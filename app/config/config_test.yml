@@ -1,0 +1,31 @@
+imports:
+    - { resource: config_dev.yml }
+    - { resource: security_test.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_test.yml"
+        strict_requirements: true
+    profiler: { only_exceptions: false }
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        dbname:   "sinp_unit_test"
+
+parameters:
+    database_name: sinp_unit_test
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+swiftmailer:
+    disable_delivery: true
+
+twig:
+    cache:  false

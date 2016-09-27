@@ -1,0 +1,83 @@
+{% extends "IgnConfigurateurBundle::layout.html.twig" %}
+{% form_theme tableForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}
+	{% trans %}Edition d'une table {% endtrans %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+	{% if tableForm is defined %}
+
+	<div class="row">
+
+		<p class="help pull-right">
+			<a target="_blank" href="{{ constant('Ign\\Bundle\\ConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-de-donnees.html">
+				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+				Aide sur les modèles de données
+			</a>
+		</p>
+
+		<ol class="breadcrumb">
+			<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+			<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
+			<li><a href="{{ path('configurateur_model_edit', { 'id' : model.id })}}">{% trans with {'%modelName%': model.name}%}breadcrumb.datamodel.edit{% endtrans %}</a></li>
+			<li class="active">{%trans with {'%tableName%': table.label} %}breadcrumb.table.edit{% endtrans %}</li>
+		</ol>
+	</div>
+
+	<div class="row">
+		{# Flash messages #}
+		{% for flashMessage in app.session.flashbag.get('notice') %}
+			<div class="alert alert-success">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+		{% for flashMessage in app.session.flashbag.get('error') %}
+			<div class="alert alert-danger">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="row">
+		<div class="panel panel-primary with-nav-tabs">
+			<div class="panel-heading clearfix">
+				<div class="pull-left">
+					{# Title #}
+					<h3 id="panel-title" class="panel-title">
+						{% trans with {'%table.label%': table.label, '%model.name%': model.name} %}table.edit.def.title{% endtrans %}
+					</h3>
+				</div>
+				<div class="pull-right">
+					{# Navigation Tabs #}
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#">{% trans %}Edit{% endtrans %}</a></li>
+						<li ><a href="{{ path('configurateur_table_fields',{ 'modelId' : model.id, 'format': table.format} ) }}">{% trans %}table.edit.fields.edit{% endtrans %}</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel-body">
+				{{ form(tableForm) }}<br />
+			</div>
+		</div>
+	</div>
+
+	<div class="row"> <!-- General page buttons -->
+		<p>
+			<a type="button" class="btn btn-default"
+			   href="{{ path('configurateur_model_edit', { 'id' : model.id })}}">
+				<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+				{% trans %}datamodel.back.button{% endtrans %}
+			</a>
+		</p>
+	</div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('IgnConfigurateurBundle::preventclosing.html.twig') }}
+{% endblock %}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RawData.mainObs" table="raw_data.main_obs">
+    <unique-constraints>
+      <unique-constraint name="main_obs_cle_obs_key" columns="cle_obs"/>
+    </unique-constraints>
+    <id name="idObservation" type="integer" column="id_observation"/>
+    <id name="providerId" type="string" column="provider_id" length="50"/>
+    <field name="submissionId" type="integer" column="submission_id" nullable="true"/>
+    <field name="cleObs" type="integer" column="cle_obs" nullable="false"/>
+    <field name="statutSource" type="string" column="statut_source" length="10" nullable="false"/>
+    <field name="referenceBiblio" type="string" column="reference_biblio" length="255" nullable="true"/>
+    <field name="jddid" type="string" column="jddid" length="36" nullable="true"/>
+    <field name="jddcode" type="string" column="jddcode" length="36" nullable="true"/>
+    <field name="identifiantOrigine" type="string" column="identifiant_origine" length="36" nullable="true"/>
+    <field name="identifiantPermanent" type="string" column="identifiant_permanent" length="50" nullable="true"/>
+    <field name="dsPublic" type="string" column="ds_public" length="36" nullable="true"/>
+    <field name="codeIdcnpDispositif" type="string" column="code_idcnp_dispositif" length="100" nullable="true"/>
+    <field name="statutObservation" type="string" column="statut_observation" length="200" nullable="true"/>
+    <field name="cdNom" type="string" column="cd_nom" length="20" nullable="true"/>
+    <field name="cdRef" type="string" column="cd_ref" length="20" nullable="true"/>
+    <field name="nomCite" type="string" column="nom_cite" length="500" nullable="false"/>
+    <field name="codeSensible" type="string" column="code_sensible" length="1" nullable="true"/>
+    <field name="denombrementMin" type="integer" column="denombrement_min" nullable="true"/>
+    <field name="denombrementMax" type="integer" column="denombrement_max" nullable="true"/>
+    <field name="objetDenombrement" type="string" column="objet_denombrement" length="100" nullable="true"/>
+    <field name="commentaire" type="string" column="commentaire" length="1000" nullable="true"/>
+    <field name="dateDebut" type="date" column="date_debut" nullable="false"/>
+    <field name="dateFin" type="date" column="date_fin" nullable="false"/>
+    <field name="heureDebut" type="time" column="heure_debut" nullable="true"/>
+    <field name="heureFin" type="time" column="heure_fin" nullable="true"/>
+    <field name="dateDetermination" type="date" column="date_determination" nullable="true"/>
+    <field name="altitudeMin" type="float" column="altitude_min" precision="10" scale="0" nullable="true"/>
+    <field name="altitudeMax" type="float" column="altitude_max" precision="10" scale="0" nullable="true"/>
+    <field name="profondeurMin" type="float" column="profondeur_min" precision="10" scale="0" nullable="true"/>
+    <field name="profondeurMax" type="float" column="profondeur_max" precision="10" scale="0" nullable="true"/>
+    <field name="toponyme" type="string" column="toponyme" length="200" nullable="true"/>
+    <field name="codeDepartement" type="string" column="code_departement" length="3" nullable="true"/>
+    <field name="x" type="float" column="x" precision="10" scale="0" nullable="true"/>
+    <field name="y" type="float" column="y" precision="10" scale="0" nullable="true"/>
+    <field name="cleObjet" type="integer" column="cle_objet" nullable="true"/>
+    <field name="precisionGeometrie" type="integer" column="precision_geometrie" nullable="true"/>
+    <field name="natureObjetGeo" type="string" column="nature_objet_geo" length="2" nullable="true"/>
+    <field name="restrictionLocalisationP" type="string" column="restriction_localisation_p" length="3" nullable="true"/>
+    <field name="restrictionMaille" type="string" column="restriction_maille" length="3" nullable="true"/>
+    <field name="restrictionCommune" type="string" column="restriction_commune" length="3" nullable="true"/>
+    <field name="restrictionTotale" type="string" column="restriction_totale" length="3" nullable="true"/>
+    <field name="floutage" type="string" column="floutage" length="3" nullable="false"/>
+    <field name="identiteObservateur" type="string" column="identite_observateur" length="200" nullable="false"/>
+    <field name="organismeObservateur" type="string" column="organisme_observateur" length="500" nullable="false"/>
+    <field name="determinateur" type="string" column="determinateur" length="200" nullable="true"/>
+    <field name="validateur" type="string" column="validateur" length="200" nullable="true"/>
+    <field name="organismeGestionnaireDonnee" type="string" column="organisme_gestionnaire_donnee" length="500" nullable="false"/>
+    <field name="organismeStandard" type="string" column="organisme_standard" length="500" nullable="true"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,402 @@
+# Messages génériques 
+
+Edit: Modifier
+Duplicate: Dupliquer
+Delete: Supprimer
+Publish: Publier
+Unpublish: Dépublier
+Un-Publish: (Dé)-Publier
+Save: Enregistrer
+Cancel: Annuler
+Confirm: Confirmer
+ConfirmAndContinue: Confirmer et continuer
+Continue: Continuer
+Add: Ajouter
+Validate: Valider
+View: Visualiser
+Name: Nom
+Label: Label
+Description: Description
+Comment: Commentaire
+ColumnName: Nom de colonne en base
+ok: OK
+Choose: Choisissez
+yes: oui
+no: non
+and: et
+Fields: Champs
+
+login:
+  fail: Vous n'êtes pas connecté. Merci de bien vouloir vous authentifier pour accéder à cette page. Redirection vers la page de connection...
+
+#error pages
+pageNotFound: Ressource introuvable
+error404: La page demandée n'existe pas. Veuillez vérifier que l'URL est correcte ou %link_start%retournez à la page d'accueil%link_end%.
+forbidden: Accès refusé
+error403: Vous n'avez les droits suffisants pour accéder à cette ressource.
+error: Un problème a été rencontré. Merci de signaler cet incident ainsi que les actions qui y ont mené afin qu'il puisse être corrigé. Veuillez excuser le désagrément causé.
+anErrorOccurred: Une erreur est survenue
+
+# Fil d'Ariane
+breadcrumb:
+  home : Accueil
+  datamodel:
+    index: Modèles de données
+    edit: Edition du modèle de données %modelName%
+    new: Création d'un modèle
+    view: Visualisation du modèle de données %modelName%
+    duplicate: Duplication d'un modèle
+  table:
+    edit: Edition de la table %tableName%
+    new: Création d'une table
+    view: Visualisation de la table %tableName%
+    dict:
+      edit: Edition du dictionnaire
+  importmodel:
+    index: Modèles d'import
+    edit: Edition du modèle d'import %modelName%
+    new: Création d'un modèle d'import
+    view: Visualisation du modèle d'import %modelName%
+  file:
+    edit: Edition du fichier %fileName%
+    mapping: Mapping du fichier %fileName%
+    new: Création d'un fichier
+    view: Visualisation du fichier %fileName%
+  inputmodel:
+    index: Modèles de saisie
+    edit: Edition du modèle de saisie %modelName%
+    new: Création d'un modèle de saisie
+  form:
+    edit: Edition du formulaire %fileName%
+    new: Création d'un formulaire
+  data:
+    index: Dictionnaire de données
+    new: Edition d'un champ
+    show: Champ du dictionnaire
+
+# Barre de navigation
+navbar:
+  title: Configurateur OGAM
+  datamodels : Modèles de données
+  importmodels : Modèles d'import
+  inputmodels : Modèles de saisie
+  dictionary: Dictionnaire de données
+  help : Aide
+
+# Modèle de données
+datamodel:
+  name: Modèle de données
+  list.title: Liste des modèles
+  copy: -copie
+  add:
+    title: Ajouter un nouveau modèle de données
+    button: Créer un nouveau modèle de données
+  delete:
+    success: Le modèle %modelName% a été supprimé avec succès.
+    fail: Un problème a été rencontré lors de la suppression du modèle %modelName%.
+    hastounpublish: Pour supprimer le modèle, il doit d'abord être dépublié.
+    failDueToImportModel: La suppression du modèle '%modelName' n'est pas possible tant que le modèle d'import '%importModelName%' n'est pas dépublié.
+    warning:
+      1: <p>Un modèle de données permet de structurer des données dans la plate-forme régionale.</p>
+      2.with.importmodels: <p>Celui-ci comprend les modèles d'import suivants :</p>
+      2.without.importmodels: <p>Celui-ci ne contient aucun modèle d'import.</p>
+      3: <p> Ceux-ci seront supprimés, ainsi que les tables de ce modèle de données. </p>
+      4: <p>Souhaitez-vous vraiment supprimer le modèle de données %model.name% ?</p>
+  edit:
+    title: Edition du modèle %name%
+    warning: Pour modifier le modèle, il doit d'abord être dépublié. Pour valider vos modifications en production, vous devrez donc le publier à nouveau en production. Souhaitez-vous dépublier le modèle ?
+    published: Le modèle %modelName% ne peut être modifié car il est publié.
+    impossible: Le modèle ne peut être modifié car il contient des données en production.
+    mappings: Attention, la modification du modèle %modelName% entraînera la suppression des éventuels mappings liés à ce modèle.
+    mappings_removed: Les mappings liés à ce modèle ont été supprimés. 
+    tables:
+      title: Tables
+      add: Créer une nouvelle table
+      list: Liste des tables
+  new:
+    title: Définition du modèle
+  duplicate:
+    success: Le modèle %modelName% a été dupliqué avec succès.
+    fail: La duplication du modèle %modelName% a échoué. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
+    badid: Le modèle de données '%modelId%' n'a pas pu être dupliqué car il n'existe pas.
+    hasCopy: Le modèle de données '%modelName%' n'a pas pu être dupliqué car une copie a déjà été créée. Pour dupliquer à nouveau ce modèle, veuillez renommer la copie existante.
+  publish:
+    success: Le modèle %modelName% a été publié avec succès.
+    fail: La publication du modèle %modelName% a échoué. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
+    badid: Le modèle de données '%modelId%' n'a pas pu être publié car il n'existe pas.
+    impossible: |-
+      <p>Le modèle de données '%modelName%' ne peut pas être publié, car :</p>
+        <ul>
+          <li>Soit il ne comporte aucune table ;</li>
+          <li>Soit aucune de ses tables ne comporte de champ géométrique;</li>
+          <li>Soit certaines de ses tables ne comportent aucun champ.</li>
+        </ul>
+      <p>Pour publier le modèle, vous devez corriger ces points.</p>
+    unpublishedImportModel: Notez que le modèle d'import %imName% n'est pas encore publié.
+    unpublishedImportModels: Notez que les modèles d'imports %imNames% ne sont pas encore publiés.
+  unpublish:
+    success: Le modèle %modelName% a été dépublié avec succès.
+    fail: La dépublication du modèle %modelName% a échouée. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
+    failduetoimportmodel: La dépublication du modèle %modelName% a échoué, suite à un problème de dépublication du modèle d'import %importModelName%. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
+    badid: Le modèle de données '%modelId%' n'a pas pu être dépublié car il n'existe pas.
+    hasData: Le modèle '%modelName%' ne peut être dépublié car il contient des données en production.
+    confirm: La dépublication du modèle '%modelName%' entraînera la dépublication des modèles d'import et des modèles de saisie qui lui sont associés. Souhaitez-vous vraiment dépublier ce modèle de données ?
+  back.button: Retourner à l'édition du modèle de données
+  resetCaches.fail: Le cache tomcat n'a pas pu être effacé, veuillez contacter votre administrateur.
+  notFound: Aucun modèle ayant pour identifiant '%modelId%' n'a été trouvé.
+
+# Tables
+table:
+  fieldsDefinition.panelTitle: Définition des champs de la table %table.label%
+  select.dictionnaryFields: Sélectionner les champs
+  updateForm.emptyParent: Aucune relation
+  new.title: Définition de la table du modèle %model.name%
+  edit:
+    def:
+      title: Table "%table.label%" du modèle "%model.name%"
+    definition:
+      title: Définition de la table %table.label% du modèle %model.name%
+      success: La définition de la table %tableName% a été mise à jour avec succès.
+    dictionary:
+      title: Dictionnaire de données
+    fields:
+      edit: Gérer les Champs
+      success: Les champs de la table %tableName% ont été mis à jour avec succès.
+    definition:
+      success: La définition de la table %tableName% a été mise à jour avec succès.
+      fail: La définition de la table %tableName% n'a pas été mise à jour suite à une erreur.
+    saveandfields: Enregistrer et ajouter des Champs
+  name:
+    exists: Ce nom de table existe déjà pour le modèle %modelName%.
+    input: Nom de la table
+  delete:
+    success: La table %tableName% a été supprimée avec succès.
+    fail: Un problème a été rencontré lors de la suppression de la table %tableName%.
+    warning: La table %table.label% va être supprimée du modèle %modelName% dans la configuration de travail.
+  view:
+    title: Visualisation de la table %table.label% du modèle %model.name%
+    pageTitle: Visualisation de la table
+    noParent: Aucune relation.
+Models: Modèles
+
+Tables: Tables
+
+Table: Table %table.label%
+Field name: Nom du champ
+Unit: Unité
+Mandatory: Obligatoire 
+
+Parent table: Table parente
+HierarchicalRelationsTitle: Définition des relations hiérarchiques
+
+# Import models
+importmodel:
+  name: Modèle d'import
+  list.title: Liste des modèles d'import
+  add:
+    title: Ajouter un nouveau modèle d'import
+    button: Créer un nouveau modèle d'import
+  edit:
+    title: Edition du modèle d'import %labelDataset%
+    warning: Pour modifier ce modèle d'import, il doit d'abord être dépublié. Pour valider vos modifications en production, vous devrez donc le publier à nouveau en production. Souhaitez-vous dépublier le modèle ?
+    targetModelChanged: ATTENTION. La modification du modèle de données cible entraînera la suppression des éventuels mappings liés à ce modèle d'import à l'enregistrement.
+    mappings_removed: Les mappings liés à ce modèle d'import ont été supprimés.
+    published: Le modèle d'import %importModelName% ne peut être modifié car il est publié en production.
+  delete:
+    success: Le modèle d'import '%modelName%' a été supprimé avec succès.
+    fail: Un problème a été rencontré lors de la suppression du modèle d'import %modelName%.
+    warning : Le modèle d'import %datasetLabel% va être supprimé dans la configuration de travail. Les fichiers de ce modèle seront également supprimées.
+    forbidden: Pour supprimer ce modèle d'import, il doit d'abord être dépublié.
+  publish:
+    success: Le modèle d'import '%importModelName%' a été publié avec succès.
+    fail: La publication du modèle d'import %importModelName% a échoué. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
+    impossible:
+      1: >-
+        <p>Le modèle d'import '%importModelName%' ne peut pas être publié, car :</p>
+      2: <ul><li>Soit le modèle de données cible '%modelName%' n'est pas publié;</li><li>Soit il ne comporte aucun fichier d'import;</li>
+      3: <li>Soit certains de ses fichiers d'import ne comportent aucun champ;</li><li>Soit certains de ses fichiers d'import ne comportent aucun mapping.</li></ul>
+      4: <p>Pour publier le modèle d'import, vous devez corriger ces points.</p>
+    badid: Le modèle d'import '%importModelId%' n'a pas pu être publié car il n'existe pas.   
+  unpublish:
+    success: Le modèle d'import '%importModelName%' a été dépublié avec succès.
+    fail: La dépublication du modèle d'import %importModelName% a échoué. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
+    uploadrunning: Un ou plusieurs fichiers liés à ce modèle d'import sont en cours de chargement. Merci d'attendre la fin du chargement pour pouvoir le dépublier.
+    badid: Le modèle d'import '%importModelId%' n'a pas pu être dépublié car il n'existe pas.  
+  files.list: Fichiers d'import
+  DataModelTarget: Modèle de données cible
+  definition: Définition du modèle d'import
+  back:
+    button: Retourner à l'édition du modèle d'import
+    warning: Attention, aucune donnée n'est mappée, donc aucune donnée ne pourra être importée.
+  saveOrder:
+    title: Enregistrer l'ordre d'import des fichiers
+    success: L'ordre d'import des fichiers a été sauvegardé avec succès.
+    fail: Une erreur est apparue lors de l'enregistrement de l'ordre d'import des fichiers du modèle d'import.
+  resetCaches.fail: Le cache tomcat n'a pas pu être effacé, veuillez contacter votre administrateur.
+  
+Edition of an import model: Edition d'un modèle d'import
+
+File list: Liste des modèles de fichiers
+Create a new file: Créer un nouveau fichier d'import
+RemoveImportModelAlert: Le modèle d'import va être supprimé dans la configuration de travail. Les fichiers de ce modèle seront également supprimés.
+
+importModel: Modèle d'import
+importFile: Fichier d'import
+
+# /datasetsimport{id}/files
+
+File Format Creation: Création d'un fichier d'import
+file:
+  edit:
+    fields:
+      title: Description du format de fichier CSV %file.label%
+      success: Les champs du fichier %file.label% ont été mis à jour avec succès.
+      button: Gérer les Champs
+      saveAndManageMappings: Enregistrer et gérer les mappings
+    definition:
+      success: La définition du fichier %file.label% a été mise à jour avec succès.
+      fail: La définition du fichier %file.label% n'a pas été mise à jour suite à une erreur.
+    title: Fichier "%file.label%" du modèle d'import "%dataset.label%"
+    dictionary.title: Dictionnaire de données
+    order.help: Cette colonne permet de définir l'ordre d'import des fichiers. Le fichier d'ordre 1 doit être celui qui correspond à la table parente. L'ordre est modifiable par glisser-déposer des lignes du tableau.
+  new.title: Définition du fichier du modèle d'import %dataset.label%
+  dataset.notfound: Le modèle d'import spécifié avec l'identifiant "%datasetId%" n'existe pas.
+  delete:
+    success: Le fichier a été supprimé avec succès.
+    fail: Un problème a été rencontré lors de la suppression du fichier.
+    warning: Le fichier d'import %file.label% va être supprimé du modèle d'import %datasetLabel% dans la configuration de travail.
+  publish:
+    success: Le modèle d'import %importModelName% a été publié avec succès.
+    fail: La publication du modèle d'import %importModelName% a échoué. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
+  view:
+    title: Visualisation du fichier %file.label% du modèle d'import %dataset.label%
+  order: 
+    title: Ordre
+    tooltip: L'ordre d'import des fichiers peut être modifié via un glisser-déposer de ceux-ci.
+File Format Visualisation: Visualisation des fichiers
+
+# datasetsimport/{datasetId}/files/{format}/edit/
+File: Description du format de fichier %file.label%
+fileField.mask: Format de date
+fileField:
+  position: Ordre
+  mask:
+    label: Format de date
+    help: Le masque d'un champ est l'expression régulière que la valeur d'un champ doit vérifier lors de l'import. Lorsqu'aucun masque n'est indiqué, aucune vérification n'est faite sur les valeurs.
+    date: Pour les champs de type DATE, il est possible de préciser le format que les valeurs du champ doivent prendre. Par défaut, le format yyyy-MM-dd est utilisé.
+    example1: "yyyy-MM-dd : une date comme 2015-10-22"
+    example2: "yyyy-MM-dd'T'HH:mmZ : une date comme 2016-12-12T04:12+0100 (format ISO 8601)"
+    doc.date : Une documentation est disponible <a href="/pdf/doc_format_de_date.pdf" target="_blank" > ici</a>.
+  order.tooltip: L'ordre des champs peut être modifié via un glisser-déposer de ceux-ci.
+  selectTable: Sélectionner une table...
+  auto:
+    title: Ajout de champs automatique
+    label: "Ajouter les champs de la table :"
+    button: Ajout automatique
+    chooseatable: Veuillez choisir la table dont vous souhaitez ajouter les champs
+    report:
+       1: <p>Les champs de la table "%tableName%" ont été ajoutés automatiquement au fichier "%fileLabel%".</p>
+       2: <p>Les champs obligatoires de la table "%tableName%" ont été ajoutés automatiquement au fichier "%fileLabel%".</p>
+       3: >-
+         <p>Initialement, il y avait : </p><ul><li>%fileFields% champs dans le fichier ;</li><li>%tableFields% champs dans la table.</li></ul>
+       4: >-
+         <p>Initialement, il y avait : </p><ul><li>%fileFields% champs dans le fichier ;</li><li>%tableFields% champs obligatoires dans la table.</li></ul>
+       5: <p>Aucun champ n'a été rajouté dans le fichier.</p>
+       6: >-
+         <p>%fieldsAddedCount% champs ont été ajoutés au fichier : <strong>%fieldsAdded%</strong></p>
+       7: <p>Voulez-vous aussi effectuer le <a href='%mappingLink%'>Mapping automatique</a> ?</p>
+       8: >-
+          <p>Les %calculatedFieldsCount% champs suivants n'ont pas été ajoutés : %calculatedFields%. Ils seront calculés automatiquement lors de l'import de données.</p>
+
+# mapping
+
+fieldMapping:
+  add: Ajouter une règle d'import dans le modèle
+  CSVMapping: Mapping du format de fichier CSV %file.label%
+  mappingMethod: Methode de mapping
+  fileField: Champ du fichier
+  mappedTable: Table en base
+  mappedTableField: Champ de la table
+  selectFileField: Sélectionner un champ du fichier...
+  selectTable: Sélectionner une table...
+  copy: Copier
+  ignore: Ignorer
+  stayOnPage: Rester sur la page
+  manageMappingsButton: Gérer les mappings
+  saveFileAndMappings: Certains champs du fichier '%file.label%' ne sont pas reliés à un champ de table. Ils ne seront pas insérés dans la base de données
+  unique: Le champ de cette table est déjà utilisé par une relation.
+  none: Aucun mapping défini.
+  table: Table
+  tableField: Champ de la table
+  method: Méthode de mapping
+  rule: Règle de mapping
+  in: dans
+  manual:
+    title: Mapping manuel
+  auto:
+    title: Mapping automatique
+    label: "Mapper sur la table :"
+    chooseatable: Veuillez choisir une table cible pour le mapping
+    report:
+      1: <p>Les champs du fichier "%fileLabel%" ont été mappés automatiquement sur ceux de la table "%tableName%".</p>
+      2: >-
+        <p>Initialement, il y avait : </p><ul><li>%alreadyMapped% champs du fichier déjà mappés ;</li><li>%toMap% champs du fichier à mapper.</li></ul>
+      3:
+        1: <p>Rapport de mapping automatique :</p><ul><li>%autoMapped% champs ont été mappés automatiquement.</li>
+        2: >-
+          <li>%alreadyMappedInTable% champs n'ont pas pu être mappés car le champ correspondant dans la table est déjà mappé : %alreadyMappedInTableList%</li>
+        3: >-
+          <li>%notFoundInTable% champs n'ont pas pu être mappés car il n'y a pas de correspondance dans la table : %notFoundInTableList%</li>
+        4: </ul>
+      4:
+        1: <p><strong>Tous les champs du fichier sont maintenant mappés aux champs de la table et inversement.</strong></p>
+        2: >-
+         <p>Après le mapping automatique, il reste : </p><ul>
+        3: >-
+          <li>Dans le fichier : %notMappedInFile% champs non mappés : <strong>%notMappedInFileList%</strong></li>
+        4: >-
+          <li>Dans la table : %notMappedInTable% champs non mappés : <strong>%notMappedInTableList%</strong></li>
+        5: </ul>
+ 
+# Dictionnaire de données
+data:
+  title: Dictionnaire de données
+  list:
+    title:
+      1: Liste des champs non rattachés
+      2: Liste des champs rattachés à des tables et/ou des fichiers d'import
+  show:
+    title: Champ du Dictionnaire de données %dataName%
+  used:
+    label: Utilisation
+    in:
+      tables: "Le champ est utilisé dans les tables suivantes :"
+      files: "Le champ est utilisé dans les fichiers d'import suivants :"
+    notin:
+      tables: Le champ n'est utilisé dans aucune table.
+      files: Le champ n'est utilisé dans aucun fichier d'import.
+  add:
+    title: Ajouter un nouveau champ dans le dictionnaire de données
+    button: Créer un nouveau champ
+    success: Le champ du dictionnaire %dataName% a été créé avec succès.
+    attach:
+      table: Ajouter et attacher à la table
+      file: Ajouter et attacher au fichier d'import
+    attachsuccess:
+      table: Le champ du dictionnaire %dataName% a été créé avec succès et ajouté à la table.
+      file: Le champ du dictionnaire %dataName% a été créé avec succès et ajouté au fichier d'import.
+  edit:
+    title: Editer un champ du dictionnaire de données
+    forbidden: Le champ %dataName% est uniquement accessible en visualisation, car il est utilisé par un modèle de données et/ou un modèle d'import.
+    success: Le type de donnée %dataName% a été modifié avec succès.
+  delete:
+    warning: >-
+      <p>Souhaitez-vous vraiment supprimer l'entrée suivante du Dictionnaire de Données : %dataName% ?</p>
+    success: Le champ du dictionnaire %dataName% a été supprimé avec succès.
+    forbidden: Le champ %dataName% est uniquement accessible en visualisation, car il est utilisé par un modèle de données et/ou un modèle d'import.
+  link_to_table:
+    warning: Le modèle est publié et/ou contient des données en production, vous ne pouvez pas modifier ses tables.
+  primary_key: Clé primaire table %tableLabel%
+  foreign_key: Clé étrangère table %tableLabel%
+  label.tooltip: Nom du champ tel qu'il apparaîtra dans l'interface GINCO.
+  name.tooltip: Nom du champ tel qu'il apparaîtra dans la base de données. Les caractères autorisés sont les lettres minuscules, chiffres et l'underscore. Le premier caractère doit être une lettre.

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Referentiels.grille" table="referentiels.grille">
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="geom" type="geometry" column="geom" nullable="true"/>
+    <field name="cdSig" type="string" column="cd_sig" length="21" nullable="true"/>
+    <field name="code10km" type="string" column="code10km" length="10" nullable="true"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,134 @@
+{# The data field is shown in a modal #}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{ title }}</h4>
+</div>
+
+<div class="modal-body">
+    <div class="container-fluid">
+     <div class="row">
+        <table class="table table-bordered table-condensed">
+            <tbody>
+            <tr>
+                <th>{% trans %}Field name{% endtrans %}</th>
+                <td>{{ data.name }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Label{% endtrans %}</th>
+                <td>{{ data.label }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Unit{% endtrans %}</th>
+                <td>{{ data.unit }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <td>{{ data.definition }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}Comment{% endtrans %}</th>
+                <td>{{ data.comment }}</td>
+            </tr>
+            <tr>
+                <th>{% trans %}data.used.label{% endtrans %}</th>
+                <td>
+                    {# Use in Data Models (Tables) #}
+                    {% if tables  %}
+                        <p>{% trans %}data.used.in.tables{% endtrans %}</p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>{{ "Models"|trans }}</th>
+                                <th>{{ "Tables"|trans }}</th>
+                                <th>{{ "Edit"|trans }}</th>
+                            </tr>
+                            {% for table in tables %}
+                                <tr>
+                                    <td>{{ table.model.name }}</td>
+                                    <td>{{ table.table.label }}</td>
+                                    <td>
+                                        {# Link to edit_table button #}
+                                        {# If model/table is editable : link to the table (to edit its fields) #}
+                                        {%  if table.editable %}
+                                            <a type="button" class="btn btn-default"
+                                               href="{{ path('configurateur_table_edit',
+                                               { 'modelId': table.model.id, 'format': table.table.format }) }}">
+                                                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                                            </a>
+                                            {# If not, disabled link #}
+                                        {% else %}
+                                            <div class="tooltip-wrapper" data-toggle="tooltip"
+                                                 title="{% trans %}data.link_to_table.warning{% endtrans %}">
+                                                <a type="button" class="btn btn-default disabled"
+                                                   href="">
+                                                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <p>{% trans %}data.used.notin.tables{% endtrans %}</p>
+                    {% endif %}
+
+                    {# Use in Import Models (Files) #}
+                    {% if files  %}
+                        <p>{% trans %}data.used.in.files{% endtrans %}</p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>{{ "importModel"|trans }}</th>
+                                <th>{{ "importFile"|trans }}</th>
+                                <th>{{ "Edit"|trans }}</th>
+                            </tr>
+                            {% for file in files %}
+                                <tr>
+                                    <td>{{ file.dataset.label }}</td>
+                                    <td>{{ file.file.label }}</td>
+                                    <td>
+                                        {# Link to edit_filr button #}
+                                        {# If import_model/file is editable : link to the file (to edit its fields) #}
+                                        {%  if file.editable %}
+                                            <a type="button" class="btn btn-default"
+                                               href="{{ path('configurateur_file_edit',
+                                               { 'datasetId': file.dataset.id, 'format': file.file.format }) }}">
+                                                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                                            </a>
+                                            {# If not, disabled link #}
+                                            {% else %}
+                                               <div class="tooltip-wrapper" data-toggle="tooltip"
+                                                    title="{% trans %}data.link_to_table.warning{% endtrans %}">
+                                                   <a type="button" class="btn btn-default disabled"
+                                                      href="">
+                                                       <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                                                   </a>
+                                               </div>
+                                           {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <p>{% trans %}data.used.notin.files{% endtrans %}</p>
+                    {% endif %}
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+     </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">{{ 'ok'|trans }}</button>
+</div>
+
+
+{# Enable tooltips #}
+<script>
+    jQuery(document).ready(function() {
+        $("[data-toggle=tooltip]").tooltip();
+    });
+</script>

@@ -1,0 +1,24 @@
+<?php
+namespace Ign\Bundle\ConfigurateurBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityRepository;
+use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Doctrine\ORM\Query\ResultSetMapping;
+
+class DatasetRepository extends EntityRepository {
+
+	/**
+	 * Find the list of dataset models for a type and ordered by their name.
+	 *
+	 * @param $type the type of the dataset
+	 * @return array of string
+	 */
+	public function findByTypeAndOrderedByName($type) {
+		return $this->getEntityManager()
+		->createQuery('SELECT d FROM IgnConfigurateurBundle:Dataset d WHERE d.type = :type ORDER BY d.label ASC')
+		->setParameter(':type', $type)
+		->getResult();
+	}
+}

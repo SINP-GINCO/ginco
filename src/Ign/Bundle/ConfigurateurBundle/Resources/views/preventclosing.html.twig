@@ -1,0 +1,22 @@
+<script language="JavaScript">
+// This script checks if a form has been modified or not, before a user leaves a page.
+// If true, then a warning is given to user.
+// Els,e user can quit the page.
+
+ // serialize clean form
+ $(function() {
+     form_clean = $("form").serialize();
+ });
+
+ $(document).ready(function () {
+    $(window).on('beforeunload', function(){
+    	 var form_dirty = $("form").serialize();
+         if(form_clean != form_dirty) {
+           return "You have unsaved changes!";
+         }
+    });
+    $(document).on("submit", "form", function(event){
+        $(window).off('beforeunload');
+    });
+});
+</script>

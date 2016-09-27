@@ -1,0 +1,190 @@
+# Generic buttons
+
+Edit: Edit
+Delete: Delete
+Publish: Publish
+Unpublish: Unpublish
+Save: Save
+Cancel: Cancel
+Confirm: Confirm
+Add: Add
+Validate: Validate
+View: View
+Name: Name
+Description: Description
+ok : OK
+yes: yes
+no: no
+Fields: Champs
+
+# Breadcrumb
+breadcrumb:
+  home: Home
+  datamodel:
+    index: Data models
+    edit: Data model editing for %modelName% 
+    new: Data model creation
+    view: Data model viewing for %modelName% 
+  table:
+    edit: Table editing for %tableName% 
+    new: Table creation
+    edit: Table viewing for %tableName% 
+    dict:
+      edit: Dictionary editing
+  importmodel:
+    index: Import models
+    edit: Import model editing for %modelName%
+    new:  Import model creation
+    view: Import model visualisation for %modelName%
+  file:
+    edit: File editing for %fileName%
+    mapping: File mapping for %fileName%
+    new: File creation
+    view: ile visualisation for %fileName%
+  inputmodel:
+    index: Input models
+    edit: Input model editing for %modelName%
+    new: Input model creation
+  form:
+    edit: Form editing %fileName%
+    new:  Form creation
+
+# Navigation bar
+navbar:
+  title: OGAM configurator
+  datamodels: Data models
+  importmodels : Import models
+  inputmodels : Input models
+  dictionary: Data dictionary
+  help : Help
+
+# Data model
+
+datamodel:
+  list.title: Models list
+  add:
+    title: Add new model
+    button: Create a new data model
+  delete:
+    success: The %modelName% model was correctly deleted.
+    fail: An issue was encountered when trying to delete the model.
+    warning:
+      1: <p>A data model enables data structuring in the regional platform.</p><p>Do you really want to delete the data model %model.name%?</p>
+      2.with.importmodels: <p>It contains the following import models :</p>
+      2.without.importmodels: <p>This one does not contain any import model.<p>
+      3: <p> Tables of this model will also be removed. </p>
+  edit:
+    title: model editing for %name%
+    warning: The model you wish to edit is already published. To start editing, the model unpublication is necessary. Do you want to unpublish the model %modelName%?
+    impossible: The model cannot be edited because it contains data in production.
+    tables:
+      title: Tables
+      add: Create a new table
+      list: Table list
+  new:
+    title: Model definition
+  publish:
+    success: The model was correctly published.
+    fail: The publication of the model %model.name% failed. Please contact the insfrastructure administrator to get further information.
+
+# Tables:
+
+table:
+  new.title: Table definition for table model %model.name%
+  edit:
+    def.title:  Table %table.label% of model %model.name% definition
+    dictionary.title: Data dictionary
+  name:
+    exists: This table name already exists in the model %modelName%.
+    inupt: Name of the table
+  delete:
+    success: The table %tableName% was correctly deleted.
+    fail: An issue was encountered when trying to delete the table %tableName%.
+    warning: The table %table.label% will be deleted fom the data model %nameModel% in the work configuration.
+  view:
+    title: Table %table.label% from model %model.name% viewing 
+    pageTitle: table viewing
+    noParent: No relation.
+Tables: Tables
+table.fieldsDefinition.panelTitle: Table fields definition for table %table.label%
+table.select.dictionnaryFields: Select fields
+
+Table: Table %table.label%
+Field name: Field name
+Unit: Unit
+Mandatory: Mandatory
+
+table.edit.fields.success: Table %tableName% fields have been correctly updated.
+table.edit.definition.success: Table %tableName% definition have been correctly updated.
+table.edit.definition.fail: Table %tableName% definition have not been updated due to an error.
+
+Parent table: Parent table
+HierarchicalRelationsTitle: Hierarchical relations definition 
+table.updateForm.emptyParent: No relation
+
+# /datasetsimport
+
+importmodel.list.title: Import models list
+importmodel.DataModelTarget: Data model target
+importmodel.add.title: Add a new import model
+importmodel.add.button: Create a new import model
+importmodel.files.list: Import files
+
+importmodel.definition: Import model definition
+
+Edition of an import model: Editing of an import model
+importmodel.edit.title: Import model %labelDataset% editing
+importmodel.delete.success: The %modelName% import model was correctly deleted.
+importmodel.delete.fail: An issue was encountered when trying to delete the %modelName% import model.
+importmodel.delete.warning : The %datasetLabel% import model will be removed from work configuration. The model's file will also be deleted.
+File list: File list
+Create a new file: Create a new file
+RemoveImportModelAlert: The import model will be deleted in the work configuration. Its files will be deleted too.
+
+
+# /datasetsimport{id}/files
+
+File Format Creation: File Format Creation
+file:
+  edit:
+    title: Import model %dataset.label% file %file.label% definition
+    fields.title: File fields definition for %file.label%
+    dictionary.title: Data dictionary
+    order.help: Cette colonne permet de définir l'ordre d'import des fichiers. Il doit correspondre à celui des tables, qui commence par la table mère. L'ordre est modifiable par glissser-déposer des lignes du tableau.
+  new.title: File definition for import model %dataset.label%
+  dataset.notfound: The dataset specified with id "%datasetId%" was not found.
+  delete:
+    success: The %fileName% file was correctly deleted.
+    fail: An issue was encountered when trying to delete the %fileName% file.
+    warning: The import file %file.label%  will be deleted fom the import model %datasetLabel% in the work configuration.
+
+# datasetsimport/{datasetId}/files/{format}/edit/
+File: File fields format description %file.label%
+file.edit.fields.title: File fields definition for %file.label%
+fileField:
+  position: Ordre
+  mask:
+    help: The mask of the field is the regular expression the field value must correspond with during the import. If ther is no mask, no checks are made.
+    doc: You can <a href="http://www.expreg.com/memo.php"> report to a documentation</a>.
+    test: And <a href="https://regex101.com/"> test your expressions</a>.
+    example:  A number between 0 and 4.
+    example2: A date.
+fileField.mask: Mask
+fileField.order.tooltip: The field order can be modified with drag-and-drop.
+
+# mapping
+
+fieldMapping:
+  AddImportRule: Add an import rule for model %dataset.label%
+  CSVMapping: Mapping of CSV file format %file.label%
+  FileField: file field
+  MappedTable: Table
+  MappedTableField: Table field
+  SelectFileField: Selct file field
+  SelectTable: Select a table
+  Copy: Copy
+  Ignore: Ignore
+  StayOnPage: Stay on the page
+  SaveFileAndMappings: Some file fields of %file.label% are not mapped with table field.
+  fieldMapping.unique: This relation already exists.
+  none: no mapping defined.

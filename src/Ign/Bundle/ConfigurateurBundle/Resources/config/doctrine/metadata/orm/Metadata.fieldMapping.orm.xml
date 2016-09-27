@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="fieldMapping" table="metadata.field_mapping">
+    <id name="srcData" type="string" column="src_data" length="36"/>
+    <id name="srcFormat" type="string" column="src_format" length="36"/>
+    <id name="dstData" type="string" column="dst_data" length="36"/>
+    <id name="dstFormat" type="string" column="dst_format" length="36"/>
+    <field name="mappingType" type="string" column="mapping_type" length="36" nullable="false"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,15 @@
+{# Manual Mapping form#}
+
+<h4>{{ 'fieldMapping.manual.title'|trans }}</h4>
+<div class="row">
+    {{ form_start(fieldMappingForm) }}
+    {{ form_errors(fieldMappingForm) }}
+    <div class="col-xs-2">{{ form_row(fieldMappingForm.mappingFunction) }}</div>
+    <div class="col-xs-3">{{ form_row(fieldMappingForm.src_data) }}</div>
+    <div class="pull-left">dans</div>
+    <div class="col-xs-2">{{ form_row(fieldMappingForm.dst_format) }}</div>
+    <div class="col-xs-3">{{ form_row(fieldMappingForm.dst_data) }}</div>
+    <div class="pull-left">{{ form_row(fieldMappingForm.enregistrer) }}</div>
+    {{ form_end(fieldMappingForm)}}
+</div>
+

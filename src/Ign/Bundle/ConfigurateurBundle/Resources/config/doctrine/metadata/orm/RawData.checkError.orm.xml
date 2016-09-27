@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RawData.checkError" table="raw_data.check_error">
+    <id name="checkId" type="integer" column="check_id"/>
+    <id name="submissionId" type="integer" column="submission_id"/>
+    <id name="checkErrorId" type="integer" column="check_error_id"/>
+    <field name="lineNumber" type="integer" column="line_number" nullable="false"/>
+    <field name="srcFormat" type="string" column="src_format" length="36" nullable="true"/>
+    <field name="srcData" type="string" column="src_data" length="36" nullable="true"/>
+    <field name="providerId" type="string" column="provider_id" length="36" nullable="true"/>
+    <field name="plotCode" type="string" column="plot_code" length="36" nullable="true"/>
+    <field name="foundValue" type="string" column="found_value" length="255" nullable="true"/>
+    <field name="expectedValue" type="string" column="expected_value" length="255" nullable="true"/>
+    <field name="errorMessage" type="string" column="error_message" length="4000" nullable="true"/>
+    <field name="creationdt" type="date" column="_creationdt" nullable="true"/>
+  </entity>
+</doctrine-mapping>

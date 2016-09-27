@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="HarmonizedData.harmonizationProcessSubmissions" table="harmonized_data.harmonization_process_submissions">
+    <indexes>
+      <index name="IDX_42F669917942C3BE" columns="harmonization_process_id"/>
+    </indexes>
+    <id name="rawDataSubmissionId" type="integer" column="raw_data_submission_id"/>
+    <id name="harmonizationProcess" association-key="true"/>
+    <one-to-one field="harmonizationProcess" target-entity="HarmonizationProcess">
+      <join-columns>
+        <join-column name="harmonization_process_id" referenced-column-name="harmonization_process_id"/>
+      </join-columns>
+    </one-to-one>
+  </entity>
+</doctrine-mapping>

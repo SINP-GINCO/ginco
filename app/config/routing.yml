@@ -1,0 +1,13 @@
+# @ annotation for the parent bundle creates problem with routes when adding controller in child bundle
+ign_configurateur:
+    resource: "../../src/Ign/Bundle/ConfigurateurBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+ign_gincoconfigurateur:
+    resource: "@IgnGincoConfigurateurBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

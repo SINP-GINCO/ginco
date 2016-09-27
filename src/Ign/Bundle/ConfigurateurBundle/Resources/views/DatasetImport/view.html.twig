@@ -1,0 +1,74 @@
+{% extends "IgnConfigurateurBundle::layout.html.twig" %} {% block title
+%}{% trans %}Visualisation of an import model{%endtrans%}{% endblock %} {%
+block body %}
+
+
+<div class="container">
+	<div class="row">
+
+		<p class="help pull-right">
+			<a target="_blank" href="{{ constant('Ign\\Bundle\\ConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-d-import.html">
+				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+				Aide sur les modèles d'import
+			</a>
+		</p>
+
+		<ol class="breadcrumb">
+			<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+			<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans %}breadcrumb.importmodel.index{% endtrans %}</a></li>
+			<li class="active">{% trans with {'%modelName%': dataset.label}%}breadcrumb.importmodel.view{% endtrans %}</li>
+		</ol>
+	</div>
+
+	<div class="row">
+
+		{# Flash messages #}
+		{% for flashMessage in app.session.flashbag.get('notice') %}
+			<div class="alert alert-success">
+				{{ flashMessage | trans | raw }}
+			</div>
+		{% endfor %}
+		{% for flashMessage in app.session.flashbag.get('error') %}
+			<div class="alert alert-danger">
+				{{ flashMessage | trans | raw }}
+			</div>
+		{% endfor %}
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 id="panel-title" class="panel-title">{{ dataset.label }}</h3>
+			</div>
+			<div class="panel-body">
+				<br>
+				<p><b>Description : </b> {{ dataset.definition }}</p>
+				<p><b>Modèle de données cible : </b> {{ dataset.model.name }}</p>
+			</div>
+			{% if files|length != 0 %}
+			<div class="panel-body">
+				<div class=col-md-6>
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th data-halign="center" data-align="center">{% trans %}importmodel.files.list{%
+									endtrans %}</th>
+								<th></th>
+							</tr>
+						</thead>
+						{% for file in files %}
+						<tr>
+							<td>{{ file.label }}</td>
+
+							<td class=col-md-1><a type="button" class="btn btn-default"
+								href="{{ path('configurateur_file_view',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">
+									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							</a></td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "IgnConfigurateurBundle::layout.html.twig" %}
+
+{% block body %}
+
+<div class="container">
+
+	<div class="row">
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 id="panel-title" class="panel-title">
+					{% trans %}Import a model{% endtrans %}
+				</h3>
+			</div>
+			<div class="panel-body">
+					{{ form(form) }}
+					<a href="{{ path('configurateur_model_index') }}" class="btn btn-default" role="button">Importer</a>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}

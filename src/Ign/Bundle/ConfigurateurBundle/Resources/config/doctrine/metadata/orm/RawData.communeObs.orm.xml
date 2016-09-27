@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RawData.communeObs" table="raw_data.commune_obs">
+    <id name="submissionId" type="integer" column="submission_id"/>
+    <id name="providerId" type="string" column="provider_id" length="50"/>
+    <id name="cleObs" type="integer" column="cle_obs"/>
+    <field name="codeCommune" type="string" column="code_commune" nullable="true"/>
+    <field name="nomCommune" type="string" column="nom_commune" nullable="true"/>
+  </entity>
+</doctrine-mapping>

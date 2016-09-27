@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RawData.submissionFile" table="raw_data.submission_file">
+    <id name="submissionId" type="integer" column="submission_id"/>
+    <id name="fileType" type="string" column="file_type" length="36"/>
+    <field name="fileName" type="string" column="file_name" length="4000" nullable="false"/>
+    <field name="nbLine" type="integer" column="nb_line" nullable="true"/>
+  </entity>
+</doctrine-mapping>

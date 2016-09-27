@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Website.users" table="website.users">
+    <id name="userLogin" type="string" column="user_login" length="50">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="userPassword" type="string" column="user_password" length="50" nullable="true"/>
+    <field name="userName" type="string" column="user_name" length="50" nullable="true"/>
+    <field name="providerId" type="string" column="provider_id" length="36" nullable="true"/>
+    <field name="active" type="integer" column="active" nullable="true"/>
+    <field name="email" type="string" column="email" length="250" nullable="true"/>
+  </entity>
+</doctrine-mapping>

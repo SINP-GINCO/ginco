@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Mapping.boundingBox" table="mapping.bounding_box">
+    <id name="providerId" type="string" column="provider_id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="bbXmin" type="decimal" column="bb_xmin" precision="10" scale="0" nullable="true"/>
+    <field name="bbYmin" type="decimal" column="bb_ymin" precision="10" scale="0" nullable="true"/>
+    <field name="bbXmax" type="decimal" column="bb_xmax" precision="10" scale="0" nullable="true"/>
+    <field name="bbYmax" type="decimal" column="bb_ymax" precision="10" scale="0" nullable="true"/>
+    <field name="zoomLevel" type="integer" column="zoom_level" nullable="true"/>
+  </entity>
+</doctrine-mapping>

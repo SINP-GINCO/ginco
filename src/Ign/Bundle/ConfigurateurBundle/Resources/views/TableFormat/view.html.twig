@@ -1,0 +1,93 @@
+{% extends "IgnConfigurateurBundle::layout.html.twig" %}
+
+{% block title %}
+	{% trans %}Table viewing{% endtrans %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+	<div class="row">
+
+		<p class="help pull-right">
+			<a target="_blank" href="{{ constant('Ign\\Bundle\\ConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-de-donnees.html">
+				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+				Aide sur les modèles de données
+			</a>
+		</p>
+
+		<ol class="breadcrumb">
+			<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+			<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
+			<li><a href="{{ path('configurateur_model_view', { 'id' : modelId })}}">{% trans with {'%modelName%': modelName}%}breadcrumb.datamodel.view{% endtrans %}</a></li>
+			<li class="active">{%trans with {'%tableName%': table.label} %}breadcrumb.table.view{% endtrans %}</li>
+		</ol>
+	</div>
+
+	<div class="row">
+
+		{# Flash messages #}
+		{% for flashMessage in app.session.flashbag.get('notice') %}
+			<div class="alert alert-success">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+		{% for flashMessage in app.session.flashbag.get('error') %}
+			<div class="alert alert-danger">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 id="panel-title" class="panel-title">
+					{% trans with {'%table.label%': table.label, '%model.name%': modelName} %}table.view.title{% endtrans %}
+				</h3>
+			</div>
+			<div class="panel-body">
+				<div class="panel-body">
+					<br>
+					<p><b> Description : </b> {{ table.description }} </p>
+					{% if  parentTable == '*' or parentTable == null %}
+						<p><b> Table parente : </b> {% trans %}table.view.noParent{% endtrans %}</p>
+					{% else %}
+						<p><b> Table parente : </b> {{ parentTable }} </p>
+					{% endif %}
+				</div>
+				<div class=col-md-8>
+					<!-- Table at the right (fields of the table) -->
+					<table id="selected-data-table"
+						class="table table-bordered table-striped"
+						data-toggle="table" data-height="400">
+						<thead>
+							<tr>
+								<th data-field="fieldName">{% trans %}Field name{% endtrans %}</th>
+								<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
+								<th>{% trans %}Mandatory{% endtrans %}</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for champ in tableFields %} {% if champ.fieldName[0:5] !=
+							'OGAM_' and champ.fieldName != 'PROVIDER_ID' and champ.fieldName
+							!= 'SUBMISSION_ID' %}
+							<tr>
+								<td id="name">{{ champ.label }}</td>
+								<td id="unit">{{ champ.unitType }}</td>
+								<td id="mandatory" class=text-center">
+									{% if champ.isMandatory == '1' %}
+										 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans %} yes {% endtrans %}
+									{% else %}
+										{% trans %} no {% endtrans %}
+									{% endif %}
+								</td>
+							</tr>
+							{% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

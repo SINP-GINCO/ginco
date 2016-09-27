@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Mapping.layerTree" table="mapping.layer_tree">
+    <id name="itemId" type="integer" column="item_id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="parentId" type="string" column="parent_id" length="50" nullable="false"/>
+    <field name="isLayer" type="integer" column="is_layer" nullable="true"/>
+    <field name="isChecked" type="integer" column="is_checked" nullable="true"/>
+    <field name="isHidden" type="integer" column="is_hidden" nullable="true"/>
+    <field name="isDisabled" type="integer" column="is_disabled" nullable="true"/>
+    <field name="isExpended" type="integer" column="is_expended" nullable="true"/>
+    <field name="name" type="string" column="name" length="50" nullable="false"/>
+    <field name="position" type="integer" column="position" nullable="true"/>
+    <field name="checkedGroup" type="string" column="checked_group" length="36" nullable="true"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,116 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id: ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        []
+    filters:
+        lessphp:
+             file: "%kernel.root_dir%/../vendor/oyejorge/less.php/lessc.inc.php"
+             apply_to: "\\.less$"
+        cssrewrite: ~
+        yui_css:
+              jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
+        yui_js:
+              jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
+    assets: ~
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+         # Rajouté pour le support des géométries par Doctrine
+        types:
+            geometry:   CrEOF\Spatial\DBAL\Types\GeometryType
+            point:      CrEOF\Spatial\DBAL\Types\Geometry\PointType
+            polygon:    CrEOF\Spatial\DBAL\Types\Geometry\PolygonType
+            linestring: CrEOF\Spatial\DBAL\Types\Geometry\LineStringType
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+         # Rajouté pour le support des géométries par Doctrine
+        dql:
+            numeric_functions:
+                st_contains:     CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STContains
+                st_distance:     CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistance
+                st_area:         CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STArea
+                st_length:       CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STLength
+                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STGeomFromText
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+    
+# Logs
+# Note : to bring back events logs, remove the channels parameter
+monolog:
+  handlers:
+    main:
+      type:  stream
+      path:  "%kernel.logs_dir%/%kernel.environment%.log"
+      level: DEBUG  
+      channels: "!event"
+
+# braincrafted
+braincrafted_bootstrap:
+    css_preprocessor: lessphp
+    jquery_path: "%kernel.root_dir%/../web/assets/jquery/jquery.js"
+    
+fos_js_routing:
+    routes_to_expose: [configurateur_table_add_fields, configurateur_file_add_fields, configurateur_table_update_fields, configurateur_file_update_fields, configurateur_table_edit_save, configurateur_file_field_mask_save, configurateur_table_change_mandatory_state, configurateur_file_change_mandatory_state, configurateur_dataset_import_update_file_order]
+
+ign_configurateur:
+    database_name: "%database_name%"
+    
+theodo_evolution_session:
+    bag_manager:
+        class:       Theodo\Evolution\Bundle\SessionBundle\Manager\BagManager
+        configuration_class:  Ign\Bundle\ConfigurateurBundle\Utils\SessionManager\Zend1BagManagerConfiguration

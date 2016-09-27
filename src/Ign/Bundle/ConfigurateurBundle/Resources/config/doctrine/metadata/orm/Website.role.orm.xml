@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Website.role" table="website.role">
+    <id name="roleCode" type="string" column="role_code" length="36">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="roleLabel" type="string" column="role_label" length="100" nullable="true"/>
+    <field name="roleDefinition" type="string" column="role_definition" length="255" nullable="true"/>
+  </entity>
+</doctrine-mapping>

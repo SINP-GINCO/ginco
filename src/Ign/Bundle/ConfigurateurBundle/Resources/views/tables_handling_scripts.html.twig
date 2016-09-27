@@ -1,0 +1,320 @@
+<script>
+/**============================================
+ * Various scripts for data handling in tables.
+ * @author Gautam Pastakia - Anna Mouget
+ *=============================================*/
+
+var $allDataTable = $('#all-data-table');
+var $selectedDataTable = $('#selected-data-table');
+var $transferButton = $('#transfer-data');
+var $saveFileButton = $('#save-file-form');
+var $saveFileToMappingsButton = $('#save-file-form-to-mappings');
+var $saveTableButton = $('#save-table-form');
+var $saveFileOrderButton = $('#save-file-order');
+var $deleteAllFieldsButton = $('#remove-all-fields');
+
+/*
+Calls the transfer action of the TableController or FileController.
+*/
+$transferButton.click(function() {
+	var addedNames = "";
+	$(jQuery.parseJSON(JSON.stringify($allDataTable.bootstrapTable('getSelections')))).each(function() {
+		var name = this.name;
+		name = name.substr(0, name.indexOf("[")-1);
+		addedNames = addedNames + name + ",";
+	})
+
+	var names = "";
+	var mandatorys = "";
+	var masks = "";
+	var orders = "";
+
+	$('#selected-data-table > tbody > tr').each(function(){
+		var $name = $(this).find('#name').text();
+		var $mandatory = $(this).find('input:checked').is(':checked');
+		var $mask = $(this).find('#mask').val();
+		var $order = $(this).find('#order').text();
+		if($name != ""){
+			names = names + $name + ",";
+			mandatorys = mandatorys + $mandatory + ",";
+			if($mask === ""){
+				$mask = "null";
+			}
+			masks = masks + encodeURIComponent($mask) + ",";
+			orders = orders + $order + ",";
+		}
+	});
+
+	addedNames = addedNames.slice(0, -1);
+
+	if(addedNames !== ""){
+		{% if table.format is defined %}
+			var url = Routing.generate('configurateur_table_add_fields', {
+				modelId : '{{model.Id }}',
+				fields : addedNames,
+				format: '{{ table.format }}'
+			});
+			var form = $('<form action="' + url + '" method="post">' +
+			  '<input type="text" name="api_url" value="' + url + '" />' +
+			  '</form>');
+			$('body').append(form);
+			form.submit();
+		{% elseif file.format is defined %}
+			if(names != ""){
+				var url = Routing.generate('configurateur_file_add_fields_and_update', {
+					datasetId : '{{dataset.id}}',
+					addedFields : addedNames,
+					fields : names,
+					mandatorys : mandatorys,
+					masks : masks,
+					orders :orders,
+					format: '{{ file.format }}'
+				});
+			} else {
+				var url = Routing.generate('configurateur_file_add_fields', {
+					datasetId : '{{dataset.id}}',
+					addedFields : addedNames,
+					format: '{{ file.format }}'
+				});
+			}
+
+			var form = $('<form action="' + url + '" method="post">' +
+			  '<input type="text" name="api_url" value="' + url + '" />' +
+			  '</form>');
+			$('body').append(form);
+			form.submit();
+		{% endif %}
+	}
+});
+
+/*
+Calls the update fields action of the FileController.
+*/
+$saveFileButton.click(function() {
+	{% if file.format is defined %}
+		var form = getFormFromFileTable(false);
+		$('body').append(form);
+		form.submit();
+	{% endif %}
+});
+
+/*
+Calls the update fields action of the FileController (then goes to mapping section).
+*/
+$saveFileToMappingsButton.click(function() {
+	{% if file.format is defined %}
+		var form = getFormFromFileTable(true);
+		$('body').append(form);
+		form.submit();
+	{% endif %}
+});
+
+/*
+Calls the update fields action of the TableController.
+*/
+$saveTableButton.click(function() {
+	{% if table.format is defined %}
+		var form = getFormFromTableTable();
+		$('body').append(form);
+		form.submit();
+	{% endif %}
+});
+
+/*
+Calls the update fields action of the TableController.
+*/
+
+function addClickEventOnRemoveFields() {
+	$("a[id^='remove-field']").click(function(){
+		var fieldToRemove = $(this).attr("id").slice(13);
+		var names = "";
+		var mandatorys = "";
+		var masks = "";
+		var orders = "";
+
+		$('#selected-data-table > tbody > tr').each(function(){
+			var $name = $(this).find('#name').text();
+			var $mandatory = $(this).find('input:checked').is(':checked');
+			var $mask = $(this).find('#mask').val();
+			var $order = $(this).find('#order').text();
+
+			names = names + $name + ",";
+			mandatorys = mandatorys + $mandatory + ",";
+			if($mask === ""){
+				$mask = "null";
+			}
+			masks = masks + encodeURIComponent($mask) + ",";
+			orders = orders + $order + ",";
+		});
+
+		{% if file.format is defined %}
+			var url = Routing.generate('configurateur_file_remove_field_and_update', {
+				datasetId : '{{dataset.id}}',
+				field : fieldToRemove,
+				fields : names,
+				mandatorys : mandatorys,
+				masks : masks,
+				orders :orders,
+				format: '{{ file.format }}'
+			});
+
+			var form = $('<form action="' + url + '" method="post">' +
+			  '<input type="text" name="api_url" value="' + url + '" />' +
+			  '</form>');
+			$('body').append(form);
+			form.submit();
+		{% endif %}
+	});
+}
+
+$(function onLoadAddClickEventOnRemoveFields(){
+	if(window.onload) {
+		var curronload = window.onload;
+		var newonload = function(evt) {
+			curronload(evt);
+			addClickEventOnRemoveFields(evt);
+		};
+	window.onload = newonload;
+	} else {
+		window.onload = addClickEventOnRemoveFields;
+	}
+}());
+
+/*
+Calls the update files action of the FileController.
+*/
+$saveFileOrderButton.click(function() {
+	var formats = "";
+	var orders = "";
+
+	$('#import-model-file-list-table > tbody > tr').each(function(){
+		var $format = $(this).find('#name').data('format');
+		var $order = $(this).find('#order').text();
+		formats = formats + $format + ",";
+		orders = orders + $order + ",";
+	});
+
+	if(formats !== ""){
+		{% if dataset.id is defined %}
+			var url = Routing.generate('configurateur_dataset_import_update_file_order', { id : '{{ dataset.id }}', formats : formats, orders :orders});
+			var form = $('<form action="' + url + '" method="post">' +
+			  '<input type="text" name="api_url" value="' + url + '" />' +
+			  '</form>');
+			$('body').append(form);
+			form.submit();
+		{% endif %}
+	}
+});
+
+/****
+ * Sortable table
+ */
+$(document).ready(function() {
+
+	//Helper function to keep table row from collapsing when being sorted
+	var fixHelperModified = function(e, tr) {
+		var $originals = tr.children();
+		var $helper = tr.clone();
+		$helper.children().each(function(index){
+			$(this).width($originals.eq(index).width())
+		});
+		return $helper;
+	};
+
+	//Make diagnosis table sortable
+	$("#file-div table tbody").sortable({
+		helper: fixHelperModified,
+		stop: function(event,ui) {
+			if($('#selected-data-table').length == 1){
+				renumber_table('#selected-data-table');
+			} else if ($('#import-model-file-list-table').length == 1){
+				renumber_table('#import-model-file-list-table');
+			}
+		}
+	 }).enableSelection();
+
+});
+
+//Renumber table rows
+function renumber_table() {
+	$(".table-sortable tr").each(function() {
+		count = $(this).parent().children().index($(this)) + 1;
+		$(this).find('.priority').html(count);
+	});
+}
+
+/*
+ * Constructs an HTML form based on all the fields on the table format table.
+ */
+function getFormFromTableTable(){
+	var names = "";
+	var mandatorys = "";
+
+	$('#selected-data-table > tbody > tr').each(function(){
+		var $name = $(this).find('#name').text();
+		var $mandatory = $(this).find('input:checked').is(':checked');
+		names = names + $name + ",";
+		mandatorys = mandatorys + $mandatory + ",";
+	});
+
+	{% if table.format is defined %}
+		if(names !== ""){
+			var url = Routing.generate('configurateur_table_update_fields', { modelId : '{{ model.id }}', fields : names, mandatorys : mandatorys, format: '{{ table.format }}'});
+			var form = $('<form action="' + url + '" method="post">' +
+			  '<input type="text" name="api_url" value="' + url + '" />' +
+			  '</form>');
+			return form;
+		}
+	{% endif %}
+}
+
+/*
+ * Constructs an HTML form based on all the fields on the file format table.
+ */
+function getFormFromFileTable(toMapping){
+	var names = "";
+	var mandatorys = "";
+	var masks = "";
+	var orders = "";
+
+	$('#selected-data-table > tbody > tr').each(function(){
+		var $name = $(this).find('#name').text();
+		var $mandatory = $(this).find('input:checked').is(':checked');
+		var $mask = $(this).find('#mask').val();
+		var $order = $(this).find('#order').text();
+
+		names = names + $name + ",";
+		mandatorys = mandatorys + $mandatory + ",";
+		if($mask === ""){
+			$mask = "null";
+		}
+		masks = masks + encodeURIComponent($mask) + ",";
+		orders = orders + $order + ",";
+	});
+
+	// Remove trailing coma
+	names = names.slice(0, -1);
+	mandatorys = mandatorys.slice(0, -1);
+	masks = masks.slice(0, -1);
+	orders = orders.slice(0, -1);
+
+	if(names !== ""){
+		{% if file.format is defined %}
+			var url = Routing.generate('configurateur_file_update_fields', {
+				datasetId : '{{ dataset.id }}',
+				fields : names,
+				mandatorys : mandatorys,
+				masks : masks,
+				orders :orders,
+				format: '{{ file.format }}',
+				toMapping: toMapping
+			});
+			var form = $('<form action="' + url + '" method="post">' +
+			  '<input type="text" name="api_url" value="' + url + '" />' +
+			  '</form>');
+			return form;
+		{% endif %}
+	}
+}
+
+</script>

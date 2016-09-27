@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Website.predefinedRequestGroup" table="website.predefined_request_group">
+    <id name="groupName" type="string" column="group_name" length="50">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="label" type="string" column="label" length="50" nullable="true"/>
+    <field name="definition" type="string" column="definition" length="250" nullable="true"/>
+    <field name="position" type="smallint" column="position" nullable="true"/>
+  </entity>
+</doctrine-mapping>

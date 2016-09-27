@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_pgsql
+    database_host: localhost
+    database_port: 5432
+    database_name: sinp_unit_test
+    database_user: ogam
+    database_password: ogam
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: fr
+    secret: edffrzgrqegtegeg

@@ -1,0 +1,32 @@
+<nav class="navbar navbar-default   nav-justified">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand logo" href="//{{ app.request.server.get("HTTP_HOST") }}">
+				<img src="{{ asset('bundles/ignconfigurateur/images/logo-sinp.png') }}">
+			</a>
+			<a class="navbar-brand" href="{{ path('configurateur_homepage') }}">
+			{% trans %}navbar.title{% endtrans %}</a>
+		</div>
+
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-9">
+			<ul class="nav navbar-nav">
+
+				<li role="presentation">
+					<a href="{{ path('configurateur_model_index') }}">
+						{% trans %}navbar.datamodels{% endtrans %}
+					</a>
+				</li>
+				<li role="presentation">
+					<a href="{{ path('configurateur_dataset_import_index') }}">
+						{% trans %}navbar.importmodels{% endtrans %}
+					</a>
+				</li>
+				<!--<li role="presentation"><a href="#">{% trans %}navbar.inputmodels{% endtrans %}</a></li> -->
+				<li role="presentation"><a href="{{ path('configurateur_data_index') }}">{% trans %}navbar.dictionary{% endtrans %}</a></li>
+				<!-- <li role="presentation"><a href="#">{% trans %}navbar.help{% endtrans %}</a></li> -->
+			</ul>
+
+		</div>
+	</div>
+</nav>

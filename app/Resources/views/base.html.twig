@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Configurateur OGAM</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8" />
+		<!-- Put in the folder 'src/Ign/Bundle/ConfigurateurBundle/public/css' your css,
+		In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignconfigurateur/' to create
+		symlinks pointing towards your files.-->
+
+		{# todo : add yui_css filter {% stylesheets 'bundles/ignconfigurateur/css/*' filter='cssrewrite, yui_css' %}#}
+		{% stylesheets 'bundles/ignconfigurateur/css/*' filter='cssrewrite' %}
+ 			 <link rel="stylesheet" href="{{ asset_url }}" />
+ 		{% endstylesheets %}
+
+		{#	<link href="{{ asset('bundles/ignconfigurateur/css/bootstrap.css') }}" rel="stylesheet">
+            <link href="{{ asset('bundles/ignconfigurateur/css/bootstrap-table.css') }}" rel="stylesheet">
+            <link href="{{ asset('bundles/ignconfigurateur/css/style.css') }}" rel="stylesheet"> #}
+
+		<!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
+		{% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+	</head>
+
+	<body>
+		{% block navbar %} {% endblock %}
+
+		{% block body %} {% endblock %}
+
+		{% block javascripts %}
+
+			<!-- Put in the folder 'src/Ign/Bundle/ConfigurateurBundle/public/js' your scripts,
+			In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignconfigurateur/' to create
+			symlinks pointing towards your files.-->
+			<script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+			<script src="{{ asset('assets/jquery-ui/jquery-ui.min.js') }}"></script>
+			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap.js') }}"></script>
+			<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+			{% if app.environment == 'prod' %}
+			<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes.js') }}"></script>
+			{% else %}
+			<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes_dev.js') }}"></script>
+			{% endif %}
+			<script>
+				$(document).ready(function(){
+					$('[data-toggle="tooltip"]').tooltip();
+				});
+			</script>
+		{% endblock %}
+
+		{% block specificjavascripts %}
+			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap-table.js') }}"></script>
+			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap-table-fr-FR.js') }}"></script>
+		{% endblock %}
+
+	</body>
+
+</html>

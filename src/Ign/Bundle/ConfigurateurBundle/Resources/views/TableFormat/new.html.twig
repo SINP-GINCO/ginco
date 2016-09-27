@@ -1,0 +1,74 @@
+{% extends "IgnConfigurateurBundle::layout.html.twig" %}
+
+{% form_theme tableForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}
+	{% trans %}Table Format Creation{% endtrans %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+
+		<p class="help pull-right">
+			<a target="_blank" href="{{ constant('Ign\\Bundle\\ConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-de-donnees.html">
+				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+				Aide sur les modèles de données
+			</a>
+		</p>
+
+		<ol class="breadcrumb">
+			<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+			<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
+			<li><a href="{{ path('configurateur_model_edit', {'id' : model.id}) }}">{%trans with {'%modelName%' : model.name} %}breadcrumb.datamodel.edit{% endtrans %}</a></li>
+			<li class="active">{% trans %}breadcrumb.table.new{% endtrans %}</li>
+		</ol>
+	</div>
+
+	<div class="row">
+		{# Flash messages #}
+		{% for flashMessage in app.session.flashbag.get('notice') %}
+			<div class="alert alert-success">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+		{% for flashMessage in app.session.flashbag.get('error') %}
+			<div class="alert alert-danger">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+	</div>
+
+	<div class="row">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 id="panel-title" class="panel-title">
+					{% trans with {'%model.name%': model.name}%}table.new.title{% endtrans %}
+				</h3>
+			</div>
+			<div class="panel-body">
+				{{ form_start(tableForm) }}
+				{{ form_errors(tableForm) }}
+
+				{{ form_row(tableForm.label) }}
+				{{ form_row(tableForm.description) }}
+				{{ form_row(tableForm.parent) }}
+
+				<div class="row"><div class="col-sm-10 col-sm-push-2">
+					{{ form_widget(tableForm.save) }}
+					{{ form_widget(tableForm.saveAndFields) }}
+				</div></div>
+
+
+				{{ form_end(tableForm) }} <br />
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('IgnConfigurateurBundle::preventclosing.html.twig') }}
+{% endblock %}

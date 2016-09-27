@@ -1,0 +1,74 @@
+{
+	"name" : "ingf/ogam_configurator",
+	"license" : "GPLv3",
+	"type" : "project",
+	"description" : "The OGAM configurator tool",
+	"autoload" : {
+		"psr-0" : {
+			"" : "src/",
+			"SymfonyStandard" : "app/"
+		}
+	},
+	"require" : {
+		"php" : ">=5.3.9",
+		"symfony/symfony" : "2.8.*",
+		"doctrine/orm" : "^2.4.8",
+		"doctrine/dbal" : "<2.4.4",
+		"doctrine/doctrine-bundle" : "~1.4",
+		"twig/extensions" : "~1.0",
+		"symfony/assetic-bundle" : "dev-master#aa5b4f8",
+		"symfony/swiftmailer-bundle" : "~2.3",
+		"symfony/monolog-bundle" : "~2.4",
+		"symfony/yaml" : "2.8.*",
+		"sensio/distribution-bundle" : "~3.0",
+		"sensio/framework-extra-bundle" : "^3.0.2",
+		"incenteev/composer-parameter-handler" : "~2.0",
+		"components/jquery" : "1.11.1",
+		"components/jqueryui" : "1.11.1",
+		"twbs/bootstrap" : "3.3.*",
+		"oyejorge/less.php" : "~1.5",
+		"braincrafted/bootstrap-bundle" : "~2.2",
+		"friendsofsymfony/jsrouting-bundle" : "~1.6",
+		"theodo-evolution/session-bundle" : "1.0.0"
+	},
+	"require-dev" : {
+		"sensio/generator-bundle" : "~3.0"
+	},
+	"scripts" : {
+		"post-install-cmd" : [
+			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+			"Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+		],
+		"post-update-cmd" : [
+			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
+			"Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+		]
+	},
+	"config" : {
+		"bin-dir" : "bin"
+	},
+	"extra" : {
+		"symfony-app-dir" : "app",
+		"symfony-web-dir" : "web",
+		"symfony-assets-install" : "relative",
+		"incenteev-parameters" : {
+			"file" : "app/config/parameters.yml",
+			"keep-outdated" : true
+		},
+		"branch-alias" : {
+			"dev-master" : "2.7-dev"
+		}
+	}
+}
