@@ -1,0 +1,719 @@
+ MAP
+#
+# Start of GINCO map file
+#
+
+RESOLUTION 96
+DEFRESOLUTION 96
+NAME GINCO_MAPSERVER
+STATUS ON
+
+UNITS meters
+FONTSET "/var/www/@instance.name@/mapserver/data/fonts/fonts.txt"
+SYMBOLSET "/var/www/@instance.name@/mapserver/data/fonts/symbols.sym"
+
+CONFIG  "MS_ERRORFILE" "/var/www/@instance.name@/website/logs/mapserver_ginco.log"
+# Mode verbeux
+# DEBUG 5
+# Erreurs seulement
+DEBUG 0
+
+#
+# Start of web interface definition
+#
+WEB
+   LOG "/var/www/@instance.name@/website/logs/mapserver_ginco.log"
+   METADATA
+
+      WFS_TITLE   				"GINCO MapServer"
+      WFS_SRS                     "EPSG:3857"
+      WFS_ABSTRACT                "GINCO Data"
+      WFS_GETFEATURE_FORMATLIST	"geojsonogr,geojsontpl"
+      WFS_ENCODING "UTF-8"
+
+      WMS_TITLE 					"GINCO MapServer"
+      WMS_ABSTRACT 				"GINCO Mapserver"
+      WMS_ACCESSCONSTRAINTS 		"none"
+      WMS_SRS                     "EPSG:3857"
+      "ows_enable_request"        "*"
+      "wms_enable_request"        "*"
+      "wms_include_items"         "*"
+      "wms_feature_info_mime_type" "text/html"
+      "queryable"                 "true"
+
+      "wcs_label"                 "GINCO MapServer"
+      "wcs_description"           "GINCO MapServer"
+      "wcs_fees"                  "none"
+      "wcs_accessconstraints"     "none"
+      "wcs_keywordlist"           "wcs,test"
+      "wcs_metadatalink_type"     "TC211"
+      "wcs_metadatalink_format"   "text/plain"
+   END
+   VALIDATION
+      # %SESSION_ID% must be 40 letters or digits
+      'SESSION_ID'     '^[a-zA-Z0-9\-]+$'
+      #%PLOT_CODE% must be 16 letters or digits or dot or dash
+      'PLOT_CODE'      '^[a-zA-Z0-9\.\-]{0,17}$'
+   END
+END
+
+PROJECTION
+  "init=epsg:3857"
+END
+
+SCALEBAR
+	UNITS kilometers
+	INTERVALS 1
+	SIZE 100 2
+	LABEL
+  		COLOR  0 0 0
+  		OUTLINECOLOR 255 255 255
+    END
+END
+
+OUTPUTFORMAT
+  NAME PNG
+  DRIVER "AGG/PNG"
+  MIMETYPE "image/png"
+  IMAGEMODE RGBA
+  FORMATOPTION  INTERLACE=OFF
+  TRANSPARENT ON
+END
+
+OUTPUTFORMAT
+  NAME JPEG
+  DRIVER "AGG/JPEG"
+  MIMETYPE "image/jpeg"
+  IMAGEMODE RGB
+  EXTENSION "jpg"
+  FORMATOPTION QUALITY=80
+END
+
+OUTPUTFORMAT
+  NAME "geojsonogr"
+  DRIVER "OGR/GEOJSON"
+  MIMETYPE "application/json; subtype=geojson; charset=utf-8"
+  FORMATOPTION "FORM=simple"
+END
+
+OUTPUTFORMAT
+  NAME "geojsontpl"
+  DRIVER "TEMPLATE"
+  MIMETYPE "application/json; subtype=geojson; charset=utf-8"
+  FORMATOPTION "FILE=geoJSONTemplate.js"
+END
+
+#
+# Start of legend
+#
+LEGEND
+  KEYSIZE 18 12
+  LABEL
+    FONT arial_win
+    TYPE TRUETYPE
+    ENCODING UTF-8
+    SIZE 10
+    COLOR 0 0 0
+  END
+END
+
+#
+# Result Vector layer, precise geometries
+#
+
+LAYER
+    NAME "result_geometrie_point"
+    GROUP result_geometrie
+    TRANSPARENCY 80
+    TYPE POINT
+    STATUS ON
+
+    METADATA
+    	WFS_TITLE		   "Results"
+        GML_FEATUREID        "oid"
+        GML_INCLUDE_ITEMS    "all"
+        "gml_groups"            "display"
+	    "gml_display_group" 	"provider_id,plot_code"
+    END
+
+    #CLUSTER
+    # MAXDISTANCE 20  # in pixels
+    # REGION "ellipse"  # can be rectangle or ellipse
+    #END
+
+    DUMP TRUE
+    CONNECTIONTYPE postgis
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+#    DATA "the_geom FROM (
+#            SELECT the_geom, oid
+#            FROM result_location
+#            WHERE session_id = '%SESSION_ID%'
+#            AND GeometryType(the_geom) = 'POINT'
+#        ) as foo USING UNIQUE oid USING srid=3857    "
+        
+     DATA "geom FROM (
+       SELECT DISTINCT ON(id)
+       bac.id_geometrie AS id, geom
+       FROM bac_geometrie bac
+       INNER JOIN observation_geometrie obs ON obs.id_geom = bac.id_geometrie
+       INNER JOIN results res ON res.table_format =  obs.table_format
+       AND res.id_provider = obs.id_provider
+       AND res.id_observation = obs.id_observation
+       INNER JOIN requests req ON res.id_request = req.id
+       WHERE req.session_id = '%SESSION_ID%'
+       AND GeometryType(geom) IN ('POINT', 'MULTIPOINT')
+       AND res.hiding_level < 1
+    ) as foo USING UNIQUE id USING srid=3857"
+        
+        
+
+   #PROJECTION
+   #"init=epsg:4326"
+   #END
+
+# CLASSITEM "Cluster:FeatureCount"
+# LABELITEM "Cluster:FeatureCount"
+# CLASS
+#  NAME "Observation ponctuelle"
+#  EXPRESSION ("[Cluster:FeatureCount]" != "1")
+#  STYLE
+#    COLOR 255 51 0
+#    OUTLINECOLOR 255 255 255
+#    MINSIZE 10
+#    SYMBOL "circle"
+#  END
+#  LABEL
+#    COLOR  255 255 255
+#    OUTLINEWIDTH 1
+#    FONT arial_win
+#    TYPE truetype
+#    SIZE 8
+#    ALIGN CENTER
+#    POSITION cc
+#    FORCE TRUE
+#  END
+#
+# END
+
+ CLASS 
+  #  EXPRESSION "1"
+  STYLE 
+     COLOR 255 51 0 # Rouge
+     OUTLINECOLOR 139 28 0  # Le même en deux fois moins saturé
+     MINSIZE 10
+   SYMBOL "circle"
+  END 
+  #LABEL
+  #  COLOR 220 20 60
+  #  OUTLINEWIDTH 3
+  #  FONT arial_win
+  #  TYPE truetype
+  #  SIZE 15
+  #  ALIGN CENTER
+  #  POSITION cc
+  #  FORCE TRUE
+  END
+ 
+  #END
+  #CLASS
+  #  EXPRESSION "1"
+  #  STYLE
+  #   COLOR 247 214 189
+  #   OUTLINECOLOR 220 20 60
+  # 	 WIDTH 2
+  #   MINSIZE 30
+  #   SYMBOL "circle"
+  # 	 OPACITY 90
+  #  END
+  #END
+  PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+LAYER
+    NAME "result_geometrie_line"
+    GROUP result_geometrie
+    TRANSPARENCY 80
+    TYPE LINE
+    STATUS ON
+
+    METADATA
+        WFS_TITLE       "Results"
+        GML_FEATUREID        "oid"
+        GML_INCLUDE_ITEMS    "all"
+        "gml_groups"            "display"
+		"gml_display_group"     "provider_id"
+    END
+
+    DUMP TRUE
+    CONNECTIONTYPE postgis
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+
+#    DATA "the_geom FROM (
+#        SELECT the_geom, row_number() OVER(ORDER BY ST_Length(the_geom) DESC) as row_number
+#        FROM (
+#          SELECT DISTINCT the_geom
+#          FROM result_location
+#          WHERE session_id = '%SESSION_ID%'
+#          AND GeometryType(the_geom) IN ('LINE','LINESTRING', 'MULTILINESTRING')
+#        ) AS foo
+#    ) as bar USING UNIQUE row_number USING srid=3857"
+    
+    DATA "geom FROM (
+       SELECT DISTINCT ON(id)
+       bac.id_geometrie AS id, geom
+       FROM bac_geometrie bac
+       INNER JOIN observation_geometrie obs ON obs.id_geom = bac.id_geometrie
+       INNER JOIN results res ON res.table_format =  obs.table_format
+       AND res.id_provider = obs.id_provider
+       AND res.id_observation = obs.id_observation
+       INNER JOIN requests req ON res.id_request = req.id
+       WHERE req.session_id = '%SESSION_ID%'
+       AND GeometryType(geom) IN ('LINE','LINESTRING', 'MULTILINESTRING')
+       AND res.hiding_level < 1
+    ) as foo USING UNIQUE id USING srid=3857"
+
+ CLASS
+  NAME "Observation linéaire"
+  STYLE
+   COLOR 255 51 0   # Rouge
+   OUTLINECOLOR 139 28 0
+   OUTLINEWIDTH 2
+   MINSIZE 10
+   WIDTH 3
+  END
+ END
+ PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+
+LAYER
+    NAME "result_geometrie_polygon"
+    GROUP result_geometrie
+    TRANSPARENCY 75
+    TYPE POLYGON
+    STATUS ON
+
+    METADATA
+        WFS_TITLE       "Results"
+        GML_FEATUREID        "oid"
+        GML_INCLUDE_ITEMS    "all"
+        "gml_groups"            "display"
+		"gml_display_group"     "provider_id"
+    END
+
+    DUMP TRUE
+    CONNECTIONTYPE postgis
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+
+#    DATA "the_geom FROM (
+#        SELECT the_geom, row_number() OVER(ORDER BY ST_Area(the_geom) DESC) as row_number
+#        FROM (
+#          SELECT DISTINCT the_geom
+#          FROM result_location
+#          WHERE session_id = '%SESSION_ID%'
+#          AND GeometryType(the_geom) IN ('POLYGON','MULTIPOLYGON')
+#        ) AS foo
+#    ) as bar USING UNIQUE row_number USING srid=3857"
+    
+    DATA "geom FROM (
+       SELECT DISTINCT ON(id)
+       bac.id_geometrie AS id, geom
+       FROM bac_geometrie bac
+       INNER JOIN observation_geometrie obs ON obs.id_geom = bac.id_geometrie
+       INNER JOIN results res ON res.table_format =  obs.table_format
+       AND res.id_provider = obs.id_provider
+       AND res.id_observation = obs.id_observation
+       INNER JOIN requests req ON res.id_request = req.id
+       WHERE req.session_id = '%SESSION_ID%'
+       AND GeometryType(geom) IN ('POLYGON','MULTIPOLYGON')
+       AND res.hiding_level < 1
+    ) as foo USING UNIQUE id USING srid=3857"
+
+ CLASS
+  NAME "Observation surfacique"
+  STYLE
+   COLOR 255 51 0 # Rouge
+   OUTLINECOLOR 139 28 0
+   OUTLINEWIDTH 2
+  END
+ END
+ PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+#
+# Bac de visualisation des résultats - communes
+#
+LAYER
+    NAME "result_commune"
+    TYPE POLYGON
+    STATUS ON
+
+#    METADATA
+#        WFS_TITLE       "Results"
+#        GML_FEATUREID        "oid"
+#        GML_INCLUDE_ITEMS    "all"
+#        "gml_groups"            "display"
+#		"gml_display_group"     "provider_id"
+#    END
+
+    DUMP TRUE
+    CONNECTIONTYPE postgis
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+
+#    DATA "geom FROM (
+#       SELECT DISTINCT ON(id)
+#       b.id_commune AS id, geom
+#      FROM bac_commune b
+#       INNER JOIN observation_commune o ON o.id_commune = b.id_commune
+#    ) as foo USING UNIQUE id USING srid=3857"
+    DATA "geom FROM (
+       SELECT DISTINCT ON(id)
+       bac.id_commune AS id, geom
+       FROM bac_commune bac
+       INNER JOIN observation_commune obs ON obs.id_commune = bac.id_commune
+       INNER JOIN results res ON res.table_format =  obs.table_format
+       AND res.id_provider = obs.id_provider
+       AND res.id_observation = obs.id_observation
+       INNER JOIN requests req ON res.id_request = req.id
+       WHERE req.session_id = '%SESSION_ID%'
+       AND res.hiding_level < 2
+    ) as foo USING UNIQUE id USING srid=3857"
+
+
+ #CLASSITEM "oid"
+ CLASS
+  NAME "Commune contenant des observations"
+  STYLE
+    COLOR 253 255 75  # Jaune
+    OUTLINECOLOR 121 102 0
+    #COLOR 255 135 0 # Orange
+    #OUTLINECOLOR 124 65 0
+    OUTLINEWIDTH 2
+    OPACITY 70
+  END
+ END
+ PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+
+#
+# Bac de visualisation des résultats - mailles
+#
+LAYER
+    NAME "result_maille"
+    TYPE POLYGON
+    STATUS ON
+
+#    METADATA
+#        WFS_TITLE       "Results"
+#        GML_FEATUREID        "oid"
+#        GML_INCLUDE_ITEMS    "all"
+#        "gml_groups"            "display"
+#		"gml_display_group"     "provider_id"
+#    END
+
+    DUMP TRUE
+    CONNECTIONTYPE postgis
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+
+#    DATA "geom FROM (
+#       SELECT DISTINCT ON(id)
+#       b.id_maille AS id, geom
+#       FROM bac_maille b
+#       INNER JOIN observation_maille o ON o.id_maille = b.id_maille
+#    ) as foo USING UNIQUE id USING srid=3857"
+
+    DATA "geom FROM (
+       SELECT DISTINCT ON(id)
+       bac.id_maille AS id, geom
+       FROM bac_maille bac
+       INNER JOIN observation_maille obs ON obs.id_maille = bac.id_maille
+       INNER JOIN results res ON res.table_format =  obs.table_format
+       AND res.id_provider = obs.id_provider
+       AND res.id_observation = obs.id_observation
+       INNER JOIN requests req ON res.id_request = req.id
+       WHERE req.session_id = '%SESSION_ID%'
+       AND res.hiding_level < 3
+    ) as foo USING UNIQUE id USING srid=3857"
+
+
+ #CLASSITEM "oid"
+ CLASS
+  NAME "Maille contenant des observations"
+  STYLE
+   COLOR 124 252 0  # Vert
+   OUTLINECOLOR 51 102 0
+   OUTLINEWIDTH 2
+   OPACITY 40
+  END
+ END
+ PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+
+#
+# Bac de visualisation des résultats - départements
+#
+LAYER
+    NAME "result_departement"
+    TYPE POLYGON
+    STATUS ON
+
+#    METADATA
+#        WFS_TITLE       "Results"
+#        GML_FEATUREID        "oid"
+#        GML_INCLUDE_ITEMS    "all"
+#        "gml_groups"            "display"
+#		"gml_display_group"     "provider_id"
+#    END
+
+    DUMP TRUE
+    CONNECTIONTYPE postgis
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+
+#    DATA "geom FROM (
+#       SELECT DISTINCT ON(id)
+#       b.id_departement AS id, geom
+#       FROM bac_departement b
+#       INNER JOIN observation_departement o ON o.id_departement = b.id_departement
+#    ) as foo USING UNIQUE id USING srid=3857"
+    
+    DATA "geom FROM (
+       SELECT DISTINCT ON(id)
+       bac.id_departement AS id, geom
+       FROM bac_departement bac
+       INNER JOIN observation_departement obs ON obs.id_departement = bac.id_departement
+       INNER JOIN results res ON res.table_format =  obs.table_format
+       AND res.id_provider = obs.id_provider
+       AND res.id_observation = obs.id_observation
+       INNER JOIN requests req ON res.id_request = req.id
+       WHERE req.session_id = '%SESSION_ID%'
+       AND res.hiding_level < 4
+    ) as foo USING UNIQUE id USING srid=3857"
+
+
+ #CLASSITEM "oid"
+ CLASS
+  NAME "Département contenant des observations"
+  STYLE
+   COLOR 0 227 255  # Bleu
+   OUTLINECOLOR 0 111 128
+   OUTLINEWIDTH 2
+   OPACITY 40
+  END
+ END
+ PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+# ----------------------------
+# Limites administratives
+# ----------------------------
+
+#
+# Régions
+#
+LAYER
+    NAME regions
+    TRANSPARENCY 80
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE postgis
+    PROCESSING "LABEL_NO_CLIP=ON"
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+    DATA "geom FROM referentiels.geofla_region USING srid=4326"
+
+
+    METADATA
+        WFS_TITLE        "regions"
+        GML_INCLUDE_ITEMS  "all"
+        "gml_groups"            "display"
+    "gml_display_group"     "code_reg,nom_reg"
+    "gml_code_alias"        "Code"
+    "gml_nom_alias"         "Nom"
+    END
+    DUMP TRUE
+
+    CLASSITEM "code_reg"
+    LABELITEM "nom_reg"
+    PROJECTION
+        AUTO
+    END
+    CLASS
+      NAME 'Régions'
+      STYLE
+        OUTLINECOLOR 173 219 181  # Vert clair
+        WIDTH 2
+      END
+      LABEL
+        COLOR  255 255 255
+        OUTLINECOLOR 0 0 0
+        OUTLINEWIDTH 1
+        FONT arialbd
+        TYPE truetype
+        SIZE 11
+        WRAP '-' # Permet de passer les étiquettes sur deux lignes
+        MAXLENGTH 10 # Mais pas avant le 10ème caractère
+        ALIGN center # Et aligne les différentes lignes au centre
+        POSITION cc # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        PARTIALS TRUE # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        BUFFER 3
+         END
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+#
+# Départements
+#
+LAYER
+    NAME departements
+    TRANSPARENCY 80
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE postgis
+        PROCESSING "LABEL_NO_CLIP=ON"
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+        DATA "geom FROM referentiels.geofla_departement USING srid=4326"
+
+
+    METADATA
+            WFS_TITLE          "departements"
+            GML_INCLUDE_ITEMS       "all"
+            "gml_groups"               "display"
+        "gml_display_group"        "code_dept,nom_dept"
+        "gml_dp_alias"  "Code"
+        "gml_nom_depart_alias"  "Nom"
+    END
+    DUMP TRUE
+
+    CLASSITEM "code_dept"
+    LABELITEM "nom_dept"
+    PROJECTION
+        AUTO
+    END
+    CLASS
+      NAME 'Départements'
+      STYLE
+        OUTLINECOLOR 173 219 181  # Vert clair
+        WIDTH 2
+      END
+      LABEL
+        COLOR  255 255 255
+        OUTLINECOLOR 0 0 0
+        OUTLINEWIDTH 1
+        FONT arialbd
+        TYPE truetype
+        SIZE 11
+        WRAP '-' # Permet de passer les étiquettes sur deux lignes
+        MAXLENGTH 9 # Mais pas avant le 10ème caractère
+        ALIGN center # Et aligne les différentes lignes au centre
+        POSITION cc # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        PARTIALS TRUE # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        BUFFER 3
+      END
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+#
+# Communes
+#
+LAYER
+    NAME communes
+    TRANSPARENCY 80
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE postgis
+    PROCESSING "LABEL_NO_CLIP=ON"
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+    DATA "geom FROM referentiels.geofla_commune USING srid=4326"
+
+    METADATA
+        WFS_TITLE          "communes"
+        GML_INCLUDE_ITEMS  "all"
+        "gml_groups"            "display"
+        "gml_display_group"     "insee_com,nom_com"
+        "gml_code_alias"  "INSEE"
+        "gml_nom_alias"    "Commune"
+    END
+    DUMP TRUE
+
+    CLASSITEM "insee_com"
+    LABELITEM "nom_com"
+    PROJECTION
+        AUTO
+    END
+    CLASS
+      NAME 'Communes'
+      STYLE
+        OUTLINECOLOR 173 219 181  # Vert clair
+        WIDTH 2
+      END
+      LABEL
+        COLOR  255 255 255 # 202 255 211 # Meme vert, un peu plus clair
+        OUTLINECOLOR 0 0 0
+        OUTLINEWIDTH 1
+        FONT arialbd
+        TYPE truetype
+        SIZE 11
+        WRAP '-' # Permet de passer les étiquettes sur deux lignes
+        MAXLENGTH 9 # Mais pas avant le 10ème caractère
+        ALIGN center # Et aligne les différentes lignes au centre
+        POSITION cc # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        PARTIALS TRUE # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        BUFFER 3
+         END
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER" 
+END
+
+#
+# Mailles
+#
+LAYER
+    NAME mailles
+    TRANSPARENCY 80
+    TYPE POLYGON
+    STATUS ON
+    CONNECTIONTYPE postgis
+    PROCESSING "LABEL_NO_CLIP=ON"
+    CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
+    DATA "geom FROM referentiels.codemaillevalue USING srid=4326"
+
+    METADATA
+        WFS_TITLE          "mailles"
+        GML_INCLUDE_ITEMS  "all"
+        "gml_groups"            "display"
+        "gml_display_group"     "cd_sig,code_10km"
+        "gml_code_alias"  "CD_SIG"
+        "gml_nom_alias"    "Code_10km"
+    END
+    DUMP TRUE
+
+    CLASSITEM "cd_sig"
+    LABELITEM "code_10km"
+    PROJECTION
+        AUTO
+    END
+    CLASS
+      NAME 'Mailles'
+      STYLE
+        OUTLINECOLOR 230 230 230  # Gris clair
+        WIDTH 2
+      END
+      LABEL
+        COLOR  255 160 155 # 202 255 211 # Meme vert, un peu plus clair
+        OUTLINECOLOR 0 0 0
+        OUTLINEWIDTH 1
+        FONT arialbd
+        TYPE truetype
+        SIZE 11
+        POSITION cc # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        PARTIALS TRUE # A utiliser avec PROCESSING "LABEL_NO_CLIP=ON"
+        BUFFER 3
+      END
+    END
+    PROCESSING "CLOSE_CONNECTION=DEFER"
+END
+
+END # Map File

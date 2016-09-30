@@ -1,0 +1,193 @@
+<?php
+/**
+ * Licensed under EUPL v1.1 (see http://ec.europa.eu/idabc/eupl).
+ *
+ * © European Union, 2008-2012
+ *
+ * Reuse is authorised, provided the source is acknowledged. The reuse policy of the European Commission is implemented by a Decision of 12 December 2011.
+ *
+ * The general principle of reuse can be subject to conditions which may be specified in individual copyright notices.
+ * Therefore users are advised to refer to the copyright notices of the individual websites maintained under Europa and of the individual documents.
+ * Reuse is not applicable to documents subject to intellectual property rights of third parties.
+ */
+
+/**
+ * Default layout
+ *
+ * @package layouts
+ */
+?>
+
+<?php echo $this->doctype()?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <?php echo $this->headTitle()?>
+  <?php echo $this->headMeta()?>
+  <?php echo $this->headLink()?>
+  <?php echo $this->headStyle()?>
+  <?php echo $this->headScript()?>
+  <link rel="shortcut icon"
+	href="<?php echo $this->baseUrl('favicon.ico');?>" />
+<script type="text/javascript">
+      // Firebugx.js
+      if (!window.console /*|| !console.firebug*/)
+      {
+          var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml",
+          "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+
+          window.console = {};
+          for (var i = 0; i < names.length; ++i)
+              window.console[names[i]] = function() {}
+      }
+  </script>
+</head>
+<body>
+
+	<div id="wrapper" class="wrapper">
+
+		<div id="main-body-bg" class="main-body-bg"></div>
+		<div id="main-body" class="main-body">
+			<!-- HEADER -->
+			<div class="header" id="header">
+
+				<div id="banner" class="banner">
+					<a class="logo" href="/" title="Accueil"><img
+						src="<?php echo $this->baseUrl('img/logo-sinp.png');?>"
+						alt="SINP - Système d'Information Nature et Paysages" /></a>
+				</div>
+
+				<div id="top" class="top">
+
+
+					<div id="header-beadcrumb" class="header-beadcrumb" style="float: left">
+						<?php
+						$request = Zend_Controller_Front::getInstance()->getRequest();
+						$controllerName = $request->getControllerName();
+						$actionName = $request->getActionName();
+						$moduleName = $request->getModuleName();
+
+						$breadcrumb = $this->navigation()
+								->breadcrumbs()
+								->setLinkLast(false)
+								->setMinDepth(0)
+								->setSeparator('<img src="/img/arrow.png">')
+								->render();
+						if ($breadcrumb) {
+							echo $breadcrumb;
+						} else {
+
+							$topControllerPage = $this->navigation()->findOneBy('controller', $controllerName);
+							if ($topControllerPage) {
+								$currentPage = Zend_Navigation_Page::factory(array(
+										'label' => 'Page',
+										'action' => $actionName,
+										'controller' => $controllerName,
+										'module' => $moduleName,
+								));
+								$topControllerPage->addPage($currentPage);
+								echo $this->navigation()
+										->breadcrumbs()
+										->setMinDepth(0)
+										->setMaxDepth(1)// Don't show current page link (we don(t know its name)
+										->setLinkLast(true)// and then lats link is top controller page, clickable
+										->setSeparator('<img src="/img/arrow.png">')
+										->render();
+							}
+						}
+						?>
+					</div>
+
+					<div id="header-login" class="header-login" style="float: right">
+<?php
+$configuration = Zend_Registry::get("configuration");
+
+$userSession = new Zend_Session_Namespace('user');
+$user = $userSession->user;
+
+$autoLogin = $configuration->getConfig('autoLogin', false) == 1;
+if (!$autoLogin) {
+	if (!empty($user)) {
+	?>
+         <em><?php echo $this->translate('Welcome ') . ' ' . $user->login ?></em>&nbsp;
+			<a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'show-change-password'), 'default', true) ?>"><?php echo $this->translate('Change Password');?></a>
+			&nbsp; 
+			<a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'logout'), 'default', true) ?>"><?php echo $this->translate('Log out');?></a>
+	<?php
+	} else {
+		?><a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'index'), 'default', true) ?>"><?php echo $this->translate('Log in');?></a>
+	<?php
+	}
+}else {
+	if (!empty($user)) {
+		if ($user->login == 'visiteur') {
+		?>
+		    <em><?php echo $this->translate('Welcome ') . ' ' . $user->login ?></em>&nbsp;
+			<a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'index'), 'default', true) ?>"><?php echo $this->translate('Log in')?></a>
+		<?php
+		} else {
+			?>
+            <em><?php echo $this->translate('Welcome ') . ' ' . $user->login ?></em>&nbsp;
+			<a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'show-change-password'), 'default', true) ?>"><?php echo $this->translate('Change Password');?></a>
+			&nbsp; 
+			<a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'logout'), 'default', true) ?>"><?php echo $this->translate('Log out');?></a>
+		<?php
+		}
+	} else {
+	?>
+		<a href="<?php echo $this->url(array('controller'=>'user', 'action'=>'index'), 'default', true) ?>"><?php echo $this->translate('Log in');?></a>
+	<?php
+	}
+}
+?>
+					</div>
+				</div>
+				<!-- Fin du header -->
+
+			</div>
+			<div>
+				<p class="help align_images">
+				    <?php
+					$docUrlBase = $configuration->getConfig('documentationUrl', 'documentation_url_missing');
+				    $icon = "<img src='/img/help.png' alt='help icon'>";
+
+				    $config = new Zend_Config_Yaml(CUSTOM_APPLICATION_PATH.'/configs/navigation.yml', 'nav');
+				    $container = new Zend_Navigation($config);
+
+					$controller = $container->findOneBy('controller', $controllerName);
+					if ($controller) {
+						$link = $docUrlBase . $controller->help;
+						echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
+					}
+				    ?>
+				</p>
+			</div>
+
+			<!-- CONTENT -->
+			<div class="content" id="content">
+        <?php echo $this->layout()->content?>
+    </div>
+
+			<!-- Fin du main-body -->
+		</div>
+
+		<!-- Utilisé pour maintenir le bas de page en bas -->
+		<div id="push" class="push"></div>
+
+		<!-- Fin du wrapper -->
+	</div>
+
+	<div class="footer" id="footer">
+		<div id="footer-ct" class="footer-ct">
+
+<?php include ('legalNotices.phtml');?>
+
+<?php include ('geoportailCopyrigths.phtml');?>
+
+
+
+			<p id="GINCOVersion">@build.version@</p>
+		</div>
+	</div>
+
+</body>
+</html>

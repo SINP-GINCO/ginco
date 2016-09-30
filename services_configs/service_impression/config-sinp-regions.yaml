@@ -1,0 +1,164 @@
+#===========================================================================
+# Config spécifique pour SINP. Si vous effectuez des modifications dessus,
+# et pour que celles-ci soient prises en compte, ouvrez le .war du service
+# impression et remplacez le fichier config.yaml par le votre, puis 
+# redéployez le service.
+#============================================================================
+
+#===========================================================================
+# allowed DPIs
+#===========================================================================
+dpis:
+  - 254
+  - 190
+  - 127
+  - 56
+  - 96
+  - 72
+
+#===========================================================================
+# allowed Formats
+#===========================================================================
+# '*' means any formats
+formats: ['*']
+
+#===========================================================================
+# the allowed scales
+#===========================================================================
+scales:
+  - 69885283
+  - 34942642
+  - 17471321
+  - 8735660
+  - 4367830
+  - 2183915
+  - 1091958
+  - 545979
+  - 272989
+  - 136495
+  - 68247
+  - 34124
+  - 17062
+  - 8531
+  - 4265
+  - 2133
+
+#===========================================================================
+# the list of allowed hosts
+#===========================================================================
+hosts:
+  - !localMatch
+    dummy: true
+  - !ipMatch
+    ip: www.camptocamp.org
+  - !ipMatch
+    ip: wxs.ign.fr
+  - !ipMatch
+    ip: wxs-i.ign.fr
+  - !ipMatch
+    ip: ogam-sinp.ign.fr
+  - !ipMatch
+    ip: alsace.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: aquitaine.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: auvergne.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: basse-normandie.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: bourgogne.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: bretagne.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: centre.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: champagne-ardenne.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: corse.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: franche-comte.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: guadeloupe.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: guyane.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: haute-normandie.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: ile-de-france.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: idf.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: reunion.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: languedoc-roussillon.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: limousin.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: lorraine.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: martinique.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: mayotte.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: midi-pyrenees.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: nord-pas-de-calais.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: pays-de-la-loire.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: picardie.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: poitou-charentes.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: provence-alpes-cote-d-azur.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: paca.ogam-sinp.ign.fr
+  - !ipMatch
+    ip: rhone-alpes.ogam-sinp.ign.fr
+  - !dnsMatch
+    host: labs.metacarta.com
+    port: 80
+  - !dnsMatch
+    host: demo.mapfish.org
+    port: 80
+
+
+# the default fileName for the files downloaded from the servlet
+outputFilename: MapFish_PrintOut
+layouts:
+  #===========================================================================
+  A4 portrait:
+  #===========================================================================
+    # override the default outputFileName defined above
+#    outputFilename: A4_Layout
+    mainPage:
+      rotation: true
+      pageSize: A4
+      header:
+        height: 50
+        items:
+          - !text
+            font: Helvetica
+            fontSize: 30
+            align: right
+            text: '${mapTitle}'
+      items:
+        - !map
+          spacingAfter: 30
+          width: 440
+          height: 483
+        - !text
+          text: '${comment}'
+          spacingAfter: 30
+      footer:
+        height: 30
+        items:
+          - !columns
+            items:
+              - !text
+                backgroundColor: #FF0000
+                align: left
+               #text: Copyright Camptocamp SA
+              - !text
+                align: right
+                #text: 'Page ${pageNum}'

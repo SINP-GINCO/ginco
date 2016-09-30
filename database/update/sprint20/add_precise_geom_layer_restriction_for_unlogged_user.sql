@@ -1,0 +1,1 @@
+INSERT INTO website.layer_role_restriction (layer_name, role_code) VALUES ('result_geometrie', 'visiteur');

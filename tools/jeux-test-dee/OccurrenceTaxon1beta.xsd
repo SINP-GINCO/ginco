@@ -1,0 +1,857 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 sp1 (x64) (http://www.altova.com) by USER USER (MNHN Muséum National) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sinp="http://inpn.mnhn.fr/sinp/" xmlns:gml="http://www.opengis.net/gml/3.2" targetNamespace="http://inpn.mnhn.fr/sinp/" elementFormDefault="qualified" version="0.9.3">
+	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+<xs:annotation>
+<xs:documentation source = "nom">Occurrence de Taxon</xs:documentation>
+<xs:documentation source = "versionDictionnaire">1.0</xs:documentation>
+<xs:documentation source = "versionSchemaXSD">1.beta</xs:documentation>
+<xs:documentation source = "auteurs">SINP</xs:documentation>
+<xs:documentation source = "statutDoc">En cours validation</xs:documentation>
+<xs:documentation source = "description">Ce schéma permet de d’échanger les données de biodiversité « occurrence de taxon » entre les plateformes régionales/thématiques et la plateforme nationale du Système d’Information Nature et Paysages</xs:documentation>
+</xs:annotation>
+	<xs:element name="AttributAdditionel" type="sinp:AttributAdditionelType" substitutionGroup="gml:AbstractObject"/>
+	<xs:complexType name="AttributAdditionelType">
+		<xs:sequence>
+			<xs:element name="nomAttribut" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Indique le libellé court de l’attribut ajouté en attribut additionnel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="definitionAttribut" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Définition de l’attribut ajouté suffisamment précise pour permettre de comprendre le sujet de l’attribut ajouté.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="valeurAttribut" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Valeur qualitative ou quantitative de l’attribut additionnel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="thematiqueAttribut" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Indique la thématique par un mot clé pour lequel l’attribut a été ajouté</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="uniteAttribut" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Unité de mesure de l’attribut. Exemple : Degré Celsius, mètre, Kilogramme. Si l’information ajoutée est de type quantitatif alors cet attribut doit être renseigné</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AttributAdditionelPropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:AttributAdditionel"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:simpleType name="CodeRefHabitatValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAL">
+				<xs:annotation>
+					<xs:documentation>Classification paléarctique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BBMEDFR">
+				<xs:annotation>
+					<xs:documentation>biocénoses benthiques de Méditerranée</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BRYOSOCIO">
+				<xs:annotation>
+					<xs:documentation>Synopsis bryosociologique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PVF">
+				<xs:annotation>
+					<xs:documentation>Prodrome des végétations de France</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PALSPM">
+				<xs:annotation>
+					<xs:documentation>Habitats de St Pierre et Miquelon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ANTMER">
+				<xs:annotation>
+					<xs:documentation>Habitats marins des départements d'outre-mer des Antilles</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GUYMER">
+				<xs:annotation>
+					<xs:documentation>Habitats marins du département d'outre-mer de Guyane</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CORINEBIOTOPES">
+				<xs:annotation>
+					<xs:documentation>CORINE Biotopes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EUNIS">
+				<xs:annotation>
+					<xs:documentation>EUNIS Habitas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GMRC">
+				<xs:annotation>
+					<xs:documentation>Géomorphologie des récifs coralliens</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CH">
+				<xs:annotation>
+					<xs:documentation>Cahier d'habitat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OSPAR">
+				<xs:annotation>
+					<xs:documentation>Convention OSPAR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BARC">
+				<xs:annotation>
+					<xs:documentation>Convention de Barcelone</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="REBENT">
+				<xs:annotation>
+					<xs:documentation>Habitat benthique côtier (Bretagne)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="REUMER">
+				<xs:annotation>
+					<xs:documentation>Habitats marins du département d'outre-mer de La Réunion</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Commune" type="sinp:CommuneType" substitutionGroup="gml:AbstractObject">
+		<xs:annotation>
+			<xs:documentation>Référentiel des communes national géré par l'INSEE</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="CommuneType">
+		<xs:sequence>
+			<xs:element name="codeCommune">
+				<xs:annotation>
+					<xs:documentation>Code de la/les commune(s) où a été effectuée l’observation suivant le référentiel INSEE en vigueur.</xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_CodeCommuneValue.xml#CodeCommuneValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nomCommune">
+				<xs:annotation>
+					<xs:documentation>Nom de la commune. Libellé de la/les commune(s) où a été effectuée l’observation suivant le référentiel INSEE en vigueur</xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_NomCommuneValue.xml#NomCommuneValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommunePropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:Commune"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:simpleType name="DSPubliqueValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NSP">
+				<xs:annotation>
+					<xs:documentation>Ne sait pas : L’information indiquant si la Donnée Source est publique ou privée n’est pas connue.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pr">
+				<xs:annotation>
+					<xs:documentation>Privée : La Donnée Source a été produite par un organisme privé ou un individu à titre personnel. Aucun organisme ayant autorité publique n'a acquis les droits patrimoniaux,  la Donnée Source reste la propriété de l’organisme ou de l’individu privé. Seul ce cas autorise un floutage géographique de la DEE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Re">
+				<xs:annotation>
+					<xs:documentation>Publique Régie : La Donnée Source est publique et a été produite directement par un organisme ayant autorité publique avec ses moyens humains et techniques propres.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ac">
+				<xs:annotation>
+					<xs:documentation>Publique Acquise : La donnée-source a été produite par un organisme privé (associations, bureaux d’étude…) ou une personne physique à titre personnel. Les droits patrimoniaux exclusifs ou non exclusifs, de copie, traitement et diffusion sans limitation ont été acquis à titre gracieux ou payant, sur marché ou par convention, par un organisme ayant autorité publique. La donnée-source est devenue publique.  </xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pu">
+				<xs:annotation>
+					<xs:documentation>Publique : La Donnée Source est publique qu’elle soit produite en « régie » ou « acquise »</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="DenombrementType" type="sinp:DenombrementTypeType" substitutionGroup="gml:AbstractObject"/>
+	<xs:complexType name="DenombrementTypeType">
+		<xs:sequence>
+			<xs:element name="denombrementMin" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>Nombre minimum d'individus du taxon composant l'observation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="denombrementMax" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>Nombre maximum d'individus du taxon composant l'observation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="objetDenombrement">
+				<xs:annotation>
+					<xs:documentation>Indique l’objet du dénombrement : individu, couple …. La nomenclature est à définir par extension thématique.</xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_ObjetDenombrementValue.xml#ObjetDenombrementValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeDenombrement" type="sinp:TypeDenombrementValueType" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Méthode utilisée pour le dénombrement (Inspire)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DenombrementTypePropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:DenombrementType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="EspaceNaturel" type="sinp:EspaceNaturelType" substitutionGroup="gml:AbstractObject">
+		<xs:annotation>
+			<xs:documentation>Référentiels des espaces naturels protégés, de Natura2000 et des ZNIEFF de type I et II disponibles sur le site de l'INPN</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="EspaceNaturelType">
+		<xs:sequence>
+			<xs:element name="codeEN">
+				<xs:annotation>
+					<xs:documentation>Code de l’espace naturel sur lequel a été faite l’observation.</xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_CodeENValue.xml#CodeENValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeEN" type="sinp:TypeENValueType">
+				<xs:annotation>
+					<xs:documentation>Indique le type d’espace naturel protégé ou de zonage (Natura 2000, Znieff1, Znieff2)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EspaceNaturelPropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:EspaceNaturel"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="HabitatType" type="sinp:HabitatTypeType" substitutionGroup="gml:AbstractObject"/>
+	<xs:complexType name="HabitatTypeType">
+		<xs:sequence>
+			<xs:element name="refHabitat" type="sinp:CodeRefHabitatValueType">
+				<xs:annotation>
+					<xs:documentation>RefHabitat correspond au référentiel utilisé pour identifier l'habitat de l'observation. Il est codé selon les acronymes utilisés sur le site de l'INPN mettant à disposition en téléchargement les référentiels habitat </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="codeHabitat">
+				<xs:annotation>
+					<xs:documentation>Code de l'habitat où le taxon de l'observation a été identifié. Le référentiel Habitat est indiqué dans le champ « RefHabitat ». </xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_CodeHabitatValue.xml#CodeHabitatValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HabitatTypePropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:HabitatType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="Maille10x10" type="sinp:Maille10x10Type" substitutionGroup="gml:AbstractObject">
+		<xs:annotation>
+			<xs:documentation>Maillage national officiel disponible sur l'INPN</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="Maille10x10Type">
+		<xs:sequence>
+			<xs:element name="codeMaille">
+				<xs:annotation>
+					<xs:documentation>Cellule de la grille de référence nationale 10kmx10km dans laquelle se situe l’observation. </xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_CodeMailleValue.xml#CodeMailleValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Maille10x10PropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:Maille10x10"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="MasseEau" type="sinp:MasseEauType" substitutionGroup="gml:AbstractObject">
+		<xs:annotation>
+			<xs:documentation>Masse d'eau du référentiel du Système d'Information sur l'Eau (site du Sandre)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="MasseEauType">
+		<xs:sequence>
+			<xs:element name="codeME">
+				<xs:annotation>
+					<xs:documentation>Code de la ou les masse(s) d'eau à la (aux)quelle(s) l'observation a été rattachée</xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_CodeMasseEauValue.xml#CodeMasseEauValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MasseEauPropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:MasseEau"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:simpleType name="NatureObjetGeoValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="In">
+				<xs:annotation>
+					<xs:documentation>Inventoriel : Le taxon observé est présent quelque part dans l’objet géographique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="St">
+				<xs:annotation>
+					<xs:documentation>Stationnel : Le taxon observé est présent sur l’ensemble de l’objet géographique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NSP">
+				<xs:annotation>
+					<xs:documentation>Ne Sait Pas : L’information est inconnue</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ObjetGeographiqueType" type="sinp:ObjetGeographiqueTypeType" substitutionGroup="gml:AbstractObject"/>
+	<xs:complexType name="ObjetGeographiqueTypeType">
+		<xs:sequence>
+			<xs:element name="natureObjetGeo" type="sinp:NatureObjetGeoValueType">
+				<xs:annotation>
+					<xs:documentation>Nature de la localisation transmise.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="geometrie" type="gml:GeometryPropertyType">
+				<xs:annotation>
+					<xs:documentation>Geometrie de l’observation d’occurrence de taxon. Elle peut être simple (point, ligne, polygone) ou multiple (multipoint, multiligne, multipolygone). Elle ne peut pas être complexe (point et ligne ou  polygone et ligne par exemple). Elle ne représente pas un territoire de rattachement (le centroïde de la commune, la surface d’une maille) mais la localisation réelle de l’observation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="precisionGeometrie" type="xs:integer" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Estimation en mètre d’une zone tampon autour de l'objet géographique. Cette précision peut inclure la précision du moyen technique d’acquisition des coordonnées (GPS,…) et/ou du protocole naturaliste.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ObjetGeographiqueTypePropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:ObjetGeographiqueType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="Organisme" type="sinp:OrganismeType" substitutionGroup="gml:AbstractObject"/>
+	<xs:complexType name="OrganismeType">
+		<xs:sequence>
+			<xs:element name="nom">
+				<xs:annotation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_NomOrganismeValue.xml#NomOrganismeValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrganismePropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:Organisme"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="PersonneType" type="sinp:PersonneTypeType" substitutionGroup="gml:AbstractObject"/>
+	<xs:complexType name="PersonneTypeType">
+		<xs:sequence>
+			<xs:element name="organisme">
+				<xs:annotation>
+					<xs:documentation>Nom de l’organisme ou des organismes </xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_NomOrganismeValue.xml#NomOrganismeValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="identite" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Prénom et nom de la ou les personnes </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonneTypePropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:PersonneType"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:element name="Source" type="sinp:SourceType" substitutionGroup="gml:AbstractObject"/>
+	<xs:complexType name="SourceType">
+		<xs:sequence>
+			<xs:element name="statutSource" type="sinp:StatutSourceValueType">
+				<xs:annotation>
+					<xs:documentation>Indique si la DS de l’observation provient directement du terrain (via un document informatisé ou une base de données), d'une collection ou de la littérature</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="identifiantOrigine" type="xs:string" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Identifiant unique de la Donnée Source de l’observation dans la base de données, elle-même caractérisée par jddId et/ou jddCode, où est stockée et initialement gérée la Donnée Source. L'identifiant ne doit pas être la clé primaire technique, susceptible de varier selon les choix de gestion de l'outil de stockage.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dSPublique" type="sinp:DSPubliqueValueType">
+				<xs:annotation>
+					<xs:documentation>Indique explicitement si la DS de la DEE est publique ou privée. Ce champ définit uniquement les droits nécessaires et suffisants des DS pour produire une DEE : l’attribut DSPublique ne doit être utilisé que pour indiquer si la DEE résultante est susceptible d’être floutée et ne doit pas être utilisé pour d’autres interprétations.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sensible" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Indique si l'observation est sensible d'après les principes du SINP (cf : GT Donnée Sensible)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="jddId" type="xs:string" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Un identifiant pour la collection ou le jeu de données terrain d'où provient l'enregistrement. Exemple code IDCNP pour l’INPN : « 00-15 ».</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="jddCode" type="xs:string" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Le nom, l'acronyme, le code ou l'initiale identifiant la collection ou le jeu de données dont l'enregistrement de la Donnée Source provient. Exemple « INPN », « Silène », « BDMAP »</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="referenceBiblio" type="xs:string" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Référence de la source de l’observation lorsque celle-ci est de type « Littérature », de préférence au format ISO690
+La référence bibliographique doit concerner l'observation même et non uniquement le taxon ou le protocole.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="organismeGestionnaireDonnee" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Nom de l’organisme qui détient la Donnée Source (DS) de la DEE et qui en a la responsabilité.</xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_NomOrganismeValue.xml#NomOrganismeValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="codeIDCNPDispositif" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Code du dispositif de collecte dans le cadre duquel la donnée a été collectée.</xs:documentation>
+					<xs:appinfo>
+						<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_IDCNPValue.xml#IDCNPValue</gml:defaultCodeSpace>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SourcePropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:Source"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:simpleType name="StatutObservationValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="No">
+				<xs:annotation>
+					<xs:documentation>Non Observé : L'observateur n'a pas détecté un taxon particulier, recherché suivant le protocole adéquat à la localisation et à la date de l'observation. Le taxon peut être présent et non vu, temporairement absent, ou réellement absent.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Pr">
+				<xs:annotation>
+					<xs:documentation>Présent : Un ou plusieurs individus du taxon ont été effectivement observés et/ou des indices témoignant de la présence du taxon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StatutSourceValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Li">
+				<xs:annotation>
+					<xs:documentation>Littérature : l'observation a été extraite d'un article ou un ouvrage scientifique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Co">
+				<xs:annotation>
+					<xs:documentation>Collection : l'observation concerne une base de données de collection</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Te">
+				<xs:annotation>
+					<xs:documentation>Terrain : l'observation provient directement d'une base de données ou d'un document issu de la prospection sur le terrain</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NSP">
+				<xs:annotation>
+					<xs:documentation>Ne Sait Pas : la source est inconnue</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="SujetObservation" type="sinp:SujetObservationType" substitutionGroup="gml:AbstractFeature">
+		<xs:annotation>
+			<xs:documentation>L’occurrence de taxon est l’observation ou la non-observation d’un taxon à une localisation à une date donnée par un ou plusieurs observateurs selon des méthodes d’observation directes (de visu) ou indirectes (empreintes, fèces,…). </xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="SujetObservationType">
+		<xs:complexContent>
+			<xs:extension base="gml:AbstractFeatureType">
+				<xs:sequence>
+					<xs:element name="identifiantPermanent" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Identifiant unique et pérenne de la Donnée Elémentaire d’Echange de l'observation dans le SINP attribué par la plateforme régionale ou thématique.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="statutObservation" type="sinp:StatutObservationValueType">
+						<xs:annotation>
+							<xs:documentation>Indique si le taxon a été observé directement ou indirectement (indices de présence), ou non observé</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="nomCite" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Nom du taxon cité à l’origine par l’observateur. Celui-ci peut être le nom scientifique reprenant idéalement en plus du nom latin, l’auteur et la date. Cependant, si le nom initialement cité est un nom vernaculaire ou un nom scientifique incomplet alors c’est cette information qui doit être indiquée.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="cdNom" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Code du taxon « cd_nom » de TaxRef référençant au niveau national le taxon. Le niveau ou rang taxinomique de la DEE doit être celui de la DS. Si le Cd_Nom pour le taxon observé existe alors il doit être renseigné.</xs:documentation>
+							<xs:appinfo>
+								<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_TaxRefValue.xml#TaxRefValue</gml:defaultCodeSpace>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="cdRef" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Code du taxon « cd_ref » de TaxRef référençant au niveau national le taxon. Le niveau ou rang taxinomique de la DEE doit être celui de la DS. Si le Cd_Ref pour le taxon observé existe alors il doit être renseigné.</xs:documentation>
+							<xs:appinfo>
+								<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_TaxRefValue.xml#TaxRefValue</gml:defaultCodeSpace>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="observateur">
+						<xs:annotation>
+							<xs:documentation>La ou les personnes ayant réalisées l'observation.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="gml:AbstractMemberType">
+									<xs:sequence>
+										<xs:element ref="sinp:PersonneType"/>
+									</xs:sequence>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="dateDebut" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Date du jour, heure et minute dans le système local de l’observation dans le système grégorien. En cas d’imprécision, cet attribut représente la date la plus ancienne de la période d’imprécision. Norme ISO8601 </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dateFin" type="xs:dateTime">
+						<xs:annotation>
+							<xs:documentation>Date du jour, heure et minute dans le système local de l’observation dans le système grégorien. En cas d’imprécision sur la date, cet attribut représente la date la plus récente de la période d’imprécision. Lorsqu’une observation est faite sur un jour, les dates de début et de fin sont les mêmes (cas le plus courant). Norme ISO8601.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="determinateur" type="xs:string" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Prénom, nom et organisme de la ou les personnes ayant réalisé la détermination taxonomique de l’observation</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dateDetermination" type="xs:date" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Date de la dernière détermination du taxon de l’observation dans le système grégorien</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="denombrement" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Nombre d'élément (cf Objet denombrement) composant l'observation</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="gml:AbstractMemberType">
+									<xs:sequence>
+										<xs:element ref="sinp:DenombrementType"/>
+									</xs:sequence>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="objetGeo" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Localisation précise de l'observation. L'objet ne représente pas un territoire de rattachement (commune, maille etc). Il peut être point, ligne, polygone, multipoint, multiligne, multipolygone.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="gml:AbstractMemberType">
+									<xs:sequence>
+										<xs:element ref="sinp:ObjetGeographiqueType"/>
+									</xs:sequence>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="habitat" nillable="true" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Habitat dans lequel le taxon a été observé</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="gml:AbstractMemberType">
+									<xs:sequence>
+										<xs:element ref="sinp:HabitatType"/>
+									</xs:sequence>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="altitudeMin" type="xs:double" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Altitude Minimum de l’observation en mètre</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="altitudeMax" type="xs:double" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Altitude Maximum de l’observation en mètre</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="profondeurMin" type="xs:double" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Profondeur Minimum de l’observation en mètre selon le référentiel des profondeurs indiqué dans les métadonnées (système de référence spatiale verticale) </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="profondeurMax" type="xs:double" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Profondeur Maximale de l’observation en mètre selon le référentiel des profondeurs indiqué dans les métadonnées (système de référence spatiale verticale)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="organismeStandard" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Nom(s) de(s) organisme(s) qui ont participés à la standardisation de la DS en DEE (codage, formatage, recherche des données obligatoires)</xs:documentation>
+							<xs:appinfo>
+								<gml:defaultCodeSpace>http://inpn.mnhn.fr/sinp/CodeList_NomOrganismeValue.xml#NomOrganismeValue</gml:defaultCodeSpace>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="validateur" type="xs:string" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Prénom, nom et/ou organisme de la personne ayant réalisée la validation scientifique de l’observation. Si ce champ est vide cela signifie qu’il n’y a pas eu de validation formelle de la détermination taxonomique. Ce champ est susceptible d’évoluer après les conclusions du GT Validation du SINP.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="commentaire" type="xs:string" nillable="true">
+						<xs:annotation>
+							<xs:documentation>Champ libre pour informations complémentaires indicatives</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="attributAdditionel" type="sinp:AttributAdditionelPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="source" type="sinp:SourcePropertyType"/>
+					<xs:element name="communes" type="sinp:CommunePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="mailles" type="sinp:Maille10x10PropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="espacesNaturels" type="sinp:EspaceNaturelPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="masseEaux" type="sinp:MasseEauPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SujetObservationPropertyType">
+		<xs:sequence>
+			<xs:element ref="sinp:SujetObservation"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+		<xs:attributeGroup ref="gml:OwnershipAttributeGroup"/>
+	</xs:complexType>
+	<xs:simpleType name="TypeDenombrementValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Ca">
+				<xs:annotation>
+					<xs:documentation>Calculé : Dénombrement par opération mathématique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Es">
+				<xs:annotation>
+					<xs:documentation>Estimé : Dénombrement qualifié d’estimé lorsque le produit concerné n'a fait l'objet d'aucune action de détermination de cette valeur du paramètre par le biais d'une technique de mesure.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Co">
+				<xs:annotation>
+					<xs:documentation>Compté : Dénombrement par énumération des individus</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NSP">
+				<xs:annotation>
+					<xs:documentation>Ne sait Pas : La méthode de dénombrement n’est pas connue</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TypeENValueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PNM">
+				<xs:annotation>
+					<xs:documentation>Parc naturel marin</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RAMSAR">
+				<xs:annotation>
+					<xs:documentation>Site Ramsar Zone humide d'importance internationale</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PNR">
+				<xs:annotation>
+					<xs:documentation>Parc naturel régional</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RNN">
+				<xs:annotation>
+					<xs:documentation>Réserve naturelle nationale</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RNC">
+				<xs:annotation>
+					<xs:documentation>Réserve naturelle de Corse</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RNR">
+				<xs:annotation>
+					<xs:documentation>Réserve naturelle régionale</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RBD">
+				<xs:annotation>
+					<xs:documentation>Réserve biologique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RNCFS">
+				<xs:annotation>
+					<xs:documentation>Réserve nationale de chasse et faune sauvage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RCFS">
+				<xs:annotation>
+					<xs:documentation>Réserve de chasse et de faune sauvage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="APB">
+				<xs:annotation>
+					<xs:documentation>Arrêté de protection de biotope</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MAB">
+				<xs:annotation>
+					<xs:documentation>Réserve de biosphère (Man and Biosphère)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCL">
+				<xs:annotation>
+					<xs:documentation>Site du Conservatoire du littoral</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ASPIM">
+				<xs:annotation>
+					<xs:documentation>Aire spécialement protégée d’importance méditerranéenne</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SCEN">
+				<xs:annotation>
+					<xs:documentation>Site de Conservatoire d’espaces naturels</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ENS">
+				<xs:annotation>
+					<xs:documentation>Espace naturel sensible</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OSPAR">
+				<xs:annotation>
+					<xs:documentation>Zone marine protégée de la convention OSPAR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="APIA">
+				<xs:annotation>
+					<xs:documentation>Zone protégée de la convention d'Apia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CARTH">
+				<xs:annotation>
+					<xs:documentation>Zone protégée de la convention de Carthagène</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ANTAR">
+				<xs:annotation>
+					<xs:documentation>Zone protégée du Traité de l'Antarctique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NAIRO">
+				<xs:annotation>
+					<xs:documentation>Zone spécialement protégée de la convention de Nairobi</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RIPN">
+				<xs:annotation>
+					<xs:documentation>Réserve intégrale de parc national</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BPM">
+				<xs:annotation>
+					<xs:documentation>Bien inscrit sur la liste du patrimoine mondial de l'UNESCO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PRN">
+				<xs:annotation>
+					<xs:documentation>Périmètre de protection de réserve naturelle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N2000">
+				<xs:annotation>
+					<xs:documentation>Natura 2000</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZNIEFF1">
+				<xs:annotation>
+					<xs:documentation>Zone Naturelle d’Intérêt Ecologique Faunistique et Floristique de type I</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZNIEFF2">
+				<xs:annotation>
+					<xs:documentation>Zone Naturelle d’Intérêt Ecologique Faunistique et Floristique de type II</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZHAE">
+				<xs:annotation>
+					<xs:documentation>Zone humide acquise par une Agence de l’eau</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RBI">
+				<xs:annotation>
+					<xs:documentation>Réserve biologique intégrale</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AAPN">
+				<xs:annotation>
+					<xs:documentation>Aire d’adhésion de parc national</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CNP">
+				<xs:annotation>
+					<xs:documentation>Coeur de parc national</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

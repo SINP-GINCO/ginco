@@ -1,0 +1,21 @@
+version: '2'
+services:
+  ginco_db_dev:
+    image: ginco/db:latest
+    dns: 172.16.2.91
+    ports:
+      - "5432:5432"
+
+  ginco_front_dev:
+    image: ginco/front:latest
+    cap_add:
+      - SYS_PTRACE # sinon tomcat ne démarre pas bien dans docker
+    dns: 172.16.2.91
+    volumes:
+      - ./../../build/confapache:/etc/apache2/sites-enabled # config apache
+      - ./../../build:/var/www/dev # code ogam configurateur (buildé), mapserver...
+      - ./../../build/services/conf:/etc/tomcat7/Catalina/localhost
+      - ./../../build/services/webapps:/var/lib/tomcat7/webapps
+    ports:
+      - "81:80"
+      - "8081:8080"

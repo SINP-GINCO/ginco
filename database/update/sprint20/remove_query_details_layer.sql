@@ -1,0 +1,1 @@
+DELETE FROM website.application_parameters WHERE name = 'query_details_layers1';

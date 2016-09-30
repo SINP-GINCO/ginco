@@ -1,0 +1,1 @@
+GRANT SELECT ON TABLE referentiels.taxref TO ogam;

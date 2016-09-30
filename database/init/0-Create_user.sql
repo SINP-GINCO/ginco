@@ -1,0 +1,5 @@
+-- DROP ROLE IF EXISTS ogam;
+
+-- Crée un user de connexion ogam / ogam
+CREATE ROLE ogam LOGIN ENCRYPTED PASSWORD 'ogam' NOSUPERUSER 
+NOINHERIT NOCREATEDB NOCREATEROLE;

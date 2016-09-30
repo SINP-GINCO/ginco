@@ -1,0 +1,464 @@
+##########################
+#   Consultation         #
+##########################
+child(ren);enfant(s) rattaché(s)
+
+##########################
+#   Validation           #
+##########################
+'%hostname%' does not appear to have a valid MX record for the email address '%value%';'%hostname%' ne semble pas avoir d'enregistrement MX valide pour l'adresse email '%value%'
+'%hostname%' is no valid hostname for email address '%value%';'%hostname%' n'est pas un nom d'hôte valide pour l'adresse email '%value%'
+'%hostname%' is not in a routable network segment. The email address '%value%' should not be resolved from public network;'%hostname%' n'est pas dans un segment réseau routable. L'adresse email '%value%' ne devrait pas être résolue depuis un réseau public.
+'%localPart%' can not be matched against dot-atom format;'%localPart%' ne correspond pas au format dot-atom
+'%localPart%' can not be matched against quoted-string format;'%localPart%' ne correspond pas au format quoted-string
+'%localPart%' is no valid local part for email address '%value%';'%localPart%' n'est pas une partie locale valide pour l'adresse email '%value%'
+'%value%' appears to be a DNS hostname but cannot extract TLD part;'%value%' semble être un nom d'hôte DNS mais l'extension TLD ne peut être extraite
+'%value%' appears to be a DNS hostname but cannot match TLD against known list;'%value%' semble être un nom d'hôte DNS mais son extension TLD semble inconnue
+'%value%' appears to be a DNS hostname but cannot match against hostname schema for TLD '%tld%';'%value%' semble être un nom d'hôte DNS valide mais ne correspond pas au schéma de l'extension TLD '%tld%'
+'%value%' appears to be a DNS hostname but contains a dash in an invalid position;'%value%' semble être un nom d'hôte DNS mais il contient un tiret à une position invalide
+'%value%' appears to be a DNS hostname but the given punycode notation cannot be decoded;'%value%' semble être un DNS valide mais le code n'a pu être décodé
+'%value%' appears to be a local network name but local network names are not allowed;'%value%' semble être un nom réseau local mais les noms locaux sont interdits
+'%value%' appears to be an IP address, but IP addresses are not allowed;'%value%' semble être une IP valide mais celles-ci ne sont pas autorisées
+'%value%' contains an invalid amount of digits;'%value%' contient un nombre incorrect de chiffres
+'%value%' contains characters which are non alphabetic and no digits;'%value%' contient des caractères non alphabétiques et non numériques
+'%value%' contains invalid characters;'%value%' contient des caractères invalides
+'%value%' contains non alphabetic characters;'%value%' contient des caractères non alphabétiques
+'%value%' does not appear to be a float;'%value%' ne semble pas être de type flottant
+'%value%' does not appear to be a postal code;'%value%' ne semble pas être un code postal valide
+'%value%' does not appear to be a valid IP address;'%value%' n'est pas une IP valide
+'%value%' does not appear to be a valid date;'%value%' ne semble pas être une date valide
+'%value%' does not appear to be a valid local network name;'%value%' ne semble pas être une adresse réseau local valide
+'%value%' does not appear to be an integer;'%value%' n'est pas un entier
+'%value%' does not fit the date format '%format%';'%value%' ne correspond pas au format de date '%format%'
+'%value%' does not match against pattern '%pattern%';'%value%' n'a pas de correspondance avec le motif '%pattern%'
+'%value%' does not match the expected structure for a DNS hostname;'%value%' ne correspond pas à la structure d'un nom d'hôte DNS valide
+'%value%' exceeds the allowed length;'%value%' excède la taille autorisée
+'%value%' failed checksum validation;'%value%' ne passe pas la validation de somme de contrôle
+'%value%' has a false IBAN format;'%value%' n'a pas un format IBAN valide
+'%value%' has failed the IBAN check;'%value%' n'a pas passé la validation IBAN
+'%value%' has not only hexadecimal digit characters;'%value%' ne contient pas uniquement des caractères héxadécimaux
+'%value%' is an empty string;'%value%' est une chaîne vide
+'%value%' is less than %min% characters long;La taille de '%value%' est inférieure à %min% caractères
+'%value%' is more than %max% characters long;La taille de '%value%' est supérieure à %max% caractères
+'%value%' is no valid ISBN number;'%value%' n'est pas un ISBN valide
+'%value%' is no valid email address in the basic format local-part@hostname;'%value%' n'est pas un email valide dans le format local-part@hostname
+'%value%' is no valid sitemap changefreq;'%value%' n'est pas une valeur de fréquence de sitemap valide
+'%value%' is no valid sitemap lastmod;'%value%' n'est pas une date de modification de sitemap valide
+'%value%' is no valid sitemap location;'%value%' n'est pas un emplacement valide pour une sitemap
+'%value%' is no valid sitemap priority;'%value%' n'est pas une priorité sitemap valide
+'%value%' is not between '%min%' and '%max%', inclusively;'%value%' n'est pas comprise entre '%min%' et '%max%', inclusivement
+'%value%' is not from an allowed institute;'%value%' ne provient pas d'une institution autorisée
+'%value%' is not greater than '%min%';'%value%' n'est pas plus grand que '%min%'
+'%value%' is not less than '%max%';'%value%' n'est pas plus petit que '%max%'
+'%value%' is not strictly between '%min%' and '%max%';'%value%' n'est pas strictement comprise entre '%min%' et '%max%'
+'%value%' is not valid;'%value%' n'est pas valide
+'%value%' must contain between 13 and 19 digits;'%value%' doit contenir entre 13 et 19 chiffres
+'%value%' must contain only digits;'%value%' ne doit contenir que des chiffres
+'%value%' seems to be an invalid creditcard number;'%value%' ne semble pas être une carte de crédit valide
+'%value%' seems to contain an invalid checksum;'%value%' semble contenir un somme de vérification invalide
+'%value%' should have a length of %length% characters;'%value%' devrait avoir une taille de %length% caractères
+'%value%' was not found in the haystack;'%value%' ne fait pas partie des valeurs attendues
+A PHP extension returned an error while uploading the file '%value%';Une extension PHP a retourné une erreur lors de l'envoi du fichier '%value%'
+A crc32 hash could not be evaluated for the given file;La somme de contrôle crc32 n'a pas pu être évaluée pour le fichier
+A hash could not be evaluated for the given file;Une somme de contrôle n'a pas pu être calculée pour le fichier
+A md5 hash could not be evaluated for the given file;Une somme de contrôle MD5 n'a pas pu être calculée pour le fichier
+A record matching '%value%' was found;Un enregistrement a été trouvé pour '%value%'
+A sha1 hash could not be evaluated for the given file;La valeur de somme de contrôle SHA-1 n'a pas pu être calculée pour le fichier
+An exception has been raised within the callback;Une exception a été levée par la fonction de rappel
+An exception has been raised while validating '%value%';Une exception a été levée lors de la validation de '%value%'
+All files in sum should have a maximum size of '%max%' but '%size%' were detected;Tous les fichiers devraient avoir une taille maximale de '%max%' mais une taille de '%size%' a été détectée
+All files in sum should have a minimum size of '%min%' but '%size%' were detected;Tous les fichiers devraient avoir une taille minimale de '%min%' mais une taille de '%size%' a été détectée
+File '%value%' can't be written;Le fichier '%value%' ne peut être écrit
+File '%value%' does not exist;Le fichier '%value%' n'existe pas
+File '%value%' does not match the given crc32 hashes;Le fichier '%value%' ne correspond pas à la somme de contrôle crc32
+File '%value%' does not match the given hashes;Le fichier '%value%' ne correspond pas à la somme de contrôle
+File '%value%' does not match the given md5 hashes;Le fichier '%value%' ne correspond pas à la somme de contrôle MD5
+File '%value%' does not match the given sha1 hashes;Le fichier '%value%' ne correspond pas à la somme de contrôle SHA-1
+File '%value%' exceeds the defined form size;Le fichier '%value%' excède la taille requise par le formulaire
+File '%value%' exceeds the defined ini size;Le fichier '%value%' excède la taille requise par le fichier ini
+File '%value%' exists;Le fichier '%value%' existe déja
+File '%value%' has a false extension;Le fichier '%value%' n'a pas la bonne extension
+File '%value%' has a false mimetype of '%type%';Le fichier '%value%' a un mauvais type MIME : '%type%'
+File '%value%' is no image, '%type%' detected;Le fichier '%value%' n'est pas une image : '%type%' détecté
+File '%value%' is not compressed, '%type%' detected;Le fichier '%value%' n'est pas compressé : '%type%' détecté
+File '%value%' is not readable or does not exist;Le fichier '%value%' n'est pas lisible ou n'existe pas
+File '%value%' was illegally uploaded. This could be a possible attack;Fichier '%value%' mal envoyé. Ceci peut être possiblement une attaque
+File '%value%' was not found;Fichier '%value%' introuvable
+File '%value%' was not uploaded;Le fichier '%value%' n'a pas été envoyé
+File '%value%' was only partially uploaded;Le fichier '%value%' n'a été que partiellement envoyé
+Invalid type given. Numeric string, integer or float expected;Type invalide. Chaîne numérique, entier ou flottant attendu
+Invalid type given. String expected;Type invalide. Chaîne attendue
+Invalid type given. String or integer expected;Type invalide. Chaîne ou entier attendu
+Invalid type given. String, integer, array or Zend_Date expected;Type invalide. Chaîne, entier, tableau ou Zend_Date attendu
+Invalid type given. String, integer, float, boolean or array expected;Type invalide. Chaîne, entier, flottant, booléen ou tableau attendu
+Invalid type given. String, integer or float expected;Type invalide. Chaîne, entier ou flottant attendu
+Luhn algorithm (mod-10 checksum) failed on '%value%';L'algorithme Luhn (somme de contrôle mod-10) a échoué pour '%value%'
+Maximum allowed height for image '%value%' should be '%maxheight%' but '%height%' detected;La hauteur maximale de l'image '%value%' devrait être '%maxheight%' mais '%height%' a été détectée
+Maximum allowed size for file '%value%' is '%max%' but '%size%' detected;La taille maximale requise pour le fichier '%value%' est de '%max%' mais '%size%' a été détecté
+Maximum allowed width for image '%value%' should be '%maxwidth%' but '%width%' detected;La largeur maximale de l'image '%value%' devrait être '%maxwidth%' mais '%width%' a été détectée
+Minimum expected height for image '%value%' should be '%minheight%' but '%height%' detected;La hauteur minimale de l'image '%value%' devrait être '%minheight%' mais '%height%' a été détectée
+Minimum expected size for file '%value%' is '%min%' but '%size%' detected;La taille minimale requise pour le fichier '%value%' est de '%min%' mais '%size%' a été détecté
+Minimum expected width for image '%value%' should be '%minwidth%' but '%width%' detected;La largeur minimale de l'image '%value%' devrait être '%minwidth%' mais '%width%' a été détectée
+No record matching '%value%' was found;Aucun enregistrement trouvé pour '%value%'
+No temporary directory was found for file '%value%';Pas de dossier temporaire trouvé pour le fichier '%value%'
+No token was provided to match against;Aucun jeton de correspondance n'a été donné
+One or more files can not be read;Un ou plusieurs fichiers n'est pas lisible
+The mimetype of file '%value%' could not be detected;Le type MIME du fichier '%value%' n'a pu être détecté
+The size of image '%value%' could not be detected;La taille de l'image '%value%' n'a pas pu être détectée
+The two given tokens do not match;Les deux jetons passés ne correspondent pas
+There was an internal error while using the pattern '%pattern%';Il y a eu une erreur interne lors de l'utilisation du motif '%pattern%'
+Too few files, minimum '%min%' are expected but '%count%' are given;Trop peu de fichiers : un minimum de '%min%' est autorisé mais '%count%' ont été fournis
+Too less words, minimum '%min%' are expected but '%count%' were counted;Trop peu de mots, un minimum de '%min%' est requis, '%count%' ont été fournis
+Too many files, maximum '%max%' are allowed but '%count%' are given;Trop de fichiers : un maximum de'%max%' est autorisé mais '%count%' ont été fournis
+Too much words, maximum '%max%' are allowed but '%count%' were counted;Trop de mots, un maximum de '%max%' est requis, '%count%' ont été fournis
+Unknown country within the IBAN '%value%';Pays inconnu pour l'IBAN '%value%'
+Unknown error while uploading file '%value%';Erreur inconnue lors de l'envoi du fichier '%value%'
+Value is required and can't be empty;Cette valeur est obligatoire et ne peut être vide
+notMatch;Le mot de passe n'est pas confirmé
+userNotExist;Cet utilisateur n'existe pas
+userExist;Cet utilisateur existe déjà
+Incorrect password;Mot de passe incorrect
+
+##########################
+#   Layout               #
+##########################
+Log out;Se déconnecter
+Log in;Se connecter
+Change login;Changer d'utilisateur
+Contact Us;Nous contacter
+Legal notices;Mentions légales
+Geoportail Copyrights;Copyrights Géoportail
+GINCO, development version;GINCO, version de développement
+branch;branche
+published online the;mis en ligne le
+Layout Head Title;Application OGAM
+Layout Head Meta Keywords;eforest, efdac, jrc, forêt
+Layout Head Meta Description;Centre de donnée sur les forêts européennes
+Layout Pathway Home;Accueil
+Translate this site fr;Traduire ce site en français
+Translate this site en;Traduire ce site en anglais
+Welcome ;Bienvenue
+
+##########################
+#	Error				 #
+##########################
+An error occurred;Une erreur est survenue
+Page not found;Ressource introuvable
+Database Error;Accès refusé sur la base de données
+Application error;Un problème a été rencontré. Merci de signaler cet incident ainsi que les actions qui y ont mené afin qu'il puisse être corrigé. Veuillez excuser le désagrément causé.
+
+##########################
+#   Index                #
+##########################
+Select a menu;Selectionnez un menu
+Welcome;Bienvenue sur le site web GINCO !
+
+Administration;Administration
+Harmonized Datas;Données Elémentaires d'échange
+Source Data;Données régionales
+
+Data Integration;Intégrer des données
+Add a new localisation; Ajouter une observation
+Data edition module; Ajouter une observation
+Data Edition;Editier des données
+Visualize Raw Data;Visualiser les données régionales
+Query Data (RAW_DATA);Visualiser les données régionales
+Query Data (HARMONIZED_DATA);Visualiser les Données Elémentaires d'Echange
+Data Harmonization;Transformer les Données régionales en Données Elémentaires d'Echange
+Visualize Harmonized Data;Visualiser les Données Elémentaires d'Echange
+Query Harmonized Data;Visualiser les Données Elémentaires d'Echange
+User Administration;Administrer les utilisateurs
+Check Configuration;Vérifier la configuration technique (php, mémoire,...)
+User Manual;Consulter le manuel utilisateur
+Manage Users;Administrer les utilisateurs
+Index Files;Indexer les fichiers
+File Indexation;Indexer les fichiers
+Configure metamodel;Configurer le méta-modèle
+Visualize metadata;Consulter les métadonnées
+
+##########################
+#   User login           #
+##########################
+User Module;Module utilisateur
+Authentication;Authentification
+Login;Identifiant
+Password;Mot de passe
+
+##########################
+#  Data integration      #
+##########################
+Submissions;Soumissions
+Add data;Ajout d'observations
+Choose a table:;Choisissez une table :
+Data integration module;Module d'intégration de données
+Submit Data;Soumettre des données
+Submission ID;Soumission
+Date;Date
+Provider Id;Producteur
+Provider of the dataset;Organisme producteur du jeu de données
+User;Utilisateur
+Dataset;Modèle d'import
+Step;Etape
+Status;Statut
+File;Fichier
+Lines;Lignes
+Actions;Actions
+Create data submission;Nouvelle soumission
+Upload Data;Chargement des données
+Check data;Vérifier les données
+Show report;Rapport de conformité et cohérence
+Validate data;Valider la soumission
+Cancel Submission;Supprimer le jeu de données
+Publish data;Publier les données
+Confirm_submission_warning;Une fois publiées, les données seront disponibles pour la recherche, visualisation et export GML. Voulez-vous confirmer ?
+Unpublish_submission_warning;Une fois dépubliées, les données ne seront plus disponibles pour la recherche, la visualisation et l'export GML. Voulez-vous confirmer ?
+Unpublish data;Dépublier les données
+Submit;Valider
+Error;Erreur
+The expected fields are<br />:;Les champs attendus sont :<br /> 
+Are you sure?;Etes-vous sur ?
+No submission found;Aucune soumission trouvée.
+Taxon occurrence;Observation de Taxon
+Observation taxon MNHN;Observation taxon MNHN
+Observation taxon IGN;Observation taxon IGN
+Observation taxon plateforme thématique;Observation taxon plateforme thématique
+données flore de l'IGN: ;données flore de l'IGN : 
+Fichier observation taxon IGN: ;Fichier observation taxon IGN :
+Fichier observation taxon IGN :;Fichier observation taxon IGN :
+Fichier observation taxon MNHN: ;Fichier observation taxon MNHN: 
+Fichier observation taxon MNHN :;Fichier observation taxon MNHN : 
+Fichier observation principal: ;Fichier observation principal: 
+Fichier commune optionnel: ;Fichier commune optionnel: 
+Fichier maille optionnel: ;Fichier maille optionnel: 
+Fichier SIG optionnel: ;Fichier SIG optionnel: 
+You must select all files to upload;Vous devez sélectionner un fichier de données à importer
+<span class="hint-title">;<span class="hint-title">
+Sensibility Report;Rapport de sensibilité
+Number of sensible data;Nombre de données sensibles
+Total number of data in the submission;Nombre de données total dans la soumission
+Download a file model for;Télécharger un modèle de fichier pour
+Export to GML;Export GML
+Spatial reference system (SRID);Système de référence (SRID)
+In the form of EPSG code. For example 4326 for WGS84;Sous forme de code EPSG. Par exemple : 4326 pour le WGS84
+
+##########################
+#  Data Copy             #
+##########################
+Data harmonization module;Recopie des données
+Harmonize Data;Recopier les données
+Back;Retour
+Launch Harmonization;Lancer la copie
+Remove Harmonization Data;Supprimer les données recopiées
+Harmonization Date;Date de recopie
+Confirm harmonization;Attention, les données de ce producteur vont être supprimées et recréées
+Confirm harmonization data deletion;Attention, les données de ce producteur vont être supprimées
+Action;Action
+
+##########################
+#  Check configuration   #
+##########################
+Check result;Résultat de la vérification
+PHP Parameters;Paramètres PHP
+Error: %value% minimum;Erreur: %value% minimum
+Expected value;Valeur attendue
+Database;Base de données
+Checking for missing schemas:;Vérification de la présence des schemas :
+The schema '%s' described in the metadata doesn't exist in the system.;Le schéma '%s' décrit dans les métadonnées n'existe pas en base.
+Checking for missing tables:;Vérification de la présence des tables :
+The expected table '%s' of the schema '%s' is not found.;La table obligatoire '%s' du schéma '%s' est introuvable.
+The PK (%s) of the table '%s' is not compatible with the metadata PK (%s).;La clé primaire (%s) de la table '%s' n'est pas compatible avec la clé primaire des métadonnées (%s).
+Checking for primary keys:;Vérification des clés primaires :
+Checking for missing fields:;Vérification de la présence des champs :
+Checking field types:;Vérification des types des champs :
+The Expected data '%s' of the table '%s' of the schema '%s' is not found.;La donnée obligatoire '%s' de la table '%s' du schéma '%s' est manquante.
+The field '%s' of the table '%s' of the schema '%s' is of type '%s' which is incompatible with the metadata definition: '%s'.;Le champ '%s' de la table '%s' du schema '%s' est de type '%s' lequel est incompatible avec la définition des métadonnées : '%s'.
+Unknow field type for the data '%s' of the table '%s' of the schema '%s'.;Le type de la donnée '%s' de la table '%s' du schéma '%s' est inconnu.
+Checking foreign keys:;Vérification des clés étrangères :
+The foreign key between the table '%s' and the table '%s' described in the metadata doesn't exist in the system.;La clé étrangère entre la table '%s' et la table '%s' décrit dans les métadonnées n'existe pas en base.
+The foreign key '%s' between the table '%s' and the table '%s' does not match the metadata definition: '%s'.;la clé étrangère '%s' entre la table '%s' et la table '%s' ne correspond pas à la définition des métadonnées : '%s'.
+Note: The database user must have administration rights to perform these tests.;Note: L'utilisateur utilisé pour ce connecter à la base doit être administreur pour pouvoir dérouler ces tests.
+MNHN;MNHN
+IGN-F;IGN-F
+Administrateur technique;Administrateur technique
+Administrateur national;Administrateur national
+Consultant;Consultant
+Expert;Expert
+formateur;formateur
+Administrator;Administrateur
+
+##########################
+# Mapping                #
+##########################
+empty_layer;Aucune couche
+
+##########################
+#  User Management       #
+##########################
+User Management Module;Administration des utilisateurs
+Show the users;Afficher les utilisateurs
+Show the roles;Afficher les rôles
+Show the providers;Afficher les organismes
+Change Password;Changer de mot de passe
+Password Change;Modification d'un mot de passe
+Password Change for user:;Modification du mot de passe pour l'utilisateur :
+Changing your password;Modification de votre mot de passe
+Create Role;Créer un rôle
+Create User;Créer un utilisateur
+Create Provider;Créer un organisme
+Add Provider;Créer un organisme
+Edit Role;Edition d'un rôle
+Edit User;Edition d'un utilisateur
+Edit Provider;Edition d'un organisme
+View related users and content;Voir les données et les utilisateurs
+Users and content for provider:;Utilisateurs et données pour l'organisme:
+This provider doesn't have any users.;Cet organisme n'a pas d'utilisateurs
+Datas;Données
+Nb of datas;Nombre de lignes de données
+This provider doesn't have any raw datas.;Cet organisme n'a pas de données en base.
+Impossible to delete this provider.;Il est impossible de supprimer cet organisme\n(données et/ou utilisateurs rattachés).
+Roles;Rôles
+Users;Utilisateurs
+User Login;Login
+User Name;Nom
+Provider;Organisme
+Providers;Organismes
+Email;Email
+Role;Rôle
+Delete;Supprimer
+Edit;Editer
+Code;Code
+Label;Libellé
+Definition;Définition
+Old Password;Ancien mot de passe
+New Password;Nouveau mot de passe
+Confirm Password;Confirmer le mot de passe
+Password does not match confirmation;Le mot de passe ne correspond pas
+Old password is not correct;L'ancien mot de passe n'est pas correct
+Role Code;Code du rôle
+Role Label;Libellé du rôle
+Role Definition;Définition du rôle 
+Permissions;Permissions
+Schemas Permissions;Permissions sur les schémas de base de données
+Dataset Restrictions;Restrictions sur les jeux de données 
+Layer Restrictions;Restrictions sur les couches cartographiques
+
+# User Rights
+Manage users;Administrer les utilisateurs
+Provide data;Intégrer des données
+Visualise data;Visualiser les données de son producteur
+Visualise data from other provider;Visualiser les données d'un autre producteur
+Launch the harmonization process;Valider les données de son producteur
+Export the raw data as a CSV file;Exporter les données brutes en CSV
+Add / Update / Delete data;Editer les données de son producteur
+Add / Update / Delete data from another provider;Editer les données d'un autre producteur
+Check the configuration;Vérifier la configuration du système
+Cancel validated submission;Annuler une soumission validée par son producteur
+Cancel other provider submission;Annuler la soumission d'un autre producteur
+
+# Schemas
+Harmonized Data;Données validées
+Raw Data;Données brutes
+
+##########################
+#  Data Edition          #
+##########################
+No %value% found.;Aucun(e) %value% trouvé(e).
+Invalid form;Invalid form
+Data saved;Données sauvegardées - Rechargement
+Item cannot be deleted because it has children;La donnée ne peut pas être effacée car d'autres données sont liées
+Error while deleting data;Erreur lors de la suppression
+Data deleted;Donnée supprimée
+Add a taxon observation data;Ajout d'une observation de taxon MNHN
+Add a flore ign data;Ajout d'une observation de taxon IGN
+
+##########################
+#  Data Query            #
+##########################
+Data Export;Export des données
+Request Criterias;Critères de requête
+
+################################
+#  indexation / index          #
+################################
+Indices;Index
+Index;Index
+Details;Détails
+View the files list;Voir la liste des fichiers
+pdfIndexLabel;Index pour les pdfs
+pdfIndexDefinition;Index de l'ensemble des pdfs contenus dans les répertoires sélectionnés
+Index size:;Taille de l'index :
+Number of documents:;Nombre de documents :
+Index directory:;Répertoire de l'index :
+Files directories:;Répertoire(s) des fichiers :
+Add/Remove the new/deleted files of the files directories into the existing index;Ajouter/Soustraire à l'index les nouveaux fichiers ou les fichiers supprimés dans les répertoires
+Create a new index and index the files presents into the files directories;Créer un nouveau index et indexer les fichiers présents dans les répertoires
+Optimize the index;Optimiser l'index
+
+################################
+#  indexation / parsepdf       #
+################################
+File Content;Contenu du fichier
+Content of the file:;Contenu du fichier :
+
+#####################################
+#  indexation / getindexstatus      #
+#####################################
+An error occured during the indexation process.;Une erreur est apparue pendant l'indexation.
+
+################################
+#   PostProcessPdfIndexation   #
+################################
+A process is already running.;Une indexation est déjà en cours.
+
+################################
+#  indexedpdffile / editmeta   #
+################################
+
+################################
+#  indexedpdffile / list       #
+################################
+Indexed PDF Files;Fichier PDF Indexés
+Indexed files list;Liste des fichiers indexés
+Files;Fichiers
+View the file;Voir le fichier
+View the file content;Voir le contenu du fichier
+View the file metadata;Voir les métadonnées du fichier
+Edit the Metadata;Editer les métadonnées
+Remove the file of the index;Supprimer le fichier de l'index
+Not implemented;Non implémenté
+
+################################
+#  indexedpdffile / viewmeta   #
+################################
+File metadata;Métadonnées du fichier
+Meta data of the file:;Métadonnées du fichier :
+Meta Name;Nom de la métadonnée
+Meta Value;Valeur de la métadonnée
+No file selected;Aucun fichier sélectionné
+
+
+################################
+#  Fil d'ariane (Breadcrumb)   #
+################################
+Breadcrumb Home;Accueil
+Breadcrumb Integration;Intégrer des données
+Breadcrumb Integration New;Nouvelle soumission
+Breadcrumb Visualization;Visualiser les données
+Breadcrumb Harmonization;Harmoniser les données
+Breadcrumb Edition;Editer les données
+Breadcrumb Edit Data;Editer une observation
+Breadcrumb Add Data;Ajouter une observation
+Breadcrumb User;Mon compte
+Breadcrumb Check Configuration;Vérifier la configuration technique
+Breadcrumb Users Administration;Administrer les utilisateurs
+Breadcrumb Users;Utilisateurs
+Breadcrumb Add User;Ajouter
+Breadcrumb Edit User;Modifier
+Breadcrumb Change Password;Mot de passe
+Breadcrumb Roles;Roles
+Breadcrumb Edit Role;Modifier
+Breadcrumb Add Role;Ajouter
+Breadcrumb Providers;Organismes
+Breadcrumb Providers Details;Détails et données
+Breadcrumb Edit Provider;Modifier
+Breadcrumb Add Provider;Ajouter

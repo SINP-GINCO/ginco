@@ -1,0 +1,22 @@
+<Context>
+
+	<Resource name="jdbc/metadata" auth="Container" type="javax.sql.DataSource"
+		maxActive="20" maxIdle="10" minIdle="0" initialSize="0" maxWait="10000" validationQuery="SELECT 1"
+		username="@db.user@" password="@db.user.pw@" driverClassName="org.postgresql.Driver"
+		url="jdbc:postgresql://@db.host@:@db.port@/@db.name@" />
+
+	<Resource name="jdbc/rawdata" auth="Container" type="javax.sql.DataSource"
+		maxActive="20" maxIdle="10" minIdle="0" initialSize="0" maxWait="10000" validationQuery="SELECT 1"
+		username="@db.user@" password="@db.user.pw@" driverClassName="org.postgresql.Driver"
+		url="jdbc:postgresql://@db.host@:@db.port@/@db.name@" />
+
+	<Resource name="jdbc/website" auth="Container" type="javax.sql.DataSource"
+		maxActive="20" maxIdle="10" minIdle="0" initialSize="0"  maxWait="10000" validationQuery="SELECT 1"
+		username="@db.user@" password="@db.user.pw@" driverClassName="org.postgresql.Driver"
+		url="jdbc:postgresql://@db.host@:@db.port@/@db.name@" />
+
+	<Resource name="mail/Session" auth="Container" type="javax.mail.Session"
+		mail.smtp.host="newsmtp" />
+
+</Context>
+

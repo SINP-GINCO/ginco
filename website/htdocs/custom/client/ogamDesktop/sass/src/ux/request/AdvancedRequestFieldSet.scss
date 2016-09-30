@@ -1,0 +1,58 @@
+/***** Criteria Form Panel Body ************************************************************************/
+.o-ux-adrfs-filter-item .x-form-layout-auto-label > * > .x-form-item-label { //Bug Extjs v5.0.1 (Bug with the form layout labelwidth param)
+	width: 100px !important;
+}
+.o-ux-adrfs-filter-item .x-form-layout-auto-label > * > .x-form-item-label > .x-form-item-label-inner { //Bug Extjs v5.0.1 (Bug with the form layout labelwidth param)
+	width: 100px !important;
+}
+.o-ux-adrfs-filter-item .x-form-trigger-wrap { //Bug Extjs v5.0.1 ?
+	border-spacing: 0px !important;
+}
+.x-menu-number-range-item .x-toolbar-footer {
+	background-color: $panel-frame-background-color;
+}
+.o-ux-adrfs-filterBin {
+	background:transparent url(images/OgamDesktop/tools/edit/bin.gif) no-repeat scroll;
+    cursor:pointer;
+    height:12px;
+    width:12px;
+    display: table-cell;
+    background-position: 0px 5px;
+}
+.o-ux-adrfs-labelNextBin span {
+	margin-top : 4px !important;
+	white-space: normal !important;
+}
+/*****************************************************************************************************/
+
+/***** Column Form Panel Body ************************************************************************/
+.o-ux-adrfs-column-item {
+	margin: 5px 0;
+}
+.o-ux-adrfs-columnLabelBinColor {
+    background:transparent url(images/OgamDesktop/tools/edit/bin.gif) no-repeat scroll;
+}
+.o-columnLabelColor {
+    color: $form-field-color;
+}
+.o-ux-adrfs-columnLabelBin {
+    cursor:pointer;
+    display:inline !important;
+    margin:0 5px;
+}
+/*****************************************************************************************************/
+
+.advanced-request .x-header{
+    background-image:none;
+    background-color: #a4c7b3;
+}
+
+.process-panel .x-header, #advReqPredPanel-placeholder, .advReqPredPanel .x-header{
+    background-image:none;
+    background-color: #96d5b1;
+}
+
+.advanced-request-fieldset .x-header{
+    background-image:none;
+    background-color: #c7e6d4;
+}

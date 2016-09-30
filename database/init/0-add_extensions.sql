@@ -1,0 +1,7 @@
+CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS dblink;
+CREATE EXTENSION IF NOT EXISTS unaccent;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+GRANT SELECT ON TABLE public.geometry_columns TO public;
+GRANT SELECT ON TABLE public.spatial_ref_sys TO public;

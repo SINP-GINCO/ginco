@@ -1,0 +1,7 @@
+# specific paths common for unix server (linux)
+
+www.dir = /var/www
+mapfile.dir = /var/www/sinp/mapserver
+cgi-bin.dir = /usr/lib/cgi-bin
+
+mapserv.exe = mapserv

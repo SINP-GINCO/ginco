@@ -1,0 +1,810 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	height: 100%;
+}
+
+h1,h2,h3 {
+	color: #135CAE;
+}
+
+h3 {
+	border-bottom: 1px dotted #CCCCCC;
+	display: block;
+	font-size: 1.7em;
+	font-weight: normal;
+	line-height: 1.7em;
+	margin-left: 20px;
+	padding: 0;
+	text-transform: uppercase;
+}
+
+h4 {
+	font-size: 1.2em;
+	margin: 10px 0 5px 30px;
+}
+
+ul.errors {
+	color: #FF0000;
+}
+
+img {
+	border: 0 none;
+}
+
+ul,ol {
+	margin-left: 2em;
+}
+
+fieldset {
+	padding: .5em;
+}
+
+body {
+	background-color: #CCCCCC;
+	background-image: url("../img/CCCCCC.png");
+	background-repeat: repeat-x;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 76.8%;
+	line-height: 1.8em;
+	margin: 0 0;
+	height: 100%;
+}
+
+.wrapper {
+	color: #333333;
+	width: 100%;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-top: 0;
+	margin-bottom: -40px;
+	/* the bottom margin is the negative value of the footer's height */
+}
+
+.main-body {
+	background-color: #FFFFFF;
+	color: #606060;
+	margin: 0 auto;
+	text-align: left;
+	margin-left: 40px;
+	margin-right: 40px;
+	height: 100%;
+}
+
+.main-body-bg {
+	background-color: #FFFFFF;
+	position: absolute;
+	top: 0;
+	left: 40px;
+	right: 40px;
+	z-index: -1;
+	bottom: 40px;
+}
+
+.header {
+	height: 120px; /* size of banner + top menu */
+}
+
+.header-beadcrumb {
+	width: 520px;
+}
+
+.header-login {
+	text-align: right;
+	font-weight: bold;
+}
+
+.fr-flag {
+    background-image: url(../img/fr_flag.png) !important;
+    width: 30px;
+    height: 16px;
+    margin-top: 3px;
+    float: left;
+}
+
+.en-flag {
+    background-image: url(../img/en_flag.png) !important;
+    width: 30px;
+    height:16px;
+    margin-top: 3px;
+    float: left;
+}
+
+.banner {
+	width: 100%;
+	overflow: hidden;
+	background-image: url("/img/bandeau-sinp.jpg");
+}
+
+.logo {
+	margin: 2px 0 0 15px;
+}
+
+.top {
+	border-bottom: 1px dotted #CCCCCC;
+	border-top: 1px dotted #CCCCCC;
+	padding: 2px 5px;
+	background-color: #EEEEEE; 
+	height: 21px;
+}
+
+.content {
+	background-color: #FFFFFF;
+}
+
+.content h1,.content h2 {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.footer,.push {
+	height: 40px; /* .push must be the same height as .footer */
+}
+
+.footer {
+	position: relative;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #CCCCCC;
+	color: #FFFFFF;
+}
+
+.footer-ct {
+	position: relative;
+	top: 10px;
+}
+
+.footer-link{
+	padding-right: 20px;
+	
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #333333;
+}
+
+a:visited {
+	text-decoration: none;
+	color: #135CAE;
+}
+
+.left-column {
+	width: 470px;
+}
+
+#contextual {
+	padding-left: 30px;
+}
+
+#contextual p {
+	margin: 0;
+}
+
+#contextual li {
+	margin-left: 15px;
+}
+
+#divJRCRequestForm {
+	position: absolute;
+	left: 5px;
+	width: 250px;
+}
+
+#queryForm {
+	position: absolute;
+	top: 180px;
+	left: 5px;
+	width: 250px;
+}
+
+#divQueryResult {
+	position: absolute;
+	top: 180px;
+	left: 260px;
+	right: 250px;
+}
+/** Menu **/
+div.moduletable_menu {
+	margin: 30px 0;
+}
+
+div.moduletable_menu li {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+div.moduletable_menu a:hover {
+	background-color: #EEEEEE;
+	color: #666666;
+	text-decoration: none;
+}
+
+div.moduletable_menu a:link,div.moduletable_menu a:active,div.moduletable_menu a:visited
+	{
+	background-image: url(../img/greybullet2.png);
+	background-position: 5px 50%;
+	background-repeat: no-repeat;
+	border-bottom: 1px dotted #CCCCCC;
+	color: #606060;
+	display: block;
+	padding: 3px 5px 3px 25px;
+}
+
+.field_label {
+	color: #003300;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	text-decoration: none;
+}
+
+.criteria_label {
+	color: #003300;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.result_label {
+	color: #003300;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+tr.sectiontableentry0 td {
+	background-color: #EDEDED;
+	padding: 3px;
+	text-align: left;
+}
+
+tr td.file-name {
+    font-style: italic;
+    font-size: 0.8em;
+    padding:0px 3px 10px 3px!important;
+    line-height:0.8em;
+}
+
+tr.sectiontableentry1 td {
+	padding: 3px;
+	text-align: left;
+}
+
+tr td.line-number {
+    text-align: right;
+}
+
+.csv-export {
+	background-image: url(../img/table_save.png) !important;
+}
+
+.sectiontableentry0 img,.sectiontableentry1 img {
+	height: 16px;
+	border: 0 none;
+	margin: 0 0 0 10px;
+}
+
+.status-img {
+	height: 16px;
+	border: 0 none;
+	margin: 0 10px 0 0;
+}
+
+.error-msg {
+	text-align: center;
+	margin: 100px 0 0;
+}
+
+.bottom-menu {
+	text-align: center;
+	margin: 40px 0 0;
+}
+
+.sectiontable {
+	margin: 30px auto;
+}
+
+.subTableLink {
+	text-align: center;
+}
+
+.onTableLink {
+	margin: 20px auto;
+	text-align: center;
+}
+
+.tempStatusDiv {
+	display: inline;
+}
+
+img.percentImage {
+	background: white url(../img/percentImage_back.png) top left no-repeat;
+	padding: 0;
+	margin: 5px 0 0 0;
+	background-position: 1px 0;
+}
+
+.no-submission, .password-change-user-name{
+    margin: 50px 0;
+    text-align: center;
+}
+td.view-cell{
+    background: url(../img/magnifier.png) 5px 5px no-repeat;
+    width:21px;
+}
+.view-cell a{
+    padding: 1px 8px;
+}
+td.pdf-cell{
+    background: url(../img/icon_pdf.gif) 5px 5px no-repeat;
+    width:21px;
+}
+.pdf-cell a{
+    padding: 1px 8px;
+}
+td.view-content-cell{
+    background: url(../img/page_white_magnify.png) 5px 5px no-repeat;
+    width:21px;
+}
+.view-content-cell a{
+    padding: 1px 8px;
+}
+td.view-meta-cell{
+    background: url(../img/page_white_database.png) 5px 5px no-repeat;
+    width:21px;
+}
+.view-meta-cell a{
+    padding: 1px 8px;
+}
+td.edit-cell{
+    background: url(../img/page_white_edit.png) 5px center no-repeat;
+    width:21px;
+}
+.edit-cell a{
+    padding: 1px 8px;
+}
+td.change-password-cell{
+    background: url(../img/key.png) 5px center no-repeat;
+    width:21px;
+}
+.change-password-cell a{
+    padding: 1px 8px;
+}
+td.delete-cell{
+    background: url(../img/delete.png) 5px center no-repeat;
+    width:21px;
+}
+.delete-cell a{
+    padding: 1px 8px;
+}
+.index-cell .index-cell-create{
+    background: url(../img/folder_link.png) top left no-repeat;
+    padding: 1px 8px;
+}
+.index-cell .index-cell-update{
+    background: url(../img/folder_add.png) top left no-repeat;
+    padding: 1px 8px;
+}
+.index-label-cell{
+    width: 200px;
+}
+.optimize-cell a{
+    background: url(../img/compress.png) top left no-repeat;
+    padding: 1px 8px;
+}
+.files-list-cell a{
+    background: url(../img/folder_explore.png) top left no-repeat;
+    padding: 1px 8px;
+}
+.file_contents {
+    padding: 0 40px 40px 40px;
+}
+
+/**************************************/
+/**      Zend Form CSS               **/
+/**************************************/
+
+.form-super-ct {
+    background-color: #F7F7F7;
+    border-bottom: 2px dotted #CCCCCC;
+    border-top: 2px dotted #CCCCCC;
+    margin: 50px auto;
+    padding: 22px 40px;
+}
+.form-ct {
+    margin:0 auto;
+    width:350px;
+}
+.zend_form .element, .zend_form .button{
+	position: relative;
+}
+
+.zend_form .element {
+	margin-bottom: 10px;
+}
+/* Needed for required display */
+.zend_form .text label,
+.zend_form .select label,
+.zend_form .textarea label {
+	position: relative;
+}
+.zend_form .text label.required:after,
+.zend_form .select label.required:after,
+.zend_form .textarea label.required:after {
+	content:"*";
+	color: red;
+	display: block;
+	position: absolute;
+	right: -8px;
+	top: -2px;
+}
+.zend_form .multiCheckbox label{
+    margin-left:30px;
+}
+.zend_form .multiCheckbox label.title{
+    display:block;
+    font-weight: bold;
+    margin:10px 0;
+}
+.zend_form .multiCheckbox input{
+    width:auto;
+    margin-top:6px;
+}
+.zend_form .textarea {
+	display: table;
+	width: 100%;
+}
+.zend_form textarea{
+	height:100px;
+    width:200px;
+	float: right;
+}
+.zend_form input{
+    width:200px;
+    position: absolute;
+    right: 0;
+}
+.zend_form select{
+   width: 204px;
+   position: absolute;
+   right: 0;
+}
+.zend_form .file input{
+    width: auto;
+}
+.zend_form .button{
+    margin-top:20px;
+    height: 25px;
+}
+.zend_form .button input{
+    width:100px;
+}
+.zend_form .hint-title{
+    font-weight: bold;
+}
+.zend_form .file .hint{
+    background-color:#F0F0F0;
+    margin: 10px 0;
+}
+
+/**************************************/
+/**      Zend Form CSS               **/
+/**           Special cases          **/
+/**************************************/
+
+/** Integration Part
+/**************************************/
+
+/** data-submission-form **/
+.data-submission-form .form-ct {
+	width: 550px;
+}
+.data-submission-form .zend_form select{
+	width: 300px;
+}
+
+/** data-upload-form **/
+.data-upload-form .form-ct {
+    width:450px;
+}
+.data-upload-form .zend_form .file .hint{
+    width:1000px;
+    margin-left:-275px;
+}
+.data-upload-form .zend_form label{
+    font-weight: bold;
+}
+
+.file.element {
+	margin-bottom: 30px;
+}
+
+/**************************************/
+/** User Part
+/**************************************/
+
+/** change-current-user-password-form **/
+.change-current-user-password-form .form-ct {
+    width:370px;
+}
+
+/** login-form **/
+.login-form .form-ct {
+    width:300px;
+}
+
+/**************************************/
+/** User Management Part
+/**************************************/
+
+/** user-form **/
+.user-form .form-ct {
+    width:370px;
+}
+
+/** change-user-password-form **/
+.change-user-password-form .form-ct {
+    width:370px;
+}
+
+/** role-form **/
+.role-form .form-ct {
+    width:370px;
+}
+
+
+/************************************************************/
+/*      Checkconf Page                                      */
+/************************************************************/
+.checkconf-page{
+    background-color: #F7F7F7;
+    border-bottom: 2px dotted #CCCCCC;
+    border-top: 2px dotted #CCCCCC;
+    margin: 50px auto;
+    padding: 22px 40px;
+}
+.checkconf-page h2{
+    margin: 20px 0;
+}
+.checkconf-page h4{
+    margin: 10px 0;
+}
+.checkconf-page .green{
+    color: green;
+}
+.checkconf-page .red{
+    color: red;
+}
+
+
+/************************************************************/
+/*      Tooltips CSS                                        */
+/* TODO : Replace with something more consistent with ExtJS */
+/************************************************************/
+a.tooltip {
+	
+}
+
+a.tooltip em {
+	display: none;
+}
+
+a.tooltip:hover {
+	border: 0;
+	position: relative;
+	z-index: 500;
+	text-decoration: none;
+}
+
+a.tooltip:hover em {
+	font-style: normal;
+	display: block;
+	position: absolute;
+	top: 20px;
+	left: -10px;
+	padding: 5px;
+	color: #000;
+	border: 1px solid #bbb;
+	background: #ffc;
+	width: 300px;
+}
+
+a.tooltip:hover em span {
+	position: absolute;
+	top: -7px;
+	left: 15px;
+	height: 7px;
+	width: 11px;
+	background: transparent url("../img/infobulletop00.gif");
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+dt {
+	font-weight: bold;
+}
+
+/************************************************************/
+/*                         Data Edition : Obsolète, voir CSS du desktop                    */
+/************************************************************/
+.actionLinks {
+	padding: 5px;
+}
+
+.toggleVisibilityButton {
+	max-width: 200px;
+	margin-bottom: 10px;
+	float: right;
+}
+
+/* Required fields */
+.x-field label {
+	position: relative;
+}
+.x-field label.required span {
+	width: auto;
+}
+.x-field label.required span:after {
+	content:"*";
+	color: red;
+	display: block;
+	position: absolute;
+	right: -8px;
+	top: -2px;
+}
+
+/*************************************************************/
+/*     Desaturate Images (black and white )                  */
+/*************************************************************/
+.desaturate{
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+/*************************************************************/
+/*     Align vertically images and text                      */
+/*************************************************************/
+p.align_images,
+a.align_images,
+div.align_images,
+h4.align_images,
+h3.align_images,
+button.align_images,
+ul.align_images li,
+td.align_images,
+span.align_images {
+	line-height: 1em;
+}
+
+p.align_images img,
+a.align_images img,
+div.align_images img,
+h4.align_images img,
+h3.align_images img,
+button.align_images img,
+ul.align_images li img,
+td.align_images img,
+span.align_images img {
+	vertical-align: middle;
+}
+
+/*************************************************************/
+/*     Hidden Elements                                       */
+/*************************************************************/
+.hidden {
+	display: none !important;
+	visibility: hidden !important;
+}
+
+
+/*************************************************************/
+/*     Modal window                                   	     */
+/*************************************************************/
+
+.modalDialog:target {
+	opacity:1;
+	pointer-events: auto;
+}
+
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(255,255,255,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 100ms ease-in;
+	-moz-transition: opacity 100s ease-in;
+	transition: opacity 100ms ease-in;
+	pointer-events: none;
+	overflow:auto;
+}
+
+.modalDialog > div {
+	width: 710px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #eef0e1;
+	color: black;
+}
+
+.copyrightTh {
+	font-weight: bold;
+	text-align: center;
+}
+
+.close {
+	background: #eef0e1;
+	color: #999;
+	line-height: 25px;
+	position: absolute;
+	right: 5px;
+	text-align: center;
+	top: 5px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+}
+
+.close:hover { background: #e4e8d1; }
+
+#openModalLegalNotices{
+	text-align : justify;
+}
+#openModalLegalNotices > div{
+	width: 70%
+}
+
+#openModalLegalNotices h1{
+	text-align : center;
+	margin-top: 2%;
+	font-size: 30px;
+}
+
+#openModalLegalNotices h2{
+	margin : 4% 2% 2% 1%;
+	font-size: 23px;
+}
+
+#openModalLegalNotices h3{
+	margin : 2%;
+	font-size: 18px;
+}
+
+/*************************************************************/
+/*     Breadcrumb                                    	     */
+/*************************************************************/
+.header-beadcrumb {
+	width: auto;
+	font-weight: bold;
+}
+
+/*************************************************************/
+/*     Help                                          	     */
+/*************************************************************/
+.help {
+	text-align: right;
+	padding-right: 15px;
+}
+
