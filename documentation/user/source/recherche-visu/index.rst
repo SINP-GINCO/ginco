@@ -8,7 +8,7 @@ Visualisation et recherche de données
     
     acces
     requeteur
-    page-decouverte
+    page-recherche-enregistrees
     cartographie
     tableau-resultats
     fiche-detail
