@@ -1,0 +1,27 @@
+#Lieu des fichiers csv à partir desquels se fait l'import
+database.dir = /home/user/SINP
+
+#URL des services tomcat: integration, rapport, impression, harmonisation... 
+services.url = ogam-sinp.ign.fr:8080
+
+# serveur des bases de la base de donnée: metadata, website, mapping, rawdata...
+db.hostname = sinp-bdd.ign.fr
+db.port = 5432
+db.user = admin
+
+# mail de contact (FIXME: utilisé où?)
+tomail = sinp-dev@ign.fr
+
+# répertoire dd déploiement de l'application php
+deploy.dir = /var/www/sinp
+# URL des services carto interne (map server, tilecache...)
+services.map.url = ogam-sinp.ign.fr
+
+# URL des services carto du géoportail.
+gp.wxs.url = http://wxs.ign.fr
+
+# clef d'identification pour l'api du Géoportail
+gp.api.key = w7ioc2pkalhdz61z56b4mbib
+
+# clef d'identification pour l'api du Géoportail (service d'impression)
+print.gp.api.key = m9rxyzlwok7ol6jzmpsig2mb

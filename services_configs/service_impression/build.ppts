@@ -1,0 +1,4 @@
+application.name = SINP
+service.name = ImpressionService
+windows.deploy.dir = C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps
+unix.deploy.dir = /var/lib/tomcat7/webapps

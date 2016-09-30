@@ -1,0 +1,10 @@
+{# Objet Géographique#}
+<cont:objetGeo>
+    <cont:ObjetGeographiqueType gml:id="ID#GMLID#">
+        {% if objetgeo.precisiongeometrie %}
+            <cont:precisionGeometrie>{{ objetgeo.precisiongeometrie }}</cont:precisionGeometrie>
+        {% endif %}
+        <cont:natureObjetGeo>{{ objetgeo.natureobjetgeo }}</cont:natureObjetGeo>
+        <cont:geometrie>{{ objetgeo.geometrie|raw }}</cont:geometrie>
+    </cont:ObjetGeographiqueType>
+</cont:objetGeo>

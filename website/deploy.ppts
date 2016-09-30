@@ -1,0 +1,10 @@
+# le nom de l'instance utilisé pour les répertoires et noms de fichiers
+instance.name = ginco
+
+# Le nom de la machine d'accés au site sans le domaine (qui est toujours .ign.fr).
+# C'est parce qu'on veut facilement pouvoir ajouter un chiffre entre les deux pour le parallélisme du rendu carto.
+# Exemple: ogam-sinp (pour une url complete ogam-sinp.ign.fr)
+http.host.name = ginco
+
+# environnement d'exécution passé par apache à zend (production par défaut)
+app.env = development

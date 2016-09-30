@@ -1,0 +1,2 @@
+update website.application_parameters set value='@ogam.local.map.services.url@/mapserv_@instance.name@.ginco?' where name='mapserver_private_url';
+DELETE FROM mapping.layer_service WHERE service_name='local_mapserver';

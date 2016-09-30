@@ -1,0 +1,27 @@
+<cont:EstDecritPar>
+    <cont:DescriptifSujet>
+        {% if descriptifsujet.preuvenonmumerique %}
+            <cont:preuveNonNumerique>{{ descriptifsujet.preuvenonmumerique }}</cont:preuveNonNumerique>
+        {% endif %}
+        {% if descriptifsujet.obscontexte %}
+            <cont:obsContexte>{{ descriptifsujet.obscontexte }}</cont:obsContexte>
+        {% endif %}
+        {% if descriptifsujet.preuvenumerique %}
+            <cont:preuveNumerique>{{ descriptifsujet.preuvenumerique }}</cont:preuveNumerique>
+        {% endif %}
+        <cont:preuveExistante>{{ descriptifsujet.preuveexistante }}</cont:preuveExistante>
+        <cont:occStatutBiologique>{{ descriptifsujet.occstatutbiologique }}</cont:occStatutBiologique>
+        <cont:occStatutBioGeographique>{{ descriptifsujet.occstatutbiogeographique }}</cont:occStatutBioGeographique>
+        <cont:occStadeDeVie>{{ descriptifsujet.occstadedevie }}</cont:occStadeDeVie>
+        <cont:occSexe>{{ descriptifsujet.occsexe }}</cont:occSexe>
+        <cont:occNaturalite>{{ descriptifsujet.occnaturalite }}</cont:occNaturalite>
+        {% if descriptifsujet.occmethodedetermination %}
+            <cont:occMethodeDetermination>{{ descriptifsujet.occmethodedetermination }}</cont:occMethodeDetermination>
+        {% endif %}
+        <cont:occEtatBiologique>{{ descriptifsujet.occetatbiologique }}</cont:occEtatBiologique>
+        <cont:obsMethode>{{ descriptifsujet.obsmethode }}</cont:obsMethode>
+        {% if descriptifsujet.obsdescription %}
+            <cont:obsDescription>{{ descriptifsujet.obsdescription }}</cont:obsDescription>
+        {% endif %}
+    </cont:DescriptifSujet>
+</cont:EstDecritPar>

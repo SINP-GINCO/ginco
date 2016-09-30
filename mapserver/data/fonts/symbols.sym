@@ -1,0 +1,119 @@
+SYMBOLSET
+
+
+# symbol 2
+Symbol
+Name 'star'
+Type VECTOR
+Filled true
+Points
+0 .375
+.35 .375
+.5 0
+.65 .375
+1 .375
+.75 .625
+.875 1
+.5 .75
+.125 1
+.25 .625
+END
+END
+
+# symbol 4
+Symbol
+Name 'square'
+Type VECTOR
+Filled true
+Points
+0 1
+0 0
+1 0
+1 1
+0 1
+END
+END
+
+# 2 mandatory symbols used by cartoweb_recenter layer
+SYMBOL
+  Name 'target1'
+  Type ELLIPSE
+  Filled false
+  Points
+    2 2
+  END
+END
+
+# The following symbols are srpv specifics
+
+# symbol used to set width for polygons outline
+SYMBOL
+  Name 'line1'
+  Type ELLIPSE
+  Filled true
+  Points
+    1 1
+  END
+END
+
+# symbol used to set width for polygons outline
+SYMBOL
+  Name 'line2'
+  Type ELLIPSE
+  Filled true
+  Points
+    1 1
+  END
+END
+
+# symbol used to set width for polygons outline
+SYMBOL
+  Name 'line3'
+  Type ELLIPSE
+  Filled true
+  Points
+    1 1
+  END
+END
+
+SYMBOL   
+  NAME "diagonalfill"
+  TYPE vector
+  FILLED true
+  POINTS
+    1 1
+    0 0
+  END   
+END
+
+SYMBOL   
+  NAME "downwarddiagonalfill"
+  TYPE vector
+  FILLED true
+  POINTS
+    0 1
+    1 0
+  END   
+END
+
+
+SYMBOL
+	NAME 'cercle_comm'
+	TYPE truetype
+	FONT symbol_ttf
+	FILLED true
+	ANTIALIAS true
+	CHARACTER "&#183;"
+END
+
+
+SYMBOL
+	Name 'circle'
+	Type ELLIPSE
+	Filled TRUE
+	POINTS
+		1 1
+	END
+END
+
+END

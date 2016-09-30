@@ -1,0 +1,94 @@
+#===========================================================================
+# allowed DPIs
+#===========================================================================
+dpis:
+  - 254
+  - 190
+  - 127
+  - 56
+  - 96
+  - 72
+
+#===========================================================================
+# allowed Formats
+#===========================================================================
+# '*' means any formats
+formats: ['*']
+
+#===========================================================================
+# the allowed scales
+#===========================================================================
+scales:
+  - 100000
+  - 250000
+  - 500000
+  - 1000000
+  - 2500000
+  - 5000000
+  - 10000000
+  - 25000000
+  - 50000000
+  - 100000000
+
+
+#===========================================================================
+# the list of allowed hosts
+#===========================================================================
+hosts:
+  - !localMatch
+    dummy: true
+  - !ipMatch
+    ip: www.camptocamp.org
+  - !ipMatch
+    ip: wxs.ign.fr
+  - !ipMatch
+    ip: wxs-i.ign.fr
+  - !ipMatch
+    ip: sinp.ign.fr
+  - !dnsMatch
+    host: labs.metacarta.com
+    port: 80
+  - !dnsMatch
+    host: demo.mapfish.org
+    port: 80
+
+
+# the default fileName for the files downloaded from the servlet
+outputFilename: MapFish_PrintOut
+layouts:
+  #===========================================================================
+  A4 portrait:
+  #===========================================================================
+    # override the default outputFileName defined above
+#    outputFilename: A4_Layout
+    mainPage:
+      rotation: true
+      pageSize: A4
+      header:
+        height: 50
+        items:
+          - !text
+            font: Helvetica
+            fontSize: 30
+            align: right
+            text: '${mapTitle}'
+      items:
+        - !map
+          spacingAfter: 30
+          width: 440
+          height: 483
+        - !text
+          text: '${comment}'
+          spacingAfter: 30
+      footer:
+        height: 30
+        items:
+          - !columns
+            items:
+              - !text
+                backgroundColor: #FF0000
+                align: left
+               #text: Copyright Camptocamp SA
+              - !text
+                align: right
+                #text: 'Page ${pageNum}'

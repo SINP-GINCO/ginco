@@ -1,0 +1,9 @@
+unix.website.deploy.dir = /var/www/sinp
+
+windows.website.deploy.dir = C:/ms4w/Apache/htdocs/sinp
+
+
+# FIXME : il faudrait utiliser ces paramètres pour le déploiement des services java.
+#unix.tomcat7.deploy.dir = /var/lib/tomcat7/webapps
+#windows.tomcat7.deploy.dir = C:/Program Files/Apache Software Foundation/Tomcat 7.0/webapps
+

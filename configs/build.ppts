@@ -1,0 +1,30 @@
+#URL des services tomcat: integration, rapport, impression, harmonisation... 
+services.url = localhost:8080
+
+# serveur des bases de la base de donnée: metadata, website, mapping, rawdata...
+db.hostname = localhost
+db.port = 5432
+db.user = admin
+
+# mail de contact (FIXME: utilisé où?)
+tomail = sinp-dev@ign.fr
+
+# répertoire de déploiement de l'application php
+windows.deploy.dir = C:\ms4w\Apache\htdocs\sinp
+unix.deploy.dir = /var/www/sinp
+
+# URL des services carto interne (map server, tilecache...)
+services.map.url = http://sinp.ign.fr
+instance.name = localhost
+
+# URL des services carto du géoportail.
+gp.wxs.url = http://wxs-i.ign.fr
+
+# clef d'identification pour l'api du Géoportail
+gp.api.key = 7gr31kqe5xttprd2g7zbkqgo
+print.gp.api.key = m9rxyzlwok7ol6jzmpsig2mb
+
+# Url pour les services
+ogam.map.services.url = http://localhost
+ogam.local.map.services.url = http://localhost
+ogam.map.services.url = http://localhost

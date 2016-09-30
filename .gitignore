@@ -1,0 +1,30 @@
+# On ne veut pas commiter les conf de build locale. 
+# Sinon on ne cesse de se les écraser mutuellement!
+# build.ppts
+
+# Les fichiers compilés par le compilateur Java ne sont pas à commiter
+*.class
+# conf eclipse
+/.project
+/.buildpath
+/.settings
+.project
+.classpath
+.metadata/
+
+# Conf Python
+.pydevproject
+# Conf SVN
+*.svn
+
+# Fichiers temporaire des éditeurs (vi, kate, libreoffice...)
+.*swp
+.~*
+/bin/
+
+# on ne commit pas les dependences et les builds
+/ogam
+/configurator
+/build
+/notes
+

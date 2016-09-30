@@ -1,0 +1,77 @@
+.. Administrer les rôles
+
+Administrer les rôles
+=====================
+
+Deux rôles GINCO par défaut ont été définis : 
+ * administrateur
+ * producteur
+ * visiteur
+
+Auxquels s'ajoute le rôle développeur, réservé à l'équipe de maintenance, et qu'il ne faut pas modifier ou supprimer.
+
+Le rôle visiteur correspond aux utilisateurs non authentifiés.
+
+Visualiser les rôles
+--------------------
+
+Pour visualiser les rôles, cliquer sur le lien "Afficher les rôles".
+
+.. image:: ../images/administration-role.png
+
+Ajouter un rôle
+---------------
+
+Pour ajouter un rôle, cliquez sur le lien "Créer un rôle"
+
+.. image:: ../images/administration-role-visu-creer.png
+ 
+Après avoir indiqué le code, le libellé et la définition du rôle, il faut sélectionner les droits (permissions) à attacher à ce rôle. 
+Et enfin cliquez sur "Valider".
+ 
+.. image:: ../images/administration-role-ajouter.png
+
+Les rôles par défaut ont les permissions suivantes :
+
+========================================================  ==============  ==========  ========
+Permissions                                               administrateur  producteur  visiteur
+========================================================  ==============  ==========  ========
+Administrer les utilisateurs                                 **Oui**          Non        Non
+Importer des données                                         **Oui**          Non        Non
+Visualiser les données régionales                            **Oui**        **Oui**    **Oui**
+Visualiser les données d'un autre fournisseur                **Oui**          Non      **Oui**
+Exporter les données (au format CSV, GeoJson, kml...)        **Oui**        **Oui**      Non
+Editer les données                                           **Oui**          Non        Non
+Editer les données d'un autre fournisseur                    **Oui**          Non        Non
+Annuler une soumission de données validées                   **Oui**          Non        Non
+Annuler une soumission de données d'un autre fournisseur     **Oui**          Non        Non
+Vérifier la configuration technique (PHP, mémoire,...)         Non            Non        Non
+Configurer le méta-modèle                                    **Oui**          Non        Non
+Visualiser les données sensibles                             **Oui**          Non        Non
+Consulter les métadonnées                                    **Oui**        **Oui**      Non
+Gérer les jeux de données (export GML...)                    **Oui**          Non        Non
+Visualiser les données privées                               **Oui**          Non        Non
+Publier les données                                          **Oui**          Non        Non
+Consulter les métadonnées                                    **Oui**        **Oui**      Non
+========================================================  ==============  ==========  ========
+
+.. note:: La permission Consulter les métadonnées ne permet pas d'en saisir ou d'en importer.
+	Il s'agit juste de visualiser les métadonnées publiées.
+	
+	Le module Géosource possède sa propre gestion des permissions, des rôles et des utilisateurs.
+
+Modifier un rôle
+----------------
+
+Pour modifier un rôle, à partir de la page de visualisation des rôles, cliquez sur l'icône à gauche du rôle à modifier.
+
+.. image:: ../images/administration-role-visu-modifier.png
+
+Vous pouvez alors modifier les code, libellé définition et permissions du rôle.
+
+Supprimer un rôle
+-----------------
+
+Pour supprmier un rôle, à partir de la page de visualisation des rôles, cliquez sur l'icône à droite du rôle à supprimer.
+
+.. image:: ../images/administration-role-visu-supprimer.png

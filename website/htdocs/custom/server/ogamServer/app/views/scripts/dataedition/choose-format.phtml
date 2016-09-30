@@ -1,0 +1,110 @@
+<?php
+/**
+ * Licensed under EUPL v1.1 (see http://ec.europa.eu/idabc/eupl).
+ *
+ * © European Union, 2008-2012
+ *
+ * Reuse is authorised, provided the source is acknowledged. The reuse policy of the European Commission is implemented by a Decision of 12 December 2011.
+ *
+ * The general principle of reuse can be subject to conditions which may be specified in individual copyright notices.
+ * Therefore users are advised to refer to the copyright notices of the individual websites maintained under Europa and of the individual documents.
+ * Reuse is not applicable to documents subject to intellectual property rights of third parties.
+ */
+
+/**
+ * Default view for data add : choose in which format to add a new data.
+ * @package views
+ */
+?>
+ <!--[if lte IE 6]>
+    <div style='border: 1px solid #F7941D; background: #FEEFDA; text-align: center; clear: both; height: 75px; position: relative;'>
+    <div style='position: absolute; right: 3px; top: 3px; font-family: courier new; font-weight: bold;'><a href='#' onclick='javascript:this.parentNode.parentNode.style.display="none"; return false;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-cornerx.jpg' style='border: none;' alt='Close this notice'/></a></div>
+    <div style='width: 640px; margin: 0 auto; text-align: left; padding: 0; overflow: hidden; color: black;'>
+      <div style='width: 75px; float: left;'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-warning.jpg' alt='Warning!'/></div>
+      <div style='width: 275px; float: left; font-family: Arial, sans-serif;'>
+        <div style='font-size: 14px; font-weight: bold; margin-top: 12px;'>You are using an outdated browser</div>
+        <div style='font-size: 12px; margin-top: 6px; line-height: 12px;'>For a better experience using this site, please upgrade to a modern web browser.</div>
+      </div>
+      <div style='width: 75px; float: left;'><a href='http://www.firefox.com' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-firefox.jpg' style='border: none;' alt='Get Firefox 3.5'/></a></div>
+      <div style='width: 75px; float: left;'><a href='http://www.browserforthebetter.com/download.html' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-ie8.jpg' style='border: none;' alt='Get Internet Explorer 8'/></a></div>
+      <div style='width: 73px; float: left;'><a href='http://www.apple.com/safari/download/' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-safari.jpg' style='border: none;' alt='Get Safari 4'/></a></div>
+      <div style='float: left;'><a href='http://www.google.com/chrome' target='_blank'><img src='http://www.ie6nomore.com/files/theme/ie6nomore-chrome.jpg' style='border: none;' alt='Get Google Chrome'/></a></div>
+    </div>
+    </div>
+    </br></br>
+<![endif]-->
+<h1>
+    <?php  echo $this->translate('Add data'); ?>
+</h1>
+<?php
+    // Get the user permissions
+// todo : check if current user is authorized to add a data in each format ;
+    $userSession = new Zend_Session_Namespace('user');
+    $user = $userSession->user;
+
+if (!empty($user))
+        $providerId = $user->provider->id;
+    }
+
+    // Helper function to display links
+    $displayMenuLink = function ($href, $anchor) {
+        echo '<li><a href="' . $href . '"  class="pagelink" >' .  $anchor . '</a></li>';
+    };
+
+?>
+
+<div class="left-column">
+<?php
+    if (!empty($this->formats)) {
+    ?>
+    <div class="moduletable_menu">
+        <h3><?php  echo $this->translate('Choose a table:'); ?></h3>
+            <?php
+            foreach ($this->models as $id => $name) {
+                echo '<h4>' . $name . '</h4>' .
+                    '<ul class="menu">' ;
+                foreach ($this->formats[$id] as $format => $label) {
+                    $displayMenuLink(
+                        $this->url(array('controller' => 'dataedition', 'action' => 'show-add-data'), 'customRoute_dataedition', true)
+                        . '/SCHEMA/RAW_DATA/FORMAT/' . $format . '/PROVIDER_ID/' . $providerId,
+                        $label
+                    );
+                }
+                echo '</ul>';
+            }
+            ?>
+    </div>
+    <?php
+    }
+?>
+
+<?php
+$configuration = Zend_Registry::get("configuration");
+if ($configuration->getConfig('autoLogin', false) == 1) {
+?>
+<div class="moduletable_menu">
+<ul id="appmenu2" class="menu">
+<?php
+if (empty($user)) {
+?>
+<li>
+<a href="<?php echo  $this->baseUrl('user/index') ?>"><?php echo $this->translate('Log in');?></a>
+</li>
+<?php
+} else {
+?>
+<li>
+<a href="<?php echo  $this->baseUrl('user/index') ?>"><?php echo $this->translate('Change login').' ('.$user->login.')'?></a>
+</li>
+<li>
+<a href="<?php echo  $this->baseUrl('user/logout') ?>"><?php echo $this->translate('Log out');?></a>
+</li>
+<?php
+}
+?>
+</ul>
+</div>
+<?php
+}
+?>
+</div>

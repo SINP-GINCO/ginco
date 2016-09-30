@@ -1,0 +1,1 @@
+INSERT INTO website.application_parameters (name, value, description) VALUES ( 'hiding_value' , 'Masqué' , 'The value to display when a field value should not be displayed');

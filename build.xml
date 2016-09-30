@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<project name="SINP root" default="deployWebSite" basedir=".">
+
+	<!-- Environment setting -->
+	<condition property="env" value="">
+		<not>
+			<isset property="env" />
+		</not>
+	</condition>
+
+	<echo message="ENVIRONNEMENT : [${env}]" />
+
+	<!-- Region setting -->
+	<condition property="/region" value="">
+		<not>
+			<isset property="region" />
+		</not>
+	</condition>
+	<condition property="region" value="">
+		<not>
+			<isset property="region" />
+		</not>
+	</condition>
+	<!-- Properties in ant are immutable, so the following assignments will only
+	     take place if property is not set. -->
+	<property name="/region" value="/${region}"/>
+	
+	<echo message="REGION : [${region}]" />
+	
+
+	<!-- Properties definition -->
+	<property file="build${env}.ppts" />
+	<property name="website.deploy.dir" value="${java.io.tmpdir}/dist/sinp" />
+
+	<!-- Deploy database -->
+	<target name="deployConfigs" description="Deploy the configs in database">
+		<ant antfile="database/build.xml" target="UpdateConfigs" inheritAll="false" />
+	</target>
+
+	<!-- Deploy the web site -->
+	<target name="deployWebSite" description="Deploy the web site">
+		<ant antfile="website/build.xml" target="deployWebSite" inheritAll="false">
+			<property name="dist.dir" value="${website.deploy.dir}" />
+			<property name="env" value="${env}" />
+		</ant>
+		<mkdir dir="${website.deploy.dir}/logs" />
+		<mkdir dir="${website.deploy.dir}/tmp" />
+		<mkdir dir="${website.deploy.dir}/tmp/database" />
+		<mkdir dir="${website.deploy.dir}/tmp/language" />
+		<mkdir dir="${website.deploy.dir}/upload" />
+		<mkdir dir="${website.deploy.dir}/sessions" />
+		<copy todir="${website.deploy.dir}/custom/application/configs">
+			<fileset dir="website/htdocs/custom/app/configs"/>
+		</copy>
+		<copy todir="${website.deploy.dir}/custom/application/lang">
+			<fileset dir="website/htdocs/custom/app/lang"/>
+		</copy>
+		<ant antfile="mapserver/build.xml" target="CreateMapFile" inheritAll="false">
+			<property name="dst.dir" value="${website.deploy.dir}/mapserver" />
+			<property name="env" value="${env}" />
+		</ant>
+	</target>
+	
+	
+	<!-- Deploy the regions web sites -->
+		<target name="deployWebSiteRegions" description="Deploy the regions web sites">
+			<ant antfile="website/build.xml" target="deployWebSite" inheritAll="false">
+				<property name="dist.dir" value="${website.deploy.dir}" />
+				<property name="env" value="${env}" />
+				<property name="region" value="${region}" />
+			</ant>
+			<mkdir dir="${website.deploy.dir}/logs" />
+			<mkdir dir="${website.deploy.dir}/logs${/region}" />
+			<mkdir dir="${website.deploy.dir}/tmp" />
+			<mkdir dir="${website.deploy.dir}/tmp/database" />
+			<mkdir dir="${website.deploy.dir}/tmp/database${/region}" />
+			<mkdir dir="${website.deploy.dir}/tmp/language" />
+			<mkdir dir="${website.deploy.dir}/upload" />
+			<mkdir dir="${website.deploy.dir}/upload${/region}" />
+			<mkdir dir="${website.deploy.dir}/sessions" />
+			<copy file="website/htdocs/custom/app/configs/${region}_application.ini"
+				  tofile="${website.deploy.dir}/custom/application/configs/${region}_application.ini"/>
+			<copy todir="${website.deploy.dir}/custom/application/lang">
+				<fileset dir="website/htdocs/custom/app/lang"/>
+			</copy>
+			<ant antfile="mapserver/build.xml" target="CreateMapFilesRegions" inheritAll="false">
+				<property name="dst.dir" value="${website.deploy.dir}/mapserver" />
+				<property name="env" value="${env}" />
+				<property name="region" value="${region}" />
+			</ant>
+		</target>
+
+	<!-- Build the Java libs -->
+	<target name="buildJavaLibs" description="Build Java libs">
+		<echo>-----------------Building Java libs...-----------------</echo>
+		<ant antfile="../libs_java/build.xml" target="build" inheritAll="false">
+			<property name="env" value="${env}" />
+		</ant>
+		<echo>-----------------Building Java libs done.-----------------</echo>
+	</target>
+
+	<!-- Deploy the common service -->
+	<target name="deployCommonService" description="Deploy the common service">
+		<echo>-----------------Compiling common services...-----------------</echo>
+		<ant antfile="service_common/build.xml" target="compile" inheritAll="false">
+			<property name="env" value="${env}" />
+			<property name="region" value="${region}" />
+		</ant>
+		<echo>-----------------Compiling common services done.-----------------</echo>
+	</target>
+
+	<!-- Deploy the reporting service -->
+	<target name="deployReportGenerationService" description="Deploy the reporting service">
+		<echo>-----------------Deploying reporting service...-----------------</echo>
+		<ant antfile="service_generation_rapport/build.xml" target="deployRegions" inheritAll="false">
+			<property name="env" value="${env}" />
+			<property name="region" value="${region}" />
+		</ant>
+		<echo>-----------------Deploying reporting service done-----------------</echo>
+	</target>
+
+	<!-- Deploy the integration service -->
+	<target name="deployIntegrationService" description="Deploy the integration service">
+		<echo>-----------------Deploying integration service...-----------------</echo>
+		<ant antfile="service_integration/build.xml" target="deployRegions" inheritAll="false">
+			<property name="env" value="${env}" />
+			<property name="region" value="${region}" />
+		</ant>
+		<echo>-----------------Deploying integration service done-----------------</echo>
+	</target>
+
+	<!-- Deploy the harmonization service -->
+	<target name="deployHarmonizationService" description="Deploy the harmonization service">
+		<echo>-----------------Deploying harmonization service...-----------------</echo>
+		<ant antfile="service_harmonization/build.xml" target="deployRegions" inheritAll="false">
+			<property name="env" value="${env}" />
+			<property name="region" value="${region}" />
+		</ant>
+		<echo>-----------------Deploying harmonization service done-----------------</echo>
+	</target>
+
+	<!-- Deploy the print service -->
+	<target name="deployPrintService" description="Deploy the print service">
+		<echo>-----------------Deploying print service...-----------------</echo>
+		<ant antfile="service_impression/build.xml" target="deploy" inheritAll="false">
+			<property name="env" value="${env}" />
+			<property name="region" value="${region}" />
+		</ant>
+		<echo>-----------------Deploying print service done-----------------</echo>
+	</target>
+
+	<!-- Deploy all services-->
+	<target name="deployAllServices" description="Deploy all services" depends="buildJavaLibs, deployCommonService, deployIntegrationService,
+		deployReportGenerationService, deployHarmonizationService, deployPrintService ">
+	</target>
+
+</project>
