@@ -23,8 +23,6 @@
 		"sensio/distribution-bundle" : "~3.0",
 		"sensio/framework-extra-bundle" : "^3.0.2",
 		"incenteev/composer-parameter-handler" : "~2.0",
-		"components/jquery" : "1.11.1",
-		"components/jqueryui" : "1.11.1",
 		"twbs/bootstrap" : "3.3.*",
 		"oyejorge/less.php" : "~1.5",
 		"braincrafted/bootstrap-bundle" : "~2.2",
