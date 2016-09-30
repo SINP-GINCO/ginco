@@ -13,10 +13,6 @@
  			 <link rel="stylesheet" href="{{ asset_url }}" />
  		{% endstylesheets %}
 
-		{#	<link href="{{ asset('bundles/ignconfigurateur/css/bootstrap.css') }}" rel="stylesheet">
-            <link href="{{ asset('bundles/ignconfigurateur/css/bootstrap-table.css') }}" rel="stylesheet">
-            <link href="{{ asset('bundles/ignconfigurateur/css/style.css') }}" rel="stylesheet"> #}
-
 		<!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
 		{% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 	</head>
@@ -31,14 +27,15 @@
 			<!-- Put in the folder 'src/Ign/Bundle/ConfigurateurBundle/public/js' your scripts,
 			In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignconfigurateur/' to create
 			symlinks pointing towards your files.-->
-			<script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
-			<script src="{{ asset('assets/jquery-ui/jquery-ui.min.js') }}"></script>
-			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap.js') }}"></script>
+			<script src="{{ asset('bundles/ignconfigurateur/js/jquery.min.js') }}"></script>
+			<script src="{{ asset('bundles/ignconfigurateur/js/jquery-ui.min.js') }}"></script>
+			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap_modal_7.js') }}"></script>
+			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap_tooltip_8.js') }}"></script>
 			<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 			{% if app.environment == 'prod' %}
-			<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes.js') }}"></script>
+				<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes.js') }}"></script>
 			{% else %}
-			<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes_dev.js') }}"></script>
+				<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes_dev.js') }}"></script>
 			{% endif %}
 			<script>
 				$(document).ready(function(){
