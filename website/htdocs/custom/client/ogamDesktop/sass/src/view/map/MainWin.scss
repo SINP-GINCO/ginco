@@ -29,12 +29,12 @@
   background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
 }
 
-/* A better cancel button (grey)*/
-.x-btn-cancel .x-btn-inner {
+/* A better cancel button and home button (grey)*/
+.x-btn-cancel .x-btn-inner, .home-button{
   color: #333;
   font-weight: bold;
 }
-.x-btn-cancel, .x-btn-cancel.x-btn-focus {
+.x-btn-cancel, .x-btn-cancel.x-btn-focus, .home-button, home-button.x-btn-focus{
   background: #efefef;
   background-image: -webkit-linear-gradient(top, #efefef, #dcdcdc);
   background-image: -moz-linear-gradient(top, #efefef, #dcdcdc);
@@ -49,7 +49,7 @@
   box-shadow: 0px 1px 3px #666666;
   border: 1px solid #c0c0c0;
 }
-.x-btn-cancel.x-btn-over, .x-btn-cancel.x-btn-pressed.x-btn-default-toolbar-small {
+.x-btn-cancel.x-btn-over, .x-btn-cancel.x-btn-pressed.x-btn-default-toolbar-small, .home-button.x-btn-over, .home-button.x-btn-pressed.x-btn-default-toolbar-small {
   background: #f7f7f7;
   background-image: -webkit-linear-gradient(top, #f7f7f7, #efefef);
   background-image: -moz-linear-gradient(top, #f7f7f7, #efefef);
