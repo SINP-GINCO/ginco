@@ -32,6 +32,7 @@ try {
 	execCustSQLFile("$sprintDir/remove_query_details_layer.sql", $config);
 	execCustSQLFile("$sprintDir/update_mode_taxref_add_lbname_column.sql", $config);
 	execCustSQLFile("$sprintDir/insert_hiding_value_in_app_parameters.sql", $config);
+	execCustSQLFile("$sprintDir/delete_check_config_permission.sql", $config);
 
 }catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
