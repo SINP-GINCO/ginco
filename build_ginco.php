@@ -80,7 +80,7 @@ copy("$projectDir/ogam/service_generation_rapport/build/libs/OGAMRG.war",
 substituteInFile("$projectDir/services_configs/service_generation_rapport/ReportService_tpl.xml", 
                  "$servicesBuildDir/conf/SINP{$config['instance.name']}RGService.xml", $config);
 
-
+/*
 // build du service Géosource
 echo("Building geosource...\n");
 copy("$projectDir/service_geosource/geosource.war", "$servicesBuildDir/webapps/geosource.war");
@@ -102,7 +102,7 @@ system("rm -r $servicesBuildDir/webapps/geosource");
 
 mkdir("$buildDir/confEnvJava", 0777, true);
 copy("$projectDir/service_geosource/setenv.sh", "$buildDir/confEnvJava/setenv.sh");
-
+*/
 
 # Build du SITE WEB 
 #=======================
