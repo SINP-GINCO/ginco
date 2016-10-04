@@ -20,8 +20,9 @@
 <!-- Documentation: http://www.webappers.com/progressBar/ -->
 <script type="text/javascript" src="<?php echo $this->baseUrl('js/integration/progressbar.js') ?>"></script>
 <script type="text/javascript" src="<?php echo $this->baseUrl('js/integration/later.min.js') ?>"></script>
-<!-- jQuery by CDN -->
+<!-- jQuery by CDN, with local fallback -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery-1.12.4.min.js">\x3C/script>')</script>
 
 <h1>
    <?php echo $this->translate('Data integration module');?>
