@@ -26,19 +26,19 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 
 //<locale>
 	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code olumn title
+	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
 	 */
 	taxrefScientificNameColumnTitle : 'Nom scientifique',
 	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code olumn title
+	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
 	 */
 	taxrefScientificNameColumnTooltip : 'Le nom scientifique sans l\'autorité (LB_NOM) du taxon',
 	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code olumn title
+	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
 	 */
-	taxrefLatinNameColumnTitle : 'Cd_nom',
+	taxrefLatinNameColumnTitle : 'Code',
 	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code olumn title
+	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
 	 */
 	taxrefLatinNameColumnTooltip : 'Le code (CD_NOM) du taxon',
 	/**
@@ -58,6 +58,8 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 	 */
 	taxrefCompleteNameColumnTooltip : 'Le nom complet du taxon (nom et auteur)',
 //</locale>
+	
+	resizable:true,
 
 	inheritableStatics : {
 
@@ -286,12 +288,12 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 			            text: cls.prototype.taxrefScientificNameColumnTitle,
 			            tooltip: cls.prototype.taxrefScientificNameColumnTooltip,
 			            dataIndex: "scientificName",
-			            flex:35
+			            flex:37
 			        },{
 			            text: cls.prototype.taxrefLatinNameColumnTitle,
 			            tooltip: cls.prototype.taxrefLatinNameColumnTitle,
 			            dataIndex: "label",
-			            flex:8
+			            flex:6
 			        },{
 			            text: cls.prototype.taxrefCompleteNameColumnTitle,
 			            tooltip: cls.prototype.taxrefCompleteNameColumnTooltip,
@@ -318,7 +320,7 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 							'<tpl if="!Ext.isEmpty(values.completeName) && values.completeName != null">({completeName})</tpl>',
 							'<tpl if="!Ext.isEmpty(values.vernacularName) && values.vernacularName != null">({vernacularName})</p></tpl>',
 				        '</div></tpl>'
-				        ]};
+				   ]};
 				field.store = {
 					xtype : 'jsonstore',
 					autoDestroy : true,
@@ -347,7 +349,12 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 						type:'ajax',
 						url:Ext.manifest.OgamDesktop.requestServiceUrl + 'ajaxgettaxrefnodes',
 						extraParams:{unit:record.unit}
-					}});
+					}
+				});
+				
+				if(record.label == 'cdRef'){
+					field.treePickerStore.filter('isReference', true);
+				}
 				break;
 			default:
 				field.xtype = 'field';
