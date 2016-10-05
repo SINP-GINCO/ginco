@@ -12,6 +12,9 @@
 .classpath
 .metadata/
 
+# Conf PHPStorm
+.idea/
+
 # Conf Python
 .pydevproject
 # Conf SVN
