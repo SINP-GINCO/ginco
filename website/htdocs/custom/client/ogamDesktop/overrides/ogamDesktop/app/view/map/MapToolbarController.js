@@ -26,15 +26,15 @@ Ext.define('Ginco.view.map.MapToolbarController', {
      * get the active (currently visible) request layers
      */
     getActiveRequestLayersNames: function() {
+        var currentResolution = this.mapCmpCtrl.map.getView().getResolution();
         var requestLayers = this.mapCmpCtrl.requestLayers;
         var activeRequestLayersNames = [];
         requestLayers.forEach(function(element, index, array){
-            if (element.getVisible()) {
+            // test if element is currently viewed, ie visible (checked in layer_tree)
+            // and current resolution is between min and max resolutions for this layer
+            if (element.getVisible() && this.mapCmpCtrl.isResInLayerRange(element, currentResolution)) {
                 activeRequestLayersNames.push(element.get("name"));
             }
-            // console.log(element.get("name"), element.getVisible());
-            // console.log(element.getKeys());
-            // console.log(element);
         },this);
         return activeRequestLayersNames;
     },
