@@ -42,6 +42,7 @@ Ext.define('Ginco.ux.form.field.Tree', {
 			store : storepiker,
 			floating : true,
 			focusable : false,
+			resizable:true,
 			multiple : this.multiple,
 			width : '50%'
 		});
