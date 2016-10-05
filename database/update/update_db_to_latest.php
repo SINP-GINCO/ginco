@@ -95,11 +95,11 @@ $config = loadPropertiesFromArgs();
 $conStr = "host={$config['db.host']} port={$config['db.port']} user={$config['db.adminuser']} password={$config['db.adminuser.pw']} dbname={$config['db.name']}";
 
 $dbVerNum = getDbVersion($conStr);
-echo ("Info : db ginco version is sprint$dbVerNum\n");
+echo ("INFO : db ginco version is sprint$dbVerNum\n");
 
 $applicablePatches = getApplicablePatches($dbVerNum, $updateDir);
 if (count($applicablePatches)==0){
-	echo "Info : DB ginco version is already up to date. There is nothing to do.\n";
+	echo "INFO : DB ginco version is already up to date. There is nothing to do.\n";
 	exit();
 }
 
@@ -120,7 +120,7 @@ $CLIParams = implode(' ',array_slice($argv,1));
 foreach ($applicablePatches as $patchDir) {
 	system("php $updateDir/$patchDir/update_db_sprint.php $CLIParams", $returnCode);
 	if ($returnCode != 0){
-		echo "Problem occured on patch $patchDir: DB is going to be restored...";
+		echo "ERROR: Problem occured on patch $patchDir: DB is going to be restored...";
 		/*restoreSql($sqlDumpFilePath, $config);*/
 		exit(1);
 	}
@@ -129,7 +129,7 @@ echo "DB patches applied. \n";
 
 // update db version tag
 $db = pg_connect( $conStr )
-	or exitOnError("Error : Unable to open database\n");
+	or exitOnError("ERROR : Unable to open database\n");
 $currentSprint = end($applicablePatches);
 $ret = pg_query($db, "UPDATE website.application_parameters SET value = '$currentSprint' WHERE name='ginco_version';");
 pg_close($db);
