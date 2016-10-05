@@ -436,13 +436,20 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 		// Transform the identifier in an array
 		$keyMap = $this->_decodeId($id);
 
+        // The test in the following block code (empty[$keyMap[$infoField->data]])
+        // fails if $infoField->data and the keys of $keyMap don't have the same case...
+        // So we put everything in uppercase
+        $keysKeyMap = array_map("strtoupper", array_keys($keyMap));
+        $valuesKeyMap = array_values($keyMap);
+        $keyMap = array_combine($keysKeyMap, $valuesKeyMap);
+
 		// Prepare a data object to be filled
 		$data = $this->genericService->buildDataObject($keyMap['SCHEMA'], $keyMap['FORMAT'], null);
 
 		// Complete the primary key info with the session values
 		foreach ($data->infoFields as $infoField) {
-			if (!empty($keyMap[$infoField->data])) {
-				$infoField->value = $keyMap[$infoField->data];
+			if (!empty($keyMap[strtoupper($infoField->data)])) {
+				$infoField->value = $keyMap[strtoupper($infoField->data)];
 			}
 		}
 
