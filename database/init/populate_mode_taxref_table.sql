@@ -16,7 +16,7 @@ DELETE FROM metadata.mode_taxref;
 --We insert cd_nom and not lb_name in name to see code in TAXREF subtype fields (cdNom and cdRef). 
 --SELECT 'TaxRefValue', cd_nom,  cd_taxsup, lb_nom, nom_complet, nom_vern, '0', case when (cd_nom = cd_ref) then 1 else 0 end
 INSERT INTO metadata.mode_taxref (unit, code, parent_code, "name", lb_name, complete_name, vernacular_name, is_leaf, is_reference)
-SELECT 'TaxRefValue', cd_nom, cd_taxsup, cd_nom, nom_complet, lb_nom, nom_vern, '0', case when (cd_nom = cd_ref) then 1 else 0 end
+SELECT 'TaxRefValue', cd_nom, cd_taxsup, cd_nom, lb_nom, nom_complet, nom_vern, '0', case when (cd_nom = cd_ref) then 1 else 0 end
 FROM referentiels.taxref;
 
 -- Marquage des feuilles
