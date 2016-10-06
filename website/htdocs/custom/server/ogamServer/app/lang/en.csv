@@ -233,7 +233,7 @@ Total number of data in the submission;Total number of data in the submission
 Download a file model for;Download a file model for
 Export to GML;Export to GML
 Spatial reference system (SRID);Spatial reference system (SRID)
-In the form of EPSG code. For example 4326 for WGS84;In the form of EPSG code. For example 4326 for WGS84
+sridDescription;In the form of EPSG code. For example: <ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>See <a href='http://www.epsg-registry.org/' target='_blank'>EPSG Geodetic Parameter Registry</a>.
 
 ﻿##########################
 #  Data Copy             #
