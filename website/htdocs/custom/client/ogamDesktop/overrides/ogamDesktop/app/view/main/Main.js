@@ -4,7 +4,7 @@
  * plugin to promote that instance of this class to the body element.
  */
 Ext.define('Ginco.view.main.Main', {
-	extend: 'OgamDesktop.view.main.Main',
+	override: 'OgamDesktop.view.main.Main',
 
 	/**
 	 * Initializes the component.
