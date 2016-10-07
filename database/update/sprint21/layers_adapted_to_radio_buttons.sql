@@ -9,7 +9,7 @@ UPDATE layer_tree SET is_checked=1 WHERE name = 'result_departement';
 --
 -- Change min and max resolutions for result layers
 --
-UPDATE layer SET maxscale=null, minscale=null WHERE name='result_departement';
-UPDATE layer SET maxscale=null, minscale=null WHERE name='result_maille';
-UPDATE layer SET maxscale=null, minscale=null WHERE name='result_commune';
-UPDATE layer SET maxscale=272989, minscale=null WHERE name='result_geometrie';
+UPDATE layer SET maxscale=null, minscale=null WHERE layer_name='result_departement';
+UPDATE layer SET maxscale=null, minscale=null WHERE layer_name='result_maille';
+UPDATE layer SET maxscale=null, minscale=null WHERE layer_name='result_commune';
+UPDATE layer SET maxscale=272989, minscale=null WHERE layer_name='result_geometrie';
