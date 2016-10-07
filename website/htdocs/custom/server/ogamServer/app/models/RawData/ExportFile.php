@@ -79,7 +79,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      * @return mixed : last id inserted
      * @throws Exception
      */
-    public function addExportFile($submissionId, $jobId, $fileName, $fileSize=0) {
+    public function addExportFile($submissionId, $jobId, $fileName) {
         if ($this->existsExportFileData($submissionId)) {
             throw new Exception("An export file already exists for submission  $submissionId");
         }
@@ -87,26 +87,8 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
             'submission_id' => $submissionId,
             'job_id' => $jobId,
             'file_name' => $fileName,
-            'file_size' => $fileSize,
         );
         return $this->insert($data);
-    }
-
-    /**
-     * Update an export file in Db; only the created_at parameter
-     * can be updated after creation, and set to now.
-     *
-     * @param $submissionId
-     * @throws Exception
-     */
-    public function setExportFileCreatedAt($submissionId) {
-        if (!$this->existsExportFileData($submissionId)) {
-            throw new Exception("Could not find export_file for submission $submissionId");
-        }
-        $data = array(
-            'created_at' => time(),
-        );
-        $this->update($data, "submission_id = '" . $submissionId . "'");
     }
 
     /**

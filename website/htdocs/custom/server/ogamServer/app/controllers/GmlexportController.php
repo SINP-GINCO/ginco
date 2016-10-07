@@ -101,7 +101,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         if ($jobId) {
             // Insert an line in export_file table
-            $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath, 0);
+            $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath);
         }
 
         $return = array(
