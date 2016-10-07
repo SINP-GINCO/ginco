@@ -37,8 +37,10 @@ $options = getopt("j::s:f:");
 $submissionId = intval($options['s']);
 // And the dataset Id
 $submissionModel = new Application_Model_RawData_Submission();
-// todo : un test avec erreuer explicite si on ne trouve pas la soumission
 $dataSubmission = $submissionModel->getSubmission($submissionId);
+if (!$dataSubmission) {
+    throw new Exception("Could not find submission $submissionId");
+}
 $datasetId = $dataSubmission->datasetId;
 
 // Get the filename
@@ -147,17 +149,20 @@ if ($total != 0) {
     $gml = new GMLExport();
 
     // Opens a file
-    // todo : test opening and alert and stop execution if false
     $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/' . $submissionId ;
     $pathExists = is_dir($filePath) || mkdir($filePath, 0755, true);
 
-    if ($pathExists) {
+    if (!$pathExists) {
+        throw new Exception("Error: could not create directory: $filePath");
+    }
+     else {
         $out = fopen($filePath . '/' . $fileName, 'w');
-
-        if ($out) {
+        if (!$out) {
+            throw new Exception("Error: could not open (w) file: $filePath/$fileName");
+        }
+        else {
             // Write the whole GML in the file flux
             $gml->generateGML($resultsArray, $out, $jobId);
-
             fclose($out);
         }
     }
@@ -165,5 +170,4 @@ if ($total != 0) {
 
 $jm->setJobCompleted($jobId);
 // Sleep a little time after complete, to avoid being seen as "aborted"
-// Todo : 2 is enough
 sleep(2);

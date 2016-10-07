@@ -276,6 +276,8 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
     if ($status == 'COMPLETED') {
         var $downloadLink = $("<a class='align_images' href='/gmlexport/download?submissionId=" + $submissionId+ "'><img src='/img/save.png'> Télécharger les DEE</a>");
         $contentDiv.append($downloadLink);
+    } else if ($status == 'ABORTED') {
+        $contentDiv.append("<p><strong>ERREUR</strong> lors de la génération DEE</p>");
     }
 
     // Update progress bar if RUNNING
