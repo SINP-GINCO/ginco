@@ -53,19 +53,19 @@ INSERT INTO layer VALUES ('mailles', 'Mailles 10km', 'mailles', 1, 100, 0, 0, 10
 INSERT INTO layer VALUES ('communes', 'Communes', 'communes', 1, 100, 0, 0, 272989, NULL, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
 
 INSERT INTO layer VALUES ('results', 'Résultats de la recherche', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO layer VALUES ('result_departement', 'Départements', 'result_departement', 1, 100, 0, 1, NULL, 8735660, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
-INSERT INTO layer VALUES ('result_maille', 'Mailles', 'result_maille', 1, 100, 0, 1, 8735660, 272989, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
-INSERT INTO layer VALUES ('result_commune', 'Communes', 'result_commune', 1, 100, 0, 1, 272989, 136495, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
-INSERT INTO layer VALUES ('result_geometrie', 'Géométries précises', 'result_geometrie', 1, 100, 0, 1, 136495, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
+INSERT INTO layer VALUES ('result_departement', 'Départements', 'result_departement', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
+INSERT INTO layer VALUES ('result_maille', 'Mailles', 'result_maille', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
+INSERT INTO layer VALUES ('result_commune', 'Communes', 'result_commune', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
+INSERT INTO layer VALUES ('result_geometrie', 'Géométries précises', 'result_geometrie', 1, 100, 0, 1, 272989, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
 
 --
 -- Define the layers legend
 --
 INSERT INTO mapping.layer_tree VALUES (2, '-1', 0, 1, 0, 0, 1, 'results', 1, NULL);
-INSERT INTO mapping.layer_tree VALUES (24, '2', 1, 1, 0, 1, 0, 'result_departement', 24, NULL);
-INSERT INTO mapping.layer_tree VALUES (23, '2', 1, 1, 0, 1, 0, 'result_maille', 21, NULL);
-INSERT INTO mapping.layer_tree VALUES (22, '2', 1, 1, 0, 1, 0, 'result_commune', 23, NULL);
-INSERT INTO mapping.layer_tree VALUES (21, '2', 1, 1, 0, 1, 0, 'result_geometrie', 22, NULL);
+INSERT INTO mapping.layer_tree VALUES (24, '2', 1, 1, 0, 1, 0, 'result_departement', 24, 'results');
+INSERT INTO mapping.layer_tree VALUES (23, '2', 1, 0, 0, 1, 0, 'result_maille', 21, 'results');
+INSERT INTO mapping.layer_tree VALUES (22, '2', 1, 0, 0, 1, 0, 'result_commune', 23, 'results');
+INSERT INTO mapping.layer_tree VALUES (21, '2', 1, 0, 0, 1, 0, 'result_geometrie', 22, 'results');
 
 INSERT INTO mapping.layer_tree VALUES (3, '-1', 0, 1, 0, 0, 1, 'Limites administratives', 3, NULL);
 INSERT INTO mapping.layer_tree VALUES (31, '3', 1, 1, 0, 0, 0, 'regions', 34, NULL);
