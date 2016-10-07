@@ -13,7 +13,7 @@
 
 
 /**
- * View for the upload of one or more data file.
+ * View for the creation of a new data submission.
  * @package views
  */
 ?>
@@ -22,10 +22,4 @@
 <h1>
    <?php echo $this->translate('Manage datasets');?> - <?php echo $this->translate('Import a new dataset');?>
 </h1>
-
-<h2>
-  <?php echo $this->translate('Dataset');?> : <?php echo $this->dataset->label;?>
-</h2>
-
 <?php echo $this->form ?>
-<?php echo $this->errorMessage ?>

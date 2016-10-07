@@ -471,14 +471,14 @@ class Custom_IntegrationController extends IntegrationController {
 	 */
 	public function showCreateDataSubmissionAction()
 	{
-		$this->logger->debug('showCreateDataSubmissionAction');
+		$this->logger->debug('Custom showCreateDataSubmissionAction');
 
 		$userSession = new Zend_Session_Namespace('user');
 		$user = $userSession->user;
 
 		$this->view->form = $this->getSubmissionForm($user);
 
-		$this->render('show-create-data-submission');
+		$this->render('custom-show-create-data-submission');
 	}
 
 	/**
@@ -631,7 +631,7 @@ class Custom_IntegrationController extends IntegrationController {
 			// there is no geometric column
 			$srid = '0';
 		}
-		
+
 		// Upload the files on Server
 		$upload = new Zend_File_Transfer_Adapter_Http();
 		$upload->receive();

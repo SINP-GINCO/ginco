@@ -157,7 +157,7 @@ Administration;Administration
 Harmonized Datas;Données Elémentaires d'échange
 Source Data;Données régionales
 
-Data Integration;Intégrer des données
+Manage datasets;Gérer les jeux de données
 Add a new localisation; Ajouter une observation
 Data edition module; Ajouter une observation
 Data Edition;Editier des données
@@ -203,7 +203,7 @@ Status;Statut
 File;Fichier
 Lines;Lignes
 Actions;Actions
-Create data submission;Nouvelle soumission
+Import a new dataset;Importer un nouveau jeu de données
 Upload Data;Chargement des données
 Check data;Vérifier les données
 Show report;Rapport de conformité et cohérence
@@ -441,8 +441,8 @@ No file selected;Aucun fichier sélectionné
 #  Fil d'ariane (Breadcrumb)   #
 ################################
 Breadcrumb Home;Accueil
-Breadcrumb Integration;Intégrer des données
-Breadcrumb Integration New;Nouvelle soumission
+Breadcrumb Integration;Gérer les jeux de données
+Breadcrumb Integration New;Importer un nouveau jeu de données
 Breadcrumb Visualization;Visualiser les données
 Breadcrumb Harmonization;Harmoniser les données
 Breadcrumb Edition;Editer les données
