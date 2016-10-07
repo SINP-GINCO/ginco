@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
+    execCustSQLFile("$sprintDir/layers_adapted_to_radio_buttons.sql", $config);
 
 }catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";

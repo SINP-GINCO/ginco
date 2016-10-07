@@ -11,6 +11,6 @@ Ext.define('Ginco.view.map.MapAddonsPanelController', {
      * @param {OgamDesktop.view.map.MapComponentController} mapCmpCtrl The map component controller
      */
     enableRequestLayersAndLegends: function(mapCmpCtrl) {
-        this.toggleLayersAndLegends(true, mapCmpCtrl.requestLayers, true);
+        this.toggleLayersAndLegends(true, mapCmpCtrl.requestLayers, false);
     }
 });
