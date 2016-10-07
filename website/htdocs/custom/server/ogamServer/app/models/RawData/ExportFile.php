@@ -132,9 +132,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
             return false;
         }
         $exportFile = $this->getExportFileData($submissionId);
-        $fileName = $exportFile->file_name;
-        $configuration = Zend_Registry::get('configuration');
-        $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/' . $submissionId . '/' . $fileName;
+        $filePath = $exportFile->file_name;
         return unlink($filePath);
     }
 
@@ -143,9 +141,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
             return false;
         }
         $exportFile = $this->getExportFileData($submissionId);
-        $fileName = $exportFile->file_name;
-        $configuration = Zend_Registry::get('configuration');
-        $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/' . $submissionId . '/' . $fileName;
+        $filePath = $exportFile->file_name;
         return is_file($filePath);
     }
 
@@ -164,6 +160,19 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
         $select->execute(array($submissionId));
         $length = $select->fetchColumn();
         return $length;
+    }
+
+    /**
+     * Generate an absolute file path for export file
+     *
+     * @param $submissionId
+     * @return string
+     */
+    public function generateFilePath($submissionId) {
+        $configuration = Zend_Registry::get('configuration');
+        $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/'. $submissionId . '/';
+        $filename = "DEE-Submission-$submissionId-" . date('YmdHi') . '.xml';
+        return $filePath . $filename ;
     }
 
 }

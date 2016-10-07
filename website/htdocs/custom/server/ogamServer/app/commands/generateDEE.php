@@ -149,16 +149,16 @@ if ($total != 0) {
     $gml = new GMLExport();
 
     // Opens a file
-    $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/' . $submissionId ;
+    $filePath = pathinfo($fileName, PATHINFO_DIRNAME);
     $pathExists = is_dir($filePath) || mkdir($filePath, 0755, true);
 
     if (!$pathExists) {
         throw new Exception("Error: could not create directory: $filePath");
     }
      else {
-        $out = fopen($filePath . '/' . $fileName, 'w');
+        $out = fopen($fileName, 'w');
         if (!$out) {
-            throw new Exception("Error: could not open (w) file: $filePath/$fileName");
+            throw new Exception("Error: could not open (w) file: $fileName");
         }
         else {
             // Write the whole GML in the file flux
