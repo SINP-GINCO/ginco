@@ -25,11 +25,11 @@
 <script>window.jQuery || document.write('<script src="/js/jquery-1.12.4.min.js">\x3C/script>')</script>
 
 <h1>
-   <?php echo $this->translate('Data integration module');?>
+   <?php echo $this->translate('Manage datasets');?>
 </h1>
 
 <p class="onTableLink">
-    <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'show-create-data-submission'), null, true) ?>"><?php echo $this->translate('Create data submission');?></a>
+    <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'show-create-data-submission'), null, true) ?>"><?php echo $this->translate('Import a new dataset');?></a>
 </p>
 
 <?php
@@ -205,7 +205,7 @@ foreach ($this->submissions as $submission) {
 ?>
     <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'validate-data'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" onClick="return confirm('<?php echo $this->translate('Confirm_submission_warning');?>');"><?php echo $this->translate('Publish data');?></a></p>
     <?php
-    }    
+    }
     if ($submission->step === "VALIDATE" && ($submission->status === "OK" || $submission->status === "WARNING") && $user->isAllowed('CONFIRM_SUBMISSION')) {
     ?>
     <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'invalidate-data'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" onClick="return confirm('<?php echo $this->translate('Unpublish_submission_warning');?>');"><?php echo $this->translate('Unpublish data');?></a></p>
