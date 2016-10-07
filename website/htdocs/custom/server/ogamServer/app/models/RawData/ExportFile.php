@@ -138,6 +138,17 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
         return unlink($filePath);
     }
 
+    public function existsExportFileOnDisk($submissionId) {
+        if (!$this->existsExportFileData($submissionId)) {
+            return false;
+        }
+        $exportFile = $this->getExportFileData($submissionId);
+        $fileName = $exportFile->file_name;
+        $configuration = Zend_Registry::get('configuration');
+        $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/' . $submissionId . '/' . $fileName;
+        return is_file($filePath);
+    }
+
     /**
      * Get a "length" measure for the export job.
      * This length is the number of lines in the observation file.
@@ -155,92 +166,4 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
         return $length;
     }
 
-
-
-    /**
-     * Get the list of different providers.
-     *
-     * @return Array[String => Label]
-     */
-    /*public function getProvidersList() {
-
-        $rows = $this->fetchAll();
-        if (!$rows) {
-            return null;
-        }
-
-        $providers = array();
-        foreach ($rows as $row) {
-            $providers[$row->id] = $row->label;
-        }
-
-        return $providers;
-    }
-
-    /**
-     * @param $id
-     * @return Array of Rowset
-     */
-    /*public function getProviderUsers($id) {
-        $userModel = new Application_Model_Website_User();
-        return $userModel->findByProviderId($id);
-    }
-
-    /**
-     * @param $id
-     * @return Array of Rowset
-     */
-   /* public function getProviderActiveSubmissions($id) {
-        $submissionModel = new Application_Model_RawData_Submission();
-        return $submissionModel->getActiveSubmissions($id);
-    }
-
-    /**
-     * @param $id
-     * @return array
-     */
-    /*public function getProviderNbOfRawDatasByTable($id) {
-        $db = $this->getAdapter();
-
-        // Get all tables in raw_data, with a provider_id column, except technical tables :
-        $req = "select table_name from information_schema.columns
-                where column_name = 'provider_id'
-                and table_schema='raw_data'
-                and table_name not in ('submission', 'check_error');";
-        $select = $db->prepare($req);
-        $select->execute(array());
-
-        $rawDataCount = array();
-
-        // For each table, count number of lines
-        foreach ($select->fetchAll() as $row) {
-            $tableName = $row['table_name'];
-
-            $countReq = "select count(*) from $tableName where provider_id = ?";
-            $count = $db->prepare($countReq);
-            $count->execute(array($id));
-
-            $nbLines = $count->fetchColumn();
-            $rawDataCount[$tableName] = $nbLines;
-        }
-
-        return $rawDataCount;
-    }
-
-    /**
-     * Returns true if you can safely delete a provider
-     * (no data or users related to it)
-     *
-     * @param $id provider id
-     * @return bool
-     */
-    /*public function isProviderDeletable($id) {
-        // Ni users, ni submissions, ni rawdatas
-        $isDeletable = ( count($this->getProviderUsers($id)) == 0 )
-            && ( count($this->getProviderActiveSubmissions($id)) == 0 )
-            && ( array_sum($this->getProviderNbOfRawDatasByTable($id)) == 0 );
-
-        return $isDeletable;
-    }
-*/
 }

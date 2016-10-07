@@ -162,7 +162,11 @@ class Custom_GmlexportController extends AbstractOGAMController {
         // Warning !!! don't change order of following operations (ON DELETE CASCADE...)
 
         // Physically delete old file
-        $success = $this->exportFileModel->deleteExportFileFromDisk($submissionId);
+        if ($this->exportFileModel->existsExportFileOnDisk($submissionId)) {
+            $this->exportFileModel->deleteExportFileFromDisk($submissionId);
+        }
+        // Check if file still exists (error on deletion...)
+        $success = !$this->exportFileModel->existsExportFileOnDisk($submissionId);
 
         // Cancel the job
         $jobId = $this->getJobIdForSubmission($submissionId);
