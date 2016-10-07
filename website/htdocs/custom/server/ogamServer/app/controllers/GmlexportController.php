@@ -90,10 +90,10 @@ class Custom_GmlexportController extends AbstractOGAMController {
         }
 
         // export file name
-        $filename = "DEE-Submission-$submissionId-" . date('YmdHi') . '.xml';
+        $filePath = $this->exportFileModel->generateFilePath($submissionId);
 
         // Command to launch the GML Export Job
-        $command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -s ' . $submissionId . ' -f ' . $filename;
+        $command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -s ' . $submissionId . ' -f ' . $filePath;
         // Length of the observation files
         $length = $this->exportFileModel->getJobLengthForSubmission($submissionId);
 
@@ -101,7 +101,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         if ($jobId) {
             // Insert an line in export_file table
-            $this->exportFileModel->addExportFile($submissionId, $jobId, $filename, 0);
+            $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath, 0);
         }
 
         $return = array(
@@ -274,11 +274,8 @@ class Custom_GmlexportController extends AbstractOGAMController {
             throw new Exception("DEE generation is not completed for submission $submissionId");
         }
         $exportFile = $this->exportFileModel->getExportFileData($submissionId);
-        $fileName = $exportFile->file_name;
-
-        // todo : get it from somewhere else...
-        $configuration = Zend_Registry::get('configuration');
-        $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/' . $submissionId . '/' . $fileName ;
+        $filePath = $exportFile->file_name;
+        $fileName = pathinfo($filePath, PATHINFO_BASENAME);
 
         if (!is_file( $filePath )) {
             throw new Exception("DEE file does not exist for submission $submissionId");
@@ -294,9 +291,6 @@ class Custom_GmlexportController extends AbstractOGAMController {
         while(!feof($file))
         {
             print(@fread($file, 1024*8));
-            // Zend met tout en tampon
-            /* ob_flush();
-            flush();*/
         }
 
         $this->_helper->layout()->disableLayout();
