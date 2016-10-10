@@ -1,6 +1,18 @@
 <?php
-
-// todo: comment
+/**
+ * This script is an autonomous command, and must be run with php.
+ * It is the queue manager script for DEE xport tasks.
+ *
+ * It launches export commands from website.job_queue table (generateDEE.php),
+ * and waits for their ending before launching another one
+ * (could be configured to run multiple scripts at the same time - see $maxJobs).
+ * Exits when no remaining job to run.
+ *
+ * Usage:
+ *
+ *  php exportDEEQueueManager.php
+ *
+ */
 
 ini_set("max_execution_time", 0); // Not really useful because the script is used in CLI (max_execution_time is already 0)
 

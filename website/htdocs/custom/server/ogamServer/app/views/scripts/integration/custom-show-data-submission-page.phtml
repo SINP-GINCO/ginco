@@ -239,9 +239,26 @@ foreach ($this->submissions as $submission) {
 
 <!-- Scripts of the page -->
 <script type="text/javascript">
+/**
+ * Scripts for DEE Export management
+ * Actions are sent via Ajax, and get back status of the export job.
+ * Status are:
+ * - NOT FOUND: no export initiated
+ * - PENDING: export initiated, but not running yet
+ * - RUNNING: in progess
+ * - COMPLETED: done, export file is available
+ * - ABORTED: problem during export, file is not available
+ */
 
+
+/**
+ * Update status and content divs for given submission.
+ * If status is not given, launch a ajax request to get it.
+ *
+ * @param $submissionId
+ * @param $status
+ */
 function updateStatusAndContent($submissionId, $status = null) {
-    console.log('updateStatusAndContent, taskId:',$submissionId, 'status', $status);
     if ( $status ) {
         updateStatusDiv($submissionId, $status);
         updateContentDiv($submissionId, $status);
@@ -250,29 +267,70 @@ function updateStatusAndContent($submissionId, $status = null) {
         $.getJSON("/gmlexport/get-status", {
             submissionId: $submissionId
         }, function (data) {
-            console.log(data);
             updateStatusDiv($submissionId, data.status);
             updateContentDiv($submissionId, data.status, data.progress);
         });
     }
 }
 
+/**
+ * Search all PENDING and RUNNING jobs (by the content of the hidden status div)
+ * And launch a ajax request to retrieve their status and progress
+ * Then update status and content divs.
+ */
+function updateAllPendingAndRunningTasks() {
+    var $submissionIds = [];
+    $('.dee-status').each(function() {
+        if ( $(this).html() == 'RUNNING' || $(this).html() == 'PENDING' ) {
+            $submissionIds.push($(this).attr('data-target'));
+        }
+    });
 
+    if ($submissionIds.length) {
+        $.getJSON("/gmlexport/get-all-status", {
+            submissionIds: $submissionIds
+        }, function (data) {
+            $.each(data, function (index, value) {
+                updateStatusDiv(value.submissionId, value.status);
+                updateContentDiv(value.submissionId, value.status, value.progress);
+            });
+        });
+    }
+}
+
+/**
+ * Update status div alone.
+ * The status div is hidden with css, and is used by the scripts
+ * to know if there is PENDING or RUNNING jobs (needing to ask periodically for their status)
+ *
+ * @param $submissionId
+ * @param $status
+ */
 function updateStatusDiv( $submissionId, $status) {
     var $statusDiv = $("div.dee-status[data-target='" + $submissionId + "']");
     // Update status
     $statusDiv.html($status);
 }
 
-
+/**
+ * Update content div alone.
+ * The content div is visible and shows:
+ *  - the download link when availabel
+ *  - the progress bar when the expot job is running
+ *  - action links: launch, cancel, relaunch
+ *
+ * @param $submissionId
+ * @param $status
+ * @param $progress
+ */
 function updateContentDiv($submissionId, $status, $progress = 0) {
     var $contentDiv = $("div.dee-content[data-target='" + $submissionId + "']");
 
     var $actions = getActions($status);
-    // console.log($actions);
 
     $contentDiv.html('');
 
+    // Download link if file is available
     if ($status == 'COMPLETED') {
         var $downloadLink = $("<a class='align_images' href='/gmlexport/download?submissionId=" + $submissionId+ "'><img src='/img/save.png'> Télécharger les DEE</a>");
         $contentDiv.append($downloadLink);
@@ -295,6 +353,7 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
         $progressBar.addClass('hidden');
     }
 
+    // Action links
     if ($.inArray( 'Lancer', $actions ) != -1) {
         var $launchLink = $("<a class='align_images' href=''><img src='/img/play.png'> Générer les DEE</a>");
         $contentDiv.append($launchLink);
@@ -323,6 +382,12 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
     $contentDiv.find( "a" ).wrap( "<div class='action'></div>" );
 }
 
+/**
+ * Return list of actions available by status
+ *
+ * @param $status
+ * @returns {Array}
+ */
 function getActions($status) {
     var $actions = [];
     switch ($status) {
@@ -345,6 +410,11 @@ function getActions($status) {
     return $actions;
 }
 
+/**
+ * Ajax request to add an export job (and launch jobs if not already running)
+ *
+ * @param $submissionId
+ */
 function addExportJob($submissionId) {
     $.getJSON( "/gmlexport/add-job", {
         submissionId: $submissionId
@@ -355,7 +425,11 @@ function addExportJob($submissionId) {
     });
 }
 
-
+/**
+ * Ajax request to cancel a job and delete export file
+ *
+ * @param $submissionId
+ */
 function cancelExport($submissionId) {
     $.getJSON( "/gmlexport/cancel-export", {
         submissionId: $submissionId
@@ -366,27 +440,6 @@ function cancelExport($submissionId) {
     });
 }
 
-function updateAllPendingAndRunningTasks() {
-    var $submissionIds = [];
-    $('.dee-status').each(function() {
-        if ( $(this).html() == 'RUNNING' || $(this).html() == 'PENDING' ) {
-            $submissionIds.push($(this).attr('data-target'));
-        }
-    });
-
-    if ($submissionIds.length) {
-        $.getJSON("/gmlexport/get-all-status", {
-            submissionIds: $submissionIds
-        }, function (data) {
-            console.log(data);
-            $.each(data, function (index, value) {
-                updateStatusDiv(value.submissionId, value.status);
-                updateContentDiv(value.submissionId, value.status, value.progress);
-            });
-        });
-    }
-}
-
 jQuery(document).ready(function() {
 
     $('.dee-content').each(function() {
@@ -394,7 +447,7 @@ jQuery(document).ready(function() {
         updateStatusAndContent($submissionId);
     });
 
-    // Update progress for running scripts
+    // Periodically update progress for running and pending jobs
     var timerId = setInterval( updateAllPendingAndRunningTasks , 1000);
 
 });

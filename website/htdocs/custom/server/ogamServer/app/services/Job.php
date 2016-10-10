@@ -2,6 +2,16 @@
 /**
  * @name  Job
  * @desc  Exec and manage linux jobs in the background
+ *
+ * Two methods:
+ *
+ * $method=EXEC_AS_BG_PROCESS
+ *      Exec jobs as background processes.
+ *
+ * $method=EXEC_WITH_AT
+ *      Exec jobs with the at command (http://www.linux-france.org/article/man-fr/man1/at-1.html)
+ *      Resists to an apache restart.
+ *
  */
 class Job {
 

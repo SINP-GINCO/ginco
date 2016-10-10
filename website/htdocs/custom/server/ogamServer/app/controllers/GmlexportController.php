@@ -134,11 +134,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
     }
 
     /**
-     * Cancel an Export.
-     * Delete the file if exists;
-     * Cancel the job;
-     * Delete line in export_file.
-     *
+     * Cancel export action. See cancelExport.
      */
     public function cancelExportAction() {
         $submissionId = $this->_getParam("submissionId");
@@ -161,7 +157,13 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $this->getResponse()->setHeader('Content-type', 'application/json');
     }
 
-
+    /**
+     * Cancel an Export.
+     * Delete the file if exists;
+     * Cancel the job;
+     * Delete line in export_file.
+     *
+     */
     protected function cancelExport($submissionId) {
         // Test if there is already an export_file entry
         if (! $this->exportFileModel->existsExportFileData($submissionId) ) {
@@ -231,6 +233,8 @@ class Custom_GmlexportController extends AbstractOGAMController {
     }
 
     /**
+     * Get status of a list of export jobs
+     * submissionIds: (GET or POST parameter, array)
      */
     public function getAllStatusAction() {
         $submissionIds = $this->_getParam("submissionIds");
@@ -314,6 +318,12 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $this->_helper->viewRenderer->setNoRender();
     }
 
+    /**
+     * Utility function: get the job id fora given submission id, from table raw_data.export_file
+     *
+     * @param $submissionId
+     * @return bool
+     */
     protected function getJobIdForSubmission( $submissionId) {
         if (!$this->exportFileModel->existsExportFileData($submissionId)) {
             return false;

@@ -1,4 +1,18 @@
 <?php
+/**
+ * This script is an autonomous command, and must be run with php.
+ * It generates a DEE export file (in GML).
+ * It is usually called by the queue manager script.
+ *
+ * Usage:
+ *
+ *  php generateDEE.php -s $SUBMISSION_ID -f OUTPUT_FILE.xml [ -j $JOB_ID ]
+ *
+ * $SUBMISSION_ID: id of the submission (dataset) in table raw_data.submission
+ * $JOB_ID: id of the job in the table website.job_queue. Used to write progress in database during the process.
+ * OUTPUT_FILE.xml: file path/name of the output file.
+ *
+ */
 include_once( dirname(__FILE__) . '/../../../../../public/includes/setup.php' );
 
 // Zend_Application
