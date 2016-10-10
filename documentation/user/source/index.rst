@@ -17,7 +17,7 @@ Contenu:
     gestion-jdd/index
     traitements/index
     recherche-visu/index
-    export/index
+    export/export-DEE-des-jeux-de-donnees
     utilisateurs/index
     annexes/index
 

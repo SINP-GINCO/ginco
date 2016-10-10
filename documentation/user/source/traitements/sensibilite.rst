@@ -82,6 +82,6 @@ Lorsque la sensibilité manuelle est enregistrée, et si un des champs sensiManu
 De plus, le champ dEEDateDerniereModification est alors mis à la date du jour.
 
 .. warning:: Si lors de l'édition d'une donnée, un des champs entrant en compte dans le calcul de la sensibilité est modifié
-(cdNom, cdRef ou jourDateFin), alors le calcul automatique est à nouveau effectué. 
+              (cdNom, cdRef ou jourDateFin), alors le calcul automatique est à nouveau effectué.
 
 .. note:: La mise à jour du champ sensiNiveau à la fin de la durée de sensibilité n'est pas encore effective.

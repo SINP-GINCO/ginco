@@ -4,7 +4,7 @@ Les métadonnées dans le SINP
 ============================
 Principes
 ---------
-Un ensemble de données d'occurrence est décrit pas 2 fiches de métadonnées :
+Un ensemble de données d'occurrence est décrit par 2 fiches de métadonnées :
 
 * Une fiche de métadonnées décrivant le dispositif de collecte, 
 * Une fiche de métadonnées décrivant le jeu de données lui-même.
@@ -23,6 +23,8 @@ Règles fonctionnelles
 
 * La fiche de métadonnées d'un jeu de données de type Données Sources Producteur (DSP) n’est pas indispensable dans le cadre du SINP. Celle-ci est à la charge et sous la responsabilité du producteur qui utilisera l'outil de saisie et gestion des métadonnées de son choix.
 * La fiche de métadonnées d'un jeu de données de type SINP est obligatoire. Elle peut être fournie par le producteur ou saisie par l'administrateur de la plate-forme.
+
 .. warning:: * Dans la plate-forme GINCO, un ensemble de données d’occurrence ne peut entrer dans le SINP sans une métadonnée de jeu de données.
+
 * Les dispositifs de collecte et les méta-dispositifs peuvent être saisis par les producteurs, les administrateurs régionaux ou l’administrateur national. Chacun est responsable à son niveau de la cohérence et de la pertinence des dispositifs.
 * Une métadonnée de DEE ne peut pas être supprimée.

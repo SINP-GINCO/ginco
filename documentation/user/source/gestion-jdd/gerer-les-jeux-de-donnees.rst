@@ -60,6 +60,7 @@ Pour chaque jeu de données, elle indique :
 * le nom du modèle d'import utilisé,
 * l'étape en cours du processus d'import, ainsi que le statut de cette étape (généralement OK ou ERROR),
 * le nom du fichier livré ainsi que son nombre de lignes,
+* une colonne permettant d'exporter les jeux de données en DEE au format GML (voir la partie :ref:`exporter_en_dee`),
 * une colonne listant les actions possibles.
 
 .. image:: ../images/gestion-jdd/liste-jdd.png
