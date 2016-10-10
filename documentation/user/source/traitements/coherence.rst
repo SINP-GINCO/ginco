@@ -13,4 +13,4 @@ lors de l'import :
   identifiant producteur.
 
 * **l'identifiant de la fiche de métadonnées** doit correspondre à une fiche de métadonnées existante dans le Géosource de la plate-forme.
-Celle-ci doit donc avoir été livrée au préalable.
+  Celle-ci doit donc avoir été livrée au préalable.

@@ -4,7 +4,7 @@ Ce répertoire contient un projet Sphinx autonome : la documentation utilisateur
  projets suivants : 
  
 * ogam / ogam
-* SINP / demo-sinp
+* SINP-GINCO / ginco
 * SINP / configurateur
 
 ## SPHINX
@@ -32,7 +32,7 @@ apt-get install python-sphinx
 ```
 ## Organisation du projet
 
-`demo-sinp/documentation/user/` contient le projet de documentation utilisateur.
+`ginco/documentation/user/` contient le projet de documentation utilisateur.
 
 Le sous-répertoire `source` contient : 
 
@@ -59,7 +59,7 @@ Le fichier Makefile à la racine contient les options courantes pour la compilat
 
 ## Compiler le projet
 
-Se placer dans `demo-sinp/documentation/user/` et exécuter : 
+Se placer dans `ginco/documentation/user/` et exécuter : 
 
 ```bash
 make clean
