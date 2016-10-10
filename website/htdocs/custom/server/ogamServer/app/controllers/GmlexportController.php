@@ -86,6 +86,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         // Test if there is already an export file
         if ( $this->exportFileModel->existsExportFileData($submissionId)) {
+            $this->logger->debug('GMLExport: export_file already exists, delting it.Submission id : ' . $submissionId);
             $this->cancelExport($submissionId);
         }
 
@@ -103,6 +104,9 @@ class Custom_GmlexportController extends AbstractOGAMController {
             // Insert an line in export_file table
             $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath);
         }
+        else {
+            $this->logger->debug('GMLExport: IMPOSSIBLE to add export_file entry, submission id : ' . $submissionId);
+        }
 
         $return = array(
             'submissionId' => $submissionId,
@@ -112,9 +116,14 @@ class Custom_GmlexportController extends AbstractOGAMController {
             $return['status'] = Application_Service_JobManagerService::PENDING;
 
             // Launch the Queue Manager
+            $this->logger->debug('GMLExport: launch the queue manager');
+
             if ($launch) {
                 Job::exec('php ' . CUSTOM_APPLICATION_PATH . '/commands/exportDEEQueueManager.php');
             }
+        }
+        else {
+            $this->logger->debug('GMLExport: IMPOSSIBLE to add job, submission id : ' . $submissionId);
         }
 
         echo json_encode($return);
@@ -163,10 +172,14 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         // Physically delete old file
         if ($this->exportFileModel->existsExportFileOnDisk($submissionId)) {
+            $this->logger->debug('GMLExport: physically delete old file');
             $this->exportFileModel->deleteExportFileFromDisk($submissionId);
         }
         // Check if file still exists (error on deletion...)
         $success = !$this->exportFileModel->existsExportFileOnDisk($submissionId);
+        if (!$success) {
+            $this->logger->debug('GMLExport: problem, old file still exists.');
+        }
 
         // Cancel the job
         $jobId = $this->getJobIdForSubmission($submissionId);
@@ -175,6 +188,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
         }
         else {
             $success = false;
+            $this->logger->debug('GMLExport: error, couldn \'t get job id');
         }
 
         // Delete from the export_file table
@@ -267,10 +281,12 @@ class Custom_GmlexportController extends AbstractOGAMController {
         // Check if the job is completed, get the filename, and checks if the file exists
         $jobId = $this->getJobIdForSubmission($submissionId);
         if (!$jobId) {
+            $this->logger->debug('GMLExport: error, couldn\'t find job id');
             throw new Exception("Could not find export_file for submission $submissionId");
         }
         $status = $this->jobManager->getStatus($jobId);
         if ($status != Application_Service_JobManagerService::COMPLETED) {
+            $this->logger->debug('GMLExport: DEE generation is not completed');
             throw new Exception("DEE generation is not completed for submission $submissionId");
         }
         $exportFile = $this->exportFileModel->getExportFileData($submissionId);
@@ -278,6 +294,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $fileName = pathinfo($filePath, PATHINFO_BASENAME);
 
         if (!is_file( $filePath )) {
+            $this->logger->debug('GMLExport: DEE file does not exist');
             throw new Exception("DEE file does not exist for submission $submissionId");
         }
 
@@ -287,7 +304,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $this->getResponse()->setHeader('Content-Type', 'text/xml;charset=utf-8;application/force-download;', true);
         $this->getResponse()->setHeader('Content-disposition', 'attachment; filename=' . $fileName, true);
 
-        $file = @fopen($filePath,"rb");
+        $file = fopen($filePath,"rb");
         while(!feof($file))
         {
             print(@fread($file, 1024*8));
