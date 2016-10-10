@@ -627,15 +627,17 @@ class Application_Model_Mapping_ResultLocation {
 				$lat
 			));
 
-			$result = $query->fetchAll();
+			$results = $query->fetchAll();
 
 			// If results, order and return them, else continue
 			$sortedResult = array();
-			if (!empty($result)) {
+			if (!empty($results)) {
 				foreach (self::$fieldsToSelect as $fieldToDisplay) {
-					foreach (array_keys($result[0]) as $key) {
-						if ($key == $fieldToDisplay) {
-							$sortedResult[0][$fieldToDisplay] = $result[0][$key];
+					for ($i = 0; $i < count($results); $i ++) {
+						foreach (array_keys($results[$i]) as $key) {
+							if ($key == $fieldToDisplay) {
+								$sortedResult[$i][$fieldToDisplay] = $results[$i][$key];
+							}
 						}
 					}
 				}
