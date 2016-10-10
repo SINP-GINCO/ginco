@@ -101,7 +101,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
         if (!$this->existsExportFileData($submissionId)) {
             return true;
         }
-        return $this->delete("submission_id = '" . $$submissionId . "'");
+        return $this->delete("submission_id = '" . $submissionId . "'");
     }
 
    /**

@@ -49,8 +49,7 @@ $fileName = $options['f'];
 // Get the job id (in the job queue)
 $jobId = isset($options['j']) ? $options['j'] : null;
 
-// Le logger n'a pas l'air de marcher ?
-$logger->debug('generateDEE - Submission Id : ' . $submissionId . " DatasetId : " . $datasetId);
+$logger->debug('generateDEE.php - Submission Id : ' . $submissionId . " DatasetId : " . $datasetId);
 
 // -- Create a query object : the query must find all lines with given submission_id,
 // And print a list of all fields in the model
