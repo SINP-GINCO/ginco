@@ -13,7 +13,7 @@
  */
 
 /**
- * This is the moel for the Export File (DEE in GML format) model.
+ * This is the model for the Export File (DEE in GML format) model.
  *
  * @package models
  */

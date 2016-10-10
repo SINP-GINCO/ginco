@@ -5,7 +5,11 @@ require_once __DIR__ . '/Job.php';
 /**
  * Class Application_Service_JobManagerService
  *
- * todo: comment this class !!!!!!
+ * A class to manage jobs that can be queued for execution.
+ *
+ * The list of jobs is in the website.job_queue table.
+ * This class writes and reads in this table, and run jobs in the background,
+ * using the Job class.
  *
  */
 class Application_Service_JobManagerService
@@ -30,6 +34,16 @@ class Application_Service_JobManagerService
         // Job::setMethod(Job::EXEC_AS_BG_PROCESS);
     }
 
+    /**
+     * Get the status of the job.
+     * If testReallyRunning is false, the status is simply read from job_queue table.
+     * If testReallyRunning is false, and if the status read from base is RUNNING,
+     *  checks if the job is really running with its pid.
+     *
+     * @param $jobId
+     * @param bool $testReallyRunning
+     * @return string
+     */
     public function getStatus( $jobId, $testReallyRunning = true ) {
 
         $stmt = $this->db->prepare(
@@ -50,6 +64,13 @@ class Application_Service_JobManagerService
         return $status;
     }
 
+    /**
+     * Checks if a job is really running as a background progress (with its pid)
+     *
+     * @param $jobId
+     * @param $pid
+     * @return bool
+     */
     protected function isReallyRunning( $jobId, $pid) {
 
         if ($this->getStatus($jobId, false) != self::RUNNING) {
@@ -74,7 +95,12 @@ class Application_Service_JobManagerService
         }
     }
 
-
+    /**
+     * Get the progress percentage of a job (progress / estimated_length)
+     *
+     * @param $jobId
+     * @return int
+     */
     public function getProgressPercentage( $jobId ) {
 
         $stmt = $this->db->prepare(
@@ -86,7 +112,13 @@ class Application_Service_JobManagerService
         return $percentage;
     }
 
-
+    /**
+     * Update the "progress" field of a job
+     *
+     * @param $jobId
+     * @param $progress
+     * @return bool
+     */
     public function setProgress($jobId, $progress) {
         if ($this->getStatus($jobId) != self::RUNNING) {
             // The task with this id is not RUNNING
@@ -107,6 +139,8 @@ class Application_Service_JobManagerService
 
 
     /**
+     * Add a job in the job_queue table.
+     * The status of the new job is PENDING, its progress 0.
      *
      * @param string $type
      * @param int $length
@@ -130,6 +164,13 @@ class Application_Service_JobManagerService
         return $id;
     }
 
+    /**
+     * Lauch the job (with the Job class)
+     * Update its status to RUNNING.
+     *
+     * @param $jobId
+     * @return bool
+     */
     public function runJob( $jobId )
     {
         // The task must exist and have PENDING status.
@@ -167,6 +208,13 @@ class Application_Service_JobManagerService
         return true;
     }
 
+    /**
+     * Cancel a job.
+     * Kill the process if running, and delete the line from job_queue.
+     *
+     * @param $jobId
+     * @return bool
+     */
     public function cancelJob( $jobId )
     {
         $status = $this->getStatus($jobId);
@@ -198,6 +246,12 @@ class Application_Service_JobManagerService
         return true;
     }
 
+    /**
+     * Update the status of a job to COMPLETED
+     *
+     * @param $jobId
+     * @return bool
+     */
     public function setJobCompleted( $jobId ) {
         $stmt = $this->db->prepare(
             "UPDATE job_queue
@@ -212,7 +266,13 @@ class Application_Service_JobManagerService
         return true;
     }
 
-
+    /**
+     * Returns the next job to run (with status PENDING).
+     * Order is given by the created_at field. (FIFO order).
+     *
+     * @param null $type
+     * @return null
+     */
     public function nextPendingJob($type = null) {
         if ($type) {
             $stmt = $this->db->prepare(
@@ -235,6 +295,12 @@ class Application_Service_JobManagerService
         return $next;
     }
 
+    /**
+     * Return the number of jobs with status RUNNING
+     *
+     * @param null $type
+     * @return int
+     */
     public function numberOfRunningJobs($type = null) {
         if ($type) {
             $stmt = $this->db->prepare(
