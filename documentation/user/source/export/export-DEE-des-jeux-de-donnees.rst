@@ -30,3 +30,6 @@ jeux de données".
 
 Il est possible de re-générer les DEE, par exemple suite à une modification d'une ou plusieurs données dans le jeu.
 Dans ce cas, le fichier de DEE est effacé et remplacé par le nouveau.
+
+.. warning:: Pour l'instant, le service d'export en DEE ne fonctionne que pour des jeux de données dont le nombre de
+   données n'est pas trop élevé (quelques dizaines de milliers de lignes).
