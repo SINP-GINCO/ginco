@@ -20,8 +20,8 @@ nav:
         controller: integration
         action: index
         module: custom
-        help: /import/index.html
-        helpLabel: Aide pour l'import de données
+        help: /gestion-jdd/index.html
+        helpLabel: Aide pour la gestion des jeux de données
         pages:
           newintegration:
             label: Breadcrumb Integration New
