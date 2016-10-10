@@ -29,7 +29,7 @@ Format général du fichier
 Pour connaitre l'ordre des champs, les champs obligatoires, ainsi que les formats des dates, vous pouvez télécharger
 un fichier de modèle sur la page d'upload du fichier d'import :
 
-.. image:: ../images/import-download-file-model.png
+.. image:: ../images/gestion-jdd/fichier-import-modele.png
 
 Vous pouvez télécharger un :download:`fichier d'exemple CSV</downloads/dee_test.csv>`.
 

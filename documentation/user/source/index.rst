@@ -14,7 +14,7 @@ Contenu:
     introduction/index
     configurateur/index
     metadonnees/index
-    import/index
+    gestion-jdd/index
     traitements/index
     recherche-visu/index
     export/index
