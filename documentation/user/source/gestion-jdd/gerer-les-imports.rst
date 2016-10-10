@@ -1,16 +1,16 @@
 .. Importer des jeux de données et gérer les imports
 
-Gérer les imports de jeux de données
+Gérer les de jeux de données
 ====================================
 
-Importer un jeu de données
---------------------------
+Importer un nouveau jeu de données
+----------------------------------
 
-.. image:: ../images/import-importer-1.png
+.. image:: ../images/gestion-jdd/nouveau-jdd-1.png
 
-Sur la page d'accueil du Module d'intégration de données, cliquez sur "Nouvelle soumission".
+Sur la page d'accueil "Gérer les jeux de données", cliquez sur "Importer un nouveau jeu de données".
 
-.. image:: ../images/import-importer-2.png
+.. image:: ../images/gestion-jdd/nouveau-jdd-2.png
 
 Choisissez ensuite :
 
@@ -23,23 +23,23 @@ dans le configurateur Ginco.
 provenant d'autres organismes que le sien. Il faut pour cela avoir au préalable créé l'organisme dans Ginco
 (voir :ref:`creer_un_organisme` ). Les données seront alors attribuées à l'organisme choisi.
 
-.. image:: ../images/import-importer-3.png
+.. image:: ../images/gestion-jdd/nouveau-jdd-3.png
 
-Vous devez enfin uploader votre ou vos fichiers csv (1). Ceux-ci doivent peser *moins de 150 Mo*.
+Vous devez enfin uploader votre ou vos fichiers csv (**1**). Ceux-ci doivent peser *moins de 150 Mo*.
 
-Vous pouvez télécharger un fichier d'exemple (2) pour chaque fichier demandé, contenant une ligne d'en-tête avec les noms
+Vous pouvez télécharger un fichier d'exemple (**2**) pour chaque fichier demandé, contenant une ligne d'en-tête avec les noms
 des champs, leur caractère obligatoire (indiqué par une étoile), et le format des dates.
 
-Renseignez le système de référence (SRID) de vos données (code EPSG des géométries des observations)(3).
+Renseignez le système de référence (SRID) de vos données (code EPSG des géométries des observations)(**3**). Un encart d'information succincte est présent plus bas pour vous aider à choisir (**4**).
 Les données seront automatiquement converties en WGS84 lors de l'import dans la plateforme.
 
 Cliquez sur le bouton Valider. Après le transfert de vos fichiers, qui peut prendre un certain temps en fonction de leur taille,
 vous êtes ramené sur la page d'accueil du module d'import. L'import des données dans l'application peut durer plusieurs minutes,
 et se fait en arrière plan.
 
-.. image:: ../images/import-importer-barre-progression.png
-.. image:: ../images/import-importer-OK.png
-.. image:: ../images/import-importer-ERROR.png
+.. image:: ../images/gestion-jdd/importer-barre-progression.png
+.. image:: ../images/gestion-jdd/importer-OK.png
+.. image:: ../images/gestion-jdd/importer-ERROR.png
 
 Une barre de progression indique le pourcentage de données traitées et importées. Le résultat de l'import est
 ensuite affiché : OK ou ERROR. Dans ce cas, téléchargez le "Rapport de conformité et cohérence", qui liste les erreurs
@@ -47,11 +47,11 @@ rencontrées lors de l'import, pour vous aider à corriger le problème. Vous po
 à :ref:`corriger_les_erreurs_dimport`.
 
 
-Gérer les jeux de données
+Liste des jeux de données
 -------------------------
 
-La page d'accueil du module d'import liste l'ensemble des jeux de données importés. Pour chaque jeu de données, elle
-indique :
+La page d'accueil de gestion des jeux de données liste l'ensemble des jeux de données importés ainsi que leurs actions associées.
+Pour chaque jeu de données, elle indique :
 
 * le numéro de la soumission (utile pour identifier la livraison plus simplement qu'avec le jddid),
 * la date de la soumission,
@@ -62,19 +62,16 @@ indique :
 * le nom du fichier livré ainsi que son nombre de lignes,
 * une colonne listant les actions possibles.
 
-.. image:: ../images/import-gerer.png
+.. image:: ../images/gestion-jdd/liste-jdd.png
 
 Actions possibles sur les jeux de données :
 
 * **Rapport de conformité et cohérence** crée un pdf listant les éventuelles erreurs rencontrées lors de l'intégration.
 
-* **Publier les données** rend les données de la soumission requêtables pour tous les utilisateurs 
-(donc visibles sur la carte et dans le tableau de résultat), et permet de faire l'export GML.
-  Tant que la soumission n'est pas publiée, les données sont visibles uniquement aux utilisateurs ayant la permission "Publier les données",
-   qui sont aussi les seuls à pouvoir réaliser l'action de publication.
+* **Publier les données** rend les données de la soumission requêtables pour tous les utilisateurs (donc visibles sur la carte et dans le tableau de résultat), et permet de faire l'export GML.
+  Tant que la soumission n'est pas publiée, les données sont visibles uniquement aux utilisateurs ayant la permission "Publier les données", qui sont aussi les seuls à pouvoir réaliser l'action de publication.
 
-  
-  * **Dépublier les données** rend les données de la soumission non consultables pour les utilisateurs n'ayant pas la permission "Publier les données".
+* **Dépublier les données** rend les données de la soumission non consultables pour les utilisateurs n'ayant pas la permission "Publier les données".
   De même, l'export GML n'est plus réalisable.
   
 * **Rapport de sensibilité** crée un csv listant les données sensibles du jeu de données (le calcul de la sensibilité
