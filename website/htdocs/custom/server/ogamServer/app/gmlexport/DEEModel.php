@@ -85,7 +85,28 @@ class DEEModel {
 		return $observation;
 	}
 
-	public function structureObservation($observation) {
+    /**
+     * Escape special XML chars
+     *
+     * @param $observation array (associative and not nested)
+     * @return array
+     */
+    public function specialCharsXML($observation) {
+        // fields where NOT to escape special characters
+        // geometry: because gml needs to remain intact
+        $exclude = array('geometrie');
+
+        foreach ($observation as $index => $obs) {
+            if (!in_array($index, $exclude) && !empty($observation[$index])) {
+                $observation[$index] = htmlspecialchars($obs, ENT_XML1, 'UTF-8');
+            }
+        }
+        return $observation;
+    }
+
+
+
+    public function structureObservation($observation) {
 		$deeStructuredObjects = array(
 			'descriptifsujet' => array(
 				'required' => false,

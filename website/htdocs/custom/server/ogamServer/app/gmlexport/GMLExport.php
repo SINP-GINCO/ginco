@@ -63,6 +63,7 @@ class GMLExport
         foreach ($observations as $index => $observation) {
             $observation = $this->dee->formatDates($observation);
             $observation = $this->dee->transformCodes($observation);
+            $observation = $this->dee->specialCharsXML($observation);
             $observation = $this->dee->structureObservation($observation);
 
             fwrite($out, $this->strReplaceBySequence("#GMLID#", $this->generateObservation($observation)));
