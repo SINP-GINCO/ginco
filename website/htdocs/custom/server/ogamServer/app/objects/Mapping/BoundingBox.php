@@ -67,12 +67,23 @@ class Application_Object_Mapping_BoundingBox {
 		// Get the parameters from configuration file
 		$configuration = Zend_Registry::get("configuration");
 
-		$xMin = $configuration->getConfig('bbox_x_min');
-		$xMax = $configuration->getConfig('bbox_x_max');
-		$yMin = $configuration->getConfig('bbox_y_min');
-		$yMax = $configuration->getConfig('bbox_y_max');
+        $usePerProviderCenter = ($configuration->getConfig('usePerProviderCenter', true) === '1');
+        $boundingBoxModel = new Application_Model_Mapping_BoundingBox();
+        try {
+            $bb = $boundingBoxModel->getBoundingBox(1);
+        } catch(Exception $e) {
+            $usePerProviderCenter = false;
+        }
 
-		return Application_Object_Mapping_BoundingBox::createBoundingBox($xMin, $xMax, $yMin, $yMax);
+        if (!$usePerProviderCenter) {
+             // The bounding box is the one of the default configuration parameters
+            $xMin = $configuration->getConfig('bbox_x_min');
+            $xMax = $configuration->getConfig('bbox_x_max');
+            $yMin = $configuration->getConfig('bbox_y_min');
+            $yMax = $configuration->getConfig('bbox_y_max');
+            $bb = Application_Object_Mapping_BoundingBox::createBoundingBox($xMin, $xMax, $yMin, $yMax);
+        }
+		return $bb;
 	}
 
 	/**

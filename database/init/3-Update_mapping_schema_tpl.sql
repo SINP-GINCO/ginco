@@ -87,7 +87,7 @@ INSERT INTO mapping.layer_tree VALUES (52, '5', 1, 0, 0, 0, 0, 'plan_ign', 51, N
 
 DELETE FROM bounding_box;
 -- Configure the bounding box for default data provider
-INSERT INTO bounding_box (provider_id, zoom_level, bb_xmin, bb_ymin, bb_xmax, bb_ymax) values ('1', 1, '-899390', '6742320', '1351350', '4883370');
+INSERT INTO bounding_box (provider_id, zoom_level, bb_xmin, bb_ymin, bb_xmax, bb_ymax) values ('1', '@bb.zoom@', '@bb.xmin@', '@bb.ymin@', '@bb.xmax@', '@bb.ymax@');
 
 DELETE FROM bac_commune;
 DELETE FROM bac_departement;
