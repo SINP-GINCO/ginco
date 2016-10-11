@@ -28,8 +28,8 @@ try {
 	/* patch code here */
     execCustSQLFile("$sprintDir/layers_adapted_to_radio_buttons.sql", $config);
     execCustSQLFile("$sprintDir/export_file.sql", $config);
-
-}catch(Exception $e){
+    execCustSQLFile("$sprintDir/default_bounding_box.sql", $config);
+} catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;
 	exit(1);
