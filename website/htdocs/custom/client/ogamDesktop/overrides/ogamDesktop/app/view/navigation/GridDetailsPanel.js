@@ -1,7 +1,8 @@
 Ext.define('Ginco.view.navigation.GridDetailsPanel', {
     override: 'OgamDesktop.view.navigation.GridDetailsPanel',
 
-    panelTitle: 'Results from layer: ',
+    panelTitle: 'Résultat(s) depuis la couche des ',
+    panelTitleNoResults: 'Pas de résultats',
 
     /**
      * Configures the detail grid.
@@ -10,9 +11,14 @@ Ext.define('Ginco.view.navigation.GridDetailsPanel', {
      * @param {Object} initConf The initial configuration
      */
     configureDetailGrid : function(initConf) {
-        this.setTitle(this.panelTitle + initConf.layerLabel);
-        for(i = 0; i<initConf.columns.length; i++){
-            initConf.columns[i].flex = 1;
+        var layerLabel = initConf.layerLabel;
+        if (layerLabel) {
+            this.setTitle(this.panelTitle + layerLabel);
+            for (i = 0; i<initConf.columns.length; i++) {
+                initConf.columns[i].flex = 1;
+            }
+        } else {
+            this.setTitle(this.panelTitleNoResults);
         }
         this.callParent(arguments);
     }
