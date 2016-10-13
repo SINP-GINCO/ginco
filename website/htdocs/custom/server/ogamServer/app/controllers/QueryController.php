@@ -160,8 +160,6 @@ class Custom_QueryController extends QueryController {
 					$id[] = $key;
 					$locationData[] = $key;
 
-					$this->logger->debug('$key : ' . $key);
-
 					// Remove the pk of the available columns
 					unset($location['pk']);
 
