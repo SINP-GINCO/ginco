@@ -278,7 +278,7 @@ class ResultLocationTest extends ControllerTestCase {
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : all.
 	 * Diffusionniveauprecision : 3
@@ -286,20 +286,19 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithAllPermissionsWithOnlyPrivateData() {
+	public function testGetHidingLevelsWithAllPermissionsWithOnlyPrivateData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('12345');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['all'], session_id());
-
-		$this->assertEquals(0, $hidingLevel);
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['all'], session_id());
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only private.
 	 * Diffusionniveauprecision : 3
@@ -307,20 +306,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithOnlyPrivatePermissionWithOnlyPrivateData() {
+	public function testGetHidingLevelsslWithOnlyPrivatePermissionWithOnlyPrivateData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['onlyPrivate'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['onlyPrivate'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : sensitive only.
 	 * Diffusionniveauprecision : 3
@@ -328,20 +327,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 3.
 	 */
-	public function testGetHidingLevelWithOnlySensitivePermissionWithOnlyPrivateData() {
+	public function testGetHidingLevelsWithOnlySensitivePermissionWithOnlyPrivateData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['onlySensitive'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['onlySensitive'], session_id());
 
-		$this->assertEquals(3, $hidingLevel);
+		$this->assertEquals(3, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : sensitive only.
 	 * Diffusionniveauprecision : 3
@@ -349,20 +348,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 3.
 	 */
-	public function testGetHidingLevelWithoutPermissionWithOnlyPrivateData() {
+	public function testGetHidingLevelsWithoutPermissionWithOnlyPrivateData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['none'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['none'], session_id());
 
-		$this->assertEquals(3, $hidingLevel);
+		$this->assertEquals(3, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : visitor.
 	 * Diffusionniveauprecision : 3
@@ -370,20 +369,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 1.
 	 */
-	public function testGetHidingLevelWithVisitorPermissionsWithOnlyPrivateData() {
+	public function testGetHidingLevelsWithVisitorPermissionsWithOnlyPrivateData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('12345');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['visitor'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['visitor'], session_id());
 
-		$this->assertEquals(1, $hidingLevel);
+		$this->assertEquals(1, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : all permissions.
 	 * Diffusionniveauprecision : 0
@@ -391,20 +390,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 2
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithAllPermissionsWithOnlySensitiveData() {
+	public function testGetHidingLevelsWithAllPermissionsWithOnlySensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['all'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['all'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only private.
 	 * Diffusionniveauprecision : 0
@@ -412,20 +411,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 2
 	 * Should return : 2.
 	 */
-	public function testGetHidingLevelWithOnlyPrivatePermissionWithOnlySensitiveData() {
+	public function testGetHidingLevelsWithOnlyPrivatePermissionWithOnlySensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['onlyPrivate'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['onlyPrivate'], session_id());
 
-		$this->assertEquals(2, $hidingLevel);
+		$this->assertEquals(2, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only sensitive.
 	 * Diffusionniveauprecision : 0
@@ -433,20 +432,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 2
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithOnlySensitivePermissionWithOnlySensitiveData() {
+	public function testGetHidingLevelsWithOnlySensitivePermissionWithOnlySensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['onlySensitive'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['onlySensitive'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : no permission.
 	 * Diffusionniveauprecision : 0
@@ -454,20 +453,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 2
 	 * Should return : 2.
 	 */
-	public function testGetHidingLevelWithoutPermissionWithOnlySensitiveData() {
+	public function testGetHidingLevelsWithoutPermissionWithOnlySensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['none'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['none'], session_id());
 
-		$this->assertEquals(2, $hidingLevel);
+		$this->assertEquals(2, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : visitor.
 	 * Diffusionniveauprecision : 0
@@ -475,20 +474,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 2
 	 * Should return : 2.
 	 */
-	public function testGetHidingLevelWithVisitorPermissionWithOnlySensitiveData() {
+	public function testGetHidingLevelsWithVisitorPermissionWithOnlySensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['visitor'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['visitor'], session_id());
 
-		$this->assertEquals(2, $hidingLevel);
+		$this->assertEquals(2, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : all permissions.
 	 * Diffusionniveauprecision : NULL
@@ -496,20 +495,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithAllPermissionsWithOnlyPrivateDataWithoutDfn() {
+	public function testGetHidingLevelsWithAllPermissionsWithOnlyPrivateDataWithoutDfn() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['all'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['all'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only private.
 	 * Diffusionniveauprecision : NULL
@@ -517,20 +516,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithOnlyPrivatePermissionWithOnlyPrivateDataWithoutDfn() {
+	public function testGetHidingLevelsWithOnlyPrivatePermissionWithOnlyPrivateDataWithoutDfn() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['onlyPrivate'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['onlyPrivate'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only sensitive.
 	 * Diffusionniveauprecision : NULL
@@ -538,20 +537,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 1.
 	 */
-	public function testGetHidingLevelWithOnlySensitivePermissionWithOnlyPrivateDataWithoutDfn() {
+	public function testGetHidingLevelsWithOnlySensitivePermissionWithOnlyPrivateDataWithoutDfn() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['onlySensitive'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['onlySensitive'], session_id());
 
-		$this->assertEquals(1, $hidingLevel);
+		$this->assertEquals(1, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : no permission.
 	 * Diffusionniveauprecision : NULL
@@ -559,20 +558,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 1.
 	 */
-	public function testGetHidingLevelWithoutPermissionWithOnlyPrivateDataWithoutDfn() {
+	public function testGetHidingLevelsWithoutPermissionWithOnlyPrivateDataWithoutDfn() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['none'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['none'], session_id());
 
-		$this->assertEquals(1, $hidingLevel);
+		$this->assertEquals(1, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : visitor.
 	 * Diffusionniveauprecision : NULL
@@ -580,20 +579,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 1.
 	 */
-	public function testGetHidingLevelWithVisitorPermissionWithOnlyPrivateDataWithoutDfn() {
+	public function testGetHidingLevelsWithVisitorPermissionWithOnlyPrivateDataWithoutDfn() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['visitor'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['visitor'], session_id());
 
-		$this->assertEquals(1, $hidingLevel);
+		$this->assertEquals(1, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : all permissions.
 	 * Diffusionniveauprecision : 2
@@ -601,20 +600,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 3
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithAllPermissionsWithPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithAllPermissionsWithPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['all'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['all'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only private.
 	 * Diffusionniveauprecision : 2
@@ -622,20 +621,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 3
 	 * Should return : 3.
 	 */
-	public function testGetHidingLevelWithOnlyPrivatePermissionWithPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithOnlyPrivatePermissionWithPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['onlyPrivate'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['onlyPrivate'], session_id());
 
-		$this->assertEquals(3, $hidingLevel);
+		$this->assertEquals(3, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only sensitive.
 	 * Diffusionniveauprecision : 2
@@ -643,20 +642,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 3
 	 * Should return : 2.
 	 */
-	public function testGetHidingLevelWithOnlySensitivePermissionWithPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithOnlySensitivePermissionWithPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['onlySensitive'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['onlySensitive'], session_id());
 
-		$this->assertEquals(2, $hidingLevel);
+		$this->assertEquals(2, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : no permission.
 	 * Diffusionniveauprecision : 2
@@ -664,20 +663,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 3
 	 * Should return : 3.
 	 */
-	public function testGetHidingLevelWithoutPermissionWithPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithoutPermissionWithPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['none'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['none'], session_id());
 
-		$this->assertEquals(3, $hidingLevel);
+		$this->assertEquals(3, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : visitor.
 	 * Diffusionniveauprecision : 2
@@ -685,20 +684,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 3
 	 * Should return : 3.
 	 */
-	public function testGetHidingLevelWithVisitorPermissionWithPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithVisitorPermissionWithPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['visitor'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['visitor'], session_id());
 
-		$this->assertEquals(3, $hidingLevel);
+		$this->assertEquals(3, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : all permissions.
 	 * Diffusionniveauprecision : NULL
@@ -706,20 +705,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithAllPermissionsWithoutPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithAllPermissionsWithoutPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['all'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['all'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only private.
 	 * Diffusionniveauprecision : NULL
@@ -727,20 +726,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithOnlyPrivatePermissionWithoutPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithOnlyPrivatePermissionWithoutPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['onlyPrivate'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['onlyPrivate'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : only sensitive.
 	 * Diffusionniveauprecision : NULL
@@ -748,20 +747,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithOnlySensitivePermissionWithoutPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithOnlySensitivePermissionWithoutPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['onlySensitive'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['onlySensitive'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : no permission.
 	 * Diffusionniveauprecision : 0
@@ -769,20 +768,20 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 0.
 	 */
-	public function testGetHidingLevelWithoutPermissionWithoutPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithoutPermissionWithoutPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['none'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['none'], session_id());
 
-		$this->assertEquals(0, $hidingLevel);
+		$this->assertEquals(0, $hidingLevels[0]);
 	}
 
 	/**
-	 * Test on getHidingLevel.
+	 * Test on getHidingLevels.
 	 *
 	 * Permissions : visitor.
 	 * Diffusionniveauprecision : 0
@@ -790,37 +789,16 @@ class ResultLocationTest extends ControllerTestCase {
 	 * sensiniveau : 0
 	 * Should return : 1.
 	 */
-	public function testGetHidingLevelWithVisitorPermissionWithoutPrivateAndSensitiveData() {
+	public function testGetHidingLevelsWithVisitorPermissionWithoutPrivateAndSensitiveData() {
 		// Test parameters
 		$table = new Application_Object_Metadata_TableFormat();
 		$table->format = 'table_observation';
 		$table->tableName = 'model_1_observation';
 		session_id('123456789');
 
-		$hidingLevel = $this->resultLocationModel->getHidingLevel($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['visitor'], session_id());
+		$hidingLevels = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['visitor'], session_id());
 
-		$this->assertEquals(1, $hidingLevel);
-	}
-
-	/**
-	 * Test on getHidingLevelParameters.
-	 */
-	public function testGetHidingLevelParameters() {
-		// Test parameters
-		$table = new Application_Object_Metadata_TableFormat();
-		$table->format = 'table_observation';
-		$table->tableName = 'model_1_observation';
-		session_id('123456789');
-
-		$method = new ReflectionMethod('Application_Model_Mapping_ResultLocation', 'getHidingLevelParameters');
-		$method->setAccessible(TRUE);
-		$parameters = $method->invoke($this->resultLocationModel, $this->getKeys(), $this->getTableValues(1, 1), $table, session_id());
-		$this->assertCount(5, $parameters);
-		$this->assertEquals(0, $parameters['sensiniveau']);
-		$this->assertEquals(3, $parameters['diffusionniveauprecision']);
-		$this->assertEquals('Pr', $parameters['dspublique']);
-		$this->assertEquals(1, $parameters['provider_id']);
-		$this->assertEquals(1, $parameters['ogam_id_table_observation']);
+		$this->assertEquals(1, $hidingLevels[0]);
 	}
 
 	/**
@@ -861,7 +839,7 @@ class ResultLocationTest extends ControllerTestCase {
 
 		foreach ($sensiNiveaux as $sensiNiveau) {
 			$hidingLevel = $method->invoke($this->resultLocationModel, $sensiNiveau, $this->permissions['visitor']);
-			if($sensiNiveau >= 1){
+			if ($sensiNiveau >= 1) {
 				$this->assertEquals($sensiNiveau, $hidingLevel);
 			} else {
 				$this->assertEquals(1, $hidingLevel);
@@ -955,7 +933,7 @@ class ResultLocationTest extends ControllerTestCase {
 
 		// No dfn. Public. With All permissions => Hiding level is always 0 except if user is not logged in, it is 1.
 		foreach ($this->permissions as $permissions) {
-			if($permissions['logged']){
+			if ($permissions['logged']) {
 				$hidingLevel = $method->invoke($this->resultLocationModel, 'Pu', null, $permissions);
 				$this->assertEquals(0, $hidingLevel);
 			} else {
@@ -966,10 +944,10 @@ class ResultLocationTest extends ControllerTestCase {
 	}
 
 	/**
-	 * Test on setHidingLevel.
+	 * Test on setHidingLevels.
 	 * Check that updating the results table is effective.
 	 */
-	public function testSetHidingLevel() {
+	public function testSetHidingLevels() {
 		session_id('123456789');
 
 		// Get the results linked to the request id before lauching method
@@ -979,11 +957,14 @@ class ResultLocationTest extends ControllerTestCase {
 
 		$key = array_search(1, array_column($results, 'id_observation'));
 		$this->assertEquals(3, $results[$key]['hiding_level']);
+		$hidingLevels = array(
+			2
+		);
 
 		// Execute the method
-		$method = new ReflectionMethod('Application_Model_Mapping_ResultLocation', 'setHidingLevel');
+		$method = new ReflectionMethod('Application_Model_Mapping_ResultLocation', 'setHidingLevels');
 		$method->setAccessible(TRUE);
-		$method->invoke($this->resultLocationModel, 2, $this->getTableValues(1, 1), 'table_observation', session_id());
+		$method->invoke($this->resultLocationModel, $hidingLevels, $this->getTableValues(1, 1), 'table_observation', session_id());
 
 		// Get the results linked to the request id after lauching method
 		$results = $getResultsmethod->invoke($this->resultLocationModel, 1);
@@ -1229,8 +1210,10 @@ class ResultLocationTest extends ControllerTestCase {
 	 */
 	private function getTableValues($idObservation, $idProvider) {
 		return array(
-			"id_observation" => "$idObservation",
-			"id_provider" => "$idProvider"
+			array(
+				"id_observation" => "$idObservation",
+				"id_provider" => "$idProvider"
+			)
 		);
 	}
 

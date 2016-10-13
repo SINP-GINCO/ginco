@@ -176,12 +176,10 @@ class Application_Model_Mapping_ResultLocation {
 			));
 		}
 
-		// Get back the results and for each, fill hiding level
-		$tableAllValues = $this->getResultsFromRequestId($reqId);
-		foreach ($tableAllValues as $tableValues) {
-			$hidingLevel = $this->getHidingLevel($keys, $tableValues, $locationTable, $this->getVisuPermissions(), $sessionId);
-			$this->setHidingLevel($hidingLevel, $tableValues, $locationTable->format, $sessionId);
-		}
+		// Get back the results and for each, get and fill hiding level
+		$tableValues = $this->getResultsFromRequestId($reqId);
+		$hidingLevels = $this->getHidingLevels($keys, $tableValues, $locationTable, $this->getVisuPermissions(), $sessionId);
+		$this->setHidingLevels($hidingLevels, $tableValues, $locationTable->format, $sessionId);
 
 		// Remove any values that can be obtained through criterias more precise than the hiding level
 		$this->deleteUnshowableResultsFromCriterias($reqId);
@@ -225,60 +223,47 @@ class Application_Model_Mapping_ResultLocation {
 	}
 
 	/**
-	 * Returns the hiding level field for one row in table results.
+	 * Returns the hiding levels for all rows provided in the array of results.
 	 *
 	 * @param
 	 *        	Array of String $keys the name of the fields of the primary key
 	 * @param
-	 *        	Array of String $tableValues the values of the primary key fields
+	 *        	Array of String $tableValues the array of values of the primary key fields
 	 * @param Application_Object_Metadata_TableFormat $table
 	 *        	the table object, containing tableName and tableFormat
 	 * @param
 	 *        	Array of String $permissions the array of permissions (VIEW_SENSITIVE, VIEW_PRIVATE)
 	 * @param String $sessionId
 	 *        	the id of the user session
-	 * @return Integer the hiding level
+	 * @return Array|Integer the list of hiding levels
 	 */
-	public function getHidingLevel($keys, $tableValues, $table, $permissions, $sessionId) {
-		// Retrieve parameters for hiding level
-		$results = $this->getHidingLevelParameters($keys, $tableValues, $table, $sessionId);
-
-		$sensiNiveau = $results['sensiniveau'];
-		$diffusionNiveauPrecision = $results['diffusionniveauprecision'];
-		$dsPublique = $results['dspublique'];
-
-		$sensibilityHidingLevel = $this->getSensibilityHidingLevel($sensiNiveau, $permissions);
-		$privateHidingLevel = $this->getPrivateHidingLevel($dsPublique, $diffusionNiveauPrecision, $permissions);
-		return max($sensibilityHidingLevel, $privateHidingLevel);
-	}
-
-	/**
-	 * Returns the values of the parameters needed for the calculation of the hiding level.
-	 *
-	 * @param
-	 *        	Array of String $keys the name of the fields of the primary key
-	 * @param
-	 *        	Array of String $tableValues the values of the primary key fields
-	 * @param Application_Object_Metadata_TableFormat $table
-	 *        	the table object, containing tableName and tableFormat
-	 * @param String $sessionId
-	 *        	the id of the user session
-	 * @return Array of String the parameters needed
-	 */
-	private function getHidingLevelParameters($keys, $tableValues, $table, $sessionId) {
-		$req = "SELECT distinct sensiniveau, diffusionniveauprecision, dspublique, " . $keys['id_provider'] . ", " . $keys['id_observation'] . "
-				FROM raw_data." . $table->tableName . " as rd " . "INNER JOIN results res ON res.table_format = ?
+	public function getHidingLevels($keys, $tableValues, $table, $permissions, $sessionId) {
+		$hidingLevels = array();
+		// Retrieve parameters for calculation of hiding level
+		$req = "SELECT distinct sensiniveau, diffusionniveauprecision, dspublique FROM raw_data." . $table->tableName . " as rd " . "INNER JOIN results res ON res.table_format = ?
 				AND res.id_provider = rd." . $keys['id_provider'] . " AND res.id_observation = rd." . $keys['id_observation'] . " INNER JOIN requests req ON res.id_request = req.id
 				WHERE req.session_id = ? AND rd." . $keys['id_provider'] . " = ? AND rd." . $keys['id_observation'] . " = ?";
-
 		$select = $this->db->prepare($req);
-		$select->execute(array(
-			$table->format,
-			$sessionId,
-			$tableValues['id_provider'],
-			$tableValues['id_observation']
-		));
-		return $select->fetch();
+		foreach ($tableValues as $values) {
+			$select->execute(array(
+				$table->format,
+				$sessionId,
+				$values['id_provider'],
+				$values['id_observation']
+			));
+
+			$results = $select->fetch();
+
+			$sensiNiveau = $results['sensiniveau'];
+			$diffusionNiveauPrecision = $results['diffusionniveauprecision'];
+			$dsPublique = $results['dspublique'];
+
+			$sensibilityHidingLevel = $this->getSensibilityHidingLevel($sensiNiveau, $permissions);
+			$privateHidingLevel = $this->getPrivateHidingLevel($dsPublique, $diffusionNiveauPrecision, $permissions);
+			$hidingLevels[] = max($sensibilityHidingLevel, $privateHidingLevel);
+		}
+
+		return $hidingLevels;
 	}
 
 	/**
@@ -327,30 +312,27 @@ class Application_Model_Mapping_ResultLocation {
 	}
 
 	/**
-	 * Sets the hiding_level column to value given.
+	 * Sets the hiding_level column for all values given.
 	 *
-	 * @param Integer $hidingLevel
-	 *        	the level of hiding (0, 1, 2, 3, 4)
+	 * @param Array|Integer $hidingLevels
+	 *        	the list of levels of hiding (0, 1, 2, 3, 4)
 	 * @param
-	 *        	Array of String $tableValues the values of the primary key fields
+	 *        	Array|Array of String $tableValues the list of the values of the primary key fields
 	 * @param String $tableFormat
 	 *        	the format of the table
 	 * @param String $sessionId
 	 *        	the id of the user session
 	 */
-	private function setHidingLevel($hidingLevel, $tableValues, $tableFormat, $sessionId) {
-		$req = "UPDATE results AS res SET hiding_level = ? FROM requests AS req
-				WHERE res.id_provider = ? AND res.id_observation = ? AND res.table_format = ?
-				AND res.id_request = req.id AND req.session_id = ?";
-		$update = $this->db->prepare($req);
-
-		$update->execute(array(
-			$hidingLevel,
-			$tableValues['id_provider'],
-			$tableValues['id_observation'],
-			$tableFormat,
-			$sessionId
-		));
+	private function setHidingLevels($hidingLevels, $tableValues, $tableFormat, $sessionId) {
+		$fullRequest = "";
+		for ($i = 0; $i < count($tableValues); $i ++) {
+			$fullRequest .= "UPDATE results AS res SET hiding_level = " . $hidingLevels[$i] . " FROM requests AS req ";
+			$fullRequest .= "WHERE res.id_provider = '" . $tableValues[$i]['id_provider'] . "' ";
+			$fullRequest .= "AND res.id_observation = '" . $tableValues[$i]['id_observation'] . "' ";
+			$fullRequest .= "AND res.table_format = '" . $tableFormat . "' ";
+			$fullRequest .= "AND res.id_request = req.id AND req.session_id = '" . $sessionId . "';";
+		}
+		$this->db->exec($fullRequest);
 	}
 
 	/**
