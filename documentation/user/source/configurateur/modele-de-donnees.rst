@@ -6,23 +6,22 @@ Configurer les modèles de données
 Principe
 --------
 
-Un modèle de données est une description d'un ensemble de tables, de leurs attributs et de leurs relations hiérarchiques. Ce modèle de données est la brique de base pour décrire ensuite un modèle d'import, indispensable à l'import de données d'occurences de taxons.
+Un modèle de données est une description d'un ensemble de tables, de leurs attributs
+et de leurs relations hiérarchiques. Ce modèle de données est la brique de base
+pour décrire ensuite un modèle d'import, indispensable à l'import de données d'occurences
+de taxons.
 
-Chaque plateforme GINCO, régionale ou thématique, comprend nativement le modèle de données DEE.
-Les administrateurs régionaux peuvent créer un ou plusieurs modèles de données supplémentaires, qui seront accessibles
-aux utilisateurs de la plateforme.
+Chaque plateforme GINCO, régionale ou thématique, est livrée avec un modèle de données
+de base. Ce modèle contient tous les champs nécessaires à l'export des données en
+DEE et au fonctionnement de la plate-forme. Les administrateurs régionaux peuvent
+créer de nouveaux modèles de données en copiant le modèle de base et en l'étendant
+avec des champs régionaux utiles.
 
-.. warning:: Si vous souhaitez pouvoir diffuser et analyser localement les données régionales, nous vous conseillons néanmoins de limiter au maximum le nombre de standards régionaux; les modules de requête et de visualisation GINCO ne peuvent s'appliquer que sur un seul modèle de données à la fois.
+.. warning:: Si vous souhaitez pouvoir diffuser et analyser localement les données
+  régionales, nous vous conseillons néanmoins de limiter au maximum le nombre de
+  standards régionaux; les modules de requête et de visualisation GINCO ne peuvent
+  s'appliquer que sur un seul modèle de données à la fois.
 
-.. note::
-
-    Pour simplifier les processus de transformation des données dans l'application GINCO, les différents modèles
-    de données doivent être structurés selon le principe des poupées gigognes.
-
-    * Un modèle DSP doit comprendre tous les champs des modèles DSR et DEE.
-    * Le modèle de données DSR est un format pivot de la DEE qui doit comprendre tous les champs du modèle DEE,
-      plus éventuellement des champs spécifiques liés à des protocoles régionaux de collecte ou liés
-      à des champs de gestion.
 
 Créer un modèle de données
 --------------------------
@@ -30,19 +29,27 @@ Créer un modèle de données
 .. image:: ../images/data-models-1.png
 
 1. Cliquer sur "Modèles de données" dans le menu du haut pour accéder à la page de gestion des modèles de données.
-2. GINCO propose nativement un modèle de données initial : **le standard d'échange DEE 1.2.1 du SINP**.
+2. GINCO propose un modèle de données de base : **Occ_Taxon_DSR_exemple**.
 
-.. note:: Le modèle standard d'échange DEE n'est ni modifiable, ni supprimable.
+.. note:: Le modèle Occ_Taxon_DSR_exemple est le modèle de base. Il n'est
+    possible ni de le supprimer, ni de le modifier.
 
-Pour créer un nouveau modèle, vous pouvez soit le créer à partir de zéro, soit dupliquer un modèle existant :
+Pour créer un nouveau modèle, vous devez dupliquer le modèle DSR de base ou un
+modèle qui l'a étendu.
 
-3. Pour créer un nouveau modèle, cliquer sur "Créer un nouveau modèle de données".
-    Un modèle vierge, sans tables ni champs, sera créé.
-4. Une autre manière de créer un modèle de données est de copier un modèle existant,
-    en cliquant sur l'icône "Dupliquer" correspondante. Un modèle contenant les mêmes tables et champs que
-    le modèle initial sera créé.
+.. warning :: Il est encore possible de créer un modèle à partir de rien, mais cette méthode
+  est fortement déconseillée. C'est un processus laborieux et un peu dangereux
+  parce que rien de garanti que le modèle ainsi configuré permettra l'export
+  correct en DEE et que tous les champs techniques nécessaires au bon fonctionnement
+  de la plate-forme seront présents.
 
-Dans les deux cas, vous devez indiquer le nom de votre nouveau modèle ainsi qu'une description (facultative) :
+3. Pour copier un modèle existant, cliquer sur l'icône "Dupliquer" correspondante.
+  Un modèle contenant les mêmes tables et champs que le modèle initial sera créé.
+  Vous ne devez pas modifier ou supprimer des champs provenant du modèle DSR
+  de base.
+
+Vous pourrez alors indiquer le nom de votre nouveau modèle ainsi qu'une description
+(facultative) :
 
 .. image:: ../images/new-data-model.png
 
@@ -52,13 +59,19 @@ Votre nouveau modèle est visible sur la page de gestion des modèles de donnée
 
 2. Le nouveau modèle n'est pas publié sur la plateforme,
     comme l'indique le bouton "Publier" présent (flèche droite, ou bouton de lecture),
-    contrairement au modèle DEE, comme l'indique le bouton "Dépublier" (carré, ou bouton d'arrêt de lecture).
+    contrairement au modèle Occ_Taxon_DSR_exemple, comme l'indique le bouton "Dépublier" (carré, ou bouton d'arrêt de lecture).
 3. et 4. Vous pouvez donc le modifier et le supprimer (les boutons sont actifs),
-    contrairement au modèle DEE (ses
+    contrairement au modèle Occ_Taxon_DSR_exemple (ses
     boutons sont inactifs) : en effet, il n'est possible de modifier/supprimer un modèle que s'il n'est pas publié
     sur la plateforme (voir `Publier / Dépublier un modèle de données`_).
 
-.. note:: Lorsque vous souhaitez modifier un modèle de données, une fenêtre modale apparaîtra vous indiquant que les éventuels mappings configurés seront supprimés. Ceci est normal car il est impossible de prévoir une cohérence entre les champs mappés si des modifications sont prêtes à être effectuées. Lorsque vous souhaitez modifier un modèle de données, les mappings seront donc supprimés, **même si vous n'effectuez pas de modifications**.
+.. note:: Lorsque vous souhaitez modifier un modèle de données, un message vous
+  indiquera que les éventuels association de champs avec les fichiers d'import
+  seront perdus. Cela s'explique par le fait qu'il est très difficile de maintenir
+  la cohérence sur ces relations alors que la structure des données va être modifiée.
+  Lorsque vous souhaitez modifier
+  un modèle de données, les correspondances de champs entre tables et fichiers seront
+  donc perdues, **même si finalement, vous n'effectuez pas de modifications**.
 
 Configurer les tables et les champs d'un modèle de données
 ----------------------------------------------------------
@@ -114,7 +127,7 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 .. note:: Un champ ne peut être présent en doublon dans une table.
 
-5. **Créer un nouveau champ** : l'écran permet de décrire un nouveau champ, qui sera ajouté au dictionnaire de données ET rattaché directement à la table. 
+5. **Créer un nouveau champ** : l'écran permet de décrire un nouveau champ, qui sera ajouté au dictionnaire de données ET rattaché directement à la table.
 
 .. image:: ../images/configurateur/configurateur-table-ajout-nouveau-champ.png
 
@@ -159,7 +172,9 @@ Lors de la configuration de votre modèle d'import, il est donc nécessaire que 
 Publier / dépublier un modèle de données
 ----------------------------------------
 
-Lorsque vous avez terminé de configurer votre modèle, et que vous souhaitez le rendre disponible pour publication, il suffit de cliquer sur le bouton de lecture dans le tableau des modèles de données :
+Lorsque vous avez terminé de configurer votre modèle, et que vous souhaitez le rendre
+disponible pour publication, il suffit de cliquer sur le bouton de lecture dans
+le tableau des modèles de données :
 
 .. image:: ../images/configurateur/configurateur-modele-publication.png
 
@@ -173,9 +188,13 @@ Le modèle de données sera alors disponible en production.
 
 Si toutes ces conditions ne sont pas atteintes, le bouton de publication est grisé.
 
-.. note:: Une fois publié, le modèle de données ne peut plus être ni supprimé ni modifié. Vous pouvez toutefois continuer à consulter sa configuration en visualisant son contenu (bouton Visualiser).
+.. note:: Une fois publié, le modèle de données ne peut plus être ni supprimé ni
+    modifié. Vous pouvez toutefois continuer à consulter sa configuration en visualisant
+    son contenu (bouton Visualiser).
 
-La publication est la première étape à effectuer dans le processus de mise à disposition de vos données. Elle est la brique nécessaire pour la publication d'un modèle d'import de fichiers dont le modèle de données cible sera le modèle que vous aurez au préalable publié.
+La publication est la première étape à effectuer dans le processus de mise à disposition
+de vos données. Elle est nécessaire à la publication des modèles d'import de
+fichiers qui vont alimenter ce modèle de données.
 
 Lorsque vous publiez un modèle de données, toutes les tables qui y ont été configurées sont générées en base de données.
 
@@ -185,4 +204,5 @@ Si vous souhaitez dépublier un modèle de données, il suffit de cliquer sur le
 
 A la dépublication d'un modèle de données, tous les modèles d'import qui lui sont associés seront également dépubliés. Il ne vous sera alors plus possible de téléverser des données d'observation.
 
-.. note:: Il n'est pas possible de dépublier un modèle de données si des données lui correspondant ont été insérées dans la base de données.
+.. warning:: Il n'est pas possible de dépublier un modèle de données si des données
+    ont été insérées dans les tables de ce modèle.
