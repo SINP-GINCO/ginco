@@ -1,26 +1,33 @@
-# GINCO 
+# GINCO
 
 ## A propos
-FIXME!!
+GINCO est le projet d'implémentation de référence des plates-formes régionles et
+thématique du SINP ([Système d'Information Nature et Paysage](http://www.naturefrance.fr/sinp/presentation-du-sinp))
 
+Les objectifs de la plate-forme sont:
+* importer des jeux de données fournis par les producteurs
+* Contrôler les données livrées, leur affecter un identifiant SINP, calculer leur
+sensibilité en fonction du référentiel de sensibilité régional.
+* consulter ces données en respectant un floutage imposés par certains critères
+de la données (ex: sensibilité) et les droits des utilisateurs.
+* exporter les jeux de données au standard gml DEE à destination de la plate-forme
+nationale.
+* importer des jeux de données au standard gml DEE en provenance de la plate-forme
+nationale.
 
-## Documentation 
+GINCO est basé sur le logiciel OGAM. Ce logiciel développé par l'IGN à été choisi
+parce qu'il largement configurable et qu'il doit permettre de s'adapter aux différentes
+thématiques du SINP.
 
-1. [Récupérer le projet OGAM][1]
-2. [Installation et configuration PostGre/PostGIS][2]
-3. [Installation serveurs web][3]
-4. [Installation Tomcat7][4]
-5. [Déploiement du site SINP][5]
-6. [Compilation / Configuration des services][6]
-7. [Description des champs du métamodèle][7]
+## Documentation utilisateur
+La documentation utilisateur est consultable en ligne [ici](https://ginco.ign.fr/doc).
 
-   [Versions des logiciels en production][8]
+## Installation
+Le code actuellement en ligne n'est pas suffisant pour installer GINCO. Il manque
+la brique de base OGAM. OGAM est un logiciel open souce sous licence EUPL, mais
+il est en cours de migration de framework php vers symfony.
+Il sera publié sur GitHub lorsque cette migration sera terminée.
+En attendant, le code d'OGAM actuellement utilisé par le projet peut être demandé
+à l'équipe de développement GINCO: sinp-dev@ign.fr
 
-[1]: documentation/0-recuperer_projet_ogam_GIT.md
-[2]: documentation/1-ogam_postgresql_postgis.md
-[3]: documentation/2-ogam_serveur_web.md
-[4]: documentation/3-ogam_tomcat7.md
-[5]: documentation/4-deploiement_site_sinp.md
-[6]: documentation/5-ogam_compil_services.md
-[7]: documentation/6-descr_metamodele.md
-[8]: documentation/ogam-versions-prod.md
+Voir [ce document](/INSTALL.md/) pour la procédure complète d'installation.
