@@ -118,7 +118,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			if (empty($orderKey)) {
 				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey) IN ($subquery $order $filter) $andWhere";
 			} else {
-				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey, $orderKey) IN ($subquery $order $filter) $andWhere";
+				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey, $orderKey) IN ($subquery $order $filter) $andWhere $order";
 			}
 
 			$this->logger->debug("GetresultRows query : " . $query);
