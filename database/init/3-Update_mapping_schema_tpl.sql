@@ -45,6 +45,20 @@ INSERT INTO layer VALUES ('plan_ign', 'Carte IGN', 'GEOGRAPHICALGRIDSYSTEMS.PLAN
 INSERT INTO layer VALUES ('Espaces naturels', 'Espaces naturels', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO layer VALUES ('PROTECTEDAREAS.ZNIEFF1', 'ZNIEFF1', 'PROTECTEDAREAS.ZNIEFF1', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
 INSERT INTO layer VALUES ('PROTECTEDAREAS.ZNIEFF2', 'ZNIEFF2', 'PROTECTEDAREAS.ZNIEFF2', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.APB', 'Arrêtés de protection de biotope', 'PROTECTEDAREAS.APB', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.CEN', 'Conservatoire du littoral : parcelles protégées', 'PROTECTEDAREAS.CEN', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.CDL', 'Conservatoire du littoral : périmètres d''intervention', 'PROTECTEDAREAS.CDL', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.PN', 'Parcs nationaux', 'PROTECTEDAREAS.PN', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.PNM', 'Parcs naturels marins', 'PROTECTEDAREAS.PNM', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.PNR', 'Parcs naturels régionaux', 'PROTECTEDAREAS.PNR', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.RB', 'Réserves biologiques', 'PROTECTEDAREAS.RB', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.BIOS', 'Réserves de biosphère', 'PROTECTEDAREAS.BIOS', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.RNC', 'Réserves naturelles de Corse', 'PROTECTEDAREAS.RNC', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.RN', 'Réserves naturelles nationales', 'PROTECTEDAREAS.RN', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.RNCF', 'Rés nation. chasse et faune sauvage', 'PROTECTEDAREAS.RNCF', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.SIC', 'Sites Natura 2000 (Directive Habitats)', 'PROTECTEDAREAS.SIC', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.ZPS', 'Sites Natura 2000 (Directive Oiseaux)', 'PROTECTEDAREAS.ZPS', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
+INSERT INTO layer VALUES ('PROTECTEDAREAS.RAMSAR', 'Zones humides d''importance internat.', 'PROTECTEDAREAS.RAMSAR', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
 
 INSERT INTO layer VALUES ('Limites administratives', 'Limites administratives', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO layer VALUES ('regions', 'Régions', 'regions', 1, 100, 0, 0, 17471321, 4367830, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
@@ -76,6 +90,20 @@ INSERT INTO mapping.layer_tree VALUES (33, '3', 1, 1, 0, 0, 0, 'communes', 32, N
 INSERT INTO mapping.layer_tree VALUES (4, '-1', 0, 1, 0, 0, 1, 'espaces_naturels', 4, NULL);
 INSERT INTO mapping.layer_tree VALUES (41, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF1', 42, NULL);
 INSERT INTO mapping.layer_tree VALUES (42, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF2', 41, NULL);
+INSERT INTO mapping.layer_tree VALUES (43, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.APB', 43, NULL);
+INSERT INTO mapping.layer_tree VALUES (44, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CEN', 44, NULL);
+INSERT INTO mapping.layer_tree VALUES (45, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CDL', 45, NULL);
+INSERT INTO mapping.layer_tree VALUES (46, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PN', 46, NULL);
+INSERT INTO mapping.layer_tree VALUES (47, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNM', 47, NULL);
+INSERT INTO mapping.layer_tree VALUES (48, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNR', 48, NULL);
+INSERT INTO mapping.layer_tree VALUES (49, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RB', 49, NULL);
+INSERT INTO mapping.layer_tree VALUES (491, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.BIOS', 491, NULL);
+INSERT INTO mapping.layer_tree VALUES (492, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNC', 492, NULL);
+INSERT INTO mapping.layer_tree VALUES (493, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RN', 493, NULL);
+INSERT INTO mapping.layer_tree VALUES (494, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNCF', 494, NULL);
+INSERT INTO mapping.layer_tree VALUES (495, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.SIC', 495, NULL);
+INSERT INTO mapping.layer_tree VALUES (496, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZPS', 496, NULL);
+INSERT INTO mapping.layer_tree VALUES (497, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RAMSAR', 497, NULL);
 
 INSERT INTO mapping.layer_tree VALUES (5, '-1', 0, 1, 0, 0, 1, 'Fonds', 5, NULL);
 INSERT INTO mapping.layer_tree VALUES (51, '5', 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 52, NULL);
