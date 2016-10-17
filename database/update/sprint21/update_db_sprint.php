@@ -29,6 +29,7 @@ try {
     execCustSQLFile("$sprintDir/layers_adapted_to_radio_buttons.sql", $config);
     execCustSQLFile("$sprintDir/export_file.sql", $config);
     execCustSQLFile("$sprintDir/default_bounding_box.sql", $config);
+    execCustSQLFile("$sprintDir/add_en_layers.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;

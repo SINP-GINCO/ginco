@@ -743,9 +743,13 @@ span.align_images img {
 	color: black;
 }
 
-.copyrightTh {
+.copyrightTh, .copyrightThContributeur {
 	font-weight: bold;
 	text-align: center;
+}
+
+.copyrightThContributeur {
+	width: 300px;
 }
 
 .close {
