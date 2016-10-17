@@ -165,7 +165,7 @@ class Application_Model_Mapping_ResultLocation {
 		} else {
 			// We can use INSERT ... SELECT statement only if we are exactly on the same server
 			$sql = "INSERT INTO results (id_request, id_observation, id_provider, table_format, hiding_level)
-				SELECT ? , " . $keys['id_observation'] . ", submission." . $keys['id_provider'] . ", ? , 0 " . $sqlFromWhere;
+				SELECT ? , " . $keys['id_observation'] . ", ". $keys['id_provider'] . ", ? , 0 FROM raw_data.". $locationTable->tableName ;
 
 			$this->logger->info('fillResults : ' . $sql);
 
