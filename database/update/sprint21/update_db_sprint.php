@@ -30,6 +30,7 @@ try {
     execCustSQLFile("$sprintDir/export_file.sql", $config);
     execCustSQLFile("$sprintDir/default_bounding_box.sql", $config);
     execCustSQLFile("$sprintDir/add_en_layers.sql", $config);
+    execCustSQLFile("$sprintDir/update_ref_espece_sensible.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;
