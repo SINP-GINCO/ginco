@@ -58,6 +58,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getResultRowsCustom($start, $length, $sort, $sortDir, $idRequest, $websiteSession) {
 		$this->logger->debug('getResultRows custom');
+		$startTime = microtime(true);
 
 		$configuration = Zend_Registry::get("configuration");
 		$projection = $configuration->getConfig('srs_visualisation', 3857);
@@ -65,23 +66,18 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 
 		try {
 
-			// Retrieve the SQL request from the session
-			// $websiteSession = new Zend_Session_Namespace('website');
 			$select = $websiteSession->SQLSelect;
-			// Il ne doit pas y avoir de DISTINCT pour pouvoir faire un Index Scan
-			// $select = str_replace(" DISTINCT", "", $select);
 			$pKey = $websiteSession->SQLPkey;
+			$fromJoins = $websiteSession->SQLFromJoinResults;
 			$from = $websiteSession->SQLFrom;
 			$where = $websiteSession->SQLWhere;
-
-			// Customize where here and not in getResultColumns to get the latest id
-			$where .= " AND id_request = " . $idRequest;
+			$andWhere = $websiteSession->SQLAndWhere;
 
 			$order = "";
-			$orderKey = "";
-			$orderKeyType = "";
-			$hidingLevelKey = ", hiding_level";
+			$hidingLevelKey = ", hiding_level, ";
 			if (!empty($sort)) {
+				$orderKey = "";
+				$orderKeyType = "";
 				// $sort contains the form format and field
 				$split = explode("__", $sort);
 				$formField = new Application_Object_Metadata_FormField();
@@ -91,19 +87,19 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				$orderKey = $tableField->format . "." . $tableField->data;
 				$orderKeyType = $tableField->type;
 				$order .= " ORDER BY " . $orderKey . " " . $sortDir;
+				// Customization of select for specific data types
+				if ($orderKeyType == 'GEOM' || $orderKeyType == 'DATE') {
+					$select .= ", " . $orderKey;
+				}
 			} else {
 				$order .= " ORDER BY " . $pKey;
-			}
-			// Customization of select for specific data types
-			if ($orderKeyType == 'GEOM' || $orderKeyType == 'DATE') {
-				$select .= ", " . $orderKey;
 			}
 
 			// Subquery (for getting desired rows)
 			if (empty($orderKey)) {
-				$subquery = "SELECT DISTINCT " . $pKey . $hidingLevelKey . $from . $where;
+				$subquery = "SELECT DISTINCT " . $pKey . $from . $where;
 			} else {
-				$subquery = "SELECT DISTINCT " . $pKey . $hidingLevelKey . ", " . $orderKey . $from . $where;
+				$subquery = "SELECT DISTINCT " . $pKey . ", " . $orderKey . $from . $where;
 			}
 			$filter = "";
 			if (!empty($length)) {
@@ -118,18 +114,17 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$this->logger->debug('from = ' . $from);
 			$this->logger->debug('where = ' . $where);
 
-			// Build complete query
+			// // Build complete query
 			if (empty($orderKey)) {
-				$query = $select . $from . " WHERE (" . $pKey . $hidingLevelKey . ") IN (" . $subquery . $order . $filter . ")" . $order;
+				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey) IN ($subquery $order $filter) $andWhere";
 			} else {
-				$query = $select . $from . " WHERE (" . $pKey . $hidingLevelKey . ", " . $orderKey . ") IN (" . $subquery . $order . $filter . ")" . $order;
+				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey, $orderKey) IN ($subquery $order $filter) $andWhere";
 			}
+
+			$this->logger->debug("GetresultRows query : " . $query);
 
 			// Execute the request
 			$result = $this->genericModel->executeRequest($query);
-
-			// Remove duplicate rows (TODO remove the comment and the following line if distinct keyword is accepted.)
-			$result = array_map('unserialize', array_unique(array_map('serialize', $result)));
 
 			// Retrive the session-stored info
 			$resultColumns = $websiteSession->resultColumns;
@@ -210,10 +205,8 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 								AND res.id_provider = '" . $line['provider_id'] . "'
 								AND res.id_observation = '$observationId'";
 					$bbResult = $this->genericModel->executeRequest($bbQuery);
-					// $this->logger->debug('LAYER: ' . $i);
 					if (count($bbResult) && !empty($bbResult[0]['wkt'])) {
 						$bbox = $bbResult[0]['wkt'];
-						// $this->logger->debug('BBOX: ' . $bbox);
 						break;
 					}
 				}
@@ -242,6 +235,9 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			"total" => $countResult,
 			"rows" => $rows
 		);
+		$endTime = microtime(true);
+		$diff = $endTime - $startTime;
+		$this->logger->debug("----------getResultRows took " . $diff . " seconds.");
 		return json_encode($json);
 	}
 
@@ -260,6 +256,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getResultColumnsCustom($datasetId, $formQuery, $maxPrecisionLevel, $requestId) {
 		$this->logger->debug('getResultColumns custom');
+		$startTime = microtime(true);
 
 		$websiteSession = new Zend_Session_Namespace('website');
 
@@ -273,55 +270,29 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 
 			$this->customGenericService = new Custom_Application_Service_GenericService();
 
-			$select = $this->genericService->generateSQLSelectRequest($this->schema, $queryObject);
-			$from = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject);
-			$where = $this->customGenericService->generateSQLWhereRequestCustom($this->schema, $queryObject);
-			$sqlPKey = $this->genericService->generateSQLPrimaryKey($this->schema, $queryObject);
-
-			// Get the ids
-			$pKeyIdWithTable = explode(',', $sqlPKey)[0];
-			$pKeyId = explode('.', $pKeyIdWithTable)[1];
-			$pKeyProviderIdWithTable = explode(',', $sqlPKey)[1];
-			$pKeyProviderId = explode('.', $pKeyProviderIdWithTable)[1];
-			$rawDataTableName = str_replace(',', '', explode(' ', $from)[3]);
+			$select = $websiteSession->SQLSelect;
+			$pKey = $websiteSession->SQLPkey;
+			$from = $websiteSession->SQLFromJoinResults;
+			$where = $websiteSession->SQLWhere;
 
 			// Customize select
-			$select .= ', ' . $sqlPKey . ", hiding_level";
+			$select .= ', ' . $pKey . ", hiding_level";
+			$rawDataTableName = str_replace(',', '', explode(' ', $from)[3]);
 
-			// Customize where
-			$where .= " AND " . $rawDataTableName . "." . $pKeyId . " = results.id_observation";
-			$where .= " AND " . $rawDataTableName . "." . $pKeyProviderId . " = results.id_provider";
-			$where .= " AND table_format = '" . $rawDataTableName . "'";
-			$where .= " AND id_request = " . $requestId;
-			$where .= " AND hiding_level <= " . $maxPrecisionLevel;
+			// Add where clause for filtering on hiding_level
+			$andWhere = " AND table_format = '" . $rawDataTableName . "'";
+			$andWhere .= " AND id_request = " . $requestId;
+			$andWhere .= " AND hiding_level <= " . $maxPrecisionLevel;
 
 			// Customize from
 			$from .= ', mapping.results ';
-
-			// Identify the field carrying the location information
-			$tables = $this->genericService->getAllFormats($this->schema, $queryObject);
-			$locationField = $this->metadataModel->getGeometryField($this->schema, array_keys($tables));
 
 			$this->logger->debug('$select : ' . $select);
 			$this->logger->debug('$from : ' . $from);
 			$this->logger->debug('$where : ' . $where);
 
-			// Calculate the number of lines of result
-			$countResult = $this->genericModel->executeRequest("SELECT COUNT(*) as count " . $from . $where);
-
-			// Get the website session
-			$websiteSession = new Zend_Session_Namespace('website');
-			// Store the metadata in session for subsequent requests
-			$websiteSession->resultColumns = $queryObject->editableFields;
 			$websiteSession->datasetId = $datasetId;
-			$websiteSession->locationField = $locationField;
-			$websiteSession->SQLSelect = $select;
-			$websiteSession->SQLFrom = $from;
-			$websiteSession->SQLWhere = $where;
-			$websiteSession->SQLPkey = $sqlPKey;
-			$websiteSession->queryObject = $queryObject;
-			$websiteSession->count = $countResult[0]['count'];
-			$websiteSession->schema = $this->schema;
+			$websiteSession->SQLAndWhere = $andWhere;
 
 			// Send the result as a JSON String
 			$json = '{"success":true,';
@@ -349,7 +320,9 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			}
 			$json .= ']}';
 		}
-
+		$endTime = microtime(true);
+		$diff = $endTime - $startTime;
+		$this->logger->debug("------------getResultColumns took " . $diff . " seconds.");
 		return $json;
 	}
 
@@ -436,12 +409,12 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 		// Transform the identifier in an array
 		$keyMap = $this->_decodeId($id);
 
-        // The test in the following block code (empty[$keyMap[$infoField->data]])
-        // fails if $infoField->data and the keys of $keyMap don't have the same case...
-        // So we put everything in uppercase
-        $keysKeyMap = array_map("strtoupper", array_keys($keyMap));
-        $valuesKeyMap = array_values($keyMap);
-        $keyMap = array_combine($keysKeyMap, $valuesKeyMap);
+		// The test in the following block code (empty[$keyMap[$infoField->data]])
+		// fails if $infoField->data and the keys of $keyMap don't have the same case...
+		// So we put everything in uppercase
+		$keysKeyMap = array_map("strtoupper", array_keys($keyMap));
+		$valuesKeyMap = array_values($keyMap);
+		$keyMap = array_combine($keysKeyMap, $valuesKeyMap);
 
 		// Prepare a data object to be filled
 		$data = $this->genericService->buildDataObject($keyMap['SCHEMA'], $keyMap['FORMAT'], null);
@@ -557,6 +530,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function prepareResultLocationsCustom($formQuery) {
 		$this->logger->debug('prepareResultLocationsCustom');
+		$startTime = microtime(true);
 
 		$this->customGenericService = new Custom_Application_Service_GenericService($this->schema);
 
@@ -567,10 +541,47 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$json = '{"success": false, "errorMessage": "At least one result column should be selected"}';
 		} else {
 
+			$sqlPKey = $this->genericService->generateSQLPrimaryKey($this->schema, $queryObject);
+
+			// Get the ids
+			$pKeyIdWithTable = explode(',', $sqlPKey)[0];
+			$pKeyId = explode('.', $pKeyIdWithTable)[1];
+			$pKeyProviderIdWithTable = explode(',', $sqlPKey)[1];
+			$pKeyProviderId = explode('.', $pKeyProviderIdWithTable)[1];
+
+			$submissionJoin = array(
+				'submission'
+			);
+			$resultJoins = array(
+				'submission',
+				'results'
+			);
 			// Generate the SQL Request
 			$select = $this->customGenericService->generateSQLSelectRequest($this->schema, $queryObject);
-			$from = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject);
+			$from = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $submissionJoin);
+			$fromJoinResults = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $resultJoins);
 			$where = $this->customGenericService->generateSQLWhereRequestCustom($this->schema, $queryObject);
+
+			$tables = $this->genericService->getAllFormats($this->schema, $queryObject);
+			$locationField = $this->metadataModel->getGeometryField($this->schema, array_keys($tables));
+
+			// Calculate the number of lines of result
+			$countResult = $this->genericModel->executeRequest("SELECT COUNT(*) as count " . $from . $where);
+
+			// Get the website session
+			$websiteSession = new Zend_Session_Namespace('website');
+			// Store the metadata in session for subsequent requests
+			$websiteSession->resultColumns = $queryObject->editableFields;
+			// $websiteSession->datasetId = $datasetId;
+			$websiteSession->locationField = $locationField;
+			$websiteSession->SQLSelect = $select;
+			$websiteSession->SQLFrom = $from;
+			$websiteSession->SQLFromJoinResults = $fromJoinResults;
+			$websiteSession->SQLWhere = $where;
+			$websiteSession->SQLPkey = $sqlPKey;
+			$websiteSession->queryObject = $queryObject;
+			$websiteSession->count = $countResult[0]['count'];
+			$websiteSession->schema = $this->schema;
 
 			// Clean previously stored results
 			$sessionId = session_id();
@@ -585,5 +596,8 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			// Run the request to store a temporary result table (for the web mapping)
 			$this->resultLocationModel->fillLocationResult($from . $where, $sessionId, $locationTableInfo);
 		}
+		$endTime = microtime(true);
+		$diff = $endTime - $startTime;
+		$this->logger->debug("-----------prepareResultLocationsCustom took " . $diff . " seconds.");
 	}
 }
