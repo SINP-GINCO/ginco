@@ -38,7 +38,7 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 	 *        	the query object (list of TableFields)
 	 * @return String a SQL request
 	 */
-	public function generateSQLFromRequestCustom($schema, $dataObject) {
+	public function generateSQLFromRequestCustom($schema, $dataObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $joinTables) {
 		$this->logger->debug('generateSQLFromRequest');
 
 		//
@@ -50,8 +50,16 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 
 		// Add the root table;
 		$rootTable = array_shift($tables);
-		$from = " FROM " . $rootTable->tableName . " " . $rootTable->getLogicalName();
-		$from .= " LEFT JOIN " . $schema . ".submission ON submission.submission_id = " . $rootTable->getLogicalName() . ".submission_id";
+		$logicalName = $rootTable->getLogicalName();
+		$from = " FROM " . $rootTable->tableName . " " . $logicalName;
+
+		// Add the user asked joined tables
+		if (in_array('submission', $joinTables)) {
+			$from .= " LEFT JOIN $schema.submission ON submission.submission_id = $logicalName.submission_id";
+		}
+		if (in_array('results', $joinTables)) {
+			$from .= " LEFT JOIN mapping.results ON results.id_observation = $pKeyIdWithTable AND results.id_provider = $pKeyProviderIdWithTable";
+		}
 
 		// Add the joined tables
 		$i = 0;
