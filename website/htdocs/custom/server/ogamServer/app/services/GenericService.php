@@ -12,6 +12,7 @@
  * Reuse is not applicable to documents subject to intellectual property rights of third parties.
  */
 include_once APPLICATION_PATH . '/services/GenericService.php';
+
 /**
  * The Generic Service.
  *
@@ -69,7 +70,7 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 			$from .= ") ";
 		}
 
-		$this->logger->debug('generateSQLFromRequestanna :' . $from);
+		$this->logger->debug('generateSQLFromRequest :' . $from);
 		return $from;
 	}
 
@@ -107,7 +108,7 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 				$where .= $this->buildWhereItem($schemaCode, $tableField, false);
 			}
 		}
-		
+
 		// Right management
 		// Check the provider id of the logged user
 		$userSession = new Zend_Session_Namespace('user');
@@ -117,12 +118,12 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 				$where .= " AND " . $rootTable->getLogicalName() . ".provider_id = '" . $providerId . "'";
 			}
 		}
-		
+
 		if (!$userSession->user->isAllowed('CONFIRM_SUBMISSION')) {
 			// user with "publish data" permission can see submissions all the time
 			$where .= " AND submission.step = 'VALIDATE' ";
 		}
-		
+
 		// Return the completed SQL request
 		return $where;
 	}
