@@ -108,7 +108,7 @@ if (!empty($user)) {
         }
 
         if ($user->isAllowed('MANAGE_USERS') || $user->isAllowed('CHECK_CONF')
-            || $user->isAllowed('CONFIGURE_METAMODEL') || $user->isAllowed('ACCESS_GEOSOURCE')
+            || $user->isAllowed('CONFIGURE_METAMODEL')
         ) {
             echo '<h4>' . $this->translate('Administration') . '</h4>' .
                   '<ul class="menu">';
