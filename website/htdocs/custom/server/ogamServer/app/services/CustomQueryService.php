@@ -58,7 +58,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getResultRowsCustom($start, $length, $sort, $sortDir, $idRequest, $websiteSession) {
 		$this->logger->debug('getResultRows custom');
-		$startTime = microtime(true);
 
 		$configuration = Zend_Registry::get("configuration");
 		$projection = $configuration->getConfig('srs_visualisation', 3857);
@@ -120,9 +119,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			} else {
 				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey, $orderKey) IN ($subquery $order $filter) $andWhere $order";
 			}
-
-			$this->logger->debug("GetresultRows query : " . $query);
-
 			// Execute the request
 			$result = $this->genericModel->executeRequest($query);
 
@@ -235,9 +231,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			"total" => $countResult,
 			"rows" => $rows
 		);
-		$endTime = microtime(true);
-		$diff = $endTime - $startTime;
-		$this->logger->debug("----------getResultRows took " . $diff . " seconds.");
 		return json_encode($json);
 	}
 
@@ -252,13 +245,12 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 *        	the maximum level of precision asked by the user
 	 * @param Integer $requestId
 	 *        	the id of the request
+	 * @param Zend_Session_Namespace $websiteSession
+	 *        	the websiteSession (storing SQL requests parameters)
 	 * @return JSON
 	 */
-	public function getResultColumnsCustom($datasetId, $formQuery, $maxPrecisionLevel, $requestId) {
+	public function getResultColumnsCustom($datasetId, $formQuery, $maxPrecisionLevel, $requestId, $websiteSession) {
 		$this->logger->debug('getResultColumns custom');
-		$startTime = microtime(true);
-
-		$websiteSession = new Zend_Session_Namespace('website');
 
 		$json = "";
 		// Transform the form request object into a table data object
@@ -274,7 +266,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$pKey = $websiteSession->SQLPkey;
 			$from = $websiteSession->SQLFromJoinResults;
 			$where = $websiteSession->SQLWhere;
-
 			// Customize select
 			$select .= ', ' . $pKey . ", hiding_level";
 			$rawDataTableName = str_replace(',', '', explode(' ', $from)[3]);
@@ -320,9 +311,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			}
 			$json .= ']}';
 		}
-		$endTime = microtime(true);
-		$diff = $endTime - $startTime;
-		$this->logger->debug("------------getResultColumns took " . $diff . " seconds.");
 		return $json;
 	}
 
@@ -530,7 +518,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function prepareResultLocationsCustom($formQuery) {
 		$this->logger->debug('prepareResultLocationsCustom');
-		$startTime = microtime(true);
 
 		$this->customGenericService = new Custom_Application_Service_GenericService($this->schema);
 
@@ -558,7 +545,8 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			);
 			// Generate the SQL Request
 			$select = $this->customGenericService->generateSQLSelectRequest($this->schema, $queryObject);
-			$from = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $submissionJoin);
+			$fromNoJoin = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, array());
+			$fromJoinSubmission = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $submissionJoin);
 			$fromJoinResults = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $resultJoins);
 			$where = $this->customGenericService->generateSQLWhereRequestCustom($this->schema, $queryObject);
 
@@ -566,16 +554,15 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$locationField = $this->metadataModel->getGeometryField($this->schema, array_keys($tables));
 
 			// Calculate the number of lines of result
-			$countResult = $this->genericModel->executeRequest("SELECT COUNT(*) as count " . $from . $where);
+			$countResult = $this->genericModel->executeRequest("SELECT COUNT(*) as count " . $fromJoinSubmission . $where);
 
 			// Get the website session
 			$websiteSession = new Zend_Session_Namespace('website');
 			// Store the metadata in session for subsequent requests
 			$websiteSession->resultColumns = $queryObject->editableFields;
-			// $websiteSession->datasetId = $datasetId;
 			$websiteSession->locationField = $locationField;
 			$websiteSession->SQLSelect = $select;
-			$websiteSession->SQLFrom = $from;
+			$websiteSession->SQLFrom = $fromJoinSubmission;
 			$websiteSession->SQLFromJoinResults = $fromJoinResults;
 			$websiteSession->SQLWhere = $where;
 			$websiteSession->SQLPkey = $sqlPKey;
@@ -585,7 +572,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 
 			// Clean previously stored results
 			$sessionId = session_id();
-			$this->logger->debug('SessionId : ' . $sessionId);
 			$this->resultLocationModel->cleanPreviousResults($sessionId);
 
 			// Identify the field carrying the location information
@@ -594,10 +580,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$locationTableInfo = $this->metadataModel->getTableFormat($this->schema, $locationField->format);
 
 			// Run the request to store a temporary result table (for the web mapping)
-			$this->resultLocationModel->fillLocationResult($from . $where, $sessionId, $locationTableInfo);
+			$this->resultLocationModel->fillLocationResult($fromJoinSubmission, $where, $sessionId, $locationTableInfo);
 		}
-		$endTime = microtime(true);
-		$diff = $endTime - $startTime;
-		$this->logger->debug("-----------prepareResultLocationsCustom took " . $diff . " seconds.");
 	}
 }

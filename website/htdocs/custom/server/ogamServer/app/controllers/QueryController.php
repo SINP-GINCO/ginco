@@ -264,7 +264,7 @@ class Custom_QueryController extends QueryController {
 			$maxPrecisionLevel = $customQueryService->getMaxPrecisionLevel($websiteSession->formQuery->criterias);
 
 			// Call the service to get the definition of the columns
-			echo $customQueryService->getResultColumnsCustom($formQuery->datasetId, $formQuery, $maxPrecisionLevel, $requestId);
+			echo $customQueryService->getResultColumnsCustom($formQuery->datasetId, $formQuery, $maxPrecisionLevel, $requestId, $websiteSession);
 		} catch (Exception $e) {
 			$this->logger->err('Error while getting result : ' . $e);
 			echo '{"success":false,"errorMessage":' . json_encode($e->getMessage()) . '}';
