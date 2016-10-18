@@ -36,6 +36,12 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 	 *        	the schema
 	 * @param Application_Object_Generic_DataObject $dataObject
 	 *        	the query object (list of TableFields)
+	 * @param String $pKeyIdWithTable
+	 *        	the full name of the ogam_id primary key (in the form tablename.ogam_id_<xxx>)
+	 * @param String $pKeyProviderIdWithTable
+	 *        	the full name of the provider_id primary key (in the form tablename.xxx)
+	 * @param Array|String $joinTables
+	 *        	the tables to join in the request
 	 * @return String a SQL request
 	 */
 	public function generateSQLFromRequestCustom($schema, $dataObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $joinTables) {
