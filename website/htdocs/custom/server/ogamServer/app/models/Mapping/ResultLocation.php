@@ -92,34 +92,38 @@ class Application_Model_Mapping_ResultLocation {
 	/**
 	 * Populate the result location table.
 	 *
-	 * @param String $sqlWhere
-	 *        	the FROM / WHERE part of the SQL Request
+	 * @param String $from
+	 *        	the FROM part of the SQL Request
+	 * @param String $where
+	 *        	the WHERE part of the SQL Request
 	 * @param String $sessionId
 	 *        	the user session id.
 	 * @param Application_Object_Metadata_TableFormat $locationTable
 	 *        	the location table
 	 */
-	public function fillLocationResult($sqlWhere, $sessionId, $locationTable) {
+	public function fillLocationResult($from, $where, $sessionId, $locationTable) {
 		$this->logger->info('fillLocationResult');
-		if (empty($sqlWhere)) {
+		if (empty($from) || empty($where)) {
 			return;
 		}
 		$this->db->getConnection()->setAttribute(PDO::ATTR_TIMEOUT, 480);
 
 		if ($this->_isLocalDB()) {
-			$this->fillResults($sqlWhere, $sessionId, $locationTable);
+			$this->fillResults($from, $where, $sessionId, $locationTable);
 		} else {
 			$rawdb = Zend_Registry::get('raw_db');
 			$rawdb->getConnection()->setAttribute(PDO::ATTR_TIMEOUT, 480);
-			$this->fillResults($sqlWhere, $sessionId, $locationTable, $rawDb);
+			$this->fillResults($from, $where, $sessionId, $locationTable, $rawDb);
 		}
 	}
 
 	/**
 	 * Populates the requests and results table in a local database.
 	 *
-	 * @param String $sqlFromWhere
-	 *        	the FROM / WHERE part of the SQL Request
+	 * @param String $from
+	 *        	the FROM part of the SQL Request
+	 * @param String $where
+	 *        	the WHERE part of the SQL Request
 	 * @param String $sessionId
 	 *        	the user session id.
 	 * @param Application_Object_Metadata_TableFormat $locationTable
@@ -128,7 +132,7 @@ class Application_Model_Mapping_ResultLocation {
 	 *        	the connection to the remote database where raw_data schema is.
 	 *        	If null, raw_db is considered as being in local database.
 	 */
-	private function fillResults($sqlFromWhere, $sessionId, $locationTable, $rawDb = null) {
+	private function fillResults($from, $where, $sessionId, $locationTable, $rawDb = null) {
 		// -- First, insert a "request" record
 		$sql = "INSERT INTO requests (session_id) VALUES ('$sessionId') RETURNING id;";
 		$reqId = $this->db->fetchOne($sql);
@@ -144,7 +148,7 @@ class Application_Model_Mapping_ResultLocation {
 		if ($rawDb) {
 			// The "remote" method is 2x or 3x more time consuming. Used when the raw data schema is in another database.
 			// Select raw results
-			$select = "SELECT " . $keys['id_observation'] . " AS id_observation, " . $keys['id_provider'] . " AS id_provider " . $sqlFromWhere;
+			$select = "SELECT " . $keys['id_observation'] . " AS id_observation, " . $keys['id_provider'] . " AS id_provider " . $from . $where;
 			$query = $rawdb->prepare($select);
 			$query->execute();
 
@@ -165,7 +169,7 @@ class Application_Model_Mapping_ResultLocation {
 		} else {
 			// We can use INSERT ... SELECT statement only if we are exactly on the same server
 			$sql = "INSERT INTO results (id_request, id_observation, id_provider, table_format, hiding_level)
-				SELECT ? , " . $keys['id_observation'] . ", ". $keys['id_provider'] . ", ? , 0 FROM raw_data.". $locationTable->tableName ;
+				SELECT ? , " . $keys['id_observation'] . ", $tableFormat." . $keys['id_provider'] . ", ? , 0 $from $where";
 
 			$this->logger->info('fillResults : ' . $sql);
 
@@ -178,8 +182,8 @@ class Application_Model_Mapping_ResultLocation {
 
 		// Get back the results and for each, get and fill hiding level
 		$tableValues = $this->getResultsFromRequestId($reqId);
-		$hidingLevels = $this->getHidingLevels($keys, $tableValues, $locationTable, $this->getVisuPermissions(), $sessionId);
-		$this->setHidingLevels($hidingLevels, $tableValues, $locationTable->format, $sessionId);
+		$tableValues = $this->getHidingLevels($keys, $tableValues, $locationTable, $this->getVisuPermissions(), $from, $where, $reqId);
+		$this->setHidingLevels($tableValues, $locationTable->format, $sessionId);
 
 		// Remove any values that can be obtained through criterias more precise than the hiding level
 		$this->deleteUnshowableResultsFromCriterias($reqId);
@@ -194,7 +198,9 @@ class Application_Model_Mapping_ResultLocation {
 	 */
 	private function getResultsFromRequestId($requestId) {
 		$db = $this->db;
-		$sql = "SELECT res.* FROM requests req, results res WHERE res.id_request = req.id AND req.id = ?";
+		$sql = "SELECT res.* FROM requests req, results res
+				WHERE res.id_request = req.id AND req.id = ?
+				ORDER BY res.id_provider, res.id_observation";
 
 		$stmt = $db->prepare($sql);
 		$stmt->execute(array(
@@ -211,9 +217,10 @@ class Application_Model_Mapping_ResultLocation {
 	 * @return String the request id
 	 */
 	public function getLastRequestIdFromSession($sessionId) {
-		$this->logger->debug('getLastRequestIdFromSession');
+		$this->logger->debug('getLastRequestIdFromSession : ' . $sessionId);
 		$db = $this->db;
-		$sql = "SELECT id FROM requests req WHERE req.session_id = ? ORDER BY req.id DESC LIMIT 1";
+		$sql = "SELECT id FROM requests req WHERE req.session_id = ?
+				ORDER BY req.id DESC LIMIT 1";
 		$stmt = $db->prepare($sql);
 		$stmt->execute(array(
 			$sessionId
@@ -223,7 +230,7 @@ class Application_Model_Mapping_ResultLocation {
 	}
 
 	/**
-	 * Returns the hiding levels for all rows provided in the array of results.
+	 * Updates the hiding levels for all rows provided in the array of values.
 	 *
 	 * @param
 	 *        	Array of String $keys the name of the fields of the primary key
@@ -233,37 +240,41 @@ class Application_Model_Mapping_ResultLocation {
 	 *        	the table object, containing tableName and tableFormat
 	 * @param
 	 *        	Array of String $permissions the array of permissions (VIEW_SENSITIVE, VIEW_PRIVATE)
-	 * @param String $sessionId
-	 *        	the id of the user session
+	 * @param String $from
+	 *        	the FROM part of the SQL Request
+	 * @param String $where
+	 *        	the WHERE part of the SQL Request
+	 * @param String $reqId
+	 *        	the request id
 	 * @return Array|Integer the list of hiding levels
 	 */
-	public function getHidingLevels($keys, $tableValues, $table, $permissions, $sessionId) {
-		$hidingLevels = array();
+	public function getHidingLevels($keys, $tableValues, $table, $permissions, $from, $where, $reqId) {
 		// Retrieve parameters for calculation of hiding level
-		$req = "SELECT distinct sensiniveau, diffusionniveauprecision, dspublique FROM raw_data." . $table->tableName . " as rd " . "INNER JOIN results res ON res.table_format = ?
-				AND res.id_provider = rd." . $keys['id_provider'] . " AND res.id_observation = rd." . $keys['id_observation'] . " INNER JOIN requests req ON res.id_request = req.id
-				WHERE req.session_id = ? AND rd." . $keys['id_provider'] . " = ? AND rd." . $keys['id_observation'] . " = ?";
+		$ogamId = $keys['id_observation'];
+		$providerId = $keys['id_provider'];
+		$req = "SELECT $ogamId,  submission.$providerId, sensiniveau, diffusionniveauprecision, dspublique $from
+						INNER JOIN results res ON res.id_provider = submission.$providerId AND res.id_observation = $ogamId
+						$where AND res.id_request = ?
+						ORDER BY res.id_provider, res.id_observation;";
+
 		$select = $this->db->prepare($req);
-		foreach ($tableValues as $values) {
-			$select->execute(array(
-				$table->format,
-				$sessionId,
-				$values['id_provider'],
-				$values['id_observation']
-			));
+		$select->execute(array(
+			$reqId
+		));
 
-			$results = $select->fetch();
+		$results = $select->fetchAll();
 
-			$sensiNiveau = $results['sensiniveau'];
-			$diffusionNiveauPrecision = $results['diffusionniveauprecision'];
-			$dsPublique = $results['dspublique'];
+		for ($i = 0; $i < count($results); $i ++) {
+			$sensiNiveau = $results[$i]['sensiniveau'];
+			$diffusionNiveauPrecision = $results[$i]['diffusionniveauprecision'];
+			$dsPublique = $results[$i]['dspublique'];
 
 			$sensibilityHidingLevel = $this->getSensibilityHidingLevel($sensiNiveau, $permissions);
 			$privateHidingLevel = $this->getPrivateHidingLevel($dsPublique, $diffusionNiveauPrecision, $permissions);
-			$hidingLevels[] = max($sensibilityHidingLevel, $privateHidingLevel);
-		}
 
-		return $hidingLevels;
+			$tableValues[$i]['hiding_level'] = max($sensibilityHidingLevel, $privateHidingLevel);
+		}
+		return $tableValues;
 	}
 
 	/**
@@ -314,8 +325,6 @@ class Application_Model_Mapping_ResultLocation {
 	/**
 	 * Sets the hiding_level column for all values given.
 	 *
-	 * @param Array|Integer $hidingLevels
-	 *        	the list of levels of hiding (0, 1, 2, 3, 4)
 	 * @param
 	 *        	Array|Array of String $tableValues the list of the values of the primary key fields
 	 * @param String $tableFormat
@@ -323,16 +332,27 @@ class Application_Model_Mapping_ResultLocation {
 	 * @param String $sessionId
 	 *        	the id of the user session
 	 */
-	private function setHidingLevels($hidingLevels, $tableValues, $tableFormat, $sessionId) {
+	private function setHidingLevels($tableValues, $tableFormat, $sessionId) {
 		$fullRequest = "";
-		for ($i = 0; $i < count($tableValues); $i ++) {
-			$fullRequest .= "UPDATE results AS res SET hiding_level = " . $hidingLevels[$i] . " FROM requests AS req ";
-			$fullRequest .= "WHERE res.id_provider = '" . $tableValues[$i]['id_provider'] . "' ";
-			$fullRequest .= "AND res.id_observation = '" . $tableValues[$i]['id_observation'] . "' ";
-			$fullRequest .= "AND res.table_format = '" . $tableFormat . "' ";
-			$fullRequest .= "AND res.id_request = req.id AND req.session_id = '" . $sessionId . "';";
+		$permissions = $this->getVisuPermissions();
+		if ($permissions['logged']) {
+			$minHidingLevel = 0;
+		} else {
+			$minHidingLevel = 1;
 		}
-		$this->db->exec($fullRequest);
+
+		for ($i = 0; $i < count($tableValues); $i ++) {
+			if ($tableValues[$i]['hiding_level'] > $minHidingLevel) {
+				$fullRequest .= "UPDATE results AS res SET hiding_level = " . $tableValues[$i]['hiding_level'] . " FROM requests AS req ";
+				$fullRequest .= "WHERE res.id_provider = '" . $tableValues[$i]['id_provider'] . "' ";
+				$fullRequest .= "AND res.id_observation = '" . $tableValues[$i]['id_observation'] . "' ";
+				$fullRequest .= "AND res.table_format = '" . $tableFormat . "' ";
+				$fullRequest .= "AND res.id_request = req.id AND req.session_id = '" . $sessionId . "';";
+			}
+		}
+		if (!empty($fullRequest)) {
+			$this->db->exec($fullRequest);
+		}
 	}
 
 	/**
