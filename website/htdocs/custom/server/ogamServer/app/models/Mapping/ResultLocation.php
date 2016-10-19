@@ -167,9 +167,15 @@ class Application_Model_Mapping_ResultLocation {
 				));
 			}
 		} else {
+			$permissions = $this->getVisuPermissions();
+			if ($permissions['logged']) {
+				$defaultHidingLevel = 0;
+			} else {
+				$defaultHidingLevel = 1;
+			}
 			// We can use INSERT ... SELECT statement only if we are exactly on the same server
 			$sql = "INSERT INTO results (id_request, id_observation, id_provider, table_format, hiding_level)
-				SELECT ? , " . $keys['id_observation'] . ", $tableFormat." . $keys['id_provider'] . ", ? , 0 $from $where";
+				SELECT ? , " . $keys['id_observation'] . ", $tableFormat." . $keys['id_provider'] . ", ? , $defaultHidingLevel $from $where;";
 
 			$this->logger->info('fillResults : ' . $sql);
 
