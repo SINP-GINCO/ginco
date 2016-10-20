@@ -239,7 +239,7 @@ Total number of data in the submission;Nombre de données total dans la soumissi
 Download a file model for;Télécharger un modèle de fichier pour
 Export to GML;Export GML
 Spatial reference system (SRID);Système de référence (SRID)
-sridDescription;Sous la forme d'un code EPSG. Par exemple :	<ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>Voir le <a href='http://www.epsg-registry.org/' target='_blank'>registre des codes EPSG</a>.<br>Remarque : si les géométries de votre fichier sont nulles, indiquez n'importe quel code valide.
+sridDescription;Sous la forme d'un code EPSG. Par exemple :	<ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>Voir le <a href='http://www.epsg-registry.org/' target='_blank'>registre des codes EPSG</a>.<br>Remarque : si les géométries de votre fichier sont vides, indiquez n'importe quel code valide.
 
 ##########################
 #  Data Copy             #
