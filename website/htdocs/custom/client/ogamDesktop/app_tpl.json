@@ -522,6 +522,9 @@
         },
         {
             "path": "${build.id}/resources"
+        },
+        {
+            "path": "${app.dir}/../../custom/client/ogamDesktop/resources"
         }
     ],
 
