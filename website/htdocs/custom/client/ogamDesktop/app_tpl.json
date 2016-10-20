@@ -73,8 +73,7 @@
         "ux"
     ],
 
-    "locales": ["fr","en"],
-    //"locale": "fr", // For development mode
+    "locale": "fr",
 
     /**
      * Fashion build configuration properties.

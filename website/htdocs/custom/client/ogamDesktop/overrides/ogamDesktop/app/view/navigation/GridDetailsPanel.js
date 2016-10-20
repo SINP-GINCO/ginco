@@ -1,9 +1,6 @@
 Ext.define('Ginco.view.navigation.GridDetailsPanel', {
     override: 'OgamDesktop.view.navigation.GridDetailsPanel',
 
-    panelTitle: 'Résultat(s) depuis la couche des ',
-    panelTitleNoResults: 'Pas de résultats',
-
     /**
      * Configures the detail grid.
      * Overwrite: change the panel title according to the layer where results are returned from

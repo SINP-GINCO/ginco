@@ -1,10 +1,6 @@
 Ext.define('Ginco.controller.map.Main', {
     override: 'OgamDesktop.controller.map.Main',
 
-    noGeometryErrorTitle: 'No geometry for this observation',
-    noGeometryError: 'This observation has no geometry to show it on the map.',
-
-
     /**
      * Update the map on request success
      *
