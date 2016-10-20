@@ -10,7 +10,8 @@ Ext.define('Ginco.locale.fr.view.edition.Panel', {
  */
 Ext.define('Ginco.locale.fr.view.navigation.GridDetailsPanel', {
     override: 'OgamDesktop.view.navigation.GridDetailsPanel',
-    panelTitle: 'Résultats pour la couche : '
+    panelTitle: 'Résultat(s) depuis la couche des ',
+    panelTitleNoResults: 'Pas de résultats'
 });
 /*
  * Advanced request panel
@@ -27,4 +28,19 @@ Ext.define("Ginco.locale.fr.controller.map.Main", {
     override: "OgamDesktop.controller.map.Main",
     noGeometryErrorTitle: 'Pas de géométrie observation',
     noGeometryError: 'Cette observation n\'a pas de géométrie visible sur la carte.'
+});
+
+/*
+* Request field set
+*/
+Ext.define("Ginco.locale.fr.ux.request.RequestFieldSet", {
+	override: 'OgamDesktop.ux.request.RequestFieldSet',
+	taxrefScientificNameColumnTitle : 'Nom scientifique',
+	taxrefScientificNameColumnTooltip : 'Le nom scientifique sans l\'autorité (LB_NOM) du taxon',
+	taxrefLatinNameColumnTitle : 'Code',
+	taxrefLatinNameColumnTooltip : 'Le code (CD_NOM) du taxon',
+	taxrefVernacularNameColumnTitle : 'Nom vernaculaire',
+	taxrefVernacularNameColumnTooltip : 'Le nom vernaculaire du taxon',
+	taxrefCompleteNameColumnTitle : 'Nom complet',
+	taxrefCompleteNameColumnTooltip : 'Le nom complet du taxon (nom et auteur)'
 });

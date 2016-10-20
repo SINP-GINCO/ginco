@@ -6,7 +6,6 @@ Ext.define('Ginco.view.edition.Panel', {
     fieldWidth : 650,
 
     toggleVisibleButton : null,
-    toggleVisibilityLabel: 'Show/Hide optional fields',
 
     /**
      * Overwrite : add the "toggle visibility for optionel fields" button

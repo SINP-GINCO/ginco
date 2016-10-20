@@ -1,65 +1,7 @@
-/**
- * Licensed under EUPL v1.1 (see http://ec.europa.eu/idabc/eupl).
- *
- * © European Union, 2008-2012
- *
- * Reuse is authorised, provided the source is acknowledged. The reuse policy of the European Commission is implemented by a Decision of 12 December 2011.
- *
- * The general principle of reuse can be subject to conditions which may be specified in individual copyright notices.
- * Therefore users are advised to refer to the copyright notices of the individual websites maintained under Europa and of the individual documents.
- * Reuse is not applicable to documents subject to intellectual property rights of third parties.
- */
-
-/**
- * Show one field form.
- * 
- * The following parameters are expected : title : The title of the form id :
- * The identifier of the form
- * 
- * @class OgamDesktop.ux.request.RequestFieldSet
- * @extends Ext.panel.Panel
- * @constructor Create a new RequestFieldSet
- * @param {Object} config The config object
- */
 Ext.define('Ginco.ux.request.RequestFieldSet', {
-	override:'OgamDesktop.ux.request.RequestFieldSet',
+    override: 'OgamDesktop.ux.request.RequestFieldSet',
 
-//<locale>
-	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
-	 */
-	taxrefScientificNameColumnTitle : 'Nom scientifique',
-	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
-	 */
-	taxrefScientificNameColumnTooltip : 'Le nom scientifique sans l\'autorité (LB_NOM) du taxon',
-	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
-	 */
-	taxrefLatinNameColumnTitle : 'Code',
-	/**
-	 * @cfg {String} taxrefLatinNameColumnTitle The taxref code column title
-	 */
-	taxrefLatinNameColumnTooltip : 'Le code (CD_NOM) du taxon',
-	/**
-	 * @cfg {String} taxrefVernacularColumnTitle The taxref vernacular name column title
-	 */
-	taxrefVernacularNameColumnTitle : 'Nom vernaculaire',
-	/**
-	 * @cfg {String} taxrefVernacularNameColumnTooltip The taxref vernacular name column tooltip
-	 */
-	taxrefVernacularNameColumnTooltip : 'Le nom vernaculaire du taxon',
-	/**
-	 * @cfg {String} taxrefCompleteNameColumnTitle The taxref complete name column title
-	 */
-	taxrefCompleteNameColumnTitle : 'Nom complet',
-	/**
-	 * @cfg {String} taxrefCompleteNameColumnTooltip The taxref complete name column tooltip
-	 */
-	taxrefCompleteNameColumnTooltip : 'Le nom complet du taxon (nom et auteur)',
-//</locale>
-	
-	resizable:true,
+    resizable:true,
 
 	inheritableStatics : {
 
