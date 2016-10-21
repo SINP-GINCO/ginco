@@ -32,6 +32,7 @@ try {
     execCustSQLFile("$sprintDir/add_en_layers.sql", $config);
     execCustSQLFile("$sprintDir/update_ref_espece_sensible.sql", $config);
     execCustSQLFile("$sprintDir/delete_permission_access_geosource.sql", $config);
+    execCustSQLFile("$sprintDir/increase_columns_lengths_for_dee_export.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;
