@@ -350,7 +350,7 @@ CREATE TABLE website.job_queue
   length integer,
   progress integer,
   created_at timestamp without time zone DEFAULT now(),
-  command character varying(200) NOT NULL,
+  command character varying(1000) NOT NULL,
   pid integer,
   CONSTRAINT pk PRIMARY KEY (id)
 )
