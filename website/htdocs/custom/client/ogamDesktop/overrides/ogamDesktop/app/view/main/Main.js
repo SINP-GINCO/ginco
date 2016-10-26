@@ -26,7 +26,7 @@ Ext.define('Ginco.view.main.Main', {
 			text : 'Aide',
 			tooltip : 'Ouvrir l\'aide',
 			handler : function() {
-				window.open('https://ginco.ign.fr/doc', '_blank');
+				window.open('https://ginco.ign.fr/doc/recherche-visu/index.html', '_blank');
 			}
 		},{
 			xtype:'tbspacer',
