@@ -40,8 +40,12 @@ function loadPropertiesFromFile($configFilePath) {
 			continue;
 
 		if (!$isWaitingOtherLine) {
-			$key = substr($line, 0, strpos($line, '='));
-			$value = substr($line, strpos($line, '=')+1, strlen($line));
+		    // Regex capturing key-value pairs, with value enclosed in single quotes, double quotes, or nothing
+            // see https://regex101.com/r/hK6gEa/3
+            $pattern = '/\b(\w+)\s*=\s*(\'|"|\b)(.*)\2/';
+            preg_match($pattern, $line, $matches);
+            $key = $matches[1];
+            $value = $matches[3];
 		}	else {
 			$value .= $line;
 		}
