@@ -174,8 +174,11 @@ if ($total != 0) {
             throw new Exception("Error: could not open (w) file: $fileName");
         }
         else {
+            $params = array(
+                'site_name' => $configuration->getConfig('site_name', 'Plateforme GINCO-SINP')
+            );
             // Write the whole GML in the file flux
-            $gml->generateGML($resultsArray, $out, $jobId);
+            $gml->generateGML($resultsArray, $out, $jobId, $params);
             fclose($out);
         }
     }

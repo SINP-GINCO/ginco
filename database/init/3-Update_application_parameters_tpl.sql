@@ -56,5 +56,6 @@ INSERT INTO application_parameters (name, value, description) VALUES ('showUploa
 INSERT INTO application_parameters (name, value, description) VALUES ('featureinfo_selectmode', 'buffer', 'Method to return closest features : "distance" or "buffer"');
 insert into application_parameters (name, value, description) values ( 'mapserver_private_url' , '@ogam.local.map.services.url@/mapserv_@instance.name@.ginco?' , 'The private URL used by mapserverProxy to request a map server.');
 insert into application_parameters (name, value, description) values ( 'hiding_value' , 'Masqué' , 'The value to display when a field value should not be displayed');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'site_name', '@site.name@', 'Name of the website');
 -- Pour utiliser le tilecache
 -- insert into application_parameters (name, value, description) values ( 'tilecache_private_url' , 'http://localhost/tilecache-ogam?' , 'The private URL used by tilecacheProxy to request a tile cache.');
