@@ -28,6 +28,7 @@ try {
 	/* patch code here */
     execCustSQLFile("$sprintDir/update_region_names.sql", $config);
     execCustSQLFile("$sprintDir/add_site_name.sql", $config);
+    execCustSQLFile("$sprintDir/change_codeME_to_array.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;
