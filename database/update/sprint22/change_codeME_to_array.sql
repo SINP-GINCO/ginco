@@ -1,0 +1,2 @@
+INSERT INTO metadata.unit(unit, type, subtype, label, definition) VALUES ('CodeMasseEauValue', 'ARRAY', 'STRING', '[Liste] Code de la masse d''eau', 'Code de la masse d''eau');
+UPDATE metadata.data SET unit='CodeMasseEauValue' WHERE data='codeme';
