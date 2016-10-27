@@ -18,10 +18,19 @@
  */
 ?>
 
+<?php
+$configuration = Zend_Registry::get("configuration");
+
+$userSession = new Zend_Session_Namespace('user');
+$user = $userSession->user;
+
+$autoLogin = $configuration->getConfig('autoLogin', false) == 1;
+?>
+
 <?php echo $this->doctype()?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <?php echo $this->headTitle()?>
+  <title><?php echo $configuration->getConfig('site_name', 'GINCO')?></title>
   <?php echo $this->headMeta()?>
   <?php echo $this->headLink()?>
   <?php echo $this->headStyle()?>
@@ -99,12 +108,6 @@
 
 					<div id="header-login" class="header-login" style="float: right">
 <?php
-$configuration = Zend_Registry::get("configuration");
-
-$userSession = new Zend_Session_Namespace('user');
-$user = $userSession->user;
-
-$autoLogin = $configuration->getConfig('autoLogin', false) == 1;
 if (!$autoLogin) {
 	if (!empty($user)) {
 	?>
