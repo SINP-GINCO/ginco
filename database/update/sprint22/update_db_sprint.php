@@ -27,6 +27,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here */
     execCustSQLFile("$sprintDir/update_region_names.sql", $config);
+    execCustSQLFile("$sprintDir/add_site_name.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;

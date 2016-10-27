@@ -37,8 +37,9 @@ class GMLExport
      * @param $observations
      * @param $out: stream ($out= fopen($filename,'w') or $out = fopen('php://output', 'w') )
      * @param int|null $jobId : job id in the job_queue table. If not null, the function will write its progress in the job_queue table.
+     * @param array $params : associative id of parameters
      */
-    public function generateGML($observations, $out, $jobId = null)
+    public function generateGML($observations, $out, $jobId = null, $params = null)
     {
         // Job Manager
         if ($jobId) {
@@ -63,6 +64,9 @@ class GMLExport
         foreach ($observations as $index => $observation) {
             $observation = $this->dee->formatDates($observation);
             $observation = $this->dee->transformCodes($observation);
+            $observation = $this->dee->fillValues($observation, array(
+                'orgtransformation' => (isset($params['site_name']) ? $params['site_name'] : 'Plateforme GINCO-SINP')
+            ));
             $observation = $this->dee->specialCharsXML($observation);
             $observation = $this->dee->structureObservation($observation);
 

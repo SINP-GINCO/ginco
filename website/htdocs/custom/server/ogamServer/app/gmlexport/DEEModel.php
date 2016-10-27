@@ -86,6 +86,20 @@ class DEEModel {
 	}
 
     /**
+     * Fill values with DEE-calculated fields
+     *
+     * @param $observation array (associative and not nested)
+     * @param $values array (associative, field => value)
+     * @return array
+     */
+    public function fillValues($observation, $values) {
+        foreach ($values as $field => $value) {
+            $observation[$field] = $value;
+        }
+        return $observation;
+    }
+
+    /**
      * Escape special XML chars
      *
      * @param $observation array (associative and not nested)
