@@ -9,18 +9,19 @@ DELETE FROM predefined_request;
 
 -- Création d'un thème (groupe de requêtes)
 INSERT INTO predefined_request_group(group_name, label, definition, position) VALUES ('dataset_2', 'Std occ taxon dee v1-2-1', 'Std occ taxon dee v1-2-1', 1);
-INSERT INTO predefined_request_group(group_name, label, definition, "position") VALUES ('saved_requests', 'recherches sauvegardées', 'recherches sauvegardées', 1);
+INSERT INTO predefined_request_group(group_name, label, definition, position) VALUES ('public_requests', 'Recherches sauvegardées publiques', 'Recherches visibles par tous les utilisateurs.', 1);
+INSERT INTO predefined_request_group(group_name, label, definition, position) VALUES ('private_requests', 'Recherches sauvegardées privées', 'Recherches visibles par moi uniquement.', 2);
 
 
 -- Création d'une requête prédéfinie
-INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date) VALUES ('dataset_2_group_request', 'RAW_DATA', 'dataset_2', 'critères les plus fréquents', null,  now());
+INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_group_request', 'RAW_DATA', 'dataset_2', 'critères les plus fréquents', null,  now(), null);
 
-INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date) VALUES ('dataset_2_periode', 'RAW_DATA', 'dataset_2', 'par période d''observation', null,  now());
-INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date) VALUES ('dataset_2_biogeo', 'RAW_DATA', 'dataset_2', 'par statut bio-géographique', null,  now());
-INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date) VALUES ('dataset_2_producteur', 'RAW_DATA', 'dataset_2', 'par  organisme producteur de données', null,  now());
-INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date) VALUES ('dataset_2_localisation', 'RAW_DATA', 'dataset_2', 'par localisation', null,  now());
+INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_periode', 'RAW_DATA', 'dataset_2', 'par période d''observation', null,  now(), null);
+INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_biogeo', 'RAW_DATA', 'dataset_2', 'par statut bio-géographique', null,  now(), null);
+INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_producteur', 'RAW_DATA', 'dataset_2', 'par  organisme producteur de données', null,  now(), null);
+INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_localisation', 'RAW_DATA', 'dataset_2', 'par localisation', null,  now(), null);
 
-INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date) VALUES ('dataset_2_donnees_a_sensibiliser', 'RAW_DATA', 'dataset_2', 'données à sensibiliser', 'données requérant une intervention manuelle',  now());
+INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_donnees_a_sensibiliser', 'RAW_DATA', 'dataset_2', 'données à sensibiliser', 'données requérant une intervention manuelle',  now(), null);
 
 
 -- Configuration des requêtes prédéfinies
@@ -147,14 +148,14 @@ INSERT INTO predefined_request_result (request_name, format, data) VALUES ('data
 
 
 -- Rattachement de la requête prédéfinies au thème
-INSERT INTO website.predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_group_request', 1);
+INSERT INTO predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_group_request', 1);
 
-INSERT INTO website.predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_periode', 1);
-INSERT INTO website.predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_biogeo', 1);
-INSERT INTO website.predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_producteur', 1);
-INSERT INTO website.predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_localisation', 1);
+INSERT INTO predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_periode', 1);
+INSERT INTO predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_biogeo', 1);
+INSERT INTO predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_producteur', 1);
+INSERT INTO predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_localisation', 1);
 
-INSERT INTO website.predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_donnees_a_sensibiliser', 1);
+INSERT INTO predefined_request_group_asso(group_name, request_name, position) VALUES ('dataset_2', 'dataset_2_donnees_a_sensibiliser', 1);
 
 
 GRANT ALL ON SCHEMA "website" TO ogam;
