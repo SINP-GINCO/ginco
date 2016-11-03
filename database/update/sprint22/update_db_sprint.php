@@ -31,6 +31,7 @@ try {
     execCustSQLFile("$sprintDir/change_codeME_to_array.sql", $config);
     execCustSQLFile("$sprintDir/change_nomCommuneCalcule_to_ARRAY_of_STRING.sql", $config);
     execCustSQLFile("$sprintDir/add_dsr_checks.sql", $config);
+    execCustSQLFile("$sprintDir/add_predefined_requests_permissions.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;
