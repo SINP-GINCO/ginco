@@ -21,7 +21,7 @@ La page suivante permet alors d'indiquer l'identifiant, le mot de passe (à sais
 L'organisme et le rôle sont à sélectionner dans les listes déroulantes.
 Enfin cliquez sur "Valider".
  
-.. image:: ../images/administration-role-ajouter.png
+.. image:: ../images/administration-utilisateur-ajouter.png
 
 .. note:: Il faut créer l'organisme et le rôle avant l'utilisateur.
 
