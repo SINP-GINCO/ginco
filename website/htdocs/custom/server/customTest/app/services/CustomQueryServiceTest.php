@@ -125,6 +125,31 @@ class CustomQueryServiceTest extends ControllerTestCase {
 		// The codedepartementcalcule
 		$this->assertNotContains($this->ĥidingValue, $results['rows'][$key][4][0]);
 	}
+	
+	/**
+	 * Test on getResultRowsCustom.
+	 * User has all permissions.
+	 * Set of results data is linked with request id 100.
+	 * No value should be hidden.
+	 * Values must be ordered by observateuridentite
+	 * TODO correct and migrate to Symfony2
+	 */
+	public function untestGetResultRowsCustomSort() {
+		// Test Parameters
+		$requestId = 101;
+		$websiteSession = $this->getWebsiteSessionSort($requestId);
+	
+		$json = $this->queryService->getResultRowsCustom(0, 20, null, null, $requestId, $websiteSession);
+		$results = json_decode($json, true);
+	
+		$this->assertEquals(1, $results['success']);
+		$this->assertEquals(20, $results['total']);
+		$this->assertCount(20, $results['rows']);
+		
+		// The observateuridentite
+		$this->assertEquals(null, $results['rows'][0][1]);
+		$this->assertEquals("Bloody BEETROOTS", $results['rows'][1][1]);
+	}
 
 	/**
 	 * Test on getResultRowsCustom.
@@ -599,6 +624,36 @@ class CustomQueryServiceTest extends ControllerTestCase {
 
 		return $websiteSession;
 	}
+	
+	/**
+	 * Returns a basic stub website session object for sort request.
+	 *
+	 * @param Integer $requestId
+	 * @return Zend_Session_Namespace
+	 */
+	private function getWebsiteSessionSort($requestId) {
+		$websiteSession = new Zend_Session_Namespace('website');
+		
+		$websiteSession->SQLSelect = "SELECT DISTINCT table_observation.ogam_id_table_observation as table_observation__OGAM_ID_table_observation,
+			table_observation.observateuridentite as table_observation__observateuridentite, 
+			'SCHEMA/RAW_DATA/FORMAT/table_observation' || '/' || 'OGAM_ID_table_observation/' ||table_observation.OGAM_ID_table_observation || '/' || 'PROVIDER_ID/' ||table_observation.PROVIDER_ID as id,
+			 table_observation.OGAM_ID_table_observation,table_observation.PROVIDER_ID,
+			 coalesce(table_observation.observateuridentite, '') ,
+			 hiding_level ";
+		$websiteSession->SQLPkey = " table_observation.OGAM_ID_table_observation, table_observation.PROVIDER_ID ";
+		$websiteSession->SQLFrom = " FROM model_1_observation table_observation LEFT JOIN RAW_DATA.submission ON submission.submission_id = table_observation.submission_id ";
+		$websiteSession->SQLFromJoinResults = " FROM model_1_observation table_observation LEFT JOIN RAW_DATA.submission ON submission.submission_id = table_observation.submission_id,
+			LEFT JOIN mapping.results ON results.id_observation = table_observatioN.ogam_id_table_observation AND results.id_provider = table_observation.provider_id";
+		$websiteSession->SQLWhere = " WHERE (1 = 1) AND table_observation.sensiniveau IN ('0', '1', '2', '3', '4')
+			AND table_observation.OGAM_ID_table_observation = results.id_observation AND table_observation.PROVIDER_ID = results.id_provider
+			AND table_format = 'table_observation' AND hiding_level <= 1000 AND id_request = " . $requestId;
+		$websiteSession->SQLAndWhere = "";
+		$websiteSession->count = 20;
+		$websiteSession->resultColumns = $this->getResultSort();
+	
+		return $websiteSession;
+	}
+	
 
 	/**
 	 * Returns a a basic stub resultColunmns array.
@@ -654,6 +709,33 @@ class CustomQueryServiceTest extends ControllerTestCase {
 		);
 	}
 
+	/**
+	 * Returns a sort stub resultColunmns array.
+	 *
+	 * @return Application_Object_Metadata_TableField[]
+	 */
+	private function getResultSort() {
+		$columnId = new Application_Object_Metadata_TableField();
+		$columnId->columnName = "ogam_id_table_observation";
+		$columnId->unit = "IDString";
+		$columnId->type = "STRING";
+		$columnId->format = "table_observation";
+		$columnId->data = "ogam_id_table_observation";
+	
+		$columnObservateuridentite = new Application_Object_Metadata_TableField();
+		$columnObservateuridentite->columnName = "observateuridentite";
+		$columnObservateuridentite->unit = "CharacterString";
+		$columnObservateuridentite->type = "STRING";
+		$columnObservateuridentite->subtype = null;
+		$columnObservateuridentite->format = "table_observation";
+		$columnObservateuridentite->data = "observateuridentite";
+	
+		return array(
+			"table_observation__OGAM_ID_table_observation" => $columnId,
+			"table_observation__observateur_identite" => $columnObservateuridentite
+		);
+	}
+	
 	/**
 	 * Returns a basic form query stub object.
 	 *
