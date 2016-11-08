@@ -245,8 +245,7 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	 */
 	public function addPredefinedRequest($requestName, $schemaCode, $datasetId, $label, $dbconn) {
 		// Add the predefined request
-		$sql = "INSERT INTO website.predefined_request (request_name, schema_code, dataset_id, label, definition, date) VALUES ('" . $requestName . "','" . $schemaCode . "','" . $datasetId . "', '" . $label . "', null,  now());";
-		pg_prepare($dbconn, "", $sql);
+		$sql = "INSERT INTO website.predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('" . $requestName . "','" . $schemaCode . "','" . $datasetId . "', '" . $label . "', null,  now(), null);";		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
 	}
 
