@@ -61,7 +61,7 @@ delete from data;
 
 delete from unit;
 
-delete from checks where check_id <= 1200;
+delete from checks;
 
 delete from modele_datasets;
 delete from dataset_files;

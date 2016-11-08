@@ -31,7 +31,7 @@ delete from dataset_files;
 
 delete from group_mode;
 delete from checks_per_provider;
-delete from checks where check_id <= 1200;
+delete from checks;
 delete from model_datasets;
 delete from dataset_forms;
 
