@@ -52,7 +52,8 @@ Consulter les métadonnées                                    **Oui**        **
 Gérer les jeux de données (export GML...)                    **Oui**          Non        Non
 Visualiser les données privées                               **Oui**          Non        Non
 Publier les données                                          **Oui**          Non        Non
-Consulter les métadonnées                                    **Oui**        **Oui**      Non
+Gérer les requêtes publiques                                 **Oui**          Non        Non
+Gérer ses requêtes privées                                   **Oui**        **Oui**      Non
 ========================================================  ==============  ==========  ========
 
 .. note:: La permission Consulter les métadonnées ne permet pas d'en saisir ou d'en importer.
