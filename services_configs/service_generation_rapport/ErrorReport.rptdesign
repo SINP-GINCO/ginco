@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="comments">Copyright (c) 2006 &lt;&lt;Your Company Name here>></property>
-    <property name="createdBy">Eclipse BIRT Designer Version 4.4.2.v201410272105 Build &lt;4.4.2.v20150217-1805></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
     <html-property name="description">Creates a blank report with no predefined content.</html-property>
     <property name="units">in</property>
     <text-property name="displayName">Blank Report</text-property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
     <parameters>
-        <scalar-parameter name="submissionid" id="5">g
+        <scalar-parameter name="submissionid" id="5">
             <property name="valueType">static</property>
             <property name="isRequired">true</property>
             <property name="dataType">integer</property>
@@ -135,7 +135,7 @@
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select _creationdt as  submissiondate, 
+            <xml-property name="queryText"><![CDATA[select _creationdt as  submissiondate,
 	label as dataset_id,
 	step,
 	status,
@@ -395,8 +395,8 @@ AND ce.submission_id = ?]]></xml-property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">error_message</property>
-                    <property name="nativeName">error_message</property>
+                    <property name="name">description</property>
+                    <property name="nativeName">description</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
@@ -408,7 +408,7 @@ AND ce.submission_id = ?]]></xml-property>
                     <property name="nativeDataType">-5</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT check_id, max(error_message) as error_message, count(*) as count
+            <xml-property name="queryText"><![CDATA[SELECT check_id, max(description) as description, count(*) as count
 FROM check_error ce
 LEFT JOIN checks c using (check_id)
 WHERE c.step = 'COMPLIANCE'
@@ -589,8 +589,8 @@ AND ce.submission_id = ?]]></xml-property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">error_message</property>
-                    <property name="nativeName">error_message</property>
+                    <property name="name">description</property>
+                    <property name="nativeName">description</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
@@ -602,7 +602,7 @@ AND ce.submission_id = ?]]></xml-property>
                     <property name="nativeDataType">-5</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[SELECT check_id, max(error_message) as error_message, count(*) as count
+            <xml-property name="queryText"><![CDATA[SELECT check_id, max(description) as description, count(*) as count
 FROM check_error ce
 LEFT JOIN checks c using (check_id)
 WHERE c.step = 'CONFORMITY'
@@ -936,7 +936,7 @@ group by check_id]]></xml-property>
                 <structure>
                     <property name="name">error_message</property>
                     <text-property name="displayName">error_message</text-property>
-                    <expression name="expression">dataSetRow["error_message"]</expression>
+                    <expression name="expression">dataSetRow["description"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
@@ -1038,7 +1038,7 @@ group by check_id]]></xml-property>
                             <property name="borderLeftStyle">none</property>
                             <property name="borderRightStyle">none</property>
                             <property name="borderTopStyle">none</property>
-                            <property name="textAlign">center</property>
+                            <property name="textAlign">left</property>
                             <property name="resultSetColumn">error_message</property>
                         </data>
                     </cell>
@@ -1096,7 +1096,7 @@ group by check_id]]></xml-property>
                 <structure>
                     <property name="name">error_message</property>
                     <text-property name="displayName">error_message</text-property>
-                    <expression name="expression">dataSetRow["description"]</expression>
+                    <expression name="expression">dataSetRow["error_message"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
@@ -1108,6 +1108,23 @@ group by check_id]]></xml-property>
             </list-property>
             <structure name="toc"/>
             <property name="pageBreakInterval">30</property>
+            <list-property name="sort">
+                <structure>
+                    <expression name="key" type="javascript">row["src_format"]</expression>
+                    <property name="direction">asc</property>
+                    <property name="strength">-1</property>
+                </structure>
+                <structure>
+                    <expression name="key" type="javascript">row["line_number"]</expression>
+                    <property name="direction">asc</property>
+                    <property name="strength">-1</property>
+                </structure>
+                <structure>
+                    <expression name="key" type="javascript">row["check_id"]</expression>
+                    <property name="direction">asc</property>
+                    <property name="strength">-1</property>
+                </structure>
+            </list-property>
             <column id="1038">
                 <property name="width">0.7083333333333334in</property>
             </column>
@@ -1235,7 +1252,7 @@ group by check_id]]></xml-property>
                     </cell>
                     <cell id="1029">
                         <data id="1030">
-                            <property name="textAlign">center</property>
+                            <property name="textAlign">left</property>
                             <property name="resultSetColumn">error_message</property>
                         </data>
                     </cell>
@@ -1272,7 +1289,7 @@ group by check_id]]></xml-property>
                 <structure>
                     <property name="name">error_message</property>
                     <text-property name="displayName">error_message</text-property>
-                    <expression name="expression">dataSetRow["error_message"]</expression>
+                    <expression name="expression">dataSetRow["description"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
@@ -1344,7 +1361,7 @@ group by check_id]]></xml-property>
                     </cell>
                     <cell id="1084">
                         <data id="1083">
-                            <property name="textAlign">center</property>
+                            <property name="textAlign">left</property>
                             <property name="resultSetColumn">error_message</property>
                         </data>
                     </cell>
@@ -1402,7 +1419,7 @@ group by check_id]]></xml-property>
                 <structure>
                     <property name="name">error_message</property>
                     <text-property name="displayName">error_message</text-property>
-                    <expression name="expression">dataSetRow["description"]</expression>
+                    <expression name="expression">dataSetRow["error_message"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
@@ -1411,30 +1428,47 @@ group by check_id]]></xml-property>
                     <expression name="expression">dataSetRow["src_data"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">line_number</property>
+                    <text-property name="displayName">line_number</text-property>
+                    <expression name="expression">dataSetRow["line_number"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <property name="pageBreakInterval">30</property>
+            <list-property name="sort">
+                <structure>
+                    <expression name="key" type="javascript">row["src_format"]</expression>
+                    <property name="direction">asc</property>
+                    <property name="strength">-1</property>
+                </structure>
+                <structure>
+                    <expression name="key" type="javascript">row["line_number"]</expression>
+                    <property name="direction">asc</property>
+                    <property name="strength">-1</property>
+                </structure>
+                <structure>
+                    <expression name="key" type="javascript">row["check_id"]</expression>
+                    <property name="direction">asc</property>
+                    <property name="strength">-1</property>
+                </structure>
+            </list-property>
             <column id="1127">
-                <property name="width">0.7083333333333334in</property>
+                <property name="width">0.7291666666666666in</property>
             </column>
             <column id="1128">
-                <property name="width">1.65625in</property>
+                <property name="width">1.90625in</property>
             </column>
-            <column id="1149">
-                <property name="width">1.96875in</property>
-            </column>
-            <column id="1130">
-                <property name="width">1.75in</property>
-            </column>
-            <column id="1131">
-                <property name="width">1.625in</property>
+            <column id="1198">
+                <property name="width">0.90625in</property>
             </column>
             <column id="1132">
-                <property name="width">3.1875in</property>
+                <property name="width">7.416666666666667in</property>
             </column>
             <header>
                 <row id="1155">
                     <cell id="1156">
-                        <property name="colSpan">6</property>
+                        <property name="colSpan">4</property>
                         <property name="rowSpan">1</property>
                         <text id="1134">
                             <property name="style">Title3</property>
@@ -1458,22 +1492,10 @@ group by check_id]]></xml-property>
                             <text-property name="text">Modèle de fichier</text-property>
                         </label>
                     </cell>
-                    <cell id="1146">
-                        <label id="1150">
+                    <cell id="1195">
+                        <label id="1199">
                             <property name="fontWeight">bold</property>
-                            <text-property name="text">Champ</text-property>
-                        </label>
-                    </cell>
-                    <cell id="1101">
-                        <label id="1102">
-                            <property name="fontWeight">bold</property>
-                            <text-property name="text">Valeur</text-property>
-                        </label>
-                    </cell>
-                    <cell id="1103">
-                        <label id="1104">
-                            <property name="fontWeight">bold</property>
-                            <text-property name="text">Valeur ou format attendu</text-property>
+                            <text-property name="text">Ligne</text-property>
                         </label>
                     </cell>
                     <cell id="1105">
@@ -1499,28 +1521,15 @@ group by check_id]]></xml-property>
                             <property name="resultSetColumn">src_format</property>
                         </data>
                     </cell>
-                    <cell id="1147">
-                        <data id="1151">
+                    <cell id="1196">
+                        <data id="1201">
                             <property name="textAlign">center</property>
-                            <property name="resultSetColumn">src_data</property>
-                        </data>
-                    </cell>
-                    <cell id="1114">
-                        <data id="1115">
-                            <property name="textAlign">center</property>
-                            <property name="resultSetColumn">found_value</property>
-                        </data>
-                    </cell>
-                    <cell id="1116">
-                        <data id="1117">
-                            <property name="textAlign">center</property>
-                            <structure name="toc"/>
-                            <property name="resultSetColumn">expected_value</property>
+                            <property name="resultSetColumn">line_number</property>
                         </data>
                     </cell>
                     <cell id="1118">
                         <data id="1119">
-                            <property name="textAlign">center</property>
+                            <property name="textAlign">left</property>
                             <property name="resultSetColumn">error_message</property>
                         </data>
                     </cell>
@@ -1530,9 +1539,7 @@ group by check_id]]></xml-property>
                 <row id="1120">
                     <cell id="1121"/>
                     <cell id="1122"/>
-                    <cell id="1148"/>
-                    <cell id="1124"/>
-                    <cell id="1125"/>
+                    <cell id="1197"/>
                     <cell id="1126"/>
                 </row>
             </footer>
@@ -1582,7 +1589,7 @@ group by check_id]]></xml-property>
                 QyXooAkOPPWsaPVIVEUAgxtUoAU6qBIIoICLAQCDCNgBwQ5AcIAdJCetgA0sRaJaqd4sQFcgcIExCqGM
                 BGySTssUrGQnS51xesRDVjjAFnBAUMp69rMDIWxCiCWCJ4L2tKgNrWVTy9rWdkS0ro2ta2Er29oYnpa2
                 ts3tZHGr294C1gS+Da5wh0tc4gYEADs=
-</property>
+            </property>
         </structure>
         <structure>
             <property name="name">Eforest-banner.jpg</property>
@@ -3202,7 +3209,7 @@ group by check_id]]></xml-property>
                 j38w/dDv4boQIX4ux7+Yfuh38N0IEL8XY9/MP3Q7+G6ECF+Lse/mH7od/DdCBC/F2PfzD90O/huhAhfi
                 7Hv5h+6Hfw3QgQvxdj38w/dDv4boQIX4ux7+Yfuh38N0IEL8XY9/MP3Q7+G6ECF+Lse/mH7od/DdCBDJ
                 keR0x9MYIIZ7pEvy/tx/LlM7uwqCR33pIGMThjFX1VPh0IEf/9k=
-</property>
+            </property>
         </structure>
         <structure>
             <property name="name">banner.jpg</property>
@@ -3695,7 +3702,7 @@ group by check_id]]></xml-property>
                 AFBT1Eznyj+UgMCIAFBF2AQt1jdsF8a07AaDw+/cfpOjtAgt+oAjyBiZmSvaE3aCl9NiyWv8y5PtlF6m
                 W8EVZkfcMpIKMFlBRPVjGjd2tW9A48GW+fGkdTmFfFtiCS+Zu/fl1B1OP/wqA6gEgQVKOoVwLlYgm0NQ
                 3BiE38GoajxNIaizNvHaGv4t46hqbeB15BmGoblfz0huOvLqGWVHU2jqcyo48rif/9k=
-</property>
+            </property>
         </structure>
         <structure>
             <property name="name">banner-sinp.png</property>
@@ -5040,7 +5047,7 @@ group by check_id]]></xml-property>
                 2KD/qTEGoUeQEq0C2iYkOqo7az0fa32tjaygxMCCEBWnZzFE02P82TmLkW2mBi7HAeU4KAq3Dd5u1/Hf
                 OcBREwmaSIWeZHvrQHUcYE+yjQNVZxmmUO+W1vzTuN63Burb6ybV7KWWf+e5uXHa9M/53fwdEhxo0p8b
                 a6yxxv4f4/GBAD9aCGMAAAAASUVORK5CYII=
-</property>
+            </property>
         </structure>
     </list-property>
 </report>
