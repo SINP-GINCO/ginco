@@ -58,20 +58,20 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getResultRowsCustom($start, $length, $sort, $sortDir, $idRequest, $websiteSession) {
 		$this->logger->debug('getResultRows custom');
-
+		
 		$configuration = Zend_Registry::get("configuration");
 		$projection = $configuration->getConfig('srs_visualisation', 3857);
 		$ĥidingValue = $configuration->getConfig('hiding_value');
-
+		
 		try {
-
+			
 			$select = $websiteSession->SQLSelect;
 			$pKey = $websiteSession->SQLPkey;
 			$fromJoins = $websiteSession->SQLFromJoinResults;
 			$from = $websiteSession->SQLFrom;
 			$where = $websiteSession->SQLWhere;
 			$andWhere = $websiteSession->SQLAndWhere;
-
+			
 			$order = "";
 			$hidingLevelKey = ", hiding_level, ";
 			if (!empty($sort)) {
@@ -90,15 +90,18 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				if ($orderKeyType == 'GEOM' || $orderKeyType == 'DATE') {
 					$select .= ", " . $orderKey;
 				}
+				$nullSubstitute = $this->getPostgresValueFromOgamType($orderKeyType);
 			} else {
 				$order .= " ORDER BY " . $pKey;
 			}
-
+			
 			// Subquery (for getting desired rows)
 			if (empty($orderKey)) {
 				$subquery = "SELECT DISTINCT " . $pKey . $from . $where;
 			} else {
-				$subquery = "SELECT DISTINCT " . $pKey . ", " . $orderKey . $from . $where;
+				// coalesce() replaces $orderKey NULL values by $nullSubstitute
+				$orderkeyCoalesce = "coalesce($orderKey, '$nullSubstitute')";
+				$subquery = "SELECT DISTINCT $pKey, $orderkeyCoalesce $from $where";
 			}
 			$filter = "";
 			if (!empty($length)) {
@@ -107,25 +110,27 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			if (!empty($start)) {
 				$filter .= " OFFSET " . $start;
 			}
-
+			
 			$this->logger->debug('select = ' . $select);
 			$this->logger->debug('pkey = ' . $pKey);
 			$this->logger->debug('from = ' . $from);
 			$this->logger->debug('where = ' . $where);
-
+			
 			// // Build complete query
 			if (empty($orderKey)) {
 				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey) IN ($subquery $order $filter) $andWhere";
 			} else {
-				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey, $orderKey) IN ($subquery $order $filter) $andWhere $order";
+				$query = "$select, $orderkeyCoalesce $hidingLevelKey $pKey $fromJoins";
+				$query .= " WHERE ($pKey, $orderkeyCoalesce) IN ($subquery ORDER BY coalesce $sortDir $filter)";
+				$query .= " $andWhere ORDER BY $orderkeyCoalesce $sortDir";
 			}
 			// Execute the request
 			$result = $this->genericModel->executeRequest($query);
-
+			
 			// Retrive the session-stored info
 			$resultColumns = $websiteSession->resultColumns;
 			$countResult = $websiteSession->count;
-
+			
 			// Result rows (one row = an non-indexed array of values)
 			$rows = array();
 			foreach ($result as $line) {
@@ -136,7 +141,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 						$observationId = $value;
 					}
 				}
-
+				
 				foreach ($resultColumns as $tableField) {
 					$key = strtolower($tableField->getName());
 					$value = $line[$key];
@@ -169,16 +174,16 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 						$row[] = $value;
 					}
 				}
-
+				
 				// Add the line id
 				$row[] = $line['id'];
 				// And the plot location in WKT: NO !!! We replace it with
 				// the bounding box of the "more precise geometry visible by user"
 				// $row[] = $line['location_centroid'];
-
+				
 				// Add the bounding box of the more precise geometry visible by user (and non-empty geometry)
 				// (used by "See on the map" button).
-
+				
 				$hidingLevels = array(
 					"geometrie",
 					"commune",
@@ -186,11 +191,11 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 					"departement"
 				);
 				$bbox = '';
-
+				
 				for ($i = $hidingLevel; $i < count($hidingLevels); $i ++) {
 					$layer = $hidingLevels[$i];
 					$idKey = ($layer == "geometrie") ? "geom" : $layer;
-
+					
 					$bbQuery = "SELECT ST_AsText(ST_Extent(ST_Transform(geom, $projection ))) AS wkt
 								FROM bac_$layer bac
 								INNER JOIN observation_$layer obs ON obs.id_$idKey = bac.id_$layer
@@ -207,13 +212,13 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 					}
 				}
 				$row[] = $bbox;
-
+				
 				// Right management : add the provider id of the data
 				$userSession = new Zend_Session_Namespace('user');
 				if (!$userSession->user->isAllowed('DATA_EDITION_OTHER_PROVIDER')) {
 					$row[] = $line['provider_id'];
 				}
-
+				
 				$rows[] = $row;
 			}
 		} catch (Exception $e) {
@@ -224,7 +229,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			);
 			return json_encode($json);
 		}
-
+		
 		// Send the result as a JSON String
 		$json = array(
 			"success" => true,
@@ -251,17 +256,17 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getResultColumnsCustom($datasetId, $formQuery, $maxPrecisionLevel, $requestId, $websiteSession) {
 		$this->logger->debug('getResultColumns custom');
-
+		
 		$json = "";
 		// Transform the form request object into a table data object
 		$queryObject = $this->genericService->getFormQueryToTableData($this->schema, $formQuery);
-
+		
 		if (count($formQuery->results) === 0) {
 			$json = '{"success": false, "errorMessage": "At least one result column should be selected"}';
 		} else {
-
+			
 			$this->customGenericService = new Custom_Application_Service_GenericService();
-
+			
 			$select = $websiteSession->SQLSelect;
 			$pKey = $websiteSession->SQLPkey;
 			$from = $websiteSession->SQLFromJoinResults;
@@ -269,33 +274,33 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			// Customize select
 			$select .= ', ' . $pKey . ", hiding_level";
 			$rawDataTableName = str_replace(',', '', explode(' ', $from)[3]);
-
+			
 			// Add where clause for filtering on hiding_level
 			$andWhere = " AND table_format = '" . $rawDataTableName . "'";
 			$andWhere .= " AND id_request = " . $requestId;
 			$andWhere .= " AND hiding_level <= " . $maxPrecisionLevel;
-
+			
 			// Customize from
 			$from .= ', mapping.results ';
-
+			
 			$this->logger->debug('$select : ' . $select);
 			$this->logger->debug('$from : ' . $from);
 			$this->logger->debug('$where : ' . $where);
-
+			
 			$websiteSession->datasetId = $datasetId;
 			$websiteSession->SQLAndWhere = $andWhere;
-
+			
 			// Send the result as a JSON String
 			$json = '{"success":true,';
-
+			
 			// Metadata
 			$json .= '"root":[';
 			// Get the titles of the columns
 			foreach ($formQuery->results as $formField) {
-
+				
 				// Get the full description of the form field
 				$formField = $this->metadataModel->getFormField($formField->format, $formField->data);
-
+				
 				// Export the JSON
 				$json .= '{' . $formField->toJSON() . ', "hidden":false},';
 			}
@@ -303,7 +308,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$json .= '{"name":"id","label":"Identifier of the line","inputType":"TEXT","definition":"The plot identifier", "hidden":true}';
 			// Add the plot location in WKT
 			$json .= ',{"name":"location_centroid","label":"Location centroid","inputType":"TEXT","definition":"The plot location", "hidden":true}';
-
+			
 			// Right management : add the provider id of the data
 			$userSession = new Zend_Session_Namespace('user');
 			if (!$userSession->user->isAllowed('DATA_EDITION_OTHER_PROVIDER')) {
@@ -325,9 +330,9 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getMaxPrecisionLevel($criterias) {
 		$this->logger->debug('getMaxPrecisionLevel');
-
+		
 		$maxPrecisionLevel = 1000;
-
+		
 		foreach ($criterias as $criteria) {
 			$criteriaName = $criteria->data;
 			if (isset(Custom_Application_Service_QueryService::getFieldsLevels()[$criteriaName])) {
@@ -337,7 +342,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				}
 			}
 		}
-
+		
 		$this->logger->debug("maxPrecisionLevel : " . $maxPrecisionLevel);
 		return $maxPrecisionLevel;
 	}
@@ -346,8 +351,8 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 * Returns true if column has geographic type information and if it is more precise
 	 * than the hiding level of the row.
 	 *
-	 * @param string $columnName
-	 * @param integer $hidingLevel
+	 * @param string $columnName        	
+	 * @param integer $hidingLevel        	
 	 * @return boolean
 	 */
 	public function shouldValueBeHidden($columnName, $hidingLevel) {
@@ -393,52 +398,52 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getDetailsDataCustom($id, $detailsLayers, $datasetId, $bbox = '', $withChildren = false) {
 		$this->logger->debug('getDetailsData : ' . $id);
-
+		
 		// Transform the identifier in an array
 		$keyMap = $this->_decodeId($id);
-
+		
 		// The test in the following block code (empty[$keyMap[$infoField->data]])
 		// fails if $infoField->data and the keys of $keyMap don't have the same case...
 		// So we put everything in uppercase
 		$keysKeyMap = array_map("strtoupper", array_keys($keyMap));
 		$valuesKeyMap = array_values($keyMap);
 		$keyMap = array_combine($keysKeyMap, $valuesKeyMap);
-
+		
 		// Prepare a data object to be filled
 		$data = $this->genericService->buildDataObject($keyMap['SCHEMA'], $keyMap['FORMAT'], null);
-
+		
 		// Complete the primary key info with the session values
 		foreach ($data->infoFields as $infoField) {
 			if (!empty($keyMap[strtoupper($infoField->data)])) {
 				$infoField->value = $keyMap[strtoupper($infoField->data)];
 			}
 		}
-
+		
 		// Get the detailed data
 		$customGenericModel = new Custom_Application_Model_Generic_Generic();
 		$customGenericModel->getDatum($data);
-
+		
 		// The data ancestors
 		$ancestors = $customGenericModel->getAncestors($data);
 		$ancestors = array_reverse($ancestors);
-
+		
 		// #802 : desactivate card details map
 		// Look for a geometry object in order to calculate a bounding box
 		// Look for the plot location
 		// $bb = Application_Object_Mapping_BoundingBox::createBoundingBoxFromWKT($bbox, 5000, 20000);
 		$bb = null;
 		$locationTable = $data;
-
+		
 		// Defines the mapsserver parameters.
 		$mapservParams = '';
 		foreach ($locationTable->getInfoFields() as $primaryKey) {
 			$mapservParams .= '&' . $primaryKey->columnName . '=' . $primaryKey->value;
 		}
-
+		
 		// Title of the detail message
 		$dataDetails = array();
 		$dataDetails['formats'] = array();
-
+		
 		// List all the formats, starting with the ancestors
 		foreach ($ancestors as $ancestor) {
 			$ancestorJSON = $this->genericService->datumToDetailJSON($ancestor, $datasetId);
@@ -446,13 +451,13 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				$dataDetails['formats'][] = json_decode($ancestorJSON, true);
 			}
 		}
-
+		
 		// Add the current data
 		$dataJSON = $this->genericService->datumToDetailJSON($data, $datasetId);
 		if ($dataJSON !== '') {
 			$dataDetails['formats'][] = json_decode($dataJSON, true);
 		}
-
+		
 		// Defines the panel title
 		$titlePK = '';
 		foreach ($data->infoFields as $infoField) {
@@ -463,17 +468,17 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 		}
 		$dataInfo = end($dataDetails['formats']);
 		$dataDetails['title'] = $dataInfo['title'] . ' (' . $titlePK . ')';
-
+		
 		// Add the localisation maps
 		if (!empty($detailsLayers)) {
 			if ($detailsLayers[0] !== '') {
 				$url = array();
 				$url = explode(";", ($this->getDetailsMapUrl(empty($detailsLayers) ? '' : $detailsLayers[0], $bb, $mapservParams)));
-
+				
 				$dataDetails['maps1'] = array(
 					'title' => 'image'
 				);
-
+				
 				// complete the array with the urls of maps1
 				$dataDetails['maps1']['urls'][] = array();
 				$urlCount = count($url);
@@ -482,13 +487,13 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				}
 			}
 		}
-
+		
 		// Add the children
 		if ($withChildren) {
-
+			
 			// Prepare a data object to be filled
 			$data2 = $this->genericService->buildDataObject($keyMap["SCHEMA"], $keyMap["FORMAT"], null);
-
+			
 			// Complete the primary key
 			foreach ($data2->infoFields as $infoField) {
 				if (!empty($keyMap[$infoField->data])) {
@@ -498,7 +503,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			// Get children too
 			$websiteSession = new Zend_Session_Namespace('website');
 			$children = $customGenericModel->getChildren($data2, $websiteSession->datasetId);
-
+			
 			// Add the children
 			foreach ($children as $listChild) {
 				$dataArray = $this->genericService->dataToGridDetailArray($id, $listChild);
@@ -518,24 +523,24 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function prepareResultLocationsCustom($formQuery) {
 		$this->logger->debug('prepareResultLocationsCustom');
-
+		
 		$this->customGenericService = new Custom_Application_Service_GenericService($this->schema);
-
+		
 		// Transform the form request object into a table data object
 		$queryObject = $this->customGenericService->getFormQueryToTableData($this->schema, $formQuery);
-
+		
 		if (count($formQuery->results) === 0) {
 			$json = '{"success": false, "errorMessage": "At least one result column should be selected"}';
 		} else {
-
+			
 			$sqlPKey = $this->genericService->generateSQLPrimaryKey($this->schema, $queryObject);
-
+			
 			// Get the ids
 			$pKeyIdWithTable = explode(',', $sqlPKey)[0];
 			$pKeyId = explode('.', $pKeyIdWithTable)[1];
 			$pKeyProviderIdWithTable = explode(',', $sqlPKey)[1];
 			$pKeyProviderId = explode('.', $pKeyProviderIdWithTable)[1];
-
+			
 			$submissionJoin = array(
 				'submission'
 			);
@@ -549,13 +554,13 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$fromJoinSubmission = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $submissionJoin);
 			$fromJoinResults = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $resultJoins);
 			$where = $this->customGenericService->generateSQLWhereRequestCustom($this->schema, $queryObject);
-
+			
 			$tables = $this->genericService->getAllFormats($this->schema, $queryObject);
 			$locationField = $this->metadataModel->getGeometryField($this->schema, array_keys($tables));
-
+			
 			// Calculate the number of lines of result
 			$countResult = $this->genericModel->executeRequest("SELECT COUNT(*) as count " . $fromJoinSubmission . $where);
-
+			
 			// Get the website session
 			$websiteSession = new Zend_Session_Namespace('website');
 			// Store the metadata in session for subsequent requests
@@ -569,18 +574,59 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$websiteSession->queryObject = $queryObject;
 			$websiteSession->count = $countResult[0]['count'];
 			$websiteSession->schema = $this->schema;
-
+			
 			// Clean previously stored results
 			$sessionId = session_id();
 			$this->resultLocationModel->cleanPreviousResults($sessionId);
-
+			
 			// Identify the field carrying the location information
 			$tables = $this->genericService->getAllFormats($this->schema, $queryObject);
 			$locationField = $this->metadataModel->getGeometryField($this->schema, array_keys($tables));
 			$locationTableInfo = $this->metadataModel->getTableFormat($this->schema, $locationField->format);
-
+			
 			// Run the request to store a temporary result table (for the web mapping)
 			$this->resultLocationModel->fillLocationResult($fromJoinSubmission, $where, $sessionId, $locationTableInfo);
 		}
+	}
+
+	/**
+	 * Returns a Postgres value corresponding to Ogam type.
+	 * The aim is to replace NULL values to be able to compare it to other values.
+	 *
+	 * @param $ogamType ogam
+	 *        	type coming from unit table type column.
+	 *        	
+	 * @return Postgres value
+	 */
+	public function getPostgresValueFromOgamType($ogamType) {
+		switch ($ogamType) {
+			case "NUMERIC":
+				$result = '-2147483648';
+				break;
+			case "ARRAY":
+				$result = "{}";
+				break;
+			case "CODE":
+				$result = "0";
+				break;
+			case "STRING":
+				$result = "";
+				break;
+			case "DATE":
+				$result = "0001/01/01";
+				break;
+			case "TIME":
+				$result = "00:00:00";
+				break;
+			case "INTEGER":
+				$result = '-2147483648';
+				break;
+			case "GEOM":
+				$result = '0101000020E6100000548A66B35D001740CDE29BFDEB274840';
+				break;
+			default:
+				$result = "0";
+		}
+		return $result;
 	}
 }
