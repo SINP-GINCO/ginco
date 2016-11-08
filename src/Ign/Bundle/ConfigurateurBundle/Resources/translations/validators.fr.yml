@@ -3,6 +3,7 @@ model:
     notBlank: Veuillez saisir un nom de modèle.
     caseinsensitive: Ce nom de modèle est déjà utilisé, veuillez en spécifier un autre.
     maxLength: Le nom du modèle ne peut dépasser 128 caractères.
+    regex: Le nom du modèle ne doit pas contenir de > ou <.
   description:
     maxLength: La description du modèle ne peut dépasser 1024 caractères.
 dataset:

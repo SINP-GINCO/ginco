@@ -26,6 +26,7 @@ class Model {
 	 * @var string @ORM\Column(name="name", type="string", length=128, nullable=false)
 	 *      @Assert\NotBlank(message="model.name.notBlank")
 	 *      @Assert\Length(max="128", maxMessage="model.name.maxLength")
+	 *      @Assert\Regex(pattern="/[^<>]*$/", match=true, message="modelName.label.regex")
 	 */
 	private $name;
 
