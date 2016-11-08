@@ -131,6 +131,21 @@ class Custom_UsermanagementController extends UsermanagementController {
 				return $this->render('show-create-role');
 			}
 		} else {
+			// extra validation
+			$permissionsList = $form->getValue('rolepermissions');
+			if (in_array('MANAGE_PUBLIC_REQUESTS', $permissionsList) && !in_array('MANAGE_PRIVATE_REQUESTS', $permissionsList)) {
+				$form->markAsError();
+				$form->rolepermissions->addError($this->translator->translate('ManageRequestPermissionError'));
+				// Redisplay form
+				$this->logger->debug('form is not valid');
+				$this->view->form = $form;
+				if ($mode == 'edit') {
+					return $this->render('show-edit-role');
+				} else {
+					return $this->render('show-create-role');
+				}
+			}
+			
 			$values = $form->getValues();
 
 			$f = new Zend_Filter_StripTags();

@@ -199,6 +199,7 @@ DATASET_ID               VARCHAR(36)          not null,
 DEFINITION				 VARCHAR(500)         null,
 LABEL 					 VARCHAR(50)	      null,
 DATE 					 date				DEFAULT now(),
+USER_LOGIN 				 VARCHAR(50),
 constraint PK_PREDEFINED_REQUEST primary key (REQUEST_NAME)
 );
 
@@ -215,6 +216,7 @@ COMMENT ON COLUMN PREDEFINED_REQUEST.DATASET_ID IS 'The dataset used by this req
 COMMENT ON COLUMN PREDEFINED_REQUEST.DEFINITION IS 'The description of the request';
 COMMENT ON COLUMN PREDEFINED_REQUEST.LABEL IS 'The label of the request';
 COMMENT ON COLUMN PREDEFINED_REQUEST.DATE IS 'Date of creation of the request';
+COMMENT ON COLUMN PREDEFINED_REQUEST.USER_LOGIN IS 'The login of the user who created the request';
 
 
 

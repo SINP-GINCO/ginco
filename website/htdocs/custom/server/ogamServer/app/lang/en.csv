@@ -311,6 +311,7 @@ Role Code;Role Code
 Role Label;Role Label
 Role Definition;Role Definition
 Permissions;Permissions
+ManageRequestPermissionsError;To manage public requests, manage private requests must be checked.
 Schemas Permissions;Schemas Permissions
 Dataset Restrictions;Dataset Restrictions
 Layer Restrictions;Layer Restrictions
