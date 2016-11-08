@@ -8,7 +8,7 @@
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="layoutPreference">auto layout</property>
     <parameters>
-        <scalar-parameter name="submissionid" id="5">
+        <scalar-parameter name="submissionid" id="5">g
             <property name="valueType">static</property>
             <property name="isRequired">true</property>
             <property name="dataType">integer</property>
