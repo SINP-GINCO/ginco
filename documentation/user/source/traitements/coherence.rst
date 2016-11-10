@@ -3,8 +3,13 @@
 Contrôles de cohérence
 ======================
 
-En plus des vérifications de conformité (format et appartenance aux référentiels), des vérifications spécifiques sont effectuées
-lors de l'import :
+En plus des vérifications de conformité (format et appartenance aux référentiels), des vérifications spécifiques
+au standard SINP sont effectuées lors de l'import.
+
+* **Vérifications de cohérence entre plusieurs champs** : certains champs doivent être remplis
+  (ou non) en fonction de la valeur prise par d'autres champs.
+  Voir la :doc:`liste des erreurs de cohérence </gestion-jdd/rapport-erreur>` pour plus de détails, ainsi que le
+  `détail du standard "Occurence de taxon" <http://standards-sinp.mnhn.fr/wp-content/uploads/sites/16/versionhtml/OccTax_v1_2_1/>`_.
 
 * **l'unicité de l'identifiant producteur pour un producteur donné** : si un identifiant producteur est
   fourni dans le jeu de données (un champ dont le mapping le fait correspondre à la clé primaire de la table), cet identifiant
