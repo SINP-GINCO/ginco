@@ -401,4 +401,142 @@ class Custom_QueryController extends QueryController {
 		$this->_helper->viewRenderer->setNoRender();
 		$this->getResponse()->setHeader('Content-type', 'application/json');
 	}
+
+
+    /**
+     * Returns a csv file corresponding to the requested data.
+     * Fields are empty when the user doesn't have the right to view them.
+     * (same as "hidden" in the result array).
+     */
+    public function csvExportAction() {
+        $this->logger->debug('gridCsvExportAction');
+
+        $userSession = new Zend_Session_Namespace('user');
+        $user = $userSession->user;
+        $websiteSession = new Zend_Session_Namespace('website');
+        $requestId = $this->resultLocationModel->getLastRequestIdFromSession(session_id());
+        $customQueryService = new Custom_Application_Service_QueryService($websiteSession->schema);
+
+        // Configure memory and time limit because the program ask a lot of resources
+        $configuration = Zend_Registry::get("configuration");
+        ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
+        ini_set("max_execution_time", $configuration->getConfig('max_execution_time', '480'));
+
+        // Number of results to export
+        $total = $websiteSession->count;
+        $this->logger->debug('Expected lines : ' . $total);
+
+        // Query by $maxLines batches
+        $maxLines = 5000;
+
+        // Start writing output (CSV file)
+        // Define the header of the response
+        $charset = $configuration->getConfig('csvExportCharset', 'UTF-8');
+        $this->getResponse()->setHeader('Content-Type', 'text/csv;charset=' . $charset . ';application/force-download;', true);
+        $this->getResponse()->setHeader('Content-disposition', 'attachment; filename=DataExport_' . date('dmy_Hi') . '.csv', true);
+
+        // Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
+        if ($charset === 'UTF-8') {
+            echo (chr(0xEF));
+            echo (chr(0xBB));
+            echo (chr(0xBF));
+        }
+
+        if (!$user->isAllowed('EXPORT_RAW_DATA')) {
+            $this->outputCharset('// No Permissions');
+        }
+        else if ($total > 65535) {
+            $this->outputCharset('// Too many result lines (>65535)');
+        }
+        else {
+
+
+            // Use fputcsv to return a string
+            $arrayToCsv = function($fields, $delimiter=",", $enclosure='"', $noLineReturn = false) {
+                // Remove original enclosing character from fields
+                $fields = array_map(function($field) {
+                    return trim($field, '"');
+                }, $fields);
+
+                $temp = fopen('php://memory', 'r+');
+                // use the default csv handler
+                fputcsv($temp, $fields, $delimiter, $enclosure);
+                rewind($temp);
+                $csv = stream_get_contents($temp);
+                fclose($temp);
+                if ($noLineReturn) {
+                    $csv = substr($csv, 0, -1);
+                }
+                return $csv;
+            };
+
+            // Retrive the session-stored info
+            $resultColumns = $websiteSession->resultColumns; // array of TableField
+
+            // Prepare the form info
+            $traductions = array();
+            foreach ($resultColumns as $tableField) {
+
+                $key = strtolower($tableField->getName());
+
+                // Get the full description of the form field
+                $formFields[$key] = $this->genericService->getTableToFormMapping($tableField);
+            }
+
+            // Display the default message
+            $this->outputCharset('// *************************************************' . "\n");
+            $this->outputCharset('// ' . $this->translator->translate('Data Export') . "\n");
+            $this->outputCharset('// *************************************************' . "\n\n");
+
+            // Request criterias
+            $this->outputCharset($this->csvExportCriterias());
+            $this->outputCharset("\n");
+
+            // Export the column names
+            $line = array();
+            foreach ($resultColumns as $tableField) {
+                $line[] = $tableField->label;
+            }
+            $outputLine = $arrayToCsv($line, ';', '"');
+            $this->outputCharset('// ' . $outputLine);
+
+            // Get the order parameters
+            $sort = $this->getRequest()->getPost('sort');
+            $sortDir = $this->getRequest()->getPost('dir');
+
+            $pagesTotal = ceil($total/$maxLines);
+
+            for ($page = 0; $page < $pagesTotal; $page++) {
+
+                // Get requested data
+                // they come in the form of a json; convert them associative array and then to csv
+                $dataJSON = $customQueryService->getResultRowsCustom($page * $maxLines, $maxLines, $sort, $sortDir, $requestId, $websiteSession, true);
+
+                $data = json_decode($dataJSON, true);
+
+                if ($data["success"]) {
+                    $rows = $data["rows"];
+                    // Write each line in the csv
+                    foreach ($rows as $line) {
+                        // keep only the first count($resultColumns), because there is 2 or 3 technical fields sent back (after the result columns).
+                        $line = array_slice($line, 0, count($resultColumns));
+                        // implode all arrays
+                        foreach($line as $index => $value) {
+                            if (is_array($value)) {
+                                $line[$index] = join(",",$value); // just use join because we don't want double enclosure...
+                            }
+                        }
+                        // Write csv line to output
+                        $outputLine = $arrayToCsv($line, ';', '"');
+                        $this->outputCharset($outputLine);
+                    }
+                }
+            }
+
+        }
+
+        $this->_helper->layout()->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+    }
+
 }
