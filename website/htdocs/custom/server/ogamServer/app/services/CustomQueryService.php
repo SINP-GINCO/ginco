@@ -54,9 +54,11 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 *        	the sort direction (ASC or DESC)
 	 * @param String $idRequest
 	 *        	the id of the request (allows to get results from results table)
+	 * @param Boolean $emptyHidingValue
+	 *        	if true, we leave the hided values empty (and not replaced with a string), and we keep their type
 	 * @return JSON
 	 */
-	public function getResultRowsCustom($start, $length, $sort, $sortDir, $idRequest, $websiteSession) {
+	public function getResultRowsCustom($start, $length, $sort, $sortDir, $idRequest, $websiteSession, $emptyHidingValue = false) {
 		$this->logger->debug('getResultRows custom');
 		
 		$configuration = Zend_Registry::get("configuration");
@@ -150,18 +152,18 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 					// Manage code traduction
 					if ($tableField->type === "CODE" && $value != "") {
 						if ($shouldValueBeHidden) {
-							$value = $ĥidingValue;
+							$value = ($emptyHidingValue) ? "" : $ĥidingValue;
 						}
 						$row[] = strval($this->genericService->getValueLabel($tableField, $value));
 					} else if ($tableField->type === "ARRAY" && $value != "") {
-						if ($shouldValueBeHidden) {
-							$row[] = $ĥidingValue;
+					    if ($shouldValueBeHidden) {
+							$row[] = ($emptyHidingValue) ? array() : $ĥidingValue;
 						} else {
 							// Split the array items
 							$arrayValues = explode(",", preg_replace("@[{-}]@", "", $value));
 							foreach ($arrayValues as $index => $value) {
 								if ($shouldValueBeHidden) {
-									$arrayValues[$index] = $ĥidingValue;
+									$arrayValues[$index] =  ($emptyHidingValue) ? "" : $ĥidingValue;
 								}
 								$arrayValues[$index] = $this->genericService->getValueLabel($tableField, $arrayValues[$index]);
 							}
@@ -169,7 +171,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 						}
 					} else {
 						if ($shouldValueBeHidden) {
-							$value = $ĥidingValue;
+							$value = ($emptyHidingValue) ? "" : $ĥidingValue;
 						}
 						$row[] = $value;
 					}
