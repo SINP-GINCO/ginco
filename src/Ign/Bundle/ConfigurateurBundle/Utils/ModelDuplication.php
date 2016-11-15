@@ -241,14 +241,22 @@ class ModelDuplication extends DatabaseUtils {
 		));
 		$originalPKRow = pg_fetch_assoc($results);
 
-		// Insert data field of PK in data table
+        // Get label of the table
+        $selectTableLabel = "SELECT label FROM metadata_work.table_format WHERE format = $1";
+        pg_prepare($this->pgConn, "select_table_label_query", $selectTableLabel);
+        $labelRes = pg_execute($this->pgConn, "select_table_label_query", array(
+            $tableFormat
+        ));
+        $tableLabel = pg_fetch_result($labelRes, 'label');
+
+        // Insert data field of PK in data table
 		$insertPKDataFieldQuery = "INSERT INTO metadata_work.data(data, unit, label, definition) VALUES($1, $2, $3, $4)";
 		pg_prepare($this->pgConn, "insert_pk_data_query", $insertPKDataFieldQuery);
 		pg_execute($this->pgConn, "insert_pk_data_query", array(
 			$duplicatedPK,
 			$originalPKRow['unit'],
-			"Clé primaire " . $tableFormat,
-			"Clé primaire " . $tableFormat
+			"Clé primaire table " . $tableLabel,
+			"Clé primaire table " . $tableLabel
 		));
 
 		// update field row for primary key (and via cascade table_field also)
