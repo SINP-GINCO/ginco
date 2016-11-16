@@ -182,7 +182,8 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 		}
 		
 		// Add  JOIN beetween results table and the table which contains the geometry column (last table of the list)
-		$geometryTable = array_pop(array_values($ancestorsToGeometry));
+		$ancestorsValue = array_values($ancestorsToGeometry);
+		$geometryTable = array_pop($ancestorsValue);
 		$this->logger->debug('geometryTable : ' . $geometryTable->tableFormat);
 		
 		$geometryTableFormat = $customMetadataModel->getTableFormat($schema, $geometryTable->tableFormat);
