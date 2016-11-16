@@ -148,7 +148,7 @@ class Application_Model_Mapping_ResultLocation {
 		if ($rawDb) {
 			// The "remote" method is 2x or 3x more time consuming. Used when the raw data schema is in another database.
 			// Select raw results
-			$select = "SELECT " . $keys['id_observation'] . " AS id_observation, " . $keys['id_provider'] . " AS id_provider " . $from . $where;
+			$select = "SELECT DISTINCT " . $keys['id_observation'] . " AS id_observation, " . $keys['id_provider'] . " AS id_provider " . $from . $where;
 			$query = $rawdb->prepare($select);
 			$query->execute();
 
@@ -175,13 +175,12 @@ class Application_Model_Mapping_ResultLocation {
 			}
 			// We can use INSERT ... SELECT statement only if we are exactly on the same server
 			$sql = "INSERT INTO results (id_request, id_observation, id_provider, table_format, hiding_level)
-				SELECT ? , " . $keys['id_observation'] . ", $tableFormat." . $keys['id_provider'] . ", ? , $defaultHidingLevel $from $where;";
+				SELECT DISTINCT $reqId, " . $tableFormat . "." . $keys['id_observation'] . ", $tableFormat." . $keys['id_provider'] . ", ? , $defaultHidingLevel $from $where;";
 
 			$this->logger->info('fillResults : ' . $sql);
 
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute(array(
-				$reqId,
 				$tableFormat
 			));
 		}
@@ -258,8 +257,8 @@ class Application_Model_Mapping_ResultLocation {
 		// Retrieve parameters for calculation of hiding level
 		$ogamId = $keys['id_observation'];
 		$providerId = $keys['id_provider'];
-		$req = "SELECT $ogamId,  submission.$providerId, sensiniveau, diffusionniveauprecision, dspublique $from
-						INNER JOIN results res ON res.id_provider = submission.$providerId AND res.id_observation = $ogamId
+		$req = "SELECT " . $table->format. " . $ogamId,  submission.$providerId, sensiniveau, diffusionniveauprecision, dspublique $from
+						INNER JOIN results res ON res.id_provider = submission.$providerId AND res.id_observation = " . $table->format. " . $ogamId
 						$where AND res.id_request = ?
 						ORDER BY res.id_provider, res.id_observation;";
 
