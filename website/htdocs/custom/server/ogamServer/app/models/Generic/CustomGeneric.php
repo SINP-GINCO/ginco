@@ -24,7 +24,6 @@ include_once CUSTOM_APPLICATION_PATH . '/models/Mapping/ResultLocation.php';
  */
 class Custom_Application_Model_Generic_Generic extends Application_Model_Generic_Generic {
 
-
 	/**
 	 * Fill a line of data with the values a table, given its primary key.
 	 * Only one object is expected in return.
@@ -35,38 +34,42 @@ class Custom_Application_Model_Generic_Generic extends Application_Model_Generic
 	 */
 	public function getDatum($data) {
 		$tableFormat = $data->tableFormat;
-
-		$this->logger->info('getDatum custom: ' . $tableFormat->format);
-
+		
+		$this->logger->info('getDatum custom : ' . $tableFormat->format . ", " . $tableFormat->schemaCode);
+		
 		$configuration = Zend_Registry::get("configuration");
 		$ĥidingValue = $configuration->getConfig('hiding_value');
-
+		
 		$schema = $this->metadataModel->getSchema($tableFormat->schemaCode);
-
+		
 		$customResultLocation = new Application_Model_Mapping_ResultLocation();
 		$customQueryService = new Custom_Application_Service_QueryService($schema);
-
-		$keys = $this->getRawDataTablePrimaryKeys($tableFormat);
+		$customGenericService = new Custom_Application_Service_GenericService($schema);
+		
 		$requestId = $customResultLocation->getLastRequestIdFromSession(session_id());
-
+		
 		// Get the values from the data table
+		// We must select hiding_level to determinate for each field if the value must be hidden.
+		// Nevertheless, the current table_format is not necessarily the format of the table carrying the geometry.
+		// So we can't use it to join on results table everytime.
+		// 1- Find the table carrying the geometry
+		// 2- Do the JOINS with each ancestor, to the one who carries the geometry
+		// => rule : it must be forbidden to put hidden fields in older tables than geometry table.
+		
+		$joinToGeometryTable = $customGenericService->getJoinToGeometryTable($schema->name, $tableFormat->format);
+		
 		$sql = "SELECT DISTINCT " . $this->genericService->buildSelect($data->getFields());
 		$sql .= ", hiding_level";
-		$sql .= " FROM " . $schema->name . "." . $tableFormat->tableName . " AS " . $tableFormat->format;
-		$sql .= ", mapping.results, mapping.requests";
+		$sql .= $joinToGeometryTable;
 		$sql .= " WHERE (1 = 1)" . $this->genericService->buildWhere($schema->code, $data->infoFields);
-		$sql .= " AND " . $tableFormat->format . "." . $keys['id_observation'] . " = results.id_observation";
-		$sql .= " AND " . $tableFormat->format . "." . $keys['id_provider'] . " = results.id_provider";
-		$sql .= " AND table_format = '" . $tableFormat->format . "'";
-		$sql .= " AND id_request = '" . $requestId . "'";
-		$sql .= " AND id_request = requests.id";
-
-		$this->logger->info('getDatum : ' . $sql);
-
+		$sql .= " AND results.id_request = '" . $requestId . "'";
+		
+		$this->logger->info('getDatum custom : ' . $sql);
+		
 		$select = $this->rawdb->prepare($sql);
 		$select->execute();
 		$row = $select->fetch();
-
+		
 		// Fill the values with data from the table
 		foreach ($data->editableFields as $field) {
 			$key = strtolower($field->getName());
@@ -76,7 +79,7 @@ class Custom_Application_Model_Generic_Generic extends Application_Model_Generic
 			} else {
 				$field->value = $row[$key];
 			}
-
+			
 			// Store additional info for geometry type
 			if ($field->type === "GEOM") {
 				$field->xmin = $row[strtolower($key) . '_x_min'];
@@ -92,10 +95,9 @@ class Custom_Application_Model_Generic_Generic extends Application_Model_Generic
 				}
 			}
 		}
-
+		
 		// Fill the values with data from the table
 		foreach ($data->getFields() as $field) {
-
 			// Fill the value labels for the field
 			$field->valueLabel = $this->genericService->getValueLabel($field, $field->value);
 		}
@@ -105,7 +107,7 @@ class Custom_Application_Model_Generic_Generic extends Application_Model_Generic
 	/**
 	 * Map the varying two keys in results to the keys in the raw_data table
 	 *
-	 * @param Application_Object_Metadata_TableFormat $table
+	 * @param Application_Object_Metadata_TableFormat $table        	
 	 * @return array|bool
 	 */
 	public function getRawDataTablePrimaryKeys($table) {

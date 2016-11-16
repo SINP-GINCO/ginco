@@ -113,23 +113,29 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				$filter .= " OFFSET " . $start;
 			}
 			
+			// Retrieve the geometry table pkey "ogam_id_table_xxx"
+			$split1 = split('results.id_observation = ', $fromJoins);
+			$split2 = split(' ', $split1[1])[0];
+			$locationTablepKeyId = ", $split2 as loc_pk";
+			
 			$this->logger->debug('select = ' . $select);
 			$this->logger->debug('pkey = ' . $pKey);
+			$this->logger->debug('$locationTablepKeyId = ' . $locationTablepKeyId);
 			$this->logger->debug('from = ' . $from);
 			$this->logger->debug('where = ' . $where);
 			
-			// // Build complete query
+			// Build complete query
 			if (empty($orderKey)) {
-				$query = "$select $hidingLevelKey $pKey $fromJoins WHERE ($pKey) IN ($subquery $order $filter) $andWhere";
+				$query = "$select $hidingLevelKey $pKey $locationTablepKeyId  $fromJoins WHERE ($pKey) IN ($subquery $order $filter) $andWhere";
 			} else {
-				$query = "$select, $orderkeyCoalesce $hidingLevelKey $pKey $fromJoins";
+				$query = "$select, $orderkeyCoalesce $hidingLevelKey $pKey $locationTablepKeyId $fromJoins";
 				$query .= " WHERE ($pKey, $orderkeyCoalesce) IN ($subquery ORDER BY coalesce $sortDir $filter)";
 				$query .= " $andWhere ORDER BY $orderkeyCoalesce $sortDir";
 			}
 			// Execute the request
 			$result = $this->genericModel->executeRequest($query);
 			
-			// Retrive the session-stored info
+			// Retrieve the session-stored info
 			$resultColumns = $websiteSession->resultColumns;
 			$countResult = $websiteSession->count;
 			
@@ -139,7 +145,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				$row = array();
 				$observationId = '';
 				foreach ($line as $key => $value) {
-					if (stripos($key, 'ogam_id') !== false) {
+					if (stripos($key, 'loc_pk') !== false) {
 						$observationId = $value;
 					}
 				}
@@ -429,19 +435,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 		$ancestors = $customGenericModel->getAncestors($data);
 		$ancestors = array_reverse($ancestors);
 		
-		// #802 : desactivate card details map
-		// Look for a geometry object in order to calculate a bounding box
-		// Look for the plot location
-		// $bb = Application_Object_Mapping_BoundingBox::createBoundingBoxFromWKT($bbox, 5000, 20000);
-		$bb = null;
-		$locationTable = $data;
-		
-		// Defines the mapsserver parameters.
-		$mapservParams = '';
-		foreach ($locationTable->getInfoFields() as $primaryKey) {
-			$mapservParams .= '&' . $primaryKey->columnName . '=' . $primaryKey->value;
-		}
-		
 		// Title of the detail message
 		$dataDetails = array();
 		$dataDetails['formats'] = array();
@@ -498,8 +491,8 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			
 			// Complete the primary key
 			foreach ($data2->infoFields as $infoField) {
-				if (!empty($keyMap[$infoField->data])) {
-					$infoField->value = $keyMap[$infoField->data];
+				if (!empty($keyMap[strtoupper($infoField->data)])) {
+					$infoField->value = $keyMap[strtoupper($infoField->data)];
 				}
 			}
 			// Get children too
@@ -535,14 +528,9 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			$json = '{"success": false, "errorMessage": "At least one result column should be selected"}';
 		} else {
 			
+			// get primary keys of the left table (child)
 			$sqlPKey = $this->genericService->generateSQLPrimaryKey($this->schema, $queryObject);
-			
-			// Get the ids
-			$pKeyIdWithTable = explode(',', $sqlPKey)[0];
-			$pKeyId = explode('.', $pKeyIdWithTable)[1];
-			$pKeyProviderIdWithTable = explode(',', $sqlPKey)[1];
-			$pKeyProviderId = explode('.', $pKeyProviderIdWithTable)[1];
-			
+						
 			$submissionJoin = array(
 				'submission'
 			);
@@ -551,14 +539,19 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				'results'
 			);
 			// Generate the SQL Request
-			$select = $this->customGenericService->generateSQLSelectRequest($this->schema, $queryObject);
-			$fromNoJoin = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, array());
-			$fromJoinSubmission = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $submissionJoin);
-			$fromJoinResults = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $pKeyIdWithTable, $pKeyProviderIdWithTable, $resultJoins);
-			$where = $this->customGenericService->generateSQLWhereRequestCustom($this->schema, $queryObject);
 			
+			// Identify the field carrying the location information
 			$tables = $this->genericService->getAllFormats($this->schema, $queryObject);
 			$locationField = $this->metadataModel->getGeometryField($this->schema, array_keys($tables));
+			$locationTableInfo = $this->metadataModel->getTableFormat($this->schema, $locationField->format);
+			
+			$select = $this->customGenericService->generateSQLSelectRequest($this->schema, $queryObject);
+			
+			// The not customised $from clause contains table_tree joins. Here we add joins with submission table, or submission and results tables.
+			$fromJoinSubmission = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $submissionJoin);
+			// results table contains geometry table id. => table and keys must be thoses of the geometry table !
+			$fromJoinResults = $this->customGenericService->generateSQLFromRequestCustom($this->schema, $queryObject, $resultJoins, $locationTableInfo->format . "." . $locationTableInfo->primaryKeys[0], $locationTableInfo->format . "." . $locationTableInfo->primaryKeys[1]);
+			$where = $this->customGenericService->generateSQLWhereRequestCustom($this->schema, $queryObject);
 			
 			// Calculate the number of lines of result
 			$countResult = $this->genericModel->executeRequest("SELECT COUNT(*) as count " . $fromJoinSubmission . $where);
@@ -580,11 +573,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			// Clean previously stored results
 			$sessionId = session_id();
 			$this->resultLocationModel->cleanPreviousResults($sessionId);
-			
-			// Identify the field carrying the location information
-			$tables = $this->genericService->getAllFormats($this->schema, $queryObject);
-			$locationField = $this->metadataModel->getGeometryField($this->schema, array_keys($tables));
-			$locationTableInfo = $this->metadataModel->getTableFormat($this->schema, $locationField->format);
 			
 			// Run the request to store a temporary result table (for the web mapping)
 			$this->resultLocationModel->fillLocationResult($fromJoinSubmission, $where, $sessionId, $locationTableInfo);
