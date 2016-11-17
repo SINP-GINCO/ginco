@@ -186,32 +186,11 @@ class Application_Model_Mapping_ResultLocation {
 		}
 
 		// Get back the results and for each, get and fill hiding level
-		$tableValues = $this->getResultsFromRequestId($reqId);
-		$tableValues = $this->getHidingLevels($keys, $tableValues, $locationTable, $this->getVisuPermissions(), $from, $where, $reqId);
+		$tableValues = $this->getHidingLevels($keys, $locationTable, $this->getVisuPermissions(), $from, $where, $reqId);
 		$this->setHidingLevels($tableValues, $locationTable->format, $sessionId);
 
 		// Remove any values that can be obtained through criterias more precise than the hiding level
 		$this->deleteUnshowableResultsFromCriterias($reqId);
-	}
-
-	/**
-	 * Returns rows of results from request id.
-	 *
-	 * @param String $requestId
-	 *
-	 * @return Array of String the results
-	 */
-	private function getResultsFromRequestId($requestId) {
-		$db = $this->db;
-		$sql = "SELECT res.* FROM requests req, results res
-				WHERE res.id_request = req.id AND req.id = ?
-				ORDER BY res.id_provider, res.id_observation";
-
-		$stmt = $db->prepare($sql);
-		$stmt->execute(array(
-			$requestId
-		));
-		return $stmt->fetchAll();
 	}
 
 	/**
@@ -237,14 +216,12 @@ class Application_Model_Mapping_ResultLocation {
 	/**
 	 * Updates the hiding levels for all rows provided in the array of values.
 	 *
-	 * @param
-	 *        	Array of String $keys the name of the fields of the primary key
-	 * @param
-	 *        	Array of String $tableValues the array of values of the primary key fields
-	 * @param Application_Object_Metadata_TableFormat $table
-	 *        	the table object, containing tableName and tableFormat
-	 * @param
-	 *        	Array of String $permissions the array of permissions (VIEW_SENSITIVE, VIEW_PRIVATE)
+	 * @param Array of String $keys the name of the fields of the primary key
+	 *
+	 * @param Application_Object_Metadata_TableFormat $geometryTable
+	 *        	the table object carrying the 'geometrie' column, containing tableName and tableFormat
+	 * @param Array of String $permissions the array of permissions (VIEW_SENSITIVE, VIEW_PRIVATE)
+	 * 
 	 * @param String $from
 	 *        	the FROM part of the SQL Request
 	 * @param String $where
@@ -253,15 +230,16 @@ class Application_Model_Mapping_ResultLocation {
 	 *        	the request id
 	 * @return Array|Integer the list of hiding levels
 	 */
-	public function getHidingLevels($keys, $tableValues, $table, $permissions, $from, $where, $reqId) {
+	public function getHidingLevels($keys, $geometryTable, $permissions, $from, $where, $reqId) {
 		// Retrieve parameters for calculation of hiding level
 		$ogamId = $keys['id_observation'];
 		$providerId = $keys['id_provider'];
-		$req = "SELECT " . $table->format. " . $ogamId,  submission.$providerId, sensiniveau, diffusionniveauprecision, dspublique $from
-						INNER JOIN results res ON res.id_provider = submission.$providerId AND res.id_observation = " . $table->format. " . $ogamId
+		$req = "SELECT " . $geometryTable->format. " . $ogamId as id_observation,  submission.$providerId as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
+						INNER JOIN results res ON res.id_provider = submission.$providerId AND res.id_observation = " . $geometryTable->format. " . $ogamId
 						$where AND res.id_request = ?
 						ORDER BY res.id_provider, res.id_observation;";
 
+		$this->logger->debug('getHidingLevels : ' . $req);
 		$select = $this->db->prepare($req);
 		$select->execute(array(
 			$reqId
@@ -269,7 +247,7 @@ class Application_Model_Mapping_ResultLocation {
 
 		$results = $select->fetchAll();
 
-		for ($i = 0; $i < count($results); $i ++) {
+		for ($i = 0; $i < count($results); $i ++) {			
 			$sensiNiveau = $results[$i]['sensiniveau'];
 			$diffusionNiveauPrecision = $results[$i]['diffusionniveauprecision'];
 			$dsPublique = $results[$i]['dspublique'];
@@ -277,9 +255,9 @@ class Application_Model_Mapping_ResultLocation {
 			$sensibilityHidingLevel = $this->getSensibilityHidingLevel($sensiNiveau, $permissions);
 			$privateHidingLevel = $this->getPrivateHidingLevel($dsPublique, $diffusionNiveauPrecision, $permissions);
 
-			$tableValues[$i]['hiding_level'] = max($sensibilityHidingLevel, $privateHidingLevel);
+			$results[$i]['hiding_level'] = max($sensibilityHidingLevel, $privateHidingLevel);
 		}
-		return $tableValues;
+		return $results;
 	}
 
 	/**
@@ -355,6 +333,8 @@ class Application_Model_Mapping_ResultLocation {
 				$fullRequest .= "AND res.id_request = req.id AND req.session_id = '" . $sessionId . "';";
 			}
 		}
+		$this->logger->debug('setHidingLevels : ' . $fullRequest);
+		
 		if (!empty($fullRequest)) {
 			$this->db->exec($fullRequest);
 		}
