@@ -301,7 +301,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '100';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['all'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['all'], $from, $where, $requestId);
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
 
@@ -324,7 +324,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '200';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -348,7 +348,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '300';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
 
 		$this->assertEquals(3, $tableValues[0]['hiding_level']);
 	}
@@ -372,7 +372,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '400';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['none'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['none'], $from, $where, $requestId);
 
 		$this->assertEquals(3, $tableValues[0]['hiding_level']);
 	}
@@ -396,7 +396,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '500';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(1, 1), $table, $this->permissions['visitor'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['visitor'], $from, $where, $requestId);
 
 		$this->assertEquals(1, $tableValues[0]['hiding_level']);
 	}
@@ -420,7 +420,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '100';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['all'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['all'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -444,7 +444,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '200';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
 		$this->assertEquals(2, $tableValues[0]['hiding_level']);
 	}
 
@@ -467,7 +467,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '300';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -491,7 +491,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '400';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['none'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['none'], $from, $where, $requestId);
 
 		$this->assertEquals(2, $tableValues[0]['hiding_level']);
 	}
@@ -515,7 +515,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '500';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(7, 1), $table, $this->permissions['visitor'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['visitor'], $from, $where, $requestId);
 
 		$this->assertEquals(2, $tableValues[0]['hiding_level']);
 	}
@@ -539,7 +539,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '100';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['all'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['all'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -563,7 +563,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '200';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -587,7 +587,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '300';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
 
 		$this->assertEquals(1, $tableValues[0]['hiding_level']);
 	}
@@ -611,7 +611,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '400';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['none'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['none'], $from, $where, $requestId);
 
 		$this->assertEquals(1, $tableValues[0]['hiding_level']);
 	}
@@ -635,7 +635,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '500';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(15, 1), $table, $this->permissions['visitor'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['visitor'], $from, $where, $requestId);
 
 		$this->assertEquals(1, $tableValues[0]['hiding_level']);
 	}
@@ -659,7 +659,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '100';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['all'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['all'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -683,7 +683,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '200';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
 
 		$this->assertEquals(3, $tableValues[0]['hiding_level']);
 	}
@@ -707,7 +707,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '300';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
 
 		$this->assertEquals(2, $tableValues[0]['hiding_level']);
 	}
@@ -731,7 +731,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '400';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['none'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['none'], $from, $where, $requestId);
 
 		$this->assertEquals(3, $tableValues[0]['hiding_level']);
 	}
@@ -755,7 +755,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '500';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(19, 1), $table, $this->permissions['visitor'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['visitor'], $from, $where, $requestId);
 
 		$this->assertEquals(3, $tableValues[0]['hiding_level']);
 	}
@@ -779,7 +779,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '100';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['all'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['all'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -803,7 +803,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '200';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlyPrivate'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -827,7 +827,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '300';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['onlySensitive'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -851,7 +851,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '400';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['none'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['none'], $from, $where, $requestId);
 
 		$this->assertEquals(0, $tableValues[0]['hiding_level']);
 	}
@@ -875,7 +875,7 @@ class ResultLocationTest extends ControllerTestCase {
 		$where = "WHERE (1 = 1) AND table_observation.codecommunecalcule && '{\"88083\"}' ";
 		$requestId = '500';
 
-		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $this->getTableValues(3, 1), $table, $this->permissions['visitor'], $from, $where, $requestId);
+		$tableValues = $this->resultLocationModel->getHidingLevels($this->getKeys(), $table, $this->permissions['visitor'], $from, $where, $requestId);
 
 		$this->assertEquals(1, $tableValues[0]['hiding_level']);
 	}
@@ -1044,7 +1044,7 @@ class ResultLocationTest extends ControllerTestCase {
 		// Execute the method
 		$method = new ReflectionMethod('Application_Model_Mapping_ResultLocation', 'setHidingLevels');
 		$method->setAccessible(TRUE);
-		$method->invoke($this->resultLocationModel, $hidingLevels, $this->getTableValues(1, 1), 'table_observation', session_id());
+		$method->invoke($this->resultLocationModel, $hidingLevels, 'table_observation', session_id());
 
 		// Get the results linked to the request id after lauching method
 		$results = $getResultsmethod->invoke($this->resultLocationModel, 1);
@@ -1279,22 +1279,6 @@ class ResultLocationTest extends ControllerTestCase {
 		}
 
 		return $stubResultLocationModel;
-	}
-
-	/**
-	 * Returns the table values used for parameters in methods calling.
-	 *
-	 * @param Integer $idObservation
-	 * @param Integer $idProvider
-	 * @return Array of String
-	 */
-	private function getTableValues($idObservation, $idProvider) {
-		return array(
-			array(
-				"id_observation" => "$idObservation",
-				"id_provider" => "$idProvider"
-			)
-		);
 	}
 
 	/**
