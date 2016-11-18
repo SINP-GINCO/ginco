@@ -114,8 +114,8 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			}
 			
 			// Retrieve the geometry table pkey "ogam_id_table_xxx"
-			$split1 = split('results.id_observation = ', $fromJoins);
-			$split2 = split(' ', $split1[1])[0];
+			$split1 = explode('results.id_observation = ', $fromJoins);
+			$split2 = explode(' ', $split1[1])[0];
 			$locationTablepKeyId = ", $split2 as loc_pk";
 			
 			$this->logger->debug('select = ' . $select);
