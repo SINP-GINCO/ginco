@@ -143,7 +143,7 @@ class Custom_IntegrationController extends IntegrationController {
 				'datefin',
 				'sensible',
 				'sensiniveau',
-				'codedepartement',
+				'codedepartementcalcule',
 				'sensireferentiel',
 				'sensiversionreferentiel',
 				'sensidateattribution',
