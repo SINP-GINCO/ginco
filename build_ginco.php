@@ -116,11 +116,13 @@ mkdir("$projectDir/website/htdocs/logs");
 
 system("cp -r -L $projectDir/website/htdocs/* $buildDir/website");
 // FIXME: la creation des répertoires est-elle vraiment utile?
-mkdir("$buildDir/website/tmp");
-mkdir("$buildDir/website/tmp/database");
-mkdir("$buildDir/website/tmp/language");
-mkdir("$buildDir/website/upload");
 mkdir("$buildDir/website/sessions");
+// L'installeur remplace les répertoires suivants par des liens symboliques vers /var/data/ginco/...
+mkdir("$buildDir/website/tmp");
+// mkdir("$buildDir/website/tmp/database");
+// mkdir("$buildDir/website/tmp/language");
+mkdir("$buildDir/website/upload");
+mkdir("$buildDir/website/dee");
 
 
 // ajout de la version du build dans le template du site
