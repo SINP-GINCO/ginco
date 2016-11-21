@@ -338,7 +338,7 @@ Role Code;Code du rôle
 Role Label;Libellé du rôle
 Role Definition;Définition du rôle 
 Permissions;Permissions
-ManageRequestPermissionsError;La permission "Gérer les requêtes publiques" n'est autorisée que si "Gérer ses requêtes privées" est aussi sélectionnée.
+ManageRequestPermissionError;La permission "Gérer les requêtes publiques" n'est autorisée que si "Gérer ses requêtes privées" est aussi sélectionnée.
 Schemas Permissions;Permissions sur les schémas de base de données
 Dataset Restrictions;Restrictions sur les jeux de données 
 Layer Restrictions;Restrictions sur les couches cartographiques
