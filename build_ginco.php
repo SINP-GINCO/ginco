@@ -185,8 +185,7 @@ substituteInFile("$buildDir/configurator/app/config/parameters.yml.dist",
                   'base_url'   => '/configurateur'], 
                  '__');
 
-	# on supprime le cache qui a été initialisé avec les mauvaises valeurs.
-system("php $buildDir/configurator/app/console cache:clear --env=prod");
-system("php $buildDir/configurator/app/console cache:warmup --env=prod");
+# on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
+system("rm -r $buildDir/configurator/app/cache/prod");
 
 system("chmod -R a+w $buildDir");
