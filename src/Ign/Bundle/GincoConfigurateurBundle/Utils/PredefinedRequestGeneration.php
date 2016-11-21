@@ -131,7 +131,7 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		$results = array(
 			'cdnom',
 			'cdref',
-			'codedepartement',
+			'codedepartementcalcule',
 			'jourdatefin',
 			'identifiantpermanent',
 			'occstatutbiologique',
