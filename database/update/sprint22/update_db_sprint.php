@@ -27,6 +27,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here */
     execCustSQLFile("$sprintDir/update_region_names.sql", $config);
+    execCustSQLFile("$sprintDir/update_region_names_in_application_parameters.sql", $config);
     execCustSQLFile("$sprintDir/add_site_name.sql", $config);
     execCustSQLFile("$sprintDir/change_codeME_to_array.sql", $config);
     execCustSQLFile("$sprintDir/change_nomCommuneCalcule_to_ARRAY_of_STRING.sql", $config);
