@@ -1,6 +1,12 @@
 Ext.define('Ginco.controller.map.Main', {
     override: 'OgamDesktop.controller.map.Main',
 
+    config: {
+		refs: {
+            detailTab: 'grid-detail-panel'
+		}
+	},
+    
     /**
      * Update the map on request success
      *
@@ -13,6 +19,9 @@ Ext.define('Ginco.controller.map.Main', {
      * @private
      */
     onRequestSuccess: function() {
+    	// Clear the detail grid (map bottom panel)
+    	this.getDetailTab().reinitializeDetailGrid();
+		
         this.getMapmainwin().mask(this.requestLoadingMessage);
         Ext.Ajax.request({
             url : Ext.manifest.OgamDesktop.requestServiceUrl +'ajaxgetresultsbbox',

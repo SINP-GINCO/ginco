@@ -18,6 +18,23 @@ Ext.define('Ginco.view.navigation.GridDetailsPanel', {
             this.setTitle(this.panelTitleNoResults);
         }
         this.callParent(arguments);
-    }
-
+    },
+    
+    /**
+     * Clear the detail grid
+     */
+	reinitializeDetailGrid : function() {
+		this.setTitle("Tableau(x) détaillé(s)");
+        var store = new Ext.data.ArrayStore({
+            // store configs
+            autoDestroy: true,
+            // reader configs
+            idIndex: 0,
+            fields: null,
+            data: null
+        });
+        var columns = [];
+		this.reconfigure(store, columns);
+		this.collapse();
+	}
 });
