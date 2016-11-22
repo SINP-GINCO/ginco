@@ -183,6 +183,7 @@ User Module;Module utilisateur
 Authentication;Authentification
 Login;Identifiant
 Password;Mot de passe
+InvalidPassword; Mot de passe invalide
 
 ##########################
 #  Data integration      #
