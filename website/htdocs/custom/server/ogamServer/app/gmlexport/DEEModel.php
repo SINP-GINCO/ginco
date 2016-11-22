@@ -499,8 +499,10 @@ class DEEModel {
 	 * "attributes" => array(), - les attributs du regroupement et de sa source
 	 * "observations" => array()) - les observations du regroupement
 	 */
-	public function groupObservations($observations) {
-		$groups = array();
+	public function groupObservations($observations, $groups = null) {
+		if (!$groups) {
+		    $groups = array();
+        }
 		
 		// 1) Group observations
 		foreach ($observations as $observation) {
