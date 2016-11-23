@@ -104,7 +104,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
         return $this->delete("submission_id = '" . $submissionId . "'");
     }
 
-   /**
+    /**
      * Delete an export_file file from disk
      *
      * @param $id
@@ -152,8 +152,15 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      */
     public function generateFilePath($submissionId) {
         $configuration = Zend_Registry::get('configuration');
-        $filePath = $configuration->getConfig('UploadDirectory') . '/DEE/'. $submissionId . '/';
-        $filename = "DEE-Submission-$submissionId-" . date('YmdHi') . '.xml';
+
+        $filePath = $configuration->getConfig('deePrivateDirectory') . '/' . $submissionId . '/';
+
+        $regionCode = $configuration->getConfig('regionCode','REGION');
+        $date = date('Y-m-d_H-i-s');
+        $uuid = $submissionId; // todo: à changer quand on aura un moyen de récupérer l'UUID du jdd.
+
+        $filename = $regionCode . '_' . $date . '_' . $uuid . '.xml';
+
         return $filePath . $filename ;
     }
 
