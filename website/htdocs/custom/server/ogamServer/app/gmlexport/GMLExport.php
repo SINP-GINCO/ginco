@@ -4,12 +4,23 @@ require_once CUSTOM_APPLICATION_PATH . '/gmlexport/vendor/autoload.php';
 require_once CUSTOM_APPLICATION_PATH . '/gmlexport/DEEModel.php';
 require_once CUSTOM_APPLICATION_PATH . '/services/JobManagerService.php';
 
+/**
+ * Class GMLExport
+ *
+ * Class for the GML export of the DEE
+ */
 class GMLExport
 {
+    // The export uses twig templates
     protected $twig;
+    // Class DEEModel
     protected $dee;
+    // counter used to construct file-unique gml ids
     protected $gmlId;
 
+    /**
+     * GMLExport constructor.
+     */
     public function __construct()
     {
         // Bootstrap Zend
@@ -39,6 +50,24 @@ class GMLExport
 
     }
 
+    /**
+     * Create the GML of the DEE for submission $submissionId.
+     * Write it in file $fileName.
+     * Optionally, a job id can be passed to the function, in which case
+     * the function reports its progress percentage to the Job Manager.
+     *
+     * Principle:
+     * - create 4 intermediate files :
+     *   - header and end of the gml file (independent from the submission)
+     *   - observations
+     *   - groups (computed from observations)
+     * - concatenate the intermediate files and delete them
+     *
+     * @param $submissionId
+     * @param $fileName
+     * @param null $jobId
+     * @throws Exception
+     */
     public function generateDeeGml($submissionId, $fileName, $jobId = null) {
         // Configure memory and time limit because the program ask a lot of resources
         $configuration = Zend_Registry::get("configuration");
@@ -213,13 +242,17 @@ class GMLExport
 
 
     /**
-     * Generate the gml for the DEE
-     * and write it to a stream ($out): file or php standard output.
+     * Generate the observations part of the gml for the DEE
+     * and write it to an output (intermediate) file.
+     * Write in "append" mode, so the file can be wited to by batches.
      *
-     * @param $observations
-     * @param $out: stream ($out= fopen($filename,'w') or $out = fopen('php://output', 'w') )
-     * @param int|null $jobId : job id in the job_queue table. If not null, the function will write its progress in the job_queue table.
+     * @param $observations: batch of observations
+     * @param $outputFile: file name to write.
      * @param array $params : associative id of parameters
+     * @param int|null $jobId : job id in the job_queue table. If not null, the function will write its progress in the job_queue table.
+     * @param $startLine: start line of the batch in the entire list of observations
+     * @param $total: total nb of the entire list of observations
+     * @throws Exception
      */
     protected function generateObservationsGML($observations, $outputFile, $params = null, $jobId = null, $startLine = 0, $total = 0)
     {
@@ -241,7 +274,7 @@ class GMLExport
 
             fwrite($out, $this->strReplaceBySequence("#GMLID#", $this->generateObservation($observation)));
 
-            // setProgress every 1, 10, 100 or 1000 lines
+            // report progress every 1, 10, 100 or 1000 lines
             if ($jobId) {
                 $progress =  $startLine + $index + 1;
                 if (($total <= 100) ||
@@ -259,6 +292,14 @@ class GMLExport
 
     }
 
+    /**
+     * Generate the groups part of the gml for the DEE
+     * and write it to an output (intermediate) file.
+     *
+     * @param $groups
+     * @param $outputFile
+     * @throws Exception
+     */
     protected function generateGroupsGML($groups, $outputFile) {
         // Open the file in write mode
         $out = fopen($outputFile, 'w');
@@ -273,6 +314,13 @@ class GMLExport
         fclose($out);
     }
 
+    /**
+     * Generate the header part of the gml for the DEE
+     * and write it to an output (intermediate) file.
+     *
+     * @param $outputFile
+     * @throws Exception
+     */
     protected function generateHeaderGML($outputFile)
     {
         // Open the file in write mode
@@ -286,6 +334,13 @@ class GMLExport
         fclose($out);
     }
 
+    /**
+     * Generate the end part of the gml for the DEE
+     * and write it to an output (intermediate) file.
+     *
+     * @param $outputFile
+     * @throws Exception
+     */
     protected function generateEndGML($outputFile)
     {
         // Open the file in write mode
@@ -299,12 +354,24 @@ class GMLExport
         fclose($out);
     }
 
+    /**
+     * Generate a string of the GML for one group
+     *
+     * @param $group
+     * @return string
+     */
     protected function generateRegroupement($group)
     {
         $part = $this->twig->render('regroupement.xml.twig', array('regroupement' => $group));
         return $part;
     }
 
+    /**
+     * Generate a string of the GML for one observation
+     *
+     * @param $observation
+     * @return string
+     */
     protected function generateObservation($observation)
     {
         $part = $this->twig->render('sujet_observation.xml.twig', array('observation' => $observation));
@@ -317,9 +384,9 @@ class GMLExport
      * Ex : "#NEEDLE#, #NEEDLE# and #NEEDLE#" => "1, 2 and 3"
      * http://codepad.org/BjVwEy8u
      *
-     * @param str $needle
-     * @param str $str
-     * @return str
+     * @param string $needle
+     * @param string $str
+     * @return string
      */
     protected function strReplaceBySequence($needle, $str)
     {
@@ -329,5 +396,4 @@ class GMLExport
         }
         return $str;
     }
-
 }
