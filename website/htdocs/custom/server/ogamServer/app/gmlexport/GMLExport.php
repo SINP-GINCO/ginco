@@ -172,11 +172,11 @@ class GMLExport
 
             // -- Batch execute the request, and write observations to the output file
             $batchLines = 1000;
-            $batches = ceil( $total / $batchLines );
+            $batches = ceil($total / $batchLines);
 
-            for ($i=0; $i<$batches; $i++) {
+            for ($i = 0; $i < $batches; $i++) {
 
-                $batchSQL = $sql . " LIMIT $batchLines OFFSET " . $i*$batchLines;
+                $batchSQL = $sql . " LIMIT $batchLines OFFSET " . $i * $batchLines;
 
                 // -- Execute query and put results in a formatted array of strings
                 $results = $genericModel->executeRequest($batchSQL);
@@ -218,7 +218,7 @@ class GMLExport
                 $params = array(
                     'site_name' => $configuration->getConfig('site_name', 'Plateforme GINCO-SINP')
                 );
-                $this->generateObservationsGML($resultsArray, $fileNameObservations, $params, $jobId, $i*$batchLines, $total);
+                $this->generateObservationsGML($resultsArray, $fileNameObservations, $params, $jobId, $i * $batchLines, $total);
 
                 // Generate Group of observations (identified by "identifiantregroupementpermanent")
                 // for each batch step, complete the $groups array
@@ -236,8 +236,8 @@ class GMLExport
             unlink($fileNameGroups);
             unlink($fileNameObservations);
             unlink($fileNameEnd);
-
         }
+        return $total!=0;
     }
 
 
@@ -246,12 +246,12 @@ class GMLExport
      * and write it to an output (intermediate) file.
      * Write in "append" mode, so the file can be wited to by batches.
      *
-     * @param $observations: batch of observations
-     * @param $outputFile: file name to write.
+     * @param $observations : batch of observations
+     * @param $outputFile : file name to write.
      * @param array $params : associative id of parameters
      * @param int|null $jobId : job id in the job_queue table. If not null, the function will write its progress in the job_queue table.
-     * @param $startLine: start line of the batch in the entire list of observations
-     * @param $total: total nb of the entire list of observations
+     * @param $startLine : start line of the batch in the entire list of observations
+     * @param $total : total nb of the entire list of observations
      * @throws Exception
      */
     protected function generateObservationsGML($observations, $outputFile, $params = null, $jobId = null, $startLine = 0, $total = 0)
@@ -276,11 +276,12 @@ class GMLExport
 
             // report progress every 1, 10, 100 or 1000 lines
             if ($jobId) {
-                $progress =  $startLine + $index + 1;
+                $progress = $startLine + $index + 1;
                 if (($total <= 100) ||
-                    ($total <= 1000 && ($progress%10 == 0)) ||
-                    ($total <= 10000 && ($progress%100 == 0)) ||
-                    ($progress%1000 == 0)) {
+                    ($total <= 1000 && ($progress % 10 == 0)) ||
+                    ($total <= 10000 && ($progress % 100 == 0)) ||
+                    ($progress % 1000 == 0)
+                ) {
                     $this->jm->setProgress($jobId, $progress);
                     // uncomment to see process runnning.. slowly
                     // sleep(1);
@@ -300,7 +301,8 @@ class GMLExport
      * @param $outputFile
      * @throws Exception
      */
-    protected function generateGroupsGML($groups, $outputFile) {
+    protected function generateGroupsGML($groups, $outputFile)
+    {
         // Open the file in write mode
         $out = fopen($outputFile, 'w');
         if (!$out) {
@@ -349,7 +351,7 @@ class GMLExport
             throw new Exception("Error: could not open (w) file: $outputFile");
         }
         // Write GML header
-        fwrite($out,  $this->twig->render('end.xml'));
+        fwrite($out, $this->twig->render('end.xml'));
         // Close
         fclose($out);
     }
@@ -395,5 +397,35 @@ class GMLExport
             $this->gmlId++;
         }
         return $str;
+    }
+
+    /**
+     * Create a gzipped archive containing:
+     * - the dee gml file
+     * - other files...
+     * And put the archive in the "deePublicDirectory" from conf (in the public directory).
+     *
+     * @param $submissionId
+     * @param $fileName
+     */
+    public function createArchiveDeeGml($submissionId, $fileName)
+    {
+        // Get filePath, fileName without extension
+        $filePath = pathinfo($fileName, PATHINFO_DIRNAME);
+        $fileNameWithoutExtension = pathinfo($fileName, PATHINFO_FILENAME);
+
+        // Put other file in the directory to create a real test archive - todo use it to put something useful !
+        $otherFile = $filePath . '/truc.txt';
+        $out = fopen($otherFile,'w');
+        fwrite($out, "Export DEE pour la soumission $submissionId");
+        fclose($out);
+
+        // Create an archive of the whole directory
+        $configuration = Zend_Registry::get('configuration');
+        $archiveName = $configuration->getConfig('deePublicDirectory') . '/' . $fileNameWithoutExtension . '.tar.gz';
+
+        system("tar zcf $archiveName $filePath");
+
+        return $archiveName;
     }
 }
