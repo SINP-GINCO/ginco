@@ -495,66 +495,85 @@ class DEEModel {
 
 	/**
 	 * Generate groups of observations - identified by 'identifiantregroupementpermanent'
-	 * $groups[identifiantregroupementpermanet] = array(
-	 * "attributes" => array(), - les attributs du regroupement et de sa source
-	 * "observations" => array()) - les observations du regroupement
+	 * $groups[identifiantregroupementpermanet] = array( attributes );
+     *
 	 */
-	public function groupObservations($observations, $groups = null) {
+	public function groupObservations($observations, $groups = null, $params = null) {
 		if (!$groups) {
 		    $groups = array();
         }
-		
-		// 1) Group observations
+        // date de transformation = date où l'on génère la DEE = maintenant
+        $transformationDate = date('c');
+        // organisme de transformation
+        $orgTransformation = (isset($params['site_name'])) ? $params['site_name'] : 'Plateforme GINCO-SINP';
+
+		// Group observations and compute attributes
 		foreach ($observations as $observation) {
 			if (isset($observation['identifiantregroupementpermanent']) && !empty($observation['identifiantregroupementpermanent'])) {
-				if (isset($groups[$observation['identifiantregroupementpermanent']])) {
-					$groups[$observation['identifiantregroupementpermanent']]["observations"][] = $observation;
+			    $id = $observation['identifiantregroupementpermanent'];
+				if (!isset($groups[$id])) {
+				    // Create group
+                    $groups[$id] = array(
+                        'identifiantregroupementpermanent' => $id,
+
+                        // methodeRegroupement: sensé être tous les mêmes
+                        'methoderegroupement' => $observation['methoderegroupement'],
+
+                        // typeRegroupement: sensé être tous les mêmes
+                        'typeregroupement' => $observation['typeregroupement'],
+
+                        // orgTransformation : Nom de la plateforme
+                        'orgtransformation' => $orgTransformation,
+
+                        // jddmetadonneedeeid : sensés être tous les mêmes
+                        'jddmetadonneedeeid' => $observation['jddmetadonneedeeid'],
+
+                        // date de transformation = date où l'on génère la DEE = maintenant todo à vérifier
+                        'deedatetransformation' => $transformationDate,
+
+                        // date de dernière modification = date où l'on génère la DEE = maintenant todo à vérifier
+                        'deedatedernieremodification' => $transformationDate,
+
+                        // dspublique : si homogène, le même que les données d'observation, sinon NSP (on commence par initialiser avec la première valeur trouvée)
+                        'dspublique' => $observation['dspublique'],
+
+                        // statutsource : si homogène, le même que les données d'observation, sinon NSP (on commence par initialiser avec la première valeur trouvée)
+                        'statutsource' => $observation['statutsource'],
+
+                        // organismegestionnairedonnee : Si organisme homogène : mettre le même que pour les sujets d'observation. Sinon, "organismes multiples".
+                        'organismegestionnairedonnee' => $observation['organismegestionnairedonnee'],
+
+                        // sensibilite : le max du regroupement, sensible : oui si une donnée est sensible
+                        'sensiniveau' => $observation['sensiniveau'],
+                        'sensible' => ($observation['sensiniveau'] > 0) ? 'OUI' : 'NON',
+                    );
 				} else {
-					$groups[$observation['identifiantregroupementpermanent']] = array(
-						"attributes" => array(),
-						"observations" => array()
-					);
-					$groups[$observation['identifiantregroupementpermanent']]["observations"][] = $observation;
-				}
+				    // Complete group attributes
+
+                    // dspublique : si homogène, le même que les données d'observation, sinon NSP
+                    if ($groups[$id]['dspublique'] != $observation['dspublique']) {
+                        $groups[$id]['dspublique'] = 'NSP';
+                    }
+
+                    // statutsource : si homogène, le même que les données d'observation, sinon NSP 
+                    if ($groups[$id]['statutsource'] != $observation['statutsource']) {
+                        $groups[$id]['statutsource'] = 'NSP';
+                    }
+                    
+                    // organismegestionnairedonnee : si homogène, le même que les données d'observation, sinon "organismes multiples"
+                    if ($groups[$id]['organismegestionnairedonnee'] != $observation['organismegestionnairedonnee']) {
+                        $groups[$id]['organismegestionnairedonnee'] = 'Organismes multiples';
+                    }
+
+                    // sensibilite : le max du regroupement, sensible : oui si une donnée est sensible
+                    if ($groups[$id]['sensiniveau'] < $observation['sensiniveau']) {
+                        $groups[$id]['sensiniveau'] = $observation['sensiniveau'];
+                        $groups[$id]['sensible'] = 'OUI'; // $observation['sensiniveau'] > $groups[$id]['sensiniveau'] >= 0
+                    }
+                }
 			}
 		}
-		
-		// 2) Compute attributes.
-		// No coherence validation: value of the first observation of the group if it is the same in
-		// all the group, min / max.
-		foreach ($groups as $id => $group) {
-			$groups[$id]['attributes']['identifiantregroupementpermanent'] = $id;
-			$groups[$id]['attributes']['methoderegroupement'] = $group["observations"][0]['methoderegroupement'];
-			$groups[$id]['attributes']['typeregroupement'] = $group["observations"][0]['typeregroupement'];
-			
-			// dspublique : si homogène, le même que les données d'observation, sinon NSP
-			$groups[$id]['attributes']['dspublique'] = (count(array_unique(array_column($group["observations"], 'dspublique'))) == 1) ? reset(array_column($group["observations"], 'dspublique')) : 'NSP';
-			
-			// sensibilite : le max du regroupement, sensible : oui si une donnée est sensible
-			$groups[$id]['attributes']['sensiniveau'] = max(array_column($group["observations"], 'sensiniveau'));
-			$groups[$id]['attributes']['sensible'] = ($groups[$id]['attributes']['sensiniveau'] > 0) ? 'OUI' : 'NON';
-			
-			// statutsource : si homogène, le même que les données d'observation, sinon NSP
-			$groups[$id]['attributes']['statutsource'] = (count(array_unique(array_column($group["observations"], 'statutsource'))) == 1) ? reset(array_column($group["observations"], 'statutsource')) : 'NSP';
-			
-			// jddmetadonneedeeid : sensés être tous les mêmes
-			$groups[$id]['attributes']['jddmetadonneedeeid'] = reset(array_column($group["observations"], 'jddmetadonneedeeid'));
-			
-			// organismegestionnairedonnee > Si organisme homogène : mettre le même que pour les sujets d'observation. Sinon, "organismes multiples".
-			$groups[$id]['attributes']['organismegestionnairedonnee'] = (count(array_unique(array_column($group["observations"], 'organismegestionnairedonnee'))) == 1) ? reset(array_column($group["observations"], 'organismegestionnairedonnee')) : 'Organismes multiples';
-			
-			// orgTransformation > Nom de la plateforme
-			$groups[$id]['attributes']['orgtransformation'] = $_SERVER['HTTP_HOST'];
-			
-			// date de transformation = date où l'on génère la DEE = maintenant
-			$groups[$id]['attributes']['deedatetransformation'] = date('c');
-			
-			// date de dernière modification : on remet celle rentrée lors de l'import (le max) ==> à vérifier
-			$dateMax = max(array_column($group["observations"], 'deedatedernieremodification'));
-			$date = new DateTime($dateMax);
-			$groups[$id]['attributes']['deedatedernieremodification'] = $date->format('c');
-		}
-		
+
 		return $groups;
 	}
 }
