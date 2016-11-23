@@ -192,7 +192,8 @@ class GMLExport
                 $this->generateObservationsGML($resultsArray, $fileNameObservations, $params, $jobId, $i*$batchLines, $total);
 
                 // Generate Group of observations (identified by "identifiantregroupementpermanent")
-                $groups = $this->dee->groupObservations($resultsArray, $groups);
+                // for each batch step, complete the $groups array
+                $groups = $this->dee->groupObservations($resultsArray, $groups, $params);
 
             }
 
@@ -266,7 +267,7 @@ class GMLExport
         }
         // Write groups
         foreach ($groups as $group) {
-            fwrite($out, $this->strReplaceBySequence("#GMLID#", $this->generateRegroupement($group['attributes'])));
+            fwrite($out, $this->strReplaceBySequence("#GMLID#", $this->generateRegroupement($group)));
         }
         // Close
         fclose($out);
