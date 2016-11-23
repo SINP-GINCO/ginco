@@ -53,6 +53,8 @@ $jobId = isset($options['j']) ? $options['j'] : null;
 // Generate DEE GML
 $gml = new GMLExport();
 $gml->generateDeeGml($submissionId, $fileName, $jobId);
+// Create the archive and put it in the DEE download directory
+$archiveName = $gml->createArchiveDeeGml($submissionId, $fileName);
 
 if ($jobId) {
     $jm->setJobCompleted($jobId);

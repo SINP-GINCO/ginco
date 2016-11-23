@@ -32,3 +32,6 @@
 /notes
 
 /nbproject/private/
+
+# Fichiers générés (GML DEE)
+/website/htdocs/custom/public/dee/*.tar.gz
