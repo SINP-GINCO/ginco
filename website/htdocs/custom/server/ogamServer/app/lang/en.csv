@@ -179,6 +179,7 @@ User Module;User Module
 Authentication;Authentication
 Login;Login
 Password;Password
+InvalidPassword;Invalid password
 
 ﻿##########################
 #  Data integration      #
