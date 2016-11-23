@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Class DEEModel
+ *
+ * Transformations and structuration of the DSR datas into DEE.
+ *
+ */
 class DEEModel {
 
 	/**
@@ -119,7 +125,14 @@ class DEEModel {
     }
 
 
-
+    /**
+     * Structure an observation data
+     * from a flat associative array
+     * to a structured array nested like the DEE GML.
+     *
+     * @param $observation array : one line of observation
+     * @return mixed
+     */
     public function structureObservation($observation) {
 		$deeStructuredObjects = array(
 			'descriptifsujet' => array(
@@ -493,12 +506,16 @@ class DEEModel {
 		return $observation;
 	}
 
-	/**
-	 * Generate groups of observations - identified by 'identifiantregroupementpermanent'
-	 * $groups[identifiantregroupementpermanet] = array( attributes );
+    /**
+     * Generate groups of observations - identified by 'identifiantregroupementpermanent'
+     * $groups[identifiantregroupementpermanet] = array( attributes );
      *
-	 */
-	public function groupObservations($observations, $groups = null, $params = null) {
+     * @param $observations: array, list of observations
+     * @param null $groups: array, $groups to be completed (batches)
+     * @param null $params
+     * @return array|null
+     */
+    public function groupObservations($observations, $groups = null, $params = null) {
 		if (!$groups) {
 		    $groups = array();
         }
