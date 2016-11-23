@@ -3,7 +3,9 @@
 require_once APPLICATION_PATH . '/controllers/AbstractOGAMController.php';
 
 /**
- * GMLExportController is the controller that manages ... todo doc
+ * GMLExportController is the controller that manages the control
+ * of DEE-GML export jobs by the Job Manager.
+ * And the direct download of the DEE GML file.
  *
  * @package Application_Controller
  */
@@ -319,7 +321,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
     }
 
     /**
-     * Utility function: get the job id fora given submission id, from table raw_data.export_file
+     * Utility function: get the job id for a given submission id, from table raw_data.export_file
      *
      * @param $submissionId
      * @return bool
