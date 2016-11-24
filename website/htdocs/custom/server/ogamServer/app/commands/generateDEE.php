@@ -56,12 +56,17 @@ $jobId = isset($options['j']) ? $options['j'] : null;
 
 // Generate DEE GML
 $gml = new GMLExport();
+$dateCreated = time();
 $gml->generateDeeGml($submissionId, $fileName, $jobId);
 $logger->debug("GML created for submission $submissionId: $fileName");
 
 // Create the archive and put it in the DEE download directory
-$archiveName = $gml->createArchiveDeeGml($submissionId, $fileName);
-$logger->debug("GML Archive created for submission $submissionId: $archiveName");
+$archivePath = $gml->createArchiveDeeGml($submissionId, $fileName);
+$logger->debug("GML Archive created for submission $submissionId: $archivePath");
+
+// Send notification email
+$gml->sendDEENotificationMail($submissionId, $archivePath, $dateCreated);
+$logger->debug("GML Notification mail sent");
 
 if ($jobId) {
     $jm->setJobCompleted($jobId);

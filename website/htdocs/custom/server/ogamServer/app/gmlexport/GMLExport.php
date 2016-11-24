@@ -436,4 +436,52 @@ class GMLExport
 
         return $archiveName;
     }
+
+
+    public function sendDEENotificationMail($submissionId, $archivePath, $dateCreated) {
+
+        $configuration = Zend_Registry::get('configuration');
+
+        $toEmailAdress =  $configuration->getConfig('deeNotificationMail','sinp-dev@ign.fr');
+
+        $action = 'CREATION';
+        $regionCode = $configuration->getConfig('regionCode','REGION');
+        $uuid = $submissionId; // todo remplacer par le vrai uuid du jdd
+        $archiveFilename  = pathinfo($archivePath, PATHINFO_BASENAME);
+        $deePath = $configuration->getConfig('deePublicDirectory');
+        $deeRelativeUrl = substr($deePath, strpos($deePath,'public') + 6);
+        $archiveUrl = $configuration->getConfig('site_url') . $deeRelativeUrl . '/' . $archiveFilename;
+        $siteName = $configuration->getConfig('site_name');
+        // Contact user
+        $exportFileModel = new Application_Model_RawData_ExportFile();
+        $exportFile = $exportFileModel->getExportFileData($submissionId);
+        $userLogin = $exportFile->user_login;
+        $userModel = new Application_Model_Website_User();
+        $user = $userModel->getUser($userLogin);
+        $userName = $user->username;
+        $userEmail = $user->email;
+
+        // Title and body:
+        $title = "[$regionCode] $action du jeu de données $uuid";
+
+        $body = "Nom du fichier : $archiveFilename" . "\r\n" .
+            "Date de $action du jeu : " . date('d/m/Y H:i:s', $dateCreated) .  "\r\n" .
+            "Fournisseur : " . "todo" .  "\r\n" .
+            "Plate-forme : " . $siteName .  "\r\n" .
+            "Contact : " . $userName . "\r\n" .
+            "Courriel : " . $userEmail . "\r\n" .
+            "Type d'envoi : " . $action . "\r\n" .
+            "Commentaire : " . "\r\n" .
+            "URL : " . $archiveUrl . "\r\n" .
+            "CHECKSUM : " . "\r\n" ;
+
+        // mail()...
+        // todo: use PHPMailer or SwiftMailer
+
+        $this->logger->debug("SEND NOTIFICATION EMAIL");
+        $this->logger->debug("to : " . $toEmailAdress);
+        $this->logger->debug("title : " . $title);
+        $this->logger->debug("body : " . $body);
+    }
+
 }
