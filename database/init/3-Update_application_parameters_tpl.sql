@@ -57,5 +57,8 @@ INSERT INTO application_parameters (name, value, description) VALUES ('featurein
 insert into application_parameters (name, value, description) values ( 'mapserver_private_url' , '@ogam.local.map.services.url@/mapserv_@instance.name@.ginco?' , 'The private URL used by mapserverProxy to request a map server.');
 insert into application_parameters (name, value, description) values ( 'hiding_value' , 'Masqué' , 'The value to display when a field value should not be displayed');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_name', '@site.name@', 'Name of the website');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'deePrivateDirectory','/var/www/@instance.name@/website/dee','Directory where DEE GML files are generated and stored');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/www/@instance.name@/website/public/dee','Directory where DEE archive are stored and can be downloaded');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'regionCode','@region.code@','INSEE Code for region, or ISO code for country');
 -- Pour utiliser le tilecache
 -- insert into application_parameters (name, value, description) values ( 'tilecache_private_url' , 'http://localhost/tilecache-ogam?' , 'The private URL used by tilecacheProxy to request a tile cache.');
