@@ -44,3 +44,9 @@ Ext.define("Ginco.locale.fr.ux.request.RequestFieldSet", {
 	taxrefCompleteNameColumnTitle : 'Nom complet',
 	taxrefCompleteNameColumnTooltip : 'Le nom complet du taxon (nom et auteur)'
 });
+
+Ext.define("Ginco.locale.fr.view.request.RequestFieldSet", {
+	override: 'OgamDesktop.view.request.AdvancedRequest',
+	processPanelHelpTitle: 'Sélectionner un modèle de données',
+	processPanelHelpDefinition:	"Ce composant permet de sélectionner l'ensemble de données dans lequel rechercher des données.",
+});
