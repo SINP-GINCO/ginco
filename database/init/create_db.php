@@ -30,7 +30,7 @@ function usage($mess=NULL){
 # MAIN
 #-------------------------------------------------------------------------------
 
-# parameters analyze
+# parameters' analyze
 if (count($argv)==1) usage();
 
 # get config
@@ -64,7 +64,7 @@ system("$refDir/init_referentiels.sh $connectStr");
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata']);
 # note: populate_mode_taxref_table need an initialized referentiel schema.
 execSQLFile("$initDir/populate_mode_taxref_table.sql",$config);
-# FIXME: serait-il possible de laisser le méta-modfèle de prod vide lors de la livraison?
+# FIXME: serait-il possible de laisser le méta-modèle de prod vide lors de la livraison?
 system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata");
 
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata_work']);
