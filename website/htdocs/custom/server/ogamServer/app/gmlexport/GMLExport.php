@@ -407,12 +407,16 @@ class GMLExport
      *
      * @param $submissionId
      * @param $fileName
+     * @return string
      */
     public function createArchiveDeeGml($submissionId, $fileName)
     {
         // Get filePath, fileName without extension
         $filePath = pathinfo($fileName, PATHINFO_DIRNAME);
         $fileNameWithoutExtension = pathinfo($fileName, PATHINFO_FILENAME);
+
+        $configuration = Zend_Registry::get('configuration');
+        $deePublicDir = $configuration->getConfig('deePublicDirectory');
 
         // Put other file in the directory to create a real test archive - todo use it to put something useful !
         $otherFile = $filePath . '/truc.txt';
@@ -421,10 +425,13 @@ class GMLExport
         fclose($out);
 
         // Create an archive of the whole directory
-        $configuration = Zend_Registry::get('configuration');
-        $archiveName = $configuration->getConfig('deePublicDirectory') . '/' . $fileNameWithoutExtension . '.tar.gz';
+        $parentDir = dirname($filePath); // deePrivateDirectory
+        $archiveName = $deePublicDir . '/' . $fileNameWithoutExtension . '.zip';
+        chdir($parentDir);
+        system("zip -r $archiveName $fileNameWithoutExtension");
 
-        system("tar zcf $archiveName $filePath");
+        // Delete the other files
+        unlink($otherFile);
 
         return $archiveName;
     }
