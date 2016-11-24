@@ -41,11 +41,20 @@ $initDir     = dirname(__FILE__);
 $metadataDir = "$initDir/../metadata"; # FIXME: ce répertoire doit bouger!
 $refDir      = "$initDir/referentiels";
 
+$connectStr ="host="     .$config['db.host'];
+$connectStr.=" port="    .$config['db.port'];
+$connectStr.=" user="    .$config['db.adminuser'];
+$connectStr.=" password=".$config['db.adminuser.pw'];
+$connectStr.=" dbname=postgres";
+
+system('psql "' . $connectStr .'" -c "DROP DATABASE IF EXISTS '. $config['db.name'].';"');
+
 echo("Création de la base de données\n");
 # dropdb $db_name -h $host -p $port -U $db_adminuser --if-exists
 #FIXME je ne comprends pas pourquoi je suis obligé de fixer tout ça pour docker.
-system("createdb {$config['db.name']} -h {$config['db.host']} -p {$config['db.port']} -U {$config['db.adminuser']} -E UTF8 -T template0");
+#system("createdb {$config['db.name']} -h {$config['db.host']} -p {$config['db.port']} -U {$config['db.adminuser']} -E UTF8 -T template0");
 #psql "host=$host port=$port user=$db_adminuser password=$db_adminuser_pw dbname=postgres" -v db_name=$db_name -f ${initDir}/0-Create_bdd.sql
+system('psql "' . $connectStr .'" -c "CREATE DATABASE '. $config['db.name'].';"');
 execSQLFile("$initDir/0-add_extensions.sql",$config);
 execSQLFile("$initDir/0-Create_user.sql",$config, false);
 
