@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 
 try {
     /* patch code here */
+    execCustSQLFile("$sprintDir/increase_columns_lengths_for_dee_export.sql", $config);
     execCustSQLFile("$sprintDir/insert_dee_gml_parameters.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
