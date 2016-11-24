@@ -80,6 +80,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      * @throws Exception
      */
     public function addExportFile($submissionId, $jobId, $fileName) {
+        $this->logger->debug("addExportFile $fileName for submission $submissionId (job id $jobId)");
         if ($this->existsExportFileData($submissionId)) {
             throw new Exception("An export file already exists for submission  $submissionId");
         }
@@ -97,6 +98,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      * @param $id
      */
     public function deleteExportFileData($submissionId) {
+        $this->logger->debug("deleteExportFileData for submission $submissionId");
         // As there is a on delete cascade on job_id, chances are good that record is already deleted from export_file
         if (!$this->existsExportFileData($submissionId)) {
             return true;
@@ -110,6 +112,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      * @param $id
      */
     public function deleteExportFileFromDisk($submissionId) {
+        $this->logger->debug("deleteExportFileFromDisk for submission $submissionId");
         if (!$this->existsExportFileData($submissionId)) {
             return false;
         }
@@ -153,13 +156,14 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
     public function generateFilePath($submissionId) {
         $configuration = Zend_Registry::get('configuration');
 
-        $filePath = $configuration->getConfig('deePrivateDirectory') . '/' . $submissionId . '/';
-
         $regionCode = $configuration->getConfig('regionCode','REGION');
         $date = date('Y-m-d_H-i-s');
         $uuid = $submissionId; // todo: à changer quand on aura un moyen de récupérer l'UUID du jdd.
 
-        $filename = $regionCode . '_' . $date . '_' . $uuid . '.xml';
+        $fileNameWithoutExtension = $regionCode . '_' . $date . '_' . $uuid ;
+
+        $filePath = $configuration->getConfig('deePrivateDirectory') . '/' . $fileNameWithoutExtension . '/';
+        $filename = $fileNameWithoutExtension . '.xml';
 
         return $filePath . $filename ;
     }

@@ -32,6 +32,10 @@ $configuration = Zend_Registry::get("configuration");
 ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
 ini_set("max_execution_time", 0); // Not really useful because the script is used in CLI (max_execution_time is already 0)
 
+// Initialise the logger
+$logger = Zend_Registry::get("logger");
+$logger->debug("generateDEE launched...");
+
 // Initialise the job manager
 $jm = new Application_Service_JobManagerService();
 
@@ -53,8 +57,11 @@ $jobId = isset($options['j']) ? $options['j'] : null;
 // Generate DEE GML
 $gml = new GMLExport();
 $gml->generateDeeGml($submissionId, $fileName, $jobId);
+$logger->debug("GML created for submission $submissionId: $fileName");
+
 // Create the archive and put it in the DEE download directory
 $archiveName = $gml->createArchiveDeeGml($submissionId, $fileName);
+$logger->debug("GML Archive created for submission $submissionId: $archiveName");
 
 if ($jobId) {
     $jm->setJobCompleted($jobId);
@@ -62,3 +69,4 @@ if ($jobId) {
 
 // Sleep a little time after complete, to avoid being seen as "aborted"
 sleep(2);
+$logger->debug("End of generateDEE.");

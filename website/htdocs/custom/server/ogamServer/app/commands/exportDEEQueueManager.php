@@ -26,6 +26,7 @@ $application->bootstrap();
 
 // Initialise the logger
 $logger = Zend_Registry::get("logger");
+$logger->debug("exportDEEQueueManager launched...");
 
 // The Job Manager Service
 $jm = new Application_Service_JobManagerService();
@@ -52,3 +53,5 @@ while ( ($nextJobId = $jm->nextPendingJob($queueName)) || ($running > 0) ) {
     $jm->runJob( $nextJobId );
     $running = $jm->numberOfRunningJobs($queueName);
 }
+
+$logger->debug("End of exportDEEQueueManager.");
