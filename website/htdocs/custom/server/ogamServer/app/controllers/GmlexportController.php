@@ -84,6 +84,9 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $submissionId = $this->_getParam("submissionId");
         $launch = $this->_getParam("launch", true);
 
+        $userSession = new Zend_Session_Namespace('user');
+        $userLogin = $userSession->user->login;
+
         $this->logger->debug('GMLExport: add job in queue, submission id : ' . $submissionId);
 
         // Test if there is already an export file
@@ -104,7 +107,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         if ($jobId) {
             // Insert an line in export_file table
-            $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath);
+            $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath, $userLogin);
         }
         else {
             $this->logger->debug('GMLExport: IMPOSSIBLE to add export_file entry, submission id : ' . $submissionId);

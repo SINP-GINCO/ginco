@@ -275,7 +275,8 @@ CREATE TABLE raw_data.export_file
 (
 	submission_id integer NOT NULL,
 	job_id integer,
-	file_name character varying(500),
+	user_login character varying(50),
+	file_name character varying(500) NOT NULL,
 	created_at timestamp without time zone DEFAULT now(),
 	CONSTRAINT pk_submission_id PRIMARY KEY (submission_id),
 	CONSTRAINT fk_job_id FOREIGN KEY (job_id)
@@ -283,7 +284,10 @@ CREATE TABLE raw_data.export_file
 	ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT fk_submission_id FOREIGN KEY (submission_id)
 	REFERENCES raw_data.submission (submission_id) MATCH SIMPLE
-	ON UPDATE CASCADE ON DELETE CASCADE
+	ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT fk_user_login FOREIGN KEY (user_login)
+	REFERENCES website.users (user_login) MATCH SIMPLE
+	ON UPDATE CASCADE ON DELETE SET NULL
 )
 WITH (
 OIDS=FALSE

@@ -35,6 +35,13 @@ class Application_Object_Website_ExportFile {
     var $jobId;
 
     /**
+     * The login of the user who created the export file
+     *
+     * @var String
+     */
+    var $userLogin;
+
+    /**
      * The resulting file name.
      *
      * @var String
