@@ -75,12 +75,13 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      * @param $submissionId
      * @param $jobId
      * @param $fileName
+     * @param $userLogin : the user who initiated the export
      * @param int $fileSize
      * @return mixed : last id inserted
      * @throws Exception
      */
-    public function addExportFile($submissionId, $jobId, $fileName) {
-        $this->logger->debug("addExportFile $fileName for submission $submissionId (job id $jobId)");
+    public function addExportFile($submissionId, $jobId, $fileName, $userLogin) {
+        $this->logger->debug("addExportFile $fileName for submission $submissionId (job id $jobId, user: $userLogin)");
         if ($this->existsExportFileData($submissionId)) {
             throw new Exception("An export file already exists for submission  $submissionId");
         }
@@ -88,6 +89,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
             'submission_id' => $submissionId,
             'job_id' => $jobId,
             'file_name' => $fileName,
+            'user_login' => $userLogin,
         );
         return $this->insert($data);
     }

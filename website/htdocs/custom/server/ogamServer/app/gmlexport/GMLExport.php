@@ -67,6 +67,7 @@ class GMLExport
      * @param $fileName
      * @param null $jobId
      * @throws Exception
+     * @return boolean
      */
     public function generateDeeGml($submissionId, $fileName, $jobId = null) {
         // Configure memory and time limit because the program ask a lot of resources
