@@ -452,6 +452,7 @@ class GMLExport
         $deeRelativeUrl = substr($deePath, strpos($deePath,'public') + 6);
         $archiveUrl = $configuration->getConfig('site_url') . $deeRelativeUrl . '/' . $archiveFilename;
         $siteName = $configuration->getConfig('site_name');
+        $md5 = md5_file($archivePath);
         // Contact user
         $exportFileModel = new Application_Model_RawData_ExportFile();
         $exportFile = $exportFileModel->getExportFileData($submissionId);
@@ -473,7 +474,7 @@ class GMLExport
             "Type d'envoi : " . $action . "\r\n" .
             "Commentaire : " . "\r\n" .
             "URL : " . $archiveUrl . "\r\n" .
-            "CHECKSUM : " . "\r\n" ;
+            "CHECKSUM MD5 : " . $md5 .  "\r\n" ;
 
         // mail()...
         // todo: use PHPMailer or SwiftMailer
