@@ -448,9 +448,7 @@ class GMLExport
         $regionCode = $configuration->getConfig('regionCode','REGION');
         $uuid = $submissionId; // todo remplacer par le vrai uuid du jdd
         $archiveFilename  = pathinfo($archivePath, PATHINFO_BASENAME);
-        $deePath = $configuration->getConfig('deePublicDirectory');
-        $deeRelativeUrl = substr($deePath, strpos($deePath,'public') + 6);
-        $archiveUrl = $configuration->getConfig('site_url') . $deeRelativeUrl . '/' . $archiveFilename;
+        $archiveUrl = $configuration->getConfig('site_url') . '/dee/' . $archiveFilename;
         $siteName = $configuration->getConfig('site_name');
         $md5 = md5_file($archivePath);
         // Contact user

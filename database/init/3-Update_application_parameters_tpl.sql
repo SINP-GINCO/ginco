@@ -3,7 +3,7 @@ SET SEARCH_PATH = website;
 DELETE FROM application_parameters;
 
 -- TEST DATABASE Parameters
-INSERT INTO application_parameters (name, value, description) values ('UploadDirectory','/var/www/@instance.name@/website/upload','Directory where the CSV files are uploaded');
+INSERT INTO application_parameters (name, value, description) values ('UploadDirectory','/var/data/ginco/@instance.name@/upload','Directory where the CSV files are uploaded');
 INSERT INTO application_parameters (name, value, description) values ('Test','OK','For test purposes');
 INSERT INTO application_parameters (name, value, description) values ('fromMail','sinp@ign.fr','The application email');
 INSERT INTO application_parameters (name, value, description) values ('toMail','@contact.mail@','The destination email');
@@ -12,7 +12,7 @@ insert into application_parameters (name, value, description) values ( 'autoLogi
 insert into application_parameters (name, value, description) values ( 'defaultUser' , 'visiteur' , 'DEFAULT LOGIN AND PAGE FOR PUBLIC ACCESS');
 insert into application_parameters (name, value, description) values ( 'fileMaxSize' , 150 , 'UPLOAD');
 insert into application_parameters (name, value, description) values ( 'integrationService_url' , '@ogam.services.host@/SINP@instance.name@IntegrationService/' , 'INTEGRATION SERVICE');
-insert into application_parameters (name, value, description) values ( 'uploadDir' , '/var/www/@instance.name@/website/tmp' , 'INTEGRATION SERVICE');
+insert into application_parameters (name, value, description) values ( 'uploadDir' , '/var/data/ginco/@instance.name@/tmp' , 'INTEGRATION SERVICE');
 insert into application_parameters (name, value, description) values ( 'harmonizationService_url' , '@ogam.services.host@/SINP@instance.name@HarmonizationService/' , 'HARMONIZATION SERVICE');
 insert into application_parameters (name, value, description) values ( 'reportGenerationService_url' , '@ogam.services.host@/SINP@instance.name@RGService/' , 'REPORT GENERATION SERVICE');
 insert into application_parameters (name, value, description) values ( 'errorReport' , 'ErrorReport.rptdesign' , 'REPORT GENERATION SERVICE');
@@ -57,8 +57,8 @@ INSERT INTO application_parameters (name, value, description) VALUES ('featurein
 insert into application_parameters (name, value, description) values ( 'mapserver_private_url' , '@ogam.local.map.services.url@/mapserv_@instance.name@.ginco?' , 'The private URL used by mapserverProxy to request a map server.');
 insert into application_parameters (name, value, description) values ( 'hiding_value' , 'Masqué' , 'The value to display when a field value should not be displayed');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_name', '@site.name@', 'Name of the website');
-INSERT INTO application_parameters (name, value, description) VALUES ( 'deePrivateDirectory','/var/www/@instance.name@/website/dee','Directory where DEE GML files are generated and stored');
-INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/www/@instance.name@/website/custom/public/dee','Directory where DEE archive are stored and can be downloaded');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'deePrivateDirectory','/var/data/ginco/@instance.name@/dee/private','Directory where DEE GML files are generated and stored');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/data/ginco/@instance.name@/dee/public','Directory where DEE archive are stored and can be downloaded');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'regionCode','@region.code@','INSEE Code for region, or ISO code for country');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@ogam.map.services.url@','URL of the site');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deeNotificationMail', 'sinp-dev@ign.fr', 'Contact mail to send notifications when the DEE is created/updated');
