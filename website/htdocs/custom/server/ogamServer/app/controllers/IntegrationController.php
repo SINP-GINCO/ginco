@@ -1,7 +1,7 @@
 <?php
 
 include_once APPLICATION_PATH . '/controllers/IntegrationController.php';
-
+include_once CUSTOM_APPLICATION_PATH . '/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 /**
  * Custom Integration Controller for GINCO
  * @package controllers
@@ -285,13 +285,22 @@ class Custom_IntegrationController extends IntegrationController {
 		
 		// Send a mail
 		$this->logger->info('SendMail');
-		$message = "Rapport de sensibilité,\r\nMail test.";
-		// Cut lines when characters number > 70
-		$message = wordwrap($message, 70, "\r\n");
-		
-		// mailer ign.fr is mandatory
-		mail('sinp-dev@ign.fr', 'Rapport de sensibilité', $message, null, '-fginconoreply@ign.fr');
-		
+
+		// Create the Transport
+		$transport = Swift_SmtpTransport::newInstance('smtp1.ign.fr', 25);
+
+		// Create the Mailer using your created Transport
+		$mailer = Swift_Mailer::newInstance($transport);
+
+		// Create a message
+		$message = Swift_Message::newInstance('Rapport de sensiblité')
+		  ->setFrom(array('NoReply@ign.fr' => 'Ginco'))
+		  ->setTo(array('sinp-dev@ign.fr' => 'Dev team'))
+		  ->setBody('Le rapport de sensibilité a été créé.')
+		  ;
+
+		// Send the message
+		$mailer->send($message);
 
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender();
