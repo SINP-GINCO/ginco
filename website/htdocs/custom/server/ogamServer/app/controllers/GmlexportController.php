@@ -274,7 +274,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
     }
 
     /**
-     * Download the GML File
+     * Download the DEE Zip File
      *
      * @throws Zend_Exception
      */
@@ -300,11 +300,15 @@ class Custom_GmlexportController extends AbstractOGAMController {
         }
         $exportFile = $this->exportFileModel->getExportFileData($submissionId);
         $filePath = $exportFile->file_name;
-        $fileName = pathinfo($filePath, PATHINFO_BASENAME);
+        $fileName = pathinfo($filePath, PATHINFO_FILENAME) . '.zip';
 
-        if (!is_file( $filePath )) {
-            $this->logger->debug('GMLExport: DEE file does not exist');
-            throw new Exception("DEE file does not exist for submission $submissionId");
+        // tests the existence of the zip file
+        $configuration = Zend_Registry::get('configuration');
+        $archiveFilePath =  $configuration->getConfig('deePublicDirectory') . '/' . $fileName;
+
+        if (!is_file( $archiveFilePath )) {
+            $this->logger->debug('GMLExport: DEE archive file does not exist');
+            throw new Exception("DEE archive file does not exist for submission $submissionId");
         }
 
         // -- Get back the file
@@ -313,7 +317,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $this->getResponse()->setHeader('Content-Type', 'text/xml;charset=utf-8;application/force-download;', true);
         $this->getResponse()->setHeader('Content-disposition', 'attachment; filename=' . $fileName, true);
 
-        $file = fopen($filePath,"rb");
+        $file = fopen($archiveFilePath,"rb");
         while(!feof($file))
         {
             print(@fread($file, 1024*8));
