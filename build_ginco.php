@@ -140,6 +140,10 @@ unlink("$appConfDir/application.ini.tpl");
 chdir("$buildDir/website/custom/server/ogamServer/app/gmlexport");
 system("bash build.sh --no-interaction");
 
+// installation du nécessaire pour l'envoi de mail avec swiftmailer
+chdir("$buildDir/website/custom/server/ogamServer/app");
+system("bash build.sh --no-interaction");
+
 // partie extjs
 echo("building website (extJs)...\n");
 $clientDir = "$projectDir/website/htdocs/custom/client/ogamDesktop";
