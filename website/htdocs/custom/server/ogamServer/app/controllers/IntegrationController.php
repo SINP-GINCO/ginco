@@ -282,6 +282,16 @@ class Custom_IntegrationController extends IntegrationController {
 			}
 			fclose($out);
 		}
+		
+		// Send a mail
+		$this->logger->info('SendMail');
+		$message = "Rapport de sensibilité,\r\nMail test.";
+		// Cut lines when characters number > 70
+		$message = wordwrap($message, 70, "\r\n");
+		
+		// mailer ign.fr is mandatory
+		mail('sinp-dev@ign.fr', 'Rapport de sensibilité', $message, null, '-fginconoreply@ign.fr');
+		
 
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender();
