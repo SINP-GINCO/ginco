@@ -70,7 +70,7 @@ class Custom_UsermanagementController extends UsermanagementController {
 			$password->addValidator(new Application_Validator_PasswordConfirmation());
 			$password->setLabel('Password');
 			$password->setRequired(true);
-			$password->setDescription("Votre mot de passe doit contenir au moins 8 caractères, une majuscule, une miniscule, un chiffre et un caractère spécial.");
+			$password->setDescription($this->translator->translate('passwordRequirement'));
 			$password->addValidator('regex', false, array(
 				'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/',
 				'messages' => $this->translator->translate('InvalidPassword')

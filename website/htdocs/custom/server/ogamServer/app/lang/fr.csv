@@ -335,6 +335,7 @@ New Password;Nouveau mot de passe
 Confirm Password;Confirmer le mot de passe
 Password does not match confirmation;Le mot de passe ne correspond pas
 Old password is not correct;L'ancien mot de passe n'est pas correct
+passwordRequirement;Votre mot de passe doit contenir au moins 8 caractères, une majuscule, une miniscule, un chiffre et un caractère spécial.
 Role Code;Code du rôle
 Role Label;Libellé du rôle
 Role Definition;Définition du rôle 

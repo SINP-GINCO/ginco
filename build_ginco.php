@@ -136,8 +136,8 @@ $appConfDir="$buildDir/website/custom/server/ogamServer/app/configs";
 substituteInFile("$appConfDir/application.ini.tpl", "$appConfDir/application.ini", $config);
 unlink("$appConfDir/application.ini.tpl");
 
-// installation du nécessaire pour la génération du gml DEE
-chdir("$buildDir/website/custom/server/ogamServer/app/gmlexport");
+// installation des dépendances Composer
+chdir("$buildDir/website/custom/server/ogamServer/app");
 system("bash build.sh --no-interaction");
 
 // partie extjs
