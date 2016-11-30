@@ -62,6 +62,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ( 'deePubli
 INSERT INTO application_parameters (name, value, description) VALUES ( 'regionCode','@region.code@','INSEE Code for region, or ISO code for country');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@ogam.map.services.url@','URL of the site');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deeNotificationMail', 'sinp-dev@ign.fr', 'Contact mail to send notifications when the DEE is created/updated');
+INSERT INTO application_parameters (name, value, description) VALUES ('sendEmail','1','Send emails for real ? 1/true, 0/false');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'contactEmail','sinp-dev@ign.fr','Destination mail of the contact form');
 -- Pour utiliser le tilecache
 -- insert into application_parameters (name, value, description) values ( 'tilecache_private_url' , 'http://localhost/tilecache-ogam?' , 'The private URL used by tilecacheProxy to request a tile cache.');
