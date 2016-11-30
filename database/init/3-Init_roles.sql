@@ -56,6 +56,7 @@ INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASE
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIRM_SUBMISSION', 'Publier les données');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_PUBLIC_REQUESTS', 'Gérer les requêtes publiques');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_PRIVATE_REQUESTS', 'Gérer ses requêtes privées');
+INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_WEBSITE_PARAMETERS', 'Configurer les paramètres de la plateforme');
 
 -- Add the permissions per role
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'MANAGE_USERS');
@@ -75,6 +76,7 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CONFIRM_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'MANAGE_PUBLIC_REQUESTS');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'MANAGE_PRIVATE_REQUESTS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CONFIGURE_WEBSITE_PARAMETERS');
 
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'MANAGE_USERS');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'DATA_INTEGRATION');
@@ -91,6 +93,7 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrat
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'CONFIRM_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'MANAGE_PUBLIC_REQUESTS');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'MANAGE_PRIVATE_REQUESTS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'CONFIGURE_WEBSITE_PARAMETERS');
 
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur', 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur', 'EXPORT_RAW_DATA');
