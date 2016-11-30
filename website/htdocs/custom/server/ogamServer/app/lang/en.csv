@@ -361,7 +361,16 @@ contactEmailDescription;Enter an email address or a list of emails separated by 
 Platform Parameters Configuration;Platform Parameters Configuration
 Platform parameters;Platform parameters
 Email(s) invalide(s) : '%value%';Invalid(s) email(s): '%value%'
-contactEmailConfirmation;The contact mail has been saved. You can check by sending a test mail on the contact page.
+contactEmailConfirmation;The contact mail has been saved. You can check by sending a test mail on the <a href="/contact">Contact</a> page.
+
+##########################
+#  Contact               #
+##########################
+contactFromEmail;Your email address:
+Message;Your message:
+Send;Send
+contactEmailSend;Thanks, your message has been sent to the site administrators.
+Contact;Contact
 
 ################################
 #  Fil d'ariane (Breadcrumb)   #

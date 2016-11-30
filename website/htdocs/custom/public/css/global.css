@@ -481,6 +481,7 @@ td.delete-cell{
 	height:100px;
     width:200px;
 	float: right;
+	padding: 6px;
 }
 .zend_form input{
     width:200px;
@@ -607,6 +608,21 @@ td.delete-cell{
 }
 .configuration-form  .zend_form input {
 	width: 300px;
+}
+
+/************************************************************/
+/*      Contact Page                                        */
+/************************************************************/
+.contact-form .form-ct {
+	width:450px;
+}
+.contact-form  .zend_form input,
+.contact-form  .zend_form textarea {
+	width: 300px;
+}
+/* Very important: hide the anti-spam field */
+.contact-form #name-element {
+	display: none;
 }
 
 /************************************************************/
