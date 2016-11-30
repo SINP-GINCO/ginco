@@ -30,6 +30,7 @@ try {
     execCustSQLFile("$sprintDir/insert_dee_gml_parameters.sql", $config);
     execCustSQLFile("$sprintDir/add_user_column_in_export_file_table.sql", $config);
     execCustSQLFile("$sprintDir/add_site_url_in_app_parameters.sql", $config);
+    execCustSQLFile("$sprintDir/add_sendEmail_in_app_parameters.sql", $config);
     execCustSQLFile("$sprintDir/update_tmp_upload_in_application_parameters.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
