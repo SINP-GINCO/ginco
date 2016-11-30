@@ -10,13 +10,8 @@ require_once APPLICATION_PATH . '/controllers/AbstractOGAMController.php';
  */
 class Custom_ConfigurationController extends AbstractOGAMController {
 
-    protected $jobManager = null;
-
-    protected $exportFileModel = null;
-
-    protected $submissionModel = null;
-
-    protected $rawdb;
+    protected $configuration;
+    protected $db;
 
     /**
      * Initialise the controler.
