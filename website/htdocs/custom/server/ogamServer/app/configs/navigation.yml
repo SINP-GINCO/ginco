@@ -71,6 +71,12 @@ nav:
         action: edit-configuration
         module: custom
 
+      contact:
+        label: Breadcrumb Contact
+        controller: contact
+        action: index
+        module: custom
+
       user:
         label: Breadcrumb User
         controller: user

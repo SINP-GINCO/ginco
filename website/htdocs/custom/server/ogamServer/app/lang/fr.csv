@@ -446,7 +446,17 @@ contactEmailDescription;Indiquez une adresse email ou une liste d'adresses sépa
 Platform Parameters Configuration;Configurer les Paramètres de la Plateforme
 Platform parameters;Paramètres de la Plateforme
 Email(s) invalide(s) : '%value%':Email(s) invalide(s) : '%value%'
-contactEmailConfirmation;L'email de contact a bien été enregistré.<br>Vous pouvez tester cette liste en envoyant un mail depuis la page Contact.
+contactEmailConfirmation;L'email de contact a bien été enregistré.<br>Vous pouvez tester cette liste en envoyant un mail depuis la page <a href="/contact">Contact</a>.
+
+
+##########################
+#  Contact               #
+##########################
+contactFromEmail;Votre adresse email :
+Message;Votre message :
+Send;Envoyer
+contactEmailSend;Merci, votre message a bien été envoyé aux administrateurs de la plateforme.
+Contact;Contact
 
 ################################
 #  Fil d'ariane (Breadcrumb)   #
@@ -474,3 +484,4 @@ Breadcrumb Providers Details;Détails et données
 Breadcrumb Edit Provider;Modifier
 Breadcrumb Add Provider;Ajouter
 Breadcrumb Configuration Parameters;Paramètres de la Plateforme
+Breadcrumb Contact;Contact
