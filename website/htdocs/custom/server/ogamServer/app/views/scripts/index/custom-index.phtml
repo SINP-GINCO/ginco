@@ -118,6 +118,12 @@ if (!empty($user)) {
                     'User Administration'
                 );
             }
+            if ($user->isAllowed('CONFIGURE_WEBSITE_PARAMETERS')) {
+                $displayMenuLink(
+                    $this->url(array('controller'=>'configuration'), 'default', true),
+                    'Platform Parameters Configuration'
+                );
+            }
             if ($user->isAllowed('CHECK_CONF')) {
                 $displayMenuLink(
                     $this->url(array('controller'=>'checkconf'), 'default', true),

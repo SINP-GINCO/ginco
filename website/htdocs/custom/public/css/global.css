@@ -54,6 +54,20 @@ body {
 	height: 100%;
 }
 
+.notification {
+	display: block;
+	padding: 5px 30px;
+	text-align: center;
+}
+.notification > div
+{
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: #ffff99;
+	color: #49492c;
+	line-height: 18px;
+}
+
 .wrapper {
 	color: #333333;
 	width: 100%;
@@ -585,6 +599,15 @@ td.delete-cell{
     color: red;
 }
 
+/************************************************************/
+/*      Application Parameters Page                         */
+/************************************************************/
+.configuration-form .form-ct {
+	width:500px;
+}
+.configuration-form  .zend_form input {
+	width: 300px;
+}
 
 /************************************************************/
 /*      Tooltips CSS                                        */

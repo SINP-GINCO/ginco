@@ -438,6 +438,15 @@ Meta Name;Nom de la métadonnée
 Meta Value;Valeur de la métadonnée
 No file selected;Aucun fichier sélectionné
 
+##########################
+#  Configuration         #
+##########################
+contactEmailLabel;Adresse email de contact :
+contactEmailDescription;Indiquez une adresse email ou une liste d'adresses séparées par des virgules.
+Platform Parameters Configuration;Configurer les Paramètres de la Plateforme
+Platform parameters;Paramètres de la Plateforme
+Email(s) invalide(s) : '%value%':Email(s) invalide(s) : '%value%'
+contactEmailConfirmation;L'email de contact a bien été enregistré.<br>Vous pouvez tester cette liste en envoyant un mail depuis la page Contact.
 
 ################################
 #  Fil d'ariane (Breadcrumb)   #
@@ -464,3 +473,4 @@ Breadcrumb Providers;Organismes
 Breadcrumb Providers Details;Détails et données
 Breadcrumb Edit Provider;Modifier
 Breadcrumb Add Provider;Ajouter
+Breadcrumb Configuration Parameters;Paramètres de la Plateforme

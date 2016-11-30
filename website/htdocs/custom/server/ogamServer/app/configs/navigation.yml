@@ -65,6 +65,12 @@ nav:
         action: index
         module: custom
 
+      parameters:
+        label: Breadcrumb Configuration Parameters
+        controller: configuration
+        action: edit-configuration
+        module: custom
+
       user:
         label: Breadcrumb User
         controller: user

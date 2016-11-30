@@ -353,6 +353,16 @@ Add a new localisation;Add a new localisation
 Data Export;Data Export
 Request Criterias;Request Criterias
 
+##########################
+#  Configuration         #
+##########################
+contactEmailLabel;Contact email:
+contactEmailDescription;Enter an email address or a list of emails separated by commas.
+Platform Parameters Configuration;Platform Parameters Configuration
+Platform parameters;Platform parameters
+Email(s) invalide(s) : '%value%';Invalid(s) email(s): '%value%'
+contactEmailConfirmation;The contact mail has been saved. You can check by sending a test mail on the contact page.
+
 ################################
 #  Fil d'ariane (Breadcrumb)   #
 ################################
@@ -378,3 +388,4 @@ Breadcrumb Providers;Providers
 Breadcrumb Providers Details;Details and data
 Breadcrumb Edit Provider;Edit provider
 Breadcrumb Add Provider;Add provider
+Breadcrumb Configuration Parameters;Platform Parameters Configuration
