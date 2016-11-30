@@ -11,6 +11,7 @@ require_once APPLICATION_PATH . '/controllers/AbstractOGAMController.php';
 class Custom_ContactController extends AbstractOGAMController {
 
     protected $db;
+    protected $configuration;
 
     /**
      * Initialise the controler.
@@ -142,13 +143,34 @@ class Custom_ContactController extends AbstractOGAMController {
                 $f = new Zend_Filter_StripTags();
                 $fromEmail = $f->filter($values['email']);
                 $this->logger->debug('fromEmail : ' . $fromEmail);
-                $message = $f->filter($values['message']);
+                $messageBody = $f->filter($values['message']);
                 $this->logger->debug('message : ' . $message);
 
-                // todo: send the email
-                $this->logger->debug("SEND CONTACT MAIL");
-                $this->logger->debug("From: " . $fromEmail);
-                $this->logger->debug("Message: " . $message);
+                // -- Send the email
+                // Using the mailer service based on SwiftMailer
+                $mailerService = new Application_Service_MailerService();
+                // Create a message
+                $message = $mailerService->newMessage('Nouveau message de contact');
+
+                // recipients adresses, separated by commas
+                $to = $this->configuration->getConfig('contactEmail','sinp-dev@ign.fr');
+
+                // body
+                $body = "<p><strong>" . $this->configuration->getConfig('site_name') ."</strong><p>" .
+                    "<p><em>Message envoyé par le formulaire de contact :</em></p><p>" .
+                    $messageBody .
+                    "</p><p><em>Répondre à :</em>" . $fromEmail . "</p>";
+
+                $message
+                    ->setTo(explode(',',$to))
+                    ->setBody($body, 'text/html')
+                ;
+
+                // Reply to the sender
+                $message->getHeaders()->setReplyTo($fromEmail);
+
+                // Send the message
+                $mailerService->sendMessage($message);
 
                 // Return to the configuration form, with a "OK" flash message
                 $this->_helper->_flashMessenger($this->translator->translate('contactEmailSend'));
