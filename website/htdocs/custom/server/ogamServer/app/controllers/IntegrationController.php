@@ -1,7 +1,7 @@
 <?php
 
 include_once APPLICATION_PATH . '/controllers/IntegrationController.php';
-include_once CUSTOM_APPLICATION_PATH . '/vendor/swiftmailer/swiftmailer/lib/swift_required.php';
+require_once CUSTOM_APPLICATION_PATH . '/vendor/autoload.php';
 /**
  * Custom Integration Controller for GINCO
  * @package controllers

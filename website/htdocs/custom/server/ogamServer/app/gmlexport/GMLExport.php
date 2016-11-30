@@ -1,6 +1,6 @@
 <?php
 
-require_once CUSTOM_APPLICATION_PATH . '/gmlexport/vendor/autoload.php';
+require_once CUSTOM_APPLICATION_PATH . '/vendor/autoload.php';
 require_once CUSTOM_APPLICATION_PATH . '/gmlexport/DEEModel.php';
 require_once CUSTOM_APPLICATION_PATH . '/services/JobManagerService.php';
 
