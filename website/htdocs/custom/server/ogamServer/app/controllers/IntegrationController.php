@@ -286,21 +286,17 @@ class Custom_IntegrationController extends IntegrationController {
 		// Send a mail
 		$this->logger->info('SendMail');
 
-		// Create the Transport
-		$transport = Swift_SmtpTransport::newInstance('smtp1.ign.fr', 25);
-
-		// Create the Mailer using your created Transport
-		$mailer = Swift_Mailer::newInstance($transport);
+        // Using the mailer service based on SwiftMailer
+        $mailerService = new Application_Service_MailerService();
 
 		// Create a message
-		$message = Swift_Message::newInstance('Rapport de sensiblité')
-		  ->setFrom(array('NoReply@ign.fr' => 'Ginco'))
-		  ->setTo(array('sinp-dev@ign.fr' => 'Dev team'))
-		  ->setBody('Le rapport de sensibilité a été créé.')
-		  ;
+		$message = $mailerService->newMessage('Rapport de sensiblité');
+		$message->setTo(array('sinp-dev@ign.fr' => 'Dev team'))
+		        ->setBody('Le rapport de sensibilité a été créé.')
+        ;
 
 		// Send the message
-		$mailer->send($message);
+        $mailerService->sendMessage($message);
 
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender();
