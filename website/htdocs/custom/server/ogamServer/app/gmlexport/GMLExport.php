@@ -463,23 +463,38 @@ class GMLExport
         // Title and body:
         $title = "[$regionCode] $action du jeu de données $uuid";
 
-        $body = "Nom du fichier : $archiveFilename" . "\r\n" .
-            "Date de $action du jeu : " . date('d/m/Y H:i:s', $dateCreated) .  "\r\n" .
-            "Fournisseur : " . "todo" .  "\r\n" .
-            "Plate-forme : " . $siteName .  "\r\n" .
-            "Contact : " . $userName . "\r\n" .
-            "Courriel : " . $userEmail . "\r\n" .
-            "Type d'envoi : " . $action . "\r\n" .
-            "Commentaire : " . "\r\n" .
-            "URL : " . $archiveUrl . "\r\n" .
-            "CHECKSUM MD5 : " . $md5 .  "\r\n" ;
+        $body = "Nom du fichier : $archiveFilename" . "\n" .
+            "Date de $action du jeu : " . date('d/m/Y H:i:s', $dateCreated) .  "\n" .
+            "Fournisseur : " . "todo" .  "\n" .
+            "Plate-forme : " . $siteName .  "\n" .
+            "Contact : " . $userName . "\n" .
+            "Courriel : " . $userEmail . "\n" .
+            "Type d'envoi : " . $action . "\n" .
+            "Commentaire : " . "\n" .
+            "URL : <a href='$archiveUrl'>" . $archiveUrl . "</a>\n" .
+            "CHECKSUM MD5 : " . $md5 .  "\n" ;
 
-        // mail()...
-        // todo: use PHPMailer or SwiftMailer
+        // -- Send the email
+        // Using the mailer service based on SwiftMailer
+        $mailerService = new Application_Service_MailerService();
+        // Create a message
+        $message = $mailerService->newMessage($title);
+        
+        // body
+        $bodyMessage = "<p><strong>" . $this->configuration->getConfig('site_name') . " - " . $title . "</strong><p>" .
+            "<p>" . nl2br($body) . "</p>";
+
+        $message
+            ->setTo(array($toEmailAdress))
+            ->setBody($bodyMessage, 'text/html')
+        ;
+
+        // Send the message
+        $mailerService->sendMessage($message);
 
         $this->logger->debug("SEND NOTIFICATION EMAIL");
         $this->logger->debug("to : " . $toEmailAdress);
-        $this->logger->debug("title : " . $title);
+        $this->logger->debug("subject : " . $title);
         $this->logger->debug("body : " . $body);
     }
 
