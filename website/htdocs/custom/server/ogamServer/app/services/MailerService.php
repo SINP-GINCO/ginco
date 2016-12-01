@@ -69,7 +69,7 @@ class Application_Service_MailerService
             try {
                 $this->mailer->send($message);
                 $this->logger->debug("Email sent: \n" .
-                    "To: " . $message->getTo() . "\n" .
+                    "To: " . implode(',',$message->getTo()) . "\n" .
                     "Title: " . $message->getSubject() . "\n" .
                     "Body: " . $message->getBody() ."\n"
                 );
