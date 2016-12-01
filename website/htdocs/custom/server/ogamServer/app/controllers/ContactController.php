@@ -144,7 +144,7 @@ class Custom_ContactController extends AbstractOGAMController {
                 $fromEmail = $f->filter($values['email']);
                 $this->logger->debug('fromEmail : ' . $fromEmail);
                 $messageBody = $f->filter($values['message']);
-                $this->logger->debug('message : ' . $message);
+                $this->logger->debug('message : ' . $messageBody);
 
                 // -- Send the email
                 // Using the mailer service based on SwiftMailer
@@ -158,8 +158,8 @@ class Custom_ContactController extends AbstractOGAMController {
                 // body
                 $body = "<p><strong>" . $this->configuration->getConfig('site_name') ."</strong><p>" .
                     "<p><em>Message envoyé par le formulaire de contact :</em></p><p>" .
-                    $messageBody .
-                    "</p><p><em>Répondre à :</em>" . $fromEmail . "</p>";
+                    nl2br($messageBody) .
+                    "</p><p><em>Répondre à :</em> " . $fromEmail . "</p>";
 
                 $message
                     ->setTo(explode(',',$to))
@@ -167,7 +167,7 @@ class Custom_ContactController extends AbstractOGAMController {
                 ;
 
                 // Reply to the sender
-                $message->getHeaders()->setReplyTo($fromEmail);
+                $message->setReplyTo($fromEmail);
 
                 // Send the message
                 $mailerService->sendMessage($message);
