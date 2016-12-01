@@ -437,12 +437,18 @@ class GMLExport
         return $archiveName;
     }
 
-
+    /**
+     * Send the notification email after creation of the DEE archive
+     *
+     * @param $submissionId
+     * @param $archivePath
+     * @param $dateCreated
+     */
     public function sendDEENotificationMail($submissionId, $archivePath, $dateCreated) {
 
         $configuration = Zend_Registry::get('configuration');
 
-        $toEmailAdress =  $configuration->getConfig('deeNotificationMail','sinp-dev@ign.fr');
+        $toEmailAddress =  $configuration->getConfig('deeNotificationMail','sinp-dev@ign.fr');
 
         $action = 'CREATION';
         $regionCode = $configuration->getConfig('regionCode','REGION');
@@ -451,6 +457,11 @@ class GMLExport
         $archiveUrl = $configuration->getConfig('site_url') . '/dee/' . $archiveFilename;
         $siteName = $configuration->getConfig('site_name');
         $md5 = md5_file($archivePath);
+        // Provider of the submission
+        $submissionModel = new Application_Model_RawData_Submission();
+        $submission = $submissionModel->getSubmission($submissionId);
+        $provider = $submission->providerLabel . " (" . $submission->providerId .")";
+
         // Contact user
         $exportFileModel = new Application_Model_RawData_ExportFile();
         $exportFile = $exportFileModel->getExportFileData($submissionId);
@@ -465,7 +476,7 @@ class GMLExport
 
         $body = "Nom du fichier : $archiveFilename" . "\n" .
             "Date de $action du jeu : " . date('d/m/Y H:i:s', $dateCreated) .  "\n" .
-            "Fournisseur : " . "todo" .  "\n" .
+            "Fournisseur : " . $provider .  "\n" .
             "Plate-forme : " . $siteName .  "\n" .
             "Contact : " . $userName . "\n" .
             "Courriel : " . $userEmail . "\n" .
@@ -481,21 +492,16 @@ class GMLExport
         $message = $mailerService->newMessage($title);
         
         // body
-        $bodyMessage = "<p><strong>" . $this->configuration->getConfig('site_name') . " - " . $title . "</strong><p>" .
+        $bodyMessage = "<p><strong>" . $configuration->getConfig('site_name') . " - " . $title . "</strong></p>" .
             "<p>" . nl2br($body) . "</p>";
 
         $message
-            ->setTo(array($toEmailAdress))
+            ->setTo(array($toEmailAddress))
             ->setBody($bodyMessage, 'text/html')
         ;
 
         // Send the message
         $mailerService->sendMessage($message);
-
-        $this->logger->debug("SEND NOTIFICATION EMAIL");
-        $this->logger->debug("to : " . $toEmailAdress);
-        $this->logger->debug("subject : " . $title);
-        $this->logger->debug("body : " . $body);
     }
 
 }
