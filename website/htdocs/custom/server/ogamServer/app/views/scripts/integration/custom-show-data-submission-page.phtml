@@ -192,15 +192,28 @@ foreach ($this->submissions as $submission) {
 
     <!-- Actions cell -->
     <td>
+
     <?php
-	if ($submission->step === "INSERT" && $submission->status === "OK") {
+    if ($submission->step !== "INIT" && $submission->status !== "DATARUNNING") {
+        ?>
+        <p><a href="<?php echo  $this->url(array('controller'=>'dataset','action'=>'download-report'), 'default', true)?>?submissionId=<?php echo $submission->submissionId;?>&report=integrationReport" ><?php echo $this->translate('Show report');?></a></p>
+    <?php }
+    if ($submission->status === "OK") {
+        ?>
+        <p>
+            <a href="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $submission->submissionId; ?>&report=sensibilityReport"><?php echo $this->translate('Sensibility Report'); ?></a>
+        </p>
+        <p>
+            <a href="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $submission->submissionId; ?>&report=permanentIdsReport"><?php echo $this->translate('Permanent Ids Report'); ?></a>
+        </p>
+
+    <?php }
+
+    if ($submission->step === "INSERT" && $submission->status === "OK") {
 ?>
     <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" ><?php echo $this->translate('Check data');?></a></p>
     <?php }
-	if ($submission->step !== "INIT" && $submission->status !== "DATARUNNING") {
-?>
-    <p><a href="<?php echo  $this->url(array('controller'=>'proxy','action'=>'showreport'), 'default', true)?>?submissionId=<?php echo $submission->submissionId;?>" ><?php echo $this->translate('Show report');?></a></p>
-    <?php }
+
     if ($submission->step === "CHECK" && ($submission->status === "OK" || $submission->status === "WARNING") && $user->isAllowed('CONFIRM_SUBMISSION')) {
 ?>
     <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'validate-data'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" onClick="return confirm('<?php echo $this->translate('Confirm_submission_warning');?>');"><?php echo $this->translate('Publish data');?></a></p>
@@ -209,15 +222,7 @@ foreach ($this->submissions as $submission) {
     if ($submission->step === "VALIDATE" && ($submission->status === "OK" || $submission->status === "WARNING") && $user->isAllowed('CONFIRM_SUBMISSION')) {
     ?>
     <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'invalidate-data'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" onClick="return confirm('<?php echo $this->translate('Unpublish_submission_warning');?>');"><?php echo $this->translate('Unpublish data');?></a></p>
-    <?php
-    }
-    if ($submission->status === "OK") {
-        ?>
-        <p>
-            <a href="<?php echo $this->url(array('controller' => 'integration', 'action' => 'export-sensibility-report'), null, true) ?>?submissionId=<?php echo $submission->submissionId; ?>"><?php echo $this->translate('Sensibility Report'); ?></a>
-        </p>
-    <?php
-    }
+    <?php }
     if ($submission->step != "VALIDATE" || $user->isAllowed('CANCEL_VALIDATED_SUBMISSION')) {
         if ($submission->providerId == $userSession->user->provider->id || ($user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION'))) {
 ?>

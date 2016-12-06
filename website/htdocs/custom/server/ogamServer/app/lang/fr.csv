@@ -235,6 +235,7 @@ Fichier SIG optionnel: ;Fichier SIG optionnel:
 You must select all files to upload;Vous devez sélectionner un fichier de données à importer
 <span class="hint-title">;<span class="hint-title">
 Sensibility Report;Rapport de sensibilité
+Permanent Ids Report;Rapport des identifiants permanents
 Number of sensible data;Nombre de données sensibles
 Total number of data in the submission;Nombre de données total dans la soumission
 Download a file model for;Télécharger un modèle de fichier pour
