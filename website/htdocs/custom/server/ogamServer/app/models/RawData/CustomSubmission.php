@@ -450,4 +450,28 @@ class Application_Model_RawData_CustomSubmission extends Application_Model_RawDa
         return $label;
     }
 
+
+    /**
+     * Get submission files
+     *
+     * @param $submissionId
+     * @return array
+     */
+    public function getSubmissionFiles($submissionId) {
+        Zend_Registry::get("logger")->info('getSubmissionFiles : ' . $submissionId);
+
+        $req = " SELECT * FROM submission_file WHERE submission_id = ?";
+        $select = $this->db->prepare($req);
+        $select->execute(array(
+            $submissionId
+        ));
+
+        $results = array();
+        foreach ($select->fetchAll() as $row) {
+            $results[] = $row;
+        }
+        return $results;
+    }
+
+
 }
