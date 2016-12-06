@@ -137,9 +137,7 @@ class Custom_DatasetController  extends AbstractOGAMController {
         $submissionId = $this->_getParam("submissionId");
         // get the report name
         $report = $this->_getParam("report");
-        if (empty($submissionId) || empty($report)) {
-            return;
-        }
+        $this->logger->debug("downloadReportAction: submission: $submissionId, report: $report" );
 
         $customSubmissionModel = new Application_Model_RawData_CustomSubmission();
 
