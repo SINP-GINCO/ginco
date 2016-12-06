@@ -87,6 +87,47 @@ class Application_Model_RawData_CustomSubmission extends Application_Model_RawDa
         return $fileNames;
     }
 
+
+    /**
+     * Generate one report (which: $report)
+     * and write them to files
+     *
+     * @param $submissionId
+     * @param $report
+     * @throws Exception
+     */
+    public function generateReport($submissionId, $report) {
+
+        $this->logger->debug('generateReport, submission: ' . $submissionId . ', report: ' . $report);
+
+        // The directory where we are going to store the reports, and the filenames
+        $reportsDirectory = $this->getReportsDirectory($submissionId) ;
+        $filenames = $this->getReportsFilenames($submissionId);
+
+        // Create it if not exists
+        $pathExists = is_dir($reportsDirectory) || mkdir($reportsDirectory, 0755, true);
+        if (!$pathExists) {
+            throw new Exception("Error: could not create directory: $reportsDirectory");
+        }
+
+        switch ($report) {
+            case 'integrationReport':
+                // generate Integration report
+                $this->writeIntegrationReport($submissionId, $filenames['integrationReport'] );
+                break;
+            case 'sensibilityReport':
+                // generate sensibility report
+                $this->writeSensibilityReport($submissionId, $filenames['sensibilityReport']);
+                break;
+            case 'permanentIdsReport':
+                // generate id report
+                $this->writePermanentIdsReport($submissionId, $filenames['permanentIdsReport']);
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * Call the Java report service to generate the
      * integration report, and write it down to $outputFile
