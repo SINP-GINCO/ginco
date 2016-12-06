@@ -82,29 +82,18 @@ class Custom_DatasetController  extends AbstractOGAMController {
 
         // Get the submission
         $submission = $customSubmissionModel->getSubmission($submissionId);
-
-        $this->logger->debug('generateReportsAction, submission: ' . $submissionId );
-
-        // The directory where we are going to store the reports, and the filenames
-        $reportsDirectory = $customSubmissionModel->getReportsDirectory($submissionId) ;
-        $filenames = $customSubmissionModel->getReportsFilenames($submissionId);
-
-        // Create it if not exists
-        $pathExists = is_dir($reportsDirectory) || mkdir($reportsDirectory, 0755, true);
-        if (!$pathExists) {
-            throw new Exception("Error: could not create directory: $reportsDirectory");
-        }
+        $this->logger->debug('generateReports, submission: ' . $submissionId );
 
         // generate Integration report (always)
-        $customSubmissionModel->writeIntegrationReport($submissionId, $filenames['integrationReport'] );
+        $customSubmissionModel->generateReport($submissionId, 'integrationReport');
 
         // only if status=OK
         if ($submission->status == "OK") {
             // generate sensibility report
-            $customSubmissionModel->writeSensibilityReport($submissionId, $filenames['sensibilityReport']);
+            $customSubmissionModel->generateReport($submissionId, 'sensibilityReport');
 
             // generate id report
-            $customSubmissionModel->writePermanentIdsReport($submissionId, $filenames['permanentIdsReport']);
+            $customSubmissionModel->generateReport($submissionId, 'permanentIdsReport');
         }
     }
 
@@ -145,11 +134,16 @@ class Custom_DatasetController  extends AbstractOGAMController {
         $filenames = $customSubmissionModel->getReportsFilenames($submissionId);
         $filePath = $filenames[$report];
 
+        // Regenerate sensibility report each time (see #815)
+        if ($report == "sensibilityReport") {
+            $customSubmissionModel->writeSensibilityReport($submissionId, $filePath);
+        }
+
         // tests the existence of the file
         if (!is_file( $filePath )) {
             $this->logger->debug("downloadReportAction: sensibility report file $filePath does not exist, trying to generate them");
             // We try to generate the reports, and then re-test
-            $this->generateReports($submissionId);
+            $customSubmissionModel->generateReport($submissionId, $report);
             if (!is_file( $filePath )) {
                 throw new Exception("Report file '$report' does not exist for submission $submissionId");
             }

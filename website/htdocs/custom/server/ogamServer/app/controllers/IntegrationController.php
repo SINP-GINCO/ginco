@@ -397,7 +397,20 @@ class Custom_IntegrationController extends IntegrationController {
 
         // Attachments
         $reports = $submissionModel->getReportsFilenames($submissionId);
+
+        // Regenerate sensibility report each time (see #815)
+        $submissionModel->writeSensibilityReport($submissionId, $reports["sensibilityReport"]);
+
         foreach($reports as $report => $reportPath) {
+            if (!is_file( $reportPath )) {
+                $this->logger->debug("validateDataAction: report file $filePath does not exist, trying to generate them");
+                // We try to generate the reports, and then re-test
+                $submissionModel->generateReport($submissionId, $report);
+                if (!is_file( $reportPath )) {
+                    throw new Exception("Report file '$report' does not exist for submission $submissionId");
+                }
+            }
+
             $message->attach(Swift_Attachment::fromPath($reportPath));
         }
 
