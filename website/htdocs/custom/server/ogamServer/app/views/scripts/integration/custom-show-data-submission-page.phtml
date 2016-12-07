@@ -30,6 +30,8 @@
 
 <p class="onTableLink">
     <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'show-create-data-submission'), null, true) ?>"><?php echo $this->translate('Import a new dataset');?></a>
+    |
+    <a class='align_images' href="<?php echo $this->url(array('controller'=>'integration','action'=>'download-active-submissions-csv'), null, true) ?>"><img src='/img/save.png'> <?php echo $this->translate('Download submissions list');?></a>
 </p>
 
 <?php
