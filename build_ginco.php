@@ -131,6 +131,10 @@ $versionInfo   = $currentBranch . ' ' . date('d/m/o G:i:s');
 $layoutFile="$buildDir/website/custom/server/ogamServer/app/layouts/scripts/layout.phtml";
 substituteInFile($layoutFile, $layoutFile, ['build.version' => $versionInfo]);
 
+// Piwik
+$piwikTrackingFile="$buildDir/website/custom/server/ogamServer/app/layouts/scripts/piwik.html";
+substituteInFile($piwikTrackingFile, $piwikTrackingFile, $config);
+
 // adaptation du application.ini à la config de l'instance.
 $appConfDir="$buildDir/website/custom/server/ogamServer/app/configs";
 substituteInFile("$appConfDir/application.ini.tpl", "$appConfDir/application.ini", $config);
@@ -145,6 +149,7 @@ echo("building website (extJs)...\n");
 $clientDir = "$projectDir/website/htdocs/custom/client/ogamDesktop";
 substituteInFile("$clientDir/app_tpl.json", 
                  "$buildDir/website/client/ogamDesktop/app.json", $config);
+substituteInFile("$clientDir/index.html","$clientDir/index.html", $config);
 chdir("$buildDir/website/client/ogamDesktop/");
 system("sencha app upgrade");
 system("sencha app build");
