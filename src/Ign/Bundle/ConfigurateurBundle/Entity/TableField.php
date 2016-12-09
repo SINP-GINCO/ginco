@@ -305,7 +305,7 @@ class TableField {
 			if ('AppCache' == get_class($kernel)) {
 				$kernel = $kernel->getKernel();
 			}
-			$em = $kernel->getContainer()->get( 'doctrine.orm.entity_manager' );
+			$em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
 			$tableFormat = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
 			$tableLabel = $tableFormat->getLabel();
 
@@ -313,11 +313,14 @@ class TableField {
 
 			// Primary key or foreign key ?
 			if ($format == $this->getTableFormat())
-				return $trans->trans('data.primary_key', array('%tableLabel%' => $tableLabel));
+				return $trans->trans('data.primary_key', array(
+					'%tableLabel%' => $tableLabel
+				));
 			else
-				return $trans->trans('data.foreign_key', array('%tableLabel%' => $tableLabel));
-		}
-		else {
+				return $trans->trans('data.foreign_key', array(
+					'%tableLabel%' => $tableLabel
+				));
+		} else {
 			return $this->getData();
 		}
 	}
