@@ -310,7 +310,7 @@ class TableController extends Controller {
 	 * @Route("/models/{model_id}/tables/{id}/delete/", name="configurateur_table_delete")
 	 * @Template()
 	 */
-	public function deleteAction($model_id, $id) {
+	public function deleteAction($model_id, $id, $fromDeleteModel = false) {
 		$em = $this->getDoctrine()->getManager();
 
 		$formatRepository = $em->getRepository('IgnConfigurateurBundle:Format');

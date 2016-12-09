@@ -381,7 +381,8 @@ class ModelController extends Controller {
 			foreach ($model->getTables() as $table) {
 				$this->forward('IgnConfigurateurBundle:Table:delete', array(
 					'model_id' => $id,
-					'id' => $table->getFormat()
+					'id' => $table->getFormat(),
+					'fromDeleteModel' => true
 				));
 			}
 			$model->getTables()->clear();
