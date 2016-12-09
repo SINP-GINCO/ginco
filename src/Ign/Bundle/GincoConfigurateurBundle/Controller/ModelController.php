@@ -9,7 +9,7 @@ class ModelController extends ModelControllerBase {
 
 	/**
 	 * #600 : Forbid access to model creation.
-	 * User should only be able to
+	 * User is only allowed to
 	 * create a model with duplication functionality.
 	 * @Route("/models/new/", name="configurateur_model_new")
 	 */
