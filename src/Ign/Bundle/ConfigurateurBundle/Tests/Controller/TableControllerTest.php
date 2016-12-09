@@ -264,8 +264,8 @@ class TableControllerTest extends ConfiguratorTest {
 	public function testNewChildTable()
 	{
 		$modelName = $this->em->getRepository('IgnConfigurateurBundle:Model')
-				->find('2')
-				->getName();
+			->find('2')
+			->getName();
 		$crawler = $this->client->request('GET', '/models/2/tables/child_table/edit/');
 		$form = $crawler->filter('form[name=ign_bundle_configurateurbundle_table_format_edit]')->form();
 
@@ -282,14 +282,13 @@ class TableControllerTest extends ConfiguratorTest {
 
 		// Check tables relation is put in table_tree with correct join_key
 		$tableTrees = $this->em->getRepository('IgnConfigurateurBundle:TableTree')->findBy(array(
-				"childTable" => 'child_table',
-				"parentTable" => $parentFormat
+			"childTable" => 'child_table',
+			"parentTable" => $parentFormat
 		));
 		$this->assertTrue(count($tableTrees) > 0);
 		$tableTree = current($tableTrees);
-		$keys = explode(',' , $tableTree->getJoinKey());
+		$keys = explode(',', $tableTree->getJoinKey());
 		$this->assertTrue(in_array('OGAM_ID_' . $parentFormat, $keys));
-
 	}
 
 
@@ -328,7 +327,6 @@ class TableControllerTest extends ConfiguratorTest {
 		$result = pg_query($pgConn, $sql) or die('Request failed: ' . pg_last_error());
 		$nbOcc = pg_fetch_row($result)[0];
 		$this->assertEquals(0, $nbOcc);
-
 	}
 
 	/**
@@ -337,7 +335,7 @@ class TableControllerTest extends ConfiguratorTest {
 	 * So before requesting, the jddid cell should not be present.
 	 * After requesting, the jddid cell should therefore be present.
 	 */
-	public function testAddFields(){
+	public function testAddFields() {
 		$fields = "jddid, jddcode";
 
 		$crawler = $this->client->request('GET', '/models/3/tables/table/fields/');
@@ -346,36 +344,34 @@ class TableControllerTest extends ConfiguratorTest {
 		$this->assertContains('<td id="name" class="hidden">jddid [STRING]</td>', $crawler->html());
 		$this->assertNotContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
 
-		$crawler = $this->client->request('GET', '/models/3/tables/table/fields/add/'. $fields .'/');
+		$crawler = $this->client->request('GET', '/models/3/tables/table/fields/add/' . $fields . '/');
 
 		$this->assertContains('<td>Identifiant de la provenance [STRING]</td>', $crawler->html());
 		$this->assertContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
 	}
 
-	public function testRemoveAllFields(){
-
+	public function testRemoveAllFields() {
 		$crawler = $this->client->request('GET', '/models/3/tables/table_with_fields/fields/');
 
 		$this->assertContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
 		$this->assertContains('<td id="label">Code identifiant la provenance</td>', $crawler->html());
 
-		$crawler = $this->client->request('GET', '/models/3/tables/table/fields/removeAll/' );
+		$crawler = $this->client->request('GET', '/models/3/tables/table/fields/removeAll/');
 
 		$this->assertNotContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
 		$this->assertNotContains('<td id="label">Code identifiant la provenance</td>', $crawler->html());
 	}
 
-	public function testRemoveFieldAction(){
+	public function testRemoveFieldAction() {
 		$field = "jddid";
 
 		$crawler = $this->client->request('GET', '/models/3/tables/table_with_field/fields/');
 
 		$this->assertContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
 
-		$crawler = $this->client->request('GET', '/models/3/tables/table_with_field/fields/remove/'. $field .'/');
+		$crawler = $this->client->request('GET', '/models/3/tables/table_with_field/fields/remove/' . $field . '/');
 
 		$this->assertNotContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
-
 	}
 
 	/**
@@ -410,6 +406,5 @@ class TableControllerTest extends ConfiguratorTest {
 		$this->assertTrue($crawler->filter($filter3)
 			->count() > 0);
 	}
-
 }
 

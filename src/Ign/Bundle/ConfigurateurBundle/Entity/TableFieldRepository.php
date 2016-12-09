@@ -53,7 +53,7 @@ class TableFieldRepository extends EntityRepository {
 			AND t.data NOT LIKE :ogam_id");
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat,
-			'ogam_id' => TableFormat::PK_PREFIX . '%',
+			'ogam_id' => TableFormat::PK_PREFIX . '%'
 		));
 		return $query->getResult();
 	}
@@ -61,7 +61,8 @@ class TableFieldRepository extends EntityRepository {
 	/**
 	 * Get the fields corresponding to keys (primary and foreigns) of the table
 	 *
-	 * @param $tableFormat
+	 * @param
+	 *        	$tableFormat
 	 * @return array
 	 */
 	public function findKeysByTableFormat($tableFormat) {
@@ -71,7 +72,7 @@ class TableFieldRepository extends EntityRepository {
 			AND t.data LIKE :ogam_id");
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat,
-			'ogam_id' => TableFormat::PK_PREFIX . '%',
+			'ogam_id' => TableFormat::PK_PREFIX . '%'
 		));
 		return $query->getResult();
 	}
@@ -109,7 +110,7 @@ class TableFieldRepository extends EntityRepository {
 			AND t.data NOT LIKE :ogam_id");
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat,
-			'ogam_id' => TableFormat::PK_PREFIX . '%',
+			'ogam_id' => TableFormat::PK_PREFIX . '%'
 		));
 
 		return $query->getResult();

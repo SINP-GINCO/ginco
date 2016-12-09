@@ -125,9 +125,6 @@ class ModelControllerTest extends ConfiguratorTest {
 			->count() > 0);
 	}
 
-	/**
-	 *
-	 */
 	public function testEditWithSameValues() {
 		$modelName = $this->repository->find('2')->getName();
 		$crawler = $this->client->request('GET', '/models/2/edit');
@@ -407,8 +404,10 @@ class ModelControllerTest extends ConfiguratorTest {
 
 		$model = $this->repository->findOneByName($modelName);
 
-		//create mocked client for tomcat response = false
-		$stub = $this->getMockBuilder(ResetTomcatCaches::class)->disableOriginalConstructor()->getMock();
+		// create mocked client for tomcat response = false
+		$stub = $this->getMockBuilder(ResetTomcatCaches::class)
+			->disableOriginalConstructor()
+			->getMock();
 		$stub->expects($this->exactly(1))
 			->method('performRequest')
 			->will($this->returnValue(false));
@@ -419,18 +418,20 @@ class ModelControllerTest extends ConfiguratorTest {
 
 		// Tomcat caches are not erased
 		// Try to publish, must fail :
-		$crawler = $client->request('GET', '/models/'.$model->getId().'/publish/');
+		$crawler = $client->request('GET', '/models/' . $model->getId() . '/publish/');
 		$filter = 'html:contains("' . $this->translator->trans('datamodel.resetCaches.fail', array(
-				'%modelName%' => $modelName
-			)) . '")';
+			'%modelName%' => $modelName
+		)) . '")';
 		$this->assertTrue($crawler->filter($filter)
-				->count() == 1);
+			->count() == 1);
 
-		//create mocked client
-		$stub = $this->getMockBuilder(ResetTomcatCaches::class)->disableOriginalConstructor()->getMock();
+		// create mocked client
+		$stub = $this->getMockBuilder(ResetTomcatCaches::class)
+			->disableOriginalConstructor()
+			->getMock();
 		$stub->expects($this->exactly(1))
-		->method('performRequest')
-		->will($this->returnValue(true));
+			->method('performRequest')
+			->will($this->returnValue(true));
 
 		$client = self::createClient();
 		$client->followRedirects(true);
@@ -438,7 +439,7 @@ class ModelControllerTest extends ConfiguratorTest {
 
 		// The model exists and contains no tables : it is not publishable yet
 		// Try to publish, must fail :
-		$crawler = $client->request('GET', '/models/'.$model->getId().'/publish/');
+		$crawler = $client->request('GET', '/models/' . $model->getId() . '/publish/');
 		$filter = 'html:contains("' . $this->translator->trans('datamodel.publish.fail', array(
 			'%modelName%' => $modelName
 		)) . '")';
@@ -446,7 +447,7 @@ class ModelControllerTest extends ConfiguratorTest {
 			->count() == 1);
 
 		// Add a table
-		$crawler = $this->client->request('GET', '/models/'.$model->getId().'/tables/new/');
+		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/tables/new/');
 		$form = $crawler->selectButton('Enregistrer')->form();
 		$form['ign_bundle_configurateurbundle_table_format_edit[label]'] = "table_for_model_to_publish";
 		$form['ign_bundle_configurateurbundle_table_format_edit[description]'] = 'description for table';
@@ -454,7 +455,9 @@ class ModelControllerTest extends ConfiguratorTest {
 
 		// Mocked service must be injected at each request.
 		// It's because the client rebuilds kernel between each requests.
-		$stub = $this->getMockBuilder(ResetTomcatCaches::class)->disableOriginalConstructor()->getMock();
+		$stub = $this->getMockBuilder(ResetTomcatCaches::class)
+			->disableOriginalConstructor()
+			->getMock();
 		$stub->expects($this->exactly(1))
 			->method('performRequest')
 			->will($this->returnValue(true));
@@ -462,22 +465,23 @@ class ModelControllerTest extends ConfiguratorTest {
 		$client->followRedirects(true);
 		$client->getContainer()->set('app.resettomcatcaches', $stub);
 
-
 		// The model now contains a table, but it has no field : it is not publishable yet
 		// Try to publish, must fail :
-		$crawler = $client->request('GET', '/models/'.$model->getId().'/publish/');
+		$crawler = $client->request('GET', '/models/' . $model->getId() . '/publish/');
 		$filter = 'html:contains("' . $this->translator->trans('datamodel.publish.fail', array(
-				'%modelName%' => $modelName
-			)) . '")';
+			'%modelName%' => $modelName
+		)) . '")';
 		$this->assertTrue($crawler->filter($filter)
-				->count() == 1);
+			->count() == 1);
 
 		// Add a field to the table of the model :
 		$table = $model->getTables()->first();
-		$crawler = $this->client->request('GET', '/models/'.$model->getId().'/tables/'.$table->getFormat().'/fields/add/jddid/');
+		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/tables/' . $table->getFormat() . '/fields/add/jddid/');
 
 		// Inject mocked service
-		$stub = $this->getMockBuilder(ResetTomcatCaches::class)->disableOriginalConstructor()->getMock();
+		$stub = $this->getMockBuilder(ResetTomcatCaches::class)
+			->disableOriginalConstructor()
+			->getMock();
 		$stub->expects($this->exactly(1))
 			->method('performRequest')
 			->will($this->returnValue(true));
@@ -487,29 +491,31 @@ class ModelControllerTest extends ConfiguratorTest {
 
 		// The model now contains a table which has one field : it is not publishable yet
 		// Try to publish, must fail :
-		$crawler = $client->request('GET', '/models/'.$model->getId().'/publish/');
+		$crawler = $client->request('GET', '/models/' . $model->getId() . '/publish/');
 		$filter = 'html:contains("' . $this->translator->trans('datamodel.publish.fail', array(
-				'%modelName%' => $modelName
-			)) . '")';
+			'%modelName%' => $modelName
+		)) . '")';
 		$this->assertTrue($crawler->filter($filter)
-				->count() == 1);
+			->count() == 1);
 
 		// Add a geometrical field to a table of the model :
 		$table = $model->getTables()->first();
-		$crawler = $this->client->request('GET', '/models/'.$model->getId().'/tables/'.$table->getFormat().'/fields/add/THE_GEOM/');
+		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/tables/' . $table->getFormat() . '/fields/add/THE_GEOM/');
 
 		// Inject mocked service
-		$stub = $this->getMockBuilder(ResetTomcatCaches::class)->disableOriginalConstructor()->getMock();
+		$stub = $this->getMockBuilder(ResetTomcatCaches::class)
+			->disableOriginalConstructor()
+			->getMock();
 		$stub->expects($this->exactly(1))
-		->method('performRequest')
-		->will($this->returnValue(true));
+			->method('performRequest')
+			->will($this->returnValue(true));
 		$client = self::createClient();
 		$client->followRedirects(true);
 		$client->getContainer()->set('app.resettomcatcaches', $stub);
 
 		// The model now contains a table which has a geometrical field : it IS publishable now
 		// Try to publish, must success :
-		$crawler = $client->request('GET', '/models/'.$model->getId().'/publish/');
+		$crawler = $client->request('GET', '/models/' . $model->getId() . '/publish/');
 		$filter = 'html:contains("' . $this->translator->trans('datamodel.publish.success', array(
 			'%modelName%' => $modelName
 		)) . '")';
@@ -518,8 +524,8 @@ class ModelControllerTest extends ConfiguratorTest {
 		));
 		$this->assertContains($message, $crawler->text());
 
-// 		$this->assertTrue($crawler->filter($filter)
-// 			->count() == 1);
+		// $this->assertTrue($crawler->filter($filter)
+		// ->count() == 1);
 	}
 
 	/**
@@ -721,8 +727,8 @@ class ModelControllerTest extends ConfiguratorTest {
 		$filter = 'html:contains("' . $modelName . '")';
 		$this->assertTrue($crawler->filter($filter)
 			->count() > 0);
-		//$this->assertTrue($this->client->getResponse()
-			//->isSuccessful());
+		// $this->assertTrue($this->client->getResponse()
+		// ->isSuccessful());
 
 		$model = $this->repository->findOneByName('My copied model');
 		$this->assertEquals('My copied model', $model->getName());

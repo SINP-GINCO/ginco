@@ -40,14 +40,16 @@ class TableController extends Controller {
 
 		// create new table form
 		$formOptions = array(
-				'model' => $model,
-				'conn' => $conn = $this->getDoctrine()->getConnection(),
-				'em' => $em
+			'model' => $model,
+			'conn' => $conn = $this->getDoctrine()->getConnection(),
+			'em' => $em
 		);
 		$formTable = $this->createForm(TableFormatType::class, $table, $formOptions);
 
 		// Add a "save and manage fields" button
-		$formTable->add('saveAndFields', SubmitType::class, array('label' => 'table.edit.saveandfields'));
+		$formTable->add('saveAndFields', SubmitType::class, array(
+			'label' => 'table.edit.saveandfields'
+		));
 
 		// Handle request
 		$formTable->handleRequest($request);
@@ -91,26 +93,25 @@ class TableController extends Controller {
 			$parent = (empty($parent)) ? '*' : $parent;
 			$tableTree = new TableTree();
 			if ($parent == '*') {
-				$tableTree
-						->setChildTable($table->getFormat())
-						->setParentTable('*')
-						->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')->find($table->getSchemaCode()));
+				$tableTree->setChildTable($table->getFormat())
+					->setParentTable('*')
+					->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')
+					->find($table->getSchemaCode()));
 				$em->persist($tableTree);
-			}
-			else {
+			} else {
 				$parent = $tableFormatRepository->find($parent);
-				$tableTree
-						->setChildTable($table->getFormat())
-						->setParentTable($parent->getFormat())
-						->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')->find($table->getSchemaCode()))
-						->setJoinKey($parent->getPrimaryKey());
+				$tableTree->setChildTable($table->getFormat())
+					->setParentTable($parent->getFormat())
+					->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')
+					->find($table->getSchemaCode()))
+					->setJoinKey($parent->getPrimaryKey());
 				$em->persist($tableTree);
 
 				// Add foreign key (parent table primary key)
 				$this->forward('IgnConfigurateurBundle:TableField:addFields', array(
-						'modelId' => $model->getId(),
-						'format' => $format,
-						'fields' => $parent->getPKName()
+					'modelId' => $model->getId(),
+					'format' => $format,
+					'fields' => $parent->getPKName()
 				));
 			}
 
@@ -118,27 +119,24 @@ class TableController extends Controller {
 			$data = new Data();
 			$textValue = $em->getRepository('IgnConfigurateurBundle:Unit')->find('IDString');
 			$label = $this->get('Translator')->trans('data.primary_key', array(
-					'%tableLabel%' => $table->getLabel()
+				'%tableLabel%' => $table->getLabel()
 			));
 			$data->setName($table->getPkName())
-				 ->setUnit($textValue)
-				 ->setLabel($label)
-				 ->setDefinition($label);
+				->setUnit($textValue)
+				->setLabel($label)
+				->setDefinition($label);
 			$em->persist($data);
 			$em->flush();
 
 			// add technical fields to the new table
-			$fields = "PROVIDER_ID,SUBMISSION_ID," . $table->getPkName() ;
+			$fields = "PROVIDER_ID,SUBMISSION_ID," . $table->getPkName();
 			$this->forward('IgnConfigurateurBundle:TableField:addFields', array(
 				'modelId' => $model->getId(),
 				'format' => $format,
 				'fields' => $fields
 			));
 
-
-			$nextAction = $formTable->get('saveAndFields')->isClicked()
-					? 'configurateur_table_fields'
-					: 'configurateur_table_edit';
+			$nextAction = $formTable->get('saveAndFields')->isClicked() ? 'configurateur_table_fields' : 'configurateur_table_edit';
 
 			return $this->redirectToRoute($nextAction, array(
 				'modelId' => $model->getId(),
@@ -148,7 +146,7 @@ class TableController extends Controller {
 
 		return $this->render('IgnConfigurateurBundle:TableFormat:new.html.twig', array(
 			'tableForm' => $formTable->createView(),
-			'model' => $model,
+			'model' => $model
 		));
 	}
 
@@ -175,10 +173,10 @@ class TableController extends Controller {
 
 		// create table form
 		$formOptions = array(
-				'model' => $model,
-				'tableFormat' => $format,
-				'conn' => $conn = $this->getDoctrine()->getConnection(),
-				'em' => $em
+			'model' => $model,
+			'tableFormat' => $format,
+			'conn' => $conn = $this->getDoctrine()->getConnection(),
+			'em' => $em
 		);
 		$form = $this->createForm(TableFormatType::class, $table, $formOptions);
 
@@ -205,10 +203,9 @@ class TableController extends Controller {
 			$data = $em->getRepository('IgnConfigurateurBundle:Data')->find($table->getPKName());
 			if ($data) {
 				$label = $this->get('Translator')->trans('data.primary_key', array(
-						'%tableLabel%' => $table->getLabel()
+					'%tableLabel%' => $table->getLabel()
 				));
-				$data->setLabel($label)
-						->setDefinition($label);
+				$data->setLabel($label)->setDefinition($label);
 				$em->flush();
 			}
 			$parent = $table->getParent();
@@ -222,15 +219,12 @@ class TableController extends Controller {
 
 				// Remove entry from table_tree
 				if ($em->contains($tableTree)) {
-					$tableTree
-							->setParentTable('*')
-							->setJoinKey(null);
+					$tableTree->setParentTable('*')->setJoinKey(null);
 					$em->flush();
 				}
 			} else {
 				$parent = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($parent);
-				$tableTree
-					->setChildTable($table->getFormat())
+				$tableTree->setChildTable($table->getFormat())
 					->setParentTable($parent->getFormat())
 					->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')
 					->find($table->getSchemaCode()))
@@ -244,19 +238,23 @@ class TableController extends Controller {
 
 				// Add foreign key (parent table primary key)
 				$this->forward('IgnConfigurateurBundle:TableField:addFields', array(
-						'modelId' => $modelId,
-						'format' => $format,
-						'fields' => $parent->getPKName()
+					'modelId' => $modelId,
+					'format' => $format,
+					'fields' => $parent->getPKName()
 				));
 			}
 			$em->persist($table);
 			try {
 				$em->flush();
 				$this->addFlash('notice', $this->get('translator')
-					->trans('table.edit.definition.success', array('%tableName%' => $table->getLabel())));
+					->trans('table.edit.definition.success', array(
+					'%tableName%' => $table->getLabel()
+				)));
 			} catch (\Doctrine\DBAL\DBALException $e) {
 				$this->addFlash('notice', $this->get('translator')
-					->trans('table.edit.definition.fail', array('%tableName%' => $table->getLabel())));
+					->trans('table.edit.definition.fail', array(
+					'%tableName%' => $table->getLabel()
+				)));
 			}
 
 			return $this->redirectToRoute('configurateur_table_edit', array(
@@ -268,15 +266,14 @@ class TableController extends Controller {
 		return $this->render('IgnConfigurateurBundle:TableFormat:edit.html.twig', array(
 			'tableForm' => $form->createView(),
 			'table' => $table,
-			'model' => $model,
+			'model' => $model
 		));
 	}
 
 	/**
 	 * @Route("models/{modelId}/tables/{format}/fields/", name="configurateur_table_fields")
 	 */
-	public function manageFieldsAction($modelId, $format)
-	{
+	public function manageFieldsAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
 		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
@@ -296,11 +293,11 @@ class TableController extends Controller {
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 
 		return $this->render('IgnConfigurateurBundle:TableFormat:fields.html.twig', array(
-				'table' => $table,
-				'allFields' => $allFields,
-				'tableFields' => $tableFields,
-				'model' => $model,
-				'fieldsForm' => $fieldsForm->createView()
+			'table' => $table,
+			'allFields' => $allFields,
+			'tableFields' => $tableFields,
+			'model' => $model,
+			'fieldsForm' => $fieldsForm->createView()
 		));
 	}
 
@@ -356,13 +353,14 @@ class TableController extends Controller {
 		$em->merge($model);
 		$em->flush();
 		$this->addFlash('notice', $this->get('translator')
-			->trans('table.delete.success', array('%tableName%' => $tableName)));
+			->trans('table.delete.success', array(
+			'%tableName%' => $tableName
+		)));
 
 		return $this->redirectToRoute('configurateur_model_edit', array(
 			'id' => $model_id
 		));
 	}
-
 
 	/**
 	 * @Route("models/{modelId}/tables/{format}/view/", name="configurateur_table_view")
@@ -371,7 +369,8 @@ class TableController extends Controller {
 	public function viewAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);		if (!$table) {
+		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
+		if (!$table) {
 			$errMsg = "Aucune TABLE ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
@@ -385,7 +384,7 @@ class TableController extends Controller {
 		} else {
 			$parentTableFormat = $tableTree->getParentTable();
 
-			if ($parentTableFormat == '*'){
+			if ($parentTableFormat == '*') {
 				$parentTableName = null;
 			} else {
 				$parentTable = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($parentTableFormat);
