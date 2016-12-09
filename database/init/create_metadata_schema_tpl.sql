@@ -585,6 +585,7 @@ ID					 VARCHAR(19)			not null,
 NAME			     VARCHAR(128)			not null,
 DESCRIPTION		     VARCHAR(1024)			null,	
 SCHEMA_CODE			 VARCHAR(36)			not null,
+IS_REF				 BOOLEAN				null,
 CONSTRAINT PK_MODEL PRIMARY KEY (ID)
 );
 COMMENT ON TABLE MODEL IS 'A data model represents a list of tables';
@@ -592,6 +593,8 @@ COMMENT ON COLUMN MODEL.ID IS 'The id of the model';
 COMMENT ON COLUMN MODEL.NAME IS 'The name of the model';
 COMMENT ON COLUMN MODEL.DESCRIPTION IS 'The description of the model';
 COMMENT ON COLUMN MODEL.SCHEMA_CODE IS 'The schema code of the model';
+COMMENT ON COLUMN MODEL.IS_REF IS 'Wether the model is a reference or standard model or not';
+
 
 /*==============================================================*/
 /* Table : MODEL_DATASETS                                      */
