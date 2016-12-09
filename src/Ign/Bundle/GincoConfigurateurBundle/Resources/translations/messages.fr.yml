@@ -1,7 +1,14 @@
-# Messages du bundle Ginco
-
 dee:
   readOnly: Le modèle DEE est en lecture seule.
 datamodel:
   new:
     forbidden: Vous ne pouvez créer un modèle qu'à partir de la duplication d'un autre modèle.
+table:
+  new:
+    forbidden: Vous ne pouvez pas ajouter de nouvelle table à un modèle.
+  delete:
+    forbidden: Vous ne pouvez pas supprimer les tables d'un modèle.
+data:
+  delete:
+    ref:
+      forbidden: Le champ %dataName% ne peut être supprimé car il dérive d'un champ appartenant à un modèle de donnéss standard.

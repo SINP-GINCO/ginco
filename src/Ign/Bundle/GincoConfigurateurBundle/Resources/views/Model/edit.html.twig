@@ -64,7 +64,6 @@ modelForm 'bootstrap_3_horizontal_layout.html.twig' %} {% block title
 								<th data-halign="center" data-align="center">{% trans %}datamodel.edit.tables.title{% endtrans %}</th>
 								<th data-align="center">{% trans %}Edit{% endtrans %}</th>
 								<th data-align="center">{% trans %}Fields{% endtrans %}</th>
-								<th data-align="center"> {% trans %}Delete{% endtrans %}</th>
 							</tr>
 						</thead>
 						{% for table in tables %}
@@ -81,35 +80,6 @@ modelForm 'bootstrap_3_horizontal_layout.html.twig' %} {% block title
 								  href="{{ path('configurateur_table_fields',{ 'modelId' : model.id, 'format': table.format} ) }}">
 									<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 							</a></td>
-							<td class=col-md-1><a type="button" class="btn btn-default"
-							    title="Supprimer la table"
-								data-toggle="modal" data-target="#deleteModal-{{ table.format }}"> <span
-									class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-							</a></td>
-
-							<!-- Delete Modal -->
-							<div class="modal fade" id="deleteModal-{{ table.format }}"
-								tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-								aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-
-										<div class="modal-body">
-											{% trans with {'%table.label%':table.label, '%modelName%': modelName}%}
-											table.delete.warning
-											{% endtrans %}
-										</div>
-
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default"
-												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-											<a type="button" class="btn btn-primary"
-												href="{{ path('configurateur_table_delete',{ 'model_id': model.id , 'id': table.format  } ) }}">
-												{% trans %}Confirm{% endtrans %} </a>
-										</div>
-									</div>
-								</div>
-							</div>
 						</tr>
 						{% endfor %}
 					</table>

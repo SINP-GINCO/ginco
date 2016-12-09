@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\ConfigurateurBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
 use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
 
@@ -136,12 +135,11 @@ class FieldMappingRepository extends EntityRepository {
 			AND fm.mappingType =:mappingType');
 		$query->setParameters(array(
 			'fileFormat' => $fileFormat,
-			'mappingType' => $mappingType,
+			'mappingType' => $mappingType
 		));
 
 		return $query->getResult();
 	}
-
 
 	/**
 	 * Deletes all the mappings linked with a field of a file.
@@ -182,6 +180,7 @@ class FieldMappingRepository extends EntityRepository {
 
 		return $query->getResult();
 	}
+
 	/**
 	 * Deletes all the mappings linked with a field of a table.
 	 *
@@ -199,6 +198,29 @@ class FieldMappingRepository extends EntityRepository {
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat,
 			'field' => $field
+		));
+
+		return $query->getResult();
+	}
+
+	/**
+	 * Deletes all the mappings linked with the table except the mapping linked to a reference field.
+	 *
+	 * @param
+	 *        	tableFormat the name of the table
+	 *
+	 * @return result of the delete query
+	 */
+	public function removeAllExceptRefMappingsByTableFormat($tableFormat) {
+		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FieldMapping fm
+			WHERE fm.dstFormat =:tableFormat
+			AND fm.srcData NOT IN (SELECT ta.data
+				FROM IgnConfigurateurBundle:TableField ta
+				INNER JOIN IgnConfigurateurBundle:ModelTables mt WITH mt.table = ta.tableFormat
+				INNER JOIN IgnConfigurateurBundle:Model m WITH m.id = mt.model
+				WHERE m.ref = true)');
+		$query->setParameters(array(
+			'tableFormat' => $tableFormat
 		));
 
 		return $query->getResult();

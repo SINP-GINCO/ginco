@@ -88,10 +88,53 @@ class FieldRepository extends EntityRepository {
 			->andwhere('d.name LIKE :fkCondition')
 			->andwhere('d.name != :pkCondition')
 			->setParameters(array(
-				'format' => $format,
-				'fkCondition' => TableFormat::PK_PREFIX . '%',
-				'pkCondition' => TableFormat::PK_PREFIX . $format,
-			))
+			'format' => $format,
+			'fkCondition' => TableFormat::PK_PREFIX . '%',
+			'pkCondition' => TableFormat::PK_PREFIX . $format
+		))
+			->getQuery();
+		$results = $query->execute();
+
+		// Delete the results
+		foreach ($results as $result) {
+			$this->_em->remove($result);
+		}
+		// Don't forget to flush in the controller
+		return true;
+	}
+
+	/**
+	 * Deletes all non-technical and non-reference fields of the table.
+	 *
+	 * @param
+	 *        	format the name of the table f
+	 *
+	 * @return result of the delete query
+	 */
+	public function deleteNonTechnicalAndNonRefByTableFormat($format) {
+		$qb = $this->_em->createQueryBuilder();
+		$qb2 = $this->_em->createQueryBuilder();
+
+		$query = $qb->select('f')
+			->from('IgnConfigurateurBundle:Field', 'f')
+			->innerJoin('f.data', 'd')
+			->where('f.format = :format')
+			->andwhere("d.name NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')")
+			->andwhere('d.name NOT LIKE :fkCondition')
+			->andwhere($qb->expr()
+			->notIn('f.data', $qb2->select('dd.name')
+			->from('IgnConfigurateurBundle:Field', 'fi')
+			->innerJoin('f.data', 'dd')
+			->join('IgnConfigurateurBundle:ModelTables', 'mt', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->eq(' mt.table', 'fi.format'))
+			->join('IgnConfigurateurBundle:Model', 'm', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->eq(' m.id', 'mt.model'))
+			->where('m.ref = true')
+			->getDQL()))
+			->setParameters(array(
+			'format' => $format,
+			'fkCondition' => TableFormat::PK_PREFIX . '%'
+		))
 			->getQuery();
 		$results = $query->execute();
 

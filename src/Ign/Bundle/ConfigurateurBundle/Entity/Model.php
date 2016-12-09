@@ -38,6 +38,12 @@ class Model {
 	private $description;
 
 	/**
+	 *
+	 * @var string @ORM\Column(name="is_ref", type="boolean", nullable=true)
+	 */
+	private $ref;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="TableFormat", inversedBy="models", cascade={"all"})
 	 * @ORM\JoinTable(name="metadata_work.model_tables",
 	 * joinColumns={@ORM\JoinColumn(name="model_id", referencedColumnName="id")},
@@ -125,6 +131,27 @@ class Model {
 	 */
 	public function getDescription() {
 		return $this->description;
+	}
+
+	/**
+	 * Set ref
+	 *
+	 * @param boolean $ref
+	 * @return Model
+	 */
+	public function setRef($ref) {
+		$this->ref = false;
+
+		return $this;
+	}
+
+	/**
+	 * Get ref
+	 *
+	 * @return string
+	 */
+	public function getRef() {
+		return $this->ref;
 	}
 
 	/**

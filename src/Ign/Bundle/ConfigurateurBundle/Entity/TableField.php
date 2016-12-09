@@ -73,6 +73,13 @@ class TableField {
 	 */
 	private $comment;
 
+	/**
+	 * Unmapped field.
+	 * Flag telling if this field is originally from a reference standard.
+	 *
+	 * @var boolean
+	 */
+	private $isRef;
 
 	/**
 	 * Set data
@@ -261,6 +268,27 @@ class TableField {
 	 */
 	public function getComment() {
 		return $this->comment;
+	}
+
+	/**
+	 * Set ref
+	 *
+	 * @param boolean $ref
+	 * @return TableField
+	 */
+	public function setRef($ref) {
+		$this->ref = $ref;
+
+		return $this;
+	}
+
+	/**
+	 * Get ref
+	 *
+	 * @return boolean
+	 */
+	public function isRef() {
+		return $this->data;
 	}
 
 	/**
