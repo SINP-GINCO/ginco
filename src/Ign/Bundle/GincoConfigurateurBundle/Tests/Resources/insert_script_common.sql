@@ -1174,7 +1174,7 @@ INSERT INTO table_schema VALUES ('PUBLIC', 'PUBLIC', 'Public', 'Contains the def
 -- Data for Name: model; Type: TABLE DATA; Schema: metadata; Owner: admin
 --
 
-INSERT INTO model VALUES ('model_1', 'Std occ taxon dee v1-2-1', 'à ne pas supprimer', 'RAW_DATA');
+INSERT INTO model VALUES ('model_1', 'Std occ taxon dee v1-2-1', 'à ne pas supprimer', 'RAW_DATA', true);
 
 --
 -- Data for Name: model_datasets; Type: TABLE DATA; Schema: metadata; Owner: admin
@@ -2502,7 +2502,7 @@ INSERT INTO table_schema VALUES ('PUBLIC', 'PUBLIC', 'Public', 'Contains the def
 -- Data for Name: model; Type: TABLE DATA; Schema: metadata; Owner: admin
 --
 
-INSERT INTO model VALUES ('model_1', 'Std occ taxon dee v1-2-1', 'à ne pas supprimer', 'RAW_DATA');
+INSERT INTO model VALUES ('model_1', 'Std occ taxon dee v1-2-1', 'à ne pas supprimer', 'RAW_DATA', true);
 
 --
 -- Data for Name: model_datasets; Type: TABLE DATA; Schema: metadata; Owner: admin
