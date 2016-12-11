@@ -53,7 +53,7 @@ Enfin un zoom maximal affiche la géométrie précise de l'observation (ici, un 
 
 .. image:: ../images/visu/visu-carto-recherche-geometrie.png
 
-.. warning:: Attention, selon vos permissions, certaines observations sensibles et/ou privées seront floutées (*i.e* : non affichées) à partir d'une certaine échelle. Par exemple, si l'application a déterminé qu'une observation est sensible et qu'elle ne peut pas être visualisée à une échelle plus précise que celle de la maille, un zoom poussé pour voir la commune de l'observation ou sa géométrie précise n'affichera rien.
+.. warning:: Attention, selon vos permissions, certaines observations sensibles et/ou privées seront floutées (*i.e* : non affichées) à partir d'une certaine échelle. Par exemple, si l'application a déterminé qu'une observation est sensible et qu'elle ne peut pas être visualisée à une échelle plus précise que celle de la maille, un zoom poussé pour voir la commune de l'observation ou sa géométrie précise n'affichera rien. Vous trouverez plus de détails sur le fonctionnement du floutage dans le chapitre :ref:`fonctionnement-floutage`.
 
 Naviguer sur la carte
 ---------------------
