@@ -21,7 +21,7 @@ Selon les droits de l'utilisateur, elles ne sont pas toujours toutes disponibles
 
 .. note:: Il est possible qu'une donnée ne comporte pas de géométrie, dans ce cas l'icone "Voir sur la carte" est grisée et inactive.
 
-.. warning:: *Attention*, selon vos permissions, certaines valeurs de champs géométriques d'observations sensibles et/ou privées seront floutées (*i.e* : cachées). Par exemple, si l'application a déterminé qu'une observation est sensible et qu'elle ne peut pas être visualisée à une échelle plus précise que celle de la maille, les champs *codeCommune*, *codeCommuneCalcule*, *nomCommune*, *nomCommuneCalcule*, et *geometrie* afficheront une constante cachant l'information réelle.
+.. warning:: *Attention*, selon vos permissions, certaines valeurs de champs géométriques d'observations sensibles et/ou privées seront floutées (*i.e* : cachées). Par exemple, si l'application a déterminé qu'une observation est sensible et qu'elle ne peut pas être visualisée à une échelle plus précise que celle de la maille, les champs *codeCommune*, *codeCommuneCalcule*, *nomCommune*, *nomCommuneCalcule*, et *geometrie* afficheront une constante cachant l'information réelle. Vous trouverez plus de détails sur le fonctionnement du floutage dans le chapitre :ref:`fonctionnement-floutage`.
 
 
 Export des résultats
