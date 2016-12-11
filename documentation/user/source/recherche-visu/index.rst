@@ -12,3 +12,4 @@ Visualisation et recherche de données
     cartographie
     tableau-resultats
     fiche-detail
+    floutage
