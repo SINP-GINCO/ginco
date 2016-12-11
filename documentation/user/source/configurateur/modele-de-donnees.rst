@@ -26,27 +26,19 @@ avec des champs régionaux utiles.
 Créer un modèle de données
 --------------------------
 
-.. image:: ../images/data-models-1.png
+.. image:: ../images/configurateur/configurateur-modele-creation.png
 
-1. Cliquer sur "Modèles de données" dans le menu du haut pour accéder à la page de gestion des modèles de données.
-2. GINCO propose un modèle de données de base : **Occ_Taxon_DSR_exemple**.
+1. Cliquer sur "Modèles de données" dans le menu du haut pour accéder à la page de gestion des modèles de données (**1**).
+2. GINCO propose un modèle de données de base : **Occ_Taxon_DSR_exemple** (**2**).
 
-.. note:: Le modèle Occ_Taxon_DSR_exemple est le modèle de base. Il n'est
-    possible ni de le supprimer, ni de le modifier.
+.. note:: Le modèle Occ_Taxon_DSR_exemple est le modèle de base. Il n'est possible ni de le supprimer, ni de le modifier.
 
 Pour créer un nouveau modèle, vous devez dupliquer le modèle DSR de base ou un
-modèle qui l'a étendu.
+modèle qui l'a étendu (**3**).
 
-.. warning :: Il est encore possible de créer un modèle à partir de rien, mais cette méthode
-  est fortement déconseillée. C'est un processus laborieux et un peu dangereux
-  parce que rien de garanti que le modèle ainsi configuré permettra l'export
-  correct en DEE et que tous les champs techniques nécessaires au bon fonctionnement
-  de la plate-forme seront présents.
+.. warning :: Il n'est plus possible de créer un modèle à partir de zéro. C'est en effet un processus laborieux et un peu dangereux car rien ne garantit que le modèle ainsi configuré permettra l'export correct en DEE et que tous les champs techniques nécessaires au bon fonctionnement de la plate-forme seront présents.
 
-3. Pour copier un modèle existant, cliquer sur l'icône "Dupliquer" correspondante.
-  Un modèle contenant les mêmes tables et champs que le modèle initial sera créé.
-  Vous ne devez pas modifier ou supprimer des champs provenant du modèle DSR
-  de base.
+3. Pour copier un modèle existant, cliquer sur l'icône "Dupliquer" correspondante. Un modèle contenant les mêmes tables et champs que le modèle initial sera créé. Vous ne devez pas modifier ou supprimer des champs provenant du modèle DSR de base.
 
 Vous pourrez alors indiquer le nom de votre nouveau modèle ainsi qu'une description
 (facultative) :
@@ -55,7 +47,7 @@ Vous pourrez alors indiquer le nom de votre nouveau modèle ainsi qu'une descrip
 
 Votre nouveau modèle est visible sur la page de gestion des modèles de données (1) :
 
-.. image:: ../images/data-models-2.png
+.. image:: ../images/configurateur/configurateur-modele-duplique.png
 
 2. Le nouveau modèle n'est pas publié sur la plateforme,
     comme l'indique le bouton "Publier" présent (flèche droite, ou bouton de lecture),
@@ -66,38 +58,38 @@ Votre nouveau modèle est visible sur la page de gestion des modèles de donnée
     sur la plateforme (voir `Publier / Dépublier un modèle de données`_).
 
 .. note:: Lorsque vous souhaitez modifier un modèle de données, un message vous
-  indiquera que les éventuels association de champs avec les fichiers d'import
-  seront perdus. Cela s'explique par le fait qu'il est très difficile de maintenir
+  indiquera que les éventuelles associations de champs avec les fichiers d'import
+  seront perdues. Cela s'explique par le fait qu'il est très difficile de maintenir
   la cohérence sur ces relations alors que la structure des données va être modifiée.
   Lorsque vous souhaitez modifier
   un modèle de données, les correspondances de champs entre tables et fichiers seront
-  donc perdues, **même si finalement, vous n'effectuez pas de modifications**.
+  donc perdues, **même si au final, vous n'effectuez pas de modifications**.
 
 Configurer les tables et les champs d'un modèle de données
 ----------------------------------------------------------
 
-Cliquez sur l'icône "Modifier" (**3**), sur la page de gestion des modèles de données, pour accéder à la page de
-configuration de votre modèle :
+Cliquez sur l'icône "Modifier" (**3**), sur la page de gestion des modèles de données, pour accéder à la page de configuration de votre modèle :
 
-.. image:: ../images/data-model-manage-tables.png
+.. image:: ../images/configurateur/configurateur-table-gestion.png
 
-On peut :
+On y peut :
 
-* `Créer et modifier des tables`_ (**1** et **2**)
-* `Gérer les champs des tables`_ (**3**)
-* `Supprimer des tables`_ (**4**)
+* `Modifier des tables`_ (**1**)
+* `Gérer les champs des tables`_ (**2**)
 
-Créer et modifier des tables
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Modifier des tables
+^^^^^^^^^^^^^^^^^^^
 
-.. image:: ../images/data-model-new-table.png
+.. image:: ../images/configurateur/configurateur-table-edition.png
 
 Les champs demandés sont :
 
-* **Nom :** Nom de la table, utilisé en base de données : les caractères autorisés sont les lettres minuscules, chiffres et _.
-* **Description :** Texte libre décrivant la table.
-* **Table parente :** Vous pouvez spécifier des relations *hiérarchiques* entre les tables du modèle, en indiquant qu'une table est *parente*
+* **Nom :** (**obligatoire**) Nom de la table, utilisé en base de données : les caractères autorisés sont les lettres minuscules, chiffres et _.
+* **Description :** (*facultatif*) Texte libre décrivant la table.
+* **Table parente :** (*facultatif*) Vous pouvez spécifier des relations *hiérarchiques* entre les tables du modèle, en indiquant qu'une table est *parente*
   d'une autre. Voir le paragraphe `Relations entre les tables`_ pour plus de détails.
+
+.. note:: Le champ 'table parente' n'a de sens que lorsque le modèle standard de données contient lui-même au moins deux tables.
 
 Gérer les champs des tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -123,7 +115,7 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 4. **Ajouter un ou plusieurs champ(s)** en cliquant sur la flèche : les champs sélectionnés seront alors ajoutés au tableau de droite.
 
-.. note:: Une fois que vous avez ajouté un ou plusieurs champ(s), il n'est plus nécessaire d'appuyer sur le bouton enregistrer (**9**).
+.. note:: Une fois que vous avez ajouté un ou plusieurs champ(s), il n'est plus nécessaire d'appuyer sur le bouton enregistrer (**10**).
 
 .. note:: Un champ ne peut être présent en doublon dans une table.
 
@@ -137,18 +129,15 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 7. **Supprimer tous les champs de la table** en cliquant sur la corbeille dans la ligne de titre.
 
-.. warning:: Attention, tous les champs de la table seront directement supprimés. Il n'y a pas de possibilité d'annulation.
+.. warning:: Attention, tous les champs de la table **ne dérivant pas directement ou indirectement d'un modèle standard** seront directement supprimés. Il n'y a pas de possibilité d'annulation.
 
-8. **Supprimer un champ de la table** en cliquant sur la corbeille correspondant à un champ dans la table.
+8. et 9. **Supprimer un champ de la table** en cliquant sur la corbeille correspondant à un champ dans la table.
 
 .. warning :: La suppression d'un champ est immédiate et irréversible. Pour retrouver un champ supprimé, il faut recommencer la procédure de rajout depuis le dictionnaire de données.
 
+.. note :: Seuls les champs créés et ajoutés par l'utilisateur peuvent être supprimés. Les autres champs, dérivés d'un modèle standard, ne peuvent pas l'être. Une icône explicative remplace l'icône de la corbeille dans ce cas-là.
+
 Dernière information : dans le cas des tables d'un modèle de données, l'ordre des champs n'a pas d'importance.
-
-Supprimer des tables
-^^^^^^^^^^^^^^^^^^^^
-
-Pour supprimer une table, il suffit de cliquer sur le bouton "Corbeille" (**4**) de la table que vous souhaitez supprimer. La table sera directement supprimée.
 
 Relations entre les tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
