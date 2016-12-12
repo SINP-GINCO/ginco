@@ -270,6 +270,9 @@ class GMLExport
             $observation = $this->dee->fillValues($observation, array(
                 'orgtransformation' => (isset($params['site_name']) ? $params['site_name'] : 'Plateforme GINCO-SINP')
             ));
+ 			$observation = $this->dee->fillValues ( $observation, array (
+ 					'deedatetransformation' => (date('c'))
+ 			) );            
             $observation = $this->dee->specialCharsXML($observation);
             $observation = $this->dee->structureObservation($observation);
 
