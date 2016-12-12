@@ -87,7 +87,6 @@ class FileController extends FileControllerBase {
 					'sensidateattribution',
 					'sensireferentiel',
 					'sensiversionreferentiel',
-					'deedatetransformation',
 					'deedatedernieremodification',
 					'sensimanuelle',
 					'sensialerte',

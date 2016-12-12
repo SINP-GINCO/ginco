@@ -10,7 +10,6 @@ $BODY$
   BEGIN
 	  	NEW.sensible = '0';
 		NEW.sensiniveau = '0';
-		NEW.deedatetransformation = now();
 		NEW.deedatedernieremodification = now();
 			
 		RETURN NEW;

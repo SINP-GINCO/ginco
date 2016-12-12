@@ -26,7 +26,6 @@ CREATE TABLE raw_data.model_1_observation
   objetdenombrement character varying(255),
   datefin timestamp with time zone NOT NULL,
   natureobjetgeo character varying(255),
-  deedatetransformation timestamp with time zone NOT NULL,
   jddmetadonneedeeid character varying(255) NOT NULL,
   denombrementmax bigint,
   obsdescription character varying(255),

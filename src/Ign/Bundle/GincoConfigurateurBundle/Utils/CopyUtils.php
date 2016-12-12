@@ -152,7 +152,6 @@ class CopyUtils extends CopyUtilsBase {
 		'validateuridentite' => 'standardisation',
 		'organismestandard' => 'standardisation',
 		'deedatedernieremodification' => 'standardisation',
-		'deedatetransformation' => 'standardisation',
 		'jddmetadonneedeeid' => 'standardisation',
 		'orgtransformation' => 'standardisation',
 		'codeidcnpdispositif' => 'standardisation',

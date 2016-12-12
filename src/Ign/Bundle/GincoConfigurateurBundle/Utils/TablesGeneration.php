@@ -191,7 +191,6 @@ class TablesGeneration extends TablesGenerationBase {
 					AND table_field.data IN (
 					'sensible',
 					'sensiniveau',
-					'deedatetransformation',
 					'deedatedernieremodification')";
 		pg_prepare($dbconn, "", $sql);
 		$result = pg_execute($dbconn, "", array(
@@ -199,7 +198,7 @@ class TablesGeneration extends TablesGenerationBase {
 		));
 		
 		// the fields needed are present in the table
-		if (pg_fetch_row($result)[0] == 4) {
+		if (pg_fetch_row($result)[0] == 3) {
 			// Add automatic calcul trigger
 			$sql = "CREATE TRIGGER init_trigger" . $tableName . " BEFORE INSERT ON " . $tableSchema . "." . $tableName . "
 						FOR EACH ROW
