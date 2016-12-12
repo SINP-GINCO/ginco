@@ -176,7 +176,7 @@ $BODY$
 			)
 		)
 		AND CD_DEPT = ANY (NEW.codedepartementcalcule)
-		AND (DUREE IS NULL OR NEW.jourdatefin::date + DUREE < now())
+		AND (DUREE IS NULL OR NEW.jourdatefin::date + DUREE > now())
 		AND (NEW.occstatutbiologique IN (NULL, '0', '1', '2') OR cd_occ_statut_biologique IS NULL OR NEW.occstatutbiologique = CAST(cd_occ_statut_biologique AS text))
 	
 	--  Quand on a plusieurs règles applicables il faut choisir la règle avec le codage le plus fort
