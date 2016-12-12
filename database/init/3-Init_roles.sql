@@ -25,7 +25,7 @@ ALTER sequence website.provider_id_seq restart with 2;
 
 -- Create some users
 -- password are equals to login, they must be changed for production
-INSERT INTO users(user_login, user_password, user_name, provider_id, active, email) VALUES ('developpeur', 'ccd46ad476382e50b51f52a5574c2cb511125f0e', 'developpeur', '1', '1', null);
+INSERT INTO users(user_login, user_password, user_name, provider_id, active, email) VALUES ('developpeur', 'ccd46ad476382e50b51f52a5574c2cb511125f0e', 'developpeur', '1', '1', 'sinp-dev@ign.fr');
 INSERT INTO users(user_login, user_password, user_name, provider_id, active, email) VALUES ('visiteur', '922391a72f5d8792a0b66b6cb3674d5eae454bda', 'visiteur', '1', '1', null);
 
 -- Link the users to their roles
