@@ -499,7 +499,7 @@ class GMLExport
             "<p>" . nl2br($body) . "</p>";
 
         $message
-            ->setTo(array($toEmailAddress))
+            ->setTo($toEmailAddress)
             ->setBody($bodyMessage, 'text/html')
         ;
 
