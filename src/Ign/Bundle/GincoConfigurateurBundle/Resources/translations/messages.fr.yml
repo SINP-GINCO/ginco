@@ -11,4 +11,4 @@ table:
 data:
   delete:
     ref:
-      forbidden: Le champ %dataName% ne peut être supprimé car il dérive d'un champ appartenant à un modèle de donnéss standard.
+      forbidden: Le champ %dataName% ne peut être supprimé car il dérive d'un champ appartenant à un modèle de données standard.
