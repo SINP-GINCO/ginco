@@ -482,7 +482,7 @@ class Custom_IntegrationController extends IntegrationController {
             $user->email);
 
         $message
-            ->setTo(array($user->email))
+            ->setTo($user->email)
             ->setBody($body, 'text/html')
         ;
 

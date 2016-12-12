@@ -65,17 +65,22 @@ class Application_Service_MailerService
         $sendEmail = $config->getConfig('sendEmail', true);
 
         if ($sendEmail == true ||$sendEmail == "true" || $sendEmail == 1 || $sendEmail == "1") {
-            // Really send the message
-            try {
-                $this->mailer->send($message);
-                $this->logger->debug("Email sent: \n" .
-                    "To: " . implode(',',array_keys($message->getTo())) . "\n" .
-                    "Title: " . $message->getSubject() . "\n" .
-                    "Body: " . $message->getBody() ."\n"
-                );
+            // Check if there is at least one recipient
+            if (count($message->getTo()) == 0) {
+                $this->logger->debug("Unable to send email: no 'To' address defined. Email title: " . $message->getSubject() );
             }
-            catch (Exception $e) {
-                $this->logger->debug('Unable to send mail: ' .$e->getMessage());
+            else {
+                // Really send the message
+                try {
+                    $this->mailer->send($message);
+                    $this->logger->debug("Email sent: \n" .
+                        "To: " . implode(',', array_keys($message->getTo())) . "\n" .
+                        "Title: " . $message->getSubject() . "\n" .
+                        "Body: " . $message->getBody() . "\n"
+                    );
+                } catch (Exception $e) {
+                    $this->logger->debug('Unable to send email: ' . $e->getMessage());
+                }
             }
         } else {
             $this->logger->debug("Email delivery disabled by configuration");
