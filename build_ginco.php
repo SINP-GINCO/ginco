@@ -149,7 +149,7 @@ echo("building website (extJs)...\n");
 $clientDir = "$projectDir/website/htdocs/custom/client/ogamDesktop";
 substituteInFile("$clientDir/app_tpl.json", 
                  "$buildDir/website/client/ogamDesktop/app.json", $config);
-substituteInFile("$clientDir/index.html","$clientDir/index.html", $config);
+substituteInFile("$clientDir/index.html","$buildDir/website/custom/client/ogamDesktop/index.html", $config);
 chdir("$buildDir/website/client/ogamDesktop/");
 system("sencha app upgrade");
 system("sencha app build");
