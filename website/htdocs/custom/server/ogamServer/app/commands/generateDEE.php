@@ -64,7 +64,7 @@ $logger->debug("GML created for submission $submissionId: $fileName");
 $archivePath = $gml->createArchiveDeeGml($submissionId, $fileName);
 $logger->debug("GML Archive created for submission $submissionId: $archivePath");
 
-// Send notification email
+// Send notification emails to the user and to the MNHN
 $gml->sendDEENotificationMail($submissionId, $archivePath, $dateCreated);
 $logger->debug("GML Notification mail sent");
 
