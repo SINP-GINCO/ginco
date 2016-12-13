@@ -53,7 +53,7 @@ class Custom_QueryController extends QueryController
                     $split = explode("__", $criteriaName);
 
                     // the user can request on sensiNiveau or diffusionniveauprecision only if he has the permission
-                    if (($split[1] != 'sensiniveau' || $user->isAllowed('VIEW_SENSITIVE')) || ($split[1] != 'diffusionniveauprecision' || $user->isAllowed('VIEW_PRIVATE'))) {
+                    if (($split[1] != 'sensiniveau' || $user->isAllowed('VIEW_SENSITIVE')) && ($split[1] != 'diffusionniveauprecision' || $user->isAllowed('VIEW_PRIVATE'))) {
                         $formQuery->addCriteria($split[0], $split[1], $inputValue);
                     }
                 }
@@ -358,12 +358,9 @@ class Custom_QueryController extends QueryController
 
         try {
 
-            // Store the request parameters in session
-            $websiteSession = new Zend_Session_Namespace('website');
-            $formQuery = $websiteSession->formQuery;
-
             // Call the service to get the definition of the columns
             $websiteSession = new Zend_Session_Namespace('website');
+            $formQuery = $websiteSession->formQuery;
             $customQueryService = new Custom_Application_Service_QueryService('RAW_DATA');
             $customQueryService->prepareResultLocationsCustom($formQuery);
 
