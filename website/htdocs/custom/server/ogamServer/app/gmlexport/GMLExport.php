@@ -441,7 +441,9 @@ class GMLExport
     }
 
     /**
-     * Send the notification email after creation of the DEE archive
+     * Send two notification emails after creation of the DEE archive:
+     *  - one to the user who created the DEE
+     *  - one to the MNHN
      *
      * @param $submissionId
      * @param $archivePath
@@ -460,10 +462,13 @@ class GMLExport
         $archiveUrl = $configuration->getConfig('site_url') . '/dee/' . $archiveFilename;
         $siteName = $configuration->getConfig('site_name');
         $md5 = md5_file($archivePath);
-        // Provider of the submission
-        $submissionModel = new Application_Model_RawData_Submission();
+        // Provider of the submission and submission files
+        $submissionModel = new Application_Model_RawData_CustomSubmission();
         $submission = $submissionModel->getSubmission($submissionId);
         $provider = $submission->providerLabel . " (" . $submission->providerId .")";
+        // Files of the submission
+        $submissionFiles = $submissionModel->getSubmissionFiles($submissionId);
+        $fileNames = array_map("basename",array_column($submissionFiles, "file_name"));
 
         // Contact user
         $exportFileModel = new Application_Model_RawData_ExportFile();
@@ -473,6 +478,8 @@ class GMLExport
         $user = $userModel->getUser($userLogin);
         $userName = $user->username;
         $userEmail = $user->email;
+
+        // -- Mail 1: to the MNHN
 
         // Title and body:
         $title = "[$regionCode] $action du jeu de données $uuid";
@@ -505,6 +512,40 @@ class GMLExport
 
         // Send the message
         $mailerService->sendMessage($message);
+
+        // -- Mail 2: to the user who created the DEE
+
+        $title = "[$regionCode] Transmission du jeu de données $uuid à la plateforme nationale";
+
+        $message = $mailerService->newMessage($title);
+
+        $body = "<p>Bonjour,</p>";
+        $body .= (count($submissionFiles) > 1) ?
+            "<p>Les fichiers de données <em>%s</em> que vous nous avez transmis et dont l'identifiant de jeu de données est 
+             <em>%s</em> ont été standardisés " :
+            "<p>Le fichier de données <em>%s</em> que vous nous avez transmis et dont l'identifiant est 
+             <em>%s</em> a été standardisé "
+            ;
+        $body .= "au format GML d'échange de DEE le %s. La plateforme nationale a été notifiée et va procéder à l'intégration de
+            ce nouveau fichier dans l'INPN.</p>";
+        $body .= "<p>Bien cordialement,</p>
+               <p>Contact : %s<br>Courriel: %s</p>";
+
+        $body = sprintf($body,
+            implode($fileNames, ", "),
+            $uuid,
+            date("d/m/Y"),
+            $user->username,
+            $user->email);
+
+        $message
+            ->setTo($user->email)
+            ->setBody($body, 'text/html')
+        ;
+
+        // Send the message
+        $mailerService->sendMessage($message);
+
     }
 
 }
