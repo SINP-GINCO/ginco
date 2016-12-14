@@ -216,12 +216,14 @@ class Application_Model_Mapping_ResultLocation {
 	/**
 	 * Updates the hiding levels for all rows provided in the array of values.
 	 *
-	 * @param Array of String $keys the name of the fields of the primary key
+	 * @param
+	 *        	Array of String $keys the name of the fields of the primary key
 	 *
 	 * @param Application_Object_Metadata_TableFormat $geometryTable
 	 *        	the table object carrying the 'geometrie' column, containing tableName and tableFormat
-	 * @param Array of String $permissions the array of permissions (VIEW_SENSITIVE, VIEW_PRIVATE)
-	 * 
+	 * @param
+	 *        	Array of String $permissions the array of permissions (VIEW_SENSITIVE, VIEW_PRIVATE)
+	 *
 	 * @param String $from
 	 *        	the FROM part of the SQL Request
 	 * @param String $where
@@ -234,8 +236,8 @@ class Application_Model_Mapping_ResultLocation {
 		// Retrieve parameters for calculation of hiding level
 		$ogamId = $keys['id_observation'];
 		$providerId = $keys['id_provider'];
-		$req = "SELECT " . $geometryTable->format. " . $ogamId as id_observation,  submission.$providerId as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
-						INNER JOIN results res ON res.id_provider = submission.$providerId AND res.id_observation = " . $geometryTable->format. " . $ogamId
+		$req = "SELECT " . $geometryTable->format . " . $ogamId as id_observation,  submission.$providerId as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
+						INNER JOIN results res ON res.id_provider = submission.$providerId AND res.id_observation = " . $geometryTable->format . " . $ogamId
 						$where AND res.id_request = ?
 						ORDER BY res.id_provider, res.id_observation;";
 
@@ -247,7 +249,7 @@ class Application_Model_Mapping_ResultLocation {
 
 		$results = $select->fetchAll();
 
-		for ($i = 0; $i < count($results); $i ++) {			
+		for ($i = 0; $i < count($results); $i ++) {
 			$sensiNiveau = $results[$i]['sensiniveau'];
 			$diffusionNiveauPrecision = $results[$i]['diffusionniveauprecision'];
 			$dsPublique = $results[$i]['dspublique'];
@@ -334,7 +336,7 @@ class Application_Model_Mapping_ResultLocation {
 			}
 		}
 		$this->logger->debug('setHidingLevels : ' . $fullRequest);
-		
+
 		if (!empty($fullRequest)) {
 			$this->db->exec($fullRequest);
 		}
