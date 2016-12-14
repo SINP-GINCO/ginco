@@ -35,6 +35,7 @@ try {
     execCustSQLFile("$sprintDir/add_contact_email_in_app_parameters.sql", $config);
     execCustSQLFile("$sprintDir/add_manage_configuration_permissions.sql", $config);
     execCustSQLFile("$sprintDir/add_is_ref_column_in_table_model.sql", $config);
+    execCustSQLFile("$sprintDir/delete_deedatetransformation_from_dsr.sql", $config);
 } catch(Exception $e){
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: ". $e->getMessage() . "\n" ;
