@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here */
 	execCustSQLFile("$sprintDir/add_results_bbox_compute_threshold_in_app_parameters.sql", $config);
+	execCustSQLFile("$sprintDir/add_date_order_check.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

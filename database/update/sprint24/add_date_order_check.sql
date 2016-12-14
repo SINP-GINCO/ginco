@@ -1,0 +1,2 @@
+INSERT INTO metadata.checks(check_id, step, name, label, description, statement, importance) VALUES (1209, 'CONFORMITY', 'DATE_ORDER', 'Incohérence sur la chronologie des dates.', 'Incohérence sur la chronologie des dates.', null, 'ERROR');
+INSERT INTO metadata_work.checks(check_id, step, name, label, description, statement, importance) VALUES (1209, 'CONFORMITY', 'DATE_ORDER', 'Incohérence sur la chronologie des dates.', 'Incohérence sur la chronologie des dates.', null, 'ERROR');
