@@ -12,3 +12,6 @@ data:
   delete:
     ref:
       forbidden: Le champ %dataName% ne peut être supprimé car il dérive d'un champ appartenant à un modèle de données standard.
+  compulsory_state_change:
+    ref:
+      forbidden: Le caractère obligatoire du champ %dataName% ne peut être modifié car il dérive d'un champ appartenant à un modèle de données standard.

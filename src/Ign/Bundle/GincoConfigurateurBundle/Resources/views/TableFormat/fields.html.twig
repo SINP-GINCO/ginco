@@ -127,21 +127,29 @@
 								<td id="label">{{ champ.label }}</td>
 								<td id="unit">{{ champ.unitType }}</td>
 								<td id="mandatory" class=text-center">
-									{% if champ.isMandatory == '1' %}
-										<input type="checkbox" checked="checked">
-									{% else %}
-										<input type="checkbox" value="">
-									{% endif %}
+									{% if champ.ref == false %}
+    						            {% if champ.isMandatory == '1' %}
+    										<input type="checkbox" checked="checked">
+    									{% else %}
+    										<input type="checkbox" value="">
+    									{% endif %}
+    								{% else %}
+    									{% if champ.isMandatory == '1' %}
+    										<input type="checkbox" checked="checked" disabled title="{% trans with {'%dataName%':champ.fieldName}%}data.compulsory_state_change.ref.forbidden{% endtrans %}">
+    									{% else %}
+    										<input type="checkbox" value="" disabled title="{% trans with {'%dataName%':champ.fieldName}%}data.compulsory_state_change.ref.forbidden{% endtrans %}">
+    									{% endif %}
+    								{% endif %}
 								</td>
 								<td>
-    									{% if champ.ref == false %}
+    								{% if champ.ref == false %}
     									<a href="{{ path('configurateur_table_remove_field', { 'modelId' : model.id, 'field': champ.fieldName, 'format': table.format })}}"
 										class="btn btn-default btn-xs" role="button">
 											<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
     									</a>
-    									{% else %}
-    										 <span class="badge" title="{% trans with {'%dataName%':champ.fieldName}%}data.delete.ref.forbidden{% endtrans %}">?</span>
-    									{% endif %}
+    								{% else %}
+    									 <span class="badge" title="{% trans with {'%dataName%':champ.fieldName}%}data.delete.ref.forbidden{% endtrans %}">?</span>
+    								{% endif %}
 								</td>
 							</tr>
 							{% endif %}
