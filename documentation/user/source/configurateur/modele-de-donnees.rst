@@ -115,7 +115,7 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 4. **Ajouter un ou plusieurs champ(s)** en cliquant sur la flèche : les champs sélectionnés seront alors ajoutés au tableau de droite.
 
-.. note:: Une fois que vous avez ajouté un ou plusieurs champ(s), il n'est plus nécessaire d'appuyer sur le bouton enregistrer (**10**).
+.. note:: Une fois que vous avez ajouté un ou plusieurs champ(s), il n'est plus nécessaire d'appuyer sur le bouton 'Enregistrer' (**11**).
 
 .. note:: Un champ ne peut être présent en doublon dans une table.
 
@@ -123,19 +123,23 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 .. image:: ../images/configurateur/configurateur-table-ajout-nouveau-champ.png
 
-6. **Rendre un champ obligatoire** ou non en cochant la case correspondant à un champ dans la table.
+6. et 7. **Rendre un champ obligatoire** ou non en cochant la case correspondant à un champ dans la table.
 
-.. note:: Pour enregistrer le caractère obligatoire d'un champ, il est nécessaire de cliquer sur le bouton 'Enregistrer'.
+.. note:: Pour enregistrer le caractère obligatoire d'un champ, il est nécessaire de cliquer sur le bouton 'Enregistrer' (**11**).
 
-7. **Supprimer tous les champs de la table** en cliquant sur la corbeille dans la ligne de titre.
+.. note :: Seuls les champs créés et ajoutés par l'utilisateur peuvent voir leur caractère obligatoire être modifié.
+
+8. **Supprimer tous les champs de la table** en cliquant sur la corbeille dans la ligne de titre.
 
 .. warning:: Attention, tous les champs de la table **ne dérivant pas directement ou indirectement d'un modèle standard** seront directement supprimés. Il n'y a pas de possibilité d'annulation.
 
-8. et 9. **Supprimer un champ de la table** en cliquant sur la corbeille correspondant à un champ dans la table.
+9. et 10. **Supprimer un champ de la table** en cliquant sur la corbeille correspondant à un champ dans la table.
 
 .. warning :: La suppression d'un champ est immédiate et irréversible. Pour retrouver un champ supprimé, il faut recommencer la procédure de rajout depuis le dictionnaire de données.
 
 .. note :: Seuls les champs créés et ajoutés par l'utilisateur peuvent être supprimés. Les autres champs, dérivés d'un modèle standard, ne peuvent pas l'être. Une icône explicative remplace l'icône de la corbeille dans ce cas-là.
+
+11. **Enregistrer vos modifications** en cliquant sur le bouton 'Enregistrer'. Cela a pour effet de valider l'enregistrement du caractère obligatoire des champs de la table.
 
 Dernière information : dans le cas des tables d'un modèle de données, l'ordre des champs n'a pas d'importance.
 
