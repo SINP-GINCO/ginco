@@ -419,10 +419,19 @@ class Application_Model_Mapping_ResultLocation {
 	 * @return String the bounging box as WKT (well known text)
 	 */
 	public function getResultsBBox($sessionId, $resultLayer = 'departement') {
+		$this->logger->info('getResultsBBox session_id : ' . $sessionId);
+
 		$configuration = Zend_Registry::get("configuration");
 		$projection = $configuration->getConfig('srs_visualisation', 3857);
+		$bboxComputeThreshold = $configuration->getConfig('results_bbox_compute_threshold');
+		$regionCode = $configuration->getConfig('regionCode');
 
-		$req = "SELECT st_astext(st_extent(st_transform(geom, $projection ))) as wkt
+		$websiteSession = new Zend_Session_Namespace('website');
+		$nbResults = $websiteSession->count;
+
+		if (is_null($bboxComputeThreshold) || $nbResults < $bboxComputeThreshold) {
+
+			$req = "SELECT st_astext(st_extent(st_transform(geom, $projection ))) as wkt
 				FROM bac_$resultLayer bac
 				INNER JOIN observation_$resultLayer obs ON obs.id_$resultLayer = bac.id_$resultLayer
 				INNER JOIN results res ON res.table_format =  obs.table_format
@@ -431,13 +440,35 @@ class Application_Model_Mapping_ResultLocation {
 				INNER JOIN requests req ON res.id_request = req.id
 				WHERE req.session_id = ?";
 
-		$this->logger->info('getResultsBBox session_id : ' . $sessionId);
-		$this->logger->info('getResultsBBox request : ' . $req);
+			$this->logger->info("getResultsBBox computing full results bbox with request : $req");
 
-		$select = $this->db->prepare($req);
-		$select->execute(array(
-			$sessionId
-		));
+			$select = $this->db->prepare($req);
+			$select->execute(array(
+				$sessionId
+			));
+		} else {
+			if ($regionCode != 'FR') {
+				$req = "SELECT st_astext(st_envelope(st_transform(geom, $projection))) as wkt
+						FROM referentiels.geofla_region
+						WHERE code_reg = ?";
+
+				$this->logger->info("getResultsBBox computing default region bbox with request : $req");
+
+				$select = $this->db->prepare($req);
+				$select->execute(array(
+					$regionCode
+				));
+			} else {
+				$req = "SELECT st_astext(st_extent(st_transform(geom, 3857))) as wkt
+						FROM referentiels.geofla_region
+						WHERE code_reg <> '%0'";
+
+				$this->logger->info("getResultsBBox computing default metropolitan country bbox with request : $req");
+				$select = $this->db->prepare($req);
+				$select->execute();
+			}
+		}
+
 		$result = $select->fetchColumn(0);
 
 		return $result;
