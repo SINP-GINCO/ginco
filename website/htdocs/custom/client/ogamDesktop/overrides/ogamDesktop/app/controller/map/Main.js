@@ -42,22 +42,49 @@ Ext.define('Ginco.controller.map.Main', {
 		});
 	},
 
-    /**
-     * Show the map container and zoom on the result BBox.
-     *
-     * Override: doesn't "zoomToFeature" if a record has no geometry visible.
-     *
-     * @private
-     * @param {Object} feature The feature corresponding to the grid row,
-     * contains id and geometry.
-     */
-    onSeeOnMapButtonClick: function(feature) {
-        if (feature.location_centroid) {
-            this.getMapmainwin().ownerCt.setActiveItem(this.getMapmainwin());
-            this.getMappanel().child('mapcomponent').getController().zoomToFeature(feature.id, feature.location_centroid);
-        } else {
-            OgamDesktop.toast(this.noGeometryError, this.noGeometryErrorTitle);
-        }
-    }
+	/**
+	 * Show the map container and zoom on the result BBox.
+	 * 
+	 * Override: - Doesn't "zoomToFeature" if a record has no geometry visible. -
+	 * Ajax request for dynamic result instead of pre-calculcation on search
+	 * click.
+	 * 
+	 * @private
+	 * @param {Object}
+	 *            feature The feature corresponding to the grid row, contains id
+	 *            and geometry.
+	 */
+	onSeeOnMapButtonClick : function(feature) {
+
+		Ext.Ajax.request({
+			url : Ext.manifest.OgamDesktop.requestServiceUrl
+					+ 'ajaxgetobservationbbox',
+			actionMethods : {
+				create : 'POST',
+				read : 'POST',
+				update : 'POST',
+				destroy : 'POST'
+			},
+			success : function(response, options) {
+				var data = Ext.decode(response.responseText);
+				var bbox = data.bbox;
+				debugger;
+				if (bbox) {
+					this.getMapmainwin().ownerCt.setActiveItem(this
+							.getMapmainwin());
+					this.getMappanel().child('mapcomponent').getController()
+							.zoomToFeature(feature.id, bbox);
+				} else {
+					OgamDesktop.toast(this.noGeometryError,
+							this.noGeometryErrorTitle);
+				}
+			},
+			method : 'POST',
+			params : {
+				observationId : feature.id
+			},
+			scope : this
+		});
+	}
 
 });

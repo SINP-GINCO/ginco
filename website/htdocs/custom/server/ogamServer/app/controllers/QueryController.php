@@ -374,6 +374,36 @@ class Custom_QueryController extends QueryController {
 	}
 
 	/**
+	 * AJAX function : Return the results features bounding box in order to zoom on the features.
+	 *
+	 * @return JSON.
+	 */
+	public function ajaxgetobservationbboxAction($observationId = null) {
+		$this->logger->debug('ajaxgetobservationbboxAction : ' . $observationId);
+
+		if ($observationId == null) {
+			$observationId = $this->getRequest()->getPost('observationId');
+		}
+
+		$configuration = Zend_Registry::get("configuration");
+
+		try {
+			$customQueryService = new Custom_Application_Service_QueryService('RAW_DATA');
+			$bbox = $customQueryService->getObservationBoundingBox($observationId);
+
+			echo '{"success":true, "bbox":' . json_encode($bbox) . '}';
+		} catch (Exception $e) {
+			$this->logger->err('Error while getting result : ' . $e);
+			echo '{"success":false, "errorMessage":' . json_encode($e->getMessage()) . '}';
+		}
+
+		// No View, we send directly the JSON
+		$this->_helper->layout()->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+		$this->getResponse()->setHeader('Content-type', 'application/json');
+	}
+
+	/**
 	 * AJAX function : Nodes of a taxonomic referential under a given node.
 	 *
 	 * @return JSON.
