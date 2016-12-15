@@ -185,41 +185,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 
 				// Add the line id
 				$row[] = $line['id'];
-				// And the plot location in WKT: NO !!! We replace it with
-				// the bounding box of the "more precise geometry visible by user"
-				// $row[] = $line['location_centroid'];
-				
-				// Add the bounding box of the more precise geometry visible by user (and non-empty geometry)
-				// (used by "See on the map" button).
-				
-				$hidingLevels = array(
-					"geometrie",
-					"commune",
-					"maille",
-					"departement"
-				);
-				$bbox = '';
-				
-				for ($i = $hidingLevel; $i < count($hidingLevels); $i ++) {
-					$layer = $hidingLevels[$i];
-					$idKey = ($layer == "geometrie") ? "geom" : $layer;
-					
-					$bbQuery = "SELECT ST_AsText(ST_Extent(ST_Transform(geom, $projection ))) AS wkt
-								FROM bac_$layer bac
-								INNER JOIN observation_$layer obs ON obs.id_$idKey = bac.id_$layer
-								INNER JOIN results res ON res.table_format =  obs.table_format
-								AND res.id_provider = obs.id_provider
-								AND res.id_observation = obs.id_observation
-								WHERE res.id_request = $idRequest
-								AND res.id_provider = '" . $line['provider_id'] . "'
-								AND res.id_observation = '$observationId'";
-					$bbResult = $this->genericModel->executeRequest($bbQuery);
-					if (count($bbResult) && !empty($bbResult[0]['wkt'])) {
-						$bbox = $bbResult[0]['wkt'];
-						break;
-					}
-				}
-				$row[] = $bbox;
 
 				// Right management : add the provider id of the data
 				$userSession = new Zend_Session_Namespace('user');
@@ -577,6 +542,72 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			// Run the request to store a temporary result table (for the web mapping)
 			$this->resultLocationModel->fillLocationResult($fromJoinSubmission, $where, $sessionId, $locationTableInfo);
 		}
+	}
+
+	/**
+	 * Get the bounding box of the more precise geometry visible by user (and non-empty geometry).
+	 * This function is called by "See on the map" button.
+	 *
+	 * @param String $observationId
+	 *        	the observation id composed of schema, format, ogam_id, provider_id
+	 * @return String the bbox represented by a WKT character chain
+	 */
+	public function getObservationBoundingBox($observationId = null) {
+		$this->logger->info('getObservationBoundingBox');
+
+		$websiteSession = new Zend_Session_Namespace('website');
+		$configuration = Zend_Registry::get("configuration");
+		$customGenericModel = new Custom_Application_Model_Generic_Generic();
+
+		$requestId = $this->resultLocationModel->getLastRequestIdFromSession(session_id());
+		$from = $websiteSession->SQLFrom;
+		$where = $websiteSession->SQLWhere;
+		$projection = $configuration->getConfig('srs_visualisation', 3857);
+
+		// Transform the identifier in an array
+		$keyMap = $this->_decodeId($observationId);
+		$keysKeyMap = array_map("strtoupper", array_keys($keyMap));
+		$valuesKeyMap = array_values($keyMap);
+		$keyMap = array_combine($keysKeyMap, $valuesKeyMap);
+
+		$table = $this->metadataModel->getTableFormat($this->schema, $keyMap['FORMAT']);
+		$keys = $customGenericModel->getRawDataTablePrimaryKeys($table);
+
+		$providerId = $keyMap[strtoupper($keys['id_provider'])];
+		$observationId = $keyMap[strtoupper($keys['id_observation'])];
+
+		$permissions = $this->resultLocationModel->getVisuPermissions();
+		$hidingLevel = $this->resultLocationModel->getHidingLevels($keys, $table, $permissions, $from, $where, $requestId)[0]['hiding_level'];
+
+		$hidingLevels = array(
+			"geometrie",
+			"commune",
+			"maille",
+			"departement"
+		);
+		$bbox = '';
+
+		for ($i = $hidingLevel; $i < count($hidingLevels); $i ++) {
+			$layer = $hidingLevels[$i];
+			$idKey = ($layer == "geometrie") ? "geom" : $layer;
+
+			$bbQuery = "SELECT ST_AsText(ST_Extent(ST_Transform(geom, $projection ))) AS wkt
+			FROM bac_$layer bac
+			INNER JOIN observation_$layer obs ON obs.id_$idKey = bac.id_$layer
+			INNER JOIN results res ON res.table_format =  obs.table_format
+			AND res.id_provider = obs.id_provider
+			AND res.id_observation = obs.id_observation
+			WHERE res.id_request = $requestId
+			AND res.id_provider = '" . $providerId . "'
+			AND res.id_observation = '$observationId'";
+			$bbResult = $this->genericModel->executeRequest($bbQuery);
+			if (count($bbResult) && !empty($bbResult[0]['wkt'])) {
+				$bbox = $bbResult[0]['wkt'];
+				break;
+			}
+		}
+
+		return $bbox;
 	}
 
 	/**
