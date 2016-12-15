@@ -626,10 +626,11 @@ class Application_Model_Mapping_ResultLocation {
 				  INNER JOIN $rawDataTableName raw ON raw.provider_id = res.id_provider
 				  AND raw." . $keys['id_observation'] . " = res.id_observation
 				  WHERE req.session_id = ?
+				  AND hiding_level <= ? 
 				  AND ST_DWithin(bac.geom, ST_SetSRID(ST_Point(?, ?),$projection), $margin)
 				  ORDER BY res.id_provider, res.id_observation";
 
-		foreach ($orderedActiveLayers as $layer) {
+		foreach ($orderedActiveLayers as $level => $layer) {
 
 			$idName = ($layer == 'geometrie') ? 'geom' : $layer;
 
@@ -643,6 +644,7 @@ class Application_Model_Mapping_ResultLocation {
 			$query = $this->db->prepare($req);
 			$query->execute(array(
 				$sessionId,
+                $level,
 				$lon,
 				$lat
 			));
