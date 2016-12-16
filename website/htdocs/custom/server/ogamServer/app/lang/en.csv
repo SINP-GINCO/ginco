@@ -310,7 +310,7 @@ New Password;New Password
 Confirm Password;Confirm New Password
 Password does not match confirmation;Password does not match confirmation
 Old password is not correct;Old password is not correct
-passwordRequirement;Your password must contain 8 characters, one lower case, one upper case, a number and a special character.
+passwordRequirement;Your password must contain 8 characters, one lower case, one upper case, a number and a special character beetween @$!%*?&.
 Role Code;Role Code
 Role Label;Role Label
 Role Definition;Role Definition
