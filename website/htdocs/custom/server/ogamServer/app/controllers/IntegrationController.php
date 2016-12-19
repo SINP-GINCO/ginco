@@ -1,9 +1,10 @@
 <?php
-
 include_once APPLICATION_PATH . '/controllers/IntegrationController.php';
 require_once CUSTOM_APPLICATION_PATH . '/vendor/autoload.php';
+
 /**
  * Custom Integration Controller for GINCO
+ *
  * @package controllers
  */
 class Custom_IntegrationController extends IntegrationController {
@@ -17,8 +18,7 @@ class Custom_IntegrationController extends IntegrationController {
 	/**
 	 * Initialise the controler
 	 */
-	public function init()
-	{
+	public function init() {
 		parent::init();
 
 		// Custom Metadata Model : methods used only in Ginco
@@ -28,7 +28,6 @@ class Custom_IntegrationController extends IntegrationController {
 		// Generic Model
 		$this->genericModel = new Application_Model_Generic_Generic();
 	}
-
 
 	/**
 	 * Show the data submission page.
@@ -47,96 +46,96 @@ class Custom_IntegrationController extends IntegrationController {
 		$this->render('custom-show-data-submission-page');
 	}
 
-    /**
-     * Download the list of submisssions/datasets as a csv file
-     */
+	/**
+	 * Download the list of submisssions/datasets as a csv file
+	 */
 	public function downloadActiveSubmissionsCsvAction() {
-        $this->logger->debug('downloadActiveSubmissionsCsvAction');
-        // Configure memory and time limit because the program ask a lot of resources
-        $configuration = Zend_Registry::get("configuration");
-        ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
-        ini_set("max_execution_time", 0);
+		$this->logger->debug('downloadActiveSubmissionsCsvAction');
+		// Configure memory and time limit because the program ask a lot of resources
+		$configuration = Zend_Registry::get("configuration");
+		ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
+		ini_set("max_execution_time", 0);
 
-        // Get the current data submissions
-        $submissions = $this->submissionModel->getActiveSubmissions();
+		// Get the current data submissions
+		$submissions = $this->submissionModel->getActiveSubmissions();
 
-        // Create the array to output to the csv file
-        $results = array();
+		// Create the array to output to the csv file
+		$results = array();
 
-        $resultHeader = array(
-            "Soumission",
-            "Date",
-            "Organisme",
-            "Utilisateur",
-            "Modèle d'import",
-            "Fichier",
-            "Lignes",
-            "Etape d'import",
-            "Statut de l'import",
-            "Données publiées",
-        );
+		$resultHeader = array(
+			"Soumission",
+			"Date",
+			"Organisme",
+			"Utilisateur",
+			"Modèle d'import",
+			"Fichier",
+			"Lignes",
+			"Etape d'import",
+			"Statut de l'import",
+			"Données publiées"
+		);
 
-        foreach ($submissions as $submission) {
-            $resultLine = array();
+		foreach ($submissions as $submission) {
+			$resultLine = array();
 
-            // Submission id
-            $resultLine[] = $submission->submissionId;
-            // Date
-            $resultLine[] = $submission->date;
-            // Provider
-            $resultLine[] = $submission->providerLabel;
-            // User (which has done the submission)
-            $resultLine[] = $submission->userLogin;
-            // Import model
-            $resultLine[] = $submission->datasetLabel;
-            // Files and lines
-            $files = array();
-            $lines = array();
-            foreach ($submission->files as $file) {
-                $files[] = basename($file->fileName);
-                $lines[] = $file->lineNumber;
-            }
-            // Files
-            $resultLine[] = implode(",",$files);
-            // Number of lines in the file
-            $resultLine[] = implode(",",$lines);
-            // Step of integration
-            $resultLine[] = $submission->step;
-            // Status of integration
-            $resultLine[] = $submission->status;
-            // Data validated ?
-            $resultLine[] = ($submission->step == "VALIDATE" && ($submission->status == "OK" || $submission->status == "WARNING")) ? "Oui" : "Non";
+			// Submission id
+			$resultLine[] = $submission->submissionId;
+			// Date
+			$resultLine[] = $submission->date;
+			// Provider
+			$resultLine[] = $submission->providerLabel;
+			// User (which has done the submission)
+			$resultLine[] = $submission->userLogin;
+			// Import model
+			$resultLine[] = $submission->datasetLabel;
+			// Files and lines
+			$files = array();
+			$lines = array();
+			foreach ($submission->files as $file) {
+				$files[] = basename($file->fileName);
+				$lines[] = $file->lineNumber;
+			}
+			// Files
+			$resultLine[] = implode(",", $files);
+			// Number of lines in the file
+			$resultLine[] = implode(",", $lines);
+			// Step of integration
+			$resultLine[] = $submission->step;
+			// Status of integration
+			$resultLine[] = $submission->status;
+			// Data validated ?
+			$resultLine[] = ($submission->step == "VALIDATE" && ($submission->status == "OK" || $submission->status == "WARNING")) ? "Oui" : "Non";
 
-            $results[] = $resultLine;
-        }
+			$results[] = $resultLine;
+		}
 
-        // -- Export results to a CSV file
+		// -- Export results to a CSV file
 
-        $fileName = "Liste_JDD_" . preg_replace('/\s+/', '-', $configuration->getConfig('site_name', 'GINCO')) . "_" . date("d-m-Y") . ".csv";
+		$fileName = "Liste_JDD_" . preg_replace('/\s+/', '-', $configuration->getConfig('site_name', 'GINCO')) . "_" . date("d-m-Y") . ".csv";
 
-        // Define the header of the response
-        $this->getResponse()->setHeader('Content-Type', 'text/csv;charset=' . $configuration->getConfig('csvExportCharset', 'UTF-8') . ';application/force-download;', true);
-        $this->getResponse()->setHeader('Content-disposition', 'attachment; filename=' . $fileName, true);
+		// Define the header of the response
+		$this->getResponse()->setHeader('Content-Type', 'text/csv;charset=' . $configuration->getConfig('csvExportCharset', 'UTF-8') . ';application/force-download;', true);
+		$this->getResponse()->setHeader('Content-disposition', 'attachment; filename=' . $fileName, true);
 
-        // Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
-        if ($configuration->getConfig('csvExportCharset', 'UTF-8') == 'UTF-8') {
-            echo(chr(0xEF));
-            echo(chr(0xBB));
-            echo(chr(0xBF));
-        }
+		// Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
+		if ($configuration->getConfig('csvExportCharset', 'UTF-8') == 'UTF-8') {
+			echo (chr(0xEF));
+			echo (chr(0xBB));
+			echo (chr(0xBF));
+		}
 
-        // Opens the standard output as a file flux
-        $out = fopen('php://output', 'w');
-        fputcsv($out, $resultHeader, ';');
+		// Opens the standard output as a file flux
+		$out = fopen('php://output', 'w');
+		fputcsv($out, $resultHeader, ';');
 
-        foreach ($results as $resultLine) {
-            fputcsv($out, $resultLine, ';');
-        }
-        fclose($out);
+		foreach ($results as $resultLine) {
+			fputcsv($out, $resultLine, ';');
+		}
+		fclose($out);
 
-        $this->_helper->layout()->disableLayout();
-        $this->_helper->viewRenderer->setNoRender();
-    }
+		$this->_helper->layout()->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+	}
 
 	/**
 	 * Show the upload data page.
@@ -167,15 +166,13 @@ class Custom_IntegrationController extends IntegrationController {
 		$this->render('custom-show-upload-data');
 	}
 
-
 	/**
 	 * Show the create data submission page.
 	 * Overwrite the Ogam Action, the form has a choice for the provider.
 	 *
 	 * @return the HTML view
 	 */
-	public function showCreateDataSubmissionAction()
-	{
+	public function showCreateDataSubmissionAction() {
 		$this->logger->debug('Custom showCreateDataSubmissionAction');
 
 		$userSession = new Zend_Session_Namespace('user');
@@ -189,13 +186,12 @@ class Custom_IntegrationController extends IntegrationController {
 	/**
 	 * Build and return the data submission form.
 	 */
-	protected function getSubmissionForm($user = null)
-	{
+	protected function getSubmissionForm($user = null) {
 		$form = new Application_Form_OGAMForm(array(
-				'attribs' => array(
-						'name' => ' data-submission-form',
-						'action' => $this->baseUrl . '/integration/validate-create-data-submission'
-				)
+			'attribs' => array(
+				'name' => ' data-submission-form',
+				'action' => $this->baseUrl . '/integration/validate-create-data-submission'
+			)
 		));
 
 		//
@@ -252,8 +248,7 @@ class Custom_IntegrationController extends IntegrationController {
 	 *
 	 * @return the HTML view
 	 */
-	public function validateCreateDataSubmissionAction()
-	{
+	public function validateCreateDataSubmissionAction() {
 		$this->logger->debug('validateCreateDataSubmissionAction');
 
 		// Check the validity of the POST
@@ -310,8 +305,7 @@ class Custom_IntegrationController extends IntegrationController {
 	 *
 	 * @return the HTML view
 	 */
-	public function validateUploadDataAction()
-	{
+	public function validateUploadDataAction() {
 		$this->logger->debug('validateUploadDataAction');
 
 		// Check the validity of the POST
@@ -397,7 +391,7 @@ class Custom_IntegrationController extends IntegrationController {
 
 			// Send the files to the integration server
 			try {
-				$this->integrationServiceModel->uploadData($submission->submissionId, $submissionProviderId, $requestedFiles, $srid, true, true, true, true);
+				$this->integrationServiceModel->uploadData($submission->submissionId, $submissionProviderId, $requestedFiles, $srid, true, true, true);
 			} catch (Exception $e) {
 				$this->logger->err('Error during upload: ' . $e);
 				$this->view->errorMessage = $e->getMessage();
@@ -410,106 +404,92 @@ class Custom_IntegrationController extends IntegrationController {
 		}
 	}
 
+	/**
+	 * Validate the data.
+	 * Custom: send a notification mail to the
+	 */
+	public function validateDataAction() {
+		$this->logger->debug('validateDataAction');
 
-    /**
-     * Validate the data.
-     * Custom: send a notification mail to the
-     *
-     */
-    public function validateDataAction() {
-        $this->logger->debug('validateDataAction');
+		// Get the parameters from configuration file
+		$configuration = Zend_Registry::get("configuration");
 
-        // Get the parameters from configuration file
-        $configuration = Zend_Registry::get("configuration");
+		// Get the submission Id
+		$submissionId = $this->_getParam("submissionId");
 
-        // Get the submission Id
-        $submissionId = $this->_getParam("submissionId");
+		// Send the validation request to the integration server
+		try {
+			$this->integrationServiceModel->validateDataSubmission($submissionId);
+		} catch (Exception $e) {
+			$this->logger->err('Error during validation: ' . $e);
+			$this->view->errorMessage = $e->getMessage();
+			return $this->render('show-data-error');
+		}
 
-        // Send the validation request to the integration server
-        try {
-            $this->integrationServiceModel->validateDataSubmission($submissionId);
-        } catch (Exception $e) {
-            $this->logger->err('Error during validation: ' . $e);
-            $this->view->errorMessage = $e->getMessage();
-            return $this->render('show-data-error');
-        }
+		// -- Send the email
+		$uuid = $submissionId; // todo remplacer par le vrai uuid du jdd
+		$siteName = $configuration->getConfig('site_name');
+		// Files of the submission
+		$submissionModel = new Application_Model_RawData_CustomSubmission();
+		$submissionFiles = $submissionModel->getSubmissionFiles($submissionId);
+		$fileNames = array_map("basename", array_column($submissionFiles, "file_name"));
 
-        // -- Send the email
-        $uuid = $submissionId; // todo remplacer par le vrai uuid du jdd
-        $siteName = $configuration->getConfig('site_name');
-        // Files of the submission
-        $submissionModel = new Application_Model_RawData_CustomSubmission();
-        $submissionFiles = $submissionModel->getSubmissionFiles($submissionId);
-        $fileNames = array_map("basename",array_column($submissionFiles, "file_name"));
+		// Contact user = connected user.
+		// Reload it from db because email value can have been changed since beginning of the session
+		$userSession = new Zend_Session_Namespace('user');
+		$userLogin = $userSession->user->login;
+		$userModel = new Application_Model_Website_User();
+		$user = $userModel->getUser($userLogin);
 
-        // Contact user = connected user.
-        // Reload it from db because email value can have been changed since beginning of the session
-        $userSession = new Zend_Session_Namespace('user');
-        $userLogin = $userSession->user->login;
-        $userModel = new Application_Model_Website_User();
-        $user = $userModel->getUser($userLogin);
+		// Title and body:
+		$title = (count($submissionFiles) > 1) ? "Intégration des jeux de données " : "Intégration du jeu de données ";
+		$title .= implode($fileNames, ", ");
 
-        // Title and body:
-        $title = (count($submissionFiles) > 1) ? "Intégration des jeux de données " : "Intégration du jeu de données ";
-        $title .= implode($fileNames, ", ");
+		// Using the mailer service based on SwiftMailer
+		$mailerService = new Application_Service_MailerService();
 
-        // Using the mailer service based on SwiftMailer
-        $mailerService = new Application_Service_MailerService();
+		// Create a message
+		$message = $mailerService->newMessage($title);
 
-        // Create a message
-        $message = $mailerService->newMessage($title);
-
-        // body
-        $body = "<p>Bonjour,</p>";
-        $body .= (count($submissionFiles) > 1) ?
-            "<p>Les fichiers de données <em>%s</em> que vous nous avez transmis ont été intégrés sur la plate-forme :
-             <em>%s</em> et publié le %s.<br>" :
-            "<p>Le fichier de données <em>%s</em> que vous nous avez transmis a été intégré sur la plate-forme :
+		// body
+		$body = "<p>Bonjour,</p>";
+		$body .= (count($submissionFiles) > 1) ? "<p>Les fichiers de données <em>%s</em> que vous nous avez transmis ont été intégrés sur la plate-forme :
+             <em>%s</em> et publié le %s.<br>" : "<p>Le fichier de données <em>%s</em> que vous nous avez transmis a été intégré sur la plate-forme :
              <em>%s</em> et publié le %s.<br>";
-        $body .= "Sur la plate-forme, le jeu de données porte désormais le numéro de la soumission : %s.</p>";
-        $body .= "<p>Vous trouverez en pièce jointe le rapport final de conformité et de cohérence du fichier, 
-                le rapport final sur la sensibilité des observations ainsi que le fichier vous permettant de reporter les 
+		$body .= "Sur la plate-forme, le jeu de données porte désormais le numéro de la soumission : %s.</p>";
+		$body .= "<p>Vous trouverez en pièce jointe le rapport final de conformité et de cohérence du fichier,
+                le rapport final sur la sensibilité des observations ainsi que le fichier vous permettant de reporter les
                 identifiants permanents SINP attribués aux données du jeu par la plate-forme.</p>";
-        $body .= "<p>Bien cordialement,</p>
+		$body .= "<p>Bien cordialement,</p>
                <p>Contact : %s<br>Courriel: %s</p>";
 
-        $body = sprintf($body,
-            implode($fileNames, ", "),
-            $siteName,
-            date("d/m/Y"),
-            $uuid,
-            $user->username,
-            $user->email);
+		$body = sprintf($body, implode($fileNames, ", "), $siteName, date("d/m/Y"), $uuid, $user->username, $user->email);
 
-        $message
-            ->setTo($user->email)
-            ->setBody($body, 'text/html')
-        ;
+		$message->setTo($user->email)->setBody($body, 'text/html');
 
-        // Attachments
-        $reports = $submissionModel->getReportsFilenames($submissionId);
+		// Attachments
+		$reports = $submissionModel->getReportsFilenames($submissionId);
 
-        // Regenerate sensibility report each time (see #815)
-        $submissionModel->writeSensibilityReport($submissionId, $reports["sensibilityReport"]);
+		// Regenerate sensibility report each time (see #815)
+		$submissionModel->writeSensibilityReport($submissionId, $reports["sensibilityReport"]);
 
-        foreach($reports as $report => $reportPath) {
-            if (!is_file( $reportPath )) {
-                $this->logger->debug("validateDataAction: report file $filePath does not exist, trying to generate them");
-                // We try to generate the reports, and then re-test
-                $submissionModel->generateReport($submissionId, $report);
-                if (!is_file( $reportPath )) {
-                    throw new Exception("Report file '$report' does not exist for submission $submissionId");
-                }
-            }
+		foreach ($reports as $report => $reportPath) {
+			if (!is_file($reportPath)) {
+				$this->logger->debug("validateDataAction: report file $filePath does not exist, trying to generate them");
+				// We try to generate the reports, and then re-test
+				$submissionModel->generateReport($submissionId, $report);
+				if (!is_file($reportPath)) {
+					throw new Exception("Report file '$report' does not exist for submission $submissionId");
+				}
+			}
 
-            $message->attach(Swift_Attachment::fromPath($reportPath));
-        }
+			$message->attach(Swift_Attachment::fromPath($reportPath));
+		}
 
-        // Send the message
-        $mailerService->sendMessage($message);
+		// Send the message
+		$mailerService->sendMessage($message);
 
-        // Forward the user to the next step
-        $this->_redirector->gotoUrl('/integration/show-data-submission-page');
-    }
-
+		// Forward the user to the next step
+		$this->_redirector->gotoUrl('/integration/show-data-submission-page');
+	}
 }
