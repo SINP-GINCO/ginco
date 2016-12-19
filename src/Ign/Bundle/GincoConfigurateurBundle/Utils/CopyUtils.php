@@ -13,7 +13,7 @@ use Assetic\Exception\Exception;
  * Group form fields if they belong to the data of the dee standard
  */
 class CopyUtils extends CopyUtilsBase {
-	
+
 	// Groups = Form_Format
 	protected $dee_groups = array(
 		'observation' => array(
@@ -55,9 +55,9 @@ class CopyUtils extends CopyUtilsBase {
 	);
 
 	protected $dee_fields = array(
-		
+
 		// ------ Observation ------------------------
-		
+
 		'nomcite' => 'observation',
 		'typedenombrement' => 'observation',
 		'objetdenombrement' => 'observation',
@@ -72,7 +72,7 @@ class CopyUtils extends CopyUtilsBase {
 		'observateuridentite' => 'observation',
 		'observateurnomorganisme' => 'observation',
 		'observateurmail' => 'observation',
-		
+
 		'obsdescription' => 'observation',
 		'obsmethode' => 'observation',
 		'obscontexte' => 'observation',
@@ -86,7 +86,7 @@ class CopyUtils extends CopyUtilsBase {
 		'preuvenumerique' => 'observation',
 		'preuvenonnumerique' => 'observation',
 		'preuveexistante' => 'observation',
-		
+
 		'cdnom' => 'observation',
 		'cdref' => 'observation',
 		'versiontaxref' => 'observation',
@@ -94,9 +94,9 @@ class CopyUtils extends CopyUtilsBase {
 		'determinateurmail' => 'observation',
 		'determinateurnomorganisme' => 'observation',
 		'datedetermination' => 'observation',
-		
+
 		// ---- Localisation --------------------------
-		
+
 		'altitudemin' => 'localisation',
 		'altitudemax' => 'localisation',
 		'altitudemoyenne' => 'localisation',
@@ -107,7 +107,7 @@ class CopyUtils extends CopyUtilsBase {
 		'versionrefhabitat' => 'localisation',
 		'codehabitat' => 'localisation',
 		'codehabref' => 'localisation',
-		
+
 		'codecommune' => 'localisation',
 		'anneerefcommune' => 'localisation',
 		'typeinfogeocommune' => 'localisation',
@@ -130,22 +130,22 @@ class CopyUtils extends CopyUtilsBase {
 		'versionme' => 'localisation',
 		'dateme' => 'localisation',
 		'region' => 'localisation',
-		
+
 		'geometrie' => 'localisation',
-		
+
 		'codecommunecalcule' => 'localisation',
 		'codedepartementcalcule' => 'localisation',
 		'codemaillecalcule' => 'localisation',
 		'nomcommunecalcule' => 'localisation',
-		
+
 		// ----- Regroupements -------------------------
-		
+
 		'identifiantregroupementpermanent' => 'regroupements',
 		'typeregroupement' => 'regroupements',
 		'methoderegroupement' => 'regroupements',
-		
+
 		// ----- Standardisation -----------------------
-		
+
 		'identifiantpermanent' => 'standardisation',
 		'validateurnomorganisme' => 'standardisation',
 		'validateurmail' => 'standardisation',
@@ -156,7 +156,7 @@ class CopyUtils extends CopyUtilsBase {
 		'orgtransformation' => 'standardisation',
 		'codeidcnpdispositif' => 'standardisation',
 		'deefloutage' => 'standardisation',
-		
+
 		'sensible' => 'standardisation',
 		'sensiniveau' => 'standardisation',
 		'sensidateattribution' => 'standardisation',
@@ -164,7 +164,7 @@ class CopyUtils extends CopyUtilsBase {
 		'sensiversionreferentiel' => 'standardisation',
 		'sensialerte' => 'standardisation',
 		'sensimanuelle' => 'standardisation',
-		
+
 		'dspublique' => 'standardisation',
 		'organismegestionnairedonnee' => 'standardisation',
 		'statutsource' => 'standardisation',
@@ -174,7 +174,7 @@ class CopyUtils extends CopyUtilsBase {
 		'jddid' => 'standardisation',
 		'jddsourceid' => 'standardisation',
 		'referencebiblio' => 'standardisation',
-		
+
 		// ----- Champs additionnels DSR -----------------------
 		'nomattribut' => 'dsr',
 		'definitionattribut' => 'dsr',
@@ -189,9 +189,9 @@ class CopyUtils extends CopyUtilsBase {
 	 * 'submission_id' => ,
 	 * 'ogam_id_table_observation' => ,
 	 */
-	
-	
-	
+
+
+
 	// Fields shown as result columns by default
 	protected $default_results = array(
 		'identifiantpermanent',
@@ -237,7 +237,7 @@ class CopyUtils extends CopyUtilsBase {
 			$modelId
 		));
 		$tfis = pg_fetch_all($results);
-		
+
 		// Find all table_format of the model.
 		$sql = "SELECT tfo.format, tfo.label
 				FROM metadata_work.table_format tfo
@@ -250,11 +250,11 @@ class CopyUtils extends CopyUtilsBase {
 		));
 		$tfos = pg_fetch_all($results);
 		$tablesCount = count($tfos);
-		
+
 		// Initialization of potential groups :
 		// they are composed of dee_groups x table_formats
 		$groups = array();
-		
+
 		foreach ($this->dee_groups as $index => $group) {
 			$groups[$index] = array();
 			foreach ($tfos as $count => $tfo) {
@@ -267,7 +267,7 @@ class CopyUtils extends CopyUtilsBase {
 				);
 			}
 		}
-		
+
 		// Define which groups will be active.
 		foreach ($tfis as $tfi) {
 			if (array_key_exists($tfi['data'], $this->dee_fields)) {
@@ -276,7 +276,7 @@ class CopyUtils extends CopyUtilsBase {
 				$groups['autres'][$tfi['format']]['active'] = true;
 			}
 		}
-		
+
 		// Create a form_format entry for each active group
 		foreach ($groups as $indexGroup => $formats) {
 			foreach ($formats as $tableFormat => $group) {
@@ -286,7 +286,7 @@ class CopyUtils extends CopyUtilsBase {
 				// Generate a new format using uniquid()
 				$format = uniqid('form_');
 				$groups[$indexGroup][$tableFormat]['format'] = $format;
-				
+
 				// Inserting a format
 				$sql = "INSERT INTO metadata.format(format, type)
 					VALUES ($1, 'FORM')";
@@ -294,7 +294,7 @@ class CopyUtils extends CopyUtilsBase {
 				pg_execute($dbconn, "", array(
 					$format
 				));
-				
+
 				// Inserting the corresponding form_format
 				$sql = "INSERT INTO metadata.form_format(format, label, definition, position, is_opened)
 					VALUES ($1, $2, $3, $4, $5)";
@@ -306,7 +306,7 @@ class CopyUtils extends CopyUtilsBase {
 					$group['position'],
 					$group['is_opened']
 				));
-				
+
 				// Create dataset_forms
 				$sql = "INSERT INTO metadata.dataset_forms(dataset_id, format)
 					VALUES ($1, $2)";
@@ -317,16 +317,16 @@ class CopyUtils extends CopyUtilsBase {
 				));
 			}
 		}
-		
+
 		// Now create a form field for each table_field, linked to the form_format (group) it belongs to
 		foreach ($tfis as $count => $row) {
-			
+
 			if (array_key_exists($row['data'], $this->dee_fields)) {
 				$format = $groups[$this->dee_fields[$row['data']]][$row['format']]['format'];
 			} else {
 				$format = $groups['autres'][$row['format']]['format'];
 			}
-			
+
 			// Insert the field
 			$sql = "INSERT INTO metadata.field(data, format, type)
 					VALUES ($1, $2, 'FORM')";
@@ -335,14 +335,14 @@ class CopyUtils extends CopyUtilsBase {
 				$row['data'],
 				$format
 			));
-			
+
 			// Insert the form_field
 			$convert = new TypesConvert();
 			$type = $convert->UnitToInput($row['type'], $row['subtype']);
 			$defaultResult = (in_array($row['data'], $this->default_results)) ? 1 : 0;
 			$mask = ($type == 'DATE') ? 'yyyy-MM-dd' : null;
 			$position = $count + 1;
-			
+
 			$sql = "INSERT INTO metadata.form_field(data, format, is_criteria, is_result,
 					input_type, position, is_default_criteria, is_default_result, mask)
 					VALUES ($1, $2, 1, 1, $3, $4, 0, $5, $6)";
@@ -355,7 +355,7 @@ class CopyUtils extends CopyUtilsBase {
 				$defaultResult,
 				$mask
 			));
-			
+
 			// Insert the field mapping
 			$sql = "INSERT INTO metadata.field_mapping(src_data, src_format, dst_data, dst_format, mapping_type)
 					VALUES ($1, $2, $3, $4, 'FORM')";
