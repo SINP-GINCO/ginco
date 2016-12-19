@@ -397,7 +397,7 @@ class Custom_IntegrationController extends IntegrationController {
 
 			// Send the files to the integration server
 			try {
-				$this->integrationServiceModel->uploadData($submission->submissionId, $submissionProviderId, $requestedFiles, $srid, true, true, true);
+				$this->integrationServiceModel->uploadData($submission->submissionId, $submissionProviderId, $requestedFiles, $srid, true, true, true, true);
 			} catch (Exception $e) {
 				$this->logger->err('Error during upload: ' . $e);
 				$this->view->errorMessage = $e->getMessage();
