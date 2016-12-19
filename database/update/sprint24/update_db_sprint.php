@@ -28,7 +28,17 @@ try {
 	execCustSQLFile("$sprintDir/add_results_bbox_compute_threshold_in_app_parameters.sql", $config);
 	execCustSQLFile("$sprintDir/add_date_order_check.sql", $config);
 	execCustSQLFile("$sprintDir/add_nomvalide_to_dsr_model.sql", $config);
+	execCustSQLFile("$sprintDir/update_sensitive_automatic_algorithm.sql", $config);
 } catch (Exception $e) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
+
+$CLIParams = implode(' ', array_slice($argv, 1));
+/* patch user raw_data here */
+system("php $sprintDir/delete_deedatetransformation_column.php $CLIParams", $returnCode);
+if ($returnCode != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
