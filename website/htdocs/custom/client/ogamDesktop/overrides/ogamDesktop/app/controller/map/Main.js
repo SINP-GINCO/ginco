@@ -68,7 +68,6 @@ Ext.define('Ginco.controller.map.Main', {
 			success : function(response, options) {
 				var data = Ext.decode(response.responseText);
 				var bbox = data.bbox;
-				debugger;
 				if (bbox) {
 					this.getMapmainwin().ownerCt.setActiveItem(this
 							.getMapmainwin());
