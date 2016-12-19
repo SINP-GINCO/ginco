@@ -59,6 +59,7 @@ class CopyUtils extends CopyUtilsBase {
 		// ------ Observation ------------------------
 
 		'nomcite' => 'observation',
+		'nomvalide' => 'observation',
 		'typedenombrement' => 'observation',
 		'objetdenombrement' => 'observation',
 		'denombrementmax' => 'observation',
