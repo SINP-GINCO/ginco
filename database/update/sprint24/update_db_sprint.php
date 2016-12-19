@@ -29,6 +29,7 @@ try {
 	execCustSQLFile("$sprintDir/add_date_order_check.sql", $config);
 	execCustSQLFile("$sprintDir/add_nomvalide_to_dsr_model.sql", $config);
 	execCustSQLFile("$sprintDir/update_sensitive_automatic_algorithm.sql", $config);
+	execCustSQLFile("$sprintDir/put_fields_position_in_alphabetic_order.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
