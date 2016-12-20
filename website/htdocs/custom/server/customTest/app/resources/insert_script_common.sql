@@ -319,7 +319,8 @@ CREATE TABLE model_1_observation (
     altitudemoyenne double precision,
     provider_id character varying(255) NOT NULL,
     typedenombrement character varying(255),
-    geometrie public.geometry(Geometry,4326)
+    geometrie public.geometry(Geometry,4326),
+    nomvalide character varying(255)
 );
 
 
