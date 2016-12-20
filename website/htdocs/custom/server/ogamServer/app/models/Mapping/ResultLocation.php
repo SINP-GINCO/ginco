@@ -431,6 +431,11 @@ class Application_Model_Mapping_ResultLocation {
 		$websiteSession = new Zend_Session_Namespace('website');
 		$nbResults = $websiteSession->count;
 
+		// Trim regionCode
+		if (!in_array($regionCode, array('FR', 'DAILYBUILD'))) {
+			$regionCode = substr($regionCode, 1);
+		}
+
 		if (is_null($bboxComputeThreshold) || $nbResults < $bboxComputeThreshold) {
 
 			$req = "SELECT st_astext(st_extent(st_transform(geom, $projection ))) as wkt
@@ -449,7 +454,7 @@ class Application_Model_Mapping_ResultLocation {
 				$sessionId
 			));
 		} else {
-			if ($regionCode != 'FR') {
+			if (!in_array($regionCode, array('FR', 'DAILYBUILD'))) {
 				$req = "SELECT st_astext(st_envelope(st_transform(geom, $projection))) as wkt
 						FROM referentiels.geofla_region
 						WHERE code_reg = ?";
@@ -463,7 +468,7 @@ class Application_Model_Mapping_ResultLocation {
 			} else {
 				$req = "SELECT st_astext(st_extent(st_transform(geom, 3857))) as wkt
 						FROM referentiels.geofla_region
-						WHERE code_reg <> '%0'";
+						WHERE code_reg NOT LIKE '0%'";
 
 				$this->logger->info("getResultsBBox computing default metropolitan country bbox with request : $req");
 				$select = $this->db->prepare($req);
