@@ -1,0 +1,6 @@
+{
+	"require" : {
+		"swiftmailer/swiftmailer" : "5.4.4",
+		"twig/twig" : "~1.0"
+	}
+}

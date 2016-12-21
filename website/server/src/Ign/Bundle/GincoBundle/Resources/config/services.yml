@@ -1,0 +1,4 @@
+services:
+#    ign_ginco.example:
+#        class: Ign\Bundle\GincoBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

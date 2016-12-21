@@ -1,0 +1,53 @@
+{# SOurce #}
+<cont:Source>
+    <cont:statutSource>{{ source.statutsource }}</cont:statutSource>
+    {% if source.sensiversionreferentiel %}
+        <cont:sensiVersionReferentiel>{{ source.sensiversionreferentiel }}</cont:sensiVersionReferentiel>
+    {% endif %}
+    {% if source.sensireferentiel %}
+        <cont:sensiReferentiel>{{ source.sensireferentiel }}</cont:sensiReferentiel>
+    {% endif %}
+    <cont:sensiNiveau>{{ source.sensiniveau }}</cont:sensiNiveau>
+    {% if source.sensidateattribution %}
+        <cont:sensiDateAttribution>{{ source.sensidateattribution }}</cont:sensiDateAttribution>
+    {% endif %}
+    <cont:sensible>{{ source.sensible }}</cont:sensible>
+    {% if source.referencebiblio %}
+        <cont:referenceBiblio>{{ source.referencebiblio }}</cont:referenceBiblio>
+    {% endif %}
+    <cont:orgTransformation>
+        <cont:OrganismeType>
+            <cont:nomOrganisme>{{ source.orgtransformation }}</cont:nomOrganisme>
+        </cont:OrganismeType>
+    </cont:orgTransformation>
+    <cont:organismeGestionnaireDonnee>
+        <cont:OrganismeType>
+            <cont:nomOrganisme>{{ source.organismegestionnairedonnee }}</cont:nomOrganisme>
+        </cont:OrganismeType>
+    </cont:organismeGestionnaireDonnee>
+    {% if source.jddsourceid %}
+        <cont:jddSourceId>{{ source.jddsourceid }}</cont:jddSourceId>
+    {% endif %}
+    <cont:jddMetadonneeDEEId>{{ source.jddmetadonneedeeid }}</cont:jddMetadonneeDEEId>
+    {% if source.jddid %}
+        <cont:jddId>{{ source.jddid }}</cont:jddId>
+    {% endif %}
+    {% if source.jddCode %}
+        <cont:jddCode>{{ source.jddcode }}</cont:jddCode>
+    {% endif %}
+    {% if source.identifiantorigine %}
+        <cont:identifiantOrigine>{{ source.identifiantorigine }}</cont:identifiantOrigine>
+    {% endif %}
+    <cont:dSPublique>{{ source.dspublique }}</cont:dSPublique>
+    {% if source.diffusionniveauprecision %}
+        <cont:diffusionNiveauPrecision>{{ source.diffusionniveauprecision }}</cont:diffusionNiveauPrecision>
+    {% endif %}
+    {% if source.deefloutage %}
+        <cont:dEEFloutage>{{ source.deefloutage }}</cont:dEEFloutage>
+    {% endif %}
+    <cont:dEEDateTransformation>{{ source.deedatetransformation }}</cont:dEEDateTransformation>
+    <cont:dEEDateDerniereModification>{{ source.deedatedernieremodification }}</cont:dEEDateDerniereModification>
+    {% if source.codeidcnpdispositif %}
+        <cont:codeIDCNPDispositif>{{ source.codeidcnpdispositif }}</cont:codeIDCNPDispositif>
+    {% endif %}
+</cont:Source>

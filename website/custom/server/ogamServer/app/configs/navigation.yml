@@ -1,0 +1,192 @@
+# Fichier de conf de la navigation : breadcrumb, menus, aide...
+# Définit les labels affichés dans les menus.
+# On pourrait ajouter des titres de page.
+
+nav:
+
+  home:
+    label: Breadcrumb Home
+    controller: index
+    action: index
+    module: custom
+    route: customRoute_index
+    help: /index.html
+    helpLabel: Aide
+
+    pages:
+
+      integration:
+        label: Breadcrumb Integration
+        controller: integration
+        action: index
+        module: custom
+        help: /gestion-jdd/index.html
+        helpLabel: Aide pour la gestion des jeux de données
+        pages:
+          newintegration:
+            label: Breadcrumb Integration New
+            controller: integration
+            action: show-create-data-submission
+            module: custom
+          newintegration2:
+            label: Breadcrumb Integration New
+            controller: integration
+            action: validate-create-data-submission
+            module: custom
+
+      visualisation:
+        label: Breadcrumb Visualization
+        controller: query
+        action: index
+        module: custom
+        help: /recherche-visu/index.html
+        helpLabel: Aide pour la visualisation et la recherche de données
+
+      edition:
+        label: Breadcrumb Edition
+        controller: dataedition
+        action: index
+        module: custom
+        pages:
+          editionedit:
+            label: Breadcrumb Edit Data
+            controller: dataedition
+            action: show-edit-data
+            module: custom
+          editionadd:
+            label: Breadcrumb Add Data
+            controller: dataedition
+            action: show-add-data
+            module: custom
+
+      checkconf:
+        label: Breadcrumb Check Configuration
+        controller: checkconf
+        action: index
+        module: custom
+
+      parameters:
+        label: Breadcrumb Configuration Parameters
+        controller: configuration
+        action: edit-configuration
+        module: custom
+
+      contact:
+        label: Breadcrumb Contact
+        controller: contact
+        action: index
+        module: custom
+
+      user:
+        label: Breadcrumb User
+        controller: user
+        action: index
+        module: custom
+        help: /utilisateurs/index.html
+        helpLabel: Aide pour la gestion des utilisateurs
+
+      usermanagement:
+        label: Breadcrumb Users Administration
+        controller: usermanagement
+        action: index
+        module: custom
+        help: /utilisateurs/index.html
+        helpLabel: Aide pour la gestion des utilisateurs
+        pages:
+
+          users:
+            label: Breadcrumb Users
+            controller: usermanagement
+            action: show-users
+            module: custom
+            pages:
+
+              adduser:
+                label: Breadcrumb Add User
+                controller: usermanagement
+                action: show-create-user
+                module: custom
+
+              edituser:
+                label: Breadcrumb Edit User
+                controller: usermanagement
+                action: show-edit-user
+                module: custom
+
+              passworduser:
+                label: Breadcrumb Change Password
+                controller: usermanagement
+                action: show-change-password
+                module: custom
+
+          users2:
+            label: Breadcrumb Users
+            controller: usermanagement
+            action: validate-user
+            module: custom
+          users3:
+            label: Breadcrumb Users
+            controller: usermanagement
+            action: delete-user
+            module: custom
+
+          roles:
+            label: Breadcrumb Roles
+            controller: usermanagement
+            action: show-roles
+            module: custom
+            pages:
+
+              editrole:
+                label: Breadcrumb Edit Role
+                controller: usermanagement
+                action: show-edit-role
+                module: custom
+
+              addrole:
+                label: Breadcrumb Add Role
+                controller: usermanagement
+                action: show-create-role
+                module: custom
+
+          roles2:
+            label: Breadcrumb Roles
+            controller: usermanagement
+            action: validate-role
+            module: custom
+          roles3:
+            label: Breadcrumb Roles
+            controller: usermanagement
+            action: delete-role
+            module: custom
+
+          providers:
+            label: Breadcrumb Providers
+            controller: usermanagement
+            action: show-providers
+            module: custom
+            pages:
+
+              providerdetails:
+                label: Breadcrumb Providers Details
+                controller: usermanagement
+                action: show-provider-content
+                module: custom
+
+              editprovider:
+                label: Breadcrumb Edit Provider
+                controller: usermanagement
+                action: edit-provider
+                module: custom
+
+              addprovider:
+                label: Breadcrumb Add Provider
+                controller: usermanagement
+                action: add-provider
+                module: custom
+
+          providers2:
+            label: Breadcrumb Providers
+            controller: usermanagement
+            action: delete-provider
+            module: custom
