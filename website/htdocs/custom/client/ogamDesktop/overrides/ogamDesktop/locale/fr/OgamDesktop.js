@@ -29,7 +29,7 @@ Ext.define("Ginco.locale.fr.controller.map.Main", {
     noGeometryErrorTitle: 'Pas de géométrie observation',
     noGeometryError: 'Cette observation n\'a pas de géométrie visible sur la carte.',
     restrainedBboxWarningTitle: 'L\'emprise spatiale des résultats est restreinte',
-    restrainedBboxWarning: 'Le nombre de résultats étant très élevé, l\emprise spatiale affichée correspond à l\'emprise par défaut de la plateforme',
+    restrainedBboxWarning: 'Le nombre de résultats étant très élevé, l\'emprise spatiale affichée correspond à l\'emprise par défaut de la plateforme',
 });
 
 /*
