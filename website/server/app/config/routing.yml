@@ -1,0 +1,7 @@
+ign_ginco:
+    resource: "@IgnGincoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
