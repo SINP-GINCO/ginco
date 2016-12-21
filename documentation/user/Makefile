@@ -19,11 +19,12 @@ ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) sou
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) source
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
+.PHONY: help clean html htmlandpdf dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  html       to make standalone HTML files"
+	@echo "  htmlandpdf to make HTML files and a pdf to download"
 	@echo "  dirhtml    to make HTML files named index.html in directories"
 	@echo "  singlehtml to make a single large HTML file"
 	@echo "  pickle     to make pickle files"
@@ -53,6 +54,20 @@ html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+
+htmlandpdf:
+	@echo "Building pdf..."
+	make latexpdf
+	@echo
+	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
+	@echo
+	@echo "Building html..."
+	make html
+	@echo
+	cp $(BUILDDIR)/latex/Ginco.pdf $(BUILDDIR)/html/_downloads/
+	@echo
+	@echo "Pdf documentation copied to $(BUILDDIR)/html/_downloads/"
+	@echo "Build finished for html pages and pdf."
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
