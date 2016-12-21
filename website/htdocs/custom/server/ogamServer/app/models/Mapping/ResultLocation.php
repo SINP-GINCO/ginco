@@ -418,7 +418,7 @@ class Application_Model_Mapping_ResultLocation {
 	 *        	the user session id.
 	 * @param String $resultLayer
 	 *        	the less precise result layer viewed.
-	 * @return String the bounging box as WKT (well known text)
+	 * @return Array of : String the bounding box as WKT (well known text), and Boolean true if bounding box is restrained.
 	 */
 	public function getResultsBBox($sessionId, $resultLayer = 'departement') {
 		$this->logger->info('getResultsBBox session_id : ' . $sessionId);
@@ -430,10 +430,14 @@ class Application_Model_Mapping_ResultLocation {
 
 		$websiteSession = new Zend_Session_Namespace('website');
 		$nbResults = $websiteSession->count;
+		$restrainedBbox = false;
 
+		$this->logger->info('getResultsBBox regionCode : ' . $regionCode);
 		// Trim regionCode
 		if (!in_array($regionCode, array('FR', 'DAILYBUILD'))) {
-			$regionCode = substr($regionCode, 1);
+			if(substr($regionCode, 0, 1) === 'R'){
+				$regionCode = substr($regionCode, 1);
+			}
 		}
 
 		if (is_null($bboxComputeThreshold) || $nbResults < $bboxComputeThreshold) {
@@ -454,6 +458,7 @@ class Application_Model_Mapping_ResultLocation {
 				$sessionId
 			));
 		} else {
+			$restrainedBbox = true;
 			if (!in_array($regionCode, array('FR', 'DAILYBUILD'))) {
 				$req = "SELECT st_astext(st_envelope(st_transform(geom, $projection))) as wkt
 						FROM referentiels.geofla_region
@@ -478,7 +483,7 @@ class Application_Model_Mapping_ResultLocation {
 
 		$result = $select->fetchColumn(0);
 
-		return $result;
+		return array('bbox' => $result, 'restrained' => $restrainedBbox);
 	}
 
 	/**
