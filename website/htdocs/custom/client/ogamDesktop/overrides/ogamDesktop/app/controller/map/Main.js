@@ -29,9 +29,13 @@ Ext.define('Ginco.controller.map.Main', {
 			success : function(response, options) {
 				var result = Ext.decode(response.responseText);
 				if (result.success) {
-					this.setResultsBbox(result.resultsbbox);
+					this.setResultsBbox(result.resultsbbox.bbox);
 					this.updateRequestLayers();
 					Ext.GlobalEvents.fireEvent('resultsPrepared');
+					if(result.resultsbbox.restrained){
+						OgamDesktop.toast(this.restrainedBboxWarning, this.restrainedBboxWarningTitle, 5000);
+						this.getMapmainwin().unmask();
+					}
 				} else {
 					OgamDesktop.toast(result.errorMessage,
 							this.getresultsbboxErrorTitle);
