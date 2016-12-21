@@ -32,8 +32,9 @@ Ext.define('Ginco.controller.map.Main', {
 					this.setResultsBbox(result.resultsbbox.bbox);
 					this.updateRequestLayers();
 					Ext.GlobalEvents.fireEvent('resultsPrepared');
-					if(result.resultsbbox.restrained){
-						OgamDesktop.toast(this.restrainedBboxWarning, this.restrainedBboxWarningTitle, 5000);
+					if (result.resultsbbox.restrained) {
+						OgamDesktop.toast(this.restrainedBboxWarning,
+								this.restrainedBboxWarningTitle, 5000);
 						this.getMapmainwin().unmask();
 					}
 				} else {
