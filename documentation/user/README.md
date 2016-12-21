@@ -75,6 +75,12 @@ make latexpdf
 ```
 Le fichier généré est `build/latex/Ginco.pdf`. 
 
+Et pour les deux en même temps (le PDF est ainsi téléchargeable directement depuis le site de doc) :
+
+```bash
+make htmlandpdf
+```
+
 ## Captures d'écran
 
 Pour créer des captures d'écran annotées, utiliser le plugin Chrome 
