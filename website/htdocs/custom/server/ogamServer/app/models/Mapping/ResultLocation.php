@@ -53,15 +53,18 @@ class Application_Model_Mapping_ResultLocation {
 	protected $genericModel;
 
 	private static $fieldsToSelect = array(
-		'submission_id',
-		'identifiantpermanent',
-		'cdnom',
-		'cdref',
+		'jourdatedebut',
+		'jourdatefin',
 		'nomcite',
-		'sensible',
-		'jddmetadonneedeeid',
+		'cdref',
+		'nomvalide',
+		'observateuridentite',
 		'organismegestionnairedonnee',
-		'deedatedernieremodification',
+		'statutobservation',
+		'sensible',
+		'sensiniveau',
+		'dspublique',
+		'diffusionniveauprecision',
 		'pk'
 	);
 
