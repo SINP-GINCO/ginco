@@ -434,8 +434,11 @@ class Application_Model_Mapping_ResultLocation {
 
 		$this->logger->info('getResultsBBox regionCode : ' . $regionCode);
 		// Trim regionCode
-		if (!in_array($regionCode, array('FR', 'DAILYBUILD'))) {
-			if(substr($regionCode, 0, 1) === 'R'){
+		if (!in_array($regionCode, array(
+			'FR',
+			'DAILYBUILD'
+		))) {
+			if (substr($regionCode, 0, 1) === 'R') {
 				$regionCode = substr($regionCode, 1);
 			}
 		}
@@ -459,7 +462,10 @@ class Application_Model_Mapping_ResultLocation {
 			));
 		} else {
 			$restrainedBbox = true;
-			if (!in_array($regionCode, array('FR', 'DAILYBUILD'))) {
+			if (!in_array($regionCode, array(
+				'FR',
+				'DAILYBUILD'
+			))) {
 				$req = "SELECT st_astext(st_envelope(st_transform(geom, $projection))) as wkt
 						FROM referentiels.geofla_region
 						WHERE code_reg = ?";
@@ -483,7 +489,10 @@ class Application_Model_Mapping_ResultLocation {
 
 		$result = $select->fetchColumn(0);
 
-		return array('bbox' => $result, 'restrained' => $restrainedBbox);
+		return array(
+			'bbox' => $result,
+			'restrained' => $restrainedBbox
+		);
 	}
 
 	/**
@@ -654,7 +663,7 @@ class Application_Model_Mapping_ResultLocation {
 			$query = $this->db->prepare($req);
 			$query->execute(array(
 				$sessionId,
-                $level,
+				$level,
 				$lon,
 				$lat
 			));
