@@ -1,4 +1,0 @@
-/build
-hudson/
-test/logs/*.log
-tmp/*
