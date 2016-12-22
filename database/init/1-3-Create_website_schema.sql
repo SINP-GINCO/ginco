@@ -25,7 +25,6 @@ USER_LOGIN           VARCHAR(50)          null,
 USER_PASSWORD        VARCHAR(50)          null,
 USER_NAME            VARCHAR(50)          null,
 PROVIDER_ID          VARCHAR(36)          null,
-ACTIVE               INT4                 null,
 EMAIL                VARCHAR(250)         null,
 constraint PK_USERS primary key (USER_LOGIN)
 );
@@ -35,7 +34,6 @@ COMMENT ON COLUMN USERS.USER_LOGIN IS 'The login of the user (unique identifier)
 COMMENT ON COLUMN USERS.USER_PASSWORD IS 'The password of the user';
 COMMENT ON COLUMN USERS.USER_NAME IS 'The user name';
 COMMENT ON COLUMN USERS.PROVIDER_ID IS 'The identifier of the provider (used to group users and manage dataset accessibility)';
-COMMENT ON COLUMN USERS.ACTIVE IS 'Is the user active ?';
 COMMENT ON COLUMN USERS.EMAIL IS 'The user email address';
 
 /*==============================================================*/
@@ -54,7 +52,7 @@ COMMENT ON COLUMN ROLE.ROLE_LABEL IS 'Label';
 COMMENT ON COLUMN ROLE.ROLE_DEFINITION IS 'Definition of the role';
 
 /*==============================================================*/
-/* Table : ROLE_TO_SCHEMA                                                 */
+/* Table : ROLE_TO_SCHEMA                                       */
 /*==============================================================*/
 create table ROLE_TO_SCHEMA (
 ROLE_CODE            VARCHAR(36)             	not null,
@@ -147,7 +145,7 @@ COMMENT ON COLUMN layer_role_restriction.role_code IS 'Role for whom this layer 
 
 ALTER TABLE layer_role_restriction 
 ADD CONSTRAINT fk_layer_role_restriction_layer_name 
-FOREIGN KEY (layer_name) REFERENCES mapping.layer(layer_name)
+FOREIGN KEY (layer_name) REFERENCES mapping.layer(name)
 ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 ALTER TABLE layer_role_restriction 
@@ -193,24 +191,24 @@ CONSTRAINT pk_provider PRIMARY KEY (id)
 /* Table : PREDEFINED_REQUEST                                   */
 /*==============================================================*/
 create table PREDEFINED_REQUEST (
-REQUEST_NAME             VARCHAR(50)          not null,
+NAME             VARCHAR(50)          not null,
 SCHEMA_CODE          	 VARCHAR(36)          not null,
 DATASET_ID               VARCHAR(36)          not null,
 DEFINITION				 VARCHAR(500)         null,
 LABEL 					 VARCHAR(50)	      null,
 DATE 					 date				DEFAULT now(),
 USER_LOGIN 				 VARCHAR(50),
-constraint PK_PREDEFINED_REQUEST primary key (REQUEST_NAME)
+constraint PK_PREDEFINED_REQUEST primary key (NAME)
 );
 
 
 
-/*alter table PREDEFINED_REQUEST*/
-/*add constraint FK_PREDEFINED_REQUEST_DATASET foreign key (DATASET_ID)*/
-/*      references METADATA.DATASET (DATASET_ID)*/
-/*      on delete restrict on update restrict;*/
+alter table PREDEFINED_REQUEST
+add constraint FK_PREDEFINED_REQUEST_DATASET foreign key (DATASET_ID)
+      references METADATA.DATASET (DATASET_ID)
+      on delete restrict on update restrict;
 
-COMMENT ON COLUMN PREDEFINED_REQUEST.REQUEST_NAME IS 'The request name';
+COMMENT ON COLUMN PREDEFINED_REQUEST.NAME IS 'The request name';
 COMMENT ON COLUMN PREDEFINED_REQUEST.SCHEMA_CODE IS 'The schema used by this request';
 COMMENT ON COLUMN PREDEFINED_REQUEST.DATASET_ID IS 'The dataset used by this request';
 COMMENT ON COLUMN PREDEFINED_REQUEST.DEFINITION IS 'The description of the request';
@@ -221,46 +219,46 @@ COMMENT ON COLUMN PREDEFINED_REQUEST.USER_LOGIN IS 'The login of the user who cr
 
 
 /*==============================================================*/
-/* Table : PREDEFINED_REQUEST_CRITERIA                          */
+/* Table : PREDEFINED_REQUEST_CRITERION                         */
 /*==============================================================*/
-create table PREDEFINED_REQUEST_CRITERIA (
+create table PREDEFINED_REQUEST_CRITERION (
 REQUEST_NAME           VARCHAR(50)          not null,
 FORMAT         		   VARCHAR(36)          not null,
 DATA                   VARCHAR(36)          not null,
 VALUE        		   VARCHAR(500)          not null,
 FIXED 				   boolean,
-constraint PK_PREDEFINED_REQUEST_CRITERIA primary key (REQUEST_NAME, FORMAT, DATA)
+constraint PK_PREDEFINED_REQUEST_CRITERION primary key (REQUEST_NAME, FORMAT, DATA)
 );
 
-COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERIA.REQUEST_NAME IS 'The request name';
-COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERIA.FORMAT IS 'The form format of the criteria';
-COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERIA.DATA IS 'The form field of the criteria';
-COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERIA.VALUE IS 'The field value (multiple values are separated by a semicolon)';
-COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERIA.FIXED IS 'Indicate if the file is fixed or selectable';
+COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERION.REQUEST_NAME IS 'The request name';
+COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERION.FORMAT IS 'The form format of the criterion';
+COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERION.DATA IS 'The form field of the criterion';
+COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERION.VALUE IS 'The field value (multiple values are separated by a semicolon)';
+COMMENT ON COLUMN PREDEFINED_REQUEST_CRITERION.FIXED IS 'Indicate if the file is fixed or selectable';
 
-ALTER TABLE ONLY predefined_request_criteria
-    ADD CONSTRAINT fk_predefined_request_criteria_request_name 
+ALTER TABLE ONLY predefined_request_criterion
+    ADD CONSTRAINT fk_predefined_request_criterion_request_name 
     FOREIGN KEY (request_name) 
-    REFERENCES predefined_request(request_name) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    REFERENCES predefined_request(name) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 /*==============================================================*/
-/* Table : PREDEFINED_REQUEST_RESULT                  */
+/* Table : PREDEFINED_REQUEST_COLUMN                 		    */
 /*==============================================================*/
-create table PREDEFINED_REQUEST_RESULT (
+create table PREDEFINED_REQUEST_COLUMN (
 REQUEST_NAME           VARCHAR(50)          not null,
 FORMAT         		   VARCHAR(36)          not null,
 DATA                   VARCHAR(36)          not null,
-constraint PK_PREDEFINED_REQUEST_RESULT primary key (REQUEST_NAME, FORMAT, DATA)
+constraint PK_PREDEFINED_REQUEST_COLUMN primary key (REQUEST_NAME, FORMAT, DATA)
 );
 
-COMMENT ON COLUMN PREDEFINED_REQUEST_RESULT.REQUEST_NAME IS 'The request name';
-COMMENT ON COLUMN PREDEFINED_REQUEST_RESULT.FORMAT IS 'The form format of the result column';
-COMMENT ON COLUMN PREDEFINED_REQUEST_RESULT.DATA IS 'The form field of the result column';
+COMMENT ON COLUMN PREDEFINED_REQUEST_COLUMN.REQUEST_NAME IS 'The request name';
+COMMENT ON COLUMN PREDEFINED_REQUEST_COLUMN.FORMAT IS 'The form format of the column';
+COMMENT ON COLUMN PREDEFINED_REQUEST_COLUMN.DATA IS 'The form field of the column';
 
-ALTER TABLE ONLY predefined_request_result
-    ADD CONSTRAINT fk_predefined_request_result_request_name 
+ALTER TABLE ONLY predefined_request_column
+    ADD CONSTRAINT fk_predefined_request_column_request_name 
     FOREIGN KEY (request_name) 
-    REFERENCES predefined_request(request_name) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    REFERENCES predefined_request(name) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 -- Sequence: website.predefined_request_group_position_seq
@@ -281,15 +279,15 @@ ALTER TABLE website.predefined_request_group_position_seq
 /* Table : PREDEFINED_REQUEST_GROUP                             */
 /*==============================================================*/
 CREATE TABLE PREDEFINED_REQUEST_GROUP (
-GROUP_NAME 		VARCHAR(50) 	NOT NULL,
+NAME 		VARCHAR(50) 	NOT NULL,
 LABEL			VARCHAR(50),
 DEFINITION  	VARCHAR(250),
 /*POSITION		integer NOT NULL DEFAULT nextval('predefined_request_group_position_seq'::regclass),*/
 POSITION		smallint,
-constraint PK_PREDEFINED_REQUEST_GROUP primary key (GROUP_NAME)
+constraint PK_PREDEFINED_REQUEST_GROUP primary key (NAME)
 );
 
-COMMENT ON COLUMN PREDEFINED_REQUEST_GROUP.GROUP_NAME IS 'The name of the group';
+COMMENT ON COLUMN PREDEFINED_REQUEST_GROUP.NAME IS 'The name of the group';
 COMMENT ON COLUMN PREDEFINED_REQUEST_GROUP.LABEL IS 'The label of the group';
 COMMENT ON COLUMN PREDEFINED_REQUEST_GROUP.DEFINITION IS 'The definition of the group';
 COMMENT ON COLUMN PREDEFINED_REQUEST_GROUP.POSITION IS 'The position of the group';
@@ -300,7 +298,7 @@ COMMENT ON COLUMN PREDEFINED_REQUEST_GROUP.POSITION IS 'The position of the grou
 /* Table : PREDEFINED_REQUEST_GROUP_ASSO                        */
 /*==============================================================*/
 CREATE TABLE PREDEFINED_REQUEST_GROUP_ASSO (
-GROUP_NAME 		VARCHAR(50) 	NOT NULL,
+GROUP_NAME 			VARCHAR(50) 	NOT NULL,
 REQUEST_NAME 	VARCHAR(50),
 POSITION		smallint,
 constraint PK_PREDEFINED_REQUEST_GROUP_ASSO primary key (GROUP_NAME, REQUEST_NAME)
@@ -313,13 +311,13 @@ COMMENT ON COLUMN PREDEFINED_REQUEST_GROUP_ASSO.POSITION IS 'The position of the
 
 ALTER TABLE ONLY predefined_request_group_asso
     ADD CONSTRAINT fk_predefined_request_group_name 
-    FOREIGN KEY (group_name) 
-    REFERENCES predefined_request_group(group_name) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    FOREIGN KEY (GROUP_NAME) 
+    REFERENCES predefined_request_group(name) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 ALTER TABLE ONLY predefined_request_group_asso
     ADD CONSTRAINT fk_predefined_request_request_name 
     FOREIGN KEY (request_name) 
-    REFERENCES predefined_request(request_name) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    REFERENCES predefined_request(name) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 /*==============================================================*/

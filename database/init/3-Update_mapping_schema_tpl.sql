@@ -1,28 +1,35 @@
 ﻿SET SEARCH_PATH = mapping, public;
 
 
--- Add the available map scales
-DELETE FROM scales;
-INSERT INTO scales(scale) VALUES (69885283);
-INSERT INTO scales(scale) VALUES (34942642);
-INSERT INTO scales(scale) VALUES (17471321);
-INSERT INTO scales(scale) VALUES (8735660);
-INSERT INTO scales(scale) VALUES (4367830);
-INSERT INTO scales(scale) VALUES (2183915);
-INSERT INTO scales(scale) VALUES (1091958);
-INSERT INTO scales(scale) VALUES (545979);
-INSERT INTO scales(scale) VALUES (272989);
-INSERT INTO scales(scale) VALUES (136495);
-INSERT INTO scales(scale) VALUES (68247);
-INSERT INTO scales(scale) VALUES (34124);
-INSERT INTO scales(scale) VALUES (17062);
-INSERT INTO scales(scale) VALUES (8531);
-INSERT INTO scales(scale) VALUES (4265);
-INSERT INTO scales(scale) VALUES (2133);
+-- Add the available map zoom_level
+DELETE FROM zoom_level;
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (0, 156543.0339280410, 559082264, '1:560M', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (1, 78271.5169640205, 279541132, '1:280M', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (2, 39135.7584820102, 139770566, '1:140M', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (3, 19567.8792410051, 69885283, '1:70M', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (4, 9783.9396205026, 34942642, '1:35M', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (5, 4891.9698102513, 17471321, '1:17M', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (6, 2445.9849051256, 8735660, '1:8,7M', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (7, 1222.9924525628, 4367830, '1:4,4M', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (8, 611.4962262814, 2183915, '1:2,2M', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (9, 305.7481131407, 1091958, '1:1,1M', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (10, 152.8740565704, 545979, '1:546K', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (11, 76.4370282852, 272989, '1:273K', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (12, 38.2185141426, 136495, '1:136K', TRUE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (13, 19.1092570713, 68247, '1:68K', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (14, 9.5546285356, 34124, '1:34K', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (15, 4.7773142678, 17062, '1:17K', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (16, 2.3886571339, 8531, '1:8,5K', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (17, 1.1943285670, 4265, '1:4,3K', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (18, 0.5971642835, 2133, '1:2,1K', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (19, 0.2985821417, 1066, '1:1,1K', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (20, 0.1492910709, 533, '1:533', FALSE);
+INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (21, 0.0746455354, 267, '1:267', FALSE);
+
 
 -- Conf des services et des layers
 
-DELETE FROM layer_tree;
+DELETE FROM layer_tree_node;
 DELETE FROM layer;
 DELETE FROM layer_service;
 
@@ -40,9 +47,9 @@ INSERT INTO layer_service (service_name, config) VALUES
 INSERT INTO layer VALUES ('Fonds', 'Fonds', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO layer VALUES ('ORTHOIMAGERY.ORTHOPHOTOS', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL);
 INSERT INTO layer VALUES ('ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL);
-INSERT INTO layer VALUES ('plan_ign', 'Carte IGN', 'GEOGRAPHICALGRIDSYSTEMS.PLANIGN', 0, 100, 0, 0, 17471321, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wmts', NULL);
+INSERT INTO layer VALUES ('plan_ign', 'Carte IGN', 'GEOGRAPHICALGRIDSYSTEMS.PLANIGN', 0, 100, 0, 0, 5, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wmts', NULL);
 
-INSERT INTO layer VALUES ('Espaces naturels', 'Espaces naturels', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO layer VALUES ('espaces_naturels', 'Espaces naturels', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO layer VALUES ('PROTECTEDAREAS.ZNIEFF1', 'ZNIEFF1', 'PROTECTEDAREAS.ZNIEFF1', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
 INSERT INTO layer VALUES ('PROTECTEDAREAS.ZNIEFF2', 'ZNIEFF2', 'PROTECTEDAREAS.ZNIEFF2', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
 INSERT INTO layer VALUES ('PROTECTEDAREAS.APB', 'Arrêtés de protection de biotope', 'PROTECTEDAREAS.APB', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
@@ -61,53 +68,53 @@ INSERT INTO layer VALUES ('PROTECTEDAREAS.ZPS', 'Sites Natura 2000 (Directive Oi
 INSERT INTO layer VALUES ('PROTECTEDAREAS.RAMSAR', 'Zones humides d''importance internat.', 'PROTECTEDAREAS.RAMSAR', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
 
 INSERT INTO layer VALUES ('Limites administratives', 'Limites administratives', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO layer VALUES ('regions', 'Régions', 'regions', 1, 100, 0, 0, 17471321, 4367830, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
-INSERT INTO layer VALUES ('departements', 'Départements', 'departements', 1, 100, 0, 0, 4367830, 272989, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
-INSERT INTO layer VALUES ('mailles', 'Mailles 10km', 'mailles', 1, 100, 0, 0, 1091958, NULL, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
-INSERT INTO layer VALUES ('communes', 'Communes', 'communes', 1, 100, 0, 0, 272989, NULL, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
+INSERT INTO layer VALUES ('regions', 'Régions', 'regions', 1, 100, 0, 0, 5, 7, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
+INSERT INTO layer VALUES ('departements', 'Départements', 'departements', 1, 100, 0, 0, 7, 11, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
+INSERT INTO layer VALUES ('mailles', 'Mailles 10km', 'mailles', 1, 100, 0, 0, 9, NULL, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
+INSERT INTO layer VALUES ('communes', 'Communes', 'communes', 1, 100, 0, 0, 11, NULL, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature');
 
 INSERT INTO layer VALUES ('results', 'Résultats de la recherche', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO layer VALUES ('result_departement', 'Départements', 'result_departement', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
 INSERT INTO layer VALUES ('result_maille', 'Mailles', 'result_maille', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
 INSERT INTO layer VALUES ('result_commune', 'Communes', 'result_commune', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
-INSERT INTO layer VALUES ('result_geometrie', 'Géométries précises', 'result_geometrie', 1, 100, 0, 1, 272989, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
+INSERT INTO layer VALUES ('result_geometrie', 'Géométries précises', 'result_geometrie', 1, 100, 0, 1, 11, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
 
 --
 -- Define the layers legend
 --
-INSERT INTO mapping.layer_tree VALUES (2, '-1', 0, 1, 0, 0, 1, 'results', 1, NULL);
-INSERT INTO mapping.layer_tree VALUES (24, '2', 1, 1, 0, 1, 0, 'result_departement', 24, 'results');
-INSERT INTO mapping.layer_tree VALUES (23, '2', 1, 0, 0, 1, 0, 'result_maille', 21, 'results');
-INSERT INTO mapping.layer_tree VALUES (22, '2', 1, 0, 0, 1, 0, 'result_commune', 23, 'results');
-INSERT INTO mapping.layer_tree VALUES (21, '2', 1, 0, 0, 1, 0, 'result_geometrie', 22, 'results');
+INSERT INTO mapping.layer_tree_node VALUES (2, '-1', 'Résultats', NULL, 0, 1, 0, 0, 1, 'results', 1, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (24, '2', 'résultats département', NULL, 1, 1, 0, 1, 0, 'result_departement', 24, 'results');
+INSERT INTO mapping.layer_tree_node VALUES (23, '2', 'résultats maille', NULL, 1, 0, 0, 1, 0, 'result_maille', 21, 'results');
+INSERT INTO mapping.layer_tree_node VALUES (22, '2', 'résultats commune', NULL, 1, 0, 0, 1, 0, 'result_commune', 23, 'results');
+INSERT INTO mapping.layer_tree_node VALUES (21, '2', 'résultats géométrie', NULL, 1, 0, 0, 1, 0, 'result_geometrie', 22, 'results');
 
-INSERT INTO mapping.layer_tree VALUES (3, '-1', 0, 1, 0, 0, 1, 'Limites administratives', 3, NULL);
-INSERT INTO mapping.layer_tree VALUES (31, '3', 1, 1, 0, 0, 0, 'regions', 34, NULL);
-INSERT INTO mapping.layer_tree VALUES (32, '3', 1, 1, 0, 0, 0, 'departements', 31, NULL);
-INSERT INTO mapping.layer_tree VALUES (34, '3', 1, 1, 0, 0, 0, 'mailles', 33, NULL);
-INSERT INTO mapping.layer_tree VALUES (33, '3', 1, 1, 0, 0, 0, 'communes', 32, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (3, '-1', 'Limites administratives', NULL, 0, 1, 0, 0, 1, 'Limites administratives', 3, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (31, '3', 'regions', NULL, 1, 1, 0, 0, 0, 'regions', 34, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (32, '3', 'departements', NULL, 1, 1, 0, 0, 0, 'departements', 31, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (34, '3', 'mailles', NULL, 1, 1, 0, 0, 0, 'mailles', 33, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (33, '3', 'communes', NULL, 1, 1, 0, 0, 0, 'communes', 32, NULL);
 
-INSERT INTO mapping.layer_tree VALUES (4, '-1', 0, 1, 0, 0, 1, 'espaces_naturels', 4, NULL);
-INSERT INTO mapping.layer_tree VALUES (41, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF1', 42, NULL);
-INSERT INTO mapping.layer_tree VALUES (42, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF2', 41, NULL);
-INSERT INTO mapping.layer_tree VALUES (43, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.APB', 43, NULL);
-INSERT INTO mapping.layer_tree VALUES (44, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CEN', 44, NULL);
-INSERT INTO mapping.layer_tree VALUES (45, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CDL', 45, NULL);
-INSERT INTO mapping.layer_tree VALUES (46, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PN', 46, NULL);
-INSERT INTO mapping.layer_tree VALUES (47, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNM', 47, NULL);
-INSERT INTO mapping.layer_tree VALUES (48, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNR', 48, NULL);
-INSERT INTO mapping.layer_tree VALUES (49, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RB', 49, NULL);
-INSERT INTO mapping.layer_tree VALUES (491, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.BIOS', 491, NULL);
-INSERT INTO mapping.layer_tree VALUES (492, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNC', 492, NULL);
-INSERT INTO mapping.layer_tree VALUES (493, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RN', 493, NULL);
-INSERT INTO mapping.layer_tree VALUES (494, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNCF', 494, NULL);
-INSERT INTO mapping.layer_tree VALUES (495, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.SIC', 495, NULL);
-INSERT INTO mapping.layer_tree VALUES (496, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZPS', 496, NULL);
-INSERT INTO mapping.layer_tree VALUES (497, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RAMSAR', 497, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (4, '-1', 'Espaces naturels', NULL, 0, 1, 0, 0, 1, 'espaces_naturels', 4, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (41, '4', 'ZNIEFF1', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF1', 42, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (42, '4', 'ZNIEFF2', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF2', 41, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (43, '4', 'APB', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.APB', 43, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (44, '4', 'CEN', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CEN', 44, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (45, '4', 'CDL', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CDL', 45, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (46, '4', 'PN', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PN', 46, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (47, '4', 'PNM', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNM', 47, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (48, '4', 'PNR', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNR', 48, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (49, '4', 'RB', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RB', 49, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (491, '4', 'BIOS', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.BIOS', 491, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (492, '4', 'RNC', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNC', 492, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (493, '4', 'RN', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RN', 493, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (494, '4', 'RNCF', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNCF', 494, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (495, '4', 'SIC', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.SIC', 495, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (496, '4', 'ZPS', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZPS', 496, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (497, '4', 'RAMSAR', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RAMSAR', 497, NULL);
 
-INSERT INTO mapping.layer_tree VALUES (5, '-1', 0, 1, 0, 0, 1, 'Fonds', 5, NULL);
-INSERT INTO mapping.layer_tree VALUES (51, '5', 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 52, NULL);
-INSERT INTO mapping.layer_tree VALUES (52, '5', 1, 0, 0, 0, 0, 'plan_ign', 51, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (5, '-1', 'Fonds', NULL, 0, 1, 0, 0, 1, 'Fonds', 5, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (51, '5', 'orthophotos', NULL, 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 52, NULL);
+INSERT INTO mapping.layer_tree_node VALUES (52, '5', 'plans IGN', NULL, 1, 0, 0, 0, 0, 'plan_ign', 51, NULL);
 
 --
 -- Forbid some layers for some profiles
