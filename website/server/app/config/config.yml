@@ -28,7 +28,7 @@ framework:
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/"
+        save_path:   "%kernel.root_dir%/sessions/"
     fragments:       ~
     http_method_override: true
     assets: ~
