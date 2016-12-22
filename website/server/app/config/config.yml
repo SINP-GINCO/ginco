@@ -2,11 +2,12 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@OGAMBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi:             ~
@@ -20,42 +21,157 @@ framework:
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
     templating:
-        engines: ['twig']
+        engines: ['twig','php']
     default_locale:  "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
-        # handler_id set to null will use default session handler from php.ini
-        handler_id:  ~
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/"
     fragments:       ~
     http_method_override: true
+    assets: ~
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    exception_controller: app.exception_controller:showAction
+    globals: 
+      configurationManager : '@ogam.configuration_manager'
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        []
+    filters:
+        lessphp:
+             file: "%kernel.root_dir%/../vendor/oyejorge/less.php/lessc.inc.php"
+             apply_to: "\\.less$"
+        cssrewrite: ~
+        yui_css:
+              jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
+        yui_js:
+              jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
+    assets: ~
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_mysql
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #     path:     "%database_path%"
+        default_connection: website
+        connections:
+            website:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+                mapping_types:
+                    geometry: string
+                    _text: string
+                schema_filter: /website\./i
+            mapping:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+                mapping_types:
+                    geometry: string
+                    _text: string
+                schema_filter: /mapping\./i
+            metadata:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+                mapping_types:
+                    geometry: string
+                    _text: string
+                schema_filter: /metadata\./i
+            raw_data:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+                mapping_types:
+                    geometry: string
+                    _text: string
+                schema_filter: /raw_data\./i
+            harmonized_data:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+                mapping_types:
+                    geometry: string
+                    _text: string
+                schema_filter: /harmonized_data\./i
+            result_location:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+                mapping_types:
+                    geometry: string
+                    _text: string
+                schema_filter: /mapping\./i
+                options:
+                    "PDO::ATTR_TIMEOUT": 480
 
     orm:
+        default_entity_manager: website
         auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        entity_managers:
+            website:
+                 connection: website
+                 mappings:
+                     OGAMBundle: 
+                        dir: Entity/Website
+            mapping:
+                 connection: mapping
+                 mappings:
+                    OGAMBundle:
+                        dir: Entity/Mapping
+            metadata:
+                 connection: metadata
+                 mappings:
+                    OGAMBundle:
+                     dir: Entity/Metadata
+            raw_data:
+                 connection: raw_data
+                 mappings:
+                     OGAMBundle:
+                        dir: Entity/RawData
+            harmonized_data:
+                 connection: harmonized_data
+                 mappings:
+                     OGAMBundle:
+                        dir: Entity/HarmonizedData
+            result_location:
+                 connection: result_location
+                 mappings:
+                    OGAMBundle:
+                        dir: Entity/Mapping
+
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -64,3 +180,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+ign_configurateur:
+    database_name: "%database_name%"
