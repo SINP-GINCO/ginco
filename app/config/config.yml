@@ -72,14 +72,6 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-         # Rajouté pour le support des géométries par Doctrine
-        dql:
-            numeric_functions:
-                st_contains:     CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STContains
-                st_distance:     CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STDistance
-                st_area:         CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STArea
-                st_length:       CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STLength
-                st_geomfromtext: CrEOF\Spatial\ORM\Query\AST\Functions\PostgreSql\STGeomFromText
 
 # Swiftmailer Configuration
 swiftmailer:
