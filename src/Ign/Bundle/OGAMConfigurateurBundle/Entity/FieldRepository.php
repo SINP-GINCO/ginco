@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
@@ -15,7 +15,7 @@ class FieldRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function deleteAllByTableFormat($format) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:Field f
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:Field f
 			WHERE f.format =:format');
 		$query->setParameter('format', $format);
 
@@ -31,7 +31,7 @@ class FieldRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function deleteAllByFileFormat($format) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:Field f
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:Field f
 			WHERE f.format =:format');
 		$query->setParameters(array(
 			'format' => $format
@@ -51,7 +51,7 @@ class FieldRepository extends EntityRepository {
 	public function deleteNonTechnicalByTableFormat($format) {
 		$qb = $this->_em->createQueryBuilder();
 		$query = $qb->select('f')
-			->from('IgnConfigurateurBundle:Field', 'f')
+			->from('IgnOGAMConfigurateurBundle:Field', 'f')
 			->innerJoin('f.data', 'd')
 			->where('f.format = :format')
 			->andwhere("d.name NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')")
@@ -81,7 +81,7 @@ class FieldRepository extends EntityRepository {
 	public function deleteForeignKeysByFormat($format) {
 		$qb = $this->_em->createQueryBuilder();
 		$query = $qb->select('f')
-			->from('IgnConfigurateurBundle:Field', 'f')
+			->from('IgnOGAMConfigurateurBundle:Field', 'f')
 			->innerJoin('f.data', 'd')
 			->where('f.format = :format')
 			->andwhere('d.name LIKE :fkCondition')
@@ -115,18 +115,18 @@ class FieldRepository extends EntityRepository {
 		$qb2 = $this->_em->createQueryBuilder();
 
 		$query = $qb->select('f')
-			->from('IgnConfigurateurBundle:Field', 'f')
+			->from('IgnOGAMConfigurateurBundle:Field', 'f')
 			->innerJoin('f.data', 'd')
 			->where('f.format = :format')
 			->andwhere("d.name NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')")
 			->andwhere('d.name NOT LIKE :fkCondition')
 			->andwhere($qb->expr()
 			->notIn('f.data', $qb2->select('dd.name')
-			->from('IgnConfigurateurBundle:Field', 'fi')
+			->from('IgnOGAMConfigurateurBundle:Field', 'fi')
 			->innerJoin('f.data', 'dd')
-			->join('IgnConfigurateurBundle:ModelTables', 'mt', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->join('IgnOGAMConfigurateurBundle:ModelTables', 'mt', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
 			->eq(' mt.table', 'fi.format'))
-			->join('IgnConfigurateurBundle:Model', 'm', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->join('IgnOGAMConfigurateurBundle:Model', 'm', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
 			->eq(' m.id', 'mt.model'))
 			->where('m.ref = true')
 			->getDQL()))

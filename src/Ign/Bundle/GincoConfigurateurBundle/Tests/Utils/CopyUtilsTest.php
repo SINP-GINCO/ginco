@@ -2,7 +2,7 @@
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Utils;
 
 use \Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\GincoConfigurateurBundle\Utils\CopyUtils;
 
 /**

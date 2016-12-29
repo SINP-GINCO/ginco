@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * TableField
  *
  * @ORM\Table(name="metadata_work.field")
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\FieldRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldRepository")
  */
 class Field {
 
@@ -94,7 +94,7 @@ class Field {
 	/**
 	 * Get format
 	 *
-	 * @return \Ign\Bundle\ConfigurateurBundle\Entity\Format
+	 * @return \Ign\Bundle\OGAMConfigurateurBundle\Entity\Format
 	 */
 	public function getFormat() {
 		return $this->format;

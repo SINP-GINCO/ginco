@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Client as BaseClient;
 

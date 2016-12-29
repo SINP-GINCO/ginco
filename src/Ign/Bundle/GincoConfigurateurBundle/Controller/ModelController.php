@@ -3,7 +3,7 @@ namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Ign\Bundle\ConfigurateurBundle\Controller\ModelController as ModelControllerBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController as ModelControllerBase;
 
 class ModelController extends ModelControllerBase {
 

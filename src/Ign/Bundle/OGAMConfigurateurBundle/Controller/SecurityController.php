@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,13 +43,13 @@ class SecurityController extends Controller {
 					$login = $obj->login;
 				}
 				$em = $this->getDoctrine();
-				$repo = $em->getRepository("IgnConfigurateurBundle:User");
+				$repo = $em->getRepository("IgnOGAMConfigurateurBundle:User");
 				$user = $repo->find($login);
 				if (!$user) {
 					throw new UsernameNotFoundException("User not found");
 				} else {
 					// Get user permissions (only a user with a role containing the CONFIGURE_METAMODEL permission is authorized)
-					$roles = $em->getRepository("IgnConfigurateurBundle:Role")->findPermissionsByUser($user);
+					$roles = $em->getRepository("IgnOGAMConfigurateurBundle:Role")->findPermissionsByUser($user);
 					$token = new PreAuthenticatedToken($user, null, "main", $roles);
 					// Login the user via use of token
 					$this->get("security.token_storage")->setToken($token);

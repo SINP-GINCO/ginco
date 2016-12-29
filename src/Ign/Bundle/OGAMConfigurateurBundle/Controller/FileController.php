@@ -1,21 +1,21 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileField;
-use Ign\Bundle\ConfigurateurBundle\Entity\Field;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\FileFormatType;
-use Ign\Bundle\ConfigurateurBundle\Form\FileFieldAutoType;
-use Ign\Bundle\ConfigurateurBundle\Form\DatasetImportType;
-use Ign\Bundle\ConfigurateurBundle\Form\FieldMappingAutoType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingAutoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,7 +74,7 @@ class FileController extends Controller {
 		}
 
 		$files = $dataset->getFiles();
-		return $this->render('IgnConfigurateurBundle:FileFormat:new.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:FileFormat:new.html.twig', array(
 			'fileForm' => $formFile->createView(),
 			'dataset' => $dataset,
 		));
@@ -86,8 +86,8 @@ class FileController extends Controller {
 	 */
 	public function editAction($datasetId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager();
-		$file = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
 		if (!$file) {
 			$errMsg = "Aucun FICHIER ne correspond à : " . $format;
@@ -114,7 +114,7 @@ class FileController extends Controller {
 			}
 		}
 
-		return $this->render('IgnConfigurateurBundle:FileFormat:edit.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:FileFormat:edit.html.twig', array(
 			'fileForm' => $form->createView(),
 			'file' => $file,
 			'dataset' => $dataset,
@@ -127,24 +127,24 @@ class FileController extends Controller {
 	 */
 	public function manageFieldsAction($datasetId, $format) {
 		$em = $this->getDoctrine()->getManager();
-		$file = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 		if (!$file) {
 			$errMsg = "Aucun FICHIER ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
 
 		// Get dictionary
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 		$allFields = $dataRepository->findAllFields();
 		// Get File Fields
-		$fileFieldRepository = $em->getRepository('IgnConfigurateurBundle:FileField');
+		$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 		$fileFields = $fileFieldRepository->findFieldsByFileFormat($format);
 
 		// "Auto Add Fields" Form
 		$autoAddFieldsForm = $this->autoAddFieldsForm($dataset, $file);
 
-		return $this->render('IgnConfigurateurBundle:FileFormat:fields.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:FileFormat:fields.html.twig', array(
 			'file' => $file,
 			'dataset' => $dataset,
 			'allFields' => $allFields,
@@ -186,12 +186,12 @@ class FileController extends Controller {
 	public function deleteAction($datasetId, $fileFormat) {
 		$em = $this->getDoctrine()->getManager();
 
-		$formatRepository = $em->getRepository('IgnConfigurateurBundle:Format');
-		$fileFormatRepository = $em->getRepository('IgnConfigurateurBundle:FileFormat');
-		$datasetRepository = $em->getRepository('IgnConfigurateurBundle:Dataset');
-		$fileFieldRepository = $em->getRepository('IgnConfigurateurBundle:FileField');
-		$fieldRepository = $em->getRepository('IgnConfigurateurBundle:Field');
-		$mappingRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
+		$formatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Format');
+		$fileFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat');
+		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
+		$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
+		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
+		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
 
 		$dataset = $datasetRepository->find($datasetId);
 		$format = $formatRepository->find($fileFormat);
@@ -245,8 +245,8 @@ class FileController extends Controller {
 	public function viewAction($datasetId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$file = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
 		if (!$file) {
 			$errMsg = "Aucun FICHIER ne correspond à : " . $format;
@@ -254,15 +254,15 @@ class FileController extends Controller {
 		}
 
 		// Get File Fields
-		$fileFieldRepository = $em->getRepository('IgnConfigurateurBundle:FileField');
+		$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 		$fileFields = $fileFieldRepository->findFieldsByFileFormat($file->getFormat());
 
-		$fieldMappings = $em->getRepository('IgnConfigurateurBundle:FieldMapping')->findMappings($format, 'FILE');
+		$fieldMappings = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findMappings($format, 'FILE');
 		// Rewrite mappings on "OGAM_ID_..." (keys)
 		foreach ($fieldMappings as $index => $fieldMapping) {
 			if (strpos($fieldMapping['dstData'], TableFormat::PK_PREFIX )=== 0) {
 				$format = substr($fieldMapping['dstData'], strlen(TableFormat::PK_PREFIX));
-				$tableFormat = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
+				$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 				$tableLabel = $tableFormat->getLabel();
 				// Primary key or foreign key ?
 				if ($format == $fieldMapping['dstFormat'])
@@ -272,7 +272,7 @@ class FileController extends Controller {
 			}
 		}
 
-		return $this->render('IgnConfigurateurBundle:FileFormat:view.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:FileFormat:view.html.twig', array(
 			'file' => $file,
 			'fileFields' => $fileFields,
 			'datasetId' => $datasetId,
@@ -295,7 +295,7 @@ class FileController extends Controller {
 
 		$em = $this->getDoctrine()->getManager();
 
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
 
 		// Create Auto-Add-Fieldform
@@ -311,8 +311,8 @@ class FileController extends Controller {
 
 		if ($autoAddFieldsForm->isValid()) {
 			$tableFormat = $autoAddFieldsForm->get('table_format')->getData()->getFormat();
-			$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($tableFormat);
-			$tableFields = $em->getRepository('IgnConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
+			$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat);
+			$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
 
 			// Get mandatory fields in table fields
 			$isMandatory = function($field) {
@@ -321,7 +321,7 @@ class FileController extends Controller {
 			$mandatoryFields = array_filter($tableFields, $isMandatory);
 
 
-			$fileFields = $em->getRepository('IgnConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
+			$fileFields = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
 
 			// Add only mandatory fields ?
 			$mandatoryOnly = $autoAddFieldsForm->get('only_mandatory')->getData();
@@ -331,8 +331,8 @@ class FileController extends Controller {
 
 			// Generate a report
 			$report = array(
-					'fileLabel' => $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($fileFormat)->getLabel(),
-					'tableLabel' => $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($tableFormat)->getLabel(),
+					'fileLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($fileFormat)->getLabel(),
+					'tableLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat)->getLabel(),
 					'mandatoryOnly' => $mandatoryOnly,
 
 			);
@@ -351,7 +351,7 @@ class FileController extends Controller {
 
 			$fieldsToAddLabels = array();
 			foreach ( $fieldsToAdd as $data ) {
-				$fieldsToAddLabels[] = $em->getRepository('IgnConfigurateurBundle:Data')->find($data)->getLabel();
+				$fieldsToAddLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($data)->getLabel();
 			}
 
 			$report = array_merge($report, array(
@@ -361,7 +361,7 @@ class FileController extends Controller {
 			));
 
 			// Add them ; get redirection in a variable
-			$redirectResponse = $this->forward('IgnConfigurateurBundle:FileField:addFields', array(
+			$redirectResponse = $this->forward('IgnOGAMConfigurateurBundle:FileField:addFields', array(
 					'datasetId' => $datasetId,
 					'format' => $fileFormat,
 					'addedFields' => implode(',', $fieldsToAdd),
@@ -371,7 +371,7 @@ class FileController extends Controller {
 			$mFields = array_column($mandatoryFields, 'fieldName');
 			$mFields = array_intersect($fieldsToAdd, $mFields);
 			foreach ($mFields as $mfield) {
-				$fileField = $em->getRepository('IgnConfigurateurBundle:FileField')->findOneBy(
+				$fileField = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(
 						array('data' => $mfield, 'fileFormat' => $fileFormat)
 				);
 				$fileField->setIsMandatory('1');

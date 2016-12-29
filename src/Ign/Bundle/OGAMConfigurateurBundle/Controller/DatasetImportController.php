@@ -1,18 +1,18 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableSchema;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Form\DatasetImportUploadType;
-use Ign\Bundle\ConfigurateurBundle\Form\DatasetImportType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportUploadType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportType;
 
 class DatasetImportController extends Controller {
 
@@ -22,7 +22,7 @@ class DatasetImportController extends Controller {
 	public function indexAction($datasets = null) {
 		// get import models list
 		$em = $this->getDoctrine()->getManager();
-		$repository = $em->getRepository('IgnConfigurateurBundle:Dataset');
+		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$datasets = $repository->findByTypeAndOrderedByName('IMPORT');
 
 		$mpService = $this->get('app.importmodelPublication');
@@ -47,7 +47,7 @@ class DatasetImportController extends Controller {
 		// form for file upload
 		$uploadForm = $this->createForm(DatasetImportUploadType::class);
 
-		return $this->render('IgnConfigurateurBundle:DatasetImport:index.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:DatasetImport:index.html.twig', array(
 			'datasets' => $datasets,
 			'pubStates' => $importModelsPubState,
 			'publishable' => $importModelsPublishable,
@@ -86,7 +86,7 @@ class DatasetImportController extends Controller {
 			));
 		}
 
-		return $this->render('IgnConfigurateurBundle:DatasetImport:new.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:DatasetImport:new.html.twig', array(
 			'form' => $form->createView()
 		));
 	}
@@ -97,7 +97,7 @@ class DatasetImportController extends Controller {
 	public function editAction($id, Request $request) {
 		$em = $this->getDoctrine()->getManager();
 
-		$datasetRepository = $em->getRepository('IgnConfigurateurBundle:Dataset');
+		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $datasetRepository->find($id);
 		if (!$dataset) {
 			throw $this->createNotFoundException('Aucun modèle d\'import trouvé pour cet id : ' . $id);
@@ -127,8 +127,8 @@ class DatasetImportController extends Controller {
 			if ($initialTargetDataModel != $finalTargetDataModel) {
 				// Delete the mappings of this model
 				$mappingsRemoved = false;
-				$fmRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
-				$ffRepository = $em->getRepository("IgnConfigurateurBundle:FileField");
+				$fmRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+				$ffRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FileField");
 
 				foreach ($dataset->getFiles() as $file) {
 					// Check if there are fields in the file
@@ -153,7 +153,7 @@ class DatasetImportController extends Controller {
 
 		$files = $dataset->getFiles();
 
-		return $this->render('IgnConfigurateurBundle:DatasetImport:edit.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:DatasetImport:edit.html.twig', array(
 			'datasetForm' => $form->createView(),
 			'datasetLabel' => $datasetLabel,
 			'dataset' => $dataset,
@@ -172,7 +172,7 @@ class DatasetImportController extends Controller {
 	 */
 	public function deleteAction($id) {
 		$em = $this->getDoctrine()->getManager();
-		$repository = $em->getRepository('IgnConfigurateurBundle:Dataset');
+		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $repository->find($id);
 
 		// Check if import model is published
@@ -185,7 +185,7 @@ class DatasetImportController extends Controller {
 			$datasetName = $dataset->getLabel();
 
 			foreach ($dataset->getFiles() as $file) {
-				$this->forward('IgnConfigurateurBundle:File:delete', array(
+				$this->forward('IgnOGAMConfigurateurBundle:File:delete', array(
 					'datasetId' => $id,
 					'fileFormat' => $file->getFormat()
 				));
@@ -216,7 +216,7 @@ class DatasetImportController extends Controller {
 	public function publishAction($importModelId) {
 		$importModel = $this->getDoctrine()
 			->getManager()
-			->getRepository('IgnConfigurateurBundle:Dataset')
+			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 			->find($importModelId);
 		if ($importModel) {
 			$mpService = $this->get('app.importmodelPublication');
@@ -281,7 +281,7 @@ class DatasetImportController extends Controller {
 		// Get the model to check if it exists
 		$importModel = $this->getDoctrine()
 			->getManager()
-			->getRepository('IgnConfigurateurBundle:Dataset')
+			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 			->find($importModelId);
 
 		if ($importModel) {
@@ -336,7 +336,7 @@ class DatasetImportController extends Controller {
 	public function viewAction($id) {
 		$em = $this->getDoctrine()->getManager();
 
-		$datasetRepository = $em->getRepository('IgnConfigurateurBundle:Dataset');
+		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $datasetRepository->find($id);
 		if (!$dataset) {
 			throw $this->createNotFoundException('Aucun modèle d\'import trouvé pour cet id : ' . $id);
@@ -345,7 +345,7 @@ class DatasetImportController extends Controller {
 		$datasetLabel = $dataset->getLabel();
 		$files = $dataset->getFiles();
 
-		return $this->render('IgnConfigurateurBundle:DatasetImport:view.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:DatasetImport:view.html.twig', array(
 			'datasetLabel' => $datasetLabel,
 			'dataset' => $dataset,
 			'files' => $files,
@@ -360,7 +360,7 @@ class DatasetImportController extends Controller {
 	public function updateFileOrderAction($id, $formats, $orders = null) {
 		$em = $this->getDoctrine()->getManager();
 
-		$datasetRepository = $em->getRepository('IgnConfigurateurBundle:Dataset');
+		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $datasetRepository->find($id);
 		if (!$dataset) {
 			throw $this->createNotFoundException('Aucun modèle d\'import trouvé pour cet id : ' . $id);
@@ -373,7 +373,7 @@ class DatasetImportController extends Controller {
 			$format = $data[$i];
 			$order = $orders[$i];
 
-			$file = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
+			$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 
 			try {
 				if ($file !== null) {

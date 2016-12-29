@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -19,7 +19,7 @@ abstract class ConfiguratorTest extends WebTestCase {
 
 	/**
 	 *
-	 * @var \Ign\Bundle\ConfigurateurBundle\Tests\Client
+	 * @var \Ign\Bundle\OGAMConfigurateurBundle\Tests\Client
 	 */
 	protected $client;
 

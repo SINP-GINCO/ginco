@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class DataControllerTest extends ConfiguratorTest {
 
@@ -27,7 +27,7 @@ class DataControllerTest extends ConfiguratorTest {
 
 		$this->em = $this->container->get('doctrine')->getManager();
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:Data');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Data');
 	}
 
 	/**

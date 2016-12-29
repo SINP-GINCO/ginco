@@ -1,22 +1,22 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableSchema;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableField;
-use Ign\Bundle\ConfigurateurBundle\Entity\Field;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableTree;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\TableFormatType;
-use Ign\Bundle\ConfigurateurBundle\Form\TableUpdateType;
-use Ign\Bundle\ConfigurateurBundle\Form\TableUpdateFieldsType;
-use Ign\Bundle\ConfigurateurBundle\Form\ModelType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableTree;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateFieldsType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Assetic\Exception\Exception;
@@ -56,7 +56,7 @@ class TableController extends Controller {
 
 		// Custom validator to check unicity of tableName in the model
 		// is impossible as tableName is set after form is valid.
-		$tableFormatRepository = $em->getRepository('IgnConfigurateurBundle:TableFormat');
+		$tableFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
 		$newTableName = $model->getId() . '_' . $table->getLabel();
 		$existingTable = $tableFormatRepository->findByTableName($newTableName);
 		if ($existingTable) {
@@ -95,20 +95,20 @@ class TableController extends Controller {
 			if ($parent == '*') {
 				$tableTree->setChildTable($table->getFormat())
 					->setParentTable('*')
-					->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')
+					->setSchemaCode($em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')
 					->find($table->getSchemaCode()));
 				$em->persist($tableTree);
 			} else {
 				$parent = $tableFormatRepository->find($parent);
 				$tableTree->setChildTable($table->getFormat())
 					->setParentTable($parent->getFormat())
-					->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')
+					->setSchemaCode($em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')
 					->find($table->getSchemaCode()))
 					->setJoinKey($parent->getPrimaryKey());
 				$em->persist($tableTree);
 
 				// Add foreign key (parent table primary key)
-				$this->forward('IgnConfigurateurBundle:TableField:addFields', array(
+				$this->forward('IgnOGAMConfigurateurBundle:TableField:addFields', array(
 					'modelId' => $model->getId(),
 					'format' => $format,
 					'fields' => $parent->getPKName()
@@ -117,7 +117,7 @@ class TableController extends Controller {
 
 			// Create a new DATA entry for primary key
 			$data = new Data();
-			$textValue = $em->getRepository('IgnConfigurateurBundle:Unit')->find('IDString');
+			$textValue = $em->getRepository('IgnOGAMConfigurateurBundle:Unit')->find('IDString');
 			$label = $this->get('Translator')->trans('data.primary_key', array(
 				'%tableLabel%' => $table->getLabel()
 			));
@@ -130,7 +130,7 @@ class TableController extends Controller {
 
 			// add technical fields to the new table
 			$fields = "PROVIDER_ID,SUBMISSION_ID," . $table->getPkName();
-			$this->forward('IgnConfigurateurBundle:TableField:addFields', array(
+			$this->forward('IgnOGAMConfigurateurBundle:TableField:addFields', array(
 				'modelId' => $model->getId(),
 				'format' => $format,
 				'fields' => $fields
@@ -144,7 +144,7 @@ class TableController extends Controller {
 			));
 		}
 
-		return $this->render('IgnConfigurateurBundle:TableFormat:new.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:TableFormat:new.html.twig', array(
 			'tableForm' => $formTable->createView(),
 			'model' => $model
 		));
@@ -156,9 +156,9 @@ class TableController extends Controller {
 	public function editAction($modelId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager();
 
-		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
-		$model = $em->getRepository('IgnConfigurateurBundle:Model')->find($modelId);
-		$tableTree = $em->getRepository('IgnConfigurateurBundle:TableTree')->findOneByChildTable($table->getFormat());
+		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
+		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
+		$tableTree = $em->getRepository('IgnOGAMConfigurateurBundle:TableTree')->findOneByChildTable($table->getFormat());
 		if ($tableTree == null) {
 			$tableTree = new TableTree();
 		}
@@ -183,7 +183,7 @@ class TableController extends Controller {
 		$form->handleRequest($request);
 
 		// Check unicity of tableName in the model
-		$tableFormatRepository = $em->getRepository('IgnConfigurateurBundle:TableFormat');
+		$tableFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
 		$newTableName = $modelId . '_' . $table->getLabel();
 		$existingTable = $tableFormatRepository->findByTableName($newTableName);
 
@@ -200,7 +200,7 @@ class TableController extends Controller {
 			$table->setTableName($newTableName);
 
 			// Change PK label with new table name
-			$data = $em->getRepository('IgnConfigurateurBundle:Data')->find($table->getPKName());
+			$data = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($table->getPKName());
 			if ($data) {
 				$label = $this->get('Translator')->trans('data.primary_key', array(
 					'%tableLabel%' => $table->getLabel()
@@ -213,8 +213,8 @@ class TableController extends Controller {
 			// Save relation between parent and child table in table_tree
 			if (empty($parent)) {
 				// Remove all references to possible former relation with former parent table, except in table data
-				$em->getRepository('IgnConfigurateurBundle:TableField')->deleteForeignKeysByTableFormat($format);
-				$em->getRepository('IgnConfigurateurBundle:Field')->deleteForeignKeysByFormat($format);
+				$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->deleteForeignKeysByTableFormat($format);
+				$em->getRepository('IgnOGAMConfigurateurBundle:Field')->deleteForeignKeysByFormat($format);
 				$em->flush();
 
 				// Remove entry from table_tree
@@ -223,21 +223,21 @@ class TableController extends Controller {
 					$em->flush();
 				}
 			} else {
-				$parent = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($parent);
+				$parent = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($parent);
 				$tableTree->setChildTable($table->getFormat())
 					->setParentTable($parent->getFormat())
-					->setSchemaCode($em->getRepository('IgnConfigurateurBundle:TableSchema')
+					->setSchemaCode($em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')
 					->find($table->getSchemaCode()))
 					->setJoinKey($parent->getPrimaryKey());
 				$em->persist($tableTree);
 
 				// Remove all references to possible former relation with former parent table, except in table data
-				$em->getRepository('IgnConfigurateurBundle:TableField')->deleteForeignKeysByTableFormat($format);
-				$em->getRepository('IgnConfigurateurBundle:Field')->deleteForeignKeysByFormat($format);
+				$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->deleteForeignKeysByTableFormat($format);
+				$em->getRepository('IgnOGAMConfigurateurBundle:Field')->deleteForeignKeysByFormat($format);
 				$em->flush();
 
 				// Add foreign key (parent table primary key)
-				$this->forward('IgnConfigurateurBundle:TableField:addFields', array(
+				$this->forward('IgnOGAMConfigurateurBundle:TableField:addFields', array(
 					'modelId' => $modelId,
 					'format' => $format,
 					'fields' => $parent->getPKName()
@@ -263,7 +263,7 @@ class TableController extends Controller {
 			));
 		}
 
-		return $this->render('IgnConfigurateurBundle:TableFormat:edit.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:TableFormat:edit.html.twig', array(
 			'tableForm' => $form->createView(),
 			'table' => $table,
 			'model' => $model
@@ -276,23 +276,23 @@ class TableController extends Controller {
 	public function manageFieldsAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
-		$model = $em->getRepository('IgnConfigurateurBundle:Model')->find($modelId);
+		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
+		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
 
 		if (!$table) {
 			$errMsg = "Aucune TABLE ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
 
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 		// Get data dictionnary
 		$allFields = $dataRepository->findAllFields();
 		$fieldsForm = $this->createForm(TableUpdateFieldsType::class, null);
 		// Get table fields
-		$tableFieldRepository = $em->getRepository('IgnConfigurateurBundle:TableField');
+		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 
-		return $this->render('IgnConfigurateurBundle:TableFormat:fields.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:TableFormat:fields.html.twig', array(
 			'table' => $table,
 			'allFields' => $allFields,
 			'tableFields' => $tableFields,
@@ -313,15 +313,15 @@ class TableController extends Controller {
 	public function deleteAction($model_id, $id, $fromDeleteModel = false) {
 		$em = $this->getDoctrine()->getManager();
 
-		$formatRepository = $em->getRepository('IgnConfigurateurBundle:Format');
-		$tableFormatRepository = $em->getRepository('IgnConfigurateurBundle:TableFormat');
-		$modelRepository = $em->getRepository('IgnConfigurateurBundle:Model');
-		$tableFieldRepository = $em->getRepository('IgnConfigurateurBundle:TableField');
-		$fieldRepository = $em->getRepository('IgnConfigurateurBundle:Field');
-		$tableTreeRepository = $em->getRepository('IgnConfigurateurBundle:TableTree');
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+		$formatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Format');
+		$tableFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
+		$modelRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
+		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
+		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
+		$tableTreeRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableTree');
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
-		$mappingRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
+		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
 		$mappingRepository->removeAllByTableFormat($id);
 		$model = $modelRepository->find($model_id);
 		$format = $formatRepository->find($id);
@@ -369,15 +369,15 @@ class TableController extends Controller {
 	public function viewAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
+		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 		if (!$table) {
 			$errMsg = "Aucune TABLE ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
 
-		$model = $em->getRepository('IgnConfigurateurBundle:Model')->find($modelId);
+		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
 
-		$tableTree = $em->getRepository('IgnConfigurateurBundle:TableTree')->findOneByChildTable($table->getFormat());
+		$tableTree = $em->getRepository('IgnOGAMConfigurateurBundle:TableTree')->findOneByChildTable($table->getFormat());
 		if ($tableTree == null) {
 			$tableTree = new TableTree();
 			$parentTableName = null;
@@ -387,16 +387,16 @@ class TableController extends Controller {
 			if ($parentTableFormat == '*') {
 				$parentTableName = null;
 			} else {
-				$parentTable = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($parentTableFormat);
+				$parentTable = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($parentTableFormat);
 				$parentTableName = $parentTable->getLabel();
 			}
 		}
 
 		// Get table fields
-		$tableFieldRepository = $em->getRepository('IgnConfigurateurBundle:TableField');
+		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 
-		return $this->render('IgnConfigurateurBundle:TableFormat:view.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:TableFormat:view.html.twig', array(
 			'parentTable' => $parentTableName,
 			'table' => $table,
 			'tableFields' => $tableFields,

@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -254,10 +254,10 @@ class TableFormat {
 	/**
 	 * Add tableFields
 	 *
-	 * @param \Ign\Bundle\ConfigurateurBundle\Entity\TableField $tableFields
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField $tableFields
 	 * @return TableFormat
 	 */
-	public function addTableField(\Ign\Bundle\ConfigurateurBundle\Entity\TableField $tableFields) {
+	public function addTableField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField $tableFields) {
 		$this->tableFields[] = $tableFields;
 
 		return $this;
@@ -266,9 +266,9 @@ class TableFormat {
 	/**
 	 * Remove tableFields
 	 *
-	 * @param \Ign\Bundle\ConfigurateurBundle\Entity\TableField $tableFields
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField $tableFields
 	 */
-	public function removeTableField(\Ign\Bundle\ConfigurateurBundle\Entity\TableField $tableFields) {
+	public function removeTableField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField $tableFields) {
 		$this->tableFields->removeElement($tableFields);
 	}
 

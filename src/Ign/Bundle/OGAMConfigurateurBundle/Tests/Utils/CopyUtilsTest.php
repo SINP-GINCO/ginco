@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils;
 
 /**
  * Test class for copy utils class (see Story #36).
@@ -60,7 +60,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::isModelPresentInWorkSchema
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::isModelPresentInWorkSchema
 	 */
 	public function testIsModelPresentInWorkSchema() {
 		$exists = $this->copyUtils->isModelPresentInWorkSchema($this->modelId);
@@ -70,7 +70,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyData
 	 */
 	public function testCopyData() {
 		// Test that before calling, the 'my_special_data' is not present
@@ -90,7 +90,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyFormat
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyFormat
 	 */
 	public function testCopyFormat() {
 		// Test that before calling, the format table_father is not present
@@ -110,7 +110,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyTableFormat
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyTableFormat
 	 * @depends testCopyFormat
 	 */
 	public function testCopyTableFormat() {
@@ -131,7 +131,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyTableTree
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyTableTree
 	 * @depends testCopyTableFormat
 	 */
 	public function testCopyTableTree() {
@@ -151,7 +151,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyField
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyField
 	 * @depends testCopyData
 	 * @depends testCopyFormat
 	 */
@@ -173,7 +173,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyTableField
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyTableField
 	 * @depends testCopyField
 	 * @depends testCopyFormat
 	 */
@@ -195,7 +195,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyModel
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyModel
 	 * @depends testCopyField
 	 * @depends testCopyFormat
 	 */
@@ -217,7 +217,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::copyModelTables
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::copyModelTables
 	 * @depends testCopyModel
 	 * @depends testCopyFormat
 	 */
@@ -238,7 +238,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::createQueryDataset
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::createQueryDataset
 	 * @depends testCopyModel
 	 */
 	public function testCreateQueryDataset() {
@@ -261,7 +261,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils::createFormFields
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils::createFormFields
 	 * @depends testCreateQueryDataset
 	 */
 	public function testCreateFormFields() {

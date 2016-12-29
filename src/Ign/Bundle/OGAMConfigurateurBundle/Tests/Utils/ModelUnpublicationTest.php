@@ -1,10 +1,10 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication;
-use Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication;
-use Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils;
 
 /**
  * Test class for model unpublication service (see Story #202).
@@ -67,7 +67,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteFormFields
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteFormFields
 	 */
 	public function testDeleteFormFields() {
 		// First, gets the query dataset id linked to the model
@@ -131,7 +131,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteQueryDataset
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteQueryDataset
 	 */
 	public function testDeleteQueryDataset() {
 		// Test that before calling, a dataset of type QUERY exists, is linked to the model,
@@ -155,7 +155,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::modelHasData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::modelHasData
 	 */
 	public function testDeleteModelTablesData() {
 		// Test that before calling, the model_table for model_to_publish and table_son are present
@@ -182,7 +182,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteTableTreeData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteTableTreeData
 	 */
 	public function testDeleteTableTreeData() {
 		// Test that before calling, the table_tree for child table_son is present
@@ -202,7 +202,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteTableFieldData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteTableFieldData
 	 */
 	public function testDeleteTableFieldData() {
 		// Test that before calling, the table_field 'my_special_data' is present
@@ -234,7 +234,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 
 	/**
 	 * @depends testDeleteTableFieldData
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteFieldData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteFieldData
 	 */
 	public function testDeleteFieldData() {
 		// Test that before calling, the field for 'my_special_data' is present
@@ -266,7 +266,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 
 	/**
 	 * @depends testDeleteFieldData
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteDataData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteDataData
 	 */
 	public function testDeleteDataData() {
 		// Test that before calling, the 'my_special_data' is present
@@ -304,7 +304,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 
 	/**
 	 * @depends testDeleteModelTablesData
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteTableFormatData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteTableFormatData
 	 */
 	public function testDeleteTableFormatData() {
 		// Test that before calling, the table_format table_father is present
@@ -333,7 +333,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 
 	/**
 	 * @depends testDeleteTableFormatData
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteFormatData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteFormatData
 	 */
 	public function testDeleteFormatData() {
 		// Test that before calling, the table_format table_father is present
@@ -364,7 +364,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	 * After this test is passed, we reemove the model_datasets occurences so that testDeleteModelData
 	 * can be executed in real conditions (before unpublishing a data model, all other models
 	 * related to it are unpublished : therefore, there should be no data in model_datasets table.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::getImportModelsFromDataModel
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::getImportModelsFromDataModel
 	 */
 	public function testGetImportModelsFromDataModel() {
 		$importModels = $this->mup->getImportModelsFromDataModel('model_2');
@@ -381,7 +381,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::unpublishModel
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::unpublishModel
 	 */
 	public function testUnpublish() {
 		// Try to unpublish a model that does not exist
@@ -396,7 +396,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::isModelPresentInProdSchema
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::isModelPresentInProdSchema
 	 */
 	public function testIsModelPresentInProdSchema() {
 		$exists = $this->mup->isModelPresentInProdSchema($this->modelId);
@@ -406,7 +406,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::modelHasData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::modelHasData
 	 */
 	public function testModelHasData() {
 		// Check if every single table generated is empty for an empty model
@@ -422,7 +422,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	 * @depends testIsModelPresentInProdSchema
 	 * @depends testModelHasData
 	 * @depends testDeleteModelTablesData
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::deleteModelData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::deleteModelData
 	 */
 	public function testDeleteModelData() {
 		// Test that before calling, the model model_to_publish is not present
@@ -445,7 +445,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::dropTables
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::dropTables
 	 */
 	public function testDropTables() {
 		// Retrieve tables from model
@@ -485,7 +485,7 @@ class ModelUnpublicationTest extends ConfiguratorTest {
 
 /**
  * @depends testDropTables
- * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::dropSequences
+ * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::dropSequences
  */
 	/*
 	 * public function testDropSequences() {

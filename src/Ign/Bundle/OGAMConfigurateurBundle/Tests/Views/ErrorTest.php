@@ -1,7 +1,7 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Views;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Views;
 
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class ErrorTest extends ConfiguratorTest {
 
@@ -20,7 +20,7 @@ class ErrorTest extends ConfiguratorTest {
 
 		$this->em = $this->container->get('doctrine')->getManager();
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:Data');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Data');
 	}
 
 	/**

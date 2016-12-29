@@ -1,17 +1,17 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\DataType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DataType;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**

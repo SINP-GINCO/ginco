@@ -1,11 +1,11 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
 
 class FileControllerTest extends ConfiguratorTest {
 
@@ -27,7 +27,7 @@ class FileControllerTest extends ConfiguratorTest {
 
 		$this->em = $this->container->get('doctrine')->getManager();
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:FileFormat');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileFormat');
 	}
 
 	public function testNew() {
@@ -109,7 +109,7 @@ class FileControllerTest extends ConfiguratorTest {
 		$this->assertTrue($this->client->getResponse()
 			->isSuccessful());
 
-		$fields = $this->em->getRepository('IgnConfigurateurBundle:FileField')->findFieldsByFileFormat('file_to_delete_complex');
+		$fields = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat('file_to_delete_complex');
 		$this->assertEmpty($fields);
 	}
 
@@ -126,7 +126,7 @@ class FileControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\FileController::viewAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\FileController::viewAction
 	 */
 	public function testViewAction() {
 		$crawler = $this->client->request('GET', '/datasetsimport/import_model_view/files/file_view/view/');
@@ -144,7 +144,7 @@ class FileControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\FileController::autoAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\FileController::autoAction
 	 */
 	public function testAutoAddFieldsWithoutSelectedTable() {
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/file_auto/fields/');
@@ -176,7 +176,7 @@ class FileControllerTest extends ConfiguratorTest {
 	 * - when we add only mandatory fields, adding of 2 fields : cdnom and cdref
 	 * - when we add the rest of the fields, 1 field is added : altitudemax ; altuitudemin is left untouched and is still mandatory
 	 *
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\FileController::autoAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\FileController::autoAction
 	 */
 	public function testAutoAction() {
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/file_auto/fields/');
@@ -190,7 +190,7 @@ class FileControllerTest extends ConfiguratorTest {
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
-					FROM IgnConfigurateurBundle:FileField ff
+					FROM IgnOGAMConfigurateurBundle:FileField ff
 					WHERE ff.fileFormat = :fileFormat')->setParameters(array(
 				'fileFormat' => 'file_auto'
 		));
@@ -229,7 +229,7 @@ class FileControllerTest extends ConfiguratorTest {
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
-					FROM IgnConfigurateurBundle:FileField ff
+					FROM IgnOGAMConfigurateurBundle:FileField ff
 					WHERE ff.fileFormat = :fileFormat')->setParameters(array(
 				'fileFormat' => 'file_auto'
 		));

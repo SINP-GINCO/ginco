@@ -1,9 +1,9 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
 
 class TableFieldRepository extends EntityRepository {
 
@@ -20,12 +20,12 @@ class TableFieldRepository extends EntityRepository {
 		$query = $em->createQuery('SELECT DISTINCT tfi.data as fieldName,
 					dt.label as label,
 					u.type as unitType, tfi.isMandatory
-					FROM IgnConfigurateurBundle:TableField tfi
-					LEFT JOIN IgnConfigurateurBundle:TableFormat tfo
+					FROM IgnOGAMConfigurateurBundle:TableField tfi
+					LEFT JOIN IgnOGAMConfigurateurBundle:TableFormat tfo
 					WITH tfo.format = tfi.tableFormat
-					LEFT JOIN IgnConfigurateurBundle:Data dt
+					LEFT JOIN IgnOGAMConfigurateurBundle:Data dt
 					WITH tfi.data = dt.name
-					LEFT JOIN IgnConfigurateurBundle:Unit u
+					LEFT JOIN IgnOGAMConfigurateurBundle:Unit u
 					WITH dt.unit = u.name
 					WHERE tfi.tableFormat = :tableFormat
 					ORDER BY fieldName');
@@ -47,7 +47,7 @@ class TableFieldRepository extends EntityRepository {
 	 */
 	public function findNonTechnicalByTableFormat($tableFormat) {
 		$query = $this->_em->createQuery("SELECT t
-			FROM IgnConfigurateurBundle:TableField t
+			FROM IgnOGAMConfigurateurBundle:TableField t
 			WHERE t.tableFormat =:tableFormat
 			AND t.data NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')
 			AND t.data NOT LIKE :ogam_id");
@@ -67,7 +67,7 @@ class TableFieldRepository extends EntityRepository {
 	 */
 	public function findKeysByTableFormat($tableFormat) {
 		$query = $this->_em->createQuery("SELECT t
-			FROM IgnConfigurateurBundle:TableField t
+			FROM IgnOGAMConfigurateurBundle:TableField t
 			WHERE t.tableFormat =:tableFormat
 			AND t.data LIKE :ogam_id");
 		$query->setParameters(array(
@@ -86,7 +86,7 @@ class TableFieldRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function deleteAllByTableFormat($tableFormat) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:TableField t
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:TableField t
 			WHERE t.tableFormat =:tableFormat');
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat
@@ -104,14 +104,14 @@ class TableFieldRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function deleteNonTechnicalByTableFormat($tableFormat) {
-		$query = $this->_em->createQuery("DELETE FROM IgnConfigurateurBundle:TableField t
+		$query = $this->_em->createQuery("DELETE FROM IgnOGAMConfigurateurBundle:TableField t
 			WHERE t.tableFormat =:tableFormat
 			AND t.data NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')
 			AND t.data NOT LIKE :ogam_id
 			AND t.data NOT IN (SELECT ta.data
-			FROM IgnConfigurateurBundle:TableField ta
-			INNER JOIN IgnConfigurateurBundle:ModelTables mt WITH mt.table = ta.tableFormat
-			INNER JOIN IgnConfigurateurBundle:Model m WITH m.id = mt.model
+			FROM IgnOGAMConfigurateurBundle:TableField ta
+			INNER JOIN IgnOGAMConfigurateurBundle:ModelTables mt WITH mt.table = ta.tableFormat
+			INNER JOIN IgnOGAMConfigurateurBundle:Model m WITH m.id = mt.model
 			WHERE m.ref = true)");
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat,
@@ -129,7 +129,7 @@ class TableFieldRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function deleteForeignKeysByTableFormat($format) {
-		$query = $this->_em->createQuery("DELETE FROM IgnConfigurateurBundle:TableField f
+		$query = $this->_em->createQuery("DELETE FROM IgnOGAMConfigurateurBundle:TableField f
 			WHERE f.tableFormat =:format
 			AND f.data LIKE :fkCondition
 			AND f.data != :pkCondition");
@@ -149,9 +149,9 @@ class TableFieldRepository extends EntityRepository {
 	 */
 	public function findReferenceFields() {
 		$query = $this->_em->createQuery("SELECT t.data
-			FROM IgnConfigurateurBundle:TableField t
-			INNER JOIN IgnConfigurateurBundle:ModelTables mt WITH mt.table = t.tableFormat
-			INNER JOIN IgnConfigurateurBundle:Model m WITH m.id = mt.model
+			FROM IgnOGAMConfigurateurBundle:TableField t
+			INNER JOIN IgnOGAMConfigurateurBundle:ModelTables mt WITH mt.table = t.tableFormat
+			INNER JOIN IgnOGAMConfigurateurBundle:Model m WITH m.id = mt.model
 			WHERE m.ref = true");
 		return $query->getResult();
 	}
@@ -169,16 +169,16 @@ class TableFieldRepository extends EntityRepository {
 		$qb2 = $this->_em->createQueryBuilder();
 
 		$query = $qb->select('t')
-			->from('IgnConfigurateurBundle:TableField', 't')
+			->from('IgnOGAMConfigurateurBundle:TableField', 't')
 			->where('t.tableFormat = :tableFormat')
 			->andwhere("t.data NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')")
 			->andwhere('t.data NOT LIKE :ogam_id')
 			->andwhere($qb->expr()
 			->notIn('t.data', $qb2->select('tf.data')
-			->from('IgnConfigurateurBundle:TableField', 'tf')
-			->join('IgnConfigurateurBundle:ModelTables', 'mt', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->from('IgnOGAMConfigurateurBundle:TableField', 'tf')
+			->join('IgnOGAMConfigurateurBundle:ModelTables', 'mt', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
 			->eq(' mt.table', 'tf.tableFormat'))
-			->join('IgnConfigurateurBundle:Model', 'm', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->join('IgnOGAMConfigurateurBundle:Model', 'm', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
 			->eq(' m.id', 'mt.model'))
 			->where('m.ref = true')
 			->getDQL()))

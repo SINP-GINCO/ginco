@@ -157,7 +157,7 @@ class PredefinedRequestTest extends WebTestCase {
 	/**
 	 * Test delete predefined request
 	 *
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication::dropPredefinedRequests
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication::dropPredefinedRequests
 	 */
 	public function testDropPredefinedRequest() {
 		$datasetId = 'dataset_2_predefined';

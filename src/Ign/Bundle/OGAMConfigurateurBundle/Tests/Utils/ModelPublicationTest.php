@@ -1,9 +1,9 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils;
-use Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 /**
  * Test class for model publication service (see Story #148).
@@ -53,7 +53,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication::publishModel
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication::publishModel
 	 */
 	public function testPublish() {
 		// Try to publish a model that does not exist
@@ -62,7 +62,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication::isPublished
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication::isPublished
 	 */
 	public function testIsPublished() {
 		$published = $this->mp->isPublished('1');
@@ -73,7 +73,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication::isPublishable
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication::isPublishable
 	 */
 	public function testIsPublishable() {
 		$test = $this->mp->isPublishable(2);
@@ -85,7 +85,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication::modelHasTables
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication::modelHasTables
 	 */
 	public function testModelHasTables() {
 		$test = $this->mp->modelHasTables(5);
@@ -95,7 +95,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication::modelTablesHaveFields
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication::modelTablesHaveFields
 	 */
 	public function testModelTablesHaveFields() {
 		$test = $this->mp->modelTablesHaveFields(5);
@@ -105,7 +105,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication::modelHasGeometricalField
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication::modelHasGeometricalField
 	 */
 	public function testModelHasGeometricalField() {
 		$test = $this->mp->modelHasGeometricalField(5);
@@ -115,7 +115,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication::getUnpublishedImportModelsNames
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication::getUnpublishedImportModelsNames
 	 */
 	public function testGetUnpublishedImportModelsNames() {
 		$names = $this->mp->getUnpublishedImportModelsNames('6');

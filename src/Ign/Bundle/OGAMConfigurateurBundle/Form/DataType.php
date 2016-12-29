@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Form;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,7 +34,7 @@ class DataType extends AbstractType {
 			)
 		))
 			->add('unit', EntityType::class, array(
-			'class' => 'IgnConfigurateurBundle:Unit',
+			'class' => 'IgnOGAMConfigurateurBundle:Unit',
 			'placeholder' => 'Choose',
 			'query_builder' => function (EntityRepository $er) {
 				return $er->createQueryBuilder('d')
@@ -64,7 +64,7 @@ class DataType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ign\Bundle\ConfigurateurBundle\Entity\Data'
+			'data_class' => 'Ign\Bundle\OGAMConfigurateurBundle\Entity\Data'
 		));
 	}
 

@@ -1,9 +1,9 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\ORM\Query\ResultSetMapping;
 
@@ -17,7 +17,7 @@ class DatasetRepository extends EntityRepository {
 	 */
 	public function findByTypeAndOrderedByName($type) {
 		return $this->getEntityManager()
-		->createQuery('SELECT d FROM IgnConfigurateurBundle:Dataset d WHERE d.type = :type ORDER BY d.label ASC')
+		->createQuery('SELECT d FROM IgnOGAMConfigurateurBundle:Dataset d WHERE d.type = :type ORDER BY d.label ASC')
 		->setParameter(':type', $type)
 		->getResult();
 	}

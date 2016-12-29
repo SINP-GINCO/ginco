@@ -1,6 +1,6 @@
 <?php
 
-namespace Ign\Bundle\ConfigurateurBundle\DependencyInjection;
+namespace Ign\Bundle\OGAMConfigurateurBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

@@ -3,7 +3,7 @@
 parameters:
 #    parameter_name: value
 #    database_user: ogam
-#    test.client.class: Ign\Bundle\ConfigurateurBundle\Tests\Client
+#    test.client.class: Ign\Bundle\OGAMConfigurateurBundle\Tests\Client
 
 services:
 #    service_name:
@@ -27,26 +27,26 @@ services:
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
  
     app.modelpublication:
-        class: Ign\Bundle\ConfigurateurBundle\Utils\ModelPublication
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
         calls:
               - [setTablesGeneration, ['@app.tablesgeneration']]
               - [setCopyUtils, ['@app.copyutils']]
 
     app.modelunpublication:
-        class: Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
         
     app.importmodelpublication:
-        class: Ign\Bundle\ConfigurateurBundle\Utils\ImportModelPublication
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
         
     app.importmodelunpublication:
-        class: Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnpublication
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnpublication
         arguments: ["@database_connection", "@logger"]
         
     app.modelduplication:
-        class: Ign\Bundle\ConfigurateurBundle\Utils\ModelDuplication
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
 
     app.permissions:
@@ -57,16 +57,16 @@ services:
               - [setImportModelPublication, ['@app.importmodelpublication']]
 
     app.resettomcatcaches:
-        class: Ign\Bundle\ConfigurateurBundle\Utils\ResetTomcatCaches
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ResetTomcatCaches
         arguments: ["@database_connection", "@logger"]
 
-    ign_configurateur.validator.caseinsensitive:                               # Le nom du service
-        class: Ign\Bundle\ConfigurateurBundle\Validator\CaseInsensitiveValidator     # La classe du service, ici le validateur
+    ign_ogamconfigurateur.validator.caseinsensitive:                               # Le nom du service
+        class: Ign\Bundle\OGAMConfigurateurBundle\Validator\CaseInsensitiveValidator     # La classe du service, ici le validateur
         arguments: ["@doctrine.orm.entity_manager"]              # Les données qu'on injecte au service : l'EntityManager
         tags:
-            - { name: validator.constraint_validator, alias: ign_configurateur_caseinsensitive }  # C'est avec l'alias qu'on retrouve le service
+            - { name: validator.constraint_validator, alias: ign_ogamconfigurateur_caseinsensitive }  # C'est avec l'alias qu'on retrouve le service
 
     ign_gincoconfigurateur.file_field_auto_type_extension:
         class: Ign\Bundle\GincoConfigurateurBundle\Form\Extension\FileFieldAutoTypeExtension
         tags:
-            - { name: form.type_extension, extended_type: Ign\Bundle\ConfigurateurBundle\Form\FileFieldAutoType }
+            - { name: form.type_extension, extended_type: Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType }

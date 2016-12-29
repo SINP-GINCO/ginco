@@ -1,11 +1,11 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
 
 class FileFieldControllerTest extends ConfiguratorTest {
 
@@ -27,7 +27,7 @@ class FileFieldControllerTest extends ConfiguratorTest {
 
 		$this->em = $this->container->get('doctrine')->getManager();
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:FileField');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 	}
 
 	public function testAddFieldsAction() {
@@ -86,7 +86,7 @@ class FileFieldControllerTest extends ConfiguratorTest {
 		$this->assertTrue($this->client->getResponse()
 			->isSuccessful());
 
-		$fields = $this->em->getRepository('IgnConfigurateurBundle:FileField')->findFieldsByFileFormat('file_to_delete_complex');
+		$fields = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat('file_to_delete_complex');
 		$this->assertEmpty($fields);
 	}
 

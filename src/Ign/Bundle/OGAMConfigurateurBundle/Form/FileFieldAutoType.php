@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Form;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
  * that the ones of a table (chosen by user),
  *
  * Class FileFieldAutoType
- * @package Ign\Bundle\ConfigurateurBundle\Form
+ * @package Ign\Bundle\OGAMConfigurateurBundle\Form
  */
 class FileFieldAutoType extends AbstractType {
 
@@ -29,7 +29,7 @@ class FileFieldAutoType extends AbstractType {
 		$modelId = $formOptions['modelId'];
 
 		$builder->add('table_format', EntityType::class, array(
-			'class' => 'IgnConfigurateurBundle:TableFormat',
+			'class' => 'IgnOGAMConfigurateurBundle:TableFormat',
 			'choice_label' => 'label',
 			'placeholder' => 'fileField.selectTable',
 			'label' => 'fileField.auto.label',
@@ -38,7 +38,7 @@ class FileFieldAutoType extends AbstractType {
 			'query_builder' => function (EntityRepository $er) use ($modelId) {
 				$qb = $er->createQueryBuilder('t')
 					->select('t')
-					->from('IgnConfigurateurBundle:ModelTables', 'mt')
+					->from('IgnOGAMConfigurateurBundle:ModelTables', 'mt')
 					->where('mt.model=:modelId')
 					->andWhere('mt.table = t.format')
 					->orderBy('t.label', 'ASC')

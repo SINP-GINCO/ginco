@@ -1,15 +1,15 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Controller\ModelController;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Utils\ResetTomcatCaches;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ResetTomcatCaches;
 
 /**
  * TODO correct issue on delete complex model
@@ -43,14 +43,14 @@ class ModelControllerTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:Model');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model');
 	}
 
 	/**
 	 * FIXME #600 introduced denial of creating new models.
 	 * But it is only effective with GincogConfigurateurBundle.
 	 * Tests fails now because of this.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::newAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::newAction
 	 */
 	public function untestNewWithCorrectName() {
 		$crawler = $this->client->request('GET', '/models/new/');
@@ -75,7 +75,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	 * FIXME #600 introduced denial of creating new models.
 	 * But it is only effective with GincogConfigurateurBundle.
 	 * Tests fails now because of this.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::newAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::newAction
 	 */
 	public function untestNewWithoutNameNorDescription() {
 		$crawler = $this->client->request('GET', '/models/new/');
@@ -96,7 +96,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	 * FIXME #600 introduced denial of creating new models.
 	 * But it is only effective with GincogConfigurateurBundle.
 	 * Tests fails now because of this.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::newAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::newAction
 	 */
 	public function untestNewWithNameLongerThan128Characters() {
 		$name = "my model name is too long my model name is too long my model name is too long my model name is too long my model name is too long.";
@@ -119,7 +119,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	 * FIXME #600 introduced denial of creating new models.
 	 * But it is only effective with GincogConfigurateurBundle.
 	 * Tests fails now because of this.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::newAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::newAction
 	 */
 	public function untestNewWithSpecialCharacters() {
 		$modelName = "My model's name has special #?!__'#* characters";
@@ -162,7 +162,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	 * All the fields are mapped.
 	 * There are 6 mappings in total before editing.
 	 * Expected is that there are none left after editaction
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function testEditWithMappings() {
 		$conn = $this->container->get('database_connection');
@@ -184,7 +184,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function testEditWithDifferentValues() {
 		$crawler = $this->client->request('GET', '/models/2/edit');
@@ -202,7 +202,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function testEditWithDifferentCasing() {
 		$modelName = $this->repository->find('2')->getName();
@@ -221,7 +221,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function testEditToNameThatAlreadyExists() {
 		// User tries to change the name to one that already exists
@@ -244,7 +244,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	 * FIXME #600 introduced denial of creating new models.
 	 * But it is only effective with GincogConfigurateurBundle.
 	 * Tests fails now because of this.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function untestEditToNameThatAlreadyExistsButWithDifferentCasing() {
 		$existingModelNameUpperCase = strtoupper($this->repository->find('3')->getName());
@@ -266,7 +266,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	/**
 	 * Deleting a model should also delete the associated import models.
 	 *
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::deleteAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::deleteAction
 	 */
 	public function testDeleteSimpleModel() {
 		$conn = $this->container->get('database_connection');
@@ -318,7 +318,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	 * FIXME #600 introduced denial of deleting tables.
 	 * But it is only effective with GincogConfigurateurBundle.
 	 * Tests fails now because of this.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::deleteAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::deleteAction
 	 */
 	public function testDeleteComplexModel() {
 		$conn = $this->container->get('database_connection');
@@ -357,7 +357,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::deleteAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::deleteAction
 	 */
 	public function testDeleteModelWhichHasSpecialCharacters() {
 		$conn = $this->container->get('database_connection');
@@ -385,7 +385,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::publishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::publishAction
 	 */
 	public function testPublishFalseModel() {
 		$crawler = $this->client->request('GET', '/models/false_id/publish/');
@@ -407,7 +407,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	 * FIXME #600 introduced denial of creating new models.
 	 * But it is only effective with GincogConfigurateurBundle.
 	 * Tests fails now because of this.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::publishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::publishAction
 	 * @requires PHP 5.5
 	 */
 	public function untestPublishModelScenario() {
@@ -550,7 +550,7 @@ class ModelControllerTest extends ConfiguratorTest {
 
 	/**
 	 * This case should show a warning modal.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function testEditPublishedModelWithoutData() {
 		$crawler = $this->client->request('GET', '/models/');
@@ -566,7 +566,7 @@ class ModelControllerTest extends ConfiguratorTest {
 
 	/**
 	 * This case should go straight to edit page.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function testEditUnpublishedModel() {
 		$modelName = $this->repository->find('6')->getName();
@@ -587,7 +587,7 @@ class ModelControllerTest extends ConfiguratorTest {
 
 	/**
 	 * This case should prompt an information modal not allowing editing.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
 	public function testEditPublishedModelWithData() {
 		$crawler = $this->client->request('GET', '/models/');
@@ -630,7 +630,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::unpublishAction
 	 */
 	public function untestUnpublishModel() {
 		$crawler = $this->client->request('GET', '/models/10/unpublish/');
@@ -644,7 +644,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::unpublishAction
 	 */
 	public function untestUnpublishModelWithoutFileUploadRunning() {
 		$crawler = $this->client->request('GET', '/models/11/unpublish/');
@@ -658,7 +658,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::unpublishAction
 	 */
 	public function testUnpublishModelWithOneOfManyFileUploadRunning() {
 		$crawler = $this->client->request('GET', '/models/12/unpublish');
@@ -674,7 +674,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::unpublishAction
 	 */
 	public function testUnpublishModelWithAllFileUploadRunning() {
 		$crawler = $this->client->request('GET', '/models/13/unpublish');
@@ -688,7 +688,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::unpublishAction
 	 */
 	public function testUnpublishFalseModel() {
 		$crawler = $this->client->request('GET', '/models/false_id/unpublish');
@@ -702,7 +702,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::unpublishAction
 	 */
 	public function testUnpublishDEEEModel() {
 		$crawler = $this->client->request('GET', '/models/1/unpublish');
@@ -715,7 +715,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::viewAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::viewAction
 	 */
 	public function testViewAction() {
 		$model = $this->repository->find('14');
@@ -731,7 +731,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::duplicateAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::duplicateAction
 	 */
 	public function testDuplicateAction() {
 		$model = $this->repository->find('7');

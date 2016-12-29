@@ -1,9 +1,9 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class ModelRepositoryTest extends ConfiguratorTest {
 
@@ -21,7 +21,7 @@ class ModelRepositoryTest extends ConfiguratorTest {
 
 		$this->em = $this->container->get('doctrine')->getManager();
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:Model');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model');
 	}
 
 	public function testFindAllOrderedByName() {

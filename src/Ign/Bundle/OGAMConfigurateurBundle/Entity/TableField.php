@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * TableField
  *
  * @ORM\Table(name="metadata_work.table_field")
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\TableFieldRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFieldRepository")
  */
 class TableField {
 
@@ -306,7 +306,7 @@ class TableField {
 				$kernel = $kernel->getKernel();
 			}
 			$em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-			$tableFormat = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
+			$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 			$tableLabel = $tableFormat->getLabel();
 
 			$trans = $kernel->getContainer()->get('translator');

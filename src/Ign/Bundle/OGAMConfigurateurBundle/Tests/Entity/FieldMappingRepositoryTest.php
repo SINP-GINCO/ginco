@@ -1,10 +1,10 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileField;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class FileFieldRepositoryTest extends ConfiguratorTest {
 
@@ -28,7 +28,7 @@ class FileFieldRepositoryTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 		
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:FieldMapping');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping');
 	}
 
 	public function testFindMappings() {

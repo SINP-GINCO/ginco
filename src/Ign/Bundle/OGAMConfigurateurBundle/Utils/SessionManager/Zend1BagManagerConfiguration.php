@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Utils\SessionManager;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Utils\SessionManager;
 
 use Theodo\Evolution\Bundle\SessionBundle\Manager\BagManagerConfigurationInterface;
 

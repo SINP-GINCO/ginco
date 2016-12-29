@@ -102,15 +102,15 @@ monolog:
 # braincrafted
 braincrafted_bootstrap:
     css_preprocessor: lessphp
-    jquery_path: "%kernel.root_dir%/../web/bundles/ignconfigurateur/js/jquery.min.js"
+    jquery_path: "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/jquery.min.js"
     
 fos_js_routing:
     routes_to_expose: [configurateur_table_add_fields, configurateur_file_add_fields, configurateur_table_update_fields, configurateur_file_update_fields, configurateur_table_edit_save, configurateur_file_field_mask_save, configurateur_table_change_mandatory_state, configurateur_file_change_mandatory_state, configurateur_dataset_import_update_file_order]
 
-ign_configurateur:
+ign_ogam_configurateur:
     database_name: "%database_name%"
     
 theodo_evolution_session:
     bag_manager:
         class:       Theodo\Evolution\Bundle\SessionBundle\Manager\BagManager
-        configuration_class:  Ign\Bundle\ConfigurateurBundle\Utils\SessionManager\Zend1BagManagerConfiguration
+        configuration_class:  Ign\Bundle\OGAMConfigurateurBundle\Utils\SessionManager\Zend1BagManagerConfiguration

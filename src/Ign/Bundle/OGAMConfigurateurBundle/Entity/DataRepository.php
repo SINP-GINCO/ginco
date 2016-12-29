@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
@@ -16,8 +16,8 @@ class DataRepository extends EntityRepository {
 	public function findAllFields() {
 		$em = $this->getEntityManager();
 		$query = $em->createQuery('SELECT DISTINCT dt.name as dataName,dt.label as label, u.type as unitType
-    			  FROM IgnConfigurateurBundle:Data dt
-				  LEFT JOIN IgnConfigurateurBundle:Unit u
+    			  FROM IgnOGAMConfigurateurBundle:Data dt
+				  LEFT JOIN IgnOGAMConfigurateurBundle:Unit u
     			  WITH dt.unit = u.name
 				  ORDER BY dt.name');
 
@@ -38,11 +38,11 @@ class DataRepository extends EntityRepository {
 	public function findAllForeignKeysByModelId($modelId) {
 		$qb = $this->createQueryBuilder('dt')
 			->select('DISTINCT dtj')
-			->from('IgnConfigurateurBundle:Model', 'm')
-			->innerJoin('IgnConfigurateurBundle:ModelTables', 'mt', 'WITH', 'mt.model = :modelId')
-			->innerJoin('IgnConfigurateurBundle:TableFormat', 'tfo', 'WITH', 'tfo.format = mt.table')
-			->innerJoin('IgnConfigurateurBundle:TableField', 'tfi', 'WITH', 'tfi.tableFormat = tfo.format')
-			->innerJoin('IgnConfigurateurBundle:Data', 'dtj', 'WITH', 'dtj.name = tfi.data')
+			->from('IgnOGAMConfigurateurBundle:Model', 'm')
+			->innerJoin('IgnOGAMConfigurateurBundle:ModelTables', 'mt', 'WITH', 'mt.model = :modelId')
+			->innerJoin('IgnOGAMConfigurateurBundle:TableFormat', 'tfo', 'WITH', 'tfo.format = mt.table')
+			->innerJoin('IgnOGAMConfigurateurBundle:TableField', 'tfi', 'WITH', 'tfi.tableFormat = tfo.format')
+			->innerJoin('IgnOGAMConfigurateurBundle:Data', 'dtj', 'WITH', 'dtj.name = tfi.data')
 			->andWhere('dtj.name NOT IN (:provider_id, :submission_id)')
 			->andWhere('dtj.name NOT LIKE :ogam_id')
 			->setParameters(array(

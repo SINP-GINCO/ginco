@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Ign\Bundle\ConfigurateurBundle\Form\FileFieldAutoType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
 
 class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 
@@ -31,7 +31,7 @@ class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 		$modelId = $formOptions['modelId'];
 		
 		$builder->add('table_format', EntityType::class, array(
-			'class' => 'IgnConfigurateurBundle:TableFormat',
+			'class' => 'IgnOGAMConfigurateurBundle:TableFormat',
 			'choice_label' => 'label',
 			'placeholder' => 'fileField.selectTable',
 			'label' => 'fileField.auto.label',
@@ -42,7 +42,7 @@ class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 			'query_builder' => function (EntityRepository $er) use($modelId) {
 				$qb = $er->createQueryBuilder('t')
 					->select('t')
-					->from('IgnConfigurateurBundle:ModelTables', 'mt')
+					->from('IgnOGAMConfigurateurBundle:ModelTables', 'mt')
 					->where('mt.model=:modelId')
 					->andWhere('mt.table = t.format')
 					->orderBy('t.label', 'ASC')

@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @ORM\Table(name="website.role")
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\RoleRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\RoleRepository")
  */
 class Role implements RoleInterface {
 

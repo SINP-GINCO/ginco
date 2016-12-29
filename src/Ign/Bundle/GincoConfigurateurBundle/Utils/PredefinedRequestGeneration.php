@@ -6,7 +6,7 @@ use \Symfony\Component\Config\FileLocator;
 use Doctrine\DBAL\Connection;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Ign\Bundle\ConfigurateurBundle\Utils\TablesGeneration as TableGenerationBase2;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\TablesGeneration as TableGenerationBase2;
 use Assetic\Exception\Exception;
 
 /**

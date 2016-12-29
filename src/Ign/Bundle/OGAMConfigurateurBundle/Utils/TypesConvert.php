@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 /**
  *

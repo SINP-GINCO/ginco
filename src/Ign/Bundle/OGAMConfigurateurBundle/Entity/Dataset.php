@@ -1,16 +1,16 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
-use Ign\Bundle\ConfigurateurBundle\Validator\CaseInsensitive;
+use Ign\Bundle\OGAMConfigurateurBundle\Validator\CaseInsensitive;
 
 /**
  * Dataset (is renamed in the application as 'Import model')
  *
  * @ORM\Table(name="metadata_work.dataset")
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\DatasetRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\DatasetRepository")
  * @ORM\HasLifecycleCallbacks()
  * @CaseInsensitive(message = "dataset.label.caseinsensitive")
  */

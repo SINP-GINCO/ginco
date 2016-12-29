@@ -1,10 +1,10 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Entity;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
 
 class FileFieldRepositoryTest extends WebTestCase {
 
@@ -22,7 +22,7 @@ class FileFieldRepositoryTest extends WebTestCase {
 	}
 
 	public function testFindAll() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:FileField');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 		$fields = $repository->findAll();
 		$this->assertTrue(count($fields) > 0);
 	}
@@ -31,7 +31,7 @@ class FileFieldRepositoryTest extends WebTestCase {
 	 * TODO complete the test with assertions.
 	 */
 	public function testDeleteAllByFileFormat() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:FileField');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 		$result = $repository->deleteAllByFileFormat('RAW_DATA_16_TABLE_1_DATA');
 		//echo $result;
 	}
@@ -40,7 +40,7 @@ class FileFieldRepositoryTest extends WebTestCase {
 	 * TODO complete the test with assertions.
 	 */
 	public function testFindFieldsByFileFormat() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:FileField');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 		$result = $repository->findFieldsByFileFormat('_7895_DATA');
 		//echo sizeof($result);
 	}

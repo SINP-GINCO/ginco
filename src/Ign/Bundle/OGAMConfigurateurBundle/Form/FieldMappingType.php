@@ -1,16 +1,16 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Form;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Ign\Bundle\ConfigurateurBundle\Entity\FieldMapping;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableField;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,7 +40,7 @@ class FieldMappingType extends AbstractType {
 		));
 
 		$srcDataChoices = array();
-		$srcData = $em->getRepository('IgnConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
+		$srcData = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
 		foreach ($srcData as $data) {
 			$srcDataChoices[$data['fieldName']] = $data['label'];
 		}
@@ -52,7 +52,7 @@ class FieldMappingType extends AbstractType {
 		));
 
 		$srcFormatChoices = array();
-		$model = $em->getRepository('IgnConfigurateurBundle:Model')->find($modelId);
+		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
 		foreach ($model->getTables() as $table) {
 			$srcFormatChoices[$table->getFormat()] = $table->getLabel();
 		}
@@ -75,11 +75,11 @@ class FieldMappingType extends AbstractType {
 			$choices = array();
 			if ($tableFormat !== null) {
 				// Non technical Fields + Keys
-				$dstData = $em->getRepository('IgnConfigurateurBundle:TableField')->findNonTechnicalByTableFormat($tableFormat);
-				$keysData = $em->getRepository('IgnConfigurateurBundle:TableField')->findKeysByTableFormat($tableFormat);
+				$dstData = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findNonTechnicalByTableFormat($tableFormat);
+				$keysData = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findKeysByTableFormat($tableFormat);
 				$allData = array_merge($keysData, $dstData);
 				foreach ($allData as $data) {
-					$label = $em->getRepository('IgnConfigurateurBundle:Data')->find($data->getData())->getLabel();
+					$label = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($data->getData())->getLabel();
 					$choices[$data->getData()] = $label;
 				}
 			}
@@ -113,7 +113,7 @@ class FieldMappingType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ign\Bundle\ConfigurateurBundle\Entity\FieldMapping',
+			'data_class' => 'Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping',
 			'fileFormat' => null,
 			'modelId' => null,
 			'em' => null

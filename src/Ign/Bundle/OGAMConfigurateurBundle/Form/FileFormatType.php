@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Form;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,7 +40,7 @@ class FileFormatType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ign\Bundle\ConfigurateurBundle\Entity\FileFormat'
+			'data_class' => 'Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat'
 		));
 	}
 

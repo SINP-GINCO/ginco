@@ -8,6 +8,6 @@ class IgnGincoConfigurateurBundle extends Bundle
 {
     public function getParent()
     {
-        return 'IgnConfigurateurBundle';
+        return 'IgnOGAMConfigurateurBundle';
     }
 }

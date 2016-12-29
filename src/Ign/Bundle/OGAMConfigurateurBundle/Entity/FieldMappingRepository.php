@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
 
 class FieldMappingRepository extends EntityRepository {
 
@@ -20,12 +20,12 @@ class FieldMappingRepository extends EntityRepository {
 					fm.srcFormat as srcFormat, fm.dstData as dstData,
 					fm.dstFormat as dstFormat, tf.label as label,
 					dt.label as srcDataLabel, dt2.label as dstDataLabel
-					FROM IgnConfigurateurBundle:FieldMapping fm
-					LEFT JOIN IgnConfigurateurBundle:TableFormat tf
+					FROM IgnOGAMConfigurateurBundle:FieldMapping fm
+					LEFT JOIN IgnOGAMConfigurateurBundle:TableFormat tf
 						WITH fm.dstFormat = tf.format
-					LEFT JOIN IgnConfigurateurBundle:Data dt
+					LEFT JOIN IgnOGAMConfigurateurBundle:Data dt
 						WITH dt.name = fm.srcData
-					LEFT JOIN IgnConfigurateurBundle:Data dt2
+					LEFT JOIN IgnOGAMConfigurateurBundle:Data dt2
 						WITH dt2.name = fm.dstData
 					WHERE fm.mappingType = :mappingType
 					AND fm.srcFormat = :fileFormat
@@ -50,12 +50,12 @@ class FieldMappingRepository extends EntityRepository {
 	public function findNotMappedFields($fileFormat, $mappingType) {
 		$em = $this->getEntityManager();
 		$query = $em->createQuery('SELECT ff.data, dt.label as label
-					FROM IgnConfigurateurBundle:FileField ff
-					LEFT JOIN IgnConfigurateurBundle:Data dt
+					FROM IgnOGAMConfigurateurBundle:FileField ff
+					LEFT JOIN IgnOGAMConfigurateurBundle:Data dt
 						WITH dt.name = ff.data
 					WHERE ff.data NOT IN (
 						SELECT fm.srcData
-						FROM IgnConfigurateurBundle:FieldMapping fm
+						FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 						WHERE fm.mappingType = :mappingType
 						AND fm.srcFormat = :fileFormat)
 					AND ff.fileFormat = :fileFormat
@@ -80,12 +80,12 @@ class FieldMappingRepository extends EntityRepository {
 	public function findNotMappedFieldsInTable($tableFormat, $mappingType) {
 		$em = $this->getEntityManager();
 		$query = $em->createQuery("SELECT tf.data, dt.label as label
-					FROM IgnConfigurateurBundle:TableField tf
-					LEFT JOIN IgnConfigurateurBundle:Data dt
+					FROM IgnOGAMConfigurateurBundle:TableField tf
+					LEFT JOIN IgnOGAMConfigurateurBundle:Data dt
 						WITH dt.name = tf.data
 					WHERE tf.data NOT IN (
 						SELECT fm.dstData
-						FROM IgnConfigurateurBundle:FieldMapping fm
+						FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 						WHERE fm.mappingType = :mappingType
 						AND fm.dstFormat = :tableFormat)
 					AND tf.tableFormat = :tableFormat
@@ -111,7 +111,7 @@ class FieldMappingRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function removeAllByFileFormat($fileFormat) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FieldMapping fm
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 			WHERE fm.srcFormat =:fileFormat');
 		$query->setParameters(array(
 			'fileFormat' => $fileFormat
@@ -130,7 +130,7 @@ class FieldMappingRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function removeAllByFileFormatAndType($fileFormat, $mappingType) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FieldMapping fm
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 			WHERE fm.srcFormat =:fileFormat
 			AND fm.mappingType =:mappingType');
 		$query->setParameters(array(
@@ -152,7 +152,7 @@ class FieldMappingRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function removeAllByFileField($fileFormat, $field) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FieldMapping fm
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 			WHERE fm.srcFormat =:fileFormat
 			AND fm.srcData =:field');
 		$query->setParameters(array(
@@ -172,7 +172,7 @@ class FieldMappingRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function removeAllByTableFormat($tableFormat) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FieldMapping fm
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 			WHERE fm.dstFormat =:tableFormat');
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat
@@ -192,7 +192,7 @@ class FieldMappingRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function removeAllByTableField($tableFormat, $field) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FieldMapping fm
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 			WHERE fm.dstFormat =:tableFormat
 			AND fm.dstData =:field');
 		$query->setParameters(array(
@@ -212,12 +212,12 @@ class FieldMappingRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function removeAllExceptRefMappingsByTableFormat($tableFormat) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FieldMapping fm
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 			WHERE fm.dstFormat =:tableFormat
 			AND fm.srcData NOT IN (SELECT ta.data
-				FROM IgnConfigurateurBundle:TableField ta
-				INNER JOIN IgnConfigurateurBundle:ModelTables mt WITH mt.table = ta.tableFormat
-				INNER JOIN IgnConfigurateurBundle:Model m WITH m.id = mt.model
+				FROM IgnOGAMConfigurateurBundle:TableField ta
+				INNER JOIN IgnOGAMConfigurateurBundle:ModelTables mt WITH mt.table = ta.tableFormat
+				INNER JOIN IgnOGAMConfigurateurBundle:Model m WITH m.id = mt.model
 				WHERE m.ref = true)');
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat

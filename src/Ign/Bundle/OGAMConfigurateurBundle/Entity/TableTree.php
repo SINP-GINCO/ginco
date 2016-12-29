@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Assetic\Exception\Exception;
@@ -9,7 +9,7 @@ use Assetic\Exception\Exception;
  *
  * @ORM\Table(name="metadata_work.table_tree")
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\TableTreeRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\TableTreeRepository")
  */
 class TableTree {
 	/**

@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Validator;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Validator;
 
 use Symfony\Component\Validator\Constraint;
 

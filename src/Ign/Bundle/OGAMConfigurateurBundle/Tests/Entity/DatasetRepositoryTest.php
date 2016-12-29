@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class DatasetRepositoryTest extends ConfiguratorTest {
 
@@ -18,7 +18,7 @@ class DatasetRepositoryTest extends ConfiguratorTest {
 
 		$this->container = static::$kernel->getContainer();
 		$this->em = $this->container->get('doctrine')->getManager();
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:Dataset');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 	}
 
 	public function testFindByTypeAndOrderedByName() {

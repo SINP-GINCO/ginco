@@ -1,10 +1,10 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 
 class FieldMappingControllerTest extends ConfiguratorTest {
 
@@ -28,7 +28,7 @@ class FieldMappingControllerTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:FieldMapping');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping');
 	}
 
 	public function testNewMappingRelation() {
@@ -51,7 +51,7 @@ class FieldMappingControllerTest extends ConfiguratorTest {
 	}
 
 	public function testEditMappingRelation() {
-		$fileLabel = $this->em->getRepository('IgnConfigurateurBundle:FileFormat')
+		$fileLabel = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')
 			->find('file_with_field')
 			->getLabel();
 
@@ -253,7 +253,7 @@ class FieldMappingControllerTest extends ConfiguratorTest {
 	 * - cdnom is now mapped on cdnom
 	 * - codecommune is not mapped (no corresponding field).
 	 *
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\FieldMappingController::autoAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\FieldMappingController::autoAction
 	 */
 	public function testAutoMapping() {
 		$crawler = $this->client->request('GET', '/datasetsimport/3/files/file_auto_mapping/mappings/');
@@ -270,7 +270,7 @@ class FieldMappingControllerTest extends ConfiguratorTest {
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					fm.srcData as srcData, fm.dstData as dstData
-					FROM IgnConfigurateurBundle:FieldMapping fm
+					FROM IgnOGAMConfigurateurBundle:FieldMapping fm
 					WHERE fm.mappingType = :mappingType
 					AND fm.srcFormat = :fileFormat
 					AND fm.dstFormat = :tableFormat')->setParameters(array(

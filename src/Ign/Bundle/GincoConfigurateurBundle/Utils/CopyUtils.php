@@ -2,8 +2,8 @@
 namespace Ign\Bundle\GincoConfigurateurBundle\Utils;
 
 use Monolog\Logger;
-use Ign\Bundle\ConfigurateurBundle\Utils\TypesConvert;
-use Ign\Bundle\ConfigurateurBundle\Utils\CopyUtils as CopyUtilsBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\TypesConvert;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils as CopyUtilsBase;
 use Assetic\Exception\Exception;
 
 /**

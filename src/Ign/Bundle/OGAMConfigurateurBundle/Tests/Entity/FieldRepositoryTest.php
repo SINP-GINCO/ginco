@@ -1,9 +1,9 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Modele;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Modele;
 
 class FieldRepositoryTest extends WebTestCase {
 
@@ -21,7 +21,7 @@ class FieldRepositoryTest extends WebTestCase {
 	}
 
 	public function testFindAll() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:Field');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Field');
 		$fields = $repository->findAll();
 		$this->assertTrue(count($fields) > 0);
 	}

@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnpublication;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnpublication;
 
 /**
  * Test class for import model unpublication service (see Story #212).
@@ -52,7 +52,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteFieldMappingData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteFieldMappingData
 	 */
 	public function testDeleteFieldMappingData() {
 		// Test that before calling, the field mapping for the import model are present
@@ -78,7 +78,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteDatasetFieldsData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteDatasetFieldsData
 	 */
 	public function testDeleteDatasetFieldsData() {
 		// Test that before calling, the dataset fields for 'my_dataset' are present
@@ -107,7 +107,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteFileFieldData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteFileFieldData
 	 */
 	public function testDeleteFileFieldData() {
 		// Test that before calling, the file fields for 'my_file' are present
@@ -132,7 +132,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteFieldData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteFieldData
 	 * @depends testDeleteFieldMappingData
 	 * @depends testDeleteFileFieldData
 	 */
@@ -160,7 +160,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteDatasetFilesData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteDatasetFilesData
 	 * @depends testDeleteFieldMappingData
 	 * @depends testDeleteFileFieldData
 	 */
@@ -182,7 +182,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteModelDatasetsData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteModelDatasetsData
 	 */
 	public function testDeleteModelDatasetsData() {
 		// Test that before calling, the link model_datasets {'2', 'my_dataset'} is present
@@ -202,7 +202,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteFileFormatData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteFileFormatData
 	 * @depends testDeleteDatasetFieldsData
 	 */
 	public function testDeleteFileFormatData() {
@@ -223,7 +223,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteFormatData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteFormatData
 	 * @depends testDeleteFileFormatData
 	 */
 	public function testDeleteFormatData() {
@@ -243,7 +243,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::isImportModelPresentInTableDataset
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::isImportModelPresentInTableDataset
 	 */
 	public function testIsImportModelPresentInTableDataset() {
 		$exists = $this->imu->isImportModelPresentInTableDataset($this->importModelId);
@@ -253,7 +253,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteImportModelData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteImportModelData
 	 * @depends testDeleteDatasetFilesData
 	 * @depends testDeleteModelDatasetsData
 	 * @depends testIsImportModelPresentInTableDataset
@@ -276,7 +276,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::deleteDataData
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::deleteDataData
 	 * @depends testDeleteFieldData
 	 */
 	public function testDeleteDataData() {
@@ -296,7 +296,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::hasRunningFileUpload
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::hasRunningFileUpload
 	 */
 	public function testHasRunningFileUpload() {
 		$hasRunningFile = $this->imu->hasRunningFileUpload($this->importModelId);
@@ -306,7 +306,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::unpublishImportModel
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::unpublishImportModel
 	 */
 	public function testUnpublishModel() {
 		$success = $this->imu->unpublishImportModel('dataset_to_unpublish');
@@ -314,7 +314,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelUnPublication::unpublishImportModel
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnPublication::unpublishImportModel
 	 */
 	public function testUnpublishModelThatDoesntExist() {
 		// Try to unpublish an import model that does not exist

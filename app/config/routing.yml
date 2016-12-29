@@ -1,5 +1,5 @@
 # @ annotation for the parent bundle creates problem with routes when adding controller in child bundle
-ign_configurateur:
+ign_ogam_configurateur:
     resource: "../../src/Ign/Bundle/ConfigurateurBundle/Controller/"
     type:     annotation
     prefix:   /

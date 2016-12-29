@@ -1,27 +1,27 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileField;
-use Ign\Bundle\ConfigurateurBundle\Entity\Field;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\FileFormatType;
-use Ign\Bundle\ConfigurateurBundle\Form\FileFieldAutoType;
-use Ign\Bundle\ConfigurateurBundle\Form\DatasetImportType;
-use Ign\Bundle\ConfigurateurBundle\Form\FieldMappingAutoType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingAutoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Assetic\Exception\Exception;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Ign\Bundle\ConfigurateurBundle\Controller\FileController as FileControllerBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\FileController as FileControllerBase;
 
 class FileController extends FileControllerBase {
 
@@ -39,7 +39,7 @@ class FileController extends FileControllerBase {
 	public function autoAction($datasetId, $fileFormat, Request $request) {
 		$em = $this->getDoctrine()->getManager();
 		
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 		
 		// Create Auto-Add-Fieldform
 		$formOptions = array(
@@ -56,8 +56,8 @@ class FileController extends FileControllerBase {
 			$tableFormat = $autoAddFieldsForm->get('table_format')
 				->getData()
 				->getFormat();
-			$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($tableFormat);
-			$tableFields = $em->getRepository('IgnConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
+			$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat);
+			$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
 			// var_dump( $tableFields);
 			
 			// Get mandatory fields in table fields
@@ -66,7 +66,7 @@ class FileController extends FileControllerBase {
 			};
 			$mandatoryFields = array_filter($tableFields, $isMandatory);
 			
-			$fileFields = $em->getRepository('IgnConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
+			$fileFields = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
 			// var_dump($fileFields);
 			
 			// Add only mandatory fields ?
@@ -111,17 +111,17 @@ class FileController extends FileControllerBase {
 			
 			$calculatedFieldsLabels = array();
 			foreach ($calculatedFields as $data) {
-				$calculatedFieldsLabels[] = $em->getRepository('IgnConfigurateurBundle:Data')
+				$calculatedFieldsLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
 					->find($data)
 					->getLabel();
 			}
 			
 			// Generate a report
 			$report = array(
-				'fileLabel' => $em->getRepository('IgnConfigurateurBundle:FileFormat')
+				'fileLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')
 					->find($fileFormat)
 					->getLabel(),
-				'tableLabel' => $em->getRepository('IgnConfigurateurBundle:TableFormat')
+				'tableLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')
 					->find($tableFormat)
 					->getLabel(),
 				'mandatoryOnly' => $mandatoryOnly,
@@ -134,7 +134,7 @@ class FileController extends FileControllerBase {
 			
 			$fieldsToAddLabels = array();
 			foreach ($fieldsToAdd as $data) {
-				$fieldsToAddLabels[] = $em->getRepository('IgnConfigurateurBundle:Data')
+				$fieldsToAddLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
 					->find($data)
 					->getLabel();
 			}
@@ -146,7 +146,7 @@ class FileController extends FileControllerBase {
 			));
 			
 			// Add them ; get redirection in a variable
-			$redirectResponse = $this->forward('IgnConfigurateurBundle:FileField:addFields', array(
+			$redirectResponse = $this->forward('IgnOGAMConfigurateurBundle:FileField:addFields', array(
 				'datasetId' => $datasetId,
 				'format' => $fileFormat,
 				'addedFields' => implode(',', $fieldsToAdd)
@@ -157,7 +157,7 @@ class FileController extends FileControllerBase {
 			$mFields = array_intersect($fieldsToAdd, $mFields);
 			
 			foreach ($mFields as $mfield) {
-				$fileField = $em->getRepository('IgnConfigurateurBundle:FileField')->findOneBy(array(
+				$fileField = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
 					'data' => $mfield,
 					'fileFormat' => $fileFormat
 				));

@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Validator;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -33,7 +33,7 @@ class CaseInsensitiveValidator extends ConstraintValidator {
 	 */
 	public function validate($entity, Constraint $constraint) {
 		$class = (new \ReflectionClass($entity))->getShortName();
-		$repository = $this->em->getRepository("IgnConfigurateurBundle:" . $class);
+		$repository = $this->em->getRepository("IgnOGAMConfigurateurBundle:" . $class);
 
 		switch ($class) {
 			case 'Dataset':

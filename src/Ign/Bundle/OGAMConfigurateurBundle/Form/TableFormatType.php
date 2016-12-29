@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Form;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,7 +37,7 @@ class TableFormatType extends AbstractType {
 		if ($options['tableFormat']) {
 			$conn = $options['conn'];
 			$em = $options['em'];
-			$tableTreeRepository = $em->getRepository('IgnConfigurateurBundle:TableTree');
+			$tableTreeRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableTree');
 			$childTables = $tableTreeRepository->findChildTablesByTableFormat($options['tableFormat'], $conn);
 		} else {
 			$childTables = array();
@@ -71,7 +71,7 @@ class TableFormatType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ign\Bundle\ConfigurateurBundle\Entity\TableFormat',
+			'data_class' => 'Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat',
 			'model' => null,
 			'tableFormat' => null,
 			'conn' => null,

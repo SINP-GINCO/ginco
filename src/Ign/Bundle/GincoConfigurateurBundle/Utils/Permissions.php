@@ -4,7 +4,7 @@ namespace Ign\Bundle\GincoConfigurateurBundle\Utils;
 use Symfony\Component\DependencyInjection;
 use \Symfony\Component\Config\FileLocator;
 use Monolog\Logger;
-use Ign\Bundle\ConfigurateurBundle\Utils\Permissions as PermissionsBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\Permissions as PermissionsBase;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

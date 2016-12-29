@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
 use \Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Utils\TablesGeneration;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\TablesGeneration;
 
 /**
  *

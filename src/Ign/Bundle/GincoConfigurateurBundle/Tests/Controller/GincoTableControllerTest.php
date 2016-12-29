@@ -1,9 +1,9 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 
 class GincoTableControllerTest extends ConfiguratorTest {
 
@@ -27,7 +27,7 @@ class GincoTableControllerTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:TableFormat');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
 	}
 
 	/**

@@ -1,9 +1,9 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
 
 class FileFieldRepository extends EntityRepository {
 
@@ -21,12 +21,12 @@ class FileFieldRepository extends EntityRepository {
 						dt.label as label,
 						u.type as unitType, tfi.isMandatory,
 						tfi.mask, tfi.position
-					FROM IgnConfigurateurBundle:FileField tfi
-					LEFT JOIN IgnConfigurateurBundle:FileFormat tfo
+					FROM IgnOGAMConfigurateurBundle:FileField tfi
+					LEFT JOIN IgnOGAMConfigurateurBundle:FileFormat tfo
 						WITH tfo.format = tfi.fileFormat
-					LEFT JOIN IgnConfigurateurBundle:Data dt
+					LEFT JOIN IgnOGAMConfigurateurBundle:Data dt
 						WITH tfi.data = dt.name
-					LEFT JOIN IgnConfigurateurBundle:Unit u
+					LEFT JOIN IgnOGAMConfigurateurBundle:Unit u
 						WITH dt.unit = u.name
 					WHERE tfi.fileFormat = :fileFormat
 					ORDER BY tfi.position');
@@ -47,7 +47,7 @@ class FileFieldRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function deleteAllByFileFormat($fileFormat) {
-		$query = $this->_em->createQuery('DELETE FROM IgnConfigurateurBundle:FileField t
+		$query = $this->_em->createQuery('DELETE FROM IgnOGAMConfigurateurBundle:FileField t
 			WHERE t.fileFormat =:fileFormat');
 		$query->setParameters(array(
 			'fileFormat' => $fileFormat
@@ -64,7 +64,7 @@ class FileFieldRepository extends EntityRepository {
 	 * @return result of the delete query
 	 */
 	public function deleteForeignKeysByFileFormat($format) {
-		$query = $this->_em->createQuery("DELETE FROM IgnConfigurateurBundle:FileField f
+		$query = $this->_em->createQuery("DELETE FROM IgnOGAMConfigurateurBundle:FileField f
 			WHERE f.tableFormat =:format
 			AND f.data LIKE :fkCondition
 			AND f.data != :pkCondition");

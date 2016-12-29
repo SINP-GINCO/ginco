@@ -1,22 +1,22 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableSchema;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableField;
-use Ign\Bundle\ConfigurateurBundle\Entity\Field;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableTree;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\TableFormatType;
-use Ign\Bundle\ConfigurateurBundle\Form\TableUpdateType;
-use Ign\Bundle\ConfigurateurBundle\Form\TableUpdateFieldsType;
-use Ign\Bundle\ConfigurateurBundle\Form\ModelType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableTree;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateFieldsType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Assetic\Exception\Exception;
@@ -33,10 +33,10 @@ class TableFieldController extends Controller {
 	public function addFieldsAction($modelId, $format, $fields) {
 		$em = $this->getDoctrine()->getManager();
 
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
-		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
-		$format = $em->getRepository('IgnConfigurateurBundle:Format')->find($format);
+		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
+		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
 
 		// Handle the name of the fields
 		$names = explode(",", $fields);
@@ -92,7 +92,7 @@ class TableFieldController extends Controller {
 					$tableField->setIsInsertable("1");
 				}
 				
-				$em->getRepository('IgnConfigurateurBundle:TableField')->findAll();
+				$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findAll();
 				$em->merge($tableField);
 			}
 			$em->flush();
@@ -113,9 +113,9 @@ class TableFieldController extends Controller {
 	public function updateFieldsAction($modelId, $fields, $mandatorys = null, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
-		$format = $em->getRepository('IgnConfigurateurBundle:Format')->find($format);
-		$tableName = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format)->getLabel();
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+		$tableName = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format)->getLabel();
 
 		// Handle the name of the fields
 		$data = explode(",", $fields);
@@ -175,9 +175,9 @@ class TableFieldController extends Controller {
 	public function removeAllFieldsAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$tableFieldRepository = $em->getRepository('IgnConfigurateurBundle:TableField');
-		$fieldRepository = $em->getRepository('IgnConfigurateurBundle:Field');
-		$mappingRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
+		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
+		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
+		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
 
 		$mappingRepository->removeAllByTableFormat($format);
 		$tableFieldRepository->deleteNonTechnicalByTableFormat($format);
@@ -201,17 +201,17 @@ class TableFieldController extends Controller {
 		$em = $this->getDoctrine()->getManager();
 
 		// remove mapping relations first
-		$mappingRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
+		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
 		$mappingRepository->removeAllByTableField($format, $field);
 
-		$tableFieldToRemove = $em->find("IgnConfigurateurBundle:TableField", array(
+		$tableFieldToRemove = $em->find("IgnOGAMConfigurateurBundle:TableField", array(
 			"data" => $field,
 			"tableFormat" => $format
 		));
 		$em->remove($tableFieldToRemove);
 		$em->flush();
 
-		$fieldToRemove = $em->find("IgnConfigurateurBundle:Field", array(
+		$fieldToRemove = $em->find("IgnOGAMConfigurateurBundle:Field", array(
 			"data" => $field,
 			"format" => $format
 		));

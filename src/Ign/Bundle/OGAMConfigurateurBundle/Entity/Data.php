@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Data
  *
  * @ORM\Table(name="metadata_work.data")
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\DataRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository")
  * @UniqueEntity("name", message = "data.name.unique")
  */
 class Data {
@@ -174,10 +174,10 @@ class Data {
 	/**
 	 * Set unit
 	 *
-	 * @param \Ign\Bundle\ConfigurateurBundle\Entity\Unit $unit
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Unit $unit
 	 * @return Data
 	 */
-	public function setUnit(\Ign\Bundle\ConfigurateurBundle\Entity\Unit $unit = null) {
+	public function setUnit(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Unit $unit = null) {
 		$this->unit = $unit;
 
 		return $this;
@@ -186,7 +186,7 @@ class Data {
 	/**
 	 * Get unit
 	 *
-	 * @return \Ign\Bundle\ConfigurateurBundle\Entity\Unit
+	 * @return \Ign\Bundle\OGAMConfigurateurBundle\Entity\Unit
 	 */
 	public function getUnit() {
 		return $this->unit;
@@ -196,10 +196,10 @@ class Data {
     /**
      * Add fields
      *
-     * @param \Ign\Bundle\ConfigurateurBundle\Entity\Field $fields
+     * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields
      * @return Data
      */
-    public function addField(\Ign\Bundle\ConfigurateurBundle\Entity\Field $fields)
+    public function addField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields)
     {
         $this->fields[] = $fields;
 
@@ -209,9 +209,9 @@ class Data {
     /**
      * Remove fields
      *
-     * @param \Ign\Bundle\ConfigurateurBundle\Entity\Field $fields
+     * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields
      */
-    public function removeField(\Ign\Bundle\ConfigurateurBundle\Entity\Field $fields)
+    public function removeField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields)
     {
         $this->fields->removeElement($fields);
     }

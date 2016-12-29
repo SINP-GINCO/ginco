@@ -1,18 +1,18 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileField;
-use Ign\Bundle\ConfigurateurBundle\Entity\Field;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\FileFormatType;
-use Ign\Bundle\ConfigurateurBundle\Form\DatasetImportType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,13 +30,13 @@ class FileFieldController extends Controller {
 	public function addFieldsAction($datasetId, $addedFields, $fields = null, $mandatorys = null, $masks = null, $orders = null, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
-		$file = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
-		$format = $em->getRepository('IgnConfigurateurBundle:Format')->find($format);
+		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
 
 		// get position for the added field (use if it is a new one)
-		$existingFields = $em->getRepository('IgnConfigurateurBundle:FileField')->findBy(array(
+		$existingFields = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findBy(array(
 			'fileFormat' => $format->getFormat()
 		), array(
 			'position' => 'DESC'
@@ -64,7 +64,7 @@ class FileFieldController extends Controller {
 
 			if ($dataField !== null) {
 				// check if the field has already been added to keep is old position
-				$existingField = $em->getRepository('IgnConfigurateurBundle:FileField')->findOneBy(array(
+				$existingField = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
 					'fileFormat' => $format->getFormat(),
 					'data' => $dataField->getName()
 				));
@@ -128,10 +128,10 @@ class FileFieldController extends Controller {
 	public function updateFieldsAction($datasetId, $fields, $mandatorys = null, $masks = null, $orders = null, $format, $toMapping = false) {
 		$em = $this->getDoctrine()->getManager();
 
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
-		$file = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
-		$format = $em->getRepository('IgnConfigurateurBundle:Format')->find($format);
+		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
 
 		// Handle the name of the fields
 		$data = explode(",", $fields);
@@ -210,9 +210,9 @@ class FileFieldController extends Controller {
 	public function removeAllFieldsAction($datasetId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$fileFieldRepository = $em->getRepository('IgnConfigurateurBundle:FileField');
-		$fieldRepository = $em->getRepository('IgnConfigurateurBundle:Field');
-		$mappingRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
+		$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
+		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
+		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
 
 		$mappingRepository->removeAllByFileFormat($format);
 		$fileFieldRepository->deleteAllByFileFormat($format);
@@ -235,12 +235,12 @@ class FileFieldController extends Controller {
 	public function removeFieldAction($datasetId, $field, $fields = null, $mandatorys = null, $masks = null, $orders = null, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$fileFieldToRemove = $em->getRepository('IgnConfigurateurBundle:FileField')->findOneBy(array(
+		$fileFieldToRemove = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
 			"data" => $field,
 			"fileFormat" => $format
 		));
 
-		$fieldToRemove = $em->find("IgnConfigurateurBundle:Field", array(
+		$fieldToRemove = $em->find("IgnOGAMConfigurateurBundle:Field", array(
 			"data" => $field,
 			"format" => $format
 		));
@@ -258,7 +258,7 @@ class FileFieldController extends Controller {
 		$orders = explode(',', $orders);
 
 		// Delete mapping relations first
-		$mappingRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
+		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
 		$mappingRepository->removeAllByFileField($format, $field);
 
 		// Remove from FileField

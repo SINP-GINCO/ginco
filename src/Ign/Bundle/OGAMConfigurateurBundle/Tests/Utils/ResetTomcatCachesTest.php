@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Utils\ResetTomcatCaches;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ResetTomcatCaches;
 
 /**
  * Test class for resetTomcatCaches service.
@@ -26,7 +26,7 @@ class ResetTomcatCachesTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ResetTomcatCaches::performRequest
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ResetTomcatCaches::performRequest
 	 * @requires PHP 5.5
 	 */
 	public function testperformRequestFalse() {
@@ -42,7 +42,7 @@ class ResetTomcatCachesTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ResetTomcatCaches::performRequest
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ResetTomcatCaches::performRequest
 	 * @requires PHP 5.5
 	 */
 	public function testperformRequestTrue() {

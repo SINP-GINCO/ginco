@@ -1,10 +1,10 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableTree;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableTree;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class TableTreeRepositoryTest extends ConfiguratorTest {
 
@@ -28,7 +28,7 @@ class TableTreeRepositoryTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 		
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:TableTree');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableTree');
 	}
 
 	public function testfindChildTablesByTableFormat() {

@@ -2,7 +2,7 @@
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Utils;
 
 use Ign\Bundle\GincoConfigurateurBundle\Utils\TablesGeneration;
-use Ign\Bundle\ConfigurateurBundle\Tests\Utils\TablesGenerationTest as TablesGenerationTestBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils\TablesGenerationTest as TablesGenerationTestBase;
 
 /**
  * This test class is for custom TablesGenerationTest

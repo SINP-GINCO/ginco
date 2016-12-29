@@ -1,11 +1,11 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 
 class TableControllerTest extends ConfiguratorTest {
 
@@ -29,7 +29,7 @@ class TableControllerTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:TableFormat');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
 	}
 
 	/**
@@ -38,7 +38,7 @@ class TableControllerTest extends ConfiguratorTest {
 	 * Tests fails now because of this.
 	 */
 	public function untestNewWithCorrectName() {
-		$modelName = $this->em->getRepository('IgnConfigurateurBundle:Model')
+		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('2')
 			->getName();
 		$crawler = $this->client->request('GET', '/models/2/tables/new/');
@@ -66,7 +66,7 @@ class TableControllerTest extends ConfiguratorTest {
 
 		$tableFormat = $table->getFormat();
 
-		$tableFieldRepository = $this->em->getRepository('IgnConfigurateurBundle:TableField');
+		$tableFieldRepository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($tableFormat);
 		$numberOfFields = sizeof($tableFields);
 
@@ -77,7 +77,7 @@ class TableControllerTest extends ConfiguratorTest {
 		$this->assertTrue(in_array('OGAM_ID_' . $tableFormat, $datas));
 
 		// Check that this data exists in Data table
-		$ogamId = $this->em->getRepository('IgnConfigurateurBundle:Data')->find('OGAM_ID_' . $tableFormat);
+		$ogamId = $this->em->getRepository('IgnOGAMConfigurateurBundle:Data')->find('OGAM_ID_' . $tableFormat);
 		$this->assertFalse($ogamId == null);
 	}
 
@@ -98,7 +98,7 @@ class TableControllerTest extends ConfiguratorTest {
 	}
 
 	public function testEditToTableNameAlreadyExistingInSameModel() {
-		$modelName = $this->em->getRepository('IgnConfigurateurBundle:Model')
+		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('3')
 			->getName();
 		$crawler = $this->client->request('GET', '/models/3/tables/table/edit/');
@@ -125,7 +125,7 @@ class TableControllerTest extends ConfiguratorTest {
 	 * Tests fails now because of this.
 	 */
 	public function untestNewTableWhichAlreadyExistsInSameModel() {
-		$modelName = $this->em->getRepository('IgnConfigurateurBundle:Model')
+		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('3')
 			->getName();
 		$crawler = $this->client->request('GET', '/models/3/tables/new/');
@@ -156,7 +156,7 @@ class TableControllerTest extends ConfiguratorTest {
 	 * Tests fails now because of this.
 	 */
 	public function untestNewTableWhichAlreadyExistsInSameModelAndWithoutDescription() {
-		$modelName = $this->em->getRepository('IgnConfigurateurBundle:Model')
+		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('3')
 			->getName();
 		$crawler = $this->client->request('GET', '/models/3/tables/new/');
@@ -181,7 +181,7 @@ class TableControllerTest extends ConfiguratorTest {
 	 * Tests fails now because of this.
 	 */
 	public function untestNewTableWhichAlreadyExistsInAnotherModel() {
-		$model = $this->em->getRepository('IgnConfigurateurBundle:Model')->find('2');
+		$model = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')->find('2');
 
 		$crawler = $this->client->request('GET', '/models/2/tables/new/');
 		$form = $crawler->filter('form[name=ign_bundle_configurateurbundle_table_format_edit]')->form();
@@ -295,7 +295,7 @@ class TableControllerTest extends ConfiguratorTest {
 	 * Tests fails now because of this.
 	 */
 	public function untestNewChildTable() {
-		$modelName = $this->em->getRepository('IgnConfigurateurBundle:Model')
+		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('2')
 			->getName();
 		$crawler = $this->client->request('GET', '/models/2/tables/child_table/edit/');
@@ -307,13 +307,13 @@ class TableControllerTest extends ConfiguratorTest {
 		$crawler = $this->client->submit($form);
 
 		// Check primary key of the parent table is now in table fields
-		$tableFieldRepository = $this->em->getRepository('IgnConfigurateurBundle:TableField');
+		$tableFieldRepository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat('child_table');
 		$datas = array_column($tableFields, 'fieldName');
 		$this->assertTrue(in_array('OGAM_ID_' . $parentFormat, $datas));
 
 		// Check tables relation is put in table_tree with correct join_key
-		$tableTrees = $this->em->getRepository('IgnConfigurateurBundle:TableTree')->findBy(array(
+		$tableTrees = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableTree')->findBy(array(
 			"childTable" => 'child_table',
 			"parentTable" => $parentFormat
 		));
@@ -411,7 +411,7 @@ class TableControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\TableController::viewAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\TableController::viewAction
 	 */
 	public function testViewWithParent() {
 		$crawler = $this->client->request('GET', '/models/4/tables/table_view2/view/');
@@ -426,7 +426,7 @@ class TableControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\TableController::viewAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\TableController::viewAction
 	 */
 	public function testViewWithField() {
 		$crawler = $this->client->request('GET', '/models/4/tables/table_view1/view/');

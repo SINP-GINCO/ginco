@@ -6,7 +6,7 @@
 
     <!--
     <services>
-        <service id="ign_configurateur.example" class="Ign\Bundle\ConfigurateurBundle\Example">
+        <service id="ign_configurateur.example" class="Ign\Bundle\OGAMConfigurateurBundle\Example">
             <argument type="service" id="service_id" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>

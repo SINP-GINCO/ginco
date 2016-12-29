@@ -1,12 +1,12 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class DatasetImportControllerTest extends ConfiguratorTest {
 
@@ -30,11 +30,11 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:Dataset');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::newAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::newAction
 	 */
 	public function testNew() {
 		$crawler = $this->client->request('GET', '/datasetsimport/new/');
@@ -53,7 +53,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::editAction
 	 */
 	public function testEdit() {
 		$crawler = $this->client->request('GET', '/datasetsimport/import_model_to_edit/edit/');
@@ -82,7 +82,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::editAction
 	 */
 	public function testEditWithMappings() {
 		$conn = $this->container->get('database_connection');
@@ -117,7 +117,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::editAction
 	 */
 	public function testEditWithoutMappings() {
 		$crawler = $this->client->request('GET', '/datasetsimport/mapping_2/edit');
@@ -143,7 +143,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	 * Case where an import model already exists with a certain name.
 	 * Same name is used to edit another import model but with different casing.
 	 * This should prompt an error message.
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::editAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::editAction
 	 */
 	public function testEditWithCaseControl() {
 		$crawler = $this->client->request('GET', '/datasetsimport/import_model_to_edit/edit/');
@@ -160,7 +160,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::deleteAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::deleteAction
 	 */
 	public function testDelete() {
 		$conn = $this->container->get('database_connection');
@@ -195,7 +195,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	 * - try to publish a complete import model, but unlinked to data model, fails
 	 * - try to publish an import model with a file, a field, a mapping, and linked to a published data model, succeeds
 	 *
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::publishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::publishAction
 	 */
 	public function untestPublishImportModelScenario() {
 		// First, create and publish a new data model (see ModelControllerTest::testPublishModelScenario
@@ -204,7 +204,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 		$modelName = "My model to publish";
 		$form['ign_bundle_configurateurbundle_model[name]'] = $modelName;
 		$crawler = $this->client->submit($form);
-		$model = $this->em->getRepository('IgnConfigurateurBundle:Model')->findOneByName($modelName);
+		$model = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')->findOneByName($modelName);
 		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/tables/new/');
 		$form = $crawler->selectButton('Enregistrer')->form();
 		$form['ign_bundle_configurateurbundle_table_format_new[label]'] = "table_for_model_to_publish";
@@ -297,7 +297,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::publishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::publishAction
 	 */
 	public function testPublishFalseImportModel() {
 		$crawler = $this->client->request('GET', '/datasetsimport/false_id/publish/');
@@ -311,7 +311,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::unpublishAction
 	 */
 	public function testUnpublishImportModel() {
 		$crawler = $this->client->request('GET', '/datasetsimport/5/unpublish');
@@ -326,7 +326,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::unpublishAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::unpublishAction
 	 */
 	public function testUnpublishFalseImportModel() {
 		$crawler = $this->client->request('GET', '/datasetsimport/false_id/unpublish');
@@ -340,7 +340,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::viewAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::viewAction
 	 */
 	public function testViewAction() {
 		$crawler = $this->client->request('GET', '/datasetsimport/6/view');
@@ -358,7 +358,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\DatasetImportController::updateFileOrderAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::updateFileOrderAction
 	 */
 	public function testUpdateFileOrderAction() {
 		$crawler = $this->client->request('GET', '/datasetsimport/id_ordered_dataset/edit');
@@ -368,7 +368,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 		$orders = '2,3,1';
 		$crawler = $this->client->request('GET', '/datasetsimport/id_ordered_dataset/edit/fields/update/' . $formats . '/' . $orders . '/');
 		// Check that order has effectively changed
-		$dataset = $this->em->getRepository('IgnConfigurateurBundle:Dataset')->find('id_ordered_dataset');
+		$dataset = $this->em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find('id_ordered_dataset');
 		foreach ($dataset->getFiles() as $file) {
 			if ($file->getFormat() == 'file_order_a') {
 				$this->assertEquals('2', $file->getPosition());

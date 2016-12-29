@@ -1,9 +1,9 @@
 <?php
 
-namespace Ign\Bundle\ConfigurateurBundle;
+namespace Ign\Bundle\OGAMConfigurateurBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class IgnConfigurateurBundle extends Bundle
+class IgnOGAMConfigurateurBundle extends Bundle
 {
 }

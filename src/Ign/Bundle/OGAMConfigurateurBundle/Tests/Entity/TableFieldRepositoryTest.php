@@ -1,10 +1,10 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Modele;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Modele;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
 
 class TableFieldRepositoryTest extends WebTestCase {
 
@@ -22,7 +22,7 @@ class TableFieldRepositoryTest extends WebTestCase {
 	}
 
 	public function testFindAll() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:TableField');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$fields = $repository->findAll();
 		$this->assertTrue(count($fields) > 0);
 	}
@@ -31,7 +31,7 @@ class TableFieldRepositoryTest extends WebTestCase {
 	 * TODO complete the test with assertions.
 	 */
 	public function testDeleteAllByTableFormat() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:TableField');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$result = $repository->deleteAllByTableFormat('RAW_DATA_16_TABLE_1_DATA');
 		// echo $result;
 	}
@@ -40,11 +40,11 @@ class TableFieldRepositoryTest extends WebTestCase {
 	 * TODO complete the test with assertions.
 	 */
 	public function testDeleteNonTechnicalByTableFormat() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:TableField');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$result = $repository->deleteNonTechnicalByTableFormat('RAW_DATA_16_TABLE_1_DATA');
 		$this->em->flush();
 
-		// $tableFieldRepository = $this->em->getRepository('IgnConfigurateurBundle:TableField');
+		// $tableFieldRepository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		// $tableFields = $tableFieldRepository->findFieldsByTableFormat(RAW_DATA_16_TABLE_1_DATA);
 		// $numberOfFields = sizeof($tableFields);
 
@@ -57,7 +57,7 @@ class TableFieldRepositoryTest extends WebTestCase {
 	 * TODO complete the test with assertions.
 	 */
 	public function testFindFieldsByTableFormat() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:TableField');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$result = $repository->findFieldsByTableFormat('_7895_DATA');
 		// echo sizeof($result);
 	}

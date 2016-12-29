@@ -1,14 +1,14 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Ign\Bundle\ConfigurateurBundle\Entity\FieldMapping;
-use Ign\Bundle\ConfigurateurBundle\Form\FieldMappingType;
-use Ign\Bundle\ConfigurateurBundle\Form\FieldMappingAutoType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingAutoType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,8 +29,8 @@ class FieldMappingController extends Controller {
 	 */
 	public function manageMappingsAction($datasetId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager();
-		$file = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
 		// Parameters to pass to the template
 		$params = array(
@@ -45,7 +45,7 @@ class FieldMappingController extends Controller {
 
 		$params = array_merge($params, $this->manualMappingForm($dataset, $file, $request));
 
-		return $this->render('IgnConfigurateurBundle:FieldMapping:mappings.html.twig', $params);
+		return $this->render('IgnOGAMConfigurateurBundle:FieldMapping:mappings.html.twig', $params);
 	}
 
 	/**
@@ -57,14 +57,14 @@ class FieldMappingController extends Controller {
 	public function listMappings(FileFormat $file)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$fieldMappings = $em->getRepository('IgnConfigurateurBundle:FieldMapping')->findMappings($file->getFormat(), 'FILE');
+		$fieldMappings = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findMappings($file->getFormat(), 'FILE');
 		$fms = $fieldMappings;
 
 		// Rewrite mappings on "OGAM_ID_..." (keys)
 		foreach ($fieldMappings as $index => $fm) {
 			if (strpos($fm['dstData'], TableFormat::PK_PREFIX )=== 0) {
 				$format = substr($fm['dstData'], strlen(TableFormat::PK_PREFIX));
-				$tableFormat = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
+				$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 				$tableLabel = $tableFormat->getLabel();
 				// Primary key or foreign key ?
 				if ($format == $fm['dstFormat'])
@@ -150,7 +150,7 @@ class FieldMappingController extends Controller {
 	 */
 	public function newAction($datasetId, $fileFormat, Request $request) {
 		$em = $this->getDoctrine()->getManager();
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 		$model = $dataset->getModel();
 
 		// Create fieldMapping form
@@ -199,7 +199,7 @@ class FieldMappingController extends Controller {
 	 */
 	public function editAction($datasetId, $fileFormat, $field, $table, $tableField, Request $request) {
 		// First delete the mapping
-		$this->forward('IgnConfigurateurBundle:FieldMapping:remove', array(
+		$this->forward('IgnOGAMConfigurateurBundle:FieldMapping:remove', array(
 				'datasetId' => $datasetId,
 				'fileFormat' => $fileFormat,
 				'field' => $field,
@@ -227,7 +227,7 @@ class FieldMappingController extends Controller {
 	public function removeAction($datasetId, $fileFormat, $field, $table, $tableField) {
 		$em = $this->getDoctrine()->getManager();
 
-		$mapping = $em->getRepository("IgnConfigurateurBundle:FieldMapping")->findOneBy(array(
+		$mapping = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping")->findOneBy(array(
 			"srcFormat" => $fileFormat,
 			'srcData' => $field,
 			'dstFormat' => $table,
@@ -253,7 +253,7 @@ class FieldMappingController extends Controller {
 	public function removeAllAction($datasetId, $fileFormat) {
 		$em = $this->getDoctrine()->getManager();
 
-		$em->getRepository("IgnConfigurateurBundle:FieldMapping")->removeAllByFileFormatAndType($fileFormat, 'FILE');
+		$em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping")->removeAllByFileFormatAndType($fileFormat, 'FILE');
 
 		$this->addFlash('notice', 'Tous les mappings du fichier ont bien été supprimés.');
 
@@ -279,7 +279,7 @@ class FieldMappingController extends Controller {
 
 		$em = $this->getDoctrine()->getManager();
 
-		$dataset = $em->getRepository('IgnConfigurateurBundle:Dataset')->find($datasetId);
+		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
 
 		// Create Auto-Field Mapping form
@@ -344,15 +344,15 @@ class FieldMappingController extends Controller {
 	{
 		$em = $this->getDoctrine()->getManager();
 
-		$tableFields = $em->getRepository('IgnConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
+		$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
 
-		$fieldMappings = $em->getRepository('IgnConfigurateurBundle:FieldMapping')->findMappings($fileFormat, 'FILE');
-		$notMappedFields = $em->getRepository('IgnConfigurateurBundle:FieldMapping')->findNotMappedFields($fileFormat, 'FILE');
+		$fieldMappings = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findMappings($fileFormat, 'FILE');
+		$notMappedFields = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findNotMappedFields($fileFormat, 'FILE');
 
 		// Generate a report
 		$report = array(
-				'fileLabel' => $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($fileFormat)->getLabel(),
-				'tableLabel' => $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($tableFormat)->getLabel(),
+				'fileLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($fileFormat)->getLabel(),
+				'tableLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat)->getLabel(),
 				'already_mapped' => $fieldMappings,
 				'to_map' => $notMappedFields,
 				'auto_mapped' => array(),
@@ -395,15 +395,15 @@ class FieldMappingController extends Controller {
 				$em->flush();
 				$report['auto_mapped'][] = $srcData;
 			} else if (!$destField) {
-				$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+				$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 				$report['not_found_in_table'][] = $dataRepository->find($srcData)->getLabel();
 			}
 		}
 
 		// Complete report with not-mapped fields in file and destination table :
 		$getData = function($arr) { return $arr['label']; };
-		$report['not_mapped_in_file'] = array_map($getData, $em->getRepository('IgnConfigurateurBundle:FieldMapping')->findNotMappedFields($fileFormat, 'FILE'));
-		$report['not_mapped_in_table'] = array_map($getData, $em->getRepository('IgnConfigurateurBundle:FieldMapping')->findNotMappedFieldsInTable($tableFormat, 'FILE'));
+		$report['not_mapped_in_file'] = array_map($getData, $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findNotMappedFields($fileFormat, 'FILE'));
+		$report['not_mapped_in_table'] = array_map($getData, $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findNotMappedFieldsInTable($tableFormat, 'FILE'));
 
 		return $this->generateReportAutoMapping($report);
 	}

@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Utils\ModelDuplication;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 /**
  * Test class for model duplication service (see Story #36).
@@ -46,12 +46,12 @@ class ModelDuplicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelDuplication::duplicateModel
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication::duplicateModel
 	 */
 	public function testDuplicateModel() {
 		$md = $this->md;
 		// Test with a bad id
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:Model');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model');
 
 		$modelWithBadId = $repository->find('5');
 		$modelWithBadId->addId('badId');
@@ -73,10 +73,10 @@ class ModelDuplicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ModelDuplication::updatePrimaryKeys
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication::updatePrimaryKeys
 	 */
 	public function testUpdatePrimaryKeys() {
-		$repository = $this->em->getRepository('IgnConfigurateurBundle:Model');
+		$repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$model = $repository->find('6');
 
 		$sql = "SELECT format from metadata_work.format WHERE format = ? ";

@@ -4,25 +4,25 @@ namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableSchema;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableField;
-use Ign\Bundle\ConfigurateurBundle\Entity\Field;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableTree;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\TableFormatType;
-use Ign\Bundle\ConfigurateurBundle\Form\TableUpdateType;
-use Ign\Bundle\ConfigurateurBundle\Form\TableUpdateFieldsType;
-use Ign\Bundle\ConfigurateurBundle\Form\ModelType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableTree;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateFieldsType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormError;
 use Assetic\Exception\Exception;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Ign\Bundle\ConfigurateurBundle\Controller\TableController as TableControllerBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\TableController as TableControllerBase;
 
 class TableController extends TableControllerBase {
 
@@ -50,20 +50,20 @@ class TableController extends TableControllerBase {
 	public function manageFieldsAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager();
 
-		$table = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
-		$model = $em->getRepository('IgnConfigurateurBundle:Model')->find($modelId);
+		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
+		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
 
 		if (!$table) {
 			$errMsg = "Aucune TABLE ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
 
-		$dataRepository = $em->getRepository('IgnConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 		// Get data dictionnary
 		$allFields = $dataRepository->findAllFields();
 		$fieldsForm = $this->createForm(TableUpdateFieldsType::class, null);
 		// Get table fields
-		$tableFieldRepository = $em->getRepository('IgnConfigurateurBundle:TableField');
+		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 		// Check if these fields are derived from a reference model
 		$referenceFields = $tableFieldRepository->findReferenceFields();
@@ -75,7 +75,7 @@ class TableController extends TableControllerBase {
 				$tableFields[$i]['ref'] = false;
 			}
 		}
-		return $this->render('IgnConfigurateurBundle:TableFormat:fields.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:TableFormat:fields.html.twig', array(
 			'table' => $table,
 			'allFields' => $allFields,
 			'tableFields' => $tableFields,

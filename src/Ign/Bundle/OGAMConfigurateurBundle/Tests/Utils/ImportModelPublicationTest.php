@@ -1,8 +1,8 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Utils;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\Utils\ImportModelPublication;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication;
 
 /**
  * Test class for import model publication service (see Story #211).
@@ -73,7 +73,7 @@ class ImportModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelPublication::importModelFilesAreMapped
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication::importModelFilesAreMapped
 	 */
 	public function testImportModelFilesAreMapped() {
 		$test = $this->imp->importModelFilesAreMapped('my_dataset');
@@ -83,7 +83,7 @@ class ImportModelPublicationTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Utils\ImportModelPublication::isPublishable
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication::isPublishable
 	 */
 	public function testIsPublishable() {
 		$test = $this->imp->isPublishable('my_dataset');

@@ -1,11 +1,11 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Tests\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\ConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
 
 class GincoFileControllerTest extends ConfiguratorTest {
 
@@ -65,7 +65,7 @@ class GincoFileControllerTest extends ConfiguratorTest {
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
-					FROM IgnConfigurateurBundle:FileField ff
+					FROM IgnOGAMConfigurateurBundle:FileField ff
 					WHERE ff.fileFormat = :fileFormat')->setParameters(array(
 			'fileFormat' => 'file_auto'
 		));
@@ -109,7 +109,7 @@ class GincoFileControllerTest extends ConfiguratorTest {
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
-					FROM IgnConfigurateurBundle:FileField ff
+					FROM IgnOGAMConfigurateurBundle:FileField ff
 					WHERE ff.fileFormat = :fileFormat')->setParameters(array(
 			'fileFormat' => 'file_auto'
 		));
@@ -159,7 +159,7 @@ class GincoFileControllerTest extends ConfiguratorTest {
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
-					FROM IgnConfigurateurBundle:FileField ff
+					FROM IgnOGAMConfigurateurBundle:FileField ff
 					WHERE ff.fileFormat = :fileFormat')->setParameters(array(
 			'fileFormat' => 'file_auto'
 		));

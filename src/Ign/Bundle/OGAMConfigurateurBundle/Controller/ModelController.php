@@ -1,21 +1,21 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableSchema;
-use Ign\Bundle\ConfigurateurBundle\Form\ModelType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
 use Symfony\Component\HttpFoundation\Request;
-use Ign\Bundle\ConfigurateurBundle\Form\ModelUploadType;
-use Ign\Bundle\ConfigurateurBundle\Form\TableFormatType;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\ConfigurateurBundle\Entity\Format;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelUploadType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Ign\Bundle\ConfigurateurBundle\Entity\TableField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
 
 class ModelController extends Controller {
 
@@ -25,7 +25,7 @@ class ModelController extends Controller {
 	 */
 	public function indexAction($models = null) {
 		$em = $this->getDoctrine()->getManager();
-		$repository = $em->getRepository('IgnConfigurateurBundle:Model');
+		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$models = $repository->findAllOrderedByName();
 		// Check if models are published and contains data
 		// And if they are publishable, ie: not published, at least one table, at least one non-technical field in each table
@@ -47,7 +47,7 @@ class ModelController extends Controller {
 			$modelsPermissions[$modelId]['deletableCode'] = $this->get('app.permissions')->getCode();
 		}
 		$uploadForm = $this->createForm(ModelUploadType::class);
-		return $this->render('IgnConfigurateurBundle:Model:index.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Model:index.html.twig', array(
 			'models' => $models,
 			'pubStates' => $modelsPubState,
 			'publishable' => $modelsPublishable,
@@ -67,7 +67,7 @@ class ModelController extends Controller {
 
 		$em = $this->getDoctrine()->getManager();
 
-		$schema = $em->getRepository('IgnConfigurateurBundle:TableSchema')->find("RAW_DATA");
+		$schema = $em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')->find("RAW_DATA");
 
 		if (!$schema) {
 			throw $this->createNotFoundException('schema not found in table_schema' . $schema);
@@ -88,7 +88,7 @@ class ModelController extends Controller {
 			));
 		}
 
-		return $this->render('IgnConfigurateurBundle:Model:new.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Model:new.html.twig', array(
 			'form' => $form->createView(),
 			'method' => 'Creation'
 		));
@@ -102,7 +102,7 @@ class ModelController extends Controller {
 	public function editAction($id, Request $request) {
 		$em = $this->getDoctrine()->getManager();
 
-		$modelRepository = $em->getRepository('IgnConfigurateurBundle:Model');
+		$modelRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$model = $modelRepository->find($id);
 
 		if (!$this->get('app.permissions')->isModelEditable($id)) {
@@ -120,8 +120,8 @@ class ModelController extends Controller {
 
 		// Delete the mappings of this model
 		$mappingsRemoved = false;
-		$fmRepository = $em->getRepository("IgnConfigurateurBundle:FieldMapping");
-		$tfRepository = $em->getRepository("IgnConfigurateurBundle:TableField");
+		$fmRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+		$tfRepository = $em->getRepository("IgnOGAMConfigurateurBundle:TableField");
 
 		foreach ($model->getTables() as $table) {
 			// Check if there are fields in the table
@@ -155,7 +155,7 @@ class ModelController extends Controller {
 
 		$tables = $model->getTables();
 
-		return $this->render('IgnConfigurateurBundle:Model:edit.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Model:edit.html.twig', array(
 			'modelForm' => $form->createView(),
 			'modelName' => $modelName,
 			'model' => $model,
@@ -176,7 +176,7 @@ class ModelController extends Controller {
 	public function publishAction($modelId) {
 		$model = $this->getDoctrine()
 			->getManager()
-			->getRepository('IgnConfigurateurBundle:Model')
+			->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find($modelId);
 		if ($model) {
 
@@ -245,7 +245,7 @@ class ModelController extends Controller {
 		$logger = $this->get('logger');
 		$model = $this->getDoctrine()
 			->getManager()
-			->getRepository('IgnConfigurateurBundle:Model')
+			->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find($modelId);
 		if ($model) {
 			// Check if model has data. If yes, then stop unpublishing
@@ -259,13 +259,13 @@ class ModelController extends Controller {
 				// Unpublish the import models
 				$importModelIds = $this->get('app.modelunpublication')->getImportModelsFromDataModel($modelId);
 				foreach ($importModelIds as $importModelId) {
-					$this->forward('IgnConfigurateurBundle:DatasetImport:unpublish', array(
+					$this->forward('IgnOGAMConfigurateurBundle:DatasetImport:unpublish', array(
 						'importModelId' => $importModelId,
 						'unpublishFromModel' => true
 					));
 					$importModelName = $this->getDoctrine()
 						->getManager()
-						->getRepository('IgnConfigurateurBundle:Dataset')
+						->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 						->find($importModelId)
 						->getLabel();
 					// If there is an error message, process it and stop the model unpublication
@@ -339,7 +339,7 @@ class ModelController extends Controller {
 	public function deleteAction($id) {
 		$em = $this->getDoctrine()->getManager();
 
-		$model = $em->getRepository('IgnConfigurateurBundle:Model')->find($id);
+		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($id);
 
 		if (!$this->get('app.permissions')->isModelDeletable($id)) {
 			$this->addFlash('error', $this->get('app.permissions')
@@ -352,11 +352,11 @@ class ModelController extends Controller {
 			foreach ($importModelIds as $importModelId) {
 				$importModelName = $this->getDoctrine()
 					->getManager()
-					->getRepository('IgnConfigurateurBundle:Dataset')
+					->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 					->find($importModelId)
 					->getLabel();
 
-				$this->forward('IgnConfigurateurBundle:DatasetImport:delete', array(
+				$this->forward('IgnOGAMConfigurateurBundle:DatasetImport:delete', array(
 					'id' => $importModelId
 				));
 
@@ -379,7 +379,7 @@ class ModelController extends Controller {
 			// TODO Delete the saisie models
 			// Delete the model
 			foreach ($model->getTables() as $table) {
-				$this->forward('IgnConfigurateurBundle:Table:delete', array(
+				$this->forward('IgnOGAMConfigurateurBundle:Table:delete', array(
 					'model_id' => $id,
 					'id' => $table->getFormat(),
 					'fromDeleteModel' => true
@@ -407,10 +407,10 @@ class ModelController extends Controller {
 		$form = $this->createForm(ModelUploadType::class);
 
 		if ($form->isValid()) {
-			return $this->forward('IgnConfigurateurBundle:Model:index');
+			return $this->forward('IgnOGAMConfigurateurBundle:Model:index');
 		}
 
-		return $this->render('IgnConfigurateurBundle:Model:upload.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Model:upload.html.twig', array(
 			'form' => $form->createView()
 		));
 	}
@@ -422,7 +422,7 @@ class ModelController extends Controller {
 	public function viewAction($id) {
 		$em = $this->getDoctrine()->getManager();
 
-		$modelRepository = $em->getRepository('IgnConfigurateurBundle:Model');
+		$modelRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$model = $modelRepository->find($id);
 		if (!$model) {
 			throw $this->createNotFoundException($this->get('translator')
@@ -434,7 +434,7 @@ class ModelController extends Controller {
 		$modelName = $model->getName();
 		$tables = $model->getTables();
 
-		return $this->render('IgnConfigurateurBundle:Model:view.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Model:view.html.twig', array(
 			'modelName' => $modelName,
 			'model' => $model,
 			'tables' => $tables,
@@ -448,7 +448,7 @@ class ModelController extends Controller {
 	public function duplicateAction($id, Request $request) {
 		$model = $this->getDoctrine()
 			->getManager()
-			->getRepository('IgnConfigurateurBundle:Model')
+			->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find($id);
 		if ($model) {
 
@@ -482,7 +482,7 @@ class ModelController extends Controller {
 				return $this->redirectToRoute('configurateur_model_index');
 			}
 
-			return $this->render('IgnConfigurateurBundle:Model:new.html.twig', array(
+			return $this->render('IgnOGAMConfigurateurBundle:Model:new.html.twig', array(
 				'form' => $form->createView(),
 				'method' => 'Duplication'
 			));

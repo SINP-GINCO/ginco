@@ -1,11 +1,11 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Controller;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Ign\Bundle\ConfigurateurBundle\Entity\Data;
-use Ign\Bundle\ConfigurateurBundle\Form\DataType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DataType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -25,12 +25,12 @@ class DataController extends Controller {
 	 */
 	public function indexAction() {
 		$em = $this->getDoctrine()->getManager();
-		$entities = $em->getRepository('IgnConfigurateurBundle:Data')->findAll();
+		$entities = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAll();
 
-		$editableDatas = $em->getRepository('IgnConfigurateurBundle:Data')->findAllNotRelatedToFields();
-		$notEditableDatas = $em->getRepository('IgnConfigurateurBundle:Data')->findAllRelatedToFields();
+		$editableDatas = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAllNotRelatedToFields();
+		$notEditableDatas = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAllRelatedToFields();
 
-		return $this->render('IgnConfigurateurBundle:Data:index.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Data:index.html.twig', array(
 			'datas' => $entities,
 			'editable' => $editableDatas,
 			'not_editable' => $notEditableDatas
@@ -62,11 +62,11 @@ class DataController extends Controller {
 			if ($form->has('add_to_format')) {
 				// Checks if the table/file exists and is editable
 				$formatSubmitted = $form->get('add_to_format')->getData();
-				$theFormat = $em->getRepository('IgnConfigurateurBundle:Format')->find($formatSubmitted);
+				$theFormat = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($formatSubmitted);
 				$type = ($theFormat) ? $theFormat->getType() : "";
 				switch ($type) {
 					case 'TABLE':
-						$tableFormat = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($formatSubmitted);
+						$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($formatSubmitted);
 						if ($tableFormat) {
 							// Do you have the right to modify the tableFormat object ?
 							$modelsPubState = $this->get('app.modelPublication')->isPublished($tableFormat->getModel()
@@ -79,7 +79,7 @@ class DataController extends Controller {
 						}
 						break;
 					case 'FILE':
-						$fileFormat = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($formatSubmitted);
+						$fileFormat = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($formatSubmitted);
 						if ($fileFormat) {
 							// Do you have the right to modify the tableFormat object ?
 							$importModelPubState = $this->get('app.importmodelPublication')->isPublished($fileFormat->getDataset()
@@ -133,7 +133,7 @@ class DataController extends Controller {
 			}
 		}
 
-		return $this->render('IgnConfigurateurBundle:Data:edit.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Data:edit.html.twig', array(
 			'title' => $this->get('translator')
 				->trans('data.add.title'),
 			'data' => $entity,
@@ -162,11 +162,11 @@ class DataController extends Controller {
 		if ($format) {
 			// Checks if the table/file exists and is editable
 			$em = $this->getDoctrine()->getManager();
-			$theFormat = $em->getRepository('IgnConfigurateurBundle:Format')->find($format);
+			$theFormat = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
 			$type = ($theFormat) ? $theFormat->getType() : "";
 			switch ($type) {
 				case 'TABLE':
-					$tableFormat = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($format);
+					$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 					if ($tableFormat) {
 						// Do you have the right to modify the tableFormat object ?
 						$modelsPubState = $this->get('app.modelPublication')->isPublished($tableFormat->getModel()
@@ -184,7 +184,7 @@ class DataController extends Controller {
 					}
 					break;
 				case 'FILE':
-					$fileFormat = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($format);
+					$fileFormat = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 					if ($fileFormat) {
 						// Do you have the right to modify the tableFormat object ?
 						$importModelPubState = $this->get('app.importmodelPublication')->isPublished($fileFormat->getDataset()
@@ -215,7 +215,7 @@ class DataController extends Controller {
 	 */
 	public function showAction($id) {
 		$em = $this->getDoctrine()->getManager();
-		$entity = $em->getRepository('IgnConfigurateurBundle:Data')->find($id);
+		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
 
 		if (!$entity) {
 			throw $this->createNotFoundException('Aucun champ du dictionnaire de données trouvé pour cet id : ' . $id);
@@ -229,7 +229,7 @@ class DataController extends Controller {
 			// Gets the logical name of the format from Format obj
 			$formatName = $field->getFormat()->getFormat();
 			// Now gets the TableFormat object of the same logical name
-			$tableFormat = $em->getRepository('IgnConfigurateurBundle:TableFormat')->find($formatName);
+			$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($formatName);
 			if ($tableFormat) {
 				$tables[$index]['table'] = $tableFormat;
 				$tables[$index]['model'] = $tableFormat->getModel();
@@ -241,7 +241,7 @@ class DataController extends Controller {
 				$tables[$index]['editable'] = (!$modelsPubState && !$modelsHasData);
 			}
 			// And/or the FileFormat object of the same logical name
-			$fileFormat = $em->getRepository('IgnConfigurateurBundle:FileFormat')->find($formatName);
+			$fileFormat = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($formatName);
 			if ($fileFormat) {
 				$files[$index]['file'] = $fileFormat;
 				$files[$index]['dataset'] = $fileFormat->getDataset();
@@ -252,7 +252,7 @@ class DataController extends Controller {
 			}
 		}
 
-		return $this->render('IgnConfigurateurBundle:Data:show.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Data:show.html.twig', array(
 			'title' => $this->get('translator')
 				->trans('data.show.title', array(
 				'%dataName%' => $entity->getName()
@@ -270,7 +270,7 @@ class DataController extends Controller {
 	public function editAction($id, Request $request) {
 		$em = $this->getDoctrine()->getManager();
 
-		$entity = $em->getRepository('IgnConfigurateurBundle:Data')->find($id);
+		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
 
 		if (!$entity) {
 			throw $this->createNotFoundException('Aucun champ du dictionnaire de données trouvé pour cet id : ' . $id);
@@ -300,7 +300,7 @@ class DataController extends Controller {
 			return $this->redirectToRoute('configurateur_data_index');
 		}
 
-		return $this->render('IgnConfigurateurBundle:Data:edit.html.twig', array(
+		return $this->render('IgnOGAMConfigurateurBundle:Data:edit.html.twig', array(
 			'title' => $this->get('translator')
 				->trans('data.edit.title'),
 			'data' => $entity,
@@ -338,7 +338,7 @@ class DataController extends Controller {
 	public function deleteAction($id) {
 		$em = $this->getDoctrine()->getManager();
 
-		$entity = $em->getRepository('IgnConfigurateurBundle:Data')->find($id);
+		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
 		if (!$entity) {
 			throw $this->createNotFoundException('Aucun champ du dictionnaire de données trouvé pour cet id : ' . $id);
 		}

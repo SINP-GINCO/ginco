@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
  * FileField
  *
  * @ORM\Table(name="metadata_work.file_field")
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\FileFieldRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFieldRepository")
  */
 class FileField {
 

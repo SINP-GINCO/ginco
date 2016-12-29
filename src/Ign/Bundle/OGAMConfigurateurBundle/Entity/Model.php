@@ -1,14 +1,14 @@
 <?php
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
-use Ign\Bundle\ConfigurateurBundle\Validator\CaseInsensitive;
+use Ign\Bundle\OGAMConfigurateurBundle\Validator\CaseInsensitive;
 
 /**
  * @ORM\Table(name="metadata_work.model")
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\ModelRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\ModelRepository")
  * @ORM\HasLifecycleCallbacks()
  * @CaseInsensitive(message = "model.name.caseinsensitive")
  */

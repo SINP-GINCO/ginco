@@ -1,12 +1,12 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\ConfigurateurBundle\Entity;
-use Ign\Bundle\ConfigurateurBundle\Entity\Model;
-use Ign\Bundle\ConfigurateurBundle\Controller\ModelController;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Ign\Bundle\ConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 /**
  * TODO correct issue on delete complex model
@@ -40,11 +40,11 @@ class GincoModelControllerTest extends ConfiguratorTest {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
 
-		$this->repository = $this->em->getRepository('IgnConfigurateurBundle:Model');
+		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model');
 	}
 
 	/**
-	 * @covers Ign\Bundle\ConfigurateurBundle\Controller\ModelController::newAction
+	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::newAction
 	 */
 	public function testNewWithCorrectName() {
 		$crawler = $this->client->request('GET', '/models/new/');

@@ -5,7 +5,7 @@ use Symfony\Component\DependencyInjection;
 use \Symfony\Component\Config\FileLocator;
 use Doctrine\DBAL\Connection;
 use Monolog\Logger;
-use Ign\Bundle\ConfigurateurBundle\Utils\TablesGeneration as TablesGenerationBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\TablesGeneration as TablesGenerationBase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\DBAL\DBALException;
 

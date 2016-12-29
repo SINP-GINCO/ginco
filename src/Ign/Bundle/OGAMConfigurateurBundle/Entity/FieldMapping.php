@@ -1,6 +1,6 @@
 <?php
 
-namespace Ign\Bundle\ConfigurateurBundle\Entity;
+namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="metadata_work.field_mapping")
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="Ign\Bundle\ConfigurateurBundle\Entity\FieldMappingRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMappingRepository")
  * @UniqueEntity(fields = {"dstData", "dstFormat", "srcFormat"}, message = "fieldMapping.unique")
  */
 class FieldMapping
