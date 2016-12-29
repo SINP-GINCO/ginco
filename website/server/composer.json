@@ -1,5 +1,5 @@
 {
-    "name": "gautam/igngincobundle",
+    "name": "igngincobundle",
     "license": "proprietary",
     "type": "project",
     "autoload": {
