@@ -14,7 +14,9 @@ class AppKernel extends Kernel {
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new Ign\Bundle\GincoBundle\IgnGincoBundle(),
-			new Ign\Bundle\GincoBundle\OGAMBundle()
+			new Ign\Bundle\OGAMBundle\OGAMBundle(),
+			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
+			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle(),
 		);
 
 		if (in_array($this->getEnvironment(), array(
