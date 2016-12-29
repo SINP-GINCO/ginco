@@ -181,5 +181,5 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-ign_configurateur:
+ign_ogam_configurateur:
     database_name: "%database_name%"
