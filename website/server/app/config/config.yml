@@ -41,21 +41,12 @@ twig:
     globals: 
       configurationManager : '@ogam.configuration_manager'
 
-# Assetic Configuration
+# Assetic configuration
 assetic:
-    debug:          "%kernel.debug%"
-    use_controller: false
-    bundles:        []
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
     filters:
-        lessphp:
-             file: "%kernel.root_dir%/../vendor/oyejorge/less.php/lessc.inc.php"
-             apply_to: "\\.less$"
         cssrewrite: ~
-        yui_css:
-              jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
-        yui_js:
-              jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
-    assets: ~
 
 # Doctrine Configuration
 doctrine:
@@ -181,5 +172,5 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-ign_ogam_configurateur:
-    database_name: "%database_name%"
+#ign_ogam_configurateur:
+#    database_name: "%database_name%"
