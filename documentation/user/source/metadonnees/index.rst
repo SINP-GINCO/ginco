@@ -1,4 +1,4 @@
-.. Métadonnées
+.. _metadonnees_index:
 
 Les métadonnées
 ===============

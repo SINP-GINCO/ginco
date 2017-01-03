@@ -1,7 +1,7 @@
-.. Importer des jeux de données et gérer les imports
+.. _gerer_jeux_de_donnees_page:
 
-Gérer les de jeux de données
-====================================
+Gérer les jeux de données
+=========================
 
 Importer un nouveau jeu de données
 ----------------------------------

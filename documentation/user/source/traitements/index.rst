@@ -1,4 +1,4 @@
-.. Traitements
+.. _traitements_index:
 
 Traitements de standardisation des données
 ==========================================

@@ -1,4 +1,4 @@
-.. Le configurateur GINCO
+.. _configurateur_index:
 
 Le configurateur GINCO
 ======================

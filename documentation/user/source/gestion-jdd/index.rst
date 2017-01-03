@@ -1,4 +1,4 @@
-.. Import
+.. _gestion_jdd_index:
 
 Gestion des jeux de données
 ===========================
