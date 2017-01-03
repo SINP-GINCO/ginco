@@ -2,8 +2,8 @@ set search_path = website;
 
 DELETE FROM predefined_request_group_asso;
 DELETE FROM predefined_request_group;
-DELETE FROM predefined_request_criteria;
-DELETE FROM predefined_request_result;
+DELETE FROM predefined_request_criterion;
+DELETE FROM predefined_request_column;
 DELETE FROM predefined_request;
 
 
@@ -21,7 +21,7 @@ INSERT INTO predefined_request (name, schema_code, dataset_id, label, definition
 INSERT INTO predefined_request (name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_producteur', 'RAW_DATA', 'dataset_2', 'par  organisme producteur de données', null,  now(), null);
 INSERT INTO predefined_request (name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_localisation', 'RAW_DATA', 'dataset_2', 'par localisation', null,  now(), null);
 
-INSERT INTO predefined_request (request_name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_donnees_a_sensibiliser', 'RAW_DATA', 'dataset_2', 'données à sensibiliser', 'données requérant une intervention manuelle',  now(), null);
+INSERT INTO predefined_request (name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_donnees_a_sensibiliser', 'RAW_DATA', 'dataset_2', 'données à sensibiliser', 'données requérant une intervention manuelle',  now(), null);
 
 
 -- Configuration des requêtes prédéfinies
