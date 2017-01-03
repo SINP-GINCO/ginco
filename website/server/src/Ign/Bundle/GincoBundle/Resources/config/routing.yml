@@ -1,3 +1,0 @@
-ign_ginco_homepage:
-    path:     /
-    defaults: { _controller: IgnGincoBundle:Default:index }
