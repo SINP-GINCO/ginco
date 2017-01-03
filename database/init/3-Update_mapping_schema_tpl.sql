@@ -35,7 +35,7 @@ DELETE FROM layer_service;
 
 -- Define the services
 
-INSERT INTO layer_service (service_name, config) VALUES
+INSERT INTO layer_service (name, config) VALUES
   ('mapProxy','{"urls":["@ogam.map.services.url@/mapserverProxy.php?"],"params":{"SERVICE":"WMS","VERSION":"1.1.1","REQUEST":"GetMap"}}'),
   ('legend_mapProxy','{"urls":["@ogam.map.services.url@/mapserverProxy.php?"],"params":{"SERVICE":"WMS","VERSION":"1.1.1","REQUEST":"GetLegendGraphic"}}'),
   ('Local_MapProxy_WFS_GetFeature','{"urls":["@ogam.map.services.url@/mapserverProxy.php?"],"params":{"SERVICE":"WFS","VERSION":"1.1.0","REQUEST":"GetFeature"}}'),
@@ -120,9 +120,9 @@ INSERT INTO mapping.layer_tree_node VALUES (52, '5', 'plans IGN', NULL, 1, 0, 0,
 -- Forbid some layers for some profiles
 --
 
-DELETE FROM bounding_box;
--- Configure the bounding box for default data provider
-INSERT INTO bounding_box (provider_id, zoom_level, bb_xmin, bb_ymin, bb_xmax, bb_ymax) values ('1', '@bb.zoom@', '@bb.xmin@', '@bb.ymin@', '@bb.xmax@', '@bb.ymax@');
+DELETE FROM provider_map_params;
+-- Configure the provider_map_params for default data provider
+INSERT INTO provider_map_params (provider_id, zoom_level, bb_xmin, bb_ymin, bb_xmax, bb_ymax) values ('1', '@bb.zoom@', '@bb.xmin@', '@bb.ymin@', '@bb.xmax@', '@bb.ymax@');
 
 DELETE FROM bac_commune;
 DELETE FROM bac_departement;
