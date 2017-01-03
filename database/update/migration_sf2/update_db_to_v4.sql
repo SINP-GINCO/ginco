@@ -1,3 +1,6 @@
+/* Script add_extension_pg_trgm must be launched before this one */
+
+
 set search_path to mapping;
 
 /* Table mapping.scales is renamed in zoom_level, and columns are added */
@@ -92,7 +95,7 @@ ALTER TABLE layer_tree_node RENAME COLUMN name TO layer_name;
 ALTER TABLE layer_tree_node ADD column label VARCHAR(30);
 ALTER TABLE layer_tree_node ADD column definition VARCHAR(100);       
 
-ALTER TABLE layer SET name ='espaces_naturels' WHERE name ='Espaces naturels';
+UPDATE layer SET name='espaces_naturels' WHERE name ='Espaces naturels';
 
 ALTER TABLE layer_tree_node ADD FOREIGN KEY (layer_name) REFERENCES mapping.layer (name) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
@@ -112,12 +115,7 @@ COMMENT ON COLUMN layer_tree_node.checked_group IS 'Group of layers';
 
 /* Rename mapping.bounding_box to provider_map_params */
 ALTER TABLE bounding_box RENAME TO provider_map_params;
-ALTER TABLE provider_map_params ADD FOREIGN KEY (zoom_level) REFERENCES mapping.zoom_level (zoom_level) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION
-
-
-/* Add extension */
-CREATE EXTENSION pg_trgm;
-
+ALTER TABLE provider_map_params ADD FOREIGN KEY (zoom_level) REFERENCES mapping.zoom_level (zoom_level) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 
 set search_path to metadata, public;
@@ -155,7 +153,7 @@ DROP INDEX IF EXISTS mode_taxref_complete_name_idx;
 DROP INDEX IF EXISTS mode_taxref_vernacular_name_idx;
 
 CREATE INDEX mode_taxref_parent_code_idx ON metadata_work.mode_taxref USING btree (parent_code);  
-CREATE INDEX mode_taxref_name_idx ON metadata_work.mode_taxref USING gist (unaccent_immutable(lable) gist_trgm_ops);
+CREATE INDEX mode_taxref_name_idx ON metadata_work.mode_taxref USING gist (unaccent_immutable(label) gist_trgm_ops);
 CREATE INDEX mode_taxref_complete_name_idx ON metadata_work.mode_taxref USING gist (unaccent_immutable(complete_name) gist_trgm_ops);
 CREATE INDEX mode_taxref_vernacular_name_idx ON metadata_work.mode_taxref USING gist (unaccent_immutable(vernacular_name) gist_trgm_ops);
 
