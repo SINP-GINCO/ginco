@@ -11,7 +11,7 @@ security:
                 manager_name: website
 
     encoders:
-        OGAMBundle\Entity\Website\User:
+        Ign\Bundle\OGAMBundle\Entity\Website\User:
             id: ogam.challenge_response_encoder
 
     firewalls:
