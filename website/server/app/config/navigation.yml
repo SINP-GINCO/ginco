@@ -1,0 +1,100 @@
+# navigation.yml
+# Configuration of the breadcrumb (BreadcrumbConfig service)
+#
+# Define a recursive tree of the site pages which show the breadcrumb.
+# For every page, set attributes label an route (route name).
+# If the route needs mandatory parameters, add a defaults attributes, with the defaults parameters.
+# To define subpages, add a pages attribute.
+#
+# Example:
+#
+# home:
+#   label: Home
+#   route: homepage
+#   pages:
+#     page1:
+#       label: Page 1
+#       route: page_1
+#       defaults:
+#         id: 1
+#         name: x
+
+
+home:
+  label: Breadcrumb_Home
+  route: homepage
+  pages:
+    integration:
+      label: Breadcrumb_Integration
+      route: integration_home
+      pages:
+        newintegration:
+          label: Breadcrumb_Integration_New
+          route: integration_creation
+        integrationupload:
+          label: Breadcrumb_Integration_New
+          route: integration_validate_creation
+    harmonization:
+      label: Breadcrumb_Harmonization
+      route: harmonization_home
+    showharmonization:
+      label: Breadcrumb_Harmonization
+      route: harmonization_dashboard
+    visualisation:
+      label: Breadcrumb_Visualization
+      route: query_show-query-form
+    edition:
+      label: Breadcrumb_Edition
+      pages:
+        editionedit:
+          label: Breadcrumb_Edit_Data
+          route: dataedition_showEditData
+          defaults:
+            id: 1
+        editionadd:
+          label: Breadcrumb_Add_Data
+          route: dataedition_showAddData
+          defaults:
+            id: 1
+    checkconf:
+      label: Breadcrumb_Check_Configuration
+      route: checkconf_showconfig
+    user:
+      label: User
+      route: user_home
+    usermanagement:
+      label: Breadcrumb_Users_Administration
+      route: usermanagement_home
+      pages:
+        users:
+          label: Breadcrumb_Users
+          route: usermanagement_showUsers
+          pages:
+            edituser:
+              label: Breadcrumb_Edit_User
+              route: usermanagement_editUser
+            passworduser:
+              label: Breadcrumb_Change_Password
+              route: usermanagement_changePassword
+              defaults:
+                login: xxx
+        roles:
+          label: Breadcrumb_Roles
+          route: usermanagement_showRoles
+          pages:
+            editrole:
+              label: Breadcrumb_Edit_Role
+              route: usermanagement_editRole
+        providers:
+          label: Breadcrumb_Providers
+          route: usermanagement_showProviders
+          pages:
+            providerdetails:
+              label: Breadcrumb_Providers_Details
+              route: usermanagement_showProviderContent
+              defaults:
+                id: 1
+            editprovider:
+              label: Breadcrumb_Edit_Provider
+              route: usermanagement_editProvider
+
