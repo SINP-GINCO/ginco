@@ -1,10 +1,5 @@
--- ---------------------------------------------
--- 1/ import dans taxref
--- 2/ mise à jour de la table metadata.mode_taxref
---
--- REMARQUES:
--- Le fichier en entrée est supposé être en utf-8 => corriger le client-encoding si ce n'est pas le cas
--- ------------------------------------------------------------------------------------------
+\COPY referentiels.taxref FROM '$dataDir/taxref.txt' WITH NULL '', FORMAT 'csv', HEADER, DELIMITER E'\t', ENCODING 'UTF-8';
+
 SET search_path TO public, metadata;
 SET client_encoding = 'UTF-8';
 
