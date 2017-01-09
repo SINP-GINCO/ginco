@@ -12,6 +12,7 @@
  */
 //require_once 'AbstractOGAMController.php';
 include_once APPLICATION_PATH . '/controllers/DataeditionController.php';
+include_once CUSTOM_APPLICATION_PATH . '/services/CustomQueryService.php';
 /**
  * DataEditionController is the controller that allow the edition of simple data.
  * @package controllers
@@ -57,6 +58,32 @@ class Custom_DataEditionController extends DataEditionController {
 		}
 
 		return $this->render('choose-format');
+	}
+	
+	/**
+	 * AJAX function : Get the AJAX structure corresponding to the edition form.
+	 *
+	 * @return JSON The list of forms
+	 */
+	public function ajaxGetEditFormAction() {
+		$this->logger->debug('ajaxGetEditFormAction');
+	
+		// Get the parameters from the URL
+		$request = $this->getRequest();
+		$data = $this->getDataFromRequest($request);
+	
+		// Complete the data object with the existing values from the database.
+		$data = $this->genericModel->getDatum($data);
+	
+		// The service used to manage the query module
+		$this->customQueryService = new Custom_Application_Service_QueryService($data->tableFormat->schemaCode);
+	
+		echo $this->customQueryService->getEditForm($data);
+	
+		// No View, we send directly the JSON
+		$this->_helper->layout()->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+		$this->getResponse()->setHeader('Content-type', 'application/json');
 	}
 
 }

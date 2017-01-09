@@ -293,4 +293,91 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 		}
 		return $ancestorsToGeometry;
 	}
+	
+	/**
+	 * Get the form field corresponding to the table field.
+	 *
+	 * @param Application_Object_Metadata_TableField $tableField
+	 *        	the table field
+	 * @return Array[Application_Object_Metadata_FormField]
+	 */
+	public function getTableToFormMapping($tableField) {
+		$this->logger->info('getTableToFormMapping : ' . $tableField->format . " " . $tableField->data . ' ' . $this->lang);
+	
+		$key = $this->_formatCacheKey('getTableToFormMapping' . $tableField->format . '_' . $tableField->data . '_' . $this->lang);
+	
+		// Get the form description corresponding to the table field
+		$result = null;
+		if ($this->useCache) {
+			$result = $this->cache->load($key);
+		}
+		if (empty($result)) {
+	
+			$req = " SELECT form_field.*, COALESCE(t.label, data.label) as label, COALESCE(t.definition, data.definition) as definition, unit.unit, unit.type, unit.subtype, form_format.label as form_label, form_format.position as form_position";
+			$req .= " FROM form_field ";
+			$req .= " LEFT JOIN field_mapping on (field_mapping.src_format = form_field.format AND field_mapping.src_data = form_field.data AND mapping_type = 'FORM') ";
+			$req .= " LEFT JOIN data on (form_field.data = data.data)";
+			$req .= " LEFT JOIN unit on (data.unit = unit.unit)";
+			$req .= " LEFT JOIN form_format on (form_format.format = form_field.format)";
+			$req .= " LEFT JOIN translation t ON (lang = '" . $this->lang . "' AND table_format = 'DATA' AND row_pk = data.data) ";
+			$req .= " WHERE field_mapping.dst_format = ? ";
+			$req .= " AND field_mapping.dst_data = ? ";
+			$req .= " ORDER BY form_format.position, form_field.position ";
+	
+			$this->logger->info('getTableToFormMapping : ' . $req);
+	
+			$select = $this->db->prepare($req);
+			$select->execute(array(
+				$tableField->format,
+				$tableField->data
+			));
+	
+			$row = $select->fetch();
+	
+			if (!empty($row)) {
+				$formField = $this->_readFormField($row);
+	
+				if ($this->useCache) {
+					$this->cache->save($formField, $key);
+				}
+				$result = $formField;
+			}
+		}
+	
+		return $result; // clone to avoid updating the values of the cached result
+	}
+	
+	/**
+	 * Read a form field object from a result line.
+	 *
+	 * @param Result $row
+	 * @return Application_Object_Metadata_FormField
+	 */
+	private function _readFormField($row) {
+		$formField = new Application_Object_Metadata_CustomFormField();
+		$formField->data = $row['data'];
+		$formField->format = $row['format'];
+		if (array_key_exists('form_label', $row)) {
+			$formField->formLabel = $row['form_label'];
+		}
+		if (array_key_exists('form_position', $row)) {
+			$formField->formPosition = $row['form_position'];
+		}
+		$formField->isCriteria = $row['is_criteria'];
+		$formField->isResult = $row['is_result'];
+		$formField->inputType = $row['input_type'];
+		$formField->isDefaultResult = $row['is_default_result'];
+		$formField->isDefaultCriteria = $row['is_default_criteria'];
+		$formField->defaultValue = $row['default_value'];
+		$formField->definition = $row['definition'];
+		$formField->label = $row['label'];
+		$formField->type = $row['type'];
+		$formField->subtype = $row['subtype'];
+		$formField->unit = $row['unit'];
+		$formField->decimals = $row['decimals'];
+		$formField->mask = $row['mask'];
+		$formField->position = $row['position'];
+	
+		return $formField;
+	}
 }

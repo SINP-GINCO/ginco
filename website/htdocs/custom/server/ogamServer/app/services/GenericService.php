@@ -198,4 +198,94 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 		$this->logger->debug('getJoinToGeometryTable :' . $from);
 		return $from;
 	}
+	
+	/**
+	 * Serialize the data object as a JSON string.
+	 *
+	 * @param Application_Object_Generic_DataObject $data
+	 *        	the data object we're looking at.
+	 * @param String $dataset
+	 *        	the dataset identifier (optional), limit the children to the current dataset.
+	 * @return JSON
+	 */
+	public function datumToDetailJSON($data, $datasetId = null) {
+		$this->logger->info('datumToDetailJSON');
+	
+		// Get the user rights
+		$userSession = new Zend_Session_Namespace('user');
+		$user = $userSession->user;
+	
+		$json = '{"title":' . json_encode($data->tableFormat->label, JSON_HEX_APOS) . ', "id":"' . $data->getId() . '", "fields":';
+		$fields = '[';
+		// Get the form field corresponding to the table field
+		$formFields = $this->getFormFieldsOrdered($data->getFields());
+		foreach ($formFields as $formField) {
+			// Add the corresponding JSON
+			$fields .= $formField->toDetailJSON() . ",";
+		}
+		// remove last comma
+		if ($fields !== '') {
+			$fields = substr($fields, 0, -1);
+		} else {
+			return '';
+		}
+		$fields .= "]";
+	
+		$json .= $fields;
+		$json .= ',"editURL":' . json_encode($data->getId());
+		$json .= '}';
+	
+		return $json;
+	}
+	/**
+	 * Return the form fields mapped to the table fields and ordered by position
+	 *
+	 * @param array $tableFields
+	 *        	The table fields
+	 * @return array The form fields ordered
+	 */
+	public function getFormFieldsOrdered(array $tableFields) {
+		$fieldsOrdered = array();
+		foreach ($tableFields as $tableField) {
+			// Get the form field corresponding to the table field
+			$formField = $this->getTableToFormMapping($tableField, true);
+			if ($formField !== null && $formField->isResult) {
+				$fieldsOrdered[] = $formField;
+			}
+		}
+		return array_values($fieldsOrdered);
+	}
+	
+
+	/**
+	 * Get the form field corresponding to the table field.
+	 *
+	 * @param Application_Object_Metadata_TableField $tableField
+	 *        	the table field
+	 * @param Boolean $copyValues
+	 *        	is true the values will be copied
+	 * @return FormField
+	 */
+	public function getTableToFormMapping($tableField, $copyValues = false) {
+	
+		// Get the description of the form field
+		$this->customMetadataModel = new Application_Model_Metadata_CustomMetadata();
+		$formField = $this->customMetadataModel->getTableToFormMapping($tableField);
+	
+		// Clone the object to avoid modifying existing object
+		if ($formField !== null) {
+			$formField = clone $formField;
+		}
+	
+		// Copy the values
+		if ($copyValues === true && $formField !== null && $tableField->value !== null) {
+	
+			// Copy the value and label
+			$formField->value = $tableField->value;
+			$formField->valueLabel = $tableField->valueLabel;
+		}
+	
+		return $formField;
+	}
+	
 }

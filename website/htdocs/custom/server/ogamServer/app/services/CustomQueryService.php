@@ -413,7 +413,8 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 		}
 
 		// Add the current data
-		$dataJSON = $this->genericService->datumToDetailJSON($data, $datasetId);
+		$this->customGenericService = new Custom_Application_Service_GenericService();
+		$dataJSON = $this->customGenericService->datumToDetailJSON($data, $datasetId);
 		if ($dataJSON !== '') {
 			$dataDetails['formats'][] = json_decode($dataJSON, true);
 		}
@@ -649,5 +650,68 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				$result = "0";
 		}
 		return $result;
+	}
+	
+	/**
+	 * Get the form fields for a data to edit.
+	 *
+	 * @param Application_Object_Generic_DataObject $data
+	 *        	the data object to edit
+	 * @return JSON.
+	 */
+	public function getEditForm($data) {
+		$this->logger->debug('getEditForm');
+	
+		return $this->_generateEditFormJSON($data);
+	}
+	
+	/**
+	 * Generate the JSON structure corresponding to a list of edit fields.
+	 *
+	 * @param Application_Object_Generic_DataObject $data
+	 *        	the data object to edit
+	 */
+	protected function _generateEditFormJSON($data) {
+		
+		$this->customGenericService = new Custom_Application_Service_GenericService;
+		
+		$json = '{"success":true,"data":[';
+		
+		foreach ($data->getInfoFields() as $tablefield) {
+			$formField = $this->customGenericService->getTableToFormMapping($tablefield); // get some info about the form
+			if (!empty($formField)) {
+				$formField->isPK = "1";
+				$formField->value = $tablefield->value;
+				$formField->valueLabel = $tablefield->valueLabel;
+				$formField->editable = $tablefield->isEditable;
+				$formField->insertable = $tablefield->isInsertable;
+				$formField->required = !$tablefield->isCalculated; // If the field is not calculated and if it is part of the key
+				$formField->data = $tablefield->data; // The name of the data is the table one
+				$formField->format = $tablefield->format; // The name of the data is the table one
+	
+				$json .= $this->_generateEditFieldJSON($formField, $tablefield);
+			}
+		}
+		foreach ($data->getEditableFields() as $tablefield) {
+			$formField = $this->customGenericService->getTableToFormMapping($tablefield); // get some info about the form
+			if (!empty($formField)) {
+				$formField->isPK = "0";
+				$formField->value = $tablefield->value;
+				$formField->valueLabel = $tablefield->valueLabel;
+				$formField->editable = $tablefield->isEditable;
+				$formField->insertable = $tablefield->isInsertable;
+				$formField->required = $tablefield->isMandatory;
+				$formField->data = $tablefield->data; // The name of the data is the table one
+				$formField->format = $tablefield->format; // The name of the data is the table one
+	
+				$json .= $this->_generateEditFieldJSON($formField, $tablefield);
+			}
+		}
+	
+		$json = substr($json, 0, -1);
+	
+		$json .= ']}';
+	
+		return $json;
 	}
 }

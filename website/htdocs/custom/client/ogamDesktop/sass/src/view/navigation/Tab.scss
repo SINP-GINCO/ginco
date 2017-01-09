@@ -1,0 +1,178 @@
+.o-navigation-print-tool {
+    background-image:url(images/OgamDesktop/tools/doc/printer.png) !important;
+}
+.o-navigation-title {
+	text-align: center;
+	font-size: 1.2em;
+	margin: 20px 0 15px 0;
+}
+.o-navigation-map-table {
+	display: table;
+	width: 100%;
+	margin-bottom: 20px;
+}
+.o-navigation-map-left-col {
+	display: table-row;
+	text-align: center;
+}
+.o-navigation-map-right-col {
+	display: table-row;
+	text-align: center;
+}
+.o-navigation-map-img {
+	position: relative;
+	display: inline-block;
+	width: 300px;
+	height: 300px;
+}
+.o-navigation-map-img > img {
+	display: block;
+	position: absolute;
+	left: 0px;
+	top: 0px
+}
+.o-navigation-map-intercol {
+	display: table-row;
+	height: 10px;
+}
+.o-navigation-fieldset {
+	border-left: solid 1px #d0d0d0;
+	padding-left: 10px;
+	margin: 0 10px 15px 10px;
+	overflow: hidden;
+}
+.o-navigation-fieldset-title {
+	margin-left:-10px;
+	margin-bottom: 10px;
+	border-bottom: solid 1px #d0d0d0;
+	padding-left: 5px;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+.o-navigation-fieldset-title > span {
+	position: relative;
+    bottom: 2px;
+    left: 2px;
+}
+.o-navigation-fieldset-title-link {
+	display: inline-block;
+    width: 20px;
+    height: 16px;
+    background-image: url(images/OgamDesktop/tools/nav/page_white_magnify.png) !important;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.o-navigation-fieldset-title-form {
+	margin:10px 10px 0px 10px;
+	padding-left: 5px;
+	font-size: 1.1em;
+	font-weight: bold;
+	color:#3b7e58;
+}
+.o-navigation-fieldset-title-form > span {
+	position: relative;
+    bottom: 2px;
+    left: 2px;
+}
+.o-navigation-fieldset > span {
+	display: block;
+    margin-top: 5px;
+}
+.o-navigation-fieldset a {
+	display: inline-block;
+}
+.o-navigation-childfieldset-row {
+	line-height: 16px;
+	margin-bottom: 2px;
+}
+.o-navigation-childfieldset-leftcolumn {
+	float: left;
+	width: 22px;
+	height: 16px;
+	margin-left: -4px;
+    background-image: url(images/OgamDesktop/tools/nav/page_white_magnify.png) !important;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+.o-navigation-childfieldset-rightcolumn {
+	white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    width: calc(100% - 25px);
+}
+
+                ///////////////////
+                // Print preview //
+                ///////////////////
+
+#o-navigation-print-main-div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: 5;
+    padding: 20px;
+}
+#o-navigation-print-main-div .o-navigation-title {
+    margin-top: 0;
+	margin-bottom: 30px;
+	font-size: 1.5em;
+}
+#o-navigation-print-main-div .o-navigation-fieldset {
+	margin: 0 0 15px 10px;
+}
+#o-navigation-print-main-div .o-navigation-fieldset-title > span {
+	position: static;
+}
+#o-navigation-print-main-div .o-navigation-fieldset-title-link {
+	display: none;
+}
+#o-navigation-print-main-div .o-navigation-childfieldset-leftcolumn {
+	width: 0;
+}
+#o-navigation-print-main-div .o-navigation-childfieldset-rightcolumn {
+	display: list-item;
+    list-style-position: inside;
+}
+#o-navigation-print-main-div a span {
+    display: none;
+}
+#o-navigation-print-main-div a::after {
+    content: attr(href);
+}
+@media (orientation:portrait) {
+	#o-navigation-print-main-div .o-navigation-map-table {
+		margin-bottom: 20px;
+	}
+	#o-navigation-print-main-div .o-navigation-map-left-col {
+		display: table-cell;
+		text-align: right;
+	}
+	#o-navigation-print-main-div .o-navigation-map-right-col {
+		display: table-cell;
+		text-align: left;
+	}
+	#o-navigation-print-main-div .o-navigation-map-intercol {
+		display: table-cell;
+		min-width: 20px;
+		max-width: 100px;
+	}
+}
+@media (orientation:landscape) {
+	#o-navigation-print-main-div .o-navigation-map-table {
+	    display: inline-table;
+	    width: auto;
+	    vertical-align: top;
+	    margin-right: 20px;
+	    margin-bottom: 0;
+	    float:left;
+	}
+}
+@media print {
+    body > div {
+        display:none !important; // The "!important" is necessary (For body>div.x-dd-drag-proxy and body>div.x-tip)
+    }
+    #o-navigation-print-main-div {
+        display:block !important; // The "!important" is necessary (For #o-navigation-print-main-div)
+    }
+}
