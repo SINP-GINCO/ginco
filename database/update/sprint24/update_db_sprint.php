@@ -44,3 +44,19 @@ if ($returnCode != 0) {
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
 }
+
+try {
+	/* update taxref to v10 */
+	execCustSQLFile("$sprintDir/delete_taxref_v9.sql", $config);
+	
+	system("wget 'https://ginco.ign.fr/ref/TAXREFv10.0/TAXREFv10.0.txt' -O $dataDir/taxref.txt");
+	echo "Intégration des données taxref dans la base...";
+	execCustSQLFile("$sprintDir/../../init/referentiels/create_taxref10_tables.sql", $config);
+	
+	execCustSQLFile("$sprintDir/add_taxref_v10.sql", $config);
+	echo "Intégration de TAXREF terminée.";
+} catch (Exception $e) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
