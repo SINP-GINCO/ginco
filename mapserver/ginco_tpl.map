@@ -12,7 +12,7 @@ UNITS meters
 FONTSET "/var/www/@instance.name@/mapserver/data/fonts/fonts.txt"
 SYMBOLSET "/var/www/@instance.name@/mapserver/data/fonts/symbols.sym"
 
-CONFIG  "MS_ERRORFILE" "/var/www/@instance.name@/website/logs/mapserver_ginco.log"
+CONFIG  "MS_ERRORFILE" "/var/www/@instance.name@/website/server/app/logs/mapserver_ginco.log"
 # Mode verbeux
 # DEBUG 5
 # Erreurs seulement
