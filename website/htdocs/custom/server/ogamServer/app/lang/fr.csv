@@ -381,6 +381,7 @@ Add a flore ign data;Ajout d'une observation de taxon IGN
 ##########################
 Data Export;Export des données
 Request Criterias;Critères de requête
+Search forbidden on sensitive fields;Vous n'avez pas les droits suffisants pour utiliser les critères sensiNiveau ou diffusionNiveauPrecision dans la recherche
 
 ################################
 #  indexation / index          #

@@ -53,6 +53,8 @@ class Custom_QueryController extends QueryController {
 					// the user can request on sensiNiveau or diffusionniveauprecision only if he has the permission
 					if (($split[1] != 'sensiniveau' || $user->isAllowed('VIEW_SENSITIVE')) && ($split[1] != 'diffusionniveauprecision' || $user->isAllowed('VIEW_PRIVATE'))) {
 						$formQuery->addCriteria($split[0], $split[1], $inputValue);
+					} else {
+						throw new Exception($this->translator->translate('Search forbidden on sensitive fields'));
 					}
 				}
 
