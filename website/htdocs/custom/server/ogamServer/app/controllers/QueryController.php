@@ -62,23 +62,6 @@ class Custom_QueryController extends QueryController {
 					$formQuery->addResult($split[0], $split[1]);
 				}
 			}
-			// if the user can't visualize sensitive data, we add the sensiNiveau criteria in the request
-			if (!$user->isAllowed('VIEW_SENSITIVE')) {
-
-				$this->customMetadataModel = new Application_Model_Metadata_CustomMetadata();
-				$sensiNiveauFormFormats = $this->customMetadataModel->getFormFormats($datasetId, 'sensiniveau');
-
-				foreach ($sensiNiveauFormFormats as $sensiNiveauFormFormat) {
-					$sensiValue = array(
-						'0',
-						'1',
-						'2',
-						'3',
-						'4'
-					);
-					$formQuery->addCriteria($sensiNiveauFormFormat, 'sensiniveau', $sensiValue);
-				}
-			}
 
 			// Store the request parameters in session
 			$websiteSession = new Zend_Session_Namespace('website');
