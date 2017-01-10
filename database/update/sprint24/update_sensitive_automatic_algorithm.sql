@@ -36,21 +36,21 @@ $BODY$
 		(CD_NOM = NEW.cdNom
 		OR CD_NOM = NEW.cdRef
 		OR CD_NOM = ANY (
-			WITH RECURSIVE node_list( cd_nom, cd_taxsup, lb_nom, nom_vern) AS (
-				SELECT cd_nom, cd_taxsup, lb_nom, nom_vern
-				FROM referentiels.taxref
-				WHERE cd_nom = NEW.cdnom
+			WITH RECURSIVE node_list( code, parent_code, lb_name, vernacular_name) AS (
+				SELECT code, parent_code, lb_name, vernacular_name
+				FROM metadata.mode_taxref
+				WHERE code = NEW.cdnom
 		
 				UNION
 		
-				SELECT parent.cd_nom, parent.cd_taxsup, parent.lb_nom, parent.nom_vern
-				FROM referentiels.taxref parent
-				INNER JOIN node_list on node_list.cd_taxsup = parent.cd_nom
-				WHERE node_list.cd_taxsup != '349525'
+				SELECT parent.code, parent.parent_code, parent.lb_name, parent.vernacular_name
+				FROM metadata.mode_taxref parent
+				INNER JOIN node_list on node_list.parent_code = parent.code
+				WHERE node_list.parent_code != '349525'
 				)
-			SELECT cd_taxsup
+			SELECT parent_code
 			FROM node_list
-			ORDER BY cd_nom
+			ORDER BY code
 			)
 		)
 		AND CD_DEPT = ANY (NEW.codedepartementcalcule)
