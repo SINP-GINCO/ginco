@@ -7,7 +7,9 @@
 		<meta name="description" content="open-source generic application base on metadata" />
         <title>{% block title %}OGAM{% endblock %}</title>
         {% block stylesheets %}
-        	<link rel="stylesheet" href="{{ asset('css/global.css') }}" />
+            {% stylesheets 'bundles/ogam/css/global.css' filter='cssrewrite' %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -24,7 +26,7 @@
                     <div id="banner" class="banner">
                         <a href="{{ path('homepage') }}">
                             {% image '@OGAMBundle/Resources/public/img/banner.jpg' %}
-                                <img src="{{ asset_url }}"/>
+                            <img src="{{ asset_url }}" alt="Banner"/>
                             {% endimage %}
                        </a>
                     </div>
