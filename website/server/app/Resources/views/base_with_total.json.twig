@@ -1,0 +1,5 @@
+{
+    "success": true,
+    "total": {% block response_total %}{{ data|length }}{% endblock %},
+    "data": {% block response_data %}{{ data|json_encode }}{% endblock %}
+}
