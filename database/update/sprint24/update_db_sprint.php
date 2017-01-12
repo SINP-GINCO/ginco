@@ -49,7 +49,7 @@ try {
 	/* update taxref to v10 */
 	execCustSQLFile("$sprintDir/delete_taxref_v9.sql", $config);
 	
-	system("wget 'https://ginco.ign.fr/ref/TAXREFv10.0/TAXREFv10.0.txt' -O $sprintDir/taxref.txt");
+	system("wget 'https://ginco.ign.fr/ref/TAXREFv10.0/TAXREFv10.0.txt' -O $sprintDir/taxref.txt --no-verbose");
 	echo "Intégration des données taxref dans la base...";
 	execCustSQLFile("$sprintDir/create_taxref10_tables.sql", $config);
 	
