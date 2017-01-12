@@ -86,6 +86,26 @@ COMMENT ON COLUMN taxref.URL IS 'Permalien INPN = ‘http://inpn.mnhn.fr/espece/
 -- Droits
 GRANT SELECT ON TABLE taxref TO ogam;
 
+-- Index: referentiels.taxref_cd_nom_idx
+
+-- DROP INDEX referentiels.taxref_cd_nom_idx;
+
+CREATE INDEX taxref_cd_nom_idx
+  ON referentiels.taxref
+  USING btree
+  (cd_nom COLLATE pg_catalog."default");
+
+-- Index: referentiels.taxref_parent_code_idx
+
+-- DROP INDEX referentiels.taxref_parent_code_idx;
+
+CREATE INDEX taxref_parent_code_idx
+  ON referentiels.taxref
+  USING btree
+  (cd_taxsup COLLATE pg_catalog."default");
+
+
+
 -- Ajout de la définition des rangs
 create table taxref_rang (
 	RANG		VARCHAR(5)		not null,
