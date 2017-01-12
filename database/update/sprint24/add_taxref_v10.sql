@@ -2,7 +2,7 @@
 
 
 -- Suppression des données de la table mode_taxref
-DELETE FROM metadata.mode_taxref;
+--DELETE FROM metadata.mode_taxref;
 
 --
 -- Recopie de la table referentiels.taxref vers la table metadata.mode_taxref
@@ -11,9 +11,16 @@ DELETE FROM metadata.mode_taxref;
 --SELECT 'TaxRefValue', cd_nom,  cd_taxsup, lb_nom, nom_complet, nom_vern, '0', case when (cd_nom = cd_ref) then 1 else 0 end
 
 INSERT INTO metadata.mode_taxref (unit, code, parent_code, "name", lb_name, complete_name, vernacular_name, is_leaf, is_reference)
-(SELECT 'TaxRefValue', taxref.cd_nom, rtf.cd_taxsup, taxref.cd_nom, taxref.lb_nom, taxref.nom_complet, taxref.nom_vern, '0', case when (taxref.cd_nom = taxref.cd_ref) then 1 else 0 end 
+SELECT 'TaxRefValue', taxref.cd_nom, taxref.cd_taxsup, taxref.cd_nom, taxref.lb_nom, taxref.nom_complet, taxref.nom_vern, '0', case when (taxref.cd_nom = taxref.cd_ref) then 1 else 0 end 
 FROM referentiels.taxref taxref
-inner join referentiels.taxref rtf on (rtf.cd_nom = taxref.cd_ref));
+WHERE taxref.cd_taxsup is not null;
+
+
+INSERT INTO metadata.mode_taxref (unit, code, parent_code, "name", lb_name, complete_name, vernacular_name, is_leaf, is_reference)
+SELECT 'TaxRefValue', taxref.cd_nom, rtf.cd_taxsup, taxref.cd_nom, taxref.lb_nom, taxref.nom_complet, taxref.nom_vern, '0', case when (taxref.cd_nom = taxref.cd_ref) then 1 else 0 end 
+FROM referentiels.taxref taxref
+inner join referentiels.taxref rtf on (rtf.cd_nom = taxref.cd_ref)
+where taxref.cd_taxsup is null;
 
 -- Fills cd_taxsup (only given when cd_nom = cd_ref)
 -- Marquage des feuilles
