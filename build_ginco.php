@@ -127,13 +127,15 @@ function buildWebsite($config, $buildMode)
 // partie extjs
 function buildExtJS($config, $buildMode)
 {
-	global $projectDir;
+	global $projectDir, $buildDir;
 
 	echo("building client (extJs)...\n");
 	echo("--------------------------\n");
 
 	$clientDir = "$projectDir/website/client";
 	$clientDirOgam = $config['ogam.path'] . "/website/htdocs/client";
+	$buildClientDir = $buildDir . "/website/client" ;
+	is_dir($buildClientDir) || mkdir($buildClientDir, 0755, true);
 
 	// Copy ext and ogam code to project
 	echo("Copying ext and ogam code from ogam project...\n");
@@ -166,16 +168,18 @@ function buildExtJS($config, $buildMode)
 	system("sencha app build");
 
 	// Clean up
-	echo("Cleaning up...\n");
 	if ($buildMode == 'dev') {
-		// Delete code : all for prod mode, all but gincoDesktop for dev mode
+		echo("Cleaning up...\n");
+		// Delete code : all but gincoDesktop
+		chdir($clientDir);
 		system("rm -rf .sencha ext ogamDesktop packages workspace.json");
 		// Restore index.html in dev mode
 		system("mv $clientDir/gincoDesktop/index.html.keep $clientDir/gincoDesktop/index.html");
 	}
+	// Prod mode: mv build directory to $buildDir
 	else {
-		// Delete code : all for prod mode
-		system("rm -rf .sencha ext gincoDesktop ogamDesktop packages workspace.json");
+		echo("Moving build files to $buildClientDir...\n");
+		system("mv $clientDir/build $buildClientDir/");
 	}
 	echo("Done building client (extJs).\n\n");
 }
@@ -188,9 +192,7 @@ function buildMapfile($config, $buildMode)
 	echo("building mapfile...\n");
 	echo("-------------------\n");
 
-	$buildMapserverDir = ($buildMode == 'prod') ?
-		$buildDir . "/mapserver" :
-		$projectDir . "/mapserver";
+	$buildMapserverDir = $buildDir . "/mapserver";
 
 	// Same effect as if ($buildMode=='prod')
 	if ( !is_dir($buildMapserverDir) ) {
