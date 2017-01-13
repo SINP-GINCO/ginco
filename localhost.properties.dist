@@ -9,30 +9,30 @@
 instance.name=localhost
 
 # Database configurattion
-db_host=localhost
-db_port=5432
-db=db_name
-db_user=ogam
-db_user_pw=#####
-db_admin_user=admin
-db_admin_user_pw=#####
+db.host=localhost
+db.port=5432
+db.name=database_name
+db.user=ogam
+db.user.pw=#####
+db.admin.user=admin
+db.admin.user.pw=#####
 
 # Target machoine configuration
 # La machine sur laquelle déployer cette instance
-deploy_host=localhost
+deploy.host=localhost
 # L'utilisateur sur la machine cible exécutant les commandes de déploiement local
-deploy_user=XXXXX
+deploy.user=XXXXX
 # Le mot de passe de l'utilisateur de déploiement
-deploy_user_pw=#####
+deploy.user.pw=#####
 # Inutilisé en local
-# deploy_port=22
+# deploy.port=22
 
 # Chemin du répertoire contenant le projet ogam pendant la phase de build
 # absolu ou relatif au répertoire courant (répertoire où est installé le projet ginco)
 ogam.path=/home/scandelier/www/sinp/ogam
 
 # Geoportal API key
-geoportail_key=7gr31kqe5xttprd2g7zbkqgo
+geoportail.key=7gr31kqe5xttprd2g7zbkqgo
 
 # URL of the project
 ogam.map.services.url=http://localhost.ogam-ginco.ign.fr
