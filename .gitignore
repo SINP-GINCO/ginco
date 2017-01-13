@@ -35,3 +35,6 @@
 
 # Fichiers générés (GML DEE)
 /website/htdocs/custom/public/dee/*.zip
+
+# Fichier de properties propre à chaque configuration locale
+localhost.properties
