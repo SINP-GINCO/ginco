@@ -31,11 +31,17 @@ deploy.user.pw=#####
 # absolu ou relatif au répertoire courant (répertoire où est installé le projet ginco)
 ogam.path=/home/scandelier/www/sinp/ogam
 
-# Geoportal API key
-geoportail.key=7gr31kqe5xttprd2g7zbkqgo
+# Nom du lien symbolique (ou portion de chemin) entre /var/www/ et
+# le répertoire du projet ginco.
+# Exemple: si le chemin vers le projet ginco à partir de /var/www est:
+# /var/www/path/to/ginco, il faut indiquer: path/to/ginco.
+# Sur les instances de prod, c'est instance.name
+apache.path.to.app=ginco
 
-# URL of the project
+# Complete URL of the project
 ogam.map.services.url=http://localhost.ogam-ginco.ign.fr
+# Part between the protocol and .ign.fr in the url of the project
+http.host.name=localhost.ogam-ginco
 
 # Site Name
 site.name="Plateforme de test GINCO Localhost"
@@ -49,6 +55,9 @@ bb.ymin=6742320
 bb.xmax=1351350
 bb.ymax=4883370
 bb.zoom=3
+
+# Geoportal API key
+geoportail.key=7gr31kqe5xttprd2g7zbkqgo
 
 # Tracking id Piwik
 # 0 to disable piwik tracking for this site

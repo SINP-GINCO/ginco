@@ -38,3 +38,7 @@
 
 # Fichier de properties propre à chaque configuration locale
 localhost.properties
+
+# Logs Apache
+/website/logs/*
+!website/logs/.gitkeep

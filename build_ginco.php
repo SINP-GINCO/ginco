@@ -197,7 +197,7 @@ function buildMapfile($config, $buildMode)
 	// Same effect as if ($buildMode=='prod')
 	if ( !is_dir($buildMapserverDir) ) {
 		echo("Creating $buildMapserverDir directory...\n");
-		mkdir("$buildMapserverDir", 0755, true);
+		mkdir($buildMapserverDir, 0755, true);
 		system("cp -r $projectDir/mapserver/data $buildMapserverDir");
 	}
 	echo("Creating mapfile: $buildMapserverDir/ginco_{$config['instance.name']}.map...\n");
@@ -209,18 +209,39 @@ function buildMapfile($config, $buildMode)
 # on la range dans ./build/confapache
 function buildApacheConf($config, $buildMode)
 {
+	global $projectDir, $buildDir, $postBuildInstructions;
+
 	echo("building apache config...\n");
-	mkdir("$buildDir/confapache", 0777, true);
-	substituteInFile("$projectDir/website/config/httpd_ginco_apache2_tpl.conf",
-		"$buildDir/confapache/httpd_ginco_{$config['instance.name']}.conf",
-		$config + ['app.env' => 'production']);
+	echo("-------------------------\n");
+
+	$confapacheBuildDir = "$buildDir/confapache";
+	// Same effect as if ($buildMode=='prod')
+	if ( !is_dir($confapacheBuildDir) ) {
+		echo("Creating $confapacheBuildDir directory...\n");
+		mkdir($confapacheBuildDir, 0755, true);
+	}
+
+	$buildConfFile = "$confapacheBuildDir/ginco_{$config['instance.name']}.conf";
+	echo("Creating apache configuration file: $buildConfFile...\n");
+
+	substituteInFile("$projectDir/confapache/ginco_apache2_tpl_$buildMode.conf", $buildConfFile, $config);
+
+	if ($buildMode == 'dev') {
+		$postBuildInstructions[] = "Apache configuration file has been built: $buildConfFile\n";
+		$postBuildInstructions[] = "To install, do:\n\n";
+		$postBuildInstructions[] = "sudo cp $buildConfFile /etc/apache2/sites-available/\n";
+		$postBuildInstructions[] = "sudo a2ensite " . pathinfo($buildConfFile, PATHINFO_BASENAME) . "\n";
+		$postBuildInstructions[] = "sudo service apache2 reload\n\n";
+	}
+
+	echo("Done building apache config.\n\n");
 }
 
 
 # TODO Build of configurator
 #=======================
 # le code du configurateur a été récupéré dans build/configurator
-function buildConfigurator($config)
+function buildConfigurator($config, $buildMode)
 {
 	echo("building configurator...\n");
 	system("cp -r $projectDir/configurator $buildDir");
@@ -301,6 +322,9 @@ $buildDir = ($buildMode == 'prod') ? "$projectDir/build" : $projectDir;
 $deployDir = ($buildMode == 'prod') ? "/var/www/" . $config['instance.name'] : $projectDir;
 $config['deploy.dir'] = $deployDir;
 
+// Post build instructions in dev mode
+$postBuildInstructions = array();
+
 // Execute tasks
 if (in_array('java', $tasks)) {
 	buildJavaServices($config, $buildMode);
@@ -320,5 +344,15 @@ if (in_array('apacheconf', $tasks)) {
 if (in_array('configurator', $tasks)) {
 	buildConfigurator($config, $buildMode);
 }
+echo ("Build finished build_ginco.php.\n\n");
 
+
+// Show post-build instructions
+if (count($postBuildInstructions) > 0) {
+	echo("Post-build installation instructions:\n");
+	echo("=====================================\n\n");
+	foreach($postBuildInstructions as $instruction) {
+		echo($instruction);
+	}
+}
 
