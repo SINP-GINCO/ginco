@@ -45,19 +45,17 @@ if ($returnCode != 0) {
 	exit(1);
 }
 
-// try {
-// 	/* update taxref to v10 */
-// 	execCustSQLFile("$sprintDir/delete_taxref_v9.sql", $config);
-	
-// 	system("wget 'https://ginco.ign.fr/ref/TAXREFv10.0/TAXREFv10.0.txt' -O $sprintDir/taxref.txt --no-verbose");
-// 	echo "Intégration des données taxref dans la base...";
-// 	execCustSQLFile("$sprintDir/create_taxref10_tables.sql", $config);
-	
-// 	$config['sprintDir'] = $sprintDir;
-// 	execCustSQLFile("$sprintDir/add_taxref_v10.sql", $config);
-// 	echo "Intégration de TAXREF terminée.";
-// } catch (Exception $e) {
-// 	echo "$sprintDir/update_db_sprint.php\n";
-// 	echo "exception: " . $e->getMessage() . "\n";
-// 	exit(1);
-// }
+try {
+	/* update taxref to v10 */
+	$config['sprintDir'] = $sprintDir;
+	system("wget 'https://ginco.ign.fr/ref/TAXREFv10.0/TAXREFv10.0.txt' -O $sprintDir/taxref.txt --no-verbose");
+	echo "Intégration des données taxref dans la base...";
+	execCustSQLFile("$sprintDir/update_referentiel_taxref_v9_to_v10.sql", $config);
+	execCustSQLFile("$sprintDir/delete_metadata_mode_taxref_v9.sql", $config);
+	execCustSQLFile("$sprintDir/update_metadata_mode_taxref_to_v10.sql", $config);
+	echo "Intégration de TAXREF terminée.";
+} catch (Exception $e) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
