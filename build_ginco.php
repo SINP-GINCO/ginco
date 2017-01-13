@@ -21,10 +21,10 @@ function usage($mess=NULL){
 	exit;
 }
 
-// Build des services
+// TODO Build des services
 // ======================
 // on les range dans ./build/services
-function buildJavaServices($config, $buildMode='prod')
+function buildJavaServices($config, $buildMode)
 {
 	echo("clean...\n");
 	$buildDir = "$projectDir/build";
@@ -78,12 +78,15 @@ function buildJavaServices($config, $buildMode='prod')
 		"$servicesBuildDir/conf/SINP{$config['instance.name']}RGService.xml", $config);
 }
 
-# Build du SITE WEB 
+# TODO Build du SITE WEB
 #=======================
 # on range tout dans ./build/website
-function buildWebsite($config, $buildMode='prod')
+function buildWebsite($config, $buildMode)
 {
+	global $projectDir;
+
 	echo("building website (php)...\n");
+
 	mkdir("$buildDir/website", 0777, true);
 	symlink("$projectDir/ogam/website/htdocs/client", "$projectDir/website/htdocs/client");
 	symlink("$projectDir/ogam/website/htdocs/server", "$projectDir/website/htdocs/server");
@@ -122,12 +125,12 @@ function buildWebsite($config, $buildMode='prod')
 }
 
 // partie extjs
-function buildExtJS($config, $buildMode='prod')
+function buildExtJS($config, $buildMode)
 {
 	global $projectDir;
 
 	echo("building client (extJs)...\n");
-	echo("--------------------------\n\n");
+	echo("--------------------------\n");
 
 	$clientDir = "$projectDir/website/client";
 	$clientDirOgam = $config['ogam.path'] . "/website/htdocs/client";
@@ -174,23 +177,35 @@ function buildExtJS($config, $buildMode='prod')
 		// Delete code : all for prod mode
 		system("rm -rf .sencha ext gincoDesktop ogamDesktop packages workspace.json");
 	}
-	echo("ExtJS build finished.\n\n");
+	echo("Done building client (extJs).\n\n");
 }
-
 
 # Customize Mapfile
-function buildMapfile($config, $buildMode='prod')
+function buildMapfile($config, $buildMode)
 {
-	echo("building mapfile...");
-	mkdir("$buildDir/mapserver", 0777, true);
-	substituteInFile("$projectDir/mapserver/ginco_tpl.map",
-		"$buildDir/mapserver/ginco_{$config['instance.name']}.map", $config);
-	system("cp -r $projectDir/mapserver/data $buildDir/mapserver/");
+	global $projectDir, $buildDir;
+
+	echo("building mapfile...\n");
+	echo("-------------------\n");
+
+	$buildMapserverDir = ($buildMode == 'prod') ?
+		$buildDir . "/mapserver" :
+		$projectDir . "/mapserver";
+
+	// Same effect as if ($buildMode=='prod')
+	if ( !is_dir($buildMapserverDir) ) {
+		echo("Creating $buildMapserverDir directory...\n");
+		mkdir("$buildMapserverDir", 0755, true);
+		system("cp -r $projectDir/mapserver/data $buildMapserverDir");
+	}
+	echo("Creating mapfile: $buildMapserverDir/ginco_{$config['instance.name']}.map...\n");
+	substituteInFile("$projectDir/mapserver/ginco_tpl.map", "$buildMapserverDir/ginco_{$config['instance.name']}.map", $config);
+	echo("Done building mapfile.\n\n");
 }
 
-# Customize Apache Configuration
+# TODO Customize Apache Configuration
 # on la range dans ./build/confapache
-function buildApacheConf($config, $buildMode='prod')
+function buildApacheConf($config, $buildMode)
 {
 	echo("building apache config...\n");
 	mkdir("$buildDir/confapache", 0777, true);
@@ -200,7 +215,7 @@ function buildApacheConf($config, $buildMode='prod')
 }
 
 
-# Build of configurator
+# TODO Build of configurator
 #=======================
 # le code du configurateur a été récupéré dans build/configurator
 function buildConfigurator($config)
@@ -276,6 +291,13 @@ if (count($tasks) == 0) {
 
 // Mode: development or prod
 $buildMode = (isset($params['mode']) && $params['mode']=='prod') ? 'prod' : 'dev';
+
+// build dir: where to put resulting builded files
+$buildDir = ($buildMode == 'prod') ? "$projectDir/build" : $projectDir;
+
+// deploy dir: the path of the ginco application once deployed on target machine
+$deployDir = ($buildMode == 'prod') ? "/var/www/" . $config['instance.name'] : $projectDir;
+$config['deploy.dir'] = $deployDir;
 
 // Execute tasks
 if (in_array('java', $tasks)) {
