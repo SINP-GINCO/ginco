@@ -105,7 +105,7 @@ function loadPropertiesFromArgs(){
 			$splitProp = explode('=', $propertyStr);
 			if (count($splitProp) != 2){
 				echo("The string [$propertyStr] should be like key=value.");
-				ecit(1);
+				exit(1);
 			}
 			$config[$splitProp[0]] = $splitProp[1];
 		}

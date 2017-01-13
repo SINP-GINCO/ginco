@@ -12,7 +12,7 @@
     /**
      * The relative path to the application's markup file (html, jsp, asp, etc.).
      */
-    "indexHtmlPath": "${app.dir}/../../custom/client/ogamDesktop/index.html",
+    "indexHtmlPath": "${app.dir}/../gincoDesktop/index.html",
 
     /**
      * Comma-separated string with the paths of directories or files to search. Any classes
@@ -38,7 +38,7 @@
      */
     "overrides": [
         "${app.dir}/overrides",
-        "${app.dir}/../../custom/client/ogamDesktop/overrides",
+        "${app.dir}/../gincoDesktop/overrides",
         "${toolkit.name}/overrides",
         "${app.dir}/locale/${app.locale}"
     ],
@@ -180,7 +180,7 @@
         "src": [
             "sass/src",
             "${toolkit.name}/sass/src",
-            "${app.dir}/../../custom/client/ogamDesktop/sass/src"
+            "${app.dir}/../gincoDesktop/sass/src"
         ]
     },
 
@@ -317,9 +317,9 @@
      },
 
     "OgamDesktop": {
-    	"requestServiceUrl": "../query/",
-    	"mapServiceUrl": "../map/",
-    	"editionServiceUrl": "../dataedition/",
+    	"requestServiceUrl": "/query/",
+    	"mapServiceUrl": "/map/",
+    	"editionServiceUrl": "/dataedition/",
     	"OpenLayers": {
     		"theme":  "lib/OpenLayers/theme/default/style.css", // Tell OpenLayers where the css default theme is
     		"imgPath":  "lib/OpenLayers/img/" // Tell OpenLayers where the control images are (remember the trailing slash)
@@ -331,7 +331,7 @@
      */
     "production": {
         "output": {
-            "base": "${workspace.dir}/../public/${app.name}",
+            "base": "${workspace.build.dir}/${build.environment}/${app.name}",
             "js": "app-${app.theme}-${app.locale}.js",
             "manifest": {
                 "path": "app-${app.theme}-${app.locale}.json"
@@ -363,9 +363,9 @@
      */
     "development": {
         "OgamDesktop": {
-            "requestServiceUrl": "https://@http.host.name@/query/",
-            "mapServiceUrl": "https://@http.host.name@/map/",
-            "editionServiceUrl": "https://@http.host.name@/dataedition/"
+            "requestServiceUrl": "/app_dev.php/query/",
+            "mapServiceUrl": "/app_dev.php/map/",
+            "editionServiceUrl": "/app_dev.php/dataedition/"
         },
         "tags": [
             // You can add this tag to enable Fashion when using app watch or
@@ -524,7 +524,7 @@
             "path": "${build.id}/resources"
         },
         {
-            "path": "${app.dir}/../../custom/client/ogamDesktop/resources"
+            "path": "${app.dir}/../gincoDesktop/resources"
         }
     ],
 
