@@ -51,8 +51,8 @@ try {
 	system("wget 'https://ginco.ign.fr/ref/TAXREFv10.0/TAXREFv10.0.txt' -O $sprintDir/taxref.txt --no-verbose");
 	echo "Intégration des données taxref dans la base...";
 	execCustSQLFile("$sprintDir/update_referentiel_taxref_v9_to_v10.sql", $config);
-	execCustSQLFile("$sprintDir/delete_metadata_mode_taxref_v9.sql", $config);
-	execCustSQLFile("$sprintDir/update_metadata_mode_taxref_to_v10.sql", $config);
+	//execCustSQLFile("$sprintDir/delete_metadata_mode_taxref_v9.sql", $config);
+	//execCustSQLFile("$sprintDir/update_metadata_mode_taxref_to_v10.sql", $config);
 	echo "Intégration de TAXREF terminée.";
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
