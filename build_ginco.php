@@ -83,9 +83,70 @@ function buildJavaServices($config, $buildMode)
 # on range tout dans ./build/website
 function buildWebsite($config, $buildMode)
 {
+    global $projectDir, $buildDir;
+
+    echo("building server (symfony)...\n\n");
+    echo("----------------------------\n");
+
+    $serverDirOgam = $config['ogam.path'] . "/website/htdocs/server";
+    $buildServerDir = $buildDir . "/website/server" ;
+    is_dir($buildServerDir) || mkdir($buildServerDir, 0755, true);
+
+    // Copy configurator files if in prod mode
+    if ($buildMode == 'prod') {
+        echo("Copying ginco server directory project to $buildServerDir...\n");
+        system("cp -r $projectDir/website/server/* $buildServerDir/");
+    }
+
+    // Copy or symlink OgamBundle
+    if ($buildMode == 'prod') {
+        echo("Copying OGAMBundle to $buildServerDir/src/Ign/Bundle/...\n");
+        system("cp -r $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/");
+    } else {
+        echo("Creating a symlink to OGAMBundle in $buildServerDir/src/Ign/Bundle/...\n");
+        system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
+        system("ln -s $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/OGAMBundle");
+    }
+
+    chdir("$buildServerDir");
+    if ($buildMode == 'prod') {
+        echo("Executing build.sh...\n");
+        system("bash build.sh --no-interaction");
+    } else {
+        echo("Executing build.sh...\n");
+        system("bash build_dev.sh --no-interaction");
+    }
+
+    echo("Filling parameters.yml with configuration parameters...\n");
+    substituteInFile(
+        "$buildServerDir/app/config/parameters.yml.dist",
+        "$buildServerDir/app/config/parameters.yml",
+        ['host' => $config['db.host'],
+            'port' => $config['db.port'],
+            'db' => $config['db.name'],
+            'user' => $config['db.user'],
+            'pw' => $config['db.user.pw'],
+            'admin_user' => $config['db.adminuser'],
+            'admin_pw' => $config['db.adminuser.pw'],
+            ],
+        '__'
+    );
+
+    # on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
+    if ($buildMode == 'prod') {
+        echo("Clearing /app/cache/prod (wrong values)...\n");
+        system("rm -r $buildServerDir/app/cache/prod");
+    }
+
+    echo("Done building server (symfony).\n\n");
+
+    // ------------------------------------------------
+    // todo reprendre le code à partir d'ici
+
+
 	global $projectDir;
 
-	echo("building website (php)...\n");
+	echo("");
 
 	mkdir("$buildDir/website", 0777, true);
 	symlink("$projectDir/ogam/website/htdocs/client", "$projectDir/website/htdocs/client");
@@ -205,7 +266,6 @@ function buildMapfile($config, $buildMode)
 	echo("Done building mapfile.\n\n");
 }
 
-# TODO Customize Apache Configuration
 # on la range dans ./build/confapache
 function buildApacheConf($config, $buildMode)
 {
@@ -238,18 +298,36 @@ function buildApacheConf($config, $buildMode)
 }
 
 
-# TODO Build of configurator
-#=======================
 # le code du configurateur a été récupéré dans build/configurator
 function buildConfigurator($config, $buildMode)
 {
-	echo("building configurator...\n");
-	system("cp -r $projectDir/configurator $buildDir");
-	chdir("$buildDir/configurator");
-	system("bash build.sh --no-interaction");
+    global $buildDir;
 
-	substituteInFile("$buildDir/configurator/app/config/parameters.yml.dist",
-		"$buildDir/configurator/app/config/parameters.yml",
+	echo("building configurator...\n");
+	echo("------------------------\n");
+
+    $configuratorDir = $config['configurator.path'];
+    $buildConfiguratorDir = ($buildMode == 'dev') ? $configuratorDir : $buildDir . "/configurator" ;
+    is_dir($buildConfiguratorDir) || mkdir($buildConfiguratorDir, 0755, true);
+
+    // Copy configurator files if in prod mode
+    if ($buildMode == 'prod') {
+        echo("Copying configurator project to $buildConfiguratorDir...\n");
+        system("cp -r $configuratorDir/* $buildConfiguratorDir/");
+    }
+
+	chdir("$buildConfiguratorDir");
+	if ($buildMode == 'prod') {
+	    echo("Executing build.sh...\n");
+        system("bash build.sh --no-interaction");
+    } else {
+        echo("Executing build.sh...\n");
+        system("bash build_dev.sh --no-interaction");
+    }
+
+    echo("Filling parameters.yml with configuration parameters...\n");
+	substituteInFile("$buildConfiguratorDir/app/config/parameters.yml.dist",
+		"$buildConfiguratorDir/app/config/parameters.yml",
 		['host' => $config['db.host'],
 			'port' => $config['db.port'],
 			'db' => $config['db.name'],
@@ -261,10 +339,16 @@ function buildConfigurator($config, $buildMode)
 		'__');
 
 	# on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
-	system("rm -r $buildDir/configurator/app/cache/prod");
+    if ($buildMode == 'prod') {
+        echo("Clearing /app/cache/prod (wrong values)...\n");
+        system("rm -r $buildConfiguratorDir/app/cache/prod");
+    }
 
-	system("chmod -R a+w $buildDir");
+    echo("Done building configurator.\n\n");
 }
+
+// todo: j'en fais quoi de ça ?
+// system("chmod -R a+w $buildDir");
 
 //------------------------------------------------------------------------------------------------------
 

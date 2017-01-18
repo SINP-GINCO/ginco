@@ -27,9 +27,10 @@ deploy.user.pw=#####
 # Inutilisé en local
 # deploy.port=22
 
-# Chemin du répertoire contenant le projet ogam pendant la phase de build
+# Chemins des répertoires contenant les projets ogam et configurateur pendant la phase de build
 # absolu ou relatif au répertoire courant (répertoire où est installé le projet ginco)
-ogam.path=/home/scandelier/www/sinp/ogam
+ogam.path=/path/to/ogam
+configurator.path=/path/to/configurator
 
 # Nom du lien symbolique (ou portion de chemin) entre /var/www/ et
 # le répertoire du projet ginco.
