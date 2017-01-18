@@ -28,7 +28,7 @@ try {
 			SELECT a.attname AS pk_column
 			FROM pg_index i
 			JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
-			WHERE i.indrelid = 'model_1_observation'::regclass AND i.indisprimary;";
+			WHERE i.indrelid = $tableName::regclass AND i.indisprimary;";
 		$results = pg_query($getPrimaryKeys);
 
 		$pkeys = array();
