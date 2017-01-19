@@ -27,7 +27,6 @@ try {
 	/* patch code here */
 	execCustSQLFile("$sprintDir/add_results_bbox_compute_threshold_in_app_parameters.sql", $config);
 	execCustSQLFile("$sprintDir/add_date_order_check.sql", $config);
-	execCustSQLFile("$sprintDir/add_nomvalide_to_dsr_model.sql", $config);
 	execCustSQLFile("$sprintDir/update_sensitive_automatic_algorithm.sql", $config);
 	execCustSQLFile("$sprintDir/put_fields_position_in_alphabetic_order.sql", $config);
 } catch (Exception $e) {
