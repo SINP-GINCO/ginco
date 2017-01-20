@@ -4,15 +4,24 @@ require_once "$projectDir/lib/share.php";
 
 //------------------------------------------------------------------------------
 // Synopsis: build ogam services for GINCO instance defined in config file.
-// TODO: could be a gradle script.
 //------------------------------------------------------------------------------
 
 function usage($mess=NULL){
 	echo "------------------------------------------------------------------------\n";
-	echo("\nbuild ogam services for GINCO instance\n");
-	echo("> php build_ginco_services.php -f configFile [{-D<propertiesName>=<Value>}]\n\n");
+	echo "\nBuild Ginco services and website\n";
+	echo "> php build_ginco.php -f configFile [{-D<propertiesName>=<Value>}] [--mode=<dev|prod>] [--task1 --task2...]\n\n";
 	echo "o configFile: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
+	echo "o --mode : accepted values are prod and dev. 'prod' will create a build/ directory and put all builded services in it. 
+	   'dev' will put builded services in the project, and output post-installation instructions.\n";
+	echo "o The available tasks are:\n";
+	echo "  o --java : build java integration and report services\n";
+	echo "  o --website : build the 'server' part of the project (symfony)\n";
+	echo "  o --ext : build the 'client' part of the project (ext)\n";
+	echo "  o --mapfile : build the mapfile for mapserver\n";
+	echo "  o --apacheconf : build the apache configuration file\n";
+	echo "  o --configurator : build the configurator (symfony)\n\n";
+
 	echo "------------------------------------------------------------------------\n";
 	if (!is_null($mess)){
 		echo("$mess\n\n");
@@ -21,48 +30,50 @@ function usage($mess=NULL){
 	exit;
 }
 
-// TODO Build des services
+// Build des services
 // ======================
 // on les range dans ./build/services
 function buildJavaServices($config, $buildMode)
 {
-	echo("clean...\n");
-	$buildDir = "$projectDir/build";
-	if (is_dir("$buildDir")) {
-		system("rm -fr $buildDir");
-	}
-	mkdir($buildDir, 0777, true);
+	global $projectDir, $buildDir, $postBuildInstructions;
+	chdir($projectDir);
 
+	echo("Building java services...\n");
+	echo("-------------------------\n");
 
+	$ogamDir = realpath($config['ogam.path']);
 	$servicesBuildDir = "$buildDir/services";
-	mkdir($servicesBuildDir, 0777, true);
-	mkdir("$servicesBuildDir/webapps", 0777, true);
-	mkdir("$servicesBuildDir/conf", 0777, true);
+	is_dir($servicesBuildDir) || mkdir($servicesBuildDir, 0755, true);
+	is_dir("$servicesBuildDir/webapps") || mkdir("$servicesBuildDir/webapps", 0755, true);
+	is_dir("$servicesBuildDir/conf") || mkdir("$servicesBuildDir/conf", 0755, true);
 
-	propertiesToFile($config, "$buildDir/config.properties");
-
+	$ISFilename = "SINP" . $config['instance.name'] . "IntegrationService";
+	$RGFilename = "SINP" . $config['instance.name'] . "RGService" ;
 
 	// build du service d'intégration
 	echo("Building integration service...\n");
+	system("mv -f $ogamDir/service_integration/config/log4j.properties $ogamDir/service_integration/config/log4j.properties.save");
 	substituteInFile("$projectDir/services_configs/service_integration/log4j_tpl.properties",
-		"$projectDir/ogam/service_integration/config/log4j.properties", $config);
-	chdir("$projectDir/ogam");
+		"$ogamDir/service_integration/config/log4j.properties", $config);
+	chdir("$ogamDir");
 	system("./gradlew service_integration:war");
 	# le war se trouve dans ${ogamDir}/service_integration/build/libs/service_integration-3.0.0.war
+	system("mv -f $ogamDir/service_integration/config/log4j.properties.save $ogamDir/service_integration/config/log4j.properties ");
 
-	copy("$projectDir/ogam/service_integration/build/libs/service_integration-3.0.0.war",
-		"$servicesBuildDir/webapps/SINP{$config['instance.name']}IntegrationService.war");
+	copy("$ogamDir/service_integration/build/libs/service_integration-3.0.0.war",
+		"$servicesBuildDir/webapps/$ISFilename.war");
 	substituteInFile("$projectDir/services_configs/service_integration/IntegrationService_tpl.xml",
-		"$servicesBuildDir/conf/SINP{$config['instance.name']}IntegrationService.xml", $config);
+		"$servicesBuildDir/conf/$ISFilename.xml", $config);
 
 	//build du service de rapport
 	echo("Building repport service...\n");
 	// remplacement des rapports par défaut d'ogam par le rapport d'erreur GINCO
-	array_map('unlink', glob("$projectDir/ogam/service_generation_rapport/report/*"));
+	system("mv -f $ogamDir/service_generation_rapport/report $ogamDir/service_generation_rapport/report.save");
+	mkdir("$ogamDir/service_generation_rapport/report", 0755, true);
 	copy("$projectDir/services_configs/service_generation_rapport/ErrorReport.rptdesign",
-		"$projectDir/ogam/service_generation_rapport/report/ErrorReport.rptdesign");
+		"$ogamDir/service_generation_rapport/report/ErrorReport.rptdesign");
 	// build
-	chdir("$projectDir/ogam");
+	chdir($ogamDir);
 	#system("./gradlew service_generation_rapport:war");
 	# le war contenant les rapports se trouve dans
 	# ${ogamDir}/service_generation_rapport/build/libs/service_generation_rapport-3.0.0.war
@@ -71,28 +82,48 @@ function buildJavaServices($config, $buildMode)
 	#mkdir("$buildDir/tmp");
 	system("./gradlew service_generation_rapport:addReports");
 	# Le war se retrouve dans build/tmp/webapps/OGAMRG.war
-	# Le xml dans ...
-	copy("$projectDir/ogam/service_generation_rapport/build/libs/OGAMRG.war",
-		"$servicesBuildDir/webapps/SINP{$config['instance.name']}RGService.war");
+	system("rm -rf report/*;
+	 mv -f $ogamDir/service_generation_rapport/report.save/* $ogamDir/service_generation_rapport/report/;
+	 rm -rf $ogamDir/service_generation_rapport/report.save");
+
+	copy("$ogamDir/service_generation_rapport/build/libs/OGAMRG.war",
+		"$servicesBuildDir/webapps/$RGFilename.war");
 	substituteInFile("$projectDir/services_configs/service_generation_rapport/ReportService_tpl.xml",
-		"$servicesBuildDir/conf/SINP{$config['instance.name']}RGService.xml", $config);
+		"$servicesBuildDir/conf/$RGFilename.xml", $config);
+
+	// Post installation command
+	if ($buildMode == 'dev') {
+		$postBuildInstructions[] = "Java services war files have been built: $servicesBuildDir/webapps/$ISFilename.war and $servicesBuildDir/webapps/$RGFilename.war\n";
+		$postBuildInstructions[] = "To install, do:\n\n";
+		$postBuildInstructions[] = "sudo service tomcat7 stop\n";
+		$postBuildInstructions[] = "sudo rm -rf /var/lib/tomcat7/webapps/$ISFilename\n";
+		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/webapps/$ISFilename.war /var/lib/tomcat7/webapps/\n";
+		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/conf/$ISFilename.xml /etc/tomcat7/Catalina/localhost/\n";
+		$postBuildInstructions[] = "sudo rm -rf /var/lib/tomcat7/webapps/$RGFilename\n";
+		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/webapps/$RGFilename.war /var/lib/tomcat7/webapps/\n";
+		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/conf/$RGFilename.xml /etc/tomcat7/Catalina/localhost/\n";
+		$postBuildInstructions[] = "sudo service tomcat7 start\n\n";
+	}
+
+	echo("Done building java services.\n\n");
+
 }
 
-# TODO Build du SITE WEB
-#=======================
+
 # on range tout dans ./build/website
 function buildWebsite($config, $buildMode)
 {
-    global $projectDir, $buildDir;
+    global $projectDir, $buildDir, $postBuildInstructions;
+	chdir($projectDir);
 
-    echo("building server (symfony)...\n\n");
+    echo("building server (symfony)...\n");
     echo("----------------------------\n");
 
-    $serverDirOgam = $config['ogam.path'] . "/website/htdocs/server";
+    $serverDirOgam = realpath($config['ogam.path'] . "/website/htdocs/server/ogamServer");
     $buildServerDir = $buildDir . "/website/server" ;
     is_dir($buildServerDir) || mkdir($buildServerDir, 0755, true);
 
-    // Copy configurator files if in prod mode
+    // Copy website files if in prod mode
     if ($buildMode == 'prod') {
         echo("Copying ginco server directory project to $buildServerDir...\n");
         system("cp -r $projectDir/website/server/* $buildServerDir/");
@@ -101,6 +132,7 @@ function buildWebsite($config, $buildMode)
     // Copy or symlink OgamBundle
     if ($buildMode == 'prod') {
         echo("Copying OGAMBundle to $buildServerDir/src/Ign/Bundle/...\n");
+		system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
         system("cp -r $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/");
     } else {
         echo("Creating a symlink to OGAMBundle in $buildServerDir/src/Ign/Bundle/...\n");
@@ -108,12 +140,25 @@ function buildWebsite($config, $buildMode)
         system("ln -s $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/OGAMBundle");
     }
 
+	// ajout de la version du build dans le template du site
+	if ($buildMode == 'prod') {
+		$currentBranch = system("git rev-parse --abbrev-ref HEAD");
+		$versionInfo = $currentBranch . ' ' . date('d/m/o G:i:s');
+		echo("Adding version ($versionInfo) in site template...\n");
+		$layoutFile = "$buildServerDir/app/Resources/views/base.html.twig";
+		substituteInFile($layoutFile, $layoutFile, ['build.version' => $versionInfo]);
+
+		// Piwik
+		$piwikTrackingFile = "$buildServerDir/app/Resources/views/piwik.html.twig";
+		substituteInFile($piwikTrackingFile, $piwikTrackingFile, $config);
+	}
+
     chdir("$buildServerDir");
     if ($buildMode == 'prod') {
         echo("Executing build.sh...\n");
         system("bash build.sh --no-interaction");
     } else {
-        echo("Executing build.sh...\n");
+        echo("Executing build_dev.sh...\n");
         system("bash build_dev.sh --no-interaction");
     }
 
@@ -126,8 +171,8 @@ function buildWebsite($config, $buildMode)
             'db' => $config['db.name'],
             'user' => $config['db.user'],
             'pw' => $config['db.user.pw'],
-            'admin_user' => $config['db.adminuser'],
-            'admin_pw' => $config['db.adminuser.pw'],
+            'admin_user' => $config['db.admin.user'],
+            'admin_pw' => $config['db.admin.user.pw'],
             ],
         '__'
     );
@@ -138,63 +183,35 @@ function buildWebsite($config, $buildMode)
         system("rm -r $buildServerDir/app/cache/prod");
     }
 
+    // we do not create any directory:
+	// Production mode: they are created once, outside the project, and the installer create symlinks
+	// Development mode: we show post-installation instructions
+
+	if ($buildMode == 'dev') {
+		$postBuildInstructions[] = "Create the following directories, where you want (best outside the project):\n";
+		$postBuildInstructions[] = "* tmp: directory where data will be uploaded\n";
+		$postBuildInstructions[] = "* upload: directory where data will be uploaded\n";
+		$postBuildInstructions[] = "* dee: directory where dee files and archives will be stored\n";
+		$postBuildInstructions[] = "Then complete with the absolute paths the values of the following parameters in table website.application_parameters:\n";
+		$postBuildInstructions[] = "uploadDir (tmp), UploadDirectory (upload), deePublicDirectory and deePrivateDirectory (???)\n\n";
+	}
+
+	// logs directory: someting todo ?
+
     echo("Done building server (symfony).\n\n");
-
-    // ------------------------------------------------
-    // todo reprendre le code à partir d'ici
-
-
-	global $projectDir;
-
-	echo("");
-
-	mkdir("$buildDir/website", 0777, true);
-	symlink("$projectDir/ogam/website/htdocs/client", "$projectDir/website/htdocs/client");
-	symlink("$projectDir/ogam/website/htdocs/server", "$projectDir/website/htdocs/server");
-	symlink("$projectDir/ogam/website/htdocs/public", "$projectDir/website/htdocs/public");
-	mkdir("$projectDir/website/htdocs/logs");
-
-	system("cp -r -L $projectDir/website/htdocs/* $buildDir/website");
-	// FIXME: la creation des répertoires est-elle vraiment utile?
-	mkdir("$buildDir/website/sessions");
-	// L'installeur remplace les répertoires suivants par des liens symboliques vers /var/data/ginco/...
-	mkdir("$buildDir/website/tmp");
-	// mkdir("$buildDir/website/tmp/database");
-	// mkdir("$buildDir/website/tmp/language");
-	mkdir("$buildDir/website/upload");
-	mkdir("$buildDir/website/dee");
-
-
-	// ajout de la version du build dans le template du site
-	$currentBranch = system("git rev-parse --abbrev-ref HEAD");
-	$versionInfo = $currentBranch . ' ' . date('d/m/o G:i:s');
-	$layoutFile = "$buildDir/website/custom/server/ogamServer/app/layouts/scripts/layout.phtml";
-	substituteInFile($layoutFile, $layoutFile, ['build.version' => $versionInfo]);
-
-	// Piwik
-	$piwikTrackingFile = "$buildDir/website/custom/server/ogamServer/app/layouts/scripts/piwik.html";
-	substituteInFile($piwikTrackingFile, $piwikTrackingFile, $config);
-
-	// adaptation du application.ini à la config de l'instance.
-	$appConfDir = "$buildDir/website/custom/server/ogamServer/app/configs";
-	substituteInFile("$appConfDir/application.ini.tpl", "$appConfDir/application.ini", $config);
-	unlink("$appConfDir/application.ini.tpl");
-
-	// installation des dépendances Composer
-	chdir("$buildDir/website/custom/server/ogamServer/app");
-	system("bash build.sh --no-interaction");
 }
 
 // partie extjs
 function buildExtJS($config, $buildMode)
 {
 	global $projectDir, $buildDir;
+	chdir($projectDir);
 
 	echo("building client (extJs)...\n");
 	echo("--------------------------\n");
 
 	$clientDir = "$projectDir/website/client";
-	$clientDirOgam = $config['ogam.path'] . "/website/htdocs/client";
+	$clientDirOgam = realpath($config['ogam.path'] . "/website/htdocs/client");
 	$buildClientDir = $buildDir . "/website/client" ;
 	is_dir($buildClientDir) || mkdir($buildClientDir, 0755, true);
 
@@ -249,6 +266,7 @@ function buildExtJS($config, $buildMode)
 function buildMapfile($config, $buildMode)
 {
 	global $projectDir, $buildDir;
+	chdir($projectDir);
 
 	echo("building mapfile...\n");
 	echo("-------------------\n");
@@ -270,6 +288,7 @@ function buildMapfile($config, $buildMode)
 function buildApacheConf($config, $buildMode)
 {
 	global $projectDir, $buildDir, $postBuildInstructions;
+	chdir($projectDir);
 
 	echo("building apache config...\n");
 	echo("-------------------------\n");
@@ -301,18 +320,22 @@ function buildApacheConf($config, $buildMode)
 # le code du configurateur a été récupéré dans build/configurator
 function buildConfigurator($config, $buildMode)
 {
-    global $buildDir;
+    global $projectDir, $buildDir;
+	chdir($projectDir);
 
 	echo("building configurator...\n");
 	echo("------------------------\n");
 
-    $configuratorDir = $config['configurator.path'];
+    $configuratorDir = realpath($config['configurator.path']);
+	echo("Configurator path: ". $config['configurator.path'] . "\n");
+	echo("Configurator Dir: ". $configuratorDir . "\n");
+
     $buildConfiguratorDir = ($buildMode == 'dev') ? $configuratorDir : $buildDir . "/configurator" ;
     is_dir($buildConfiguratorDir) || mkdir($buildConfiguratorDir, 0755, true);
 
     // Copy configurator files if in prod mode
     if ($buildMode == 'prod') {
-        echo("Copying configurator project to $buildConfiguratorDir...\n");
+        echo("Copying configurator project from $configuratorDir/ to $buildConfiguratorDir/...\n");
         system("cp -r $configuratorDir/* $buildConfiguratorDir/");
     }
 
@@ -321,7 +344,7 @@ function buildConfigurator($config, $buildMode)
 	    echo("Executing build.sh...\n");
         system("bash build.sh --no-interaction");
     } else {
-        echo("Executing build.sh...\n");
+        echo("Executing build_dev.sh...\n");
         system("bash build_dev.sh --no-interaction");
     }
 
@@ -333,9 +356,8 @@ function buildConfigurator($config, $buildMode)
 			'db' => $config['db.name'],
 			'user' => $config['db.user'],
 			'pw' => $config['db.user.pw'],
-			'admin_user' => $config['db.adminuser'],
-			'admin_pw' => $config['db.adminuser.pw'],
-			'base_url' => '/configurateur'],
+			'admin_user' => $config['db.admin.user'],
+			'admin_pw' => $config['db.admin.user.pw']],
 		'__');
 
 	# on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
@@ -346,9 +368,6 @@ function buildConfigurator($config, $buildMode)
 
     echo("Done building configurator.\n\n");
 }
-
-// todo: j'en fais quoi de ça ?
-// system("chmod -R a+w $buildDir");
 
 //------------------------------------------------------------------------------------------------------
 
@@ -396,11 +415,21 @@ if (count($tasks) == 0) {
 }
 //var_dump($tasks);
 
-// Mode: development or prod
-$buildMode = (isset($params['mode']) && $params['mode']=='prod') ? 'prod' : 'dev';
+// Mode: development or prod (default is prod)
+$buildMode = (isset($params['mode']) && $params['mode']=='dev') ? 'dev' : 'prod';
 
 // build dir: where to put resulting builded files
-$buildDir = ($buildMode == 'prod') ? "$projectDir/build" : $projectDir;
+// In prod mod, always erase build directory to have a coherent set of builded services
+if ($buildMode == 'prod') {
+	$buildDir = "$projectDir/build";
+	if (is_dir($buildDir) && $buildDir != $projectDir) {
+		system("rm -rf $buildDir");
+	}
+	mkdir($buildDir, 0755, true);
+} else {
+	$buildDir = $projectDir;
+}
+
 
 // deploy dir: the path of the ginco application once deployed on target machine
 $deployDir = ($buildMode == 'prod') ? "/var/www/" . $config['instance.name'] : $projectDir;
@@ -428,8 +457,13 @@ if (in_array('apacheconf', $tasks)) {
 if (in_array('configurator', $tasks)) {
 	buildConfigurator($config, $buildMode);
 }
-echo ("Build finished build_ginco.php.\n\n");
+// In prod mode, we keep the config parameters to a file which will be sent to the target machine
+// It will be used by database creation/update scripts
+if ($buildMode == 'prod') {
+	propertiesToFile($config, "$buildDir/config.properties");
+}
 
+echo ("Build finished build_ginco.php.\n\n");
 
 // Show post-build instructions
 if (count($postBuildInstructions) > 0) {
