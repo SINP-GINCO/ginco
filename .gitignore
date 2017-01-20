@@ -30,8 +30,16 @@
 /configurator
 /build
 /notes
+/services
 
 /nbproject/private/
 
 # Fichiers générés (GML DEE)
 /website/htdocs/custom/public/dee/*.zip
+
+# Fichier de properties propre à chaque configuration locale
+localhost.properties
+
+# Logs Apache
+/website/logs/*
+!website/logs/.gitkeep

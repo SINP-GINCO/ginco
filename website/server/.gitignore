@@ -3,10 +3,15 @@
 /app/cache/*
 /app/config/parameters.yml
 /app/logs/*
+/app/sessions/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
+!app/sessions/.gitkeep
 /app/phpunit.xml
 /build/
 /vendor/
 /bin/
 /composer.phar
+OGAMBundle
+OGAMConfigurateurBundle
+GincoConfigurateurBundle

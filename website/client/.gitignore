@@ -1,0 +1,6 @@
+.sencha
+workspace.json
+ogamDesktop/
+packages/
+ext/
+build/
