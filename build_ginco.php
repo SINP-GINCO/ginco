@@ -57,10 +57,10 @@ function buildJavaServices($config, $buildMode)
 		"$ogamDir/service_integration/config/log4j.properties", $config);
 	chdir("$ogamDir");
 	system("./gradlew service_integration:war");
-	# le war se trouve dans ${ogamDir}/service_integration/build/libs/service_integration-3.0.0.war
+	# le war se trouve dans ${ogamDir}/service_integration/build/libs/service_integration-4.0.0.war
 	system("mv -f $ogamDir/service_integration/config/log4j.properties.save $ogamDir/service_integration/config/log4j.properties ");
 
-	copy("$ogamDir/service_integration/build/libs/service_integration-3.0.0.war",
+	copy("$ogamDir/service_integration/build/libs/service_integration-4.0.0.war",
 		"$servicesBuildDir/webapps/$ISFilename.war");
 	substituteInFile("$projectDir/services_configs/service_integration/IntegrationService_tpl.xml",
 		"$servicesBuildDir/conf/$ISFilename.xml", $config);
@@ -153,7 +153,22 @@ function buildWebsite($config, $buildMode)
 		substituteInFile($piwikTrackingFile, $piwikTrackingFile, $config);
 	}
 
-    chdir("$buildServerDir");
+	echo("Filling parameters.yml with configuration parameters...\n");
+	substituteInFile(
+		"$buildServerDir/app/config/parameters.yml.dist",
+		"$buildServerDir/app/config/parameters.yml",
+		['host' => $config['db.host'],
+			'port' => $config['db.port'],
+			'db' => $config['db.name'],
+			'user' => $config['db.user'],
+			'pw' => $config['db.user.pw'],
+			'admin_user' => $config['db.adminuser'],
+			'admin_pw' => $config['db.adminuser.pw'],
+		],
+		'__'
+	);
+
+	chdir("$buildServerDir");
     if ($buildMode == 'prod') {
         echo("Executing build.sh...\n");
         system("bash build.sh --no-interaction");
@@ -162,25 +177,10 @@ function buildWebsite($config, $buildMode)
         system("bash build_dev.sh --no-interaction");
     }
 
-    echo("Filling parameters.yml with configuration parameters...\n");
-    substituteInFile(
-        "$buildServerDir/app/config/parameters.yml.dist",
-        "$buildServerDir/app/config/parameters.yml",
-        ['host' => $config['db.host'],
-            'port' => $config['db.port'],
-            'db' => $config['db.name'],
-            'user' => $config['db.user'],
-            'pw' => $config['db.user.pw'],
-            'admin_user' => $config['db.admin.user'],
-            'admin_pw' => $config['db.admin.user.pw'],
-            ],
-        '__'
-    );
-
     # on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
     if ($buildMode == 'prod') {
         echo("Clearing /app/cache/prod (wrong values)...\n");
-        system("rm -r $buildServerDir/app/cache/prod");
+        system("rm -rf $buildServerDir/app/cache/prod");
     }
 
     // we do not create any directory:
@@ -339,6 +339,18 @@ function buildConfigurator($config, $buildMode)
         system("cp -r $configuratorDir/* $buildConfiguratorDir/");
     }
 
+	echo("Filling parameters.yml with configuration parameters...\n");
+	substituteInFile("$buildConfiguratorDir/app/config/parameters.yml.dist",
+		"$buildConfiguratorDir/app/config/parameters.yml",
+		['host' => $config['db.host'],
+			'port' => $config['db.port'],
+			'db' => $config['db.name'],
+			'user' => $config['db.user'],
+			'pw' => $config['db.user.pw'],
+			'admin_user' => $config['db.adminuser'],
+			'admin_pw' => $config['db.adminuser.pw']],
+		'__');
+
 	chdir("$buildConfiguratorDir");
 	if ($buildMode == 'prod') {
 	    echo("Executing build.sh...\n");
@@ -347,18 +359,6 @@ function buildConfigurator($config, $buildMode)
         echo("Executing build_dev.sh...\n");
         system("bash build_dev.sh --no-interaction");
     }
-
-    echo("Filling parameters.yml with configuration parameters...\n");
-	substituteInFile("$buildConfiguratorDir/app/config/parameters.yml.dist",
-		"$buildConfiguratorDir/app/config/parameters.yml",
-		['host' => $config['db.host'],
-			'port' => $config['db.port'],
-			'db' => $config['db.name'],
-			'user' => $config['db.user'],
-			'pw' => $config['db.user.pw'],
-			'admin_user' => $config['db.admin.user'],
-			'admin_pw' => $config['db.admin.user.pw']],
-		'__');
 
 	# on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
     if ($buildMode == 'prod') {
