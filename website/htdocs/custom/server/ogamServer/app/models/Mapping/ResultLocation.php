@@ -366,6 +366,8 @@ class Application_Model_Mapping_ResultLocation {
 	 * Criteria for deleting rows is based on the calculation of the maximum level of
 	 * precision asked by the user. If this maximum level is inferior to the hiding_level
 	 * of the row, the row will be deleted.
+	 * All rows where hiding_level calculated is exactly 4 (no result should be returned) are
+	 * also deleted.
 	 *
 	 * @param string $reqId
 	 */
@@ -378,6 +380,13 @@ class Application_Model_Mapping_ResultLocation {
 		$stmt = $this->db->prepare($sql);
 		$stmt->execute(array(
 			$maxPrecisionLevel,
+			$reqId
+		));
+
+		$sql = "DELETE FROM results WHERE hiding_level = 4 AND id_request = ?";
+
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute(array(
 			$reqId
 		));
 	}
