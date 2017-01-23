@@ -57,7 +57,7 @@ html:
 
 htmlandpdf:
 	@echo "Building pdf..."
-	make latexpdf
+	make latexpdf > /dev/null
 	@echo
 	@echo "pdflatex finished; the PDF files are in $(BUILDDIR)/latex."
 	@echo
