@@ -183,11 +183,15 @@ function buildWebsite($config, $buildMode)
         system("rm -rf $buildServerDir/app/cache/prod");
     }
 
-    // we do not create any directory:
-	// Production mode: they are created once, outside the project, and the installer create symlinks
+    // Directories used in application:
+	// Production mode: they are created once, outside the project, and the installer create symlinks,
+	// execpt the website/logs directory
 	// Development mode: we show post-installation instructions
 
-	if ($buildMode == 'dev') {
+	if ($buildMode == 'prod') {
+		$buildLogsDir = $buildDir . "/website/logs" ;
+		is_dir($buildLogsDir) || mkdir($buildLogsDir, 0755, true);
+	} else if ($buildMode == 'dev') {
 		$postBuildInstructions[] = "Create the following directories, where you want (best outside the project):\n";
 		$postBuildInstructions[] = "* tmp: directory where data will be uploaded\n";
 		$postBuildInstructions[] = "* upload: directory where data will be uploaded\n";
@@ -196,7 +200,6 @@ function buildWebsite($config, $buildMode)
 		$postBuildInstructions[] = "uploadDir (tmp), UploadDirectory (upload), deePublicDirectory and deePrivateDirectory (???)\n\n";
 	}
 
-	// logs directory: someting todo ?
 
     echo("Done building server (symfony).\n\n");
 }
