@@ -169,19 +169,15 @@ function buildWebsite($config, $buildMode)
 		'__'
 	);
 
+	// Play build.sh / build_dev.sh : composer install, installing assets and clear / warmup cache.
+	// --> Ok in dev mode
+	// --> Not done in prod mode because app/console assets:install and assetic:dump need a connection
+	// to the database, which is not accessible from local ign or jenkins.
+	// --> so build.sh is run by the installer in switch_version.sh, on the target server.
 	chdir("$buildServerDir");
-    if ($buildMode == 'prod') {
-        echo("Executing build.sh...\n");
-        system("bash build.sh --no-scripts");
-    } else {
+    if ($buildMode == 'dev') {
         echo("Executing build_dev.sh...\n");
         system("bash build_dev.sh --no-scripts");
-    }
-
-    # on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
-    if ($buildMode == 'prod') {
-        echo("Clearing /app/cache/prod (wrong values)...\n");
-        system("rm -rf $buildServerDir/app/cache/prod");
     }
 
     // Directories used in application:
@@ -356,19 +352,16 @@ function buildConfigurator($config, $buildMode)
 		'__');
 
 	chdir("$buildConfiguratorDir");
-	if ($buildMode == 'prod') {
-	    echo("Executing build.sh...\n");
-        system("bash build.sh --no-scripts");
-    } else {
-        echo("Executing build_dev.sh...\n");
-        system("bash build_dev.sh --no-scripts");
-    }
-
-	# on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
-    if ($buildMode == 'prod') {
-        echo("Clearing /app/cache/prod (wrong values)...\n");
-        system("rm -r $buildConfiguratorDir/app/cache/prod");
-    }
+	// Play build.sh / build_dev.sh : composer install, installing assets and clear / warmup cache.
+	// --> Ok in dev mode
+	// --> Not done in prod mode because app/console assets:install and assetic:dump need a connection
+	// to the database, which is not accessible from local ign or jenkins.
+	// --> so build.sh is run by the installer in switch_version.sh, on the target server.
+	chdir("$buildServerDir");
+	if ($buildMode == 'dev') {
+		echo("Executing build_dev.sh...\n");
+		system("bash build_dev.sh --no-scripts");
+	}
 
     echo("Done building configurator.\n\n");
 }
