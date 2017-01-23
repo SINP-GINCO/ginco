@@ -14,8 +14,9 @@ curl -sS https://getcomposer.org/installer | php
 # install assets
 php app/console assets:install
 
-# Dump Assetic assets for prod environnement, clear and warmup cache
+# Dump Assetic assets for prod environnement
 php app/console assetic:dump --env=prod
-php app/console cache:clear --env=prod
-php app/console cache:warmup --env=prod
+#  Clear and warmup cache: no because ii is initialised with wrong values
+# php app/console cache:clear --env=prod
+# php app/console cache:warmup --env=prod
 
