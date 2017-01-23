@@ -171,10 +171,10 @@ function buildWebsite($config, $buildMode)
 	chdir("$buildServerDir");
     if ($buildMode == 'prod') {
         echo("Executing build.sh...\n");
-        system("bash build.sh --no-interaction");
+        system("bash build.sh --no-scripts");
     } else {
         echo("Executing build_dev.sh...\n");
-        system("bash build_dev.sh --no-interaction");
+        system("bash build_dev.sh --no-scripts");
     }
 
     # on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
@@ -357,10 +357,10 @@ function buildConfigurator($config, $buildMode)
 	chdir("$buildConfiguratorDir");
 	if ($buildMode == 'prod') {
 	    echo("Executing build.sh...\n");
-        system("bash build.sh --no-interaction");
+        system("bash build.sh --no-scripts");
     } else {
         echo("Executing build_dev.sh...\n");
-        system("bash build_dev.sh --no-interaction");
+        system("bash build_dev.sh --no-scripts");
     }
 
 	# on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
