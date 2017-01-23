@@ -169,15 +169,24 @@ function buildWebsite($config, $buildMode)
 		'__'
 	);
 
-	// Play build.sh / build_dev.sh : composer install, installing assets and clear / warmup cache.
+	chdir("$buildServerDir");
+
+	// Get composer and install vendors (but don't run scripts, we do it after
+	if (!is_file("composer.phar")) {
+		echo "Installing composer...\n";
+		system("curl -sS https://getcomposer.org/installer | php");
+	}
+	echo "Installing project vendors...\n";
+	system("./composer.phar install --no-scripts");
+
+	// Installing assets and clear cache:
 	// --> Ok in dev mode
 	// --> Not done in prod mode because app/console assets:install and assetic:dump need a connection
 	// to the database, which is not accessible from local ign or jenkins.
-	// --> so build.sh is run by the installer in switch_version.sh, on the target server.
-	chdir("$buildServerDir");
-    if ($buildMode == 'dev') {
-        echo("Executing build_dev.sh...\n");
-        system("bash build_dev.sh --no-scripts");
+	// --> done by the installer in switch_version.sh, on the target server.
+	if ($buildMode == 'dev') {
+        echo("Installing assets...\n");
+        system("php app/console assets:install --symlink");
     }
 
     // Directories used in application:
@@ -195,8 +204,12 @@ function buildWebsite($config, $buildMode)
 		$postBuildInstructions[] = "* dee: directory where dee files and archives will be stored\n";
 		$postBuildInstructions[] = "Then complete with the absolute paths the values of the following parameters in table website.application_parameters:\n";
 		$postBuildInstructions[] = "uploadDir (tmp), UploadDirectory (upload), deePublicDirectory and deePrivateDirectory (???)\n\n";
-	}
 
+		$postBuildInstructions[] = "Set permissions on application directories, execute:\n";
+		$postBuildInstructions[] = " cd $buildServerDir\n";
+		$postBuildInstructions[] = " sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs app/sessions\n";
+		$postBuildInstructions[] = " sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs app/sessions\n\n";
+	}
 
     echo("Done building server (symfony).\n\n");
 }
@@ -352,18 +365,34 @@ function buildConfigurator($config, $buildMode)
 		'__');
 
 	chdir("$buildConfiguratorDir");
-	// Play build.sh / build_dev.sh : composer install, installing assets and clear / warmup cache.
+
+	// Get composer and install vendors (but don't run scripts, we do it after
+	if (!is_file("composer.phar")) {
+		echo "Installing composer...\n";
+		system("curl -sS https://getcomposer.org/installer | php");
+	}
+	echo "Installing project vendors...\n";
+	system("./composer.phar install --no-scripts");
+
+	// Installing assets and clear cache:
 	// --> Ok in dev mode
 	// --> Not done in prod mode because app/console assets:install and assetic:dump need a connection
 	// to the database, which is not accessible from local ign or jenkins.
-	// --> so build.sh is run by the installer in switch_version.sh, on the target server.
-	chdir("$buildServerDir");
+	// --> done by the installer in switch_version.sh, on the target server.
 	if ($buildMode == 'dev') {
-		echo("Executing build_dev.sh...\n");
-		system("bash build_dev.sh --no-scripts");
+		echo("Installing assets...\n");
+		system("php app/console assets:install --symlink");
 	}
 
-    echo("Done building configurator.\n\n");
+	// Post installation instructions
+	if ($buildMode == 'dev') {
+		$postBuildInstructions[] = "Set permissions on configurator application directories, execute:\n";
+		$postBuildInstructions[] = " cd $buildConfiguratorDir\n";
+		$postBuildInstructions[] = " sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs\n";
+		$postBuildInstructions[] = " sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs\n\n";
+	}
+
+	echo("Done building configurator.\n\n");
 }
 
 //------------------------------------------------------------------------------------------------------
