@@ -16,6 +16,7 @@ db.user=ogam
 db.user.pw=#####
 db.adminuser=admin
 db.adminuser.pw=#####
+db.version=9.6.0
 
 # Target machoine configuration
 # La machine sur laquelle déployer cette instance
