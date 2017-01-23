@@ -125,7 +125,7 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 .. note:: Il est préférable de rendre un champ obligatoire sur le modèle d'import plutôt que sur le modèle de données.
 
-.. note:: Certains champs sont obligatoires dans le modèle de données et pas dans le modèle d'import. lorsqu'ils sont calculés automatiquement par l'application à l'import (par exemple: l'identifiant pernanent SINP ou les champs de sensibilité).
+.. note:: Lorsque l'on mappe des champs d'un fichier d'un modèle d'import avec des champs obligatoires non-calculés d'une table, le champ devient obligatoire et non-modifiable dans la configuration des champs du fichier du modèle d'import. Cette contrainte a été mise en place pour éviter que certains champs obligatoires en base ne soient pas présents dans le ou les fichiers du modèle d'import, ce qui peut engendrer des erreurs lors de l'import. Les champs calculés ne sont pas pris en compte (par exemple : l'identifiant permanent SINP, les champs de sensibilité ou les champs administratifs calculés).
 
 
 7. **Remplir le format de date** pour tous les champs dont l'unité est "*DATE*". Par défaut, le format de date pré-rempli est *yyyy-MM-dd*, mais vous pouvez le modifier. Vous trouverez plus de détails dans :ref:`format-des-dates`.
