@@ -10,7 +10,7 @@ curl -sS https://getcomposer.org/installer | php
 ./composer.phar install $@
 
 # Dump js-routing
-php app/console fos:js-routing:dump --env=dev --target="./src/Ign/Bundle/ConfigurateurBundle/Resources/public/js/fos_js_routes_dev.js"
+php app/console fos:js-routing:dump --env=dev --target="./src/Ign/Bundle/OGAMConfigurateurBundle/Resources/public/js/fos_js_routes_dev.js"
 
 # install assets
 php app/console assets:install --symlink
