@@ -10,6 +10,7 @@ parameters:
     database_password: __pw__
     database_admin_user: __admin_user__
     database_admin_password: __admin_pw__
+    database_version: __db_version__
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1

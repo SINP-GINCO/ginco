@@ -164,6 +164,7 @@ function buildWebsite($config, $buildMode)
 			'pw' => $config['db.user.pw'],
 			'admin_user' => $config['db.adminuser'],
 			'admin_pw' => $config['db.adminuser.pw'],
+			'db_version' => $config['db.version'],
 		],
 		'__'
 	);
