@@ -136,7 +136,7 @@ doctrine:
 
     orm:
         default_entity_manager: website
-        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_generate_proxy_classes: "FILE_NOT_EXISTS"
         entity_managers:
             website:
                  connection: website
