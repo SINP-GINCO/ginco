@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "52115c268c06ada2fc1b9e1e9146ec10",
-    "content-hash": "c01b6360e6b2cc2391c6ba62cd0d90a9",
+    "hash": "8578e34ba57ec6cba4d59c7c5676dff2",
+    "content-hash": "1bb7ef4adf3d6f3ade993887675ff61e",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1416,16 +1416,16 @@
         },
         {
             "name": "symfony/assetic-bundle",
-            "version": "v2.8.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/assetic-bundle.git",
-                "reference": "0241b135ff64c6031048c6425cd833a8300da46b"
+                "reference": "aa5b4f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/assetic-bundle/zipball/0241b135ff64c6031048c6425cd833a8300da46b",
-                "reference": "0241b135ff64c6031048c6425cd833a8300da46b",
+                "url": "https://api.github.com/repos/symfony/assetic-bundle/zipball/aa5b4f8",
+                "reference": "aa5b4f8",
                 "shasum": ""
             },
             "require": {
@@ -1482,7 +1482,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2016-11-22 11:42:57"
+            "time": "2015-12-28 13:12:39"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -2768,7 +2768,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "symfony/assetic-bundle": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
