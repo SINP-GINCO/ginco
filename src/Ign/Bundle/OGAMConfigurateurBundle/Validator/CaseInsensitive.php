@@ -16,6 +16,6 @@ class CaseInsensitive extends Constraint {
 	}
 
 	public function validatedBy() {
-		return 'ign_configurateur_caseinsensitive'; // appel à l'alias du service
+		return 'ign_ogamconfigurateur_caseinsensitive'; // appel à l'alias du service
 	}
 }

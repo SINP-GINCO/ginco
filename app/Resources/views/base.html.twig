@@ -5,11 +5,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8" />
 		<!-- Put in the folder 'src/Ign/Bundle/ConfigurateurBundle/public/css' your css,
-		In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignconfigurateur/' to create
+		In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignogamconfigurateur/' to create
 		symlinks pointing towards your files.-->
 
-		{# todo : add yui_css filter {% stylesheets 'bundles/ignconfigurateur/css/*' filter='cssrewrite, yui_css' %}#}
-		{% stylesheets 'bundles/ignconfigurateur/css/*' filter='cssrewrite' %}
+		{# todo : add yui_css filter {% stylesheets 'bundles/ignogamconfigurateur/css/*' filter='cssrewrite, yui_css' %}#}
+		{% stylesheets 'bundles/ignogamconfigurateur/css/*' filter='cssrewrite' %}
  			 <link rel="stylesheet" href="{{ asset_url }}" />
  		{% endstylesheets %}
 
@@ -25,17 +25,17 @@
 		{% block javascripts %}
 
 			<!-- Put in the folder 'src/Ign/Bundle/ConfigurateurBundle/public/js' your scripts,
-			In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignconfigurateur/' to create
+			In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignogamconfigurateur/' to create
 			symlinks pointing towards your files.-->
-			<script src="{{ asset('bundles/ignconfigurateur/js/jquery.min.js') }}"></script>
-			<script src="{{ asset('bundles/ignconfigurateur/js/jquery-ui.min.js') }}"></script>
-			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap_modal_7.js') }}"></script>
-			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap_tooltip_8.js') }}"></script>
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/jquery.min.js') }}"></script>
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/jquery-ui.min.js') }}"></script>
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap_modal_7.js') }}"></script>
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap_tooltip_8.js') }}"></script>
 			<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 			{% if app.environment == 'prod' %}
-				<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes.js') }}"></script>
+				<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes.js') }}"></script>
 			{% else %}
-				<script src="{{ asset('bundles/ignconfigurateur/js/fos_js_routes_dev.js') }}"></script>
+				<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes_dev.js') }}"></script>
 			{% endif %}
 			<script>
 				$(document).ready(function(){
@@ -45,8 +45,8 @@
 		{% endblock %}
 
 		{% block specificjavascripts %}
-			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap-table.js') }}"></script>
-			<script src="{{ asset('bundles/ignconfigurateur/js/bootstrap-table-fr-FR.js') }}"></script>
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap-table.js') }}"></script>
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.js') }}"></script>
 		{% endblock %}
 
 	</body>

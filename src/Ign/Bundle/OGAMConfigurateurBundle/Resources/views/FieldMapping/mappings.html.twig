@@ -1,4 +1,4 @@
-{% extends "IgnConfigurateurBundle::layout.html.twig" %}
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 
 {% block title %}
 	{% trans %}File Format Edition{% endtrans %}
@@ -12,7 +12,7 @@
 	<div class="row">
 
 		<p class="help pull-right">
-			<a target="_blank" href="{{ constant('Ign\\Bundle\\ConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-d-import.html">
+			<a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-d-import.html">
 				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 				Aide sur les modèles d'import
 			</a>
@@ -60,12 +60,12 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				{{ include('IgnConfigurateurBundle:FieldMapping:list.html.twig') }}
+				{{ include('IgnOGAMConfigurateurBundle:FieldMapping:list.html.twig') }}
 			</div>
 
 			<div class="panel-body">
-				{{ include('IgnConfigurateurBundle:FieldMapping:manual_mapping.html.twig') }}
-				{{ include('IgnConfigurateurBundle:FieldMapping:auto_mapping.html.twig') }}
+				{{ include('IgnOGAMConfigurateurBundle:FieldMapping:manual_mapping.html.twig') }}
+				{{ include('IgnOGAMConfigurateurBundle:FieldMapping:auto_mapping.html.twig') }}
 			</div>
 
 		</div>
@@ -114,7 +114,7 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{{ include('IgnConfigurateurBundle::preventclosing.html.twig') }}
-	{{ include('IgnConfigurateurBundle::field_mapping_script.html.twig') }}
+	{{ include('IgnOGAMConfigurateurBundle::preventclosing.html.twig') }}
+	{{ include('IgnOGAMConfigurateurBundle::field_mapping_script.html.twig') }}
 {% endblock %}
 

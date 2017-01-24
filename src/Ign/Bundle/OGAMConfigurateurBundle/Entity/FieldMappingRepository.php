@@ -2,7 +2,7 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\OGAMConfigurateurBundle\IgnConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle;
 
 class FieldMappingRepository extends EntityRepository {
 

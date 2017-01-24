@@ -4,7 +4,7 @@ security:
             memory: ~
         db_provider:
             entity:
-                class: IgnConfigurateurBundle:User
+                class: IgnOGAMConfigurateurBundle:User
                 property: username
     firewalls:
         # On crée un pare-feu uniquement pour le formulaire

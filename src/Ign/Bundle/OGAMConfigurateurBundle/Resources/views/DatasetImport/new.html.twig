@@ -1,4 +1,4 @@
-{% extends "IgnConfigurateurBundle::layout.html.twig" %}
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 
 
@@ -11,7 +11,7 @@
 	<div class="row">
 
 		<p class="help pull-right">
-			<a target="_blank" href="{{ constant('Ign\\Bundle\\ConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-d-import.html">
+			<a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-d-import.html">
 				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 				Aide sur les modèles d'import
 			</a>
@@ -40,5 +40,5 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	{{ include('IgnConfigurateurBundle::preventclosing.html.twig') }}
+	{{ include('IgnOGAMConfigurateurBundle::preventclosing.html.twig') }}
 {% endblock %}
