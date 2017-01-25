@@ -163,7 +163,7 @@ set search_path to website;
 ALTER TABLE users DROP column IF EXISTS active;
 
 /* Change  layer_role_restriction foreign_key */
-ALTER TABLE layer_role_restriction DROP CONSTRAINT fk_layer_role_restriction_layer_name;
+ALTER TABLE layer_role_restriction DROP CONSTRAINT IF EXISTS fk_layer_role_restriction_layer_name;
 ALTER TABLE layer_role_restriction ADD FOREIGN KEY (layer_name) REFERENCES mapping.layer(name) ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Rename column in table predefined_request, add constraint */
@@ -175,21 +175,21 @@ ALTER TABLE predefined_request_criteria RENAME TO predefined_request_criterion;
 COMMENT ON COLUMN predefined_request_criterion.format IS 'The form format of the criterion';
 COMMENT ON COLUMN predefined_request_criterion.data IS 'The form field of the criterion';
 COMMENT ON COLUMN predefined_request_criterion.fixed IS 'Indicate if the criterion is fixed or selectable';
-ALTER TABLE predefined_request_criterion DROP CONSTRAINT fk_predefined_request_criteria_request_name;
+ALTER TABLE predefined_request_criterion DROP CONSTRAINT IF EXISTS fk_predefined_request_criteria_request_name;
 ALTER TABLE ONLY predefined_request_criterion ADD FOREIGN KEY (request_name) REFERENCES predefined_request(name) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 /* Rename table predefined_request_result to predefined_request_column */
 ALTER TABLE predefined_request_result RENAME TO predefined_request_column;
 COMMENT ON COLUMN predefined_request_column.format IS 'The form format of the column';
 COMMENT ON COLUMN predefined_request_column.data IS 'The form field of the column';
-ALTER TABLE predefined_request_column DROP CONSTRAINT fk_predefined_request_result_request_name;
+ALTER TABLE predefined_request_column DROP CONSTRAINT IF EXISTS fk_predefined_request_result_request_name;
 ALTER TABLE ONLY predefined_request_column ADD CONSTRAINT fk_predefined_request_column_request_name FOREIGN KEY (request_name) REFERENCES predefined_request(name) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 /* Change column name in table PREDEFINED_REQUEST_GROUP */
 ALTER TABLE predefined_request_group RENAME COLUMN group_name to name;
 
 /* Change foreign key on table predefined_request_group_asso */
-ALTER TABLE predefined_request_group_asso DROP CONSTRAINT fk_predefined_request_request_name;
+ALTER TABLE predefined_request_group_asso DROP CONSTRAINT IF EXISTS fk_predefined_request_request_name;
 ALTER TABLE ONLY predefined_request_group_asso ADD FOREIGN KEY (request_name) REFERENCES predefined_request(name) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 /* Change all dynamodes beacuse now we need two more fields: definition and position (unused but mandatory) */
