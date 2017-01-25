@@ -15,6 +15,10 @@ CREATE TABLE zoom_level
   PRIMARY KEY  (zoom_level)
 ) WITHOUT OIDS;
 
+ALTER TABLE zoom_level OWNER TO admin;
+GRANT ALL ON TABLE zoom_level TO admin;
+GRANT ALL ON TABLE zoom_level TO ogam;
+
 COMMENT ON COLUMN zoom_level.zoom_level IS 'The level of zoom';
 COMMENT ON COLUMN zoom_level.resolution IS 'The resolution value';
 COMMENT ON COLUMN zoom_level.approx_scale_denom IS 'The approximate scale denominator value corresponding to the resolution';
