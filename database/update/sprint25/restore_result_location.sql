@@ -27,3 +27,7 @@ COMMENT ON COLUMN RESULT_LOCATION.SESSION_ID IS 'Identifier of the user session'
 COMMENT ON COLUMN RESULT_LOCATION.FORMAT IS 'The identifier of the table containing the geometry';
 COMMENT ON COLUMN RESULT_LOCATION.PK IS 'The primary key of the line containing the geometry';
 COMMENT ON COLUMN RESULT_LOCATION._CREATIONDT IS 'Creation date (used to know when to purge the base)';
+
+ALTER TABLE result_location OWNER TO admin;
+GRANT ALL ON TABLE result_location TO admin;
+GRANT ALL ON TABLE result_location TO ogam;
