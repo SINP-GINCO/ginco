@@ -13,7 +13,8 @@
     },
     "require": {
         "php": ">=5.3.9",
-        "symfony/symfony": ">=2.0 <=2.8.15",
+        "symfony/symfony": "^2.8",
+        "twig/twig": "^1.28",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
         "symfony/assetic-bundle" : "dev-master#aa5b4f8",
