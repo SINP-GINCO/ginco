@@ -22,9 +22,6 @@ class IgnOGAMConfigurateurExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
-        
         $container->setParameter( 'ign_configurateur.database_name', $config[ 'database_name' ]);
     }
 }
