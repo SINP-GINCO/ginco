@@ -19,8 +19,7 @@ function usage($mess=NULL){
 	echo "  o --website : build the 'server' part of the project (symfony)\n";
 	echo "  o --ext : build the 'client' part of the project (ext)\n";
 	echo "  o --mapfile : build the mapfile for mapserver\n";
-	echo "  o --apacheconf : build the apache configuration file\n";
-	echo "  o --configurator : build the configurator (symfony)\n\n";
+	echo "  o --apacheconf : build the apache configuration file\n\n";
 
 	echo "------------------------------------------------------------------------\n";
 	if (!is_null($mess)){
@@ -116,8 +115,8 @@ function buildWebsite($config, $buildMode)
     global $projectDir, $buildDir, $postBuildInstructions;
 	chdir($projectDir);
 
-    echo("building server (symfony)...\n");
-    echo("----------------------------\n");
+    echo("building server: Ogam, Ginco, Configurator (symfony parts)...\n");
+    echo("-------------------------------------------------------------\n");
 
     $serverDirOgam = realpath($config['ogam.path'] . "/website/htdocs/server/ogamServer");
     $buildServerDir = $buildDir . "/website/server" ;
@@ -139,6 +138,19 @@ function buildWebsite($config, $buildMode)
         system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
         system("ln -s $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/OGAMBundle");
     }
+
+	// Copy or symlink configurator bundles
+	$configuratorDir = realpath($config['configurator.path']);
+	if ($buildMode == 'prod') {
+		echo("Copying configurator bundles to $buildServerDir/src/Ign/Bundle/...\n");
+		system("rm -rf $buildServerDir/src/Ign/Bundle/*ConfigurateurBundle");
+		system("cp -r $configuratorDir/src/Ign/Bundle/*ConfigurateurBundle $buildServerDir/src/Ign/Bundle/");
+	} else {
+		echo("Creating symlinks to OGAM/GincoConfigurateurBundle in $buildServerDir/src/Ign/Bundle/...\n");
+		system("rm -rf $buildServerDir/src/Ign/Bundle/*ConfigurateurBundle");
+		system("ln -s $configuratorDir/src/Ign/Bundle/OGAMConfigurateurBundle $buildServerDir/src/Ign/Bundle/OGAMConfigurateurBundle");
+		system("ln -s $configuratorDir/src/Ign/Bundle/GincoConfigurateurBundle $buildServerDir/src/Ign/Bundle/GincoConfigurateurBundle");
+	}
 
 	// ajout de la version du build dans le template du site
 	if ($buildMode == 'prod') {
@@ -330,71 +342,6 @@ function buildApacheConf($config, $buildMode)
 }
 
 
-# le code du configurateur a été récupéré dans build/configurator
-function buildConfigurator($config, $buildMode)
-{
-    global $projectDir, $buildDir;
-	chdir($projectDir);
-
-	echo("building configurator...\n");
-	echo("------------------------\n");
-
-    $configuratorDir = realpath($config['configurator.path']);
-	echo("Configurator path: ". $config['configurator.path'] . "\n");
-	echo("Configurator Dir: ". $configuratorDir . "\n");
-
-    $buildConfiguratorDir = ($buildMode == 'dev') ? $configuratorDir : $buildDir . "/configurator" ;
-    is_dir($buildConfiguratorDir) || mkdir($buildConfiguratorDir, 0755, true);
-
-    // Copy configurator files if in prod mode
-    if ($buildMode == 'prod') {
-        echo("Copying configurator project from $configuratorDir/ to $buildConfiguratorDir/...\n");
-        system("cp -r $configuratorDir/* $buildConfiguratorDir/");
-    }
-
-	echo("Filling parameters.yml with configuration parameters...\n");
-	substituteInFile("$buildConfiguratorDir/app/config/parameters.yml.dist",
-		"$buildConfiguratorDir/app/config/parameters.yml",
-		['host' => $config['db.host'],
-			'port' => $config['db.port'],
-			'db' => $config['db.name'],
-			'user' => $config['db.user'],
-			'pw' => $config['db.user.pw'],
-			'admin_user' => $config['db.adminuser'],
-			'admin_pw' => $config['db.adminuser.pw']],
-		'__');
-
-	chdir("$buildConfiguratorDir");
-
-	// Get composer and install vendors (but don't run scripts, we do it after
-	if (!is_file("composer.phar")) {
-		echo "Installing composer...\n";
-		system("curl -sS https://getcomposer.org/installer | php");
-	}
-	echo "Installing project vendors...\n";
-	system("./composer.phar install --no-scripts");
-
-	// Installing assets and clear cache:
-	// --> Ok in dev mode
-	// --> Not done in prod mode because app/console assets:install and assetic:dump need a connection
-	// to the database, which is not accessible from local ign or jenkins.
-	// --> done by the installer in switch_version.sh, on the target server.
-	if ($buildMode == 'dev') {
-		echo("Installing assets...\n");
-		system("php app/console assets:install --symlink");
-	}
-
-	// Post installation instructions
-	if ($buildMode == 'dev') {
-		$postBuildInstructions[] = "Set permissions on configurator application directories, execute:\n";
-		$postBuildInstructions[] = " cd $buildConfiguratorDir\n";
-		$postBuildInstructions[] = " sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs\n";
-		$postBuildInstructions[] = " sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs\n\n";
-	}
-
-	echo("Done building configurator.\n\n");
-}
-
 //------------------------------------------------------------------------------------------------------
 
 if (count($argv)==1) usage();
@@ -411,7 +358,6 @@ $tasksOptions  = array(
 	"ext",		// Build extJS client
 	"mapfile",		// Build mapfile
 	"apacheconf",		// Build apache configuration file
-	"configurator",		// Build configurator website
 );
 $otherOptions = array(
 	"mode::",     	// Development mode: symlinks instead of copy files
@@ -479,9 +425,6 @@ if (in_array('mapfile', $tasks)) {
 }
 if (in_array('apacheconf', $tasks)) {
 	buildApacheConf($config, $buildMode);
-}
-if (in_array('configurator', $tasks)) {
-	buildConfigurator($config, $buildMode);
 }
 // In prod mode, we keep the config parameters to a file which will be sent to the target machine
 // It will be used by database creation/update scripts

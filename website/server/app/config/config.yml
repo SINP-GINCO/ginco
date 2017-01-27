@@ -86,7 +86,7 @@ assetic:
         jquery:
             inputs:
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/jquery.min.js"
-        
+
 
 # Doctrine Configuration
 doctrine:
@@ -222,9 +222,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-
-#ign_ogam_configurateur:
-#    database_name: "%database_name%"
 
 # breadcrumb configuration
 white_october_breadcrumbs:
