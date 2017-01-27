@@ -1,6 +1,6 @@
 {
-    "name": "igngincobundle",
-    "license": "proprietary",
+    "name": "sinp-ginco/ginco",
+    "license": "CeCILL",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -17,7 +17,7 @@
         "twig/twig": "^1.28",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
-        "symfony/assetic-bundle" : "dev-master#aa5b4f8",
+        "symfony/assetic-bundle" : "^2.8",
         "symfony/swiftmailer-bundle": "~2.3",
         "symfony/monolog-bundle": "~2.11.3",
         "sensio/distribution-bundle": "~5.0",
