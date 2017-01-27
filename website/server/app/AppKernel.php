@@ -17,8 +17,8 @@ class AppKernel extends Kernel {
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
 			new Ign\Bundle\GincoBundle\IgnGincoBundle(),
 			new Ign\Bundle\OGAMBundle\OGAMBundle(),
-			// new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
-			// new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle(),
+			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
+			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle()
 		);
 
 		if (in_array($this->getEnvironment(), array(
