@@ -7,9 +7,12 @@
 		<meta name="description" content="open-source generic application base on metadata" />
         <title>{% block title %}OGAM{% endblock %}</title>
         {% block stylesheets %}
-        {% stylesheets 'bundles/ogam/css/global.css' filter='cssrewrite' %}
-             <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
+{#          {% stylesheets 'bundles/ogam/css/global.css' filter='cssrewrite' %}#}
+{#              <link rel="stylesheet" href="{{ asset_url }}" />#}
+{#          {% endstylesheets %}#}
+            {% stylesheets '@bootstrap_css' %}
+                <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+            {% endstylesheets %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -18,7 +21,7 @@
     	<div id="wrapper" class="wrapper">
 
             <div id="main-body-bg" class="main-body-bg"></div>
-            <div id="main-body" class="main-body">
+            <div class="container">
             
                 <!-- HEADER -->
                 <div class="header" id="header">
@@ -32,8 +35,10 @@
                     </div>
             
                     <div id="top" class="top">
+                    
+                    {% block navbar %} {% endblock %}
             
-            			<div id="header-beadcrumb" class="header-beadcrumb" style="float: left">
+            			<div id="header-beadcrumb" class="breadcrumb" style="float: left">
                             {{ wo_render_breadcrumbs() }}
             			</div>
             			
@@ -78,8 +83,8 @@
     <!-- Fin du wrapper -->
     </div>
     
-    <div class="footer"  id="footer">
-         <div id="footer-ct" class="footer-ct">
+    <div class="panel-footer"  id="footer">
+        <div class="container">
         	<span title="Build @build_number@">Version @version_number@&nbsp;-&nbsp;</span>
             {{'Layout Copyright'|trans}} &nbsp;
             <a id="lkContact" onclick="sendMail();" href="#">{% trans %}Contact Us{% endtrans %}</a>
@@ -90,7 +95,11 @@
     </body>
     
   {% block javascripts %}
-
+  
+  {% javascripts '@jquery' '@bootstrap_js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+  
     <script type="text/javascript">
       //Defines the base URL for the scripts
      function sendMail(){
