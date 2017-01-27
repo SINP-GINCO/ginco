@@ -11,14 +11,14 @@ class AppKernel extends Kernel {
 			new Symfony\Bundle\TwigBundle\TwigBundle(),
 			new Symfony\Bundle\MonologBundle\MonologBundle(),
 			new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-			new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+            new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
 			new Ign\Bundle\GincoBundle\IgnGincoBundle(),
 			new Ign\Bundle\OGAMBundle\OGAMBundle(),
 			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
-			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle()
+			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle(),
 		);
 
 		if (in_array($this->getEnvironment(), array(
