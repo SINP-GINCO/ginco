@@ -179,8 +179,6 @@ doctrine:
         auto_generate_proxy_classes: "FILE_NOT_EXISTS"
         entity_managers:
             metadata_work:
-                naming_strategy: doctrine.orm.naming_strategy.underscore
-                auto_mapping: true
                 mappings:
                     IgnOGAMConfigurateurBundle: ~
             website:
