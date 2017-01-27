@@ -8,3 +8,13 @@ ign_ginco:
     resource: "@IgnGincoBundle/Controller/"
     type:     annotation
     prefix:   /
+
+ign_ogam_configurateur:
+    resource: "../../src/Ign/Bundle/OGAMConfigurateurBundle/Controller/"
+    type:     annotation
+    prefix:   /configurator
+
+ign_ginco_configurateur:
+    resource: "@IgnGincoConfigurateurBundle/Controller/"
+    type:     annotation
+    prefix:   /configurator

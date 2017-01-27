@@ -28,7 +28,7 @@ framework:
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/sessions/"
+        save_path:   "%kernel.root_dir%/sessions"
     fragments:       ~
     http_method_override: true
     assets: ~
@@ -177,6 +177,11 @@ doctrine:
         default_entity_manager: website
         auto_generate_proxy_classes: "FILE_NOT_EXISTS"
         entity_managers:
+            metadata_work:
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                auto_mapping: true
+                mappings:
+                    IgnOGAMConfigurateurBundle: ~
             website:
                  connection: website
                  mappings:
@@ -223,3 +228,6 @@ swiftmailer:
 # breadcrumb configuration
 white_october_breadcrumbs:
     separator: ''
+
+ign_ogam_configurateur:
+    database_name: "%database_name%"

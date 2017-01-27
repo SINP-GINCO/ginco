@@ -40,6 +40,7 @@ security:
         - { path: ^/proxy/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/harmonization/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/checkconf/, allow_if: "user and is_authenticated() and user.isAllowed('CHECK_CONF')"}
+        - { path: ^/configurator/, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_METAMODEL')"}
 
             # activate different ways to authenticate
 
