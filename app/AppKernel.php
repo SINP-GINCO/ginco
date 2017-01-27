@@ -17,7 +17,6 @@ class AppKernel extends Kernel {
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-			new Theodo\Evolution\Bundle\SessionBundle\TheodoEvolutionSessionBundle(),
 			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
 			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle()
 		);

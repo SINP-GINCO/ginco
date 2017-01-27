@@ -1,32 +1,13 @@
+# app/config/security.yml
 security:
     providers:
         in_memory:
             memory: ~
-        db_provider:
-            entity:
-                class: IgnOGAMConfigurateurBundle:User
-                property: username
+
     firewalls:
-        # On crée un pare-feu uniquement pour le formulaire
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        # main_login:
-        #      pattern:   ^/login/
-        #      anonymous: true
-        main:
-            pattern: ^/
-        #    anonymous: false
+
+        default:
             anonymous: ~
-        #    provider:  db_provider
-        #    form_login:
-        #        login_path: configurateur_login
-        #        check_path: login_check
-        #        use_forward: true
-        #    logout:
-        #        path:   logout
-        #       target: /
-    access_control:
-      #  - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      #  - { path: ^/, roles: ROLE_CONFIGURE_METAMODEL }
-    

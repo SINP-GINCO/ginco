@@ -27,8 +27,7 @@
 		"twbs/bootstrap" : "3.3.*",
 		"oyejorge/less.php" : "~1.5",
 		"braincrafted/bootstrap-bundle" : "~2.2",
-		"friendsofsymfony/jsrouting-bundle" : "~1.6",
-		"theodo-evolution/session-bundle" : "1.0.0"
+		"friendsofsymfony/jsrouting-bundle" : "~1.6"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~3.0"
