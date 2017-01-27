@@ -29,6 +29,7 @@ try {
 	/* Zend 1 --> Symfony 2 migration */
 	execCustSQLFile("$sprintDir/add_extension_pg_trgm.sql", $config);
 	execCustSQLFile("$sprintDir/update_db_to_v4.sql", $config);
+	execCustSQLFile("$sprintDir/update_layers_and_layer_tree.sql", $config);
 
 	/* Restore a result_location table - temporary - to test visu in Ogam */
 	execCustSQLFile("$sprintDir/restore_result_location.sql", $config);
