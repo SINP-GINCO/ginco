@@ -1,0 +1,72 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+#    database_user: ogam
+#    test.client.class: Ign\Bundle\OGAMConfigurateurBundle\Tests\Client
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+
+    app.tablesgeneration:
+        class: Ign\Bundle\GincoConfigurateurBundle\Utils\TablesGeneration
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        calls:
+              - [setRequest, ["@request_stack"]]
+              - [setPredefinedRequestGeneration, ['@app.predefinedrequestgeneration']]
+
+    app.copyutils:
+        class: Ign\Bundle\GincoConfigurateurBundle\Utils\CopyUtils
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        
+    app.predefinedrequestgeneration:
+        class: Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+
+    app.modelpublication:
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        calls:
+              - [setTablesGeneration, ['@app.tablesgeneration']]
+              - [setCopyUtils, ['@app.copyutils']]
+
+    app.modelunpublication:
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        
+    app.importmodelpublication:
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        
+    app.importmodelunpublication:
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnpublication
+        arguments: ["@database_connection", "@logger"]
+        
+    app.modelduplication:
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+
+    app.permissions:
+        class: Ign\Bundle\GincoConfigurateurBundle\Utils\Permissions
+        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%", "@translator"]
+        calls:
+              - [setModelPublication, ['@app.modelpublication']]
+              - [setImportModelPublication, ['@app.importmodelpublication']]
+
+    app.resettomcatcaches:
+        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ResetTomcatCaches
+        arguments: ["@database_connection", "@logger"]
+
+    ign_ogamconfigurateur.validator.caseinsensitive:                               # Le nom du service
+        class: Ign\Bundle\OGAMConfigurateurBundle\Validator\CaseInsensitiveValidator     # La classe du service, ici le validateur
+        arguments: ["@doctrine.orm.metadata_work_entity_manager"]              # Les données qu'on injecte au service : l'EntityManager
+        tags:
+            - { name: validator.constraint_validator, alias: ign_ogamconfigurateur_caseinsensitive }  # C'est avec l'alias qu'on retrouve le service
+
+    ign_gincoconfigurateur.file_field_auto_type_extension:
+        class: Ign\Bundle\GincoConfigurateurBundle\Form\Extension\FileFieldAutoTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType }
