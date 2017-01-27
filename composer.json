@@ -1,6 +1,6 @@
 {
-	"name" : "ingf/ogam_configurator",
-	"license" : "GPLv3",
+	"name" : "sinp-ginco/ogam_configurator",
+	"license" : "CeCILL",
 	"type" : "project",
 	"description" : "The OGAM configurator tool",
 	"autoload" : {
@@ -11,12 +11,13 @@
 	},
 	"require" : {
 		"php" : ">=5.3.9",
-		"symfony/symfony" : "2.8.*",
+		"symfony/symfony" : "^2.8",
+		"twig/twig": "^1.28",
 		"doctrine/orm" : "^2.4.8",
 		"doctrine/dbal" : "<2.4.4",
 		"doctrine/doctrine-bundle" : "~1.4",
 		"twig/extensions" : "~1.0",
-		"symfony/assetic-bundle" : "dev-master#aa5b4f8",
+		"symfony/assetic-bundle" : "^2.8",
 		"symfony/swiftmailer-bundle" : "~2.3",
 		"symfony/monolog-bundle" : "~2.4",
 		"symfony/yaml" : "2.8.*",
