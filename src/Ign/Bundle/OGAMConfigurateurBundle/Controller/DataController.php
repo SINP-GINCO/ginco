@@ -24,7 +24,7 @@ class DataController extends Controller {
 	 * @Route("", name="configurateur_data_index")
 	 */
 	public function indexAction() {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$entities = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAll();
 
 		$editableDatas = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAllNotRelatedToFields();
@@ -51,7 +51,7 @@ class DataController extends Controller {
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
-			$em = $this->getDoctrine()->getManager();
+			$em = $this->getDoctrine()->getManager('metadata_work');
 			$em->persist($entity);
 			$em->flush();
 
@@ -161,7 +161,7 @@ class DataController extends Controller {
 		// A hidden field to add the new Data entity to a table
 		if ($format) {
 			// Checks if the table/file exists and is editable
-			$em = $this->getDoctrine()->getManager();
+			$em = $this->getDoctrine()->getManager('metadata_work');
 			$theFormat = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
 			$type = ($theFormat) ? $theFormat->getType() : "";
 			switch ($type) {
@@ -214,7 +214,7 @@ class DataController extends Controller {
 	 * @Route("/{id}", name="configurateur_data_show")
 	 */
 	public function showAction($id) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
 
 		if (!$entity) {
@@ -268,7 +268,7 @@ class DataController extends Controller {
 	 * @Route("/{id}/edit", name="configurateur_data_edit")
 	 */
 	public function editAction($id, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
 
@@ -336,7 +336,7 @@ class DataController extends Controller {
 	 * @Route("/{id}/delete", name="configurateur_data_delete")
 	 */
 	public function deleteAction($id) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
 		if (!$entity) {

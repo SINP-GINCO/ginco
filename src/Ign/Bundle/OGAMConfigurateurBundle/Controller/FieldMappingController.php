@@ -28,7 +28,7 @@ class FieldMappingController extends Controller {
 	 * @Route("datasetsimport/{datasetId}/files/{format}/mappings/", name="configurateur_file_mappings")
 	 */
 	public function manageMappingsAction($datasetId, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
@@ -56,7 +56,7 @@ class FieldMappingController extends Controller {
 	 */
 	public function listMappings(FileFormat $file)
 	{
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$fieldMappings = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findMappings($file->getFormat(), 'FILE');
 		$fms = $fieldMappings;
 
@@ -107,7 +107,7 @@ class FieldMappingController extends Controller {
 	 */
 	public function manualMappingForm(Dataset $dataset, FileFormat $file, Request $request)
 	{
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$model = $dataset->getModel();
 
 		// Create fieldMapping form
@@ -149,7 +149,7 @@ class FieldMappingController extends Controller {
 	 *        	@Route("datasetsimport/{datasetId}/files/{fileFormat}/mapping/new", name="configurateur_field_mapping_new")
 	 */
 	public function newAction($datasetId, $fileFormat, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 		$model = $dataset->getModel();
 
@@ -225,7 +225,7 @@ class FieldMappingController extends Controller {
 	 *        	@Route("/datasetsimport/{datasetId}/files/{fileFormat}/mapping/remove/{field}/{table}/{tableField}", name="configurateur_field_mapping_remove")
 	 */
 	public function removeAction($datasetId, $fileFormat, $field, $table, $tableField) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$mapping = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping")->findOneBy(array(
 			"srcFormat" => $fileFormat,
@@ -251,7 +251,7 @@ class FieldMappingController extends Controller {
 	 *        	@Route("/datasetsimport/{datasetId}/files/{fileFormat}/mapping/removeall", name="configurateur_field_mapping_remove_all")
 	 */
 	public function removeAllAction($datasetId, $fileFormat) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping")->removeAllByFileFormatAndType($fileFormat, 'FILE');
 
@@ -277,7 +277,7 @@ class FieldMappingController extends Controller {
 	 */
 	public function autoAction($datasetId, $fileFormat, Request $request) {
 
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
@@ -342,7 +342,7 @@ class FieldMappingController extends Controller {
 	 */
 	public function doAutoMapping($tableFormat, $fileFormat)
 	{
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
 

@@ -34,7 +34,7 @@ class TableController extends Controller {
 	 * @return @Route("models/{id}/tables/new/", name="configurateur_table_index", defaults={"id":0})
 	 */
 	public function newAction(Model $model, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$table = new TableFormat();
 
@@ -154,7 +154,7 @@ class TableController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/edit/", name="configurateur_table_edit")
 	 */
 	public function editAction($modelId, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
@@ -274,7 +274,7 @@ class TableController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/fields/", name="configurateur_table_fields")
 	 */
 	public function manageFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
@@ -311,7 +311,7 @@ class TableController extends Controller {
 	 * @Template()
 	 */
 	public function deleteAction($model_id, $id, $fromDeleteModel = false) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$formatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Format');
 		$tableFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
@@ -367,7 +367,7 @@ class TableController extends Controller {
 	 * @Template()
 	 */
 	public function viewAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 		if (!$table) {

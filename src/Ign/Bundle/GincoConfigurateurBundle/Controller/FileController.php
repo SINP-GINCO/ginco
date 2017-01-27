@@ -37,8 +37,8 @@ class FileController extends FileControllerBase {
 	 *         Automatically adds fields to the file (same fields as the ones in the chosen table)
 	 */
 	public function autoAction($datasetId, $fileFormat, Request $request) {
-		$em = $this->getDoctrine()->getManager();
-		
+		$em = $this->getDoctrine()->getManager('metadata_work');
+
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 		
 		// Create Auto-Add-Fieldform

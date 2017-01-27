@@ -24,7 +24,7 @@ class ModelController extends Controller {
 	 * @Route("/models/", name="configurateur_model_index", defaults={"publicationStatus" = null})
 	 */
 	public function indexAction($models = null) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$models = $repository->findAllOrderedByName();
 		// Check if models are published and contains data
@@ -65,7 +65,7 @@ class ModelController extends Controller {
 		$model = new Model();
 		$schema = new TableSchema();
 
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$schema = $em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')->find("RAW_DATA");
 
@@ -100,7 +100,7 @@ class ModelController extends Controller {
 	 */
 	// la première partie de la page de la maquette est faite dans updateAction => à transposer ici ?
 	public function editAction($id, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$modelRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$model = $modelRepository->find($id);
@@ -175,7 +175,7 @@ class ModelController extends Controller {
 	 */
 	public function publishAction($modelId) {
 		$model = $this->getDoctrine()
-			->getManager()
+			->getManager('metadata_work')
 			->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find($modelId);
 		if ($model) {
@@ -244,7 +244,7 @@ class ModelController extends Controller {
 	public function unpublishAction($modelId, $redirectToEdit = false) {
 		$logger = $this->get('logger');
 		$model = $this->getDoctrine()
-			->getManager()
+			->getManager('metadata_work')
 			->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find($modelId);
 		if ($model) {
@@ -264,7 +264,7 @@ class ModelController extends Controller {
 						'unpublishFromModel' => true
 					));
 					$importModelName = $this->getDoctrine()
-						->getManager()
+						->getManager('metadata_work')
 						->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 						->find($importModelId)
 						->getLabel();
@@ -337,7 +337,7 @@ class ModelController extends Controller {
 	 * @Template()
 	 */
 	public function deleteAction($id) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($id);
 
@@ -351,7 +351,7 @@ class ModelController extends Controller {
 			$importModelIds = $this->get('app.modelunpublication')->getImportModelsFromDataModel($id);
 			foreach ($importModelIds as $importModelId) {
 				$importModelName = $this->getDoctrine()
-					->getManager()
+					->getManager('metadata_work')
 					->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 					->find($importModelId)
 					->getLabel();
@@ -420,7 +420,7 @@ class ModelController extends Controller {
 	 * @Route("/models/{id}/view/", name="configurateur_model_view")
 	 */
 	public function viewAction($id) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$modelRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
 		$model = $modelRepository->find($id);
@@ -447,7 +447,7 @@ class ModelController extends Controller {
 	 */
 	public function duplicateAction($id, Request $request) {
 		$model = $this->getDoctrine()
-			->getManager()
+			->getManager('metadata_work')
 			->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find($id);
 		if ($model) {

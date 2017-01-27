@@ -28,7 +28,7 @@ class FileFieldController extends Controller {
 	 * @Template()
 	 */
 	public function addFieldsAction($datasetId, $addedFields, $fields = null, $mandatorys = null, $masks = null, $orders = null, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
@@ -126,7 +126,7 @@ class FileFieldController extends Controller {
 	 * @Template()
 	 */
 	public function updateFieldsAction($datasetId, $fields, $mandatorys = null, $masks = null, $orders = null, $format, $toMapping = false) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
@@ -208,7 +208,7 @@ class FileFieldController extends Controller {
 	 * @Template()
 	 */
 	public function removeAllFieldsAction($datasetId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
@@ -233,7 +233,7 @@ class FileFieldController extends Controller {
 	 * @Template()
 	 */
 	public function removeFieldAction($datasetId, $field, $fields = null, $mandatorys = null, $masks = null, $orders = null, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$fileFieldToRemove = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
 			"data" => $field,

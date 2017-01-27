@@ -31,7 +31,7 @@ class TableFieldController extends Controller {
 	 * @Template()
 	 */
 	public function addFieldsAction($modelId, $format, $fields) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
@@ -111,7 +111,7 @@ class TableFieldController extends Controller {
 	 * @Template()
 	 */
 	public function updateFieldsAction($modelId, $fields, $mandatorys = null, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
@@ -173,7 +173,7 @@ class TableFieldController extends Controller {
 	 * @Template()
 	 */
 	public function removeAllFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
@@ -198,7 +198,7 @@ class TableFieldController extends Controller {
 	 * @Template()
 	 */
 	public function removeFieldAction($modelId, $field, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		// remove mapping relations first
 		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");

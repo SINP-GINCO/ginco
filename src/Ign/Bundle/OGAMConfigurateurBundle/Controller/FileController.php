@@ -28,7 +28,7 @@ class FileController extends Controller {
 	 * @Route("datasetsimport/{id}/files/new/", name="configurateur_file_index", defaults={"id":0})
 	 */
 	public function newAction(Dataset $dataset, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$file = new FileFormat();
 
@@ -85,7 +85,7 @@ class FileController extends Controller {
 	 * @Route("datasetsimport/{datasetId}/files/{format}/edit/", name="configurateur_file_edit")
 	 */
 	public function editAction($datasetId, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
@@ -126,7 +126,7 @@ class FileController extends Controller {
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/", name="configurateur_file_fields")
 	 */
 	public function manageFieldsAction($datasetId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 		if (!$file) {
@@ -184,7 +184,7 @@ class FileController extends Controller {
 	 * @Template()
 	 */
 	public function deleteAction($datasetId, $fileFormat) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$formatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Format');
 		$fileFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat');
@@ -243,7 +243,7 @@ class FileController extends Controller {
 	 * @Template()
 	 */
 	public function viewAction($datasetId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
@@ -293,7 +293,7 @@ class FileController extends Controller {
 	 */
 	public function autoAction($datasetId, $fileFormat, Request $request) {
 
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 

@@ -14,7 +14,7 @@ class TableFieldController extends TableFieldControllerBase {
 	 * @Template()
 	 */
 	public function removeAllFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
 		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
@@ -39,7 +39,7 @@ class TableFieldController extends TableFieldControllerBase {
 	 * @Template()
 	 */
 	public function removeFieldAction($modelId, $field, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		// Check if the field is not derived from a field included in a reference model
 		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');

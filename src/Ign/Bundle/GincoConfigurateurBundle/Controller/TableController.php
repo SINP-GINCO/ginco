@@ -48,7 +48,7 @@ class TableController extends TableControllerBase {
 	 * @Route("models/{modelId}/tables/{format}/fields/", name="configurateur_table_fields")
 	 */
 	public function manageFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);

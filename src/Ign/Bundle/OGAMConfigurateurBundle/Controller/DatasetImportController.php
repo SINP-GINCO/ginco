@@ -21,7 +21,7 @@ class DatasetImportController extends Controller {
 	 */
 	public function indexAction($datasets = null) {
 		// get import models list
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$datasets = $repository->findByTypeAndOrderedByName('IMPORT');
 
@@ -64,7 +64,7 @@ class DatasetImportController extends Controller {
 		// empty import model initialization
 		$dataset = new Dataset();
 
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$form = $this->createForm(DatasetImportType::class, $dataset, array(
 			'isNew' => true
@@ -95,7 +95,7 @@ class DatasetImportController extends Controller {
 	 * @Route("/datasetsimport/{id}/edit/", name="configurateur_dataset_import_edit")
 	 */
 	public function editAction($id, Request $request) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $datasetRepository->find($id);
@@ -171,7 +171,7 @@ class DatasetImportController extends Controller {
 	 * @Template()
 	 */
 	public function deleteAction($id) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $repository->find($id);
 
@@ -334,7 +334,7 @@ class DatasetImportController extends Controller {
 	 * @Route("/datasetsimport/{id}/view/", name="configurateur_dataset_import_view")
 	 */
 	public function viewAction($id) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $datasetRepository->find($id);
@@ -358,7 +358,7 @@ class DatasetImportController extends Controller {
 	 * @Route("/datasetsimport/{id}/edit/fields/update/{formats}/{orders}/", name="configurateur_dataset_import_update_file_order", options={"expose"=true})
 	 */
 	public function updateFileOrderAction($id, $formats, $orders = null) {
-		$em = $this->getDoctrine()->getManager();
+		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$dataset = $datasetRepository->find($id);
