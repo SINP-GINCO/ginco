@@ -31,16 +31,16 @@ class FileController extends FileControllerBase {
 	 *        	$datasetId
 	 * @param
 	 *        	$fileFormat
-	 * @param Request $request        	
+	 * @param Request $request
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse @Route("/datasetsimport/{datasetId}/files/{fileFormat}/autofields/", name="configurateur_file_auto_add_fields")
-	 *        
+	 *
 	 *         Automatically adds fields to the file (same fields as the ones in the chosen table)
 	 */
 	public function autoAction($datasetId, $fileFormat, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
-		
+
 		// Create Auto-Add-Fieldform
 		$formOptions = array(
 			'modelId' => $dataset->getModel()->getId(),
@@ -51,7 +51,7 @@ class FileController extends FileControllerBase {
 		);
 		$autoAddFieldsForm = $this->createForm(FileFieldAutoType::class, null, $formOptions);
 		$autoAddFieldsForm->handleRequest($request);
-		
+
 		if ($autoAddFieldsForm->isValid()) {
 			$tableFormat = $autoAddFieldsForm->get('table_format')
 				->getData()
@@ -59,24 +59,24 @@ class FileController extends FileControllerBase {
 			$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat);
 			$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
 			// var_dump( $tableFields);
-			
+
 			// Get mandatory fields in table fields
 			$isMandatory = function ($field) {
 				return ($field['isMandatory'] == 1);
 			};
 			$mandatoryFields = array_filter($tableFields, $isMandatory);
-			
+
 			$fileFields = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
 			// var_dump($fileFields);
-			
+
 			// Add only mandatory fields ?
 			$mandatoryOnly = $autoAddFieldsForm->get('only_mandatory')->getData();
 			if ($mandatoryOnly) {
 				$tableFields = $mandatoryFields;
 			}
-			
+
 			$tableDatas = array_column($tableFields, 'fieldName');
-			
+
 			// Add calculated fields ?
 			$calculatedIncluded = $autoAddFieldsForm->get('with_calculated')->getData();
 			$calculatedFields = array();
@@ -99,23 +99,23 @@ class FileController extends FileControllerBase {
 				$tableDatas = array_diff($tableDatas, $calculatedFields);
 				// var_dump($tableDatas);
 			}
-			
+
 			// remove technical fields
 			$technicalFields = array(
 				'PROVIDER_ID',
 				'SUBMISSION_ID'
 			);
 			$technicalFields = array_merge($technicalFields, explode(',', $table->getPrimaryKey()));
-			
+
 			$tableDatas = array_diff($tableDatas, $technicalFields);
-			
+
 			$calculatedFieldsLabels = array();
 			foreach ($calculatedFields as $data) {
 				$calculatedFieldsLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
 					->find($data)
 					->getLabel();
 			}
-			
+
 			// Generate a report
 			$report = array(
 				'fileLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')
@@ -127,35 +127,35 @@ class FileController extends FileControllerBase {
 				'mandatoryOnly' => $mandatoryOnly,
 				'calculatedFields' => $calculatedFieldsLabels
 			);
-			
+
 			// Find table fields not already added as file fields
 			$fileDatas = array_column($fileFields, 'fieldName');
 			$fieldsToAdd = array_diff($tableDatas, $fileDatas);
-			
+
 			$fieldsToAddLabels = array();
 			foreach ($fieldsToAdd as $data) {
 				$fieldsToAddLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
 					->find($data)
 					->getLabel();
 			}
-			
+
 			$report = array_merge($report, array(
 				'tableFields' => $tableDatas,
 				'fileFields' => $fileDatas,
 				'fieldsToAdd' => $fieldsToAddLabels
 			));
-			
+
 			// Add them ; get redirection in a variable
 			$redirectResponse = $this->forward('IgnOGAMConfigurateurBundle:FileField:addFields', array(
 				'datasetId' => $datasetId,
 				'format' => $fileFormat,
 				'addedFields' => implode(',', $fieldsToAdd)
 			));
-			
+
 			// Update as mandatory in file the fields which are mandatory in table
 			$mFields = array_column($mandatoryFields, 'fieldName');
 			$mFields = array_intersect($fieldsToAdd, $mFields);
-			
+
 			foreach ($mFields as $mfield) {
 				$fileField = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
 					'data' => $mfield,
@@ -164,23 +164,23 @@ class FileController extends FileControllerBase {
 				$fileField->setIsMandatory('1');
 			}
 			$em->flush();
-			
+
 			$link = $this->generateUrl("configurateur_field_automapping_direct", array(
 				'datasetId' => $datasetId,
 				'fileFormat' => $fileFormat,
 				'tableFormat' => $tableFormat
 			));
-			
+
 			$report['mappingLink'] = $link;
-			
+
 			$notice = $this->generateReportAutoAddFields($report);
-			
+
 			$this->addFlash('notice-autoaddfields', $notice);
 		} else {
 			$this->addFlash('error-autoaddfields', $this->get('translator')
 				->trans('fileField.auto.chooseatable'));
 		}
-		
+
 		return $this->redirectToRoute('configurateur_file_fields', array(
 			'datasetId' => $datasetId,
 			'format' => $fileFormat
@@ -197,7 +197,7 @@ class FileController extends FileControllerBase {
 	 */
 	public function generateReportAutoAddFields($report) {
 		$translator = $this->get('translator');
-		
+
 		if ($report['mandatoryOnly']) {
 			$reportMessage = $translator->trans('fileField.auto.report.2', array(
 				'%fileLabel%' => $report['fileLabel'],

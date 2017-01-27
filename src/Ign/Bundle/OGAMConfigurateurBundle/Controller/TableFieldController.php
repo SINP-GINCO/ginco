@@ -56,11 +56,11 @@ class TableFieldController extends Controller {
 				$tableField->setData($dataField->getName());
 				$tableField->setTableFormat($table->getFormat());
 				$tableField->setColumnName($dataField->getName());
-				
+
 				$dataFieldPrefix = substr($dataField->getName(), 0, 8);
 				$dataFieldSuffix = substr($dataField->getName(), 8, strlen($dataField->getName())-8);
 
-				// todo : move to input form model when he will exist 
+				// todo : move to input form model when he will exist
 				if ($dataFieldPrefix == "OGAM_ID_") {
 					if ($dataFieldSuffix == $table->getFormat()){
 						// primary key
@@ -91,7 +91,7 @@ class TableFieldController extends Controller {
 					$tableField->setIsEditable("1");
 					$tableField->setIsInsertable("1");
 				}
-				
+
 				$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findAll();
 				$em->merge($tableField);
 			}
