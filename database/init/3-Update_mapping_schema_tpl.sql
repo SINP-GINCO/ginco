@@ -43,80 +43,72 @@ INSERT INTO layer_service (name, config) VALUES
   ('geoportal_wmts','{"urls":["https://wxs.ign.fr/@view.geoportail.key@/geoportail/wmts?"],"params":{"SERVICE":"WMTS","VERSION":"1.0.0","REQUEST":"getTile","style":"normal","matrixSet":"PM","requestEncoding":"KVP","maxExtent":[-20037508, -20037508, 20037508, 20037508],"serverResolutions":[156543.033928,78271.516964,39135.758482,19567.879241,9783.939621,4891.969810,2445.984905,1222.992453,611.496226,305.748113,152.874057,76.437028,38.218514,19.109257,9.554629,4.777302,2.388657,1.194329,0.597164,0.298582,0.149291,0.074646],"tileOrigin":[-20037508,20037508]}}'),
   ('geoportal_wmts_png','{"urls":["http://wxs.ign.fr/@view.geoportail.key@/geoportail/wmts?"],"params":{"SERVICE":"WMTS","VERSION":"1.0.0","REQUEST":"getTile","format":"image/png","style":"normal","matrixSet":"PM","requestEncoding":"KVP","maxExtent":[-20037508, -20037508, 20037508, 20037508],"serverResolutions":[156543.033928,78271.516964,39135.758482,19567.879241,9783.939621,4891.969810,2445.984905,1222.992453,611.496226,305.748113,152.874057,76.437028,38.218514,19.109257,9.554629,4.777302,2.388657,1.194329,0.597164,0.298582,0.149291,0.074646],"tileOrigin":[-20037508,20037508]}}');
 
+--
 -- Define the layers
-INSERT INTO layer (name, label, service_layer_name, is_transparent, is_base_layer, is_untiled, has_legend, default_opacity, max_zoom_level, min_zoom_level, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES
-  ('Fonds', 'Fonds', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  ('plan_ign', 'Carte IGN', 'GEOGRAPHICALGRIDSYSTEMS.PLANIGN', 0, 1, 0, 0, 100, 5, NULL, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wmts', NULL),
-  ('ORTHOIMAGERY.ORTHOPHOTOS', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL),
-  ('ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL),
-
-  ('Limites administratives', 'Limites administratives', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  ('communes', 'Communes', 'communes', 1, 1, 0, 0, 100, 11, NULL, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
-  ('departements', 'Départements', 'departements', 1, 1, 0, 0, 100, 7, 11, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
-  ('mailles', 'Mailles 10km', 'mailles', 1, 1, 0, 0, 100, 9, NULL, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
-  ('regions', 'Régions', 'regions', 1, 1, 0, 0, 100, 5, 7, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
-
-  ('espaces_naturels', 'Espaces naturels', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  ('PROTECTEDAREAS.BIOS', 'Réserves de biosphère', 'PROTECTEDAREAS.BIOS', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.CDL', 'Conservatoire du littoral : périmètres d''intervention', 'PROTECTEDAREAS.CDL', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.CEN', 'Conservatoire du littoral : parcelles protégées', 'PROTECTEDAREAS.CEN', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.PN', 'Parcs nationaux', 'PROTECTEDAREAS.PN', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.PNM', 'Parcs naturels marins', 'PROTECTEDAREAS.PNM', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.PNR', 'Parcs naturels régionaux', 'PROTECTEDAREAS.PNR', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.RAMSAR', 'Zones humides d''importance internat.', 'PROTECTEDAREAS.RAMSAR', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.RB', 'Réserves biologiques', 'PROTECTEDAREAS.RB', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.RN', 'Réserves naturelles nationales', 'PROTECTEDAREAS.RN', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.RNC', 'Réserves naturelles de Corse', 'PROTECTEDAREAS.RNC', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.RNCF', 'Rés nation. chasse et faune sauvage', 'PROTECTEDAREAS.RNCF', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.SIC', 'Sites Natura 2000 (Directive Habitats)', 'PROTECTEDAREAS.SIC', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.ZNIEFF1', 'ZNIEFF1', 'PROTECTEDAREAS.ZNIEFF1', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.ZNIEFF2', 'ZNIEFF2', 'PROTECTEDAREAS.ZNIEFF2', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.ZPS', 'Sites Natura 2000 (Directive Oiseaux)', 'PROTECTEDAREAS.ZPS', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-  ('PROTECTEDAREAS.APB', 'Arrêtés de protection de biotope', 'PROTECTEDAREAS.APB', 0, 1, 0, 0, 100, NULL, NULL, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
-
-  ('results', 'Résultats de la recherche', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  ('result_geometrie', 'Géométries précises', 'result_geometrie', 1, 1, 0, 1, 100, 11, NULL, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL),
-  ('result_maille', 'Mailles', 'result_maille', 1, 1, 0, 1, 100, NULL, NULL, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL),
-  ('result_commune', 'Communes', 'result_commune', 1, 1, 0, 1, 100, NULL, NULL, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL),
-  ('result_departement', 'Départements', 'result_departement', 1, 1, 0, 1, 100, NULL, NULL, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL);
+--
+INSERT INTO layer (name, label, service_layer_name, is_transparent, default_opacity, is_base_layer, is_untiled, max_zoom_level, min_zoom_level, has_legend, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES
+  ('ORTHOIMAGERY.ORTHOPHOTOS', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL),
+  ('ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL),
+  ('PROTECTEDAREAS.ZNIEFF2', 'ZNIEFF2', 'PROTECTEDAREAS.ZNIEFF2', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('result_commune', 'Communes', 'result_commune', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL),
+  ('result_departement', 'Départements', 'result_departement', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL),
+  ('result_maille', 'Mailles', 'result_maille', 1, 100, 0, 1, NULL, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL),
+  ('communes', 'Communes', 'communes', 1, 100, 0, 0, 11, NULL, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
+  ('result_geometrie', 'Géométries précises', 'result_geometrie', 1, 100, 0, 1, 11, NULL, 0, NULL, 'REQUEST', 'mapProxy', 'legend_mapProxy', 'mapProxy', NULL),
+  ('mailles', 'Mailles 10km', 'mailles', 1, 100, 0, 0, 9, NULL, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
+  ('plan_ign', 'Carte IGN', 'GEOGRAPHICALGRIDSYSTEMS.PLANIGN', 0, 100, 0, 0, 5, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wmts', NULL),
+  ('departements', 'Départements', 'departements', 1, 100, 0, 0, 7, 11, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
+  ('regions', 'Régions', 'regions', 1, 100, 0, 0, 5, 7, 1, NULL, 'NONE', 'mapProxy', 'legend_mapProxy', 'mapProxy', 'Local_MapProxy_WFS_GetFeature'),
+  ('PROTECTEDAREAS.BIOS', 'Réserves de biosphère', 'PROTECTEDAREAS.BIOS', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.CDL', 'Conservatoire du littoral : périmètres d''intervention', 'PROTECTEDAREAS.CDL', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.CEN', 'Conservatoire du littoral : parcelles protégées', 'PROTECTEDAREAS.CEN', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.PN', 'Parcs nationaux', 'PROTECTEDAREAS.PN', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.PNM', 'Parcs naturels marins', 'PROTECTEDAREAS.PNM', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.PNR', 'Parcs naturels régionaux', 'PROTECTEDAREAS.PNR', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.RAMSAR', 'Zones humides d''importance internat.', 'PROTECTEDAREAS.RAMSAR', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.RB', 'Réserves biologiques', 'PROTECTEDAREAS.RB', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.RN', 'Réserves naturelles nationales', 'PROTECTEDAREAS.RN', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.RNC', 'Réserves naturelles de Corse', 'PROTECTEDAREAS.RNC', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.RNCF', 'Rés nation. chasse et faune sauvage', 'PROTECTEDAREAS.RNCF', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.SIC', 'Sites Natura 2000 (Directive Habitats)', 'PROTECTEDAREAS.SIC', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.ZNIEFF1', 'ZNIEFF1', 'PROTECTEDAREAS.ZNIEFF1', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.ZPS', 'Sites Natura 2000 (Directive Oiseaux)', 'PROTECTEDAREAS.ZPS', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL),
+  ('PROTECTEDAREAS.APB', 'Arrêtés de protection de biotope', 'PROTECTEDAREAS.APB', 0, 100, 1, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts_png', NULL, 'geoportal_wmts_png', NULL);
 
 --
--- Define the layers legend
+-- And the layer tree
 --
-INSERT INTO mapping.layer_tree_node VALUES (2, '-1', 'Résultats', NULL, 0, 1, 0, 0, 1, 'results', 1, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (24, '2', 'résultats département', NULL, 1, 1, 0, 1, 0, 'result_departement', 24, 'results');
-INSERT INTO mapping.layer_tree_node VALUES (23, '2', 'résultats maille', NULL, 1, 0, 0, 1, 0, 'result_maille', 21, 'results');
-INSERT INTO mapping.layer_tree_node VALUES (22, '2', 'résultats commune', NULL, 1, 0, 0, 1, 0, 'result_commune', 23, 'results');
-INSERT INTO mapping.layer_tree_node VALUES (21, '2', 'résultats géométrie', NULL, 1, 0, 0, 1, 0, 'result_geometrie', 22, 'results');
-
-INSERT INTO mapping.layer_tree_node VALUES (3, '-1', 'Limites administratives', NULL, 0, 1, 0, 0, 1, 'Limites administratives', 3, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (31, '3', 'regions', NULL, 1, 1, 0, 0, 0, 'regions', 34, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (32, '3', 'departements', NULL, 1, 1, 0, 0, 0, 'departements', 31, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (34, '3', 'mailles', NULL, 1, 1, 0, 0, 0, 'mailles', 33, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (33, '3', 'communes', NULL, 1, 1, 0, 0, 0, 'communes', 32, NULL);
-
-INSERT INTO mapping.layer_tree_node VALUES (4, '-1', 'Espaces naturels', NULL, 0, 1, 0, 0, 1, 'espaces_naturels', 4, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (41, '4', 'ZNIEFF1', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF1', 42, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (42, '4', 'ZNIEFF2', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF2', 41, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (43, '4', 'APB', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.APB', 43, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (44, '4', 'CEN', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CEN', 44, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (45, '4', 'CDL', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CDL', 45, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (46, '4', 'PN', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PN', 46, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (47, '4', 'PNM', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNM', 47, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (48, '4', 'PNR', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNR', 48, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (49, '4', 'RB', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RB', 49, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (491, '4', 'BIOS', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.BIOS', 491, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (492, '4', 'RNC', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNC', 492, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (493, '4', 'RN', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RN', 493, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (494, '4', 'RNCF', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNCF', 494, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (495, '4', 'SIC', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.SIC', 495, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (496, '4', 'ZPS', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZPS', 496, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (497, '4', 'RAMSAR', NULL, 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RAMSAR', 497, NULL);
-
-INSERT INTO mapping.layer_tree_node VALUES (5, '-1', 'Fonds', NULL, 0, 1, 0, 0, 1, 'Fonds', 5, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (51, '5', 'orthophotos', NULL, 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 52, NULL);
-INSERT INTO mapping.layer_tree_node VALUES (52, '5', 'plans IGN', NULL, 1, 0, 0, 0, 0, 'plan_ign', 51, NULL);
-
+INSERT INTO layer_tree_node (node_id, parent_node_id, is_layer, is_checked, is_hidden, is_disabled, is_expanded, layer_name, "position", checked_group, label, definition) VALUES
+  (2, '-1', 0, 1, 0, 0, 1, NULL, 1, NULL, 'Résultats de la recherche', NULL),
+  (3, '-1', 0, 1, 0, 0, 1, NULL, 3, NULL, 'Limites administratives', NULL),
+  (4, '-1', 0, 1, 0, 0, 1, NULL, 4, NULL, 'Espaces naturels', NULL),
+  (5, '-1', 0, 1, 0, 0, 1, NULL, 5, NULL, 'Fonds', NULL),
+  (21, '2', 1, 0, 0, 1, 0, 'result_geometrie', 21, 'results', NULL, NULL),
+  (22, '2', 1, 0, 0, 1, 0, 'result_commune', 22, 'results', NULL, NULL),
+  (23, '2', 1, 0, 0, 1, 0, 'result_maille', 23, 'results', NULL, NULL),
+  (24, '2', 1, 1, 0, 1, 0, 'result_departement', 24, 'results', NULL, NULL),
+  (31, '3', 1, 1, 0, 0, 0, 'communes', 31, NULL, NULL, NULL),
+  (32, '3', 1, 1, 0, 0, 0, 'mailles', 32, NULL, NULL, NULL),
+  (33, '3', 1, 1, 0, 0, 0, 'departements', 33, NULL, NULL, NULL),
+  (34, '3', 1, 1, 0, 0, 0, 'regions', 34, NULL, NULL, NULL),
+  (51, '5', 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 51, NULL, NULL, NULL),
+  (52, '5', 1, 0, 0, 0, 0, 'plan_ign', 52, NULL, NULL, NULL),
+  (41, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF1', 114, NULL, NULL, NULL),
+  (42, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF2', 115, NULL, NULL, NULL),
+  (43, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.APB', 101, NULL, NULL, NULL),
+  (44, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CEN', 102, NULL, NULL, NULL),
+  (45, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CDL', 103, NULL, NULL, NULL),
+  (46, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PN', 104, NULL, NULL, NULL),
+  (47, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNM', 105, NULL, NULL, NULL),
+  (48, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNR', 106, NULL, NULL, NULL),
+  (49, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RB', 107, NULL, NULL, NULL),
+  (491, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.BIOS', 108, NULL, NULL, NULL),
+  (492, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNC', 109, NULL, NULL, NULL),
+  (493, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RN', 110, NULL, NULL, NULL),
+  (494, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNCF', 111, NULL, NULL, NULL),
+  (495, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.SIC', 112, NULL, NULL, NULL),
+  (496, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZPS', 113, NULL, NULL, NULL),
+  (497, '4', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RAMSAR', 116, NULL, NULL, NULL);
 --
 -- Forbid some layers for some profiles
 --
