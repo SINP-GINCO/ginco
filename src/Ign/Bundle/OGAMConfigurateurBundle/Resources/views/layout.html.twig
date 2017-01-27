@@ -1,4 +1,4 @@
-{% extends "::base.html.twig" %}
+{% extends ["::base_configurator.html.twig", "::base.html.twig"] %}
 
 {% block navbar %}
 	{{ include('IgnOGAMConfigurateurBundle::navbar.html.twig') }}
