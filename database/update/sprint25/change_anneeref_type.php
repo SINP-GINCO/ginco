@@ -13,7 +13,14 @@ try {
 	
 	foreach ($columnsToChange as $columnToChange) {
 		
-		$updateMetadataQuery = "UPDATE metadata_work.data SET unit='Integer' WHERE data ='$columnToChange';UPDATE metadata.data SET unit='Integer' WHERE data = '$columnToChange';UPDATE metadata_work.form_field SET input_type='NUMERIC' WHERE data = '$columnToChange';UPDATE metadata.form_field SET input_type='NUMERIC' WHERE data = '$columnToChange';";
+		$updateMetadataQuery = "
+			UPDATE metadata_work.data SET unit='Integer' WHERE data ='$columnToChange';
+			UPDATE metadata.data SET unit='Integer' WHERE data = '$columnToChange';
+			UPDATE metadata_work.form_field SET input_type='NUMERIC', mask=null WHERE data = '$columnToChange';
+			UPDATE metadata.form_field SET input_type='NUMERIC', mask=null WHERE data = '$columnToChange';
+			UPDATE metadata_work.file_field SET mask=null WHERE data = '$columnToChange';
+			UPDATE metadata.file_field SET mask=null WHERE data = '$columnToChange';"
+		;
 		pg_query($updateMetadataQuery);
 		
 		$tablesToUpdateQuery = "SELECT table_name FROM information_schema.columns WHERE table_schema = 'raw_data' AND table_name LIKE 'model%' AND column_name = '$columnToChange' AND data_type= 'date'";
