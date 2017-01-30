@@ -5,10 +5,18 @@
 # Usage:
 # php build_ginco.php -f localhost.properties -i instance <options>
 
+# == Instance configuration
+
 # Instance name (ex localhost)
 instance.name=localhost
 
-# Database configurattion
+# Complete URL of the project
+ogam.map.services.url=http://localhost.ogam-ginco.ign.fr
+# Part between the protocol and .ign.fr in the url of the project
+http.host.name=localhost.ogam-ginco
+
+# == Database configurattion
+
 db.host=localhost
 db.port=5432
 db.name=database_name
@@ -18,7 +26,8 @@ db.adminuser=admin
 db.adminuser.pw=#####
 db.version=9.6.0
 
-# Target machoine configuration
+# == Target machoine configuration / Unused on localhost
+
 # La machine sur laquelle déployer cette instance
 deploy.host=localhost
 # L'utilisateur sur la machine cible exécutant les commandes de déploiement local
@@ -26,7 +35,9 @@ deploy.user=XXXXX
 # Le mot de passe de l'utilisateur de déploiement
 deploy.user.pw=#####
 # Inutilisé en local
-# deploy.port=22
+deploy.port=22
+
+# == Build machine configuration
 
 # Chemins des répertoires contenant les projets ogam et configurateur pendant la phase de build
 # absolu ou relatif au répertoire courant (répertoire où est installé le projet ginco)
@@ -40,10 +51,7 @@ configurator.path=/path/to/configurator
 # Sur les instances de prod, c'est instance.name
 apache.path.to.app=ginco
 
-# Complete URL of the project
-ogam.map.services.url=http://localhost.ogam-ginco.ign.fr
-# Part between the protocol and .ign.fr in the url of the project
-http.host.name=localhost.ogam-ginco
+# == Instance customisation parameters
 
 # Site Name
 site.name="Plateforme de test GINCO Localhost"
