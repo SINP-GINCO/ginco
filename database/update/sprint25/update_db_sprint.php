@@ -34,6 +34,8 @@ try {
 	/* Restore a result_location table - temporary - to test visu in Ogam */
 	execCustSQLFile("$sprintDir/restore_result_location.sql", $config);
 
+	execCustSQLFile("$sprintDir/reorder_layer_tree.sql", $config);
+
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
