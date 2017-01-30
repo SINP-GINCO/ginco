@@ -41,3 +41,13 @@ try {
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
 }
+
+
+$CLIParams = implode(' ', array_slice($argv, 1));
+/* patch user raw_data here */
+system("php $sprintDir/change_anneeref_type.php $CLIParams", $returnCode);
+if ($returnCode != 0) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
