@@ -7,7 +7,7 @@ require_once "$sprintDir/../../../lib/share.php";
 // -------------------------------------------------------------------------------
 function usage($mess = NULL) {
 	echo "------------------------------------------------------------------------\n";
-	echo ("\nUpdate DB from sprint 23 to sprint 24\n");
+	echo ("\nUpdate DB from sprint 24 to sprint 25\n");
 	echo ("> php update_db_sprint.php -f <configFile> [{-D<propertiesName>=<Value>}]\n\n");
 	echo "o <configFile>: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
@@ -25,6 +25,7 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
+	execCustSQLFile("$sprintDir/reorder_layer_tree.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
