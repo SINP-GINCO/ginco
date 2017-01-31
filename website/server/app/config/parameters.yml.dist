@@ -19,3 +19,7 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    # FOS-jsrouting parameters
+    base_url: /configurator
+    router.request_context.base_url: "%base_url%"
