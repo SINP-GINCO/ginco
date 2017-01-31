@@ -66,7 +66,7 @@ class DataRepository extends EntityRepository {
 		$qb = $this->createQueryBuilder('dt')
 			->select('dt')
 			->leftJoin('dt.fields', 'f')
-			->where('f is not NULL');
+			->where('f.data is not NULL');
 
 		return $qb->getQuery()->getResult();
 	}
@@ -80,7 +80,7 @@ class DataRepository extends EntityRepository {
 		$qb = $this->createQueryBuilder('dt')
 			->select('dt')
 			->leftJoin('dt.fields', 'f')
-			->where('f is NULL');
+			->where('f.data is NULL');
 
 		return $qb->getQuery()->getResult();
 	}

@@ -4,6 +4,12 @@
 	{% trans %}Model Edition {% endtrans %}
 {% endblock %}
 
-{% block body %} {% endblock %}
+{% block body %}
+	{{ parent() }}
+	<ol class="breadcrumb">
+		<li><a href="{{ path('configurateur_homepage') }}">{% trans %}breadcrumb.home{% endtrans %}</a></li>
+	</ol>
+{% endblock %}
+
 
 {% block specificjavascripts %} {% endblock %}

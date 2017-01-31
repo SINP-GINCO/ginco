@@ -188,12 +188,11 @@
 {% block specificjavascripts %}
 	{{ parent() }}
 	{{ include('IgnOGAMConfigurateurBundle::tables_handling_scripts.html.twig') }}
-
     <script>
-
         jQuery(document).ready(function() {
             // Enable tooltips
             $("[data-toggle=tooltip]").tooltip();
+        });
     </script>
 {% endblock %}
 

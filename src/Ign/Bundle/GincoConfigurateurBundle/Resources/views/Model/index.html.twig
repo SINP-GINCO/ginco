@@ -42,15 +42,15 @@
 			</div>
 			<div class="panel-body">
 				<table id="list-models" data-toggle="table"
-						 class="table table-hover table-condensed">
+						 class="table table-hover table-condensed table-no-bordered">
 					 <thead>
 						<tr>
-							<th data-align="right" >{% trans %}datamodel.name{% endtrans %}</th>
-							<th data-align="center">{% trans %}View{% endtrans %}</th>
-							<th data-align="center">{% trans %}Edit{% endtrans %}</th>
-							<th data-align="center">{% trans %}Duplicate{% endtrans %}</th>
-							<th data-align="center">{% trans %}Delete{% endtrans %}</th>
-							<th data-align="center">{% trans %}Un-Publish{% endtrans %}</th>
+							<th data-valign="left" >{% trans %}datamodel.name{% endtrans %}</th>
+							<th data-valign="center">{% trans %}View{% endtrans %}</th>
+							<th data-valign="center">{% trans %}Edit{% endtrans %}</th>
+							<th data-valign="center">{% trans %}Duplicate{% endtrans %}</th>
+							<th data-valign="center">{% trans %}Delete{% endtrans %}</th>
+							<th data-valign="center">{% trans %}Un-Publish{% endtrans %}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -326,5 +326,3 @@
 </div>
 
 {% endblock %}
-
-{% block specificjavascripts %} {% endblock %}
