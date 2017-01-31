@@ -15,6 +15,7 @@
         "php": ">=5.3.9",
         "symfony/symfony": "^2.8",
         "twig/twig": "^1.28",
+        "twig/extensions" : "~1.0",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
         "symfony/assetic-bundle" : "^2.8",
@@ -25,7 +26,9 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "whiteoctober/breadcrumbs-bundle": "^1.2",
         "zendframework/zend-http": "^2.5",
-        "twbs/bootstrap" : "3.3.*"
+        "twbs/bootstrap" : "3.3.*",
+        "friendsofsymfony/jsrouting-bundle" : "~1.6",
+        "wenzhixin/bootstrap-table": "^1.11"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
