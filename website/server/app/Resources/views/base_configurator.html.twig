@@ -9,7 +9,8 @@
 		{% block stylesheets %}
 			{% stylesheets
 			'bundles/ignogamconfigurateur/css/*'
-			'@bootstrap_css' %}
+			'@bootstrap_css'
+			filter='cssrewrite, yui_css' %}
 				<link rel="stylesheet" href="{{ asset_url }}" />
 			{% endstylesheets %}
 		{% endblock %}
