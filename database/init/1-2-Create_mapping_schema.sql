@@ -180,7 +180,7 @@ CREATE TABLE layer_tree_node
 (
 	node_id INT,						     -- identify the node
 	parent_node_id  VARCHAR(50)    NOT NULL, -- identify the parent of the node (-1 = root)
-	label VARCHAR(30),                       -- label of the node into the tree
+	label VARCHAR(50),                       -- label of the node into the tree
 	definition VARCHAR(100),                 -- definition of the node into the tree
 	is_layer INT, 						     -- if value = 1 then this is a layer, else it is only a node
 	is_checked INT, 					     -- if value = 1 then the node is checked by default
