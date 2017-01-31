@@ -56,8 +56,8 @@ assetic:
     assets:
         jquery_and_bootstrap:
             inputs:
-                - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/jquery.min.js"
-                - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/jquery-ui.min.js"
+                - "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
+                - "%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.min.js"
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.min.js"
