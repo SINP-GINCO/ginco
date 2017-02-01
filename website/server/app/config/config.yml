@@ -54,13 +54,15 @@ assetic:
         yui_js:
               jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
     assets:
-        jquery_and_bootstrap:
+        ginco_js:
             inputs:
                 - "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
                 - "%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.min.js"
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.min.js"
+                - "%kernel.root_dir%/../web/bundles/fosjsrouting/js/router.js"
+                - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/data-toggle-tooltip.js"
         bootstrap_css:
             inputs:
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css"
