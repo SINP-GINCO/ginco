@@ -23,81 +23,71 @@
 
 <body>
 <div class="page">
-    <header id="header">
-
+    <header id="page-header">
         {#== Logo and banner ==#}
         <div id="banner" class="container">
             <div class="row">
-                <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
-                    {% image '@OGAMBundle/Resources/public/img/banner.jpg' %}
-                    <img src="{{ asset_url }}" alt="{% trans %}SINP - Système d'Information Nature et Paysages{% endtrans %}"/>
-                    {% endimage %}
-                </a>
-                <div class="col-sm-6 text-right text-capitalize h2">
+                <div class="col-xs-3">
+                    <div id="header-logo">
+                        <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
+                            {% image 'img/logo-sinp.png' %}
+                            <img src="{{ asset_url }}" alt="{% trans %}SINP - Système d'Information Nature et Paysages{% endtrans %}"/>
+                            {% endimage %}
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-9 text-right h2 header-title">
                     {{ configurationManager.getConfig('site_name', 'GINCO') }}
                 </div>
             </div>
         </div>
-
-        {#== Main Menu ==#}
-        <div id="menu">
-            <div class="container">
-                <nav id="navbar">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
     </header>
 
-    {#== Breadcrumb and help link ==#}
-    <div id="breadcrumb" class="container">
-        {{ wo_render_breadcrumbs() }}
+    {#== Main Menu ==#}
+    <div id="main-menu">
+        <div class="container">
+            <nav id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                {# Help link #}
+                <ul class="nav navbar-nav navbar-right help">
+                    {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing')  %}
+                    {% set helpLabel = 'Aide' %}
+                    <li><a href="{{ helpLink }}" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> {{ helpLabel }}</a></li>
+                    {#<?php
+                         $docUrlBase = $configuration->getConfig('documentationUrl', 'documentation_url_missing');
+                    $icon = "<img src='/img/help.png' alt='help icon'>";
+
+                    $config = new Zend_Config_Yaml(CUSTOM_APPLICATION_PATH.'/configs/navigation.yml', 'nav');
+                    $container = new Zend_Navigation($config);
+
+                    $controller = $container->findOneBy('controller', $controllerName);
+                    if ($controller) {
+                    $link = $docUrlBase . $controller->help;
+                    echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
+                    }
+                    ?>#}
+                </ul>
+            </nav>
+        </div>
     </div>
-
-    <div id="help" class="container text-right">
-        {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing')  %}
-        {% set helpLabel = 'Aide' %}
-        <a href="{{ helpLink }}" target="_blank">{{ helpLabel }}</a>
-        {#<?php
-             $docUrlBase = $configuration->getConfig('documentationUrl', 'documentation_url_missing');
-        $icon = "<img src='/img/help.png' alt='help icon'>";
-
-        $config = new Zend_Config_Yaml(CUSTOM_APPLICATION_PATH.'/configs/navigation.yml', 'nav');
-        $container = new Zend_Navigation($config);
-
-        $controller = $container->findOneBy('controller', $controllerName);
-        if ($controller) {
-        $link = $docUrlBase . $controller->help;
-        echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
-        }
-        ?>#}
-
-    </div>
-
 
     {#== User box/connection link==#}
-
     <div id="header-login" class="header-login container text-right">
 
         <!-- Drapeaux pour changer la langue  -->
@@ -114,6 +104,11 @@
         {% else %}
             <a href="{{ path('user_login') }}">{% trans %}Log in{% endtrans %}</a>
         {% endif %}
+    </div>
+
+    {#== Breadcrumb ==#}
+    <div id="breadcrumb" class="container">
+        {{ wo_render_breadcrumbs() }}
     </div>
 
     {#== Page content ==#}
