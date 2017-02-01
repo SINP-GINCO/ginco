@@ -1,3 +1,57 @@
 /**
  * Styling of the Ginco application, on top of bootstrap
  */
+
+
+
+/* Global
+-------------------------------------------------- */
+
+/* Define Semantic Elements as Block Elements
+   for old browsers
+*/
+header, section, footer, aside, nav, main, article, figure {
+  display: block;
+}
+
+/*------------------------------------------------
+  Sticky footer
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: @footer-height;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: @footer-height;;
+}
+
+/*------------------------------------------------
+  Layout Styling
+-------------------------------------------------- */
+
+/*
+ * Header
+*/
+#page-header {
+  background-color: @sinp-green;
+  height: @header-height; /* height of banner-sinp.jpg */
+  #banner {
+    height: @header-height;
+    background-image: url("/img/bandeau-sinp.jpg");
+    #header-logo {
+      margin-top: 5px;
+    }
+    .header-title {
+      color: white;
+      text-transform: uppercase;
+    }
+  }
+}
