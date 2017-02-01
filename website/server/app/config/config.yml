@@ -63,7 +63,7 @@ assetic:
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.min.js"
         bootstrap_css:
             inputs:
-                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css"
+                - "%kernel.root_dir%/Resources/css/style.css"
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap-theme.min.css"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/css/style.css"
