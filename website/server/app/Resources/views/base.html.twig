@@ -1,104 +1,156 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="robots" content="index, follow" />
-		<meta name="keywords" content="ogam" />
-		<meta name="description" content="open-source generic application base on metadata" />
-        <title>{% block title %}OGAM{% endblock %}</title>
-        {% block stylesheets %}
-        {% stylesheets 'bundles/ogam/css/global.css' filter='cssrewrite' %}
-             <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-    
-    	<div id="wrapper" class="wrapper">
+<html lang="fr">
 
-            <div id="main-body-bg" class="main-body-bg"></div>
-            <div id="main-body" class="main-body">
-            
-                <!-- HEADER -->
-                <div class="header" id="header">
-            
-                    <div id="banner" class="banner">
-                        <a href="{{ path('homepage') }}">
-                            {% image '@OGAMBundle/Resources/public/img/banner.jpg' %}
-                            <img src="{{ asset_url }}" alt="Banner"/>
-                            {% endimage %}
-                       </a>
-                    </div>
-            
-                    <div id="top" class="top">
-            
-            			<div id="header-beadcrumb" class="header-beadcrumb" style="float: left">
-                            {{ wo_render_breadcrumbs() }}
-            			</div>
-            			
-            			<div id="header-login" class="header-login" style="float: right">
-            				
-            				<!-- Drapeaux pour changer la langue  -->
-            				{% if app.request.getLocale == 'fr' %}
-            					<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=en" ><div class="en-flag" title="{% trans %}Translate this site en{% endtrans %}">&nbsp;</div></a>
-            				{% else %}
-            					<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=fr" ><div class="fr-flag" title="{% trans %}Translate this site fr{% endtrans %}">&nbsp;</div></a>
-            				{% endif %}
-            				
-            				{% if app.user %}
-            					<a href="{{ path('user_changepassword') }}">{% trans %}Change Password{% endtrans %}</a>
-            					&nbsp;
-            					<a id="logoutLink" href="{{ path('user_logout') }}">{% trans %}Log out{% endtrans %}</a>
-            			    {% else %}
-            			    	<a href="{{ path('user_login') }}">{% trans %}Log in{% endtrans %}</a>            			    
-            			    {% endif %}                          			
-                  		</div>
-                  	</div>
-            
-            	<!-- Fin du header -->
-            	</div>
-    
-                <!-- CONTENT -->
-                <div class="content" id="content">
-                
-                    <!--  Flash messages -->
-                    {% include ('::flash-messages.html.twig') %}
-                                
-                	{% block body %}{% endblock %}
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow" />
+
+    <title>{% block title %}
+        {{ configurationManager.getConfig('site_name', 'GINCO') }}
+    {% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+    {% block stylesheets %}
+        {% stylesheets
+        '@bootstrap_css'
+        filter='cssrewrite, yui_css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+
+<body>
+<div class="page">
+    <header id="header">
+
+        {#== Logo and banner ==#}
+        <div id="banner" class="container">
+            <div class="row">
+                <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
+                    {% image '@OGAMBundle/Resources/public/img/banner.jpg' %}
+                    <img src="{{ asset_url }}" alt="{% trans %}SINP - Système d'Information Nature et Paysages{% endtrans %}"/>
+                    {% endimage %}
+                </a>
+                <div class="col-sm-6 text-right text-capitalize h2">
+                    {{ configurationManager.getConfig('site_name', 'GINCO') }}
                 </div>
-    
-            
-        <!-- Fin du main-body -->
+            </div>
         </div>
 
-    <!-- Utilisé pour maintenir le bas de page en bas -->
-    <div id="push" class="push"></div>
+        {#== Main Menu ==#}
+        <div id="menu">
+            <div class="container">
+                <nav id="navbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">One more separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                        <li><a href="#">Link</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-    <!-- Fin du wrapper -->
+    {#== Breadcrumb and help link ==#}
+    <div id="breadcrumb" class="container">
+        {{ wo_render_breadcrumbs() }}
     </div>
-    
-    <div class="footer"  id="footer">
-         <div id="footer-ct" class="footer-ct">
-        	<span title="Build @build_number@">Version @version_number@&nbsp;-&nbsp;</span>
+
+    <div id="help" class="container text-right">
+        {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing')  %}
+        {% set helpLabel = 'Aide' %}
+        <a href="{{ helpLink }}" target="_blank">{{ helpLabel }}</a>
+        {#<?php
+             $docUrlBase = $configuration->getConfig('documentationUrl', 'documentation_url_missing');
+        $icon = "<img src='/img/help.png' alt='help icon'>";
+
+        $config = new Zend_Config_Yaml(CUSTOM_APPLICATION_PATH.'/configs/navigation.yml', 'nav');
+        $container = new Zend_Navigation($config);
+
+        $controller = $container->findOneBy('controller', $controllerName);
+        if ($controller) {
+        $link = $docUrlBase . $controller->help;
+        echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
+        }
+        ?>#}
+
+    </div>
+
+
+    {#== User box/connection link==#}
+
+    <div id="header-login" class="header-login container text-right">
+
+        <!-- Drapeaux pour changer la langue  -->
+        {% if app.request.getLocale == 'fr' %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=en" ><div class="en-flag" title="{% trans %}Translate this site en{% endtrans %}">&nbsp;</div></a>
+        {% else %}
+            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=fr" ><div class="fr-flag" title="{% trans %}Translate this site fr{% endtrans %}">&nbsp;</div></a>
+        {% endif %}
+
+        {% if app.user %}
+            <a href="{{ path('user_changepassword') }}">{% trans %}Change Password{% endtrans %}</a>
+            &nbsp;
+            <a id="logoutLink" href="{{ path('user_logout') }}">{% trans %}Log out{% endtrans %}</a>
+        {% else %}
+            <a href="{{ path('user_login') }}">{% trans %}Log in{% endtrans %}</a>
+        {% endif %}
+    </div>
+
+    {#== Page content ==#}
+    <main id="main" class="container">
+
+        {#== Flash messages ==#}
+        {% block flash_messages %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }}" role="alert">
+                        {{ message|trans|raw }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endblock %}
+
+        {#== Main content ==#}
+        {% block body %}{% endblock %}
+    </main>
+
+    {#== Footer ==#}
+    <footer class="footer">
+        <div class="container">
+            <span title="Build @build_number@">Version @version_number@&nbsp;-&nbsp;</span>
             {{'Layout Copyright'|trans}} &nbsp;
             <a id="lkContact" onclick="sendMail();" href="#">{% trans %}Contact Us{% endtrans %}</a>
         </div>
-    </div>
-            
-            
-    </body>
-    
-  {% block javascripts %}
+    </footer>
+</div>
 
-    <script type="text/javascript">
-      //Defines the base URL for the scripts
-     function sendMail(){
-        pre='{{ configurationManager.getConfig('contactEmailPrefix') }}';
-        suf='{{ configurationManager.getConfig('contactEmailSufix') }}';
-        document.getElementById('lkContact').href="mailto:" + pre + "@" + suf;
-      }
- 	 </script>
-  
-  {% endblock %}
+{% block javascripts %}
+    {% javascripts
+    '@jquery_and_bootstrap'
+     %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+</body>
 </html>

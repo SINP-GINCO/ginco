@@ -5,8 +5,47 @@
  * these variables directly from ../bootstrap/less/variables.less to this file.
  */
 
-// Set the proper directory for the Bootstrap Glyphicon font.
-@icon-font-path: '../bootstrap/fonts/';
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+//## Here we totally disable responsiveness, we have only one width: 1140px;
 
-//== Colors
-@red: #ff0000;
+@screen-xs: 1px;
+@screen-sm: @screen-xs;
+@screen-md: @screen-xs;
+@screen-lg: @screen-xs;
+
+@screen-xs-min:              @screen-xs;
+@screen-phone:               @screen-xs-min;
+@screen-sm-min:              @screen-sm;
+@screen-tablet:              @screen-sm-min;
+@screen-md-min:              @screen-md;
+@screen-desktop:             @screen-md-min;
+@screen-lg-min:              @screen-lg;
+@screen-lg-desktop:          @screen-lg-min;
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+@screen-md-max:              (@screen-lg-min - 1);
+
+// Navbar collapse
+//## Here we never collapse the navbar
+//** Point at which the navbar becomes uncollapsed.
+@grid-float-breakpoint:     1px;
+//** Point at which the navbar begins collapsing.
+@grid-float-breakpoint-max: (@grid-float-breakpoint - 1);
+
+//== Container sizes
+//
+//## Define the maximum width of `.container` for different screen sizes.
+
+// Small screen / tablet
+
+// Large screen / wide desktop
+@container-unique:      (1140px + @grid-gutter-width);
+
+@container-lg:                 @container-unique;
+@container-md:                 @container-unique;
+@container-sm:                 @container-unique;
+
+
+
