@@ -79,9 +79,7 @@
 	</body>
 	{% block javascripts %}
 		{% javascripts
-			'@jquery_and_bootstrap'
-			'bundles/ignogamconfigurateur/js/data-toggle-tooltip.js'
-			'bundles/fosjsrouting/js/router.js' %}
+			'@ginco_js' %}
 			<script type="text/javascript" src="{{ asset_url }}"></script>
 		{% endjavascripts %}
 		<script type="text/javascript">
@@ -93,9 +91,9 @@
         }
 		</script>
 		{% if app.environment == 'prod' %}
-			<script src="{{ asset('bundles/ignginco/js/fos_js_routes.js') }}"></script>
+			<script src="{{ asset('bundles/ignginco/js/fos_js_routes.prod.js') }}"></script>
 		{% else %}
-			<script src="{{ asset('bundles/ignginco/js/fos_js_routes_dev.js') }}"></script>
+			<script src="{{ asset('bundles/ignginco/js/fos_js_routes.dev.js') }}"></script>
 		{% endif %}
 	{% endblock %}
 
