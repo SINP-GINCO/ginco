@@ -22,7 +22,7 @@ Cela se matérialisera par l'impossibilité de voir la donnée sur la couche gé
 
 .. note:: Le floutage des données n'engendre pas comme on pourrait l'entendre un floutage réel où des données floues remplacent les données précises. Elles ne sont en effet non pas floutées, mais cachées. Les données ne remontent pas chez le client et il est donc impossible de les récupérer de quelque manière que ce soit.
 
-Vous trouverez les divers cas d’usage et les divers principes liés au calcul du floutage dans :download:`ce document de référence </downloads/Note_Diffusion_DSR-DEE_GINCO_22-06-2016.pdf>`.
+Vous trouverez les divers cas d’usage et les divers principes liés au calcul du floutage dans :download:`ce document de référence </downloads/Note_Diffusion_DSR-DEE_GINCO.pdf>`.
 
 
 
