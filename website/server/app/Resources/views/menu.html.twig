@@ -1,7 +1,7 @@
 {# Main Menu in Navbar #}
 <ul class="nav navbar-nav">
 
-    <li class="active"><a href="#">{{ 'Home'|trans }}</a></li>
+    <li class="active"><a href="{{ path('homepage') }}">{{ 'Home'|trans }}</a></li>
 
     {% if (app.user and app.user.isAllowed('DATA_QUERY') and app.user.isSchemaAllowed('RAW_DATA')) %}
         <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Regional data'|trans }}</a><li>

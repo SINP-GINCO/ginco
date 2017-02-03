@@ -6782,12 +6782,28 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin-bottom: 45px;
 }
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 60px;
+  height: 45px;
+  border-top: 1px solid #b3c951;
+}
+.footer .nav > li > a {
+  padding: 10px 15px;
+}
+.footer .nav > li > a:hover,
+.footer .nav > li > a:focus {
+  background-color: white;
+  text-decoration: underline;
+}
+.footer .navbar-text {
+  margin: 10px 15px;
+}
+#legalModal .modal-dialog,
+#copyrightsModal .modal-dialog {
+  width: 800px;
 }
