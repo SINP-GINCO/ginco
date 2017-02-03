@@ -47,69 +47,63 @@
     <div id="main-menu">
         <div class="container">
             <nav id="navbar">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">Nav header</li>
-                            <li><a href="#">Separated link</a></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                {# Help link #}
-                <ul class="nav navbar-nav navbar-right help">
-                    {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing')  %}
-                    {% set helpLabel = 'Aide' %}
-                    <li><a href="{{ helpLink }}" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> {{ helpLabel }}</a></li>
-                    {#<?php
-                         $docUrlBase = $configuration->getConfig('documentationUrl', 'documentation_url_missing');
-                    $icon = "<img src='/img/help.png' alt='help icon'>";
+                {% include 'menu.html.twig' %}
 
-                    $config = new Zend_Config_Yaml(CUSTOM_APPLICATION_PATH.'/configs/navigation.yml', 'nav');
-                    $container = new Zend_Navigation($config);
-
-                    $controller = $container->findOneBy('controller', $controllerName);
-                    if ($controller) {
-                    $link = $docUrlBase . $controller->help;
-                    echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
-                    }
-                    ?>#}
+                {#== User box/connexion link==#}
+                <ul class="nav navbar-nav navbar-right">
+                    {% if app.user %}
+                        {# User menu #}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ app.user.login }} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('user_changepassword') }}">{{ 'Change Password'|trans }}</a></li>
+                                <li><a href="{{ path('user_logout') }}">{{ 'Log out'|trans }}</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('user_login') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {% trans %}Log in{% endtrans %}</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
     </div>
 
-    {#== User box/connection link==#}
-    <div id="header-login" class="header-login container text-right">
-
-        <!-- Drapeaux pour changer la langue  -->
+    <!-- Drapeaux pour changer la langue todo: à virer -->
+    <div>
+        {# dump(app.request.getLocale) #}
         {% if app.request.getLocale == 'fr' %}
             <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=en" ><div class="en-flag" title="{% trans %}Translate this site en{% endtrans %}">&nbsp;</div></a>
         {% else %}
             <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=fr" ><div class="fr-flag" title="{% trans %}Translate this site fr{% endtrans %}">&nbsp;</div></a>
         {% endif %}
-
-        {% if app.user %}
-            <a href="{{ path('user_changepassword') }}">{% trans %}Change Password{% endtrans %}</a>
-            &nbsp;
-            <a id="logoutLink" href="{{ path('user_logout') }}">{% trans %}Log out{% endtrans %}</a>
-        {% else %}
-            <a href="{{ path('user_login') }}">{% trans %}Log in{% endtrans %}</a>
-        {% endif %}
     </div>
 
-    {#== Breadcrumb ==#}
-    <div id="breadcrumb" class="container">
+    {#== Breadcrumb and Help Link ==#}
+    <div class="container">
+        <div class="help-link pull-right">
+            {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing')  %}
+            {% set helpLabel = 'Aide' %}
+            <a href="{{ helpLink }}" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> {{ helpLabel }}</a>
+            {#<?php
+                 $docUrlBase = $configuration->getConfig('documentationUrl', 'documentation_url_missing');
+            $icon = "<img src='/img/help.png' alt='help icon'>";
+
+            $config = new Zend_Config_Yaml(CUSTOM_APPLICATION_PATH.'/configs/navigation.yml', 'nav');
+            $container = new Zend_Navigation($config);
+
+            $controller = $container->findOneBy('controller', $controllerName);
+            if ($controller) {
+            $link = $docUrlBase . $controller->help;
+            echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
+            }
+            ?>#}
+        </div>
+
         {{ wo_render_breadcrumbs() }}
     </div>
+
 
     {#== Page content ==#}
     <main id="main" class="container">

@@ -61,6 +61,7 @@ assetic:
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.min.js"
+                - "%kernel.root_dir%/Resources/js/hover-dropdown.js"
         bootstrap_css:
             inputs:
                 - "%kernel.root_dir%/Resources/css/style.css"

@@ -15,24 +15,10 @@
 @screen-md: @screen-xs;
 @screen-lg: @screen-xs;
 
-@screen-xs-min:              @screen-xs;
-@screen-phone:               @screen-xs-min;
-@screen-sm-min:              @screen-sm;
-@screen-tablet:              @screen-sm-min;
-@screen-md-min:              @screen-md;
-@screen-desktop:             @screen-md-min;
-@screen-lg-min:              @screen-lg;
-@screen-lg-desktop:          @screen-lg-min;
-@screen-xs-max:              (@screen-sm-min - 1);
-@screen-sm-max:              (@screen-md-min - 1);
-@screen-md-max:              (@screen-lg-min - 1);
-
 // Navbar collapse
 //## Here we never collapse the navbar
 //** Point at which the navbar becomes uncollapsed.
 @grid-float-breakpoint:     1px;
-//** Point at which the navbar begins collapsing.
-@grid-float-breakpoint-max: (@grid-float-breakpoint - 1);
 
 //== Container sizes
 //
@@ -42,7 +28,6 @@
 
 // Large screen / wide desktop
 @container-unique:      (1140px + @grid-gutter-width);
-
 @container-lg:                 @container-unique;
 @container-md:                 @container-unique;
 @container-sm:                 @container-unique;
@@ -50,7 +35,31 @@
 
 //== Colors
 
-@sinp-green:      #7E931E;
+@sinp-green:            #7E931E;
+@sinp-green-light:      #b3c951;
+@sinp-green-lighter:    #c5d287;
+@sinp-green-dark:       #50600a;
+@sinp-orange:           #f79f3f;
+@sinp-brown:            #a15d14;
+@sinp-blue:             #22b0ab;
+
+@brand-primary:         darken(@sinp-blue,10%);
+@brand-success:         @sinp-green-light;
+@brand-info:            @sinp-blue;
+@brand-warning:         @sinp-orange;
+@brand-danger:          #d9534f;
+
+//** Global textual link color.
+@link-color:            @brand-primary;
+@link-hover-color:      @sinp-blue;
+
+
+//== Breadcrumbs
+//** Breadcrumb background color
+@breadcrumb-bg:                 white;
+//** Textual separator for between breadcrumb elements
+@breadcrumb-separator:          '\25B8'; // black small triangle (&#9656) http://www.evotech.net/articles/testjsentities.html
+
 
 //== Custom Variables
 
