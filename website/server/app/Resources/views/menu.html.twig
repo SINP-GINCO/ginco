@@ -1,0 +1,49 @@
+{# Main Menu in Navbar #}
+<ul class="nav navbar-nav">
+
+    <li class="active"><a href="#">{{ 'Home'|trans }}</a></li>
+
+    {% if (app.user and app.user.isAllowed('DATA_QUERY') and app.user.isSchemaAllowed('RAW_DATA')) %}
+        <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Regional data'|trans }}</a><li>
+    {% endif %}
+
+    {% if (app.user and app.user.isAllowed('DATA_INTEGRATION')) %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Datasets'|trans }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('integration_home') }}">{{ 'Manage datasets'|trans }}</a></li>
+                <li><a href="{{ path('integration_creation') }}">{{ 'Import a new dataset'|trans }}</a></li>
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if (app.user and app.user.isAllowed('CONFIGURE_METAMODEL')) %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Models configuration'|trans }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('configurateur_model_index') }}">{{ 'Data models'|trans }}</a></li>
+                <li><a href="{{ path('configurateur_dataset_import_index') }}">{{ 'Import models'|trans }}</a></li>
+                <li><a href="{{ path('configurateur_data_index') }}">{{ 'Data dictionary'|trans }}</a></li>
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if (app.user and (app.user.isAllowed('MANAGE_USERS') or app.user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS') or app.user.isAllowed('CHECK_CONF'))) %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Administration'|trans }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                {% if (app.user.isAllowed('MANAGE_USERS')) %}
+                    <li><a href="{{ path('usermanagement_showUsers') }}">{{ 'Users'|trans }}</a></li>
+                    <li><a href="{{ path('usermanagement_showProviders') }}">{{ 'Providers'|trans }}</a></li>
+                    <li><a href="{{ path('usermanagement_showRoles') }}">{{ 'Roles and permissions'|trans }}</a></li>
+                {% endif %}
+                {% if (app.user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')) %}
+                    <li><a href="#">{{ 'Platform Parameters Configuration'|trans }}</a></li>
+                {% endif %}
+                {% if (app.user.isAllowed('CHECK_CONF')) %}
+                    <li><a href="{{ path('checkconf_showconfig') }}">{{ 'Check Configuration'|trans }}</a></li>
+                {% endif %}
+            </ul>
+        </li>
+    {% endif %}
+</ul>

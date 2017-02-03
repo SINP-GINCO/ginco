@@ -1,22 +1,82 @@
-/**
- * Styling of the Ginco application, on top of bootstrap
- */
+//
+// Styling of the Ginco application, on top of bootstrap
+//
 
 
+//------------------------------
+// Global styling
+//------------------------------
 
-/* Global
--------------------------------------------------- */
+// Define Semantic Elements as Block Elements
+// for old browsers
 
-/* Define Semantic Elements as Block Elements
-   for old browsers
-*/
 header, section, footer, aside, nav, main, article, figure {
   display: block;
 }
 
-/*------------------------------------------------
-  Sticky footer
--------------------------------------------------- */
+//------------------------------
+// Header
+//------------------------------
+
+#page-header {
+  #gradient > .horizontal(white; @sinp-green; 50%; 50%);
+  height: @header-height; /* height of banner-sinp.jpg */
+  #banner {
+    height: @header-height;
+    background-image: url("/img/bandeau-sinp.jpg");
+    #header-logo {
+      margin-top: 5px;
+    }
+    .header-title {
+      color: white;
+      text-transform: uppercase;
+    }
+  }
+}
+
+
+//------------------------------
+// Main menu
+//------------------------------
+
+#main-menu {
+  background-color: @sinp-green-light;
+  color: white;
+
+  .nav > li > a {
+    padding: 10px 15px;
+    color: white;
+    &:hover,
+    &:focus {
+      background-color: @sinp-green-lighter;
+    }
+  }
+  .nav .open > a {
+    &,
+    &:hover,
+    &:focus {
+      background-color: @sinp-green-lighter;
+      border-color: @link-color;
+    }
+  }
+
+  .navbar-right {
+    margin-right: 0;
+  }
+}
+
+//------------------------------
+// Breadcrumb and help link
+//------------------------------
+
+.help-link {
+  padding: @breadcrumb-padding-vertical 0;
+}
+
+//------------------------------
+// (Sticky) footer
+//------------------------------
+
 html {
   position: relative;
   min-height: 100%;
@@ -31,27 +91,4 @@ body {
   width: 100%;
   /* Set the fixed height of the footer here */
   height: @footer-height;;
-}
-
-/*------------------------------------------------
-  Layout Styling
--------------------------------------------------- */
-
-/*
- * Header
-*/
-#page-header {
-  background-color: @sinp-green;
-  height: @header-height; /* height of banner-sinp.jpg */
-  #banner {
-    height: @header-height;
-    background-image: url("/img/bandeau-sinp.jpg");
-    #header-logo {
-      margin-top: 5px;
-    }
-    .header-title {
-      color: white;
-      text-transform: uppercase;
-    }
-  }
 }
