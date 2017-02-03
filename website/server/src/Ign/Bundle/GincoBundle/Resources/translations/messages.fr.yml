@@ -1,0 +1,34 @@
+# In this file we just need to:
+# - write translations not defined in Ogam Bundle
+# - overwrite translations from Ogam Bundle
+# --> No need to rewrite correct translations from Ogam Bundle
+
+# General, layout, navigation
+# ---------------------------
+Home: Accueil
+SINP - Système d'Information Nature et Paysages: SINP - Système d'Information Nature et Paysages
+Regional data: Données régionales
+Datasets: Jeux de données
+Models configuration: Configuration des modèles
+Administration: Administration
+Roles and permissions: Rôles et permissions
+Platform Parameters Configuration: Paramètres de la plateforme
+Legal notice: Mentions légales
+Geoportal copyrights: Copyrights Géoportail
+Contact: Contact
+Close: Close
+
+# Integration - Datasets
+# ----------------------
+
+Data integration module: Gérer les jeux de données
+Manage datasets: Gérer les jeux de données
+Import a new dataset: Importer un nouveau jeu de données
+
+
+# Configurateur
+# -------------
+
+Data models: Modèles de données
+Import models: Modèles d'import
+Data dictionary: Dictionnaire de données

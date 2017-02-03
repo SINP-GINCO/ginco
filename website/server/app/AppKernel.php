@@ -15,8 +15,8 @@ class AppKernel extends Kernel {
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+			new Ign\Bundle\OGAMBundle\OGAMBundle(),	// Order is important for translations !
 			new Ign\Bundle\GincoBundle\IgnGincoBundle(),
-			new Ign\Bundle\OGAMBundle\OGAMBundle(),
 			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
 			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
