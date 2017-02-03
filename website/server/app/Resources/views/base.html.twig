@@ -71,18 +71,6 @@
         </div>
     </div>
 
-    {#
-    <!-- Drapeaux pour changer la langue todo: à virer -->
-    <div>
-        {{  dump(app.request.getLocale)  }}
-        {% if app.request.getLocale == 'fr' %}
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=en" ><div class="en-flag" title="{% trans %}Translate this site en{% endtrans %}">&nbsp;</div></a>
-        {% else %}
-            <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=fr" ><div class="fr-flag" title="{% trans %}Translate this site fr{% endtrans %}">&nbsp;</div></a>
-        {% endif %}
-    </div>
-    #}
-
     {#== Breadcrumb and Help Link ==#}
     <div class="container">
         <div class="help-link pull-right">
