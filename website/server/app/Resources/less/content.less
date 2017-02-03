@@ -91,4 +91,27 @@ body {
   width: 100%;
   /* Set the fixed height of the footer here */
   height: @footer-height;;
+  border-top: 1px solid @sinp-green-light;
+
+  .nav > li > a {
+    padding: 10px 15px;
+    &:hover,
+    &:focus {
+      background-color:white;
+      text-decoration: underline;
+    }
+  }
+  .navbar-text {
+    margin: 10px 15px;
+  }
+}
+
+//------------------------------
+// Footer modals
+//------------------------------
+
+#legalModal, #copyrightsModal {
+  .modal-dialog {
+    width: 800px;
+  }
 }

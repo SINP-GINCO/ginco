@@ -70,15 +70,17 @@
         </div>
     </div>
 
+    {#
     <!-- Drapeaux pour changer la langue todo: à virer -->
     <div>
-        {# dump(app.request.getLocale) #}
+        {{  dump(app.request.getLocale)  }}
         {% if app.request.getLocale == 'fr' %}
             <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=en" ><div class="en-flag" title="{% trans %}Translate this site en{% endtrans %}">&nbsp;</div></a>
         {% else %}
             <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=fr" ><div class="fr-flag" title="{% trans %}Translate this site fr{% endtrans %}">&nbsp;</div></a>
         {% endif %}
     </div>
+    #}
 
     {#== Breadcrumb and Help Link ==#}
     <div class="container">
@@ -126,11 +128,27 @@
     {#== Footer ==#}
     <footer class="footer">
         <div class="container">
-            <span title="Build @build_number@">Version @version_number@&nbsp;-&nbsp;</span>
-            {{'Layout Copyright'|trans}} &nbsp;
-            <a id="lkContact" onclick="sendMail();" href="#">{% trans %}Contact Us{% endtrans %}</a>
+            <ul class="nav navbar-nav">
+                <li><a href="#" data-toggle="modal" data-target="#legalModal">{{ 'Legal notice'|trans }}</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#copyrightsModal">{{ 'Geoportal copyrights'|trans }}</a></li>
+                <li><a href="#">{{ 'Contact'|trans }}</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <p class="navbar-text">Version : @build.version@</p>
+            </ul>
         </div>
     </footer>
+
+    {# Include Modals (Legal Notices and copyrigths) #}
+    {% include 'legalNotices.modal.html.twig' %}
+    {% include 'geoportailCopyrigths.modal.html.twig' %}
+
+    {#== Piwik tracking ==#}
+    {% if app.environment != 'dev' %}
+        {% include 'piwik.html.twig' %}
+    {% endif %}
+
 </div>
 
 {% block javascripts %}
