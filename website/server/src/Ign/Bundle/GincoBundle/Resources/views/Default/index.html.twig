@@ -1,1 +1,49 @@
-Hello World!
+{% extends 'base.html.twig' %}
+
+{% block description %}Todo Remplir cette description{% endblock %}
+
+{% block body %}
+    <h1>{% trans %}Homepage.title{% endtrans %}</h1>
+
+    {% if (app.user and app.user.isAllowed('DATA_QUERY') and app.user.isSchemaAllowed('RAW_DATA')) %}
+      <h2>{{ 'Menu.RegionalData'|trans }}</h2>
+      <ul>
+        <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Menu.RegionalData.Access'|trans }}</a></li>
+      </ul>
+    {% endif %}
+
+    {% if (app.user and app.user.isAllowed('DATA_INTEGRATION')) %}
+        <h2>{{ 'Menu.Datasets'|trans }}</h2>
+        <ul>
+            <li><a href="{{ path('integration_home') }}">{{ 'Menu.ManageDatasets'|trans }}</a></li>
+            <li><a href="{{ path('integration_creation') }}">{{ 'Menu.ImportDataset'|trans }}</a></li>
+        </ul>
+    {% endif %}
+
+    {% if (app.user and app.user.isAllowed('CONFIGURE_METAMODEL')) %}
+        <h2>{{ 'Menu.Configurator'|trans }}</h2>
+        <ul>
+            <li><a href="{{ path('configurateur_model_index') }}">{{ 'Menu.DataModels'|trans }}</a></li>
+            <li><a href="{{ path('configurateur_dataset_import_index') }}">{{ 'Menu.ImportModels'|trans }}</a></li>
+            <li><a href="{{ path('configurateur_data_index') }}">{{ 'Menu.DataDictionary'|trans }}</a></li>
+        </ul>
+    {% endif %}
+
+    {% if (app.user and (app.user.isAllowed('MANAGE_USERS') or app.user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS') or app.user.isAllowed('CHECK_CONF'))) %}
+        <h2>{{ 'Menu.Administration'|trans }}</h2>
+        <ul>
+            {% if (app.user.isAllowed('MANAGE_USERS')) %}
+                <li><a href="{{ path('usermanagement_showUsers') }}">{{ 'Menu.Users'|trans }}</a></li>
+                <li><a href="{{ path('usermanagement_showProviders') }}">{{ 'Menu.Providers'|trans }}</a></li>
+                <li><a href="{{ path('usermanagement_showRoles') }}">{{ 'Menu.Roles'|trans }}</a></li>
+            {% endif %}
+            {% if (app.user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')) %}
+                <li><a href="#">{{ 'Menu.PlatformParameters'|trans }}</a></li>
+            {% endif %}
+            {% if (app.user.isAllowed('CHECK_CONF')) %}
+                <li><a href="{{ path('checkconf_showconfig') }}">{{ 'Menu.CheckConfiguration'|trans }}</a></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+
+{% endblock %}

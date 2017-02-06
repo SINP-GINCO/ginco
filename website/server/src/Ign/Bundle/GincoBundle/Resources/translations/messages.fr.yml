@@ -16,6 +16,7 @@ Close: Close
 # ---------------------------
 Menu.Home: Accueil
 Menu.RegionalData: Données régionales
+Menu.RegionalData.Access: Visualiser les données régionales
 Menu.Datasets: Jeux de données
 Menu.ManageDatasets: Gérer les jeux de données
 Menu.ImportDataset: Importer un jeu de données
@@ -62,6 +63,10 @@ Help.configurator.home: Aide sur le configurateur
 Help.configurator.models: Aide sur les modèles de données
 Help.configurator.import_models: Aide sur les modèles d'import
 Help.configurator.data: Aide dictionnaire de données
+
+# Homepage
+# ----------------------
+Homepage.title: Bienvenue sur la plateforme GINCO
 
 # Integration - Datasets
 # ----------------------
