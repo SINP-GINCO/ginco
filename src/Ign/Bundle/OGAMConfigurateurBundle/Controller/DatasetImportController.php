@@ -104,7 +104,8 @@ class DatasetImportController extends Controller {
 		}
 
 		if (!$this->get('app.permissions')->isImportModelEditable($id)) {
-			$this->addFlash('error', $this->get('app.permissions')->getMessage());
+			$this->addFlash('error', $this->get('app.permissions')
+				->getMessage());
 			return $this->redirectToRoute('configurateur_dataset_import_index');
 		}
 
@@ -180,7 +181,8 @@ class DatasetImportController extends Controller {
 		$published = $mpService->isPublished($id);
 
 		if (!$this->get('app.permissions')->isImportModelDeletable($id)) {
-			$this->addFlash('error', $this->get('app.permissions')->getMessage());
+			$this->addFlash('error', $this->get('app.permissions')
+				->getMessage());
 		} else {
 			$datasetName = $dataset->getLabel();
 
@@ -245,7 +247,6 @@ class DatasetImportController extends Controller {
 						)));
 					}
 				}
-
 			} else {
 				$this->addFlash('error', $this->get('translator')
 					->trans('importmodel.publish.fail', array(
@@ -272,7 +273,8 @@ class DatasetImportController extends Controller {
 	 *
 	 * @param boolean $unpublishFromModel
 	 *        	if the unpublication call comes from the data model unpublication action call
-	 * @param boolean $redirectToEdit optional
+	 * @param boolean $redirectToEdit
+	 *        	optional
 	 *        	parameter. if true, will redirect to edit page after unpublication
 	 *
 	 */
@@ -300,6 +302,7 @@ class DatasetImportController extends Controller {
 
 			// Unpublish the import model
 			$successStatus = $this->get('app.importModelUnpublication')->unpublishImportModel($importModelId);
+
 			// Send a flash message depending on the result of the unpublication
 			$importModelName = $importModel->getLabel();
 			if ($successStatus == 'SUCCESS') {
