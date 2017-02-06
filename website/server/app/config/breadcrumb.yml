@@ -1,5 +1,5 @@
-# navigation.yml
-# Configuration of the breadcrumb (BreadcrumbConfig service)
+# breadcrumb.yml
+# Configuration of the main breadcrumb (BreadcrumbConfig service)
 #
 # Define a recursive tree of the site pages which show the breadcrumb.
 # For every page, set attributes label an route (route name).

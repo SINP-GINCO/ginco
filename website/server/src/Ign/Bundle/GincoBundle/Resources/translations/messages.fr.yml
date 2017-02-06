@@ -18,6 +18,18 @@ Geoportal copyrights: Copyrights Géoportail
 Contact: Contact
 Close: Close
 
+# Help link
+# ---------------------------
+
+Help.default: Aide
+Help.home: Aide
+Help.users: Aide sur la gestion des utilisateurs
+Help.datasets: Aide sur les jeux de données
+Help.configurator.home: Aide sur le configurateur
+Help.configurator.models: Aide sur les modèles de données
+Help.configurator.import_models: Aide sur les modèles d'import
+Help.configurator.data: Aide dictionnaire de données
+
 # Integration - Datasets
 # ----------------------
 

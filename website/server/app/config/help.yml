@@ -1,0 +1,99 @@
+# Configuration file for help links
+#
+# For every help page, set attributes label an url (relative to help site domain).
+# And routes of all pages with tis label/url.
+#
+# Example with one route:
+#
+# home:
+#  label: Help
+#  url: /index.html
+#  route: homepage
+#
+# Example wih several routes:
+#
+# users:
+#   label: Help on user management
+#   url: /gestion-des-utilisateurs
+#   routes:
+#     - user_home
+#     - user_edit
+#     - user_add
+
+
+home:
+  label: Help.home
+  url: /index.html
+  route: homepage
+
+usermanagement:
+  label: Help.users
+  url: /utilisateurs/index.html
+  routes:
+    - usermanagement_home
+    - usermanagement_showUsers
+    - usermanagement_editUser
+    - usermanagement_changePassword
+    - usermanagement_showRoles
+    - usermanagement_editRole
+    - usermanagement_showProviders
+    - usermanagement_showProviderContent
+    - usermanagement_editProvider
+
+datasets:
+  label: Help.datasets
+  url: /gestion-jdd/index.html
+  routes:
+    - integration_home
+    - integration_list
+    - integration_creation
+    - ign_ogam_integration_showuploaddata
+    - integration_validate_upload
+
+configurator:
+  label: Help.configurator.home
+  url: /configurateur/index.html
+  route: configurateur_homepage
+
+configurator_models:
+  label: Help.configurator.models
+  url: /configurateur/modele-de-donnees.html
+  routes:
+    - configurateur_model_new
+    - configurateur_model_index
+    - configurateur_model_edit
+    - configurateur_model_import
+    - configurateur_model_view
+    - configurateur_model_duplicate
+    - configurateur_table_index
+    - configurateur_table_fields
+    - configurateur_table_edit
+    - configurateur_table_view
+    - configurateur_table_add_fields
+    - configurateur_table_update_fields
+
+configurator_import_models:
+  label:  Help.configurator.import_models
+  url: /configurateur/modele-d-import.html
+  routes:
+    - configurateur_dataset_import_index
+    - configurateur_dataset_import_new
+    - configurateur_dataset_import_edit
+    - configurateur_dataset_import_view
+    - configurateur_file_mappings
+    - configurateur_field_mapping_new
+    - configurateur_field_mapping_edit
+    - configurateur_file_index
+    - configurateur_file_edit
+    - configurateur_file_fields
+    - configurateur_file_view
+
+configurator_data:
+  label: Help.configurator.data
+  url: /configurateur/dictionnaire-donnees.html
+  routes:
+    - configurateur_data_index
+    - configurateur_data_new
+    - configurateur_data_new_addtoformat
+    - configurateur_data_show
+    - configurateur_data_edit

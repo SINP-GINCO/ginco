@@ -74,27 +74,15 @@
     {#== Breadcrumb and Help Link ==#}
     <div class="container">
         <div class="help-link pull-right">
-            {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing')  %}
-            {% set helpLabel = 'Aide' %}
-            <a href="{{ helpLink }}" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> {{ helpLabel }}</a>
-            {#<?php
-                 $docUrlBase = $configuration->getConfig('documentationUrl', 'documentation_url_missing');
-            $icon = "<img src='/img/help.png' alt='help icon'>";
+            {% set helpLabel = ginco_help_label(app.request.attributes.get('_route'), 'Help.default') %}
+            {% set helpUri = ginco_help_url(app.request.attributes.get('_route')) %}
+            {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing') ~ helpUri %}
 
-            $config = new Zend_Config_Yaml(CUSTOM_APPLICATION_PATH.'/configs/navigation.yml', 'nav');
-            $container = new Zend_Navigation($config);
-
-            $controller = $container->findOneBy('controller', $controllerName);
-            if ($controller) {
-            $link = $docUrlBase . $controller->help;
-            echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
-            }
-            ?>#}
+            <a href="{{ helpLink }}" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> {{ helpLabel|trans }}</a>
         </div>
 
         {{ wo_render_breadcrumbs() }}
     </div>
-
 
     {#== Page content ==#}
     <main id="main" class="container">
