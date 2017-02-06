@@ -41,6 +41,10 @@ twig:
     globals: 
       configurationManager : '@ogam.configuration_manager'
 
+    # Use Boostrap forms - horizontal and overriden 4 + 4 columns
+    form_themes:
+        - form.html.twig
+
 # Assetic configuration
 assetic:
     debug:          '%kernel.debug%'

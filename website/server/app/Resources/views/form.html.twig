@@ -1,71 +1,10 @@
-{% extends 'form_div_layout.html.twig'  %}
+{# Override bootstrap horizontal layout#}
+{% use "bootstrap_3_horizontal_layout.html.twig" %}
 
-{%- block form_start -%}
-<div class="{{ name }}">
-    <div class="form-super-ct">
-        <div class="form-ct">
-            <div class="zend_form">
-            {{- parent() -}}
-{%- endblock form_start -%}
+{% block form_label_class -%}
+    col-sm-4
+{%- endblock form_label_class %}
 
-{%- block form_end -%}
-             {{- parent() -}}
-            </div>
-        </div>
-    </div>
-</div>
-{%- endblock form_end -%}
-
-{%- block form_row -%}
-<div id="{{ id }}-element" class="{{ type ?? '' }} element">
-        {{- form_label(form) -}}
-        {{- form_widget(form) -}}
-        {{- form_errors(form) -}}
-</div>
-{%- endblock form_row-%}
-
-{%- block button_row -%}
-    <div class="button">
-        {{- form_widget(form) -}}
-    </div>
-{%- endblock button_row -%}
-
-{%- block choice_widget_collapsed -%}
-
-	{{- parent() -}}
-
-{%- endblock choice_widget_collapsed -%}
-
-{# Redefine the error block to add a class #}
-{% block form_errors %}
-    {% spaceless %}
-        {% if errors|length > 0 %}
-        <ul>
-            {% for error in errors %}
-                <li class="error">{{ error.message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    {% endspaceless %}
-{% endblock form_errors %}
-
-{# Add a star to requiered fields #}
-{% block form_label %}
-    {{ parent() }}
-
-    {% if required %}
-        <span class="required" title="This field is required">*</span>
-    {% endif %}
-{% endblock %}
-
-
-{# Add a <br> to choices #}
-{%- block choice_widget_expanded -%}
-    <div class="multiCheckbox element" {{ block('widget_container_attributes') }}>
-    {%- for child in form %}
-        {{- form_widget(child) -}}
-        {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
-        <br/>
-    {% endfor -%}
-    </div>
-{%- endblock choice_widget_expanded -%}
+{% block form_group_class -%}
+    col-sm-4
+{%- endblock form_group_class %}
