@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block description %}Todo Remplir cette description{% endblock %}
+{% block description %}{% endblock %}
 
 {% block body %}
-    <h1>{% trans %}Homepage.title{% endtrans %}</h1>
+    <h1>{{ configurationManager.getConfig('site_name', 'Plateforme GINCO') }}</h1>
 
     {% if (app.user and app.user.isAllowed('DATA_QUERY') and app.user.isSchemaAllowed('RAW_DATA')) %}
       <h2>{{ 'Menu.RegionalData'|trans }}</h2>
