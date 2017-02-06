@@ -215,7 +215,7 @@ class DatasetImportController extends Controller {
 	 */
 	public function publishAction($importModelId) {
 		$importModel = $this->getDoctrine()
-			->getManager()
+			->getManager('metadata_work')
 			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 			->find($importModelId);
 		if ($importModel) {
@@ -280,15 +280,13 @@ class DatasetImportController extends Controller {
 		$logger = $this->get('logger');
 		// Get the model to check if it exists
 		$importModel = $this->getDoctrine()
-			->getManager()
+			->getManager('metadata_work')
 			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 			->find($importModelId);
-
 		if ($importModel) {
 			// Check if a file is being uploaded
 			$muService = $this->get('app.importmodelUnpublication');
 			if ($muService->hasRunningFileUpload($importModelId)) {
-
 				$this->addFlash('error', $this->get('translator')
 					->trans('importmodel.unpublish.uploadrunning', array(
 					'%importModelId%' => $importModelId
