@@ -3,24 +3,39 @@
 # - overwrite translations from Ogam Bundle
 # --> No need to rewrite correct translations from Ogam Bundle
 
-# General, layout, navigation
+# General & layout
 # ---------------------------
 Home: Accueil
 SINP - Système d'Information Nature et Paysages: SINP - Système d'Information Nature et Paysages
-Regional data: Données régionales
-Datasets: Jeux de données
-Models configuration: Configuration des modèles
-Administration: Administration
-Roles and permissions: Rôles et permissions
-Platform Parameters Configuration: Paramètres de la plateforme
 Legal notice: Mentions légales
 Geoportal copyrights: Copyrights Géoportail
 Contact: Contact
 Close: Close
 
-# Help link
+# Main menu
+# ---------------------------
+Menu.Home: Accueil
+Menu.RegionalData: Données régionales
+Menu.Datasets: Jeux de données
+Menu.ManageDatasets: Gérer les jeux de données
+Menu.ImportDataset: Importer un jeu de données
+Menu.Configurator: Configuration des modèles
+Menu.DataModels: Modèles de données
+Menu.ImportModels: Modèles d'import
+Menu.DataDictionary: Dictionnaire de données
+Menu.Administration: Administration
+Menu.Users: Utilisateurs
+Menu.Providers: Organismes
+Menu.Roles: Rôles et permissions
+Menu.PlatformParameters: Paramètres de la plateforme
+Menu.CheckConfiguration: Vérifier la configuration technique
+
+# Breadcrumb
 # ---------------------------
 
+
+# Help link
+# ---------------------------
 Help.default: Aide
 Help.home: Aide
 Help.users: Aide sur la gestion des utilisateurs
