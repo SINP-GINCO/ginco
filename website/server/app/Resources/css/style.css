@@ -6775,6 +6775,9 @@ figure {
 .help-link {
   padding: 8px 0;
 }
+.breadcrumb {
+  padding-left: 0;
+}
 html {
   position: relative;
   min-height: 100%;
@@ -6798,6 +6801,9 @@ body {
 .footer .nav > li > a:focus {
   background-color: white;
   text-decoration: underline;
+}
+.footer .nav > li:first-child > a {
+  padding-left: 0;
 }
 .footer .navbar-text {
   margin: 10px 15px;
