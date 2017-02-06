@@ -32,7 +32,25 @@ Menu.CheckConfiguration: Vérifier la configuration technique
 
 # Breadcrumb
 # ---------------------------
-
+Breadcrumb.Home: Accueil
+Breadcrumb.Integration: Gérer les jeux de données
+Breadcrumb.Integration.New: Importer un nouveau jeu de données
+Breadcrumb.User: Mon compte
+Breadcrumb.Check.Configuration: Vérifier la configuration technique
+Breadcrumb.Users.Administration: Administrer les utilisateurs
+Breadcrumb.Users: Utilisateurs
+Breadcrumb.Add.User: Ajouter
+Breadcrumb.Edit.User: Modifier
+Breadcrumb.Change.Password: Mot de passe
+Breadcrumb.Roles: Roles
+Breadcrumb.Edit.Role: Modifier
+Breadcrumb.Add.Role: Ajouter
+Breadcrumb.Providers: Organismes
+Breadcrumb.Providers.Details: Détails et données
+Breadcrumb.Edit.Provider: Modifier
+Breadcrumb.Add.Provider: Ajouter
+Breadcrumb.Configuration.Parameters: Paramètres de la Plateforme
+Breadcrumb.Contact: Contact
 
 # Help link
 # ---------------------------
