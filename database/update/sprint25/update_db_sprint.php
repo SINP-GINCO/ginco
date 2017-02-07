@@ -35,6 +35,8 @@ try {
 	execCustSQLFile("$sprintDir/restore_result_location.sql", $config);
 
 	execCustSQLFile("$sprintDir/reorder_layer_tree.sql", $config);
+	execCustSQLFile("$sprintDir/add_integration_service_event_listener.sql", $config);
+
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
