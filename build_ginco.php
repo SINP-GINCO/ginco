@@ -52,12 +52,15 @@ function buildJavaServices($config, $buildMode)
 
 	$ISFilename = "SINP" . $config['instance.name'] . "IntegrationService";
 	$RGFilename = "SINP" . $config['instance.name'] . "RGService" ;
+	$gincoCustomPath = "$projectDir/services/service_integration/custom/fr/ifn/ogam/integration";
+	$ogamCustomPath = "$ogamDir/service_integration/custom/fr/ifn/ogam/integration";
 
 	// build du service d'intégration
 	echo("Building integration service...\n");
 	system("mv -f $ogamDir/service_integration/config/log4j.properties $ogamDir/service_integration/config/log4j.properties.save");
 	substituteInFile("$projectDir/services_configs/service_integration/log4j_tpl.properties",
 		"$ogamDir/service_integration/config/log4j.properties", $config);
+	copy("$gincoCustomPath/business/ComputeGeoAssociationService.java", "$ogamCustomPath/business/ComputeGeoAssociationService.java");
 	chdir("$ogamDir");
 	system("./gradlew service_integration:war");
 	# le war se trouve dans ${ogamDir}/service_integration/build/libs/service_integration-4.0.0.war
