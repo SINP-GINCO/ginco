@@ -6817,3 +6817,7 @@ body {
 #copyrightsModal .modal-dialog {
   width: 800px;
 }
+.password-change-user-name {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
