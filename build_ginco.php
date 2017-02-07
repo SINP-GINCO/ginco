@@ -41,7 +41,7 @@ function buildJavaServices($config, $buildMode)
 	echo("-------------------------\n");
 
 	$ogamDir = realpath($config['ogam.path']);
-	$servicesBuildDir = "$buildDir/services";
+	$servicesBuildDir = "$buildDir/services/build";
 	is_dir($servicesBuildDir) || mkdir($servicesBuildDir, 0755, true);
 	is_dir("$servicesBuildDir/webapps") || mkdir("$servicesBuildDir/webapps", 0755, true);
 	is_dir("$servicesBuildDir/conf") || mkdir("$servicesBuildDir/conf", 0755, true);
@@ -65,7 +65,7 @@ function buildJavaServices($config, $buildMode)
 		"$servicesBuildDir/conf/$ISFilename.xml", $config);
 
 	//build du service de rapport
-	echo("Building repport service...\n");
+	echo("Building report service...\n");
 	// remplacement des rapports par défaut d'ogam par le rapport d'erreur GINCO
 	system("mv -f $ogamDir/service_generation_rapport/report $ogamDir/service_generation_rapport/report.save");
 	mkdir("$ogamDir/service_generation_rapport/report", 0755, true);
