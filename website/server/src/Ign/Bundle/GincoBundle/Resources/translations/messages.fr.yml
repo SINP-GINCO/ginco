@@ -14,59 +14,64 @@ Close: Close
 
 # Main menu
 # ---------------------------
-Menu.Home: Accueil
-Menu.RegionalData: Données régionales
-Menu.RegionalData.Access: Visualiser les données régionales
-Menu.Datasets: Jeux de données
-Menu.ManageDatasets: Gérer les jeux de données
-Menu.ImportDataset: Importer un jeu de données
-Menu.Configurator: Configuration des modèles
-Menu.DataModels: Modèles de données
-Menu.ImportModels: Modèles d'import
-Menu.DataDictionary: Dictionnaire de données
-Menu.Administration: Administration
-Menu.Users: Utilisateurs
-Menu.Providers: Organismes
-Menu.Roles: Rôles et permissions
-Menu.PlatformParameters: Paramètres de la plateforme
-Menu.CheckConfiguration: Vérifier la configuration technique
+Menu:
+  Home: Accueil
+  RegionalData: Données régionales
+  RegionalData.Access: Visualiser les données régionales
+  Datasets: Jeux de données
+  ManageDatasets: Gérer les jeux de données
+  ImportDataset: Importer un jeu de données
+  Configurator: Configuration des modèles
+  DataModels: Modèles de données
+  ImportModels: Modèles d'import
+  DataDictionary: Dictionnaire de données
+  Administration: Administration
+  Users: Utilisateurs
+  Providers: Organismes
+  Roles: Rôles et permissions
+  PlatformParameters: Paramètres de la plateforme
+  CheckConfiguration: Vérifier la configuration technique
 
 # Breadcrumb
 # ---------------------------
-Breadcrumb.Home: Accueil
-Breadcrumb.Integration: Gérer les jeux de données
-Breadcrumb.Integration.New: Importer un nouveau jeu de données
-Breadcrumb.User: Mon compte
-Breadcrumb.Check.Configuration: Vérifier la configuration technique
-Breadcrumb.Users.Administration: Administrer les utilisateurs
-Breadcrumb.Users: Utilisateurs
-Breadcrumb.Add.User: Ajouter
-Breadcrumb.Edit.User: Modifier
-Breadcrumb.Change.Password: Mot de passe
-Breadcrumb.Roles: Roles
-Breadcrumb.Edit.Role: Modifier
-Breadcrumb.Add.Role: Ajouter
-Breadcrumb.Providers: Organismes
-Breadcrumb.Providers.Details: Détails et données
-Breadcrumb.Edit.Provider: Modifier
-Breadcrumb.Add.Provider: Ajouter
-Breadcrumb.Configuration.Parameters: Paramètres de la Plateforme
-Breadcrumb.Contact: Contact
+Breadcrumb:
+  Home: Accueil
+  Integration: Gérer les jeux de données
+  Integration.New: Importer un nouveau jeu de données
+  User: Mon compte
+  Check.Configuration: Vérifier la configuration technique
+  Users.Administration: Administrer les utilisateurs
+  Users: Utilisateurs
+  Add.User: Ajouter
+  Edit.User: Modifier
+  Change.Password: Mot de passe
+  Roles: Roles
+  Edit.Role: Modifier
+  Add.Role: Ajouter
+  Providers: Organismes
+  Providers.Details: Détails et données
+  Edit.Provider: Modifier
+  Add.Provider: Ajouter
+  Configuration.Parameters: Paramètres de la Plateforme
+  Contact: Contact
 
 # Help link
 # ---------------------------
-Help.default: Aide
-Help.home: Aide
-Help.users: Aide sur la gestion des utilisateurs
-Help.datasets: Aide sur les jeux de données
-Help.configurator.home: Aide sur le configurateur
-Help.configurator.models: Aide sur les modèles de données
-Help.configurator.import_models: Aide sur les modèles d'import
-Help.configurator.data: Aide dictionnaire de données
+Help:
+  default: Aide
+  home: Aide
+  users: Aide sur la gestion des utilisateurs
+  datasets: Aide sur les jeux de données
+  configurator:
+    home: Aide sur le configurateur
+    models: Aide sur les modèles de données
+    import_models: Aide sur les modèles d'import
+    data: Aide dictionnaire de données
 
 # Homepage
 # ----------------------
-Homepage.title: Bienvenue sur la plateforme GINCO
+Homepage:
+  title: Bienvenue sur la plateforme GINCO
 
 # Integration - Datasets
 # ----------------------
