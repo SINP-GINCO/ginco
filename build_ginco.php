@@ -41,7 +41,11 @@ function buildJavaServices($config, $buildMode)
 	echo("-------------------------\n");
 
 	$ogamDir = realpath($config['ogam.path']);
-	$servicesBuildDir = "$buildDir/services/build";
+	if ($buildMode == 'dev') {
+		$servicesBuildDir = "$buildDir/services/build";
+	} else {
+		$servicesBuildDir = "$buildDir/services";
+	}
 	is_dir($servicesBuildDir) || mkdir($servicesBuildDir, 0755, true);
 	is_dir("$servicesBuildDir/webapps") || mkdir("$servicesBuildDir/webapps", 0755, true);
 	is_dir("$servicesBuildDir/conf") || mkdir("$servicesBuildDir/conf", 0755, true);
