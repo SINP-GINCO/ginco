@@ -1254,15 +1254,15 @@ h6 .small,
 }
 h1,
 .h1 {
-  font-size: 36px;
+  font-size: 31px;
 }
 h2,
 .h2 {
-  font-size: 30px;
+  font-size: 26px;
 }
 h3,
 .h3 {
-  font-size: 24px;
+  font-size: 21px;
 }
 h4,
 .h4 {
@@ -6732,6 +6732,10 @@ article,
 figure {
   display: block;
 }
+h1,
+.h1 {
+  margin-bottom: 20px;
+}
 #page-header {
   background-image: -webkit-linear-gradient(left, white 50%, #7E931E 50%);
   background-image: -o-linear-gradient(left, white 50%, #7E931E 50%);
@@ -6777,6 +6781,7 @@ figure {
 }
 .breadcrumb {
   padding-left: 0;
+  margin-bottom: 10px;
 }
 html {
   position: relative;
