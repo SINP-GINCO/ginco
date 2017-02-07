@@ -8,3 +8,8 @@
 {% block form_group_class -%}
     col-sm-4
 {%- endblock form_group_class %}
+
+{% block button_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('btn-primary') ~ ' btn')|trim}) %}
+    {{- parent() -}}
+{%- endblock %}
