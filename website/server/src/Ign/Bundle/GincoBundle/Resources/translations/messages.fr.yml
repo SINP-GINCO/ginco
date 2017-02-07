@@ -82,3 +82,9 @@ Import a new dataset: Importer un nouveau jeu de données
 Data models: Modèles de données
 Import models: Modèles d'import
 Data dictionary: Dictionnaire de données
+
+# Administration
+# --------------
+
+Users.delete.prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
+
