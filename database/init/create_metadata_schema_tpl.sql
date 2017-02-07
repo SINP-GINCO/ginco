@@ -615,6 +615,22 @@ constraint PK_MODEL_TABLES primary key (MODEL_ID, TABLE_ID)
 COMMENT ON COLUMN MODEL_TABLES.MODEL_ID IS 'The id of the model';
 COMMENT ON COLUMN MODEL_TABLES.TABLE_ID IS 'The id of the table';
 
+/*==============================================================*/
+/* Table : EVENT_LISTENER                                       */
+/*==============================================================*/
+CREATE TABLE event_listener
+(
+LISTENER_ID character varying(50) NOT NULL,
+CLASSNAME character varying(255),
+_CREATIONDT timestamp without time zone DEFAULT now(),
+CONSTRAINT pk_event_listener PRIMARY KEY (listener_id)
+)
+
+COMMENT ON COLUMN event_listener.listener_id IS 'The name/identifier of the post-processing treatment';
+COMMENT ON COLUMN event_listener.classname IS 'The fully qualified name of the listener (Ex : fr.ifn.ogam.integration.business.SimpleEventLogger)';
+COMMENT ON COLUMN event_listener._creationdt IS 'The creation date';
+
+
 /*==========================================================================*/
 /*	Metamodel initialization - constraints.
 	Used to create a new and clean 'metadata'
