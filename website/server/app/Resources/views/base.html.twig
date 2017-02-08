@@ -71,8 +71,9 @@
         </div>
     </div>
 
-    {#== Breadcrumb and Help Link ==#}
     <div class="container">
+
+        {#== Help Link ==#}
         <div class="help-link pull-right">
             {% set helpLabel = ginco_help_label(app.request.attributes.get('_route'), 'Help.default') %}
             {% set helpUri = ginco_help_url(app.request.attributes.get('_route')) %}
@@ -81,7 +82,14 @@
             <a href="{{ helpLink }}" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> {{ helpLabel|trans }}</a>
         </div>
 
-        {{ wo_render_breadcrumbs() }}
+        {#== Breadcrumb ==#}
+        {# if the breadcrumb block is given by the template, use it. If not, use calculated breadcrumb #}
+        {% set breadcrumbBlock = block('breadcrumb') %}
+        {% if breadcrumbBlock is not empty %}
+            {{ breadcrumbBlock|raw }}
+        {% else %}
+            {{ wo_render_breadcrumbs() }}
+        {% endif %}
     </div>
 
     {#== Page content ==#}

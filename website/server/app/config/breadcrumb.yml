@@ -19,6 +19,9 @@
 #         id: 1
 #         name: x
 
+# The breadcrumb for the configurator part of the application is too complex to be calculated here,
+# so the calculated breadcrumb is replaced in base template, by the one in the breadcrumb block
+# in the configurator templates
 
 home:
   label: Breadcrumb.Home

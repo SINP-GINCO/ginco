@@ -19,7 +19,6 @@ h1, .h1 {
 }
 
 // Text Color
-
 .color-danger {
   color: @brand-danger;
 }
@@ -28,6 +27,26 @@ h1, .h1 {
 }
 .color-success {
   color: @brand-success;
+}
+
+// Forms required labels
+form label.required:after {
+  content:"*";
+  color: @brand-danger;
+  display: block;
+  position: absolute;
+  right: 5px;
+  top: 7px;
+}
+
+// Alerts of non-conventionnal type
+// alert-notice = alert-success
+.alert-notice {
+  .alert-variant(@alert-success-bg; @alert-success-border; @alert-success-text);
+}
+// alert error = alert-danger
+.alert-error {
+  .alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
 }
 
 
