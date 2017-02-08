@@ -60,21 +60,16 @@
 							</div>
 						</div>
 					</div>
-
-
 				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 {% else %}
-	<p>{% trans %}Pas encore d'utilisateurs.{% endtrans %}</p>
+	<p>{% trans %}Users.no_users{% endtrans %}</p>
 {% endif %}
 
 <p>
     <a href="{{ path('usermanagement_editUser') }}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Create User{% endtrans %}</a>
 <p/>
-
-
-
 {% endblock %}

@@ -11,6 +11,7 @@ Legal notice: Mentions légales
 Geoportal copyrights: Copyrights Géoportail
 Contact: Contact
 Close: Close
+Actions: Actions
 
 # Main menu
 # ---------------------------
@@ -91,5 +92,17 @@ Data dictionary: Dictionnaire de données
 # Administration
 # --------------
 
-Users.delete.prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
+Users:
+  delete.prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
+  no_users: Pas encore d'utilisateurs.
 
+Providers:
+  delete:
+    prompt: Voulez-vous vraiment supprimer l'organisme '%providerLabel%' ?
+    impossible: Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés.
+  no_providers: Pas encore d'organismes.
+
+Role:
+  delete:
+    prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
+    impossible: Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés.
