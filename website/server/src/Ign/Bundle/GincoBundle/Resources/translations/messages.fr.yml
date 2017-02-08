@@ -80,7 +80,18 @@ Homepage:
 Data integration module: Gérer les jeux de données
 Manage datasets: Gérer les jeux de données
 Import a new dataset: Importer un nouveau jeu de données
+Submission ID: Id
 
+IntegrationPage:
+  File: Fichier
+
+Integration:
+  Field:
+    label: Nom du champ
+    definition: Définition
+    format: Format
+
+'The expected fields are:': Liste des champs attendus
 
 # Configurateur
 # -------------
