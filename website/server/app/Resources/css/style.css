@@ -6745,6 +6745,36 @@ h1,
 .color-success {
   color: #b3c951;
 }
+form label.required:after {
+  content: "*";
+  color: #d9534f;
+  display: block;
+  position: absolute;
+  right: 5px;
+  top: 7px;
+}
+.alert-notice {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+.alert-notice hr {
+  border-top-color: #c9e2b3;
+}
+.alert-notice .alert-link {
+  color: #2b542c;
+}
+.alert-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.alert-error hr {
+  border-top-color: #e4b9c0;
+}
+.alert-error .alert-link {
+  color: #843534;
+}
 #page-header {
   background-image: -webkit-linear-gradient(left, white 50%, #7E931E 50%);
   background-image: -o-linear-gradient(left, white 50%, #7E931E 50%);
