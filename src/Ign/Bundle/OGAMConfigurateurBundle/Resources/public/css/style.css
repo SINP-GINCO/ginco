@@ -12,16 +12,6 @@
 	height: auto;
 }
 
-/* Required labels */
-form label.required:after {
-	content:"*";
-	color: red;
-	display: block;
-	position: absolute;
-	right: 5px;
-	top: 7px;
-}
-
 /* Cut too-long texts and add ellipsis (...) */
 .longtext {
 	overflow: hidden;

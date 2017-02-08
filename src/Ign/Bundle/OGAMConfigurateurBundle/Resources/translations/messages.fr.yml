@@ -40,11 +40,12 @@ anErrorOccurred: Une erreur est survenue
 # Fil d'Ariane
 breadcrumb:
   home : Accueil
+  configurator: Configurateur
   datamodel:
     index: Modèles de données
     edit: Edition du modèle de données %modelName%
     new: Création d'un modèle
-    view: Visualisation du modèle de données %modelName%
+    view: Visualisation du modèle %modelName%
     duplicate: Duplication d'un modèle
   table:
     edit: Edition de la table %tableName%

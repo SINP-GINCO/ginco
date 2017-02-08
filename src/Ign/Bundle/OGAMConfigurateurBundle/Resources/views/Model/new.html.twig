@@ -1,7 +1,6 @@
 {% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 
-
 {% block title %}
 	{% if method == 'Creation' %}
 		{% trans %}Model Creation{% endtrans %}
@@ -10,41 +9,27 @@
 	{% endif %}
 {% endblock %}
 
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		{% if method == 'Creation' %}
+			<li class="active">{% trans %}breadcrumb.datamodel.new{% endtrans %}</li>
+		{% elseif method == 'Duplication' %}
+			<li class="active">{% trans %}breadcrumb.datamodel.duplicate{% endtrans %}</li>
+		{% endif %}
+	</ol>
+{% endblock breadcrumb %}
+
 {% block body %}
-
-<div class="container">
-	<div class="row">
-
-		<p class="help pull-right">
-			<a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-de-donnees.html">
-				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-				Aide sur les modèles de données
-			</a>
-		</p>
-
-		<ol class="breadcrumb">
-			<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
-			<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
-			{% if method == 'Creation' %}
-				<li class="active">{% trans %}breadcrumb.datamodel.new{% endtrans %}</li>
-			{% elseif method == 'Duplication' %}
-				<li class="active">{% trans %}breadcrumb.datamodel.duplicate{% endtrans %}</li>
-			{% endif %}
-		</ol>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 id="panel-title" class="panel-title">{% trans %}datamodel.new.title{% endtrans %}</h3>
 	</div>
-
-	<div class="row">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 id="panel-title" class="panel-title">{% trans %}datamodel.new.title{% endtrans %}</h3>
-			</div>
-			<div class="panel-body">
-					{{ form(form) }}
-			</div>
-		</div>
+	<div class="panel-body">
+			{{ form(form) }}
 	</div>
 </div>
-
 {% endblock %}
 
 {% block javascripts %}
