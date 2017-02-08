@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import fr.ifn.ogam.common.business.checks.CheckException;
 import fr.ifn.ogam.common.database.GenericData;
 import fr.ifn.ogam.common.database.mapping.GeometryDAO;
 import fr.ifn.ogam.common.database.referentiels.CommuneDAO;
@@ -83,6 +84,22 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 
 		// DO NOTHING
 
+	}
+
+	/**
+	 * Event called before each insertion of a line of data.
+	 * 
+	 * @param submissionId
+	 *            the submission identifier
+	 * @param values
+	 *            Entry values
+	 * @throws Exception, CheckException
+	 *             in case of database error
+	 */
+	@Override
+	public void beforeLineInsertion(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException {
+
+		// DO NOTHING
 	}
 
 	/**

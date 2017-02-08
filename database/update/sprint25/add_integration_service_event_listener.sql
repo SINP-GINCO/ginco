@@ -21,5 +21,6 @@ COMMENT ON COLUMN event_listener._creationdt IS 'The creation date';
 
 GRANT SELECT ON TABLE event_listener TO ogam;
 
-INSERT INTO metadata.event_listener(listener_id, classname)
-VALUES ('GincoComputeGeoAssociationService', 'fr.ifn.ogam.integration.business.ComputeGeoAssociationService');
+INSERT INTO metadata.event_listener(listener_id, classname) VALUES
+('GincoComputeGeoAssociationService', 'fr.ifn.ogam.integration.business.ComputeGeoAssociationService'),
+('GincoChecksDSRService', 'fr.ifn.ogam.integration.business.ChecksDSRGincoService');
