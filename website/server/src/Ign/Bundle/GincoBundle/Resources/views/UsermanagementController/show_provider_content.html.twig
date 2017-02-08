@@ -32,63 +32,55 @@
 <h2>{{ 'Submissions'|trans }}</h2>
 
 {% if submissions|length > 0 %}
-	<table>
+    <!-- Show all the submissions -->
+    <table class="table">
         <thead>
-            <tr>
-                <th>{% trans %}Submission ID{% endtrans %}</th>
-                <th>{% trans %}Date{% endtrans %}</th>
-                <th>{% trans %}Dataset{% endtrans %}</th>
-                <th>{% trans %}Step{% endtrans %}</th>
-                <th>{% trans %}Status{% endtrans %}</th>
-                <th>{% trans %}File{% endtrans %}</th>
-                <th>{% trans %}Lines{% endtrans %}&nbsp;</th>
-                <th></th>
-            </tr>
+        <tr>
+            <th>{{ 'Submission ID'|trans }}</th>
+            <th>{{ 'Date'|trans }}</th>
+            <th>{{ 'User'|trans }}</th>
+            <th>{{ 'Dataset'|trans }}</th>
+            <th>{{ 'Step'|trans }}</th>
+            <th>{{ 'Status'|trans }}</th>
+            <th>{{ 'IntegrationPage.File'|trans }} ({{ 'Lines'|trans }})</th>
+        </tr>
         </thead>
         <tbody>
-            {% for submission in submissions %}
-                <tr>
-                    <td>{{ submission.id }}</td>
-                    <td>{{ submission.creationDate|date("Y/m/d") }}</td>
-                    <td>{{ submission.dataset.id }}</td>
-                    <td>{{ submission.step }}</td>
-                    <td>
-                        {{ submission.status }}
-                        {% if submission.status == "OK" or submission.status == "CHECK" %}
-                            {% image '@OGAMBundle/Resources/public/img/Green_tick.png' %}
-                                <img src="{{ asset_url }}"/>
-                            {% endimage %}
-                        {% elseif  submission.status == "WARNING" %}
-                            {% image '@OGAMBundle/Resources/public/img/warning_orange.png' %}
-                                <img src="{{ asset_url }}"/>
-                            {% endimage %}
-                        {% elseif  submission.status == "RUNNING" %}
-
-                        {% else %}
-                            <!-- "ERROR" or "CRASH" -->
-                            {% image '@OGAMBundle/Resources/public/img/Red_x.png' %}
-                                <img src="{{ asset_url }}"/>
-                            {% endimage %}
-                        {% endif %}
-                    </td>
-                    <td colspan=2>
-                        {% if submission.status != "DATARUNNING" %}
-                            <table width="100%">
-                                {% for file in submission.files %}
-                                    <tr>
-                                        <td class="file-name">
-                                            <span title="{{ file.fileType }}">{{ file.fileName|split('/')|last }}</span>
-                                        </td>
-                                        <td class="line-number">{{ file.nbLines }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </table>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
+        {% for submission in submissions %}
+            <tr>
+                <td>{{ submission.id }}</td>
+                <td>{{ submission.creationDate|date("Y-m-d") }}</td>
+                <td>{{ submission.user.login }}</td>
+                <td>{{ submission.dataset.label }}</td>
+                <td>{{ submission.step }}</td>
+                {# Status #}
+                <td>
+                    {% if submission.status in ['OK','CHECK'] %}
+                        <span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                    {% elseif submission.status in ['WARNING'] %}
+                        <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                    {% elseif submission.status in ['RUNNING'] %}
+                        <div class="tempStatusDiv" id="tempStatusDiv_{{ submission.id }}">
+                            {{ include('OGAMBundle::integration_script.html.twig') }}
+                        </div>
+                    {% else %}
+                        <span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                    {% endif %}
+                </td>
+                {# File and lines #}
+                <td>
+                    {% if submission.status not in ['RUNNING'] %}
+                        {% for file in submission.files %}
+                            <div>{{ file.fileName|replace({'\\':'/'})|split('/')|last }}
+                                ({{ file.nbLines }})
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
-	</table>
+    </table>
 {% else %}
 	<div class="no-submission">{% trans %}No submission found{% endtrans %}</div>
 {% endif %}

@@ -6736,6 +6736,15 @@ h1,
 .h1 {
   margin-bottom: 20px;
 }
+.color-danger {
+  color: #d9534f;
+}
+.color-warning {
+  color: #f79f3f;
+}
+.color-success {
+  color: #b3c951;
+}
 #page-header {
   background-image: -webkit-linear-gradient(left, white 50%, #7E931E 50%);
   background-image: -o-linear-gradient(left, white 50%, #7E931E 50%);
