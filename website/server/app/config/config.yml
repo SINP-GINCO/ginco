@@ -1,8 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: services.yml }
-    - { resource: "@OGAMBundle/Resources/config/services.yml" }
+    - { resource: services_ginco.yml }
     - { resource: services_configurator.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -42,6 +41,10 @@ twig:
     globals: 
       configurationManager : '@ogam.configuration_manager'
 
+    # Use Boostrap forms - horizontal and overriden 4 + 4 columns
+    form_themes:
+        - form.html.twig
+
 # Assetic configuration
 assetic:
     debug:          '%kernel.debug%'
@@ -54,19 +57,19 @@ assetic:
         yui_js:
               jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.8.jar"
     assets:
-        ginco_js:
+        jquery_and_bootstrap:
             inputs:
                 - "%kernel.root_dir%/../vendor/components/jquery/jquery.min.js"
                 - "%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.min.js"
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.min.js"
+                - "%kernel.root_dir%/Resources/js/hover-dropdown.js"
                 - "%kernel.root_dir%/../web/bundles/fosjsrouting/js/router.js"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/data-toggle-tooltip.js"
         bootstrap_css:
             inputs:
-                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css"
-                - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap-theme.min.css"
+                - "%kernel.root_dir%/Resources/css/style.css"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/css/style.css"
             filters: [cssrewrite]

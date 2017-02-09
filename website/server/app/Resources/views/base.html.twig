@@ -1,104 +1,148 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="robots" content="index, follow" />
-		<meta name="keywords" content="ogam" />
-		<meta name="description" content="open-source generic application base on metadata" />
-        <title>{% block title %}OGAM{% endblock %}</title>
-        {% block stylesheets %}
-        {% stylesheets 'bundles/ogam/css/global.css' filter='cssrewrite' %}
-             <link rel="stylesheet" href="{{ asset_url }}" />
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow" />
+
+    <title>{% block title %}
+        {{ configurationManager.getConfig('site_name', 'GINCO') }}
+    {% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link href="//fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+
+    {% block stylesheets %}
+        {% stylesheets
+        '@bootstrap_css'
+        filter='cssrewrite, yui_css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-    
-    	<div id="wrapper" class="wrapper">
+    {% endblock %}
+</head>
 
-            <div id="main-body-bg" class="main-body-bg"></div>
-            <div id="main-body" class="main-body">
-            
-                <!-- HEADER -->
-                <div class="header" id="header">
-            
-                    <div id="banner" class="banner">
-                        <a href="{{ path('homepage') }}">
-                            {% image '@OGAMBundle/Resources/public/img/banner.jpg' %}
-                            <img src="{{ asset_url }}" alt="Banner"/>
+<body>
+<div class="page">
+    <header id="page-header">
+        {#== Logo and banner ==#}
+        <div id="banner" class="container">
+            <div class="row">
+                <div class="col-xs-3">
+                    <div id="header-logo">
+                        <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
+                            {% image 'img/logo-sinp.png' %}
+                            <img src="{{ asset_url }}" alt="{% trans %}SINP - Système d'Information Nature et Paysages{% endtrans %}"/>
                             {% endimage %}
-                       </a>
+                        </a>
                     </div>
-            
-                    <div id="top" class="top">
-            
-            			<div id="header-beadcrumb" class="header-beadcrumb" style="float: left">
-                            {{ wo_render_breadcrumbs() }}
-            			</div>
-            			
-            			<div id="header-login" class="header-login" style="float: right">
-            				
-            				<!-- Drapeaux pour changer la langue  -->
-            				{% if app.request.getLocale == 'fr' %}
-            					<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=en" ><div class="en-flag" title="{% trans %}Translate this site en{% endtrans %}">&nbsp;</div></a>
-            				{% else %}
-            					<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}?lang=fr" ><div class="fr-flag" title="{% trans %}Translate this site fr{% endtrans %}">&nbsp;</div></a>
-            				{% endif %}
-            				
-            				{% if app.user %}
-            					<a href="{{ path('user_changepassword') }}">{% trans %}Change Password{% endtrans %}</a>
-            					&nbsp;
-            					<a id="logoutLink" href="{{ path('user_logout') }}">{% trans %}Log out{% endtrans %}</a>
-            			    {% else %}
-            			    	<a href="{{ path('user_login') }}">{% trans %}Log in{% endtrans %}</a>            			    
-            			    {% endif %}                          			
-                  		</div>
-                  	</div>
-            
-            	<!-- Fin du header -->
-            	</div>
-    
-                <!-- CONTENT -->
-                <div class="content" id="content">
-                
-                    <!--  Flash messages -->
-                    {% include ('::flash-messages.html.twig') %}
-                                
-                	{% block body %}{% endblock %}
                 </div>
-    
-            
-        <!-- Fin du main-body -->
+                <div class="col-xs-9 text-right h1 header-title">
+                    {{ configurationManager.getConfig('site_name', 'GINCO') }}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {#== Main Menu ==#}
+    <div id="main-menu">
+        <div class="container">
+            <nav id="navbar">
+                {% include 'menu.html.twig' %}
+
+                {#== User box/connexion link==#}
+                <ul class="nav navbar-nav navbar-right">
+                    {% if app.user %}
+                        {# User menu #}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ app.user.login }} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('user_changepassword') }}">{{ 'Change Password'|trans }}</a></li>
+                                <li><a href="{{ path('user_logout') }}">{{ 'Log out'|trans }}</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('user_login') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {% trans %}Log in{% endtrans %}</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+
+        {#== Help Link ==#}
+        <div class="help-link pull-right">
+            {% set helpLabel = ginco_help_label(app.request.attributes.get('_route'), 'Help.default') %}
+            {% set helpUri = ginco_help_url(app.request.attributes.get('_route')) %}
+            {% set helpLink = configurationManager.getConfig('documentationUrl', 'documentation_url_missing') ~ helpUri %}
+
+            <a href="{{ helpLink }}" target="_blank"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> {{ helpLabel|trans }}</a>
         </div>
 
-    <!-- Utilisé pour maintenir le bas de page en bas -->
-    <div id="push" class="push"></div>
-
-    <!-- Fin du wrapper -->
+        {#== Breadcrumb ==#}
+        {# if the breadcrumb block is given by the template, use it. If not, use calculated breadcrumb #}
+        {% set breadcrumbBlock = block('breadcrumb') %}
+        {% if breadcrumbBlock is not empty %}
+            {{ breadcrumbBlock|raw }}
+        {% else %}
+            {{ wo_render_breadcrumbs() }}
+        {% endif %}
     </div>
-    
-    <div class="footer"  id="footer">
-         <div id="footer-ct" class="footer-ct">
-        	<span title="Build @build_number@">Version @version_number@&nbsp;-&nbsp;</span>
-            {{'Layout Copyright'|trans}} &nbsp;
-            <a id="lkContact" onclick="sendMail();" href="#">{% trans %}Contact Us{% endtrans %}</a>
+
+    {#== Page content ==#}
+    <main id="main" class="container">
+
+        {#== Flash messages ==#}
+        {% block flash_messages %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ type }}" role="alert">
+                        {{ message|trans|raw }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endblock %}
+
+        {#== Main content ==#}
+        {% block body %}{% endblock %}
+    </main>
+
+    {#== Footer ==#}
+    <footer class="footer">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li><a href="#" data-toggle="modal" data-target="#legalModal">{{ 'Legal notice'|trans }}</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#copyrightsModal">{{ 'Geoportal copyrights'|trans }}</a></li>
+                <li><a href="#">{{ 'Contact'|trans }}</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <p class="navbar-text">Version : @build.version@</p>
+            </ul>
         </div>
-    </div>
-            
-            
-    </body>
-    
-  {% block javascripts %}
+    </footer>
 
-    <script type="text/javascript">
-      //Defines the base URL for the scripts
-     function sendMail(){
-        pre='{{ configurationManager.getConfig('contactEmailPrefix') }}';
-        suf='{{ configurationManager.getConfig('contactEmailSufix') }}';
-        document.getElementById('lkContact').href="mailto:" + pre + "@" + suf;
-      }
- 	 </script>
-  
-  {% endblock %}
+    {# Include Modals (Legal Notices and copyrigths) #}
+    {% include 'legalNotices.modal.html.twig' %}
+    {% include 'geoportailCopyrigths.modal.html.twig' %}
+
+    {#== Piwik tracking ==#}
+    {% if app.environment != 'dev' %}
+        {% include 'piwik.html.twig' %}
+    {% endif %}
+
+</div>
+
+{% block javascripts %}
+    {% javascripts
+    '@jquery_and_bootstrap'
+     %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+</body>
 </html>

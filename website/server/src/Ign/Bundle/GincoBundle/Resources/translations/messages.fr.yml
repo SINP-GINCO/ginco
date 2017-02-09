@@ -1,0 +1,119 @@
+# In this file we just need to:
+# - write translations not defined in Ogam Bundle
+# - overwrite translations from Ogam Bundle
+# --> No need to rewrite correct translations from Ogam Bundle
+
+# General & layout
+# ---------------------------
+Home: Accueil
+SINP - Système d'Information Nature et Paysages: SINP - Système d'Information Nature et Paysages
+Legal notice: Mentions légales
+Geoportal copyrights: Copyrights Géoportail
+Contact: Contact
+Close: Close
+Actions: Actions
+
+# Main menu
+# ---------------------------
+Menu:
+  Home: Accueil
+  RegionalData: Données régionales
+  RegionalData.Access: Visualiser les données régionales
+  Datasets: Jeux de données
+  ManageDatasets: Gérer les jeux de données
+  ImportDataset: Importer un jeu de données
+  Configurator: Configuration des modèles
+  DataModels: Modèles de données
+  ImportModels: Modèles d'import
+  DataDictionary: Dictionnaire de données
+  Administration: Administration
+  Users: Utilisateurs
+  Providers: Organismes
+  Roles: Rôles et permissions
+  PlatformParameters: Paramètres de la plateforme
+  CheckConfiguration: Vérifier la configuration technique
+
+# Breadcrumb
+# ---------------------------
+Breadcrumb:
+  Home: Accueil
+  Integration: Gérer les jeux de données
+  Integration.New: Importer un nouveau jeu de données
+  User: Mon compte
+  Check.Configuration: Vérifier la configuration technique
+  Users.Administration: Administrer les utilisateurs
+  Users: Utilisateurs
+  Add.User: Ajouter
+  Edit.User: Modifier
+  Change.Password: Mot de passe
+  Roles: Roles
+  Edit.Role: Modifier
+  Add.Role: Ajouter
+  Providers: Organismes
+  Providers.Details: Détails et données
+  Edit.Provider: Modifier
+  Add.Provider: Ajouter
+  Configuration.Parameters: Paramètres de la Plateforme
+  Contact: Contact
+
+# Help link
+# ---------------------------
+Help:
+  default: Aide
+  home: Aide
+  users: Aide sur la gestion des utilisateurs
+  datasets: Aide sur les jeux de données
+  configurator:
+    home: Aide sur le configurateur
+    models: Aide sur les modèles de données
+    import_models: Aide sur les modèles d'import
+    data: Aide dictionnaire de données
+
+# Homepage
+# ----------------------
+Homepage:
+  title: Bienvenue sur la plateforme GINCO
+
+# Integration - Datasets
+# ----------------------
+
+Data integration module: Gérer les jeux de données
+Manage datasets: Gérer les jeux de données
+Import a new dataset: Importer un nouveau jeu de données
+Submission ID: Id
+
+IntegrationPage:
+  File: Fichier
+
+Integration:
+  Field:
+    label: Nom du champ
+    definition: Définition
+    format: Format
+
+'The expected fields are:': Liste des champs attendus
+
+# Configurateur
+# -------------
+
+Data models: Modèles de données
+Import models: Modèles d'import
+Data dictionary: Dictionnaire de données
+
+# Administration
+# --------------
+
+Users:
+  delete.prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
+  no_users: Pas encore d'utilisateurs.
+
+Providers:
+  delete:
+    prompt: Voulez-vous vraiment supprimer l'organisme '%providerLabel%' ?
+    impossible: Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés.
+  no_providers: Pas encore d'organismes.
+
+Role:
+  delete:
+    prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
+    impossible: Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés.
