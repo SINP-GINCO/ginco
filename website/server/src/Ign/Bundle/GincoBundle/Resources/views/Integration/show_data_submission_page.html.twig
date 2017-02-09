@@ -36,19 +36,27 @@
                 <td>{{ submission.user.login }}</td>
                 <td>{{ submission.dataset.label }}</td>
                 <td>{{ submission.step }}</td>
-                {# Status #}
+                {# Status -- see integration-progress-bars.js.twig #}
                 <td>
-                    {% if submission.status in ['OK','CHECK'] %}
-                        <span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;{{ submission.status }}
-                    {% elseif submission.status in ['WARNING'] %}
-                        <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
-                    {% elseif submission.status in ['RUNNING'] %}
-                        <div class="tempStatusDiv" id="tempStatusDiv_{{ submission.id }}">
-                            {{ include('OGAMBundle::integration_script.html.twig') }}
+                    <div class="integration-status hidden" data-target="{{ submission.id }}">{{ submission.status }}</div>
+
+                    <div class="integration-progress hidden">
+                        <div>{{ 'IntegrationPage.import.running'|trans }}</div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                0%
+                            </div>
                         </div>
-                    {% else %}
-                        <span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
-                    {% endif %}
+                    </div>
+                    <div class="integration-content" data-target="{{ submission.id }}">
+                        {% if submission.status in ['OK','CHECK'] %}
+                            <span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                        {% elseif submission.status in ['WARNING'] %}
+                            <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                        {% elseif submission.status in ['ERROR'] %}
+                            <span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                        {% endif %}
+                    </div>
                 </td>
                 {# File and lines #}
                 <td>
@@ -118,7 +126,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@OGAMBundle/Resources/public/js/integration/*' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script>
+        {% include '@IgnGinco/Integration/integration-progress-bars.js.twig' %}
+    </script>
 {% endblock %}

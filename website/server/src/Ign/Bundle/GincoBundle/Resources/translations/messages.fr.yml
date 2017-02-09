@@ -84,6 +84,8 @@ Submission ID: Id
 
 IntegrationPage:
   File: Fichier
+  import:
+    running: Import en cours...
 
 Integration:
   Field:
