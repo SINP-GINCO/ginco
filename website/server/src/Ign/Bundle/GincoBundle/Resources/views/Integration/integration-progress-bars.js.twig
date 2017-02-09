@@ -1,0 +1,129 @@
+/**
+ * Script for updating integration progress bar
+ * Get back status via Ajax.
+ * Status are:
+ * - OK, CHECK
+ * - WARNING
+ * - RUNNING: in progess
+ * - ERROR and others
+ */
+
+/**
+ * Update status divs for given submission.
+ * If status is not given, launch a ajax request to get it.
+ *
+ * @param $submissionId
+ * @param $status
+ */
+function updateStatusAndContent($submissionId, $status = null) {
+    if ( $status ) {
+        updateStatusDiv($submissionId, $status);
+        updateContentDiv($submissionId, $status);
+    }
+    else {
+        $.getJSON("{{ url('integration_status') }}", {
+            action: 'status',
+            submissionId: $submissionId
+        }, function (data) {
+            updateStatusDiv($submissionId, data.status);
+            var $progress = 0;
+            if (data.status == 'RUNNING') {
+                $progress = Math.floor( data.currentCount * 100.0 / data.totalCount );
+                updateContentDiv($submissionId, data.status, $progress);
+            }
+            else {
+                location.reload();
+            }
+
+        });
+    }
+}
+
+/**
+ * Search all RUNNING jobs (by the content of the hidden status div)
+ * And launch a ajax request to retrieve their status and progress
+ * Then update status and content divs.
+ */
+function updateAllRunningTasks() {
+
+    var $submissionIds = [];
+    $('.integration-status').each(function() {
+        if ( $(this).html() == 'RUNNING' ) {
+            $submissionIds.push($(this).attr('data-target'));
+        }
+    });
+
+    if ($submissionIds.length) {
+        $.each($submissionIds, function(index, value) {
+           updateStatusAndContent(value);
+        });
+    }
+    else {
+        // If no more Running tasks, we clear interval
+        clearInterval(timerId);
+    }
+}
+
+/**
+ * Update status div alone.
+ * The status div is hidden with css, and is used by the scripts
+ * to know if there is RUNNING jobs (needing to ask periodically for their status)
+ *
+ * @param $submissionId
+ * @param $status
+ */
+function updateStatusDiv( $submissionId, $status) {
+    var $statusDiv = $("div.integration-status[data-target='" + $submissionId + "']");
+    // Update status
+    $statusDiv.html($status);
+}
+
+/**
+ * Update content div alone.
+ * The content div is visible and shows:
+ *  - the status of the import if not RUNNING
+ *  - the progress bar when the import job is running
+ *  - action links: cancel -- NO but possible
+ *
+ * @param $submissionId
+ * @param $status
+ * @param $progress
+ */
+function updateContentDiv($submissionId, $status, $progress = 0) {
+    var $contentDiv = $("div.integration-content[data-target='" + $submissionId + "']");
+
+    $contentDiv.html('');
+
+    // Update progress bar if RUNNING
+    var $progressBar = $contentDiv.parent().find('div.progress-bar');
+    if ($status == 'RUNNING') {
+        if ($progressBar.parent().parent().hasClass('hidden')) {
+            $progressBar.parent().parent().removeClass('hidden');
+        }
+        $progressBar.css('width', $progress+'%').attr('aria-valuenow', $progress).html( $progress+'%');
+    }
+    // If not RUNNING remove progress bar and show Status
+    else {
+        $progressBar.parent().parent().addClass('hidden');
+
+        switch($status) {
+            case 'OK':
+            case 'CHECK':
+                $contentDiv.html('<span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;'+$status);
+                break;
+            case 'WARNING':
+                $contentDiv.html('<span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;'+$status);
+                break;
+            case 'ERROR':
+            default:
+                $contentDiv.html('<span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;'+$status);
+        }
+    }
+}
+
+var timerId;
+
+$(function(){
+    // Periodically update progress for running and pending jobs
+    timerId = setInterval( updateAllRunningTasks , 1000);
+});
