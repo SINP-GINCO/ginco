@@ -1,0 +1,79 @@
+{% extends "::base.html.twig" %}
+{# Note: this template writes a login form from scratch because no login form is defined in the application #}
+
+{% block body %}
+
+{% if error %}
+    <div class="alert alert-danger" role="alert">
+        {{ error.messageKey|trans(error.messageData, 'security') }}
+    </div>
+{% endif %}
+
+<h1>{% trans %}Authentication{% endtrans %}</h1>
+
+<form class="form-horizontal" action="{{ path('user_validatelogin') }}" method="post" onSubmit="cram()">
+    <div class="form-group">
+        <label for="username" class="col-sm-4 control-label required">{% trans %}Username{% endtrans %}</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" class="col-sm-4 control-label required">{% trans %}Password{% endtrans %}</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" id="password" name="_password">
+        </div>
+    </div>
+    <input type="hidden" name="challenge" value="{{ challenge }}" id="challenge" />
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-4">
+            <button type="submit" class="btn btn-primary">{% trans %}Log in{% endtrans %}</button>
+        </div>
+    </div>
+</form>
+
+
+{#
+<div class="login-form"><div class="form-super-ct"><div class="form-ct">
+
+    <form action="{{ path('user_validatelogin') }}" method="post" onSubmit="cram()">
+        
+        <div class="zend_form">
+        
+            <div class="text element" id="login-element">
+            	<label for="username" class="required">{% trans %}Username{% endtrans %}:</label>
+            	<input type="text" id="username" name="_username" value="{{ last_username }}" />
+            </div>
+            
+        	<div class="password element" id="password-element">
+            	<label for="password" class="required">{% trans %}Password{% endtrans %}:</label>
+            	<input type="password" id="password" name="_password" />
+            </div>
+        
+        	<input type="hidden" name="challenge" value="{{ challenge }}" id="challenge" />
+        	
+            {#
+                If you want to control the URL the user
+                is redirected to on success (more details below)
+                <input type="hidden" name="_target_path" value="/account" />
+            #}
+      {#
+        	<div class="button">
+            	<input type="submit" name="submit" id="submit" value="{% trans %}Log in{% endtrans %}"/>
+            </div>
+        
+        </div>
+        
+    </form>
+
+</div></div></div>
+    #}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@OGAMBundle/Resources/public/js/auth_cram.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
