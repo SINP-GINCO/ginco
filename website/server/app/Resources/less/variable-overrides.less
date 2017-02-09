@@ -1,0 +1,81 @@
+/**
+ * Variable Overrides.
+ *
+ * Modify this file to override the Bootstrap Framework variables. You can copy
+ * these variables directly from ../bootstrap/less/variables.less to this file.
+ */
+
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+//## Here we totally disable responsiveness, we have only one width: 1140px;
+
+@screen-xs: 1px;
+@screen-sm: @screen-xs;
+@screen-md: @screen-xs;
+@screen-lg: @screen-xs;
+
+// Navbar collapse
+//## Here we never collapse the navbar
+//** Point at which the navbar becomes uncollapsed.
+@grid-float-breakpoint:     1px;
+
+//== Container sizes
+//
+//## Define the maximum width of `.container` for different screen sizes.
+
+// Small screen / tablet
+
+// Large screen / wide desktop
+@container-unique:      (1140px + @grid-gutter-width);
+@container-lg:                 @container-unique;
+@container-md:                 @container-unique;
+@container-sm:                 @container-unique;
+
+
+//== Colors
+
+@sinp-green:            #7E931E;
+@sinp-green-light:      #b3c951;
+@sinp-green-lighter:    #c5d287;
+@sinp-green-dark:       #50600a;
+@sinp-orange:           #f79f3f;
+@sinp-brown:            #a15d14;
+@sinp-blue:             #22b0ab;
+
+@brand-primary:         darken(@sinp-blue,10%);
+@brand-success:         @sinp-green-light;
+@brand-info:            @sinp-blue;
+@brand-warning:         @sinp-orange;
+@brand-danger:          #d9534f;
+
+//** Global textual link color.
+@link-color:            @brand-primary;
+@link-hover-color:      @sinp-blue;
+
+
+//== Breadcrumbs
+//** Breadcrumb background color
+@breadcrumb-bg:                 white;
+//** Textual separator for between breadcrumb elements
+@breadcrumb-separator:          '\25B8'; // black small triangle (&#9656) http://www.evotech.net/articles/testjsentities.html
+
+//== Typography
+//
+@headings-font-family:    'Roboto Condensed', Arial, sans-serif;
+
+@font-size-h1:            floor((@font-size-base * 2.25));
+@font-size-h2:            floor((@font-size-base * 1.9));
+@font-size-h3:            ceil((@font-size-base * 1.5));
+@font-size-h4:            ceil((@font-size-base * 1.25)); // ~18px
+@font-size-h5:            @font-size-base;
+@font-size-h6:            ceil((@font-size-base * 0.85)); // ~12px
+
+
+//== Custom Variables
+
+//## Header (banner) height
+@header-height: 85px;
+
+//## Sticky footer height
+@footer-height: 45px;

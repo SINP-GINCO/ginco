@@ -1,0 +1,85 @@
+{% extends "::base.html.twig" %}
+{% form_theme form with ['form.html.twig', _self] %}
+
+{% block body %}
+<h1>{{ 'Data integration module'|trans }} - {{ 'Upload Data'|trans }}<br>
+<small>{{ 'Dataset'|trans }} : {{ dataset.label }}</small></h1>
+
+
+{% set showModel = configurationManager.getConfig('showUploadFileModel', 0) != 0  %}
+{% set showDetail = configurationManager.getConfig('showUploadFileDetail', 0) != 0 %}
+
+<div class="{{ form.vars.name }}">
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {% for child in form.children %}
+            {{ form_row(child, {'showModel': showModel, 'showDetail': showDetail, 'files': files}) }}
+        {% endfor %}
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
+
+{% block _datauploadform_fileformat_widget %}
+    {% set file = files[name] %}
+    {{ form_widget(form) }}
+    {{ showModel ? block('filemodel') }}
+    {{ showDetail ? block('showdetail') }}
+{% endblock %}
+
+{% block filemodel %}
+    <p class="help-block">
+        <a href="#" onclick="window.location='{{ path('integration_exportfilemodel') ~ '?fileFormat=' ~ file.format }}';">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            {{ 'Download a file model for'|trans ~ ' "' ~ file.label ~ '"'}}
+        </a>
+    </p>
+{% endblock %}
+
+{%- block showdetail -%}
+
+    <a role="button" data-toggle="collapse" href="#collapseDetails" aria-expanded="false" aria-controls="collapseDetails">
+        {{ 'The expected fields are:'|trans }} <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+    </a>
+
+    <div class="collapse" id="collapseDetails">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td>{{ 'Integration.Field.label'|trans }}</td>
+                <td>{{ 'Integration.Field.definition'|trans }}</td>
+                <td>{{ 'Integration.Field.format'|trans }}</td>
+            </tr>
+            </thead>
+            <tbody>
+            {%- for field in file.fields -%}
+                <tr>
+                    <td>{{ field.data.label }}
+                        {% if field.isMandatory %}
+                            <span class="color-danger">*</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ field.data.definition }}</td>
+                    <td>
+                    {%- if field.mask -%}
+                        {{ field.mask }}
+                    {%- endif -%}
+                    </td>
+                </tr>
+            {%- endfor -%}
+            </tbody>
+        </table>
+    </div>
+{%- endblock -%}
+
+
+{% block _datauploadform_SRID_widget %}
+    {{ form_widget(form) }}
+    <p class="help-block">
+        {% trans %}In the form of EPSG code. For example 4326 for WGS84{% endtrans %}
+    </p>
+{% endblock %}
+
+{% block form_group_class -%}
+    col-sm-8
+{%- endblock form_group_class %}
