@@ -178,3 +178,77 @@ body {
   margin-top: @line-height-computed;
 }
 
+
+//------------------------------
+// Configurator
+//------------------------------
+
+/* fileFormat or tableFormat edit.html.twig */
+#data-transfer-button {
+  margin-top: 15%;
+}
+
+.sortable-table-body {
+  cursor: move;
+}
+
+#mask {
+  width:120px;
+}
+
+#new-dictionnary-data-button {
+  margin-top: 10px;
+}
+/* data_table.html.twig */
+#dictionnary-data-table-head {
+  background-color: @sinp-green-light;
+  color: #ffffff;
+}
+
+#action-button {
+  margin-right:5px;
+}
+
+.mask-example {
+  text-indent:15px;
+}
+/********************************************************************/
+/*** PANELS WITH NAV TABS ****/
+/* -- See : http://bootsnipp.com/snippets/KGORX */
+
+.panel.with-nav-tabs .panel-heading{
+  padding: 5px 5px 0 5px;
+}
+.panel.with-nav-tabs .panel-heading .panel-title{
+  padding: 10px;
+}
+.panel.with-nav-tabs .nav-tabs{
+  border-bottom: none;
+}
+.panel.with-nav-tabs .nav-justified{
+  margin-bottom: -1px;
+}
+/********************************************************************/
+/*** PANEL PRIMARY ***/
+.with-nav-tabs.panel-primary .nav-tabs > li > a,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+  color: #fff;
+}
+.with-nav-tabs.panel-primary .nav-tabs > .open > a,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+  color: #fff;
+  background-color: @sinp-green-light;
+  border-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:focus {
+  color: @sinp-green;
+  background-color: #fff;
+  border-color: @sinp-green;
+  border-bottom-color: transparent;
+}
