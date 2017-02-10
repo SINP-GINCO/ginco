@@ -26,6 +26,17 @@ form.form-inline .control-label {
 	margin-right: 10px;
 }
 
+/* Forms required labels */
+form label.required:after {
+   content:"*";
+   color: red;
+   display: block;
+   position: absolute;
+   right: 5px;
+   top: 7px;
+}
+
+
 /* fileFormat or tableFormat edit.html.twig */
 #data-transfer-button {
 	margin-top: 15%;
