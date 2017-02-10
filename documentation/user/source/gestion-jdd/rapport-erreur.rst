@@ -114,3 +114,5 @@ Erreurs de cohérence
   est indiqué à 1.
 
 * **1208 - Plusieurs géoréférencements** ; un seul géoréférencement doit être livré ; un seul champ "typeInfoGeo" peut valoir 1.
+
+* **1209 -  Période d’observation** ; la valeur de jourdatedebut est ultérieure à celle de jourdatefin ou la valeur de jourdatefin est ultérieure à la date du jour.
