@@ -71,7 +71,7 @@ assetic:
             inputs:
                 - "%kernel.root_dir%/Resources/css/style.css"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css"
-                - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/css/style.css"
+# - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/css/style.css"
             filters: [cssrewrite]
             output: "css/bootstrap.css"
         bootstrap_glyphicons_ttf:
