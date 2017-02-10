@@ -21,7 +21,7 @@ function updateStatusAndContent($submissionId, $status = null) {
         updateContentDiv($submissionId, $status);
     }
     else {
-        $.getJSON("{{ url('integration_status') }}", {
+        $.getJSON("{{ path('integration_status') }}", {
             action: 'status',
             submissionId: $submissionId
         }, function (data) {
