@@ -4,72 +4,45 @@
     {% trans %}Dictionnaire de données{% endtrans %}
 {% endblock %}
 
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+        <li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+        <li class="active">{%trans %}breadcrumb.data.index{% endtrans %}</li>
+    </ol>
+{% endblock breadcrumb %}
+
 {% block body %}
-<div class="container">
-
-    {# Breadcrumb #}
-    <div class="row">
-
-        <p class="help pull-right">
-            <a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/dictionnaire-donnees.html">
-                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                Aide dictionnaire de données
-            </a>
-        </p>
-
-        <ol class="breadcrumb">
-            <li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
-            <li class="active">{%trans %}breadcrumb.data.index{% endtrans %}</li>
-        </ol>
+ <div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 id="panel-title" class="panel-title">
+            {% trans %}data.title{% endtrans %}
+        </h3>
     </div>
+    <div class="panel-body">
 
-    <div class="row">
+        {# Add data entry button #}
+        <a href="{{ path('configurateur_data_new') }}"
+           class="btn btn-default" role="button"> <span
+                    class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            {% trans %}data.add.button{% endtrans %}
+        </a>
+    </div>
+    <div class="panel-body">
+       {# Editable Data entities (non related to a Field) #}
+        <h4>{% trans %}data.list.title.1{% endtrans %}</h4>
 
-        {# Flash messages #}
-        {% for flashMessage in app.session.flashbag.get('notice') %}
-            <div class="alert alert-success">
-                {{ flashMessage }}
-            </div>
-        {% endfor %}
-        {% for flashMessage in app.session.flashbag.get('error') %}
-            <div class="alert alert-danger">
-                {{ flashMessage }}
-            </div>
-        {% endfor %}
+        {% set datas = editable %}
+        {% set table_name = 'editable' %}
+        {% include "IgnOGAMConfigurateurBundle:Data:data_table.html.twig" %}
+    </div>
+    <div class="panel-body">
+        {# Non editable Data entities (related to at least one Field) #}
+        <h4>{% trans %}data.list.title.2{% endtrans %}</h4>
 
-         <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 id="panel-title" class="panel-title">
-                    {% trans %}data.title{% endtrans %}
-                </h3>
-            </div>
-            <div class="panel-body">
-
-                {# Add data entry button #}
-                <a href="{{ path('configurateur_data_new') }}"
-                   class="btn btn-default" role="button"> <span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                    {% trans %}data.add.button{% endtrans %}
-                </a>
-            </div>
-            <div class="panel-body">
-               {# Editable Data entities (non related to a Field) #}
-                <h4>{% trans %}data.list.title.1{% endtrans %}</h4>
-
-                {% set datas = editable %}
-                {% set table_name = 'editable' %}
-                {% include "IgnOGAMConfigurateurBundle:Data:data_table.html.twig" %}
-            </div>
-            <div class="panel-body">
-                {# Non editable Data entities (related to at least one Field) #}
-                <h4>{% trans %}data.list.title.2{% endtrans %}</h4>
-
-                {% set datas = not_editable %}
-                {% set table_name = 'not_editable' %}
-                {% include "IgnOGAMConfigurateurBundle:Data:data_table.html.twig" %}
-            </div>
-        </div>
-
+        {% set datas = not_editable %}
+        {% set table_name = 'not_editable' %}
+        {% include "IgnOGAMConfigurateurBundle:Data:data_table.html.twig" %}
     </div>
 </div>
 
