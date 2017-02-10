@@ -6775,6 +6775,9 @@ form label.required:after {
 .alert-error .alert-link {
   color: #843534;
 }
+.progress {
+  margin-bottom: 10px;
+}
 #page-header {
   background-image: -webkit-linear-gradient(left, white 50%, #7E931E 50%);
   background-image: -o-linear-gradient(left, white 50%, #7E931E 50%);
