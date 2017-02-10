@@ -1,41 +1,26 @@
 {% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 
+{% block title %}{% trans %}importmodel.add.title{% endtrans %}{% endblock %}
 
-{% block title %}{% trans %}importmodel.add.title{% endtrans %}
-{% endblock %}
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans %}breadcrumb.importmodel.index{% endtrans %}</a></li>
+		<li class="active">{% trans %}breadcrumb.importmodel.new{% endtrans %}</li>
+	</ol>
+{% endblock breadcrumb %}
 
 {% block body %}
-
-<div class="container">
-	<div class="row">
-
-		<p class="help pull-right">
-			<a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-d-import.html">
-				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-				Aide sur les modèles d'import
-			</a>
-		</p>
-
-		<ol class="breadcrumb">
-			<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
-			<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans %}breadcrumb.importmodel.index{% endtrans %}</a></li>
-			<li class="active">{% trans %}breadcrumb.importmodel.new{% endtrans %}</li>
-		</ol>
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 id="panel-title" class="panel-title">{% trans %}importmodel.definition{% endtrans %}</h3>
 	</div>
-
-	<div class="row">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 id="panel-title" class="panel-title">{% trans %}importmodel.definition{% endtrans %}</h3>
-			</div>
-			<div class="panel-body">
-					{{ form(form) }}
-			</div>
-		</div>
+	<div class="panel-body">
+			{{ form(form) }}
 	</div>
 </div>
-
 {% endblock %}
 
 {% block javascripts %}

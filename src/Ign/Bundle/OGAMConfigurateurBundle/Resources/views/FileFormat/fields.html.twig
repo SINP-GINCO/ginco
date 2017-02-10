@@ -4,240 +4,209 @@
 	{% trans %}File Format Edition{% endtrans %}
 {% endblock %}
 
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans%}breadcrumb.importmodel.index{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">{%trans	with {'%modelName%': dataset.label}%}breadcrumb.importmodel.edit{% endtrans %}</a></li>
+		<li class="active">{% trans with {'%fileName%': file.label}%}breadcrumb.file.edit{% endtrans %}</li>
+	</ol>
+{% endblock breadcrumb %}
+
 {% block body %}
-<div class="container">
-
-	<div class="row">
-
-		<p class="help pull-right">
-			<a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/configurateur/modele-d-import.html">
-				<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-				Aide sur les modèles d'import
-			</a>
-		</p>
-
-		<ol class="breadcrumb">
-			<li><a href="{{ path('configurateur_homepage') }}">{%trans
-					%}breadcrumb.home{% endtrans %}</a></li>
-			<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans
-					%}breadcrumb.importmodel.index{% endtrans %}</a></li>
-			<li><a
-				href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">{%trans
-					with {'%modelName%': dataset.label}%}breadcrumb.importmodel.edit{%
-					endtrans %}</a></li>
-			<li class="active">{% trans with {'%fileName%':
-				file.label}%}breadcrumb.file.edit{% endtrans %}</li>
-		</ol>
+<div class="panel panel-primary with-nav-tabs">
+	<div class="panel-heading clearfix">
+		<div class="pull-left">
+			{# Title #}
+			<h3 id="panel-title" class="panel-title">
+				{% trans with {'%file.label%': file.label, '%dataset.label%' : dataset.label} %}file.edit.title{% endtrans %}
+			</h3>
+		</div>
+		<div class="pull-right">
+			{# Navigation Tabs #}
+			<ul class="nav nav-tabs">
+				<li><a href="{{ path('configurateur_file_edit',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">{% trans %}Edit{% endtrans %}</a></li>
+				<li class="active"><a href="#">{% trans %}file.edit.fields.button{% endtrans %}</a></li>
+				<li><a href="{{ path('configurateur_file_mappings',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">{% trans %}fieldMapping.manageMappingsButton{% endtrans %}</a></li>
+			</ul>
+		</div>
 	</div>
-
-	<div class="row">
-		{# Flash messages #} {% for flashMessage in
-		app.session.flashbag.get('notice') %}
-		<div class="alert alert-success">{{ flashMessage }}</div>
-		{% endfor %} {% for flashMessage in app.session.flashbag.get('error')
-		%}
-		<div class="alert alert-danger">{{ flashMessage }}</div>
-		{% endfor %}
-	</div>
-
-	<div class="row">
-		<div class="panel panel-primary with-nav-tabs">
-			<div class="panel-heading clearfix">
-				<div class="pull-left">
-					{# Title #}
-					<h3 id="panel-title" class="panel-title">
-						{% trans with {'%file.label%': file.label, '%dataset.label%' : dataset.label} %}file.edit.title{% endtrans %}
-					</h3>
-				</div>
-				<div class="pull-right">
-					{# Navigation Tabs #}
-					<ul class="nav nav-tabs">
-						<li><a href="{{ path('configurateur_file_edit',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">{% trans %}Edit{% endtrans %}</a></li>
-						<li class="active"><a href="#">{% trans %}file.edit.fields.button{% endtrans %}</a></li>
-						<li><a href="{{ path('configurateur_file_mappings',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">{% trans %}fieldMapping.manageMappingsButton{% endtrans %}</a></li>
-					</ul>
-				</div>
+	<div class="panel-body">
+		<div class="col-xs-4">
+			<!-- file at the left (dictionary) -->
+			<h4>{% trans %}file.edit.dictionary.title{% endtrans %}</h4>
+			<table id="all-data-table" data-toggle="table" data-height="400"
+				data-click-to-select="true" data-search="true"
+				data-maintain-selected = "true" data-search-align="left"
+				class="table table-hover table-condensed">
+				<thead>
+					<tr>
+						<th data-field="state" data-checkbox="true"></th>
+						<th data-field="name" class="hidden"></th>
+						<th data-field="label">{% trans %}table.select.dictionnaryFields{% endtrans %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for champ in allFields %}
+						{% if champ.dataName[0:5] != 'OGAM_' and champ.dataName != 'PROVIDER_ID'
+						and champ.dataName != 'SUBMISSION_ID' %}
+							<tr>
+								<td>ee</td>
+								<td id="name" class="hidden">{{ champ.dataName }} [{{ champ.unitType }}]</td>
+								<td id="label">{{ champ.label }} [{{ champ.unitType }}]</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+			<div>
+				<!-- Create dictionnary data entity button -->
+				<a id="new-dictionnary-data-button" type="button"
+					class="btn btn-default"
+					href="{{ path('configurateur_data_new_addtoformat', { 'format': file.format }) }}">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					{% trans %}data.add.button{% endtrans %}
+				</a>
 			</div>
-			<div class="panel-body">
-				<div class="col-xs-4">
-					<!-- file at the left (dictionary) -->
-					<h4>{% trans %}file.edit.dictionary.title{% endtrans %}</h4>
-					<table id="all-data-table" data-toggle="table" data-height="400"
-						data-click-to-select="true" data-search="true"
-						data-maintain-selected = "true" data-search-align="left"
-						class="table table-hover table-condensed">
-						<thead>
-							<tr>
-								<th data-field="state" data-checkbox="true"></th>
-								<th data-field="name" class="hidden"></th>
-								<th data-field="label">{% trans %}table.select.dictionnaryFields{% endtrans %}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for champ in allFields %}
-								{% if champ.dataName[0:5] != 'OGAM_' and champ.dataName != 'PROVIDER_ID'
-								and champ.dataName != 'SUBMISSION_ID' %}
-									<tr>
-										<td>ee</td>
-										<td id="name" class="hidden">{{ champ.dataName }} [{{ champ.unitType }}]</td>
-										<td id="label">{{ champ.label }} [{{ champ.unitType }}]</td>
-									</tr>
-								{% endif %}
-							{% endfor %}
-						</tbody>
-					</table>
-					<div>
-						<!-- Create dictionnary data entity button -->
-						<a id="new-dictionnary-data-button" type="button"
-							class="btn btn-default"
-							href="{{ path('configurateur_data_new_addtoformat', { 'format': file.format }) }}">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-							{% trans %}data.add.button{% endtrans %}
-						</a>
-					</div>
-				</div>
-				<!-- Button for fields transfer from dictionary to file -->
-				<div id="data-transfer-button"
-					class="text-center col-xs-1 center-block">
-					<a id="transfer-data" class="btn btn-default" role="button"> <span
-						class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-					</a>
-				</div>
-				<div id="file-div" class="col-xs-7">
-					<h4>{{ 'File'|trans({'%file.label%': file.label}) }}</h4>
-					<!-- file at the right (fields of the file) -->
-					<table id="selected-data-table" data-toggle="table"
-						data-height="400" class="table table-hover table-condensed table-sortable">
-						<thead>
-							<tr>
-								<th data-field="name" class="hidden"></th>
-								<th data-field="label">{% trans %}Field name{% endtrans %}</th>
-								<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
-								<th data-field="mandatory">{% trans %}Mandatory{% endtrans %}</th>
-								<th data-field="mask">{% trans %}fileField.mask.label{% endtrans %}
-									<button type="button" class="btn btn-default btn-xs"
-										data-toggle="modal" data-target="#modal-mask-help">?</button>
-								</th>
-								<th data-field="order"><span data-toggle="tooltip"
-									title="{% trans %}fileField.order.tooltip{% endtrans %}">{%
-										trans %}fileField.position{% endtrans %}</span></th>
-								<th data-align="center">
-									<a 	id="remove-all-fields" href="{{ path('configurateur_file_remove_all_fields', {'datasetId' : dataset.id, 'format': file.format } ) }}"
-										class="btn btn-default btn-xs" role="button">
-										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-									</a>
-								</th>
-							</tr>
-						</thead>
-						<tbody class="sortable-table-body">
-							{% for champ in fileFields %}
-							<tr>
-								<td id="name" class="hidden">{{ champ.fieldName }}</td>
-								<td id="label">{{ champ.label }}</td>
-								<td id="unit">{{ champ.unitType }}</td>
-								<td id="mandatory" class=text-center">{% if champ.isMandatory ==
-									'1' %} <input type="checkbox" checked="checked"> {% else %} <input
-									type="checkbox" value=""> {% endif %}
-								</td>
-								<td>{% if champ.unitType == 'DATE' or champ.unitType == 'DateTime' or champ.unitType == 'TIME'  %}
-									<input id="mask" class="text-center" value="{{ champ.mask}}">
-									{% else %}<p id="mask">{{ champ.mask}}</p>
-									{% endif %}</td>
-								<td id="order" class="priority text-center">{{ champ.position}}</td>
+		</div>
+		<!-- Button for fields transfer from dictionary to file -->
+		<div id="data-transfer-button"
+			class="text-center col-xs-1 center-block">
+			<a id="transfer-data" class="btn btn-default" role="button"> <span
+				class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+			</a>
+		</div>
+		<div id="file-div" class="col-xs-7">
+			<h4>{{ 'File'|trans({'%file.label%': file.label}) }}</h4>
+			<!-- file at the right (fields of the file) -->
+			<table id="selected-data-table" data-toggle="table"
+				data-height="400" class="table table-hover table-condensed table-sortable">
+				<thead>
+					<tr>
+						<th data-field="name" class="hidden"></th>
+						<th data-field="label">{% trans %}Field name{% endtrans %}</th>
+						<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
+						<th data-field="mandatory">{% trans %}Mandatory{% endtrans %}</th>
+						<th data-field="mask">{% trans %}fileField.mask.label{% endtrans %}
+							<button type="button" class="btn btn-default btn-xs"
+								data-toggle="modal" data-target="#modal-mask-help">?</button>
+						</th>
+						<th data-field="order"><span data-toggle="tooltip"
+							title="{% trans %}fileField.order.tooltip{% endtrans %}">{%
+								trans %}fileField.position{% endtrans %}</span></th>
+						<th data-align="center">
+							<a 	id="remove-all-fields" href="{{ path('configurateur_file_remove_all_fields', {'datasetId' : dataset.id, 'format': file.format } ) }}"
+								class="btn btn-default btn-xs" role="button">
+								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+							</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="sortable-table-body">
+					{% for champ in fileFields %}
+					<tr>
+						<td id="name" class="hidden">{{ champ.fieldName }}</td>
+						<td id="label">{{ champ.label }}</td>
+						<td id="unit">{{ champ.unitType }}</td>
+						<td id="mandatory" class=text-center">{% if champ.isMandatory ==
+							'1' %} <input type="checkbox" checked="checked"> {% else %} <input
+							type="checkbox" value=""> {% endif %}
+						</td>
+						<td>{% if champ.unitType == 'DATE' or champ.unitType == 'DateTime' or champ.unitType == 'TIME'  %}
+							<input id="mask" class="text-center" value="{{ champ.mask}}">
+							{% else %}<p id="mask">{{ champ.mask}}</p>
+							{% endif %}</td>
+						<td id="order" class="priority text-center">{{ champ.position}}</td>
 {# 								<td><a 	id="remove-field-{{ champ.fieldName }}"#}
 {# 										href="{{ path('configurateur_file_remove_field', { 'datasetId' : dataset.id, 'field': champ.fieldName, 'format': file.format })}}"#}
 {# 										class="btn btn-default btn-xs" type="button">#}
 {# 									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>#}
 {# 								</a></td>#}
-								<td><a 	id="remove-field-{{ champ.fieldName }}"
-										class="btn btn-default btn-xs" type="button">
-									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-								</a></td>
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					<div class="modal fade" id="modal-mask-help" tabindex="-1"
-						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									<p>{% trans%} fileField.mask.date {% endtrans %}</p>
-									<p class="mask-example">{% trans%} fileField.mask.example1 {%
-										endtrans %}</p>
-									<p class="mask-example">{% trans%} fileField.mask.example2 {%
-										endtrans %}</p>
-									<p><a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/annexes/dates.html">
-											<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-											Documentation sur les formats de date dans GINCO
-										</a>
-									</p>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
-								</div>
-							</div>
+						<td><a 	id="remove-field-{{ champ.fieldName }}"
+								class="btn btn-default btn-xs" type="button">
+							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+						</a></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="modal fade" id="modal-mask-help" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<p>{% trans%} fileField.mask.date {% endtrans %}</p>
+							<p class="mask-example">{% trans%} fileField.mask.example1 {%
+								endtrans %}</p>
+							<p class="mask-example">{% trans%} fileField.mask.example2 {%
+								endtrans %}</p>
+							<p><a target="_blank" href="{{ constant('Ign\\Bundle\\OGAMConfigurateurBundle\\Constants\\Constants::DOCUMENTATION_URL') }}/annexes/dates.html">
+									<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+									Documentation sur les formats de date dans GINCO
+								</a>
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div class="panel-body">
-				<div class="col-xs-12">
-					{{ include('IgnOGAMConfigurateurBundle:FileFormat:auto_add_fields.html.twig') }}
-				</div>
-			</div>
-			<div class="panel-body">
-				<div class="col-xs-12">
-					<!-- Save Button -->
-					{% if notMappedFields is defined and notMappedFields|length > 0 %}
-					<a id="modalMapping" role="button" class="btn btn-default"
-						data-toggle="modal" data-target="#modalSave">{% trans %}Save{%
-						endtrans %}</a>
-					<!-- Modal -->
-					<div class="modal fade" id="modalSave" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									{{ 'fieldMapping.saveFileAndMappings'|trans({'%file.label%':
-									file.label, '%datasetLabel%': datasetLabel}) }} {% for nmf in
-									notMappedFields %} <br /> - {{ nmf.data }}{% endfor %}
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">{% trans %}fieldMapping.stayOnPage{%
-										endtrans %}</button>
-									<a id="save-file-form" type="button" class="btn btn-primary">
-										{% trans %}fieldMapping.ignore{% endtrans %} </a>
-								</div>
-							</div>
-						</div>
-					</div>
-					{% else %}
-						<a 	id="save-file-form" type="button" class="btn btn-default">
-							{%trans %}Save{% endtrans %}
-						</a>
-						<a 	id="save-file-form-to-mappings" type="button" class="btn btn-default">
-							{% trans %}file.edit.fields.saveAndManageMappings{% endtrans %}
-						</a>
-					{% endif %}
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<!-- General page buttons -->
-	<div class="row">
-		<p>
-		<a type="button" class="btn btn-default"
-			href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">
-			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-			{% trans %}importmodel.back.button{% endtrans %}
-		</a>
-		</p>
+	<div class="panel-body">
+		<div class="col-xs-12">
+			{{ include('IgnOGAMConfigurateurBundle:FileFormat:auto_add_fields.html.twig') }}
+		</div>
+	</div>
+	<div class="panel-body">
+		<div class="col-xs-12">
+			<!-- Save Button -->
+			{% if notMappedFields is defined and notMappedFields|length > 0 %}
+			<a id="modalMapping" role="button" class="btn btn-default"
+				data-toggle="modal" data-target="#modalSave">{% trans %}Save{%
+				endtrans %}</a>
+			<!-- Modal -->
+			<div class="modal fade" id="modalSave" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							{{ 'fieldMapping.saveFileAndMappings'|trans({'%file.label%':
+							file.label, '%datasetLabel%': datasetLabel}) }} {% for nmf in
+							notMappedFields %} <br /> - {{ nmf.data }}{% endfor %}
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">{% trans %}fieldMapping.stayOnPage{%
+								endtrans %}</button>
+							<a id="save-file-form" type="button" class="btn btn-primary">
+								{% trans %}fieldMapping.ignore{% endtrans %} </a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% else %}
+				<a 	id="save-file-form" type="button" class="btn btn-default">
+					{%trans %}Save{% endtrans %}
+				</a>
+				<a 	id="save-file-form-to-mappings" type="button" class="btn btn-default">
+					{% trans %}file.edit.fields.saveAndManageMappings{% endtrans %}
+				</a>
+			{% endif %}
+		</div>
 	</div>
 </div>
+<!-- General page buttons -->
+<p>
+<a type="button" class="btn btn-default"
+	href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">
+	<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+	{% trans %}importmodel.back.button{% endtrans %}
+</a>
+</p>
 {% endblock %}
 
 {% block javascripts %}
