@@ -1,54 +1,72 @@
 <!DOCTYPE html>
+<html lang="fr">
+
 <html>
-	<head>
-		<title>Configurateur OGAM</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta charset="UTF-8" />
-		<!-- Put in the folder 'src/Ign/Bundle/ConfigurateurBundle/public/css' your css,
-		In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignogamconfigurateur/' to create
-		symlinks pointing towards your files.-->
+<head>
+	<title>{% block title %}Configurateur OGAM{% endblock %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
 
-		{# todo : add yui_css filter {% stylesheets 'bundles/ignogamconfigurateur/css/*' filter='cssrewrite, yui_css' %}#}
-		{% stylesheets 'bundles/ignogamconfigurateur/css/*' filter='cssrewrite' %}
- 			 <link rel="stylesheet" href="{{ asset_url }}" />
- 		{% endstylesheets %}
+	{% block stylesheets %}
+		{% stylesheets
+		'@bootstrap_css'
+		filter='cssrewrite, yui_css' %}
+		<link rel="stylesheet" href="{{ asset_url }}" />
+		{% endstylesheets %}
+	{% endblock %}
+</head>
 
-		<!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
-		{% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
-	</head>
+<body>
+{#== Navbar ==#}
+{% block navbar %}
+	{{ include('IgnOGAMConfigurateurBundle::navbar.html.twig') }}
+{% endblock %}
 
-	<body>
-		{% block navbar %} {% endblock %}
+<div class="container">
+	{#== Breadcrumb ==#}
+	{% block breadcrumb %}{% endblock %}
+</div>
 
-		{% block body %} {% endblock %}
+<div class="container" id="main">
 
-		{% block javascripts %}
+	{#== Flash messages ==#}
+	{% block flash_messages %}
+		{% for type, messages in app.session.flashbag.all() %}
+			{% for message in messages %}
+				<div class="alert alert-{{ type }} alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					{{ message|trans|raw }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+	{% endblock %}
 
-			<!-- Put in the folder 'src/Ign/Bundle/ConfigurateurBundle/public/js' your scripts,
-			In 'prod' environment, use command 'php app/console --help assetic:dump web/bundles/ignogamconfigurateur/' to create
-			symlinks pointing towards your files.-->
-			<script src="{{ asset('bundles/ignogamconfigurateur/js/jquery.min.js') }}"></script>
-			<script src="{{ asset('bundles/ignogamconfigurateur/js/jquery-ui.min.js') }}"></script>
-			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap_modal_7.js') }}"></script>
-			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap_tooltip_8.js') }}"></script>
-			<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-			{% if app.environment == 'prod' %}
-				<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes.js') }}"></script>
-			{% else %}
-				<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes_dev.js') }}"></script>
-			{% endif %}
-			<script>
-				$(document).ready(function(){
-					$('[data-toggle="tooltip"]').tooltip();
-				});
-			</script>
-		{% endblock %}
+	{#== Main content ==#}
+	{% block body %}{% endblock %}
+</div>
 
-		{% block specificjavascripts %}
-			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap-table.js') }}"></script>
-			<script src="{{ asset('bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.js') }}"></script>
-		{% endblock %}
 
-	</body>
+	{% block javascripts %}
+		{% javascripts
+			'@jquery_and_bootstrap'
+		%}
+			<script type="text/javascript" src="{{ asset_url }}"></script>
+		{% endjavascripts %}
 
+		{% if app.environment == 'prod' %}
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes.js') }}"></script>
+		{% else %}
+			<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes_dev.js') }}"></script>
+		{% endif %}
+
+		<script>
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+		</script>
+	{% endblock %}
+
+	{% block specificjavascripts %}
+	{% endblock %}
+</body>
 </html>

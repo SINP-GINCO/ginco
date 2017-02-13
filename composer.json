@@ -14,23 +14,22 @@
 		"symfony/symfony" : "^2.8",
 		"twig/twig": "^1.28",
 		"doctrine/orm" : "^2.4.8",
-		"doctrine/dbal" : "<2.4.4",
 		"doctrine/doctrine-bundle" : "~1.4",
-		"twig/extensions" : "~1.0",
 		"symfony/assetic-bundle" : "^2.8",
 		"symfony/swiftmailer-bundle" : "~2.3",
 		"symfony/monolog-bundle" : "~2.4",
-		"symfony/yaml" : "2.8.*",
 		"sensio/distribution-bundle" : "~3.0",
 		"sensio/framework-extra-bundle" : "^3.0.2",
 		"incenteev/composer-parameter-handler" : "~2.0",
 		"twbs/bootstrap" : "3.3.*",
-		"oyejorge/less.php" : "~1.5",
-		"braincrafted/bootstrap-bundle" : "~2.2",
-		"friendsofsymfony/jsrouting-bundle" : "~1.6"
+		"friendsofsymfony/jsrouting-bundle" : "~1.6",
+		"wenzhixin/bootstrap-table": "^1.11",
+		"components/jquery": "^1.12",
+		"components/jqueryui": "^1.12"
 	},
 	"require-dev" : {
-		"sensio/generator-bundle" : "~3.0"
+		"sensio/generator-bundle" : "~3.0",
+		"symfony/phpunit-bridge": "~2.7"
 	},
 	"scripts" : {
 		"post-install-cmd" : [
@@ -40,8 +39,7 @@
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-			"Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
 		],
 		"post-update-cmd" : [
 			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -50,8 +48,7 @@
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-			"Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
 		]
 	},
 	"config" : {

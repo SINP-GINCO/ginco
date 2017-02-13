@@ -8,7 +8,7 @@
 
 {% block breadcrumb %}
 	<ol class="breadcrumb">
-		<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
 		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
 		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans%}breadcrumb.importmodel.index{% endtrans %}</a></li>
 		<li><a href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">{%trans with {'%modelName%' : dataset.label} %}breadcrumb.importmodel.edit{% endtrans %}</a></li>

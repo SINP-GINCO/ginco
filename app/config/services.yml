@@ -70,3 +70,11 @@ services:
         class: Ign\Bundle\GincoConfigurateurBundle\Form\Extension\FileFieldAutoTypeExtension
         tags:
             - { name: form.type_extension, extended_type: Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType }
+
+    # Twig extensions
+    twig.route_exists_extension:
+        class: Ign\Bundle\OGAMConfigurateurBundle\Twig\RouteExtension
+        public: false
+        arguments: ["@router"]
+        tags:
+            - { name: twig.extension }

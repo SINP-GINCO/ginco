@@ -15,7 +15,6 @@ class AppKernel extends Kernel {
 			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-			new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
 			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle()

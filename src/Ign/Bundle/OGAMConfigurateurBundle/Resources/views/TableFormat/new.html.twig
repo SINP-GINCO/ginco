@@ -8,7 +8,7 @@
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
-	<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>
+	{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
 	<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
 	<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
 	<li><a href="{{ path('configurateur_model_edit', {'id' : model.id}) }}">{%trans with {'%modelName%' : model.name} %}breadcrumb.datamodel.edit{% endtrans %}</a></li>
