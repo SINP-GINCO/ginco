@@ -78,8 +78,9 @@ Homepage:
 # ----------------------
 
 Data integration module: Gérer les jeux de données
+Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
-Import a new dataset: Importer un nouveau jeu de données
+Create data submission: Importer un nouveau jeu de données
 Submission ID: Id
 
 IntegrationPage:
