@@ -16,7 +16,6 @@ class DataSubmissionType extends BaseType {
 	 * @param array $options
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		dump($options['defaultProvider']);
 		$builder->add('DATASET_ID', ChoiceType::class, array(
 			'label' => 'Dataset',
 			'required' => true,
