@@ -135,9 +135,13 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			// Execute the request
 			$result = $this->genericModel->executeRequest($query);
 
+			// Retrieve number of total results
+			$countRequest = "SELECT count(*) $fromJoins WHERE ($pKey) IN ($subquery $order) $andWhere";
+			$countRequestResult = $this->genericModel->executeRequest($countRequest);
+			$countResult = $countRequestResult[0]['count'];
+
 			// Retrieve the session-stored info
 			$resultColumns = $websiteSession->resultColumns;
-			$countResult = $websiteSession->count;
 
 			// Result rows (one row = an non-indexed array of values)
 			$rows = array();
