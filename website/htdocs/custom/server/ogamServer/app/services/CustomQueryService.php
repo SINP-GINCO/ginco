@@ -76,6 +76,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 
 			$order = "";
 			$hidingLevelKey = ", hiding_level, ";
+
 			if (!empty($sort)) {
 				$orderKey = "";
 				$orderKeyType = "";
@@ -126,7 +127,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 
 			// Build complete query
 			if (empty($orderKey)) {
-				$query = "$select $hidingLevelKey $pKey $locationTablepKeyId  $fromJoins WHERE ($pKey) IN ($subquery $order $filter) $andWhere";
+				$query = "$select $hidingLevelKey $pKey $locationTablepKeyId $fromJoins WHERE ($pKey) IN ($subquery $order $filter) $andWhere";
 			} else {
 				$query = "$select, $orderkeyCoalesce $hidingLevelKey $pKey $locationTablepKeyId $fromJoins";
 				$query .= " WHERE ($pKey, $orderkeyCoalesce) IN ($subquery ORDER BY coalesce $sortDir $filter)";
@@ -655,7 +656,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 		}
 		return $result;
 	}
-	
+
 	/**
 	 * Get the form fields for a data to edit.
 	 *
@@ -665,10 +666,10 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 */
 	public function getEditForm($data) {
 		$this->logger->debug('getEditForm');
-	
+
 		return $this->_generateEditFormJSON($data);
 	}
-	
+
 	/**
 	 * Generate the JSON structure corresponding to a list of edit fields.
 	 *
@@ -676,11 +677,10 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 	 *        	the data object to edit
 	 */
 	protected function _generateEditFormJSON($data) {
-		
-		$this->customGenericService = new Custom_Application_Service_GenericService;
-		
+		$this->customGenericService = new Custom_Application_Service_GenericService();
+
 		$json = '{"success":true,"data":[';
-		
+
 		foreach ($data->getInfoFields() as $tablefield) {
 			$formField = $this->customGenericService->getTableToFormMapping($tablefield); // get some info about the form
 			if (!empty($formField)) {
@@ -692,7 +692,7 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				$formField->required = !$tablefield->isCalculated; // If the field is not calculated and if it is part of the key
 				$formField->data = $tablefield->data; // The name of the data is the table one
 				$formField->format = $tablefield->format; // The name of the data is the table one
-	
+
 				$json .= $this->_generateEditFieldJSON($formField, $tablefield);
 			}
 		}
@@ -707,15 +707,15 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 				$formField->required = $tablefield->isMandatory;
 				$formField->data = $tablefield->data; // The name of the data is the table one
 				$formField->format = $tablefield->format; // The name of the data is the table one
-	
+
 				$json .= $this->_generateEditFieldJSON($formField, $tablefield);
 			}
 		}
-	
+
 		$json = substr($json, 0, -1);
-	
+
 		$json .= ']}';
-	
+
 		return $json;
 	}
 }
