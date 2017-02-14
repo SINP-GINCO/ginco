@@ -14,13 +14,19 @@ Format général du fichier
 
 * Chaque fichier représente un jeu de données, et chaque ligne représente une donnée.
 
-* Le fichier doit comporter le même nombre de champs que le modèle d'import, même si ils sont vides. Pour cela, il est
+* Le fichier doit comporter le même nombre de champs que le modèle d'import, même s'ils sont vides. Pour cela, il est
   pratique d'insérer une ligne de commentaires en début de fichier, comportant les noms des champs.
 
 * Une ligne de commentaire spécifiant les différents champs peut être insérée en début de fichier,
-  elle doit alors commencer par deux slashs. Exemple :
+  elle doit alors commencer par un double slash. Exemple :
 
   ``// Champ 1; Champ 2; Champ 3``
+
+
+* Les champs de cette ligne d'en-tête peuvent facultativement être entourés de guillements, **à l'exception du premier champ qui ne doit pas être entouré de guillements et doit contenir un espace entre le double slash et le label** :
+
+  ``// Champ 1;"Champ 2";"Champ 3"``
+
 
 * Les champs doivent être dans l'ordre attendu par le modèle d'import.
 
