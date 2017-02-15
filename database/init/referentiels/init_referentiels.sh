@@ -36,9 +36,10 @@ copyOptions="NULL '', FORMAT 'csv', HEADER, DELIMITER E'\t', ENCODING 'UTF-8'"
 psql "$connectionStr" -c "\COPY referentiels.taxref FROM '$dataDir/taxref.txt' WITH ($copyOptions);"
 echo "Intégration de TAXREF terminée."
 
-echo "Intégration du référentiel de sensiblité"
+echo "Intégration du référentiel de sensiblité et de sa table de métadonnées"
 #FIXME: ajouter le téléchargement du référentiel de sensibilité compatible avec le taxref 10!
 psql "$connectionStr" -f $dataDir/especesensible.sql
+psql "$connectionStr" -f $dataDir/especesensiblelistes.sql
 
 echo "téléchargement de la dernière version des limites administratives (geoFLA)..."
 wget "https://ginco.ign.fr/ref/geofla_last_communes.sql"     -O $dataDir/visu_communes.sql

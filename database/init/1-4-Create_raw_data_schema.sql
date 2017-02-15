@@ -125,7 +125,10 @@ CREATE OR REPLACE FUNCTION raw_data.sensitive_automatic()
 $BODY$
 
 	DECLARE
-		rule referentiels.especesensible%ROWTYPE;
+		rule_codage integer;
+		rule_autre character varying(500);
+		rule_full_citation character varying(500);
+		rule_cd_doc integer;
 	BEGIN
 
 	-- As users can update data with editor, one checks that there is realy something to do.
@@ -146,14 +149,15 @@ $BODY$
 	NEW.sensible = '0';
 	NEW.sensiniveau = '0';
 	NEW.sensidateattribution = now();
-	NEW.sensireferentiel = 'Référentiel de test (désignation indiquée en dur dans la fonction sensitive_automatic()).';
-	NEW.sensiversionreferentiel = 'version 0.';
+	NEW.sensireferentiel = '';
+	NEW.sensiversionreferentiel = '';
 	NEW.sensimanuelle = '0';
 	NEW.sensialerte = '0';
 		
 	-- Does the data deals with sensitive taxon for the departement and is under the sensitive duration ?
-	SELECT * INTO rule
+	SELECT especesensible.codage, especesensible.autre, especesensiblelistes.full_citation, especesensiblelistes.cd_doc INTO rule_codage, rule_autre, rule_full_citation, rule_cd_doc
 	FROM referentiels.especesensible
+	LEFT JOIN referentiels.especesensiblelistes ON especesensiblelistes.cd_sl = especesensible.cd_sl
 	WHERE 
 		(CD_NOM = NEW.cdNom
 		OR CD_NOM = NEW.cdRef
@@ -179,9 +183,12 @@ $BODY$
 		AND (DUREE IS NULL OR (NEW.jourdatefin::date + DUREE * '1 year'::INTERVAL > now()))
 		AND (NEW.occstatutbiologique IN (NULL, '0', '1', '2') OR cd_occ_statut_biologique IS NULL OR NEW.occstatutbiologique = CAST(cd_occ_statut_biologique AS text))
 	
-	--  Quand on a plusieurs règles applicables il faut choisir la règle avec le codage le plus fort
-	--  puis prendre en priorité une règle sans commentaire (rule.autre is null)
-	ORDER BY codage DESC, autre ASC
+	--  Quand on a plusieurs règles applicables il faut choisir en priorité
+	--  Celles de la liste régionale (cd_insee_reg not null)
+	--  Parmis elles, les règles avec le codage le plus fort
+	--  Parmis elles, une règle sans commentaire (rule_autre is null)
+	--  Voir #579
+	ORDER BY cd_insee_reg ASC, codage DESC, autre DESC
 	--  enfin, on prend la première.
 	LIMIT 1;
 		
@@ -193,10 +200,12 @@ $BODY$
 		
 	-- A rule has been found, the obs is sensitive
 	NEW.sensible = '1';
-	NEW.sensiniveau = rule.codage;
+	NEW.sensiniveau = rule_codage;
+	NEW.sensireferentiel = rule_full_citation;
+	NEW.sensiversionreferentiel = rule_cd_doc;
 		
 	-- If there is a comment, sensitivity must be defined manually
-	If (rule.autre IS NOT NULL) Then
+	If (rule_autre IS NOT NULL) Then
 		NEW.sensialerte = '1';
 	End if ;
 			
