@@ -568,18 +568,18 @@ INSERT INTO VersionMasseDEauValue VALUES ('3','Rap2016','Version issue du rappor
 
 
 
-CREATE TABLE diffusionfloutagevalue (
+CREATE TABLE deefloutagevalue (
     code character varying(32),
     label character varying(128),
     definition character varying(510)
 );
 
-ALTER TABLE referentiels.DiffusionFloutageValue OWNER TO postgres;
+ALTER TABLE referentiels.DEEFloutageValue OWNER TO postgres;
 
-ALTER TABLE ONLY DiffusionFloutageValue ADD CONSTRAINT DiffusionFloutageValue_pkey PRIMARY KEY (code);
+ALTER TABLE ONLY DEEFloutageValue ADD CONSTRAINT DEEFloutageValue_pkey PRIMARY KEY (code);
 
-INSERT INTO DiffusionFloutageValue VALUES ('OUI','OUI','Indique qu''un floutage a eu lieu.');
-INSERT INTO DiffusionFloutageValue VALUES ('NON','NON','Indique qu''aucun floutage a eu lieu.');
+INSERT INTO DEEFloutageValue VALUES ('OUI','OUI','Indique qu''un floutage a eu lieu.');
+INSERT INTO DEEFloutageValue VALUES ('NON','NON','Indique qu''aucun floutage a eu lieu.');
 
 
 CREATE TABLE idcnpvalue (
