@@ -25,8 +25,17 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
-	execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
+	//execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
 } catch (Exception $e) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
+
+$CLIParams = implode(' ', array_slice($argv, 1));
+/* patch user raw_data here */
+system("php $sprintDir/remove_ogam_id_from_dsr_import_model.php $CLIParams", $returnCode);
+if ($returnCode != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
