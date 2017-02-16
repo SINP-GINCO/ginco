@@ -86,7 +86,6 @@ execSQLFile("$initDir/1-2-Create_mapping_schema.sql",$config);
 execSQLFile("$initDir/1-3-Create_website_schema.sql",$config);
 execSQLFile("$initDir/1-4-Create_raw_data_schema.sql",$config);
 
-execCustSQLFile("$initDir/4-create_geosource_schema_tpl.sql",$config,false);
 execSQLFile("$initDir/2-Ogam_permissions.sql",$config);
 execSQLFile("$initDir/2-Set_search_path.sql",$config);
 execCustSQLFile("$initDir/3-Update_application_parameters_tpl.sql",$config);
