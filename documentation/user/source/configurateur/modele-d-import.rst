@@ -176,16 +176,17 @@ Une fois sur la page, deux types de mapping sont disponibles :
 Le mapping manuel
 *****************
 
-Cette fonctionnalité permet de mapper avec détail les champs spéciaux ou non-reconnus par le mapping automatique. En voici le déroulement : 
+Cette fonctionnalité permet de mapper avec détail les champs spéciaux ou non-reconnus par le mapping automatique.
+**Un cas pratique est le mapping de votre propre clé utilisateur avec la clé primaire de la table.** 
+En voici le déroulement : 
 
 1. Dans la première liste déroulante, sélectionnez l'option "Copier".
-
-2. Dans la deuxième liste déroulante, sélectionnez le champ du fichier que vous souhaitez mapper (par exemple, le champ "*geometrie*").
-3. Dans la troisième liste déroulante, sélectionnez la table dans laquelle se trouve le champ avec lequel vous souhaitez mapper le champ "*geometrie*".
-4. Dans la quatrième liste déroulante, sélectionnez le champ avec lequel mapper "*geometrie*".
+2. Dans la deuxième liste déroulante, sélectionnez le champ du fichier que vous souhaitez mapper (ici, le champ "*monIdentifiant*").
+3. Dans la troisième liste déroulante, sélectionnez la table dans laquelle se trouve le champ avec lequel vous souhaitez mapper le champ "*monIdentifiant*".
+4. Dans la quatrième liste déroulante, sélectionnez le champ avec lequel mapper "*monIdentifiant*"(ici, la clé primaire de la table, "*Clé primaire table observation*").
 5. Cliquez sur le bouton "Enregistrer".
 
-Une fois cela fait, une nouvelle règle de mapping sera créée et affichée dans un tableau dans la page de gestion des mappings :
+Une fois cela fait, une nouvelle règle de mapping sera créée et affichée dans le tableau des règles de mapping :
 
 .. image:: ../images/configurateur/configurateur-fichier-mapping-manuel.png
 
