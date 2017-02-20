@@ -1,14 +1,8 @@
 set search_path = referentiels;
 
--- DROP INDEX referentiels.codemaillevalue_code_10km_idx;
-
-CREATE INDEX codemaillevalue_code_10km_idx
-  ON referentiels.codemaillevalue
-  USING btree
-  (code_10km COLLATE pg_catalog."default");
-
 -- DROP INDEX referentiels.codeenvalue_codeen_idx;
-
+-- There is still an index btree(typeen, codeen), as it is the primary key, but, "a two-column index does not support searching on the second column alone",
+-- so we add one on codeen only.
 CREATE INDEX codeenvalue_codeen_idx
   ON referentiels.codeenvalue
   USING btree
