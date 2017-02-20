@@ -23,10 +23,11 @@ Format général du fichier
   ``// Champ 1; Champ 2; Champ 3``
 
 
-* Les champs de cette ligne d'en-tête peuvent facultativement être entourés de guillements, **à l'exception du premier champ qui ne doit pas être entouré de guillements et doit contenir un espace entre le double slash et le label** :
+* Les champs de cette ligne d'en-tête peuvent facultativement être entourés de guillements, **à l'exception du premier champ qui ne doit pas être entouré de guillements** :
 
   ``// Champ 1;"Champ 2";"Champ 3"``
 
+* L'espacement entre le double slash et le nom du premier champ est facultatif.
 
 * Les champs doivent être dans l'ordre attendu par le modèle d'import.
 
