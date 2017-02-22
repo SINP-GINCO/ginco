@@ -1,0 +1,28 @@
+{% block subject %}
+    default subject
+{% endblock %}
+
+{% block body_text %}
+    {% block email_body_text %}
+        default text
+    {% endblock %}
+    {% block signature_text %}
+        ---
+        Ceci est un mail automatique envoyé par la {{ site_name }}. Pour nous joindre,
+        merci d'utiliser le formulaire de contact du site.
+    {% endblock %}
+{% endblock %}
+
+{% block body_html %}
+    {% block email_body_html %}
+        <p>default body</p>
+    {% endblock %}
+    {% block signature_html %}
+        <div style="color:#555;">
+            <p>---</p>
+
+            <p style="font-size:11px">Ceci est un mail automatique envoyé par la {{ site_name }}. Pour nous joindre,
+            merci d'utiliser le formulaire de contact du site.</p>
+        </div>
+    {% endblock %}
+{% endblock %}
