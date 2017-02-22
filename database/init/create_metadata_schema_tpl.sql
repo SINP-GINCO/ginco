@@ -160,6 +160,9 @@ COMMENT ON COLUMN MODE_TAXREF.IS_REFERENCE IS 'Indicate if the taxon is a refere
 CREATE INDEX mode_taxref_parent_code_idx
   ON mode_taxref USING btree (parent_code);
   
+CREATE INDEX mode_taxref_code_idx
+  ON mode_taxref USING btree (code);
+  
 CREATE INDEX mode_taxref_NAME_idx
   ON mode_taxref USING btree (unaccent_immutable(NAME));
   

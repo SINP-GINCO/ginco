@@ -167,12 +167,12 @@ $BODY$
 				FROM metadata.mode_taxref
 				WHERE code = NEW.cdnom
 		
-				UNION
+				UNION ALL
 		
 				SELECT parent.code, parent.parent_code, parent.lb_name, parent.vernacular_name
-				FROM metadata.mode_taxref parent
-				INNER JOIN node_list on node_list.parent_code = parent.code
-				WHERE node_list.parent_code != '349525'
+				FROM node_list, metadata.mode_taxref parent
+				WHERE node_list.parent_code = parent.code
+				AND node_list.parent_code != '349525'
 				)
 			SELECT parent_code
 			FROM node_list
