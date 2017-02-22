@@ -1,0 +1,31 @@
+{% extends "base-email.html.twig" %}
+
+{%- block subject %}
+    Nouveau message de contact
+{% endblock -%}
+
+{%- block email_body_text %}
+    {% autoescape true %}
+        {{ site_name }}
+        ---------------------------------------------
+        Message envoyé via le formulaire de contact :
+
+        {{ message }}
+        ---------------------------------------------
+
+        Répondre à : {{ email }}
+
+    {% endautoescape %}
+{% endblock -%}
+
+{%- block email_body_html %}
+    {% autoescape false %}
+        <p><strong>{{ site_name }}</strong></p>
+        <p><em>Message envoyé via le formulaire de contact :</em></p>
+
+        <p>{{ message }}</p>
+
+        <p><em>Répondre à : </em><a href="mailto:{{ email }}">{{ email }}</a></p>
+
+    {% endautoescape %}
+{% endblock -%}
