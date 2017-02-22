@@ -132,3 +132,8 @@ services:
         arguments: ["%kernel.root_dir%/config/help.yml"]
         tags:
             - { name: twig.extension }
+
+    # Mail Manager
+    app.mail_manager:
+        class: Ign\Bundle\GincoBundle\Services\MailManager
+        arguments: ["@mailer", "@twig", "@logger", "noreply@ign.fr", "@=service('ogam.configuration_manager').getConfig('site_name', 'Plateforme GINCO')"]
