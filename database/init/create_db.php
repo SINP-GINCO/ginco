@@ -18,6 +18,7 @@ function usage($mess=NULL){
 	echo("> create_db -f <configFile> [{-D<propertiesName>=<Value>}]\n\n");
 	echo "o <configFile>: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
+	echo "o -DfillModeTaxref : true to populate mode_taxref.\n";
 	echo "------------------------------------------------------------------------\n";
 	if (!is_null($mess)){
 		echo("$mess\n\n");
@@ -71,14 +72,13 @@ system("$refDir/init_referentiels.sh $connectStr");
 
 # setting metadata and metadata_work schema
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata']);
-# note: populate_mode_taxref_table need an initialized referentiel schema.
-execSQLFile("$initDir/populate_mode_taxref_table.sql",$config);
+# Populate mode_taxref script takes forever. Set option -DfillModeTaxref to true to activate it
+if (isset($config['fillModeTaxref']) && $config['fillModeTaxref'] == 'true') {
+	execSQLFile("$initDir/populate_mode_taxref_table.sql",$config);
+}
 # FIXME: serait-il possible de laisser le méta-modèle de prod vide lors de la livraison?
 system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata");
-
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata_work']);
-# mode_taxref is not usefull in metadata_work.
-# execCustSQLFile("$initDir/populate_mode_taxref_table_tpl.sql", $config + ['schema' => 'metadata_work']);
 system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata_work");
 
 

@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here */
 	//execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
+	execCustSQLFile("$sprintDir/add_missing_indexes.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

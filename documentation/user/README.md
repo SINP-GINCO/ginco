@@ -30,6 +30,12 @@ le marquage par version, les notes et warnings...
 ```bash
 apt-get install python-sphinx
 ```
+Et installer l'outil latexpdf (pour compiler la doc en PDF) :
+
+```bash
+apt-get install texlive-latex-base
+```
+
 ## Organisation du projet
 
 `ginco/documentation/user/` contient le projet de documentation utilisateur.
