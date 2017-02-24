@@ -25,6 +25,7 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
+	execCustSQLFile("$sprintDir/update_postgis_to_2.3.1.sql", $config);
 	//execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
 	execCustSQLFile("$sprintDir/add_missing_indexes.sql", $config);
 } catch (Exception $e) {
