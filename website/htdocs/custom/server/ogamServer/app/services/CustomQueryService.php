@@ -289,8 +289,6 @@ class Custom_Application_Service_QueryService extends Application_Service_QueryS
 			}
 			// Add the identifier of the line
 			$json .= '{"name":"id","label":"Identifier of the line","inputType":"TEXT","definition":"The plot identifier", "hidden":true}';
-			// Add the plot location in WKT
-			$json .= ',{"name":"location_centroid","label":"Location centroid","inputType":"TEXT","definition":"The plot location", "hidden":true}';
 
 			// Right management : add the provider id of the data
 			$userSession = new Zend_Session_Namespace('user');
