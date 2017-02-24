@@ -25,7 +25,7 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
-	//execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
+	execCustSQLFile("$sprintDir/update_postgis_to_2.3.1.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
