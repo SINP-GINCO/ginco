@@ -16,6 +16,7 @@ Contenu:
     metadonnees/index
     gestion-jdd/index
     traitements/index
+    notifications/notifications
     recherche-visu/index
     export/export-DEE-des-jeux-de-donnees
     utilisateurs/index
