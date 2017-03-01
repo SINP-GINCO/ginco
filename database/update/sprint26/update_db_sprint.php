@@ -38,8 +38,10 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
 system("php $sprintDir/remove_ogam_id_from_dsr_import_model.php $CLIParams", $returnCode1);
 system("php $sprintDir/change_datedetermination_type_to_date.php $CLIParams", $returnCode2);
+system("php $sprintDir/add_id_predefined_request.php $CLIParams", $returnCode2);
 
-if ($returnCode1 != 0 || $returnCode2 != 0) {
+//if ($returnCode1 != 0 || $returnCode2 != 0) {
+if ($returnCode2 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
