@@ -61,7 +61,7 @@ class MailManager
      */
     public function sendEmail($template, $parameters, $to, $attachments = null,  $from = null, $fromName = null)
     {
-        $template = $this->twig->loadTemplate('Emails/' . $template . '.html.twig');
+        $template = $this->twig->loadTemplate('IgnGincoBundle:Emails:' . $template . '.html.twig');
 
         $parameters = $parameters + array('site_name' => $this->fromName);
 
@@ -96,7 +96,7 @@ class MailManager
         $this->logger->info("Email sent: " .
             "To: " . implode(',', array_keys($message->getTo())) . ", " .
             "Title: " . $message->getSubject() . ", " .
-            "Attachments: " . implode(', ', $attachments)
+            ( $attachments ? "Attachments: " . implode(', ', $attachments) : "" )
         );
         return $response;
     }
