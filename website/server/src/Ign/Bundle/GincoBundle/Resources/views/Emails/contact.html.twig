@@ -1,4 +1,4 @@
-{% extends "base-email.html.twig" %}
+{% extends "IgnGincoBundle:Emails:base-email.html.twig" %}
 
 {%- block subject %}
     Nouveau message de contact
@@ -23,7 +23,7 @@
         <p><strong>{{ site_name }}</strong></p>
         <p><em>Message envoyé via le formulaire de contact :</em></p>
 
-        <p>{{ message }}</p>
+        <p>{{ message|nl2br }}</p>
 
         <p><em>Répondre à : </em><a href="mailto:{{ email }}">{{ email }}</a></p>
 
