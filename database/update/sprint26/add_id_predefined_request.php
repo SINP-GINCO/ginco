@@ -12,6 +12,7 @@ try {
 	$scriptSQL = 'set search_path to website;
 		
 		ALTER TABLE website.predefined_request ADD COLUMN id SERIAL;
+		GRANT ALL ON ALL sequences IN schema website to ogam, admin;
 		
 		CREATE UNIQUE INDEX predefined_request_unique_request_name_user_login_not_null
 		  ON website.predefined_request
