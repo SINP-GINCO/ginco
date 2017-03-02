@@ -24,6 +24,13 @@ La couche "Résultats de la recherche" est activée lorsqu'une recherche est ex�
 Les couches regroupées dans les "Limites administratives" ("Régions", "Départements", "Communes") 
 s'activent selon le niveau de zoom.
 
+Les couches correspondant à des espaces naturels (EN) sont regourpées par catégories.
+Vous pouvez changer l'ordre de superposition des couches sur la carte, en effectuant un glisser-déposer des couches dans l'arbre.
+
+.. image:: ../images/visu/visu-couches.png
+
+Les dates d'édition des couches EN sont disponibles `ici <https://www.geoportail.gouv.fr/depot/fiches/mnhn/actualite_donnees_mnhn.pdf>`_.
+
 L'opacité des couches est modifiable en cliquant avec le bouton droit de la souris sur l'intitulé de la couche, 
 puis en déplaçant le curseur.
 
