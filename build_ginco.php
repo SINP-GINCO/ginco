@@ -175,7 +175,7 @@ substituteInFile("$projectDir/website/config/httpd_ginco_apache2_tpl.conf",
 # le code du configurateur a été récupéré dans build/configurator
 echo("building configurator...\n");
 system("cp -r $projectDir/configurator $buildDir");
-chdir("$buildDir/configurator");
+
 substituteInFile("$buildDir/configurator/app/config/parameters.yml.dist",
 	"$buildDir/configurator/app/config/parameters.yml",
 	['host'       => $config['db.host'],
@@ -188,11 +188,5 @@ substituteInFile("$buildDir/configurator/app/config/parameters.yml.dist",
 		'db_version' => $config['db.version'],
 		'base_url'   => '/configurateur'],
 	'__');
-system("bash build.sh --no-interaction");
-
-
-
-# on supprime le cache qui a été initialisé avec les mauvaises valeurs et les mauvais chemins.
-system("rm -r $buildDir/configurator/app/cache/prod");
 
 system("chmod -R a+w $buildDir");
