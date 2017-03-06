@@ -252,6 +252,52 @@ class Custom_UsermanagementController extends UsermanagementController {
 	}
 
 	/**
+	 * Build and return the change password form.
+	 *
+	 * @param String $login
+	 *        	the login
+	 */
+	protected function getChangePasswordForm($login = null) {
+		$form = new Application_Form_OGAMForm(array(
+			'attribs' => array(
+				'name' => 'change-user-password-form',
+				'action' => $this->baseUrl . '/usermanagement/validate-user-password'
+			)
+		));
+	
+		$this->logger->debug('getChangePasswordForm login : ' . $login);
+	
+		// Add the user login as an input type text
+		$loginElem = $form->createElement('hidden', 'login');
+		$loginElem->setValue($login);
+	
+		// Create and configure password element:
+		$newpassword = $form->createElement('password', 'password');
+		$newpassword->setLabel('New Password');
+		$newpassword->setRequired(true);
+		$newpassword->setDescription($this->translator->translate('passwordRequirement'));
+		$newpassword->addValidator('regex', false, array(
+			'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/',
+			'messages' => $this->translator->translate('InvalidPassword')
+		));
+	
+		// Create and configure confirm-password element:
+		$confirmPassword = $form->createElement('password', 'confirmpassword');
+		$confirmPassword->setLabel('Confirm Password');
+		$confirmPassword->setRequired(true);
+	
+		$submit = $form->createElement('submit', 'submit');
+		$submit->setLabel('Submit');
+	
+		$form->addElement($loginElem);
+		$form->addElement($newpassword);
+		$form->addElement($confirmPassword);
+		$form->addElement($submit);
+	
+		return $form;
+	}
+	
+	/**
 	 * Check the role form validity and update the role information.
 	 *
 	 * @return a view.
