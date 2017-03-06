@@ -59,7 +59,7 @@ substituteInFile("$projectDir/services_configs/service_integration/IntegrationSe
                  "$servicesBuildDir/conf/SINP{$config['instance.name']}IntegrationService.xml", $config);
 
 //build du service de rapport
-echo("Building repport service...\n");
+echo("Building report service...\n");
 // remplacement des rapports par défaut d'ogam par le rapport d'erreur GINCO
 array_map('unlink', glob("$projectDir/ogam/service_generation_rapport/report/*"));
 copy("$projectDir/services_configs/service_generation_rapport/ErrorReport.rptdesign",
@@ -155,7 +155,7 @@ system("sencha app upgrade");
 system("sencha app build");
 
 # Customize Mapfile
-echo("building mapfile...");
+echo("building mapfile...\n");
 mkdir("$buildDir/mapserver", 0777, true);
 substituteInFile("$projectDir/mapserver/ginco_tpl.map", 
                  "$buildDir/mapserver/ginco_{$config['instance.name']}.map", $config);
