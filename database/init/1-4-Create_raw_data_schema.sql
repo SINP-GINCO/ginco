@@ -131,7 +131,7 @@ $BODY$
 		rule_cd_doc integer;
 	BEGIN
 
-	-- As users can update data with editor, one checks that there is realy something to do.
+	-- As users can update data with the editor, first check that there is realy something to do.
 	-- If none of the fields used for sensitivity computation have been modified we leave.
 	If (NEW.codedepartementcalcule = OLD.codedepartementcalcule 
 		AND NEW.cdnom = OLD.cdnom 
@@ -145,17 +145,24 @@ $BODY$
 	-- see #747 for discussion about when to update this date.
 	NEW.deedatedernieremodification = now();
 
+	-- We get the referential applied for the data departement
+	SELECT especesensiblelistes.full_citation, especesensiblelistes.cd_doc INTO rule_full_citation, rule_cd_doc
+	FROM referentiels.especesensible
+	LEFT JOIN referentiels.especesensiblelistes ON especesensiblelistes.cd_sl = especesensible.cd_sl
+	WHERE especesensible.cd_dept = ANY (NEW.codedepartementcalcule)
+	LIMIT 1;
+	
 	-- by default a data is not sensitive
 	NEW.sensible = '0';
 	NEW.sensiniveau = '0';
 	NEW.sensidateattribution = now();
-	NEW.sensireferentiel = '';
-	NEW.sensiversionreferentiel = '';
+	NEW.sensireferentiel = rule_full_citation;
+	NEW.sensiversionreferentiel = rule_cd_doc;
 	NEW.sensimanuelle = '0';
 	NEW.sensialerte = '0';
 		
 	-- Does the data deals with sensitive taxon for the departement and is under the sensitive duration ?
-	SELECT especesensible.codage, especesensible.autre, especesensiblelistes.full_citation, especesensiblelistes.cd_doc INTO rule_codage, rule_autre, rule_full_citation, rule_cd_doc
+	SELECT especesensible.codage, especesensible.autre INTO rule_codage, rule_autre
 	FROM referentiels.especesensible
 	LEFT JOIN referentiels.especesensiblelistes ON especesensiblelistes.cd_sl = especesensible.cd_sl
 	WHERE 
@@ -184,12 +191,11 @@ $BODY$
 		AND (NEW.occstatutbiologique IN (NULL, '0', '1', '2') OR cd_occ_statut_biologique IS NULL OR NEW.occstatutbiologique = CAST(cd_occ_statut_biologique AS text))
 	
 	--  Quand on a plusieurs règles applicables il faut choisir en priorité
-	--  Celles de la liste régionale (cd_insee_reg not null)
-	--  Parmis elles, les règles avec le codage le plus fort
-	--  Parmis elles, une règle sans commentaire (rule_autre is null)
+	--  Les règles avec le codage le plus fort
+	--  Parmis elles, la règle sans commentaire (rule_autre is null)
 	--  Voir #579
-	ORDER BY cd_insee_reg ASC, codage DESC, autre DESC
-	--  enfin, on prend la première.
+	ORDER BY codage DESC, autre DESC
+	--  on prend la première règle, maintenant qu'elles ont été ordonnées
 	LIMIT 1;
 		
 		
@@ -201,8 +207,6 @@ $BODY$
 	-- A rule has been found, the obs is sensitive
 	NEW.sensible = '1';
 	NEW.sensiniveau = rule_codage;
-	NEW.sensireferentiel = rule_full_citation;
-	NEW.sensiversionreferentiel = rule_cd_doc;
 		
 	-- If there is a comment, sensitivity must be defined manually
 	If (rule_autre IS NOT NULL) Then
@@ -216,7 +220,6 @@ $BODY$
   COST 100;
 ALTER FUNCTION raw_data.sensitive_automatic()
   OWNER TO admin;
-
 
 GRANT SELECT on table referentiels.taxref to ogam; --FIXME: why here?
 
