@@ -22,7 +22,7 @@ Le référentiel de sensibilité fourni à GINCO est constitué des informations
 * CD_SL : identifiant de la liste de sensibilité.
 * CD_OCC_STATUT_BIOLOGIQUE : code du statut biologique pour lequel s'applique la sensibilité.
 
-Le référentiel est fourni  à GINCO par la plateforme nationale (INPN).
+Le référentiel est fourni à GINCO par la plateforme nationale (INPN).
 Les codes de taxons fournis à GINCO sont ceux de la version en vigueur de TAXREF lors de la fourniture du référentiel à GINCO.
 La sensibilité ne s'applique pas pour les données marines.
 Lorsqu'une liste régionale existe, cette liste remplace la liste nationale pour la région concernée.
@@ -35,11 +35,15 @@ Lors de l'import de données, un calcul de la sensibilité des observations est 
 
 Pour chaque observation, l'application identifie les lignes du référentiel de sensibilité correspondant au taxon 
 dans le département de l'observation.
-Si aucune règle ne correpond, l'observation n'est pas sensible.
+Si aucune règle ne correspond, l'observation n'est pas sensible.
 Sinon l'application applique la règle avec le codage le plus élevé, en prenant en priorité une règle sans commentaire.
 
 Lorsque l'observation comporte un commentaire, le calcul automatique n'est pas suffisant et la sensibilité doit être vérifiée manuellement.
 Le champ sensiAlerte est alors mis à "OUI".
+
+Les champs sensiReferentiel et sensiVersionReferentiel sont ceux de la liste qui s’applique dans le département de l’observation (connu via le champ codeDepartementCalcule).
+Ces deux champs correspondent donc aux métadonnées de la liste régionale s’il en existe une, et nationale sinon.
+C’est le cas que la donnée soit sensible ou non.
 
 Rapport de sensibilité
 ----------------------
