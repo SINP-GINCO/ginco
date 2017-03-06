@@ -185,7 +185,7 @@ substituteInFile("$buildDir/configurator/app/config/parameters.yml.dist",
 		'pw'         => $config['db.user.pw'],
 		'admin_user' => $config['db.adminuser'],
 		'admin_pw'   => $config['db.adminuser.pw'],
-		'database_version' => $config['db.version'],
+		'db_version' => $config['db.version'],
 		'base_url'   => '/configurateur'],
 	'__');
 system("bash build.sh --no-interaction");
