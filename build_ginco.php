@@ -47,15 +47,15 @@ propertiesToFile($config, "$buildDir/config.properties");
 
 // build du service d'intégration
 echo("Building integration service...\n");
-substituteInFile("$projectDir/services_configs/service_integration/log4j_tpl.properties", 
+substituteInFile("$projectDir/services_configs/service_integration/log4j_tpl.properties",
                  "$projectDir/ogam/service_integration/config/log4j.properties", $config);
 chdir("$projectDir/ogam");
 system("./gradlew service_integration:war");
 	# le war se trouve dans ${ogamDir}/service_integration/build/libs/service_integration-3.0.0.war
 
-copy("$projectDir/ogam/service_integration/build/libs/service_integration-3.0.0.war", 
+copy("$projectDir/ogam/service_integration/build/libs/service_integration-3.0.0.war",
      "$servicesBuildDir/webapps/SINP{$config['instance.name']}IntegrationService.war");
-substituteInFile("$projectDir/services_configs/service_integration/IntegrationService_tpl.xml", 
+substituteInFile("$projectDir/services_configs/service_integration/IntegrationService_tpl.xml",
                  "$servicesBuildDir/conf/SINP{$config['instance.name']}IntegrationService.xml", $config);
 
 //build du service de rapport
@@ -67,7 +67,7 @@ copy("$projectDir/services_configs/service_generation_rapport/ErrorReport.rptdes
 // build
 chdir("$projectDir/ogam");
 #system("./gradlew service_generation_rapport:war");
-	# le war contenant les rapports se trouve dans 
+	# le war contenant les rapports se trouve dans
 	# ${ogamDir}/service_generation_rapport/build/libs/service_generation_rapport-3.0.0.war
 	# En fait, la target war ne fonctionne pas correctement pour ce service. Il faut utiliser
 	# la target deploy à la place (en attendant que ce soit corrigé)
@@ -75,9 +75,9 @@ chdir("$projectDir/ogam");
 system("./gradlew service_generation_rapport:addReports");
 	# Le war se retrouve dans build/tmp/webapps/OGAMRG.war
 	# Le xml dans ...
-copy("$projectDir/ogam/service_generation_rapport/build/libs/OGAMRG.war", 
+copy("$projectDir/ogam/service_generation_rapport/build/libs/OGAMRG.war",
      "$servicesBuildDir/webapps/SINP{$config['instance.name']}RGService.war");
-substituteInFile("$projectDir/services_configs/service_generation_rapport/ReportService_tpl.xml", 
+substituteInFile("$projectDir/services_configs/service_generation_rapport/ReportService_tpl.xml",
                  "$servicesBuildDir/conf/SINP{$config['instance.name']}RGService.xml", $config);
 
 /*
@@ -91,8 +91,8 @@ unlink("geosource.war");
 // adaptation de la config geosource
 unlink("geosource/WEB-INF/config-node/srv.xml");
 copy("$projectDir/service_geosource/srv.xml", "./geosource/WEB-INF/config-node/srv.xml");
-substituteInFile("$projectDir/service_geosource/jdbc_tpl.properties", 
-                 "$servicesBuildDir/webapps/geosource/WEB-INF/config-db/jdbc.properties", 
+substituteInFile("$projectDir/service_geosource/jdbc_tpl.properties",
+                 "$servicesBuildDir/webapps/geosource/WEB-INF/config-db/jdbc.properties",
                  ['geosource.db.user' => 'geosource', 'geosource.db.user.pw' => 'geosource'] + $config);
 
 chdir("$servicesBuildDir/webapps/geosource");
@@ -104,7 +104,7 @@ mkdir("$buildDir/confEnvJava", 0777, true);
 copy("$projectDir/service_geosource/setenv.sh", "$buildDir/confEnvJava/setenv.sh");
 */
 
-# Build du SITE WEB 
+# Build du SITE WEB
 #=======================
 # on range tout dans ./build/website
 echo("building website (php)...\n");
@@ -147,7 +147,7 @@ system("bash build.sh --no-interaction");
 // partie extjs
 echo("building website (extJs)...\n");
 $clientDir = "$projectDir/website/htdocs/custom/client/ogamDesktop";
-substituteInFile("$clientDir/app_tpl.json", 
+substituteInFile("$clientDir/app_tpl.json",
                  "$buildDir/website/client/ogamDesktop/app.json", $config);
 substituteInFile("$clientDir/index.html","$buildDir/website/custom/client/ogamDesktop/index.html", $config);
 chdir("$buildDir/website/client/ogamDesktop/");
@@ -157,7 +157,7 @@ system("sencha app build");
 # Customize Mapfile
 echo("building mapfile...\n");
 mkdir("$buildDir/mapserver", 0777, true);
-substituteInFile("$projectDir/mapserver/ginco_tpl.map", 
+substituteInFile("$projectDir/mapserver/ginco_tpl.map",
                  "$buildDir/mapserver/ginco_{$config['instance.name']}.map", $config);
 system("cp -r $projectDir/mapserver/data $buildDir/mapserver/");
 
@@ -166,7 +166,7 @@ system("cp -r $projectDir/mapserver/data $buildDir/mapserver/");
 echo("building apache config...\n");
 mkdir("$buildDir/confapache", 0777, true);
 substituteInFile("$projectDir/website/config/httpd_ginco_apache2_tpl.conf",
-                 "$buildDir/confapache/httpd_ginco_{$config['instance.name']}.conf", 
+                 "$buildDir/confapache/httpd_ginco_{$config['instance.name']}.conf",
                  $config + ['app.env' => 'production']);
 
 
@@ -185,6 +185,7 @@ substituteInFile("$buildDir/configurator/app/config/parameters.yml.dist",
 		'pw'         => $config['db.user.pw'],
 		'admin_user' => $config['db.adminuser'],
 		'admin_pw'   => $config['db.adminuser.pw'],
+		'database_version' => $config['db.version'],
 		'base_url'   => '/configurateur'],
 	'__');
 system("bash build.sh --no-interaction");
