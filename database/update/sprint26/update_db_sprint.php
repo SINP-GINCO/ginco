@@ -26,6 +26,9 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here */
 	execCustSQLFile("$sprintDir/update_postgis_to_2.3.1.sql", $config);
+	execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
+	execCustSQLFile("$sprintDir/update_referentiel_especesensible.sql", $config);
+	execCustSQLFile("$sprintDir/add_missing_indexes.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
@@ -34,8 +37,10 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-system("php $sprintDir/remove_ogam_id_from_dsr_import_model.php $CLIParams", $returnCode);
-if ($returnCode != 0) {
+system("php $sprintDir/remove_ogam_id_from_dsr_import_model.php $CLIParams", $returnCode1);
+system("php $sprintDir/updateCalculatedFields.php $CLIParams", $returnCode2);
+
+if ($returnCode1 != 0 || $returnCode2 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
