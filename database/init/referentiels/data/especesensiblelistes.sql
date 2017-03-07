@@ -14,6 +14,10 @@ WITH (
 );
 ALTER TABLE referentiels.especesensiblelistes
   OWNER TO admin;
+ 
+GRANT ALL ON TABLE referentiels.especesensiblelistes TO admin;
+GRANT ALL ON TABLE referentiels.especesensiblelistes TO ogam;
+GRANT ALL ON TABLE referentiels.especesensiblelistes TO postgres;
   
 INSERT INTO referentiels.especesensiblelistes(short_citation, cd_insee_reg, date_liste, full_citation, url, cd_doc, cd_sl)
     VALUES ('Touroult (2016)', NULL, 2016, 'Touroult, J. 2016. SINP. Liste nationale des taxons potentiellement sensibles et des conditions de sensibilité/non sensibilité de la donnée, Version 2.', NULL, 142869, 9);
