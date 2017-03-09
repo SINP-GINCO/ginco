@@ -614,10 +614,27 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			}
 		}
 
+		String[] typeInfoGeoUnauthorized = { DSRConstants.TYPE_INFO_GEO_EN, DSRConstants.TYPE_INFO_GEO_ME };
+
+		int georeferencedUnauthorizedNumber = 0;
+
+		for (String name : typeInfoGeoUnauthorized) {
+			GenericData typeInfoGeoGD = values.get(name);
+			if (typeInfoGeoGD != null && !empty(typeInfoGeoGD)) {
+				String typeInfoGeoValue = (String) typeInfoGeoGD.getValue();
+				if (typeInfoGeoValue.equals("1")) {
+					georeferencedUnauthorizedNumber++;
+				}
+			}
+		}
+
 		// At least one georeferenced object must be given, ie geometry or one typeInfoGeo = 1
 		if (empty(geometrieGD) && (georeferencedObjectsNumber == 0)) {
 			String errorMessage = "Au moins un géoréférencement doit être livré: soit une géométrie dans le champ " + DSRConstants.GEOMETRIE
 					+ ", soit l'un des champs suivants doit valoir 1 : " + StringUtils.join(typeInfoGeoAll, ", ") + ".";
+			if (georeferencedUnauthorizedNumber > 0) {
+				errorMessage += " GINCO n'accepte pas les géoréférencements aux espaces naturels ou masses d'eau.";
+			}
 			CheckException ce = new CheckException(NO_GEOREFERENCE, errorMessage);
 			throw ce;
 		} else if (georeferencedObjectsNumber > 1) {
@@ -626,6 +643,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			throw ce;
 		}
 	}
+
 
 	/**
 	 * Fills nomValide if it is empty.
