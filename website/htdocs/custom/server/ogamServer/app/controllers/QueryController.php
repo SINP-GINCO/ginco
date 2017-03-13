@@ -389,6 +389,60 @@ class Custom_QueryController extends QueryController {
 	}
 
 	/**
+	 * AJAX function : Return the list of available codes for a taxref and a filter text.
+	 *
+	 * @return JSON.
+	 */
+	public function ajaxgettaxrefcodesAction() {
+		$this->logger->debug('ajaxgettaxrefcodesAction');
+
+		$unit = $this->getRequest()->getParam('unit');
+		$query = pg_escape_string($this->getRequest()->getParam('query'));
+		$query = $this->genericService->removeAccents($query);
+		$start = $this->getRequest()->getParam('start');
+		$limit = $this->getRequest()->getParam('limit');
+
+		$this->logger->debug('$query : ' . $query);
+		$this->logger->debug('$start : ' . $start);
+		$this->logger->debug('$limit : ' . $limit);
+
+		$customMetadata = new Application_Model_Metadata_CustomMetadata();
+
+		$taxrefs = $customMetadata->getTaxrefModes($unit, $query, $start, $limit);
+
+		if (count($taxrefs) < $limit) {
+			// optimisation
+			$count = count($taxrefs);
+		} else {
+			$count = $customMetadata->getTaxrefModesCount($unit, $query);
+		}
+
+		// Send the result as a JSON String
+		$json = '{"success":true';
+		$json .= ', "rows":[';
+		foreach ($taxrefs as $taxref) {
+
+			$json .= '{"code":' . json_encode($taxref->code);
+			$json .= ', "label":' . json_encode($taxref->name) . '';
+			$json .= ', "isReference":' . json_encode($taxref->isReference) . '';
+			$json .= ', "vernacularName":' . json_encode($taxref->vernacularName) . '},';
+		}
+		if (!empty($taxrefs)) {
+			$json = substr($json, 0, -1);
+		}
+		$json .= ']';
+		$json .= ', "results":' . $count;
+		$json .= '}';
+
+		echo $json;
+
+		// No View, we send directly the JSON
+		$this->_helper->layout()->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+		$this->getResponse()->setHeader('Content-type', 'application/json');
+	}
+
+	/**
 	 * AJAX function : Nodes of a taxonomic referential under a given node.
 	 *
 	 * @return JSON.
