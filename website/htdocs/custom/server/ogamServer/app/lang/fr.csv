@@ -197,8 +197,13 @@ Submission ID;Soumission
 Date;Date
 Provider Id;Producteur
 Provider of the dataset;Organisme producteur du jeu de données
+Dataset metadata identifier;Identifiant de métadonnées
+Declare the metadata id;Déclarer l'identifiant de métadonnées
+The metadata ID '%s' already exists. Please declare another one.; L'identifiant de métadonnées '%s' existe déjà. Merci d'en déclarer un autre.
+The download failed for metadata id '%s';Le téléchargement de la fiche de métadonnées pour l'identifiant '%s' a échoué.
 User;Utilisateur
 Dataset;Modèle d'import
+Data model;Modèle de données
 Step;Etape
 Status;Statut
 File;Fichier

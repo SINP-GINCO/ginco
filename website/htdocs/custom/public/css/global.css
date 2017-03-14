@@ -519,6 +519,18 @@ td.delete-cell{
 /** Integration Part
 /**************************************/
 
+/** jdd-form **/
+.jdd-form .form-ct {
+	width: 550px;
+}
+
+.jdd-form .zend_form select{
+	width: 300px;
+}
+
+.jdd-form .zend_form input{
+	width: 286px;
+}
 /** data-submission-form **/
 .data-submission-form .form-ct {
 	width: 550px;

@@ -167,6 +167,20 @@ class Custom_IntegrationController extends IntegrationController {
 	}
 
 	/**
+	 * Show the create jdd page.
+	 * New Ogam Action. #900.
+	 *
+	 * @return the HTML view
+	 */
+	public function showCreateJddPageAction() {
+		$this->logger->debug('showCreateJddPageAction');
+
+		$this->view->form = $this->getJddForm();
+
+		$this->render('show-create-jdd-page');
+	}
+
+	/**
 	 * Show the create data submission page.
 	 * Overwrite the Ogam Action, the form has a choice for the provider.
 	 *
@@ -181,6 +195,46 @@ class Custom_IntegrationController extends IntegrationController {
 		$this->view->form = $this->getSubmissionForm($user);
 
 		$this->render('custom-show-create-data-submission');
+	}
+
+	/**
+	 * Build and return the jdd submission form.
+	 */
+	protected function getJddForm() {
+		$form = new Application_Form_OGAMForm(array(
+			'attribs' => array(
+				'name' => ' jdd-form',
+				'action' => $this->baseUrl . '/integration/validate-create-jdd-page'
+			)
+		));
+
+		//
+		// Add the jdd id element
+		//
+		$jddIdElem = $form->createElement('text', 'JDD_ID');
+		$jddIdElem->setLabel('Dataset metadata identifier');
+		$jddIdElem->setRequired(true);
+
+		//
+		// Add the data model element
+		//
+		$dataModelElement = $form->createElement('select', 'MODEL_ID');
+		$dataModelElement->setLabel('Data model');
+		$dataModelElement->setRequired(true);
+		$dataModelElement->addMultiOptions($this->customMetadataModel->getDataModels());
+
+		//
+		// Add the submit element
+		//
+		$submitElement = $form->createElement('submit', 'submit');
+		$submitElement->setLabel('Submit');
+
+		// Add elements to form:
+		$form->addElement($jddIdElem);
+		$form->addElement($dataModelElement);
+		$form->addElement($submitElement);
+
+		return $form;
 	}
 
 	/**
@@ -243,6 +297,179 @@ class Custom_IntegrationController extends IntegrationController {
 	}
 
 	/**
+	 * Validate the create jdd page.
+	 *
+	 * @return the HTML view
+	 */
+	public function validateCreateJddPageAction() {
+		$this->logger->debug('validateCreateJddPageAction');
+
+		// Check the validity of the POST
+		if (!$this->getRequest()->isPost()) {
+			$this->logger->debug('form is not a POST');
+			return $this->_forward('index');
+		}
+
+		// Check the validity of the Form
+		$form = $this->getJddForm();
+		if (!$form->isValid($_POST)) {
+			$this->logger->debug('form is not valid');
+			$this->view->form = $form;
+			return $this->render('show-create-jdd-page');
+		}
+
+		// Get the selected values
+		$values = $form->getValues();
+		$jddId = $values['JDD_ID'];
+		$modelId = $values['MODEL_ID'];
+
+		// Retrieve jdd data from metadata external service
+		$jddData = $this->getJddDataFromXML($jddId, $modelId, $this->getRequest());
+
+		// Check if the jdd exists
+		$jddModel = new Application_Model_RawData_Jdd();
+		$jdd = $jddModel->getJddByMetadataId($jddData['jdd_metadata_id']);
+
+		if ($jdd === null) {
+			// Create the jdd
+			$jdd = new Application_Object_RawData_Jdd();
+			$jdd->jddMetadataId = $jddData['jdd_metadata_id'];
+			$jdd->title = $jddData['title'];
+			$jdd->status = 'empty';
+			$jdd->modelId = $modelId;
+
+			// Save the jdd
+			$jddId = $jddModel->add($jdd);
+			$jdd->id = $jddId;
+
+			// Save the jdd_id in session
+			$jddSession = new Zend_Session_Namespace('jdd');
+			$jddSession->jddId = $jddId;
+		} else {
+			// Forbid the creation
+			$this->_helper->_flashMessenger($this->view->translate("The metadata ID '%s' already exists. Please declare another one.", $jddId));
+			$this->_redirect($this->getRequest()->getRequestUri());
+		}
+
+		// Forward the user to the new submission page
+		return $this->showCreateDataSubmissionAction();
+	}
+
+	/**
+	 *
+	 * Returns the jdd data (metadata_id and title).
+	 *
+	 * @param String $jddId
+	 *        	the id of the jdd
+	 * @param String $modelId
+	 *        	the id of the data model
+	 * @param String $request
+	 *        	the id of the data model
+	 * @return array|String the jdd data : jdd_metadata_id and title
+	 */
+	public function getJddDataFromXML($jddId, $modelId, $request) {
+		// Get the service URL
+		$configuration = Zend_Registry::get("configuration");
+		try {
+			$jddIdServiceUrl = $configuration->getConfig('testJddMetadataFileDownloadServiceURL');
+		} catch (Exception $e) {
+			$this->logger->err('No jddmetadata file download service URL found: ' . $e);
+			$this->_helper->_flashMessenger($this->translator->translate('Application error'));
+			$this->_redirect($request->getRequestUri());
+		}
+		// If the service URL is not empty
+		if (isset($jddIdServiceUrl)) {
+			$url = $jddIdServiceUrl . $jddId;
+
+			// Try to download the XML file
+			$ch = curl_init($url);
+
+			// CURL options
+			$verbose = fopen('php://temp', 'w+');
+			$fileUrl = '/tmp/tempMetadata.xml';
+			$file = fopen($fileUrl, 'w+');
+			$httpProxy = 'http://proxy.ign.fr:3128';
+			$httpsProxy = 'https://proxy.ign.fr:3128';
+
+			$curlOptions = array(
+				CURLOPT_URL => $url,
+				CURLOPT_PROXY => $httpsProxy,
+				CURLOPT_SSL_VERIFYPEER => false,
+				CURLOPT_FOLLOWLOCATION => true,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_CONNECTTIMEOUT => 2,
+				CURLOPT_TIMEOUT => 4,
+				CURLOPT_FILE => $file,
+				CURLOPT_VERBOSE => true,
+				CURLOPT_STDERR => $verbose
+			);
+			curl_setopt_array($ch, $curlOptions);
+
+			// Execute request
+			$response = curl_exec($ch);
+			$httpCode = "" . curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+			$this->logger->debug("The HTTP code returned is " . $httpCode);
+
+			// Close the cURL channel and file
+			curl_close($ch);
+			fclose($file);
+
+			// HTTP code different from 200 means something is wrong
+			if ($httpCode !== '200') {
+				$this->logger->err("The download failed for id $jddId");
+
+				rewind($verbose);
+				$verboseLog = stream_get_contents($verbose);
+				$this->logger->err(print_r($verboseLog, true));
+
+				$this->_helper->_flashMessenger($this->view->translate("The download failed for metadata id '%s'", $jddId));
+				$this->_redirect($request->getRequestUri());
+			}
+
+			// Parse the XML file
+			try {
+				$xml = simplexml_load_file($fileUrl);
+			} catch (Exception $e) {
+				$this->logger->err("The jdd metadata XML file contains errors could not be parsed for the jddid $jddId : $e");
+
+				$this->_helper->_flashMessenger($this->translator->translate('Application error'));
+				$this->_redirect($request->getRequestUri());
+
+			} finally{
+				// Delete the file
+				unlink($fileUrl);
+			}
+
+			$xml = dom_import_simplexml($xml);
+			if ($xml === false) {
+				$this->logger->err("The jdd metadata XML file contains errors and could not be parsed for the jddid $jddId : $e");
+				$this->view->errorMessage = "The jdd metadata XML file contains errors could not be parsed for the jddid $jddId";
+				$this->_helper->_flashMessenger($this->translator->translate('Application error'));
+				$this->_redirect($request->getRequestUri());
+			}
+
+			// Find the id and the title of the jdd
+			$nodelist = $xml->getElementsByTagName('JeuDeDonnees');
+			for ($i = 0; $i < $nodelist->length; $i ++) {
+				$xmlJddId = $nodelist->item($i)
+					->getElementsByTagName('identifiantJeuDeDonnees')
+					->item(0)->nodeValue;
+				$title = $nodelist->item($i)
+					->getElementsByTagName('nomComplet')
+					->item(0)->nodeValue;
+			}
+
+			$jddData = array(
+				'jdd_metadata_id' => $xmlJddId,
+				'title' => $title
+			);
+
+			return $jddData;
+		}
+	}
+
+	/**
 	 * Validate the create data submission page.
 	 * Overwrites the custom action, uses the provider Id submitted in the form
 	 *
@@ -269,17 +496,18 @@ class Custom_IntegrationController extends IntegrationController {
 		$values = $form->getValues();
 		$datasetId = $values['DATASET_ID'];
 		$submissionProviderId = $values['PROVIDER_ID'];
+		$jddSession = new Zend_Session_Namespace('jdd');
+		$jddId = $jddSession->jddId;
 
 		$userSession = new Zend_Session_Namespace('user');
 		$userLogin = $userSession->user->login;
-		// $providerId = $userSession->user->provider->id;
 		$this->logger->debug('userLogin : ' . $userLogin);
-		// $this->logger->debug('providerId : ' . $providerId);
 		$this->logger->debug('submitted as providerId : ' . $submissionProviderId);
 
 		// Send the request to the integration server
 		try {
-			$submissionId = $this->integrationServiceModel->newDataSubmission($submissionProviderId, $datasetId, $userLogin);
+			$customIntegrationServiceModel = new Application_Model_IntegrationService_CustomIntegrationService();
+			$submissionId = $customIntegrationServiceModel->newDataSubmissionCustom($submissionProviderId, $datasetId, $userLogin, $jddId);
 		} catch (Exception $e) {
 			$this->logger->err('Error during upload: ' . $e);
 			$this->view->errorMessage = $e->getMessage();
@@ -314,7 +542,7 @@ class Custom_IntegrationController extends IntegrationController {
 			return $this->_forward('index');
 		}
 
-		// Check the validity of the From
+		// Check the validity of the form
 		$form = $this->getDataUploadForm();
 		if (!$form->isValid($_POST)) {
 			$this->logger->debug('form is not valid');
@@ -334,6 +562,10 @@ class Custom_IntegrationController extends IntegrationController {
 		// Upload the files on Server
 		$upload = new Zend_File_Transfer_Adapter_Http();
 		$upload->receive();
+
+		// Get the jdd info
+		$jddSession = new Zend_Session_Namespace('jdd');
+		$jdd = $jddSession->jdd;
 
 		// Get the submission info
 		$dataSession = new Zend_Session_Namespace('submission');
@@ -488,6 +720,38 @@ class Custom_IntegrationController extends IntegrationController {
 
 		// Send the message
 		$mailerService->sendMessage($message);
+
+		// Forward the user to the next step
+		$this->_redirector->gotoUrl('/integration/show-data-submission-page');
+	}
+
+	/**
+	 * Cancel a data submission.
+	 * Custom : Remove the submission from its jdd.
+	 *
+	 * @return the HTML view
+	 */
+	public function cancelDataSubmissionAction() {
+		$this->logger->debug('cancelDataSubmissionAction');
+
+		// Desactivate the timeout
+		set_time_limit(0);
+
+		// Get the submission Id
+		$submissionId = $this->_getParam("submissionId");
+
+		// Send the cancel request to the integration server
+		try {
+			$this->integrationServiceModel->cancelDataSubmission($submissionId);
+		} catch (Exception $e) {
+			$this->logger->err('Error during upload: ' . $e);
+			$this->view->errorMessage = $e->getMessage();
+			return $this->render('show-data-error');
+		}
+
+		// Remove the submission link in the jdd table
+		$jddModel = new Application_Model_RawData_Jdd();
+		$jdd = $jddModel->removeSubmission($submissionId);
 
 		// Forward the user to the next step
 		$this->_redirector->gotoUrl('/integration/show-data-submission-page');
