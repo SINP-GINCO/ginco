@@ -30,22 +30,22 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	 * @return Array[String] form formats
 	 */
 	public function getFormFormats($datasetId, $field) {
-		
+
 		// (not done in models, it's why we do a direct sql request here).
 		$db = Zend_Db_Table::getDefaultAdapter();
-		
+
 		$req = "SELECT df.format
 				FROM metadata.dataset_forms df, metadata.form_field ff
 				WHERE df.format = ff.format
 				AND df.dataset_id = ?
 				AND ff.data = ?";
-		
+
 		$query = $db->prepare($req);
 		$query->execute(array(
 			$datasetId,
 			$field
 		));
-		
+
 		$result = array();
 		foreach ($query->fetchAll() as $row) {
 			$result[] = $row['format'];
@@ -85,16 +85,16 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	 */
 	public function getModelForDataset($datasetId) {
 		$db = Zend_Db_Table::getDefaultAdapter();
-		
+
 		$req = "SELECT md.model_id
 				FROM metadata.model_datasets md
 				WHERE md.dataset_id = ?";
-		
+
 		$query = $db->prepare($req);
 		$query->execute(array(
 			$datasetId
 		));
-		
+
 		$modelId = '';
 		foreach ($query->fetchAll() as $row) {
 			$modelId = $row['model_id']; // Only one result expected...
@@ -111,18 +111,18 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	 */
 	public function getTableFormats($modelId) {
 		$db = Zend_Db_Table::getDefaultAdapter();
-		
+
 		$req = "SELECT tf.format
 				FROM metadata.table_format tf
 				LEFT JOIN metadata.model_tables mt
 				ON tf.format = mt.table_id
 				WHERE mt.model_id = ?";
-		
+
 		$query = $db->prepare($req);
 		$query->execute(array(
 			$modelId
 		));
-		
+
 		$result = array();
 		foreach ($query->fetchAll() as $row) {
 			$result[] = $row['format'];
@@ -139,7 +139,7 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	 */
 	public function getTableFieldsForModel($modelId) {
 		$db = Zend_Db_Table::getDefaultAdapter();
-		
+
 		$req = "SELECT tfi.*, d.label as label, d.unit, u.type, u.subtype, d.definition
 				FROM metadata.table_field tfi
 				LEFT JOIN metadata.model_tables mt ON tfi.format = mt.table_id
@@ -147,24 +147,24 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 				LEFT JOIN metadata.unit u on d.unit = u.unit
 				WHERE mt.model_id = ?
 				ORDER BY d.label";
-		
+
 		$select = $db->prepare($req);
 		$select->execute(array(
 			$modelId
 		));
-		
+
 		$result = array();
 		foreach ($select->fetchAll() as $row) {
 			$result[] = $this->_readTableField($row);
 		}
-		
+
 		return $result;
 	}
 
 	/**
 	 * Read a table field object from a result line.
 	 *
-	 * @param Result $row        	
+	 * @param Result $row
 	 * @return Application_Object_Metadata_FormField
 	 */
 	private function _readTableField($row) {
@@ -182,7 +182,7 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 		$tableField->type = $row['type'];
 		$tableField->subtype = $row['subtype'];
 		$tableField->definition = $row['definition'];
-		
+
 		return $tableField;
 	}
 
@@ -201,15 +201,15 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	 */
 	public function getTaxrefChildren($unit, $parentcode = '*', $levels = 1) {
 		$key = $this->_formatCacheKey('custom getTaxrefChildren_' . $unit . '_' . $parentcode . '_' . $levels);
-		
+
 		$this->logger->debug($key);
-		
+
 		if ($this->useCache) {
 			$cachedResult = $this->cache->load($key);
 		}
-		
+
 		if (empty($cachedResult)) {
-			
+
 			$req = "WITH RECURSIVE node_list( unit, code, parent_code, name, complete_name, lb_name, vernacular_name, is_reference, is_leaf, level) AS (  ";
 			$req .= "	    SELECT unit, code, parent_code, name, complete_name, lb_name, vernacular_name, is_reference, is_leaf, 1";
 			$req .= "		FROM mode_taxref ";
@@ -227,23 +227,23 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 			$req .= "	SELECT * ";
 			$req .= "	FROM node_list ";
 			$req .= "	ORDER BY level, parent_code, name "; // level is used to ensure correct construction of the structure
-			
+
 			$select = $this->db->prepare($req);
-			
+
 			$select->execute(array(
 				$unit,
 				$parentcode,
 				$unit
 			));
-			
+
 			$rows = $select->fetchAll();
-			
+
 			if (!empty($rows)) {
 				$resultTree = new Application_Object_Metadata_TreeNode(); // The root is empty
 				foreach ($rows as $row) {
-					
+
 					$parentCode = $row['parent_code'];
-					
+
 					// Build the new node
 					$tree = new Application_Object_Metadata_CustomTaxrefNode();
 					$tree->code = $row['code'];
@@ -253,7 +253,7 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 					$tree->vernacularName = $row['vernacular_name'];
 					$tree->isLeaf = $row['is_leaf'];
 					$tree->isReference = $row['is_reference'];
-					
+
 					// Check if a parent can be found in the structure
 					$parentNode = $resultTree->getNode($parentCode);
 					if ($parentNode == null) {
@@ -267,7 +267,7 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 			} else {
 				$resultTree = null;
 			}
-			
+
 			if ($this->useCache) {
 				$this->cache->save($resultTree, $key);
 			}
@@ -280,35 +280,35 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	/**
 	 * Troncates the array of the ancestors, ends it with the table containing the geometry
 	 *
-	 * @param String $schema        	
-	 * @param Array[Application_Object_Metadata_TableTreeData] $ancestors        	
+	 * @param String $schema
+	 * @param Array[Application_Object_Metadata_TableTreeData] $ancestors
 	 * @return Array[Application_Object_Metadata_TableTreeData] $ancestorsToGeometry
 	 */
 	public function getAncestorsToGeometry($schema, $ancestors) {
 		$this->logger->info('getAncestorsToGeometry');
-		
+
 		$ancestorsToGeometry = array();
 		$ĥasGeometryColumn = 0;
-		
+
 		while ($ĥasGeometryColumn != 1) {
 			$ancestor = array_shift($ancestors);
 			$ancestorsToGeometry[$ancestor->getLogicalName()] = $ancestor;
-			
+
 			$req = " SELECT 1 as has_geometry ";
 			$req .= " FROM INFORMATION_SCHEMA.COLUMNS ";
 			$req .= " WHERE table_name = ? ";
 			$req .= " and column_name = 'geometrie' ";
 			$req .= " and table_schema = ? ";
-			
+
 			$this->logger->info('getAncestorsToGeometry : ' . $req);
-			
+
 			$select = $this->db->prepare($req);
 			$select->execute(array(
 				$ancestor->tableName,
 				strtolower($schema)
 			));
 			$this->logger->info('ancestor table name : ' . $ancestor->tableName . ", join keys : " . $ancestor->keys);
-			
+
 			$row = $select->fetch();
 			if ($row['has_geometry'] != null) {
 				$ĥasGeometryColumn = 1;
@@ -316,7 +316,7 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 		}
 		return $ancestorsToGeometry;
 	}
-	
+
 	/**
 	 * Get the form field corresponding to the table field.
 	 *
@@ -326,16 +326,16 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	 */
 	public function getTableToFormMapping($tableField) {
 		$this->logger->info('getTableToFormMapping : ' . $tableField->format . " " . $tableField->data . ' ' . $this->lang);
-	
+
 		$key = $this->_formatCacheKey('getTableToFormMapping' . $tableField->format . '_' . $tableField->data . '_' . $this->lang);
-	
+
 		// Get the form description corresponding to the table field
 		$result = null;
 		if ($this->useCache) {
 			$result = $this->cache->load($key);
 		}
 		if (empty($result)) {
-	
+
 			$req = " SELECT form_field.*, COALESCE(t.label, data.label) as label, COALESCE(t.definition, data.definition) as definition, unit.unit, unit.type, unit.subtype, form_format.label as form_label, form_format.position as form_position";
 			$req .= " FROM form_field ";
 			$req .= " LEFT JOIN field_mapping on (field_mapping.src_format = form_field.format AND field_mapping.src_data = form_field.data AND mapping_type = 'FORM') ";
@@ -346,30 +346,30 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 			$req .= " WHERE field_mapping.dst_format = ? ";
 			$req .= " AND field_mapping.dst_data = ? ";
 			$req .= " ORDER BY form_format.position, form_field.position ";
-	
+
 			$this->logger->info('getTableToFormMapping : ' . $req);
-	
+
 			$select = $this->db->prepare($req);
 			$select->execute(array(
 				$tableField->format,
 				$tableField->data
 			));
-	
+
 			$row = $select->fetch();
-	
+
 			if (!empty($row)) {
 				$formField = $this->_readFormField($row);
-	
+
 				if ($this->useCache) {
 					$this->cache->save($formField, $key);
 				}
 				$result = $formField;
 			}
 		}
-	
+
 		return $result; // clone to avoid updating the values of the cached result
 	}
-	
+
 	/**
 	 * Read a form field object from a result line.
 	 *
@@ -400,7 +400,7 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 		$formField->decimals = $row['decimals'];
 		$formField->mask = $row['mask'];
 		$formField->position = $row['position'];
-	
+
 		return $formField;
 	}
 }
