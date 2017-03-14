@@ -388,12 +388,10 @@ class Custom_IntegrationController extends IntegrationController {
 			$verbose = fopen('php://temp', 'w+');
 			$fileUrl = '/tmp/tempMetadata.xml';
 			$file = fopen($fileUrl, 'w+');
-			$httpProxy = 'http://proxy.ign.fr:3128';
-			$httpsProxy = 'https://proxy.ign.fr:3128';
+			$httpsProxy = $configuration->getConfig('https_proxy', '');
 
 			$curlOptions = array(
 				CURLOPT_URL => $url,
-				CURLOPT_PROXY => $httpsProxy,
 				CURLOPT_SSL_VERIFYPEER => false,
 				CURLOPT_FOLLOWLOCATION => true,
 				CURLOPT_RETURNTRANSFER => true,
@@ -403,6 +401,11 @@ class Custom_IntegrationController extends IntegrationController {
 				CURLOPT_VERBOSE => true,
 				CURLOPT_STDERR => $verbose
 			);
+
+			if(!empty($httpsProxy)){
+				$curlOptions[CURLOPT_PROXY] = $httpsProxy;
+			}
+
 			curl_setopt_array($ch, $curlOptions);
 
 			// Execute request
