@@ -54,6 +54,29 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	}
 
 	/**
+	 * Get the list of the data models.
+	 *
+	 * @return Array of Object
+	 */
+	public function getDataModels() {
+		$this->logger->debug('getDataModels');
+		$db = Zend_Db_Table::getDefaultAdapter();
+
+		$req = "SELECT id, name
+				FROM metadata.model
+				ORDER BY name";
+
+		$query = $db->prepare($req);
+		$query->execute();
+
+		$result = array();
+		foreach ($query->fetchAll() as $row) {
+			$result[$row['id']] = $row['name'];
+		}
+		return $result;
+	}
+
+	/**
 	 * Get the model Id related to a given dataset
 	 *
 	 * @param
