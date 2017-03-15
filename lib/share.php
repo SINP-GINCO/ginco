@@ -28,24 +28,44 @@ function substituteInFile($filePathIn, $filePathOut, $config, $tag = "@"){
 #-------------------------------------------------------------------------------
 function loadPropertiesFromFile($configFilePath) {
 	$result = array();
+	readConfigFile($configFilePath, $result);
+	return $result;
+}
+
+
+function readConfigFile($configFilePath, &$result) {
+
 	if (!is_file($configFilePath)){
 		echo ("[$configFilePath] is not a file");
 		exit (1);
 	}
+	$configParentPath = dirname(realpath($configFilePath));
+
 	$lines = explode("\n", file_get_contents($configFilePath));
 	$key = "";
 	$isWaitingOtherLine = false;
+	$value='';
+
 	foreach ($lines as $i => $line) {
 		if (empty($line) || (!$isWaitingOtherLine && strpos($line, "#") === 0))
 			continue;
 
 		if (!$isWaitingOtherLine) {
-		    // Regex capturing key-value pairs, with value enclosed in single quotes, double quotes, or nothing
-            // see https://regex101.com/r/hK6gEa/4
-            $pattern = '/\b([\w\.]+)\s*=\s*(\'|"|)(.*)\2/';
-            preg_match($pattern, $line, $matches);
-            $key = $matches[1];
-            $value = $matches[3];
+
+			// Capture "import otherfile.properties" lines; https://regex101.com/r/Isg4VY/1/
+			$importPattern = '/\bimport\s*(\'|"|)(.*)\1/';
+			if (preg_match($importPattern, $line, $matches)) {
+				$importFile = $matches[2];
+				readConfigFile($configParentPath.'/'.$importFile, $result);
+				continue;
+			}
+
+			// Regex capturing key-value pairs, with value enclosed in single quotes, double quotes, or nothing
+			// see https://regex101.com/r/hK6gEa/4
+			$pattern = '/\b([\w\.]+)\s*=\s*(\'|"|)(.*)\2/';
+			preg_match($pattern, $line, $matches);
+			$key = $matches[1];
+			$value = $matches[3];
 		}	else {
 			$value .= $line;
 		}
@@ -60,8 +80,6 @@ function loadPropertiesFromFile($configFilePath) {
 		$result[$key] = $value;
 		unset($lines[$i]);
 	}
-
-	return $result;
 }
 
 
