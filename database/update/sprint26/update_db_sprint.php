@@ -29,8 +29,6 @@ try {
 	execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
 	execCustSQLFile("$sprintDir/update_referentiel_especesensible.sql", $config);
 	execCustSQLFile("$sprintDir/add_missing_indexes.sql", $config);
-	execCustSQLFile("$sprintDir/add_jdd_table.sql", $config);
-	execCustSQLFile("$sprintDir/add_jdd_id_download_service_url.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
