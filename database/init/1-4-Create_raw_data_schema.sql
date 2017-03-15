@@ -318,7 +318,7 @@ GRANT ALL ON TABLE raw_data.export_file TO ogam;
 CREATE TABLE jdd
 (
 	id serial,
-	jdd_metadata_id character varying(32) UNIQUE,
+	jdd_metadata_id character varying(36) UNIQUE,
 	title character varying(512),
 	status character varying(16) NOT NULL,
 	model_id character varying(19) NOT NULL,

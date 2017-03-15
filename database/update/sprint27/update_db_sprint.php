@@ -25,7 +25,8 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
-	// execCustSQLFile("$sprintDir/script.sql", $config);
+	execCustSQLFile("$sprintDir/add_jdd_table.sql", $config);
+	execCustSQLFile("$sprintDir/add_jdd_id_download_service_url.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
