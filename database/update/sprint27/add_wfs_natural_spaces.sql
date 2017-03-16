@@ -8,7 +8,7 @@ DELETE from mapping.layer_tree WHERE item_id = 498;
 DELETE from mapping.layer_tree WHERE item_id = 499;
 
 /* Insert WFS layer */
-INSERT INTO mapping.layer_service (service_name, config) VALUES ('EN_WFS_GetFeature', '{"urls":["https://wxs-i.ign.fr/7gr31kqe5xttprd2g7zbkqgo/geoportail/wfs?"],"params":{"SERVICE":"WFS","VERSION":"1.0.0","REQUEST":"GetFeature", "outputFormat":"json"}}');
+INSERT INTO mapping.layer_service (service_name, config) VALUES ('EN_WFS_GetFeature', '{"urls":["https://wxs.ign.fr/@view.geoportail.key@/geoportail/wfs?"],"params":{"SERVICE":"WFS","VERSION":"1.0.0","REQUEST":"GetFeature","outputFormat":"json"}}');
 
 INSERT INTO layer (layer_name, layer_label, service_layer_name, istransparent, default_opacity, isbaselayer, isuntiled, maxscale, minscale, has_legend, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES ('PROTECTEDAREAS_APB_WFS', 'Arrêtés de protection de biotope', 'PROTECTEDAREAS.APB:wld_apb', 1, 100, 0, 1, NULL, NULL, 1, NULL, 'NONE', NULL, NULL, NULL, 'EN_WFS_GetFeature');
 INSERT INTO layer (layer_name, layer_label, service_layer_name, istransparent, default_opacity, isbaselayer, isuntiled, maxscale, minscale, has_legend, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES ('PROTECTEDAREAS_BIOS_WFS', 'Réserves de biosphère', 'PROTECTEDAREAS.BIOS:wld_bios', 1, 100, 0, 1, NULL, NULL, 1, NULL, 'NONE', NULL, NULL, NULL, 'EN_WFS_GetFeature');
