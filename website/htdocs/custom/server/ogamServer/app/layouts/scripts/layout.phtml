@@ -185,7 +185,7 @@ if (!$autoLogin) {
 			    supported = true;
 			}
 
-			if (supported) {
+			if (!supported) {
 		     	document.getElementById('browser-not-supported').style.display = 'block';
 		    }else {
 		     	document.getElementById('browser-not-supported').style.display = 'none';
