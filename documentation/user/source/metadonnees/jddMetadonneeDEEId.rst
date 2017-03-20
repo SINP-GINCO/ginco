@@ -1,9 +1,14 @@
 .. Le champ jddMetadonneeDEEId
 
-Identifiant de métadonnée : jddMetadonneeDEEId
-==============================================
+Déclaration de l’identifiant de métadonnée : jddMetadonneeDEEId
+===============================================================
 
-L'import de données dans GINCO nécessite de connaître l'identifiant de la métadonnée du jeu de données.
-Concrètement, cet identifiant vous sera demandé sur le formulaire d'import d'un jeu de données.
+.. note:: Une donnée importée ou saisie dans GINCO doit **obligatoirement** être rattachée à une fiche de métadonnée.
 
-Todo: récupérer l'identifiant de la fiche dans l'appli INPN.
+.. warning::  Celle-ci doit être saisie au préalable et déclarée lors de l’import d’un jeu de données dans GINCO.
+
+Concrètement, cet identifiant vous sera demandé sur le formulaire d’import d’un jeu de données. L’application l’affecte automatiquement à l’ensemble des données du jeu importé.
+
+Vous pouvez trouver l'identifiant de métadonnée sur le module dédié :
+
+.. image:: ../images/metadata-id.png
