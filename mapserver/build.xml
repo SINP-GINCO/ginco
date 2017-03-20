@@ -22,7 +22,6 @@
 				<filter token="db.name" value="${db.name}" />
 				<filter token="db.user" value="${db.user}" />
 				<filter token="db.user.pw" value="${db.user.pw}" />
-				<filter token="ogam.map.services.url" value="${ogam.map.services.url}" />
 			</filterset>
 		</copy>
 		<copy todir="${dst.dir}/data">
