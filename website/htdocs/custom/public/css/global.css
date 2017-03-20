@@ -75,7 +75,7 @@ body {
 	height: auto !important;
 	height: 100%;
 	margin-top: 0;
-	margin-bottom: -40px;
+	margin-bottom: -80px;
 	/* the bottom margin is the negative value of the footer's height */
 }
 
@@ -138,6 +138,11 @@ body {
 	margin: 2px 0 0 15px;
 }
 
+.logo img{
+	height: 77px;
+	width: auto;
+}
+
 .top {
 	border-bottom: 1px dotted #CCCCCC;
 	border-top: 1px dotted #CCCCCC;
@@ -156,7 +161,7 @@ body {
 }
 
 .footer,.push {
-	height: 40px; /* .push must be the same height as .footer */
+	height: 60px; /* .push must be the same height as .footer */
 }
 
 .footer {
@@ -970,4 +975,26 @@ span.align_images img {
 }
 .link-download button:hover { background: #BE5E58; }
 
+/*************************************************************/
+/*     Logo footer                            	 */
+/*************************************************************/
 
+.footer img {
+	height: 60px;
+	width: auto;
+	padding: 0px 20px;
+}
+
+.footer-left{
+	float:left;
+	text-align: right;
+	width:45%;
+	overflow:hidden;
+}
+
+.footer-right{
+	text-align: left;
+	width:45%;
+	overflow:hidden;
+	padding: 0 0 0 10%;
+} 
