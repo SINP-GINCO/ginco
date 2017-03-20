@@ -3,16 +3,35 @@
 Accéder à l'application de métadonnées de l'INPN
 ================================================
 
-.. note:: L'application de métadonnées de l'INPN possède son propre système
-  d'authentification, qui n'est actuellement pas relié à celui de GINCO.
-  Il faut donc créer un compte sur l'INPN, puis se connecter avec ce compte INPN.
+.. note:: L’application de métadonnées de l’INPN possède son propre système d’authentification, qui n’est actuellement pas relié à celui de GINCO. Il faut donc créer un compte sur l’INPN, puis se connecter avec ce compte INPN.
 
-Accès déconnecté
-****************
+Modalités
+*********
 
-Il n'est pas nécessaire d'être authentifié à l'application de métadonnées de l'INPN
-pour consulter et rechercher les métadonnées qui sont publiées ? todo
-Elles sont directement consultables sur la page d'accueil et sur la page de recherche ?
+* Avoir un compte sur l’INPN : utilisation de l’annuaire national du SINP
+* Faire la demande d’accès à l’application  par mail à sinp-data@mnhn.fr en indiquant :
+ 1- le login ;
+ 2- la personne ;
+ 3- le profil utilisateur demandé.
+ 
+Dans un premier temps, seuls les administrateurs régionaux pourront avoir un compte.
 
-Accès connecté
-**************
+Profils utilisateurs et droits associés
+***************************************
+
++-------------------------+------------------------------------------+------------------------------------------+----------------------+
+|                         | Administrateur                           | Gestionnaire                             | Lecteur              |
+|                         |                                          |                                          |                      |
+|                         |                                          |                                          |                      |
+|                         |                                          |                                          |                      |
++=========================+==========================================+==========================================+======================+
+|Lire une fiche           | Oui                                      | Oui                                      |  Oui                 |
++-------------------------+------------------------------------------+------------------------------------------+----------------------+
+|Créer une fiche          | OK (avec limitation régionale/thématique)| OK (avec limitation régionale/thématique)|  Non                 |
++-------------------------+------------------------------------------+------------------------------------------+----------------------+
+|Modifier une fiche       | OK (avec limitation régionale/thématique)| OK (avec limitation propriété)           |  Non                 |
++-------------------------+------------------------------------------+------------------------------------------+----------------------+
+|Supprimer une fiche      | OK (avec limitation régionale/thématique)| OK (avec limitation propriété)           |  Non                 |
++-------------------------+------------------------------------------+------------------------------------------+----------------------+
+|Publier une fiche        | Oui                                      | Non                                      |  Non                 | 
++-------------------------+------------------------------------------+------------------------------------------+----------------------+
