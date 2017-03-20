@@ -43,7 +43,7 @@ insert into application_parameters (name, value, description) values ( 'zoom_lev
 insert into application_parameters (name, value, description) values ( 'mapserver_dpi' , 72 , 'Default number of dots per inch in mapserv');
 insert into application_parameters (name, value, description) values ( 'mapserver_inch_per_kilometer' , 39370.1 , 'Inch to meter conversion factor');
 insert into application_parameters (name, value, description) values ( 'featureinfo_margin' , 1000 , 'bounding box margin around the user click (in the unit of the map)');
-insert into application_parameters (name, value, description) values ( 'featureinfo_typename' , 'result_locations' , 'Layer that is queried');
+insert into application_parameters (name, value, description) values ( 'featureinfo_typename' , 'result_geometrie' , 'Layer that is queried');
 insert into application_parameters (name, value, description) values ( 'featureinfo_maxfeatures' , 20 , 'Max number of features returned by a click on the map. If 0 then there is no limit; If 1 the direct access to the detail');
 insert into application_parameters (name, value, description) values ( 'contactEmailPrefix' , 'sinp' , 'Email');
 insert into application_parameters (name, value, description) values ( 'contactEmailSufix' , 'ign.fr' , 'Email');
@@ -60,7 +60,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ( 'site_nam
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePrivateDirectory','/var/data/ginco/@instance.name@/dee/private','Directory where DEE GML files are generated and stored');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/data/ginco/@instance.name@/dee/public','Directory where DEE archive are stored and can be downloaded');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'regionCode','@region.code@','INSEE Code for region, or ISO code for country');
-INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@ogam.map.services.url@','URL of the site');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@site.url@','URL of the site');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deeNotificationMail', 'sinp-dev@ign.fr', 'Contact mail to send notifications when the DEE is created/updated');
 INSERT INTO application_parameters (name, value, description) VALUES ('sendEmail','1','Send emails for real ? 1/true, 0/false');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'contactEmail','sinp-dev@ign.fr','Destination mail of the contact form');
