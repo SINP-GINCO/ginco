@@ -2,7 +2,7 @@
 -- Table: raw_data.jdd
 -------------------------------------------------------------------------------
 SET search_path TO raw_data;
--- DROP TABLE raw_data.jdd;
+DROP TABLE IF EXISTS jdd;
 
 CREATE TABLE jdd
 (
