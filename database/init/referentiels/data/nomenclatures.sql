@@ -135,53 +135,6 @@ INSERT INTO NatureObjetGeoValue VALUES ('In','Inventoriel : Le taxon observé es
 INSERT INTO NatureObjetGeoValue VALUES ('NSP','Ne Sait Pas : L’information est inconnue','');
 
 
-CREATE TABLE TypeENValue (
-    code character varying(32),
-    label character varying(128),
-    definition character varying(510)
-);
-
-ALTER TABLE referentiels.TypeENValue OWNER TO postgres;
-
-ALTER TABLE ONLY TypeENValue ADD CONSTRAINT TypeENValue_pkey PRIMARY KEY (code);
-
-INSERT INTO TypeENValue VALUES ('CPN','Coeur de parc national','');
-INSERT INTO TypeENValue VALUES ('AAPN','Aire d''adhésion de parc national','');
-INSERT INTO TypeENValue VALUES ('RIPN','Réserve intégrale de parc national','');
-INSERT INTO TypeENValue VALUES ('PNM','Parc naturel marin','');
-INSERT INTO TypeENValue VALUES ('PNR','Parc naturel régional ','');
-INSERT INTO TypeENValue VALUES ('RNN','Réserve naturelle nationale ','');
-INSERT INTO TypeENValue VALUES ('RNC','Réserve naturelle de Corse','');
-INSERT INTO TypeENValue VALUES ('RNR','Réserve naturelle régionale ','');
-INSERT INTO TypeENValue VALUES ('PRN','Périmètre de protection de réserve naturelle','');
-INSERT INTO TypeENValue VALUES ('RBD','Réserve biologique ','');
-INSERT INTO TypeENValue VALUES ('RBI','Réserve biologique intégrale ','');
-INSERT INTO TypeENValue VALUES ('RNCFS','Réserve nationale de chasse et faune sauvage ','');
-INSERT INTO TypeENValue VALUES ('RCFS','Réserve de chasse et faune sauvage ','');
-INSERT INTO TypeENValue VALUES ('APB','Arrêté de protection de biotope','');
-INSERT INTO TypeENValue VALUES ('MAB','Réserve de biosphère (Man and Biosphère) ','');
-INSERT INTO TypeENValue VALUES ('SCL','Site du Conservatoire du littoral','');
-INSERT INTO TypeENValue VALUES ('RAMSAR','Site Ramsar Zone humide d''importance internationale','');
-INSERT INTO TypeENValue VALUES ('ASPIM','Aire spécialement protégée d''importance méditerranéenne','');
-INSERT INTO TypeENValue VALUES ('SCEN','Site de Conservatoire d''espaces naturels ','');
-INSERT INTO TypeENValue VALUES ('ENS','Espace naturel sensible','');
-INSERT INTO TypeENValue VALUES ('OSPAR','Zone marine protégée de la convention OSPAR','');
-INSERT INTO TypeENValue VALUES ('APIA','Ezone protégée de la convention d''Apia ','');
-INSERT INTO TypeENValue VALUES ('CARTH','Zone protégée de la convention de Carthagène ','');
-INSERT INTO TypeENValue VALUES ('ANTAR','Zone protégée du Traité de l''Antartique','');
-INSERT INTO TypeENValue VALUES ('NAIRO','Zone spécialement protégée de la convention de Nairobi ','');
-INSERT INTO TypeENValue VALUES ('ZHAE','Zone humide acquise par l''Agence de l''eau','');
-INSERT INTO TypeENValue VALUES ('BPM','Bien inscrit sur la liste du patrimoine mondial de l''UNESCO','');
-INSERT INTO TypeENValue VALUES ('N2000','Natura 2000','');
-INSERT INTO TypeENValue VALUES ('ZNIEFF1','Zone Naturelle d''Intérêt Ecologique Faunistique et Floristique type 1','');
-INSERT INTO TypeENValue VALUES ('ZNIEFF2','Zone Naturelle d''Intérêt Ecologique Faunistique et Floristique type 2','');
-INSERT INTO TypeENValue VALUES ('ZNIEFF','Zone Naturelle d''Intérêt Ecologique Faunistique et Floristique (type non précisé)','');
-
-
-
-
-
-
 CREATE TABLE NiveauPrecisionValue (
     code character varying(32),
     label character varying(128),
@@ -198,14 +151,6 @@ INSERT INTO NiveauPrecisionValue VALUES ('2','Diffusion floutée par rattachemen
 INSERT INTO NiveauPrecisionValue VALUES ('3','Diffusion floutée par rattachement au département ','');
 INSERT INTO NiveauPrecisionValue VALUES ('4','Aucune diffusion (cas exceptionnel), correspond à une donnée de sensibilité 4 ','');
 INSERT INTO NiveauPrecisionValue VALUES ('5','Diffusion telle quelle : si une donnée précise existe, elle doit être diffusée telle quelle ','');
-
-
-
-
-
-
-
-
 
 
 
