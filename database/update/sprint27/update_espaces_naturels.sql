@@ -15,7 +15,7 @@ ALTER TABLE codeentampon
   OWNER TO admin;
 
 -- Copier le fichier dans la table tampon
-COPY codeentampon ( codeen, libelleen, typeen, labeltypeen) FROM '@sprintDir@/en_inpn.csv' WITH DELIMITER ',' CSV HEADER;
+\COPY referentiels.codeentampon ( codeen, libelleen, typeen, labeltypeen) FROM '@sprintDir@/en_inpn.csv' WITH (NULL '', FORMAT 'csv', HEADER, DELIMITER E',', ENCODING 'UTF-8');
 
 -- Vide puis remplit la table typeenvalue à partir de la table tampon
 TRUNCATE typeenvalue;
