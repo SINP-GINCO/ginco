@@ -13,7 +13,8 @@
 
 
 /**
- * View for the data submission.
+ * View for the datasets (jdd).
+ * Completely modified with #801.
  * @package views
  */
 ?>
@@ -42,207 +43,244 @@ $user = $userSession->user;
 
 
 <!-- Show the currently active location submissions -->
-<?php if(!empty($this->submissions)){ ?>
-<table class="sectiontable">
-<tr>
-    <th style="text-align:center"><?php echo $this->translate('Submission ID');?></th>
-    <th style="text-align:center"><?php echo $this->translate('Date');?></th>
-    <th style="text-align:center"><?php echo $this->translate('Provider');?></th>
-    <th style="text-align:center"><?php echo $this->translate('User');?></th>
-    <th style="text-align:center"><?php echo $this->translate('Dataset');?></th>
-    <th style="text-align:center"><?php echo $this->translate('Step');?></th>
-    <th style="text-align:center"><?php echo $this->translate('Status');?></th>
-    <th><?php echo $this->translate('File');?></th>
-    <th style="text-align:right"><?php echo $this->translate('Lines');?>&nbsp;</th>
-    <?php if ($user->isAllowed('MANAGE_DATASETS')) { ?>
-    <th style="text-align:center"><?php echo $this->translate('Export DEE');?>&nbsp;</th>
-    <?php } ?>
-    <th style="text-align:center"><?php echo $this->translate('Actions');?></th>
-    <th></th>
-</tr>
-<?php
-$i = 0;
-foreach ($this->submissions as $submission) {
-    if ($submission->datasetLabel == null) {
-        $submission->datasetLabel = "modèle d'import dépublié";
-    }
-?>
-<tr class="sectiontableentry<?php echo $i % 2?>">
-    <td><?php echo  $this->escape($submission->submissionId); ?></td>
-    <td><?php echo  $this->escape($submission->date); ?></td>
-    <td><?php echo  $this->escape($submission->providerLabel); ?></td>
-    <td><?php echo  $this->escape($submission->userLogin); ?></td>
-    <td><?php echo  $this->escape($submission->datasetLabel); ?></td>
-    <td><?php echo  $this->escape($submission->step); ?></td>
-    <td>
-        <?php if ($submission->status === "OK" && $submission->step === "INSERT") { ?>
-        <!-- occurred when submission is too fast : perform check just after -->
-        <script>
-            window.onload = function(e){
-                window.location="<?php echo  $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>";
-            }
-        </script>
-        <?php } else if ($submission->status === "OK") { ?>
-            <?php echo  $this->escape($submission->status); ?>
-            <img src="<?php echo  $this->baseUrl('img/Green_tick.png') ?>" />
-        <?php } else if ($submission->status === "WARNING") { ?>
-            <?php echo  $this->escape($submission->status); ?>
-            <img src="<?php echo  $this->baseUrl('img/warning_orange.png') ?>" />
-        <?php } else if ($submission->status === "RUNNING") { ?>
-            <div class="tempStatusDiv" id="tempStatusDiv_<?php echo  $submission->submissionId ?>">
-            <script type="text/javascript">
-                var OgamDesktopIntegration = {};
-            // Display the progress bar
-            display('progressBar<?php echo  $submission->submissionId ?>', '', 0, '<?php echo  $this->baseUrl('img/') ?>');
-
-            // Refresh The status of the submission
-                OgamDesktopIntegration.getStatus_<?php echo $submission->submissionId ?> = function () {
-                var url = '<?php echo  $this->baseUrl('Integration/') ?>';
-                    <?php if ($submission->step === "CHECK") { ?>
-                    url += 'get-check-status';
-                    <?php } else { ?>
-                    url += 'get-data-status';
-                    <?php } ?>
-                    OgamDesktopIntegration.request = new XMLHttpRequest();
-                    OgamDesktopIntegration.request.onreadystatechange = function () {
-                        if (OgamDesktopIntegration.request.readyState == 4) { // 4: request finished and response is ready
-                            if (OgamDesktopIntegration.request.status == 200) { // Success
-                                var rp = JSON.parse(OgamDesktopIntegration.request.responseText);
-                        var src = '<?php echo $this->baseUrl('img/') ?>';
-                        switch(rp.status){
-                            case 'OK':
-                                OgamDesktopIntegration.getStatusTask_<?php echo $submission->submissionId ?>.clear();
-                                window.location="<?php echo  $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>";
-                                break;
-                            case 'WARNING':
-                            case 'ERROR':
-                            case 'CRASH':
-                                OgamDesktopIntegration.getStatusTask_<?php echo $submission->submissionId ?>.clear();
-                                location.reload();
-                                break;
-                            case 'RUNNING':
-                                total = rp.totalCount;
-                                if (total == 0) {
-                                    percentage = 1;
-                                } else {
-                                    percentage = rp.currentCount / total;
-                                }
-                                percentage = (percentage * 100);
-                                setLabel('progressBar<?php echo  $submission->submissionId ?>', rp.taskName);
-                                setProgress('progressBar<?php echo  $submission->submissionId ?>', percentage);
-                                break;
-                            default:
-                                return;
-                            }
-                        } else { // Failure
-
-                        }
-                    }
-                };
-                OgamDesktopIntegration.request.open("GET", url+'?action=status&submissionId='+<?php echo $submission->submissionId ?>, true);
-                OgamDesktopIntegration.request.send();
-            }
-            OgamDesktopIntegration.getStatusTask_<?php echo $submission->submissionId ?> = later.setInterval(OgamDesktopIntegration.getStatus_<?php echo $submission->submissionId ?>, later.parse.text('every 2 sec'));
-            </script>
-            </div>
-        <?php } else { //"ERROR" or "CRASH") ?>
-            <?php echo $this->escape($submission->status); ?>
-            <img src="<?php echo  $this->baseUrl('img/Red_x.png') ?>" />
-        <?php } ?>
-    </td>
-    <td colspan=2>
-        <?php if ($submission->status !== "DATARUNNING") : ?>
-            <table width="100%">
-            <?php foreach ($submission->files as $file) : ?>
-                <tr><td class="file-name">
-                	<span title="<?php echo  $file->fileType ?>">
-                    <?php
-                        $fileName = $file->fileName;
-                        $fileName = strtr($fileName,'\\','/');
-                        $fileName = substr($fileName, strrpos($fileName,'/') + 1);
-                        echo $fileName;
-                    ?>
-                    </span>
-                </td>
-                <td class="line-number"><?php echo  $file->lineNumber ?></td>
-                </tr>
-
-            <?php endforeach; ?>
-            </table>
-        <?php endif; ?>
-    </td>
-
-    <?php if ($user->isAllowed('MANAGE_DATASETS')) { ?>
-    <td><!-- Export cell -->
-        <?php
-        if ($submission->status != "OK" || $submission->step != "VALIDATE") {
-        ?>
-        <p>Publiez les données <br>pour les exporter en DEE.</p>
-        <?php } else { ?>
-
-        <div class="dee-status hidden" data-target="<?php echo $submission->submissionId ?>"></div>
-        <div class="progress hidden">
-            <script type="text/javascript">
-                var $label = "<?php echo 'Génération DEE ' . (($submission->status == 'RUNNING') ? 'en cours...' : 'en attente...')?>";
-                display('deeprogress' + <?php echo $submission->submissionId ?>, $label, 0 ,'/img/');
-            </script>
-        </div>
-        <div class="dee-content" data-target="<?php echo $submission->submissionId ?>"></div>
-        <?php } ?>
-    </td><!-- End of the export cell -->
-    <?php } ?>
-
-    <!-- Actions cell -->
-    <td>
-
+<?php if(!empty($this->datasets)){ ?>
+    <table class="sectiontable">
+        <tr class="sectiontableheader">
+            <th><?php echo $this->translate('ID');?></th>
+            <th><?php echo $this->translate('Update');?></th>
+            <th><?php echo $this->translate('Title');?></th>
+            <th><?php echo $this->translate('Provider');?></th>
+            <th><?php echo $this->translate('Nb of data');?></th>
+            <th><?php echo $this->translate('DSR');?></th>
+            <th><?php echo $this->translate('Reports');?></th>
+            <?php if ($user->isAllowed('MANAGE_DATASETS')) { ?>
+                <th><?php echo $this->translate('DEE');?>&nbsp;</th>
+            <?php } ?>
+            <th><?php echo $this->translate('Delete');?></th>
+        </tr>
     <?php
-    if ($submission->step !== "INIT" && $submission->status !== "DATARUNNING") {
-        ?>
-        <p><a href="<?php echo  $this->url(array('controller'=>'dataset','action'=>'download-report'), 'default', true)?>?submissionId=<?php echo $submission->submissionId;?>&report=integrationReport" ><?php echo $this->translate('Show report');?></a></p>
-    <?php }
-    if ($submission->status === "OK") {
-        ?>
-        <p>
-            <a href="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $submission->submissionId; ?>&report=sensibilityReport"><?php echo $this->translate('Sensibility Report'); ?></a>
-        </p>
-        <p>
-            <a href="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $submission->submissionId; ?>&report=permanentIdsReport"><?php echo $this->translate('Permanent Ids Report'); ?></a>
-        </p>
-
-    <?php }
-
-    if ($submission->step === "INSERT" && $submission->status === "OK") {
-?>
-    <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" ><?php echo $this->translate('Check data');?></a></p>
-    <?php }
-
-    if ($submission->step === "CHECK" && ($submission->status === "OK" || $submission->status === "WARNING") && $user->isAllowed('CONFIRM_SUBMISSION')) {
-?>
-    <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'validate-data'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" onClick="return confirm('<?php echo $this->translate('Confirm_submission_warning');?>');"><?php echo $this->translate('Publish data');?></a></p>
-    <?php
-    }
-    if ($submission->step === "VALIDATE" && ($submission->status === "OK" || $submission->status === "WARNING") && $user->isAllowed('CONFIRM_SUBMISSION')) {
+        $i = 0;
+        foreach ($this->datasets as $dataset) {
+            //if ($dataset->datasetLabel == null) {
+            //    $submission->datasetLabel = "modèle d'import dépublié";
+            //}
     ?>
-    <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'invalidate-data'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" onClick="return confirm('<?php echo $this->translate('Unpublish_submission_warning');?>');"><?php echo $this->translate('Unpublish data');?></a></p>
-    <?php }
-    if ($submission->step != "VALIDATE" || $user->isAllowed('CANCEL_VALIDATED_SUBMISSION')) {
-        if ($submission->providerId == $userSession->user->provider->id || ($user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION'))) {
-?>
-    <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'cancel-data-submission'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" onClick="return confirm('<?php echo $this->translate('Are you sure?');?>');"><?php echo $this->translate('Cancel Submission');?></a></p>
-<?php  }
-    } ?>
-    </td>
-    <!-- End of the actions cell -->
-</tr>
+            <tr class="sectiontableentry<?php echo $i % 2?>">
+                <td><?php if($dataset['step'] !== "CANCEL") {
+                        echo $this->escape($dataset['submission_id']);
+                }?><br/>
+                <?php echo $this->escape($dataset['jdd_metadata_id']); ?></td>
+                <td><?php echo  $this->escape($dataset['created_at']); ?></td>
+                <td><?php echo  $this->escape($dataset['title']); ?></td>
+                <td style="text-align:center"><?php echo $this->escape($dataset['provider_label']);?></td>
+                <td style="text-align:center"><?php echo $this->escape($dataset['nb_data']);?></td>
+                <!-- Begin DSR column  -->
+                <td>
+                    <table>
+                        <tr>
+                        <?php
+                            $hasSubmission = isset($dataset['submission_id']);
+                            if ($dataset['status'] === "OK" && $dataset['step'] === "INSERT") { ?>
+                            <!-- occurred when submission is too fast : perform check just after -->
+                            <script>
+                                window.onload = function(e){
+                                    window.location="<?php echo  $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>?submissionId=<?php echo $dataset['submission_id'];?>";
+                                }
+                            </script>
+                            <?php
+                            } else if ($dataset['status'] === "WARNING") {
+                                echo $this->escape($dataset['status']); ?>
+                                <img src="<?php echo $this->baseUrl('img/warning_orange.png') ?>"/>
+                            <?php
+                            } else if ($dataset['status'] === "RUNNING"){ ?>
+                                <div class="tempStatusDiv" id="tempStatusDiv_<?php echo $dataset['submission_id'] ?>">
+                                <script type="text/javascript">
+                                    var OgamDesktopIntegration = {};
+                                    // Display the progress bar
+                                    display('progressBar<?php echo  $dataset['submission_id'] ?>', '', 0, '<?php echo  $this->baseUrl('img/') ?>');
+                                    // Refresh The status of the submission
+                                    OgamDesktopIntegration.getStatus_<?php echo $dataset['submission_id'] ?> = function () {
+                                        var url = '<?php echo  $this->baseUrl('Integration/') ?>';
+                                        <?php
+                                        if ($dataset['step'] === "CHECK") { ?>
+                                            url += 'get-check-status';
+                                        <?php
+                                        } else { ?>
+                                            url += 'get-data-status';
+                                        <?php
+                                        } ?>
+                                        OgamDesktopIntegration.request = new XMLHttpRequest();
+                                        OgamDesktopIntegration.request.onreadystatechange = function () {
+                                            if (OgamDesktopIntegration.request.readyState == 4) { // 4: request finished and response is ready
+                                                if (OgamDesktopIntegration.request.status == 200) { // Success
+                                                    var rp = JSON.parse(OgamDesktopIntegration.request.responseText);
+                                                    var src = '<?php echo $this->baseUrl('img/') ?>';
+                                                    switch(rp.status){
+                                                        case 'OK':
+                                                            OgamDesktopIntegration.getStatusTask_<?php echo $dataset['submission_id'] ?>.clear();
+                                                            window.location="<?php echo  $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>?submissionId=<?php echo $dataset['submission_id'];?>";
+                                                            break;
+                                                        case 'WARNING':
+                                                        case 'ERROR':
+                                                        case 'CRASH':
+                                                            OgamDesktopIntegration.getStatusTask_<?php echo $dataset['submission_id'] ?>.clear();
+                                                            location.reload();
+                                                            break;
+                                                        case 'RUNNING':
+                                                            total = rp.totalCount;
+                                                            if (total == 0) {
+                                                                percentage = 1;
+                                                            } else {
+                                                                percentage = rp.currentCount / total;
+                                                            }
+                                                            percentage = (percentage * 100);
+                                                            setLabel('progressBar<?php echo  $dataset['submission_id'] ?>', rp.taskName);
+                                                            setProgress('progressBar<?php echo  $dataset['submission_id'] ?>', percentage);
+                                                            break;
+                                                        default:
+                                                            return;
+                                                    }
+                                                } else {
+                                                    // Failure
+                                                }
+                                            }
+                                        };
+                                        OgamDesktopIntegration.request.open("GET", url+'?action=status&submissionId='+<?php echo $dataset['submission_id'] ?>, true);
+                                        OgamDesktopIntegration.request.send();
+                                    }
+                                    OgamDesktopIntegration.getStatusTask_<?php echo $dataset['submission_id'] ?> = later.setInterval(OgamDesktopIntegration.getStatus_<?php echo $dataset['submission_id'] ?>, later.parse.text('every 2 sec'));
+                                </script>
+                                </div>
+                            <?php
+                            } else if (($dataset['status'] === 'ERROR' || $dataset['status'] === 'CRASH') && $dataset['step'] !== 'CANCEL') { //"ERROR" or "CRASH") ?>
+                            <td>
+                                <img title="<?php echo $this->translate('The file contains errors')?>" src="<?php echo $this->baseUrl('img/warning_red.png') ?>" />
+                            </td>
+                            <?php
+                            } else if ($dataset['step'] === "CHECK" && ($dataset['status'] === "OK"
+                                || $dataset['status'] === "WARNING") && $user->isAllowed('CONFIRM_SUBMISSION')) {?>
+                                <td><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'validate-data'), null, true)?>?submissionId=<?php echo $dataset['submission_id'];?>"
+                                   onClick="return confirm('<?php echo $this->translate('Confirm_submission_warning');?>');"
+                                   title="<?php echo $this->translate('Publish data');?>">
+                                <img src="<?php echo $this->baseUrl('img/play_publish.png'); ?>"/></a></td>
+                            <?php
+                            } else if ($dataset['step'] === "VALIDATE" && ($dataset['status'] === "OK"
+                                || $dataset['status'] === "WARNING") && $user->isAllowed('CONFIRM_SUBMISSION')) {?>
+                                <td><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'invalidate-data'), null, true)?>?submissionId=<?php echo $dataset['submission_id'];?>"
+                                            onClick="return confirm('<?php echo $this->translate('Unpublish_submission_warning');?>');"
+                                            title="<?php echo $this->translate('Unpublish data');?>">
+                                <img src="<?php echo  $this->baseUrl('img/stop_green.png'); ?>" /></a></td>
+                            <?php
+                            } else {
+                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                            }
+                            if ($dataset['step'] === "CANCEL" || $dataset['status'] === "ERROR") {?>
+                                <td><a href="<?php echo $this->url(array('controller'=>'integration','action'=>'show-create-data-submission'), null, true)?>?jddId=<?php echo $dataset['id'];?>">
+                                <img title="<?php echo $this->translate('Upload data file');?>" src="<?php echo $this->baseUrl('img/upload.png') ?>"/></a></td>
+                            <?php
+                            } else {
+                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                            }
+                            if ($dataset['step'] === "INSERT" && $dataset['status'] === "OK") {?>
+                                <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>
+                                           ?submissionId=<?php echo $dataset['submission_id'];?>
+                                           " >
+                                           <?php echo $this->translate('Check data');?>
+                                </a>
+                            <?php
+                            }
+                            if (($dataset['step'] !== "VALIDATE" && $dataset['step'] !== "CANCEL")
+                                && $user->isAllowed('CANCEL_VALIDATED_SUBMISSION')) {
+                                if ($dataset['provider_id'] == $userSession->user->provider->id
+                                    || $user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) {?>
+                                    <td><a href="<?php echo $this->url(array('controller'=>'integration','action'=>'cancel-data-submission'), null, true)?>?submissionId=<?php echo $dataset['submission_id'];?>
+                                     " onClick="return confirm('<?php echo $this->translate('Are you sure?');?>');"
+                                     title = "<?php echo $this->translate('Cancel Submission');?>">
+                                    <img src="<?php echo $this->baseUrl('img/delete_x_icon.png'); ?>" /></a></td>
+                                <?php
+                                } else {
+                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                            }
+                            } else {
+                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                            }?>
+                        </tr>
+                    </table>
+                </td>
+                <!-- End DSR column  -->
+                <!-- Begin reports column -->
+                <td style="text-align:center">
+                <?php if ($dataset['step'] !== "CANCEL") {?>
+                    <select onChange="window.location.href=this.value">
+                        <option value="">
+                            <?php echo '---' . $this->translate('Download reports') . '---';?>
+                        </option>
+                        <?php
+                        if ($dataset['step'] !== "INIT" && $dataset['status'] !== "DATARUNNING") {?>
+                            <option value="<?php echo $this->url(array('controller'=>'dataset','action'=>'download-report'), 'default', true) ?>?submissionId=<?php echo $dataset['submission_id']; ?>&report=integrationReport">
+                                           <?php echo $this->translate('Show report');?>
+                            </option>
+                        <?php
+                        }
+                        if ($dataset['status'] === "OK") {?>
+                            <option value="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $dataset['submission_id']; ?>&report=sensibilityReport">
+                                           <?php echo $this->translate('Sensibility Report'); ?>
+                            </option>
+                            <option value="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $dataset['submission_id']; ?>&report=permanentIdsReport">
+                                           <?php echo $this->translate('Permanent Ids Report'); ?>
+                            </option>
+                        <?php
+                        }
+                    } else {
+                        echo $this->translate('-');
+                    }?>
+                    </select>
+                </td>
+                <!-- End reports column -->
+                <!-- Begin DEE column -->
+                <td>
+                <?php if ($user->isAllowed('MANAGE_DATASETS') && isset($dataset['submission_id'])) {
+                    if ($hasSubmission && $dataset['status'] != "OK" || $dataset['step'] != "VALIDATE") {?>
+                        <p>Publiez les données <br>pour les exporter en DEE.</p>
+                        <?php
+                    } else { ?>
+                        <div class="dee-status hidden" data-target="<?php echo $dataset['submission_id'] ?>"></div>
+                        <div class="progress hidden">
+                            <script type="text/javascript">
+                                var $label = "<?php echo 'Génération DEE ' . (($dataset['status'] == 'RUNNING') ? 'en cours...' : 'en attente...')?>";
+                                display('deeprogress' + <?php echo $dataset['submission_id'] ?>, $label, 0 ,'/img/');
+                            </script>
+                        </div>
+                        <div class="dee-content" data-target="<?php echo $dataset['submission_id'] ?>"></div>
+                    <?php
+                    }
+                }?>
+                </td>
+                <!-- End DEE column  -->
+                <!-- Begin remove column -->
+                <td>
+                <?php if ($dataset['step'] === "CANCEL" && !isset($dataset['export_file_id'])) {
+                    if ($dataset['provider_id'] == $userSession->user->provider->id
+                        || ($user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION'))) {?>
+                        <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'remove-jdd'), null, true)?>?jddId=<?php echo $dataset['id'];?>
+                                " onClick="return confirm('<?php echo $this->translate('Are you sure?');?>');"
+                                title="<?php echo $this->translate('Remove dataset');?>">
+                        <img src="<?php echo  $this->baseUrl('img/delete_x_icon.png') ?>" /></a>
+                        <?php
+                    }
+                }?>
+                </td>
+                <!-- End remove column -->
+            </tr>
+            <?php
+            $i++;
+        }?>
+    </table>
+    <?php
+} else { ?>
+    <div class="no-submission"><?php echo $this->translate('No dataset found');?></div>
 <?php
-	$i++;
-}
-?>
-</table>
-<?php } else { ?>
-<div class="no-submission"><?php echo $this->translate('No submission found');?></div>
-<?php } ?>
-
+} ?>
 
 <!-- Scripts of the page -->
 <script type="text/javascript">
@@ -336,13 +374,25 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
     var $actions = getActions($status);
 
     $contentDiv.html('');
+    var table = $('<table></table>');
+    var row = $('<tr></tr>');
+    table.append(row);
 
+
+    if ($.inArray( 'Relancer', $actions ) != -1) {
+        var $launchAgainLink = $("<td><a class='align_images' title='Regénérer' href=''><img src='/img/refresh_arrow.png'></a></td>");
+        row.append($launchAgainLink);
+        $launchAgainLink.click( function(e) {
+            e.preventDefault();
+            addExportJob($submissionId);
+        });
+    }
     // Download link if file is available
     if ($status == 'COMPLETED') {
-        var $downloadLink = $("<a class='align_images' href='/gmlexport/download?submissionId=" + $submissionId+ "'><img src='/img/save.png'> Télécharger les DEE</a>");
-        $contentDiv.append($downloadLink);
+        var $downloadLink = $("<td><a class='align_images' href='/gmlexport/download?submissionId=" + $submissionId+ "'><img src='/img/.png'> Télécharger les DEE</a></td>");
+        row.append($downloadLink);
     } else if ($status == 'ABORTED') {
-        $contentDiv.append("<p><strong>ERREUR</strong> lors de la génération DEE</p>");
+        row.append("<td class='align_images'><img title='Erreur lors de la génération DEE' src='/img/warning_red.png'/></td>");
     }
 
     // Update progress bar if RUNNING
@@ -362,31 +412,22 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
 
     // Action links
     if ($.inArray( 'Lancer', $actions ) != -1) {
-        var $launchLink = $("<a class='align_images' href=''><img src='/img/play.png'> Générer les DEE</a>");
-        $contentDiv.append($launchLink);
+        var $launchLink = $("<td><a class='align_images' href=''><img src='/img/play_publish.png'> Générer les DEE</a></td>");
+        row.append($launchLink);
         $launchLink.click( function(e) {
             e.preventDefault();
             addExportJob($submissionId);
         });
     }
     if ($.inArray( 'Annuler', $actions ) != -1) {
-        var $cancelLink = $("<a class='align_images' href=''><img src='/img/delete.png'> Annuler</a>");
-        $contentDiv.append($cancelLink);
+        var $cancelLink = $("<td><a class='align_images' href='' title='Annuler'><img src='/img/delete_x_icon.png'></a></td>");
+        row.append($cancelLink);
         $cancelLink.click( function(e) {
             e.preventDefault();
             cancelExport($submissionId);
         });
     }
-    if ($.inArray( 'Relancer', $actions ) != -1) {
-        var $launchAgainLink = $("<a class='align_images' href=''><img src='/img/refresh.png'> Regénérer</a>");
-        $contentDiv.append($launchAgainLink);
-        $launchAgainLink.click( function(e) {
-            e.preventDefault();
-            addExportJob($submissionId);
-        });
-    }
-    // Wrap each link in a div
-    $contentDiv.find( "a" ).wrap( "<div class='action'></div>" );
+    $contentDiv.append(table);
 }
 
 /**

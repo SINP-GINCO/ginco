@@ -202,6 +202,13 @@ Dataset metadata identifier;Identifiant de métadonnées
 Declare the metadata id;Déclarer l'identifiant de métadonnées
 The metadata ID '%s' already exists. Please declare another one.; L'identifiant de métadonnées '%s' existe déjà. Merci d'en déclarer un autre.
 The download failed for metadata id '%s';Le téléchargement de la fiche de métadonnées pour l'identifiant '%s' a échoué.
+ID;ID
+DSR;DSR
+DEE;DEE
+Update;Mise à jour
+Title;Titre
+Reports;Rapports
+Nb of data;Nb de données
 User;Utilisateur
 Dataset;Modèle d'import
 Data model;Modèle de données
@@ -215,7 +222,8 @@ Upload Data;Chargement des données
 Check data;Vérifier les données
 Show report;Rapport de conformité et cohérence
 Validate data;Valider la soumission
-Cancel Submission;Supprimer le jeu de données
+Cancel Submission;Supprimer la soumission
+Remove dataset; Supprimer le jeu de données
 Publish data;Publier les données
 Confirm_submission_warning;Une fois publiées, les données seront disponibles pour la recherche, visualisation et export GML. Voulez-vous confirmer ?
 Unpublish_submission_warning;Une fois dépubliées, les données ne seront plus disponibles pour la recherche, la visualisation et l'export GML. Voulez-vous confirmer ?
@@ -224,7 +232,9 @@ Submit;Valider
 Error;Erreur
 The expected fields are<br />:;Les champs attendus sont :<br /> 
 Are you sure?;Etes-vous sur ?
-No submission found;Aucune soumission trouvée.
+No dataset found;Aucun jeu de données trouvé.
+The file contains errors;Le fichier contient des erreurs.
+Upload data file;Téléverser un jeu de données
 Taxon occurrence;Observation de Taxon
 Observation taxon MNHN;Observation taxon MNHN
 Observation taxon IGN;Observation taxon IGN
@@ -242,6 +252,7 @@ You must select all files to upload;Vous devez sélectionner un fichier de donn�
 <span class="hint-title">;<span class="hint-title">
 Sensibility Report;Rapport de sensibilité
 Permanent Ids Report;Rapport des identifiants permanents
+Download reports;Télécharger les rapports
 Number of sensible data;Nombre de données sensibles
 Total number of data in the submission;Nombre de données total dans la soumission
 Download a file model for;Télécharger un modèle de fichier pour
