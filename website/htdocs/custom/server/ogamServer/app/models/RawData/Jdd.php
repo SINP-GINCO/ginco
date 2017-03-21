@@ -30,6 +30,22 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 
 	protected $lang;
 
+	protected $dbConn;
+
+	public function __construct() {
+		parent::__construct();
+
+		// Initialize the logger
+		$this->logger = Zend_Registry::get("logger");
+
+		// The database connection
+		$this->dbConn = Zend_Registry::get('raw_db');
+	}
+
+	function __destruct() {
+		$this->dbConn->closeConnection();
+	}
+
 	/**
 	 * Initialization
 	 */
@@ -38,6 +54,80 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 
 		$translate = Zend_Registry::get('Zend_Translate');
 		$this->lang = strtoupper($translate->getAdapter()->getLocale());
+	}
+
+	/**
+	 * Find the datasets (jdd) which are not deleted.
+	 *
+	 * @param Application_Object_Website_Jdd $jdd
+	 *        	The jdd
+	 * @return Application_Object_Website_Jdd the jdd updated with the last id inserted
+	 */
+	public function find($providerId = null) {
+		Zend_Registry::get("logger")->info('getDatasets');
+		// Retrieve jdd data
+		$jddReq = "SELECT * FROM raw_data.jdd WHERE status <> 'deleted'";
+
+		$selectJdd = $this->dbConn->prepare($jddReq);
+
+		$selectJdd->execute();
+
+		$result = array();
+		foreach ($selectJdd->fetchAll() as $row) {
+
+			$jddId = $row['id'];
+			$submissionId = $row['submission_id'];
+			// Format metadata_id (with this form : ...e682aa)
+			$jddMetadataId = $row['jdd_metadata_id'];
+			$jddMetadataId = "..." . substr($jddMetadataId, strlen($jddMetadataId) - 6, strlen($jddMetadataId));
+			// Format creation date
+			$createdAt = new DateTime($row['created_at']);
+			$createdAt = $createdAt->format('d/m/Y');
+
+			$jddInfo = array(
+				'id' => $jddId,
+				'jdd_metadata_id' => $jddMetadataId,
+				'submission_id' => $row['submission_id'],
+				'title' => $row['title'],
+				'created_at' => $createdAt,
+				'nb_data' => '-',
+				'provider_label' => '-',
+			);
+
+			if (isset($submissionId)) {
+				// Retrieve submission data
+				$submissionReq = " SELECT provider_id, p.label as provider_label, nb_line, s.status, step, file_type, file_name ";
+				$submissionReq .= " FROM raw_data.submission s ";
+				$submissionReq .= " LEFT JOIN raw_data.submission_file USING (submission_id)";
+				$submissionReq .= " LEFT JOIN website.providers p ON p.id = s.provider_id";
+				$submissionReq .= " WHERE submission_id = ? ";
+
+				if ($providerId) {
+					$req .= " AND provider_id = ?";
+				}
+
+				$selectSubmission = $this->dbConn->prepare($submissionReq);
+				$params = array();
+				$params[] = $submissionId;
+				if ($providerId) {
+					$params[] = $providerId;
+				}
+				$selectSubmission->execute($params);
+				$submission = $selectSubmission->fetch();
+
+				$jddInfo['provider_id'] = $submission['provider_id'];
+				$jddInfo['provider_label'] = $submission['provider_label'];
+				$jddInfo['nb_data'] = $submission['nb_line'];
+				$jddInfo['status'] = $submission['status'];
+				$jddInfo['file_type'] = $submission['file_type'];
+				$jddInfo['file_name'] = $submission['file_name'];
+				$jddInfo['step'] = $submission['step'];
+			}
+
+			$result[$jddId] = $jddInfo;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -58,6 +148,24 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	}
 
 	/**
+	 * Update an existing jdd.
+	 *
+	 * @param Application_Object_Website_Jdd $jdd
+	 *        	The jdd
+	 * @return Integer the result of the update
+	 */
+	public function updateJdd($jdd) {
+		$data = array(
+			'title' => $jdd->title,
+			'status' => $jdd->status,
+			'model_id' => $jdd->modelId
+		);
+
+		$where = $this->getAdapter()->quoteInto('id = ?', $jdd->id);
+		return $this->update($data, $where);
+	}
+
+	/**
 	 * Get the jdd corresponding to the id.
 	 *
 	 * @param
@@ -65,7 +173,9 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	 * @return boolean
 	 */
 	public function getJddByMetadataId($id) {
-		$select = $this->select()->where('jdd_metadata_id = ?', $id);
+		$select = $this->select()
+			->where('jdd_metadata_id = ?', $id)
+			->where('status <> ?', 'deleted');
 		$row = $this->fetchRow($select);
 		if ($row !== null) {
 			return $row->toArray();
@@ -84,6 +194,21 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 			'submission_id' => NULL
 		);
 		$where = $this->getAdapter()->quoteInto('submission_id = ?', $submissionId);
+		return $this->update($data, $where);
+	}
+
+	/**
+	 * Set the status of the jdd linked to the given id to 'empty'.
+	 *
+	 * @param Integer $id
+	 *        	the id of the jdd
+	 * @return boolean
+	 */
+	public function cancel($id) {
+		$data = array(
+			'status' => 'deleted'
+		);
+		$where = $this->getAdapter()->quoteInto('id = ?', $id);
 		return $this->update($data, $where);
 	}
 }

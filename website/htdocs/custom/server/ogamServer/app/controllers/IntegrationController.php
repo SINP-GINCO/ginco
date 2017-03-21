@@ -41,7 +41,8 @@ class Custom_IntegrationController extends IntegrationController {
 		$userSession = new Zend_Session_Namespace('user');
 
 		// Get the current data submissions
-		$this->view->submissions = $this->submissionModel->getActiveSubmissions();
+		$jddModel = new Application_Model_RawData_Jdd();
+		$this->view->datasets = $jddModel->find();
 
 		$this->render('custom-show-data-submission-page');
 	}
@@ -191,6 +192,15 @@ class Custom_IntegrationController extends IntegrationController {
 
 		$userSession = new Zend_Session_Namespace('user');
 		$user = $userSession->user;
+
+		// Get the jdd id if it was sent
+		$jddId = $this->_getParam("jddId");
+		if(isset($jddId)){
+			// Save the jdd_id in session
+			$this->logger->debug("saving jddid $jddId");
+			$jddSession = new Zend_Session_Namespace('jdd');
+			$jddSession->jddId = $jddId;
+		}
 
 		$this->view->form = $this->getSubmissionForm($user);
 
@@ -345,6 +355,12 @@ class Custom_IntegrationController extends IntegrationController {
 			// Save the jdd_id in session
 			$jddSession = new Zend_Session_Namespace('jdd');
 			$jddSession->jddId = $jddId;
+		} else if ($jdd->status === 'deleted') {
+			// Update the jdd
+			$jdd->status = 'empty';
+			$jdd->title = $jddData['title'];
+			$jdd->modelId = $modelId;
+			$jddModel->updateJdd($jdd);
 		} else {
 			// Forbid the creation
 			$this->_helper->_flashMessenger($this->view->translate("The metadata ID '%s' already exists. Please declare another one.", $jddId));
@@ -729,34 +745,25 @@ class Custom_IntegrationController extends IntegrationController {
 	}
 
 	/**
-	 * Cancel a data submission.
-	 * Custom : Remove the submission from its jdd.
+	 * Set status of jdd to empty.
+	 * Custom method.
 	 *
 	 * @return the HTML view
 	 */
-	public function cancelDataSubmissionAction() {
-		$this->logger->debug('cancelDataSubmissionAction');
+	public function removeJddAction() {
+		$this->logger->debug('removeJddAction');
 
 		// Desactivate the timeout
 		set_time_limit(0);
 
-		// Get the submission Id
-		$submissionId = $this->_getParam("submissionId");
+		// Get the jdd_id
+		$jddId = $this->_getParam("jddId");
 
-		// Send the cancel request to the integration server
-		try {
-			$this->integrationServiceModel->cancelDataSubmission($submissionId);
-		} catch (Exception $e) {
-			$this->logger->err('Error during upload: ' . $e);
-			$this->view->errorMessage = $e->getMessage();
-			return $this->render('show-data-error');
-		}
-
-		// Remove the submission link in the jdd table
 		$jddModel = new Application_Model_RawData_Jdd();
-		$jdd = $jddModel->removeSubmission($submissionId);
+		$jdd = $jddModel->cancel($jddId);
 
 		// Forward the user to the next step
 		$this->_redirector->gotoUrl('/integration/show-data-submission-page');
 	}
+
 }

@@ -280,6 +280,12 @@ div.moduletable_menu a:link,div.moduletable_menu a:active,div.moduletable_menu a
 	text-decoration: none;
 }
 
+tr.sectiontableheader th {
+    background-color: #93D8AF;
+    padding: 3px;
+    text-align: center;
+}
+
 tr.sectiontableentry0 td {
 	background-color: #EDEDED;
 	padding: 3px;
