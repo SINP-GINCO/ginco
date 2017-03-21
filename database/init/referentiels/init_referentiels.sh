@@ -28,6 +28,7 @@ taxref=$dataDir/download/taxrefv10.txt
 communes=$dataDir/download/visu_communes_geofla_2015.1.sql
 departements=$dataDir/download/visu_departements_geofla_2015.1.sql
 regions=$dataDir/download/visu_regions_geofla_2015.1.sql
+espacesnaturels=$dataDir/download/en_inpn.csv
 
 # Note NV: Il aurait été sympa de pouvoir récupérer n'importe quelle version de
 #       taxref et de faire passer les mêmes traitements. Mais finalement, je renonce
@@ -81,8 +82,22 @@ psql "$connectionStr" -f "$departements"
 psql "$connectionStr" -f "$regions"
 echo "Mise à jour des référentiels des limites administratives terminée."
 
+
+if [ -f "$espacesnaturels" ]
+then
+	echo "$espacesnaturels a été trouvé localement..."
+else
+	echo "téléchargement de la dernière version des espaces naturels (export INPN)..."
+	wget "https://ginco.ign.fr/ref/espaces_naturels_last.csv" -O $espacesnaturels --no-verbose
+fi
+
+echo "Integration du référentiel des espaces naturels..."
+psql "$connectionStr" -f $rootDir/espaces_naturels_1.sql
+copyOptions="NULL '', FORMAT 'csv', HEADER, DELIMITER E',', ENCODING 'UTF-8'"
+psql "$connectionStr" -c "\COPY referentiels.codeentampon  ( codeen, libelleen, typeen, labeltypeen) FROM '$espacesnaturels' WITH ($copyOptions);"
+psql "$connectionStr" -f $rootDir/espaces_naturels_2.sql
+
 echo "Création des autres référentiels métier"
-psql "$connectionStr" -f $dataDir/codeenvalue.sql
 psql "$connectionStr" -f $dataDir/codemaillevalue.sql
 psql "$connectionStr" -f $dataDir/habref_20.sql
 

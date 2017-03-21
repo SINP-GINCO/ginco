@@ -24,10 +24,24 @@ if (count($argv) == 1)
 $config = loadPropertiesFromArgs();
 
 try {
-	/* patch code here */
+	/* patch code here*/
 	execCustSQLFile("$sprintDir/add_jdd_table.sql", $config);
 	execCustSQLFile("$sprintDir/add_jdd_id_download_service_url.sql", $config);
 	execCustSQLFile("$sprintDir/add_wfs_natural_spaces.sql", $config);
+} catch (Exception $e) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
+
+
+try {
+	/* update espaces naturels */
+	$config['sprintDir'] = $sprintDir;
+	system("wget 'https://ginco.ign.fr/ref/ESPACES_NATURELS_INPN/espaces_naturels_inpn_20170228.csv' -O $sprintDir/en_inpn.csv --no-verbose");
+	echo "Intégration des données espaces naturels dans la base...";
+	execCustSQLFile("$sprintDir/update_espaces_naturels.sql", $config);
+	echo "Intégration du référentiel espaces naturels terminée.";
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
