@@ -42,7 +42,7 @@ class Custom_IntegrationController extends IntegrationController {
 
 		// Get the current data submissions
 		$jddModel = new Application_Model_RawData_Jdd();
-		$this->view->datasets = $jddModel->find();
+		$this->view->datasets = $jddModel->findNotDeleted();
 
 		$this->render('custom-show-data-submission-page');
 	}
@@ -355,11 +355,11 @@ class Custom_IntegrationController extends IntegrationController {
 			// Save the jdd_id in session
 			$jddSession = new Zend_Session_Namespace('jdd');
 			$jddSession->jddId = $jddId;
-		} else if ($jdd->status === 'deleted') {
+		} else if ($jdd['status'] === 'deleted') {
 			// Update the jdd
-			$jdd->status = 'empty';
-			$jdd->title = $jddData['title'];
-			$jdd->modelId = $modelId;
+			$jdd['status'] = 'empty';
+			$jdd['title'] = $jddData['title'];
+			$jdd['modelId'] = $modelId;
 			$jddModel->updateJdd($jdd);
 		} else {
 			// Forbid the creation
@@ -387,7 +387,7 @@ class Custom_IntegrationController extends IntegrationController {
 		// Get the service URL
 		$configuration = Zend_Registry::get("configuration");
 		try {
-			$jddIdServiceUrl = $configuration->getConfig('testJddMetadataFileDownloadServiceURL');
+			$jddIdServiceUrl = $configuration->getConfig('jddMetadataFileDownloadServiceURL');
 		} catch (Exception $e) {
 			$this->logger->err('No jddmetadata file download service URL found: ' . $e);
 			$this->_helper->_flashMessenger($this->translator->translate('Application error'));
@@ -668,6 +668,12 @@ class Custom_IntegrationController extends IntegrationController {
 		// Get the submission Id
 		$submissionId = $this->_getParam("submissionId");
 
+		// Get the JDD Metadata Id
+		$jddSession = new Zend_Session_Namespace('jdd');
+		$jddModel = new Application_Model_RawData_Jdd();
+		$jddRowset = $jddModel->find($jddSession->jddId);
+		$jddRowset->next();
+
 		// Send the validation request to the integration server
 		try {
 			$this->integrationServiceModel->validateDataSubmission($submissionId);
@@ -678,7 +684,7 @@ class Custom_IntegrationController extends IntegrationController {
 		}
 
 		// -- Send the email
-		$uuid = $submissionId; // todo remplacer par le vrai uuid du jdd
+		$uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
 		$siteName = $configuration->getConfig('site_name');
 		// Files of the submission
 		$submissionModel = new Application_Model_RawData_CustomSubmission();
@@ -707,7 +713,7 @@ class Custom_IntegrationController extends IntegrationController {
 		$body .= (count($submissionFiles) > 1) ? "<p>Les fichiers de données <em>%s</em> que vous nous avez transmis ont été intégrés sur la plate-forme :
              <em>%s</em> et publié le %s.<br>" : "<p>Le fichier de données <em>%s</em> que vous nous avez transmis a été intégré sur la plate-forme :
              <em>%s</em> et publié le %s.<br>";
-		$body .= "Sur la plate-forme, le jeu de données porte désormais le numéro de la soumission : %s.</p>";
+		$body .= "Sur la plate-forme, il porte désormais l'identifiant de sa fiche de métadonnées : %s.</p>";
 		$body .= "<p>Vous trouverez en pièce jointe le rapport final de conformité et de cohérence du fichier,
                 le rapport final sur la sensibilité des observations ainsi que le fichier vous permettant de reporter les
                 identifiants permanents SINP attribués aux données du jeu par la plate-forme.</p>";

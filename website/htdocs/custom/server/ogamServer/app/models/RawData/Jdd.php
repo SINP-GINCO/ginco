@@ -63,10 +63,12 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	 *        	The jdd
 	 * @return Application_Object_Website_Jdd the jdd updated with the last id inserted
 	 */
-	public function find($providerId = null) {
+	public function findNotDeleted($providerId = null) {
+		$this->logger->debug("findNotDeleted");
+		$translator = Zend_Registry::get('Zend_Translate');
 		Zend_Registry::get("logger")->info('getDatasets');
 		// Retrieve jdd data
-		$jddReq = "SELECT * FROM raw_data.jdd WHERE status <> 'deleted'";
+		$jddReq = "SELECT * FROM raw_data.jdd WHERE status <> 'deleted' ORDER BY id";
 
 		$selectJdd = $this->dbConn->prepare($jddReq);
 
@@ -79,16 +81,30 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 			$submissionId = $row['submission_id'];
 			// Format metadata_id (with this form : ...e682aa)
 			$jddMetadataId = $row['jdd_metadata_id'];
-			$jddMetadataId = "..." . substr($jddMetadataId, strlen($jddMetadataId) - 6, strlen($jddMetadataId));
+			$jddMetadataIdShort = "..." . substr($jddMetadataId, strlen($jddMetadataId) - 6, strlen($jddMetadataId));
+			// Format of the tooltip of the submission and jddMetadata id
+			$this->logger->debug($submissionId);
+			$submissionIdTooltip = $translator->translate("Submission identifier"). " : $submissionId";
+			$jddMetadataIdTooltip = $translator->translate("Jdd metadata id"). " : $jddMetadataId";
+			// Format title
+			$title = $row['title'];
+			$titleShort = substr($title, 0, 32);
+			if(strlen($title) != strlen($titleShort)){
+				$titleShort = $titleShort . "...";
+			}
 			// Format creation date
 			$createdAt = new DateTime($row['created_at']);
 			$createdAt = $createdAt->format('d/m/Y');
 
 			$jddInfo = array(
 				'id' => $jddId,
+				'submission_id_tooltip' => $submissionIdTooltip,
+				'jdd_metadata_id_tooltip' => $jddMetadataIdTooltip,
 				'jdd_metadata_id' => $jddMetadataId,
+				'jdd_metadata_id_short' => $jddMetadataIdShort,
 				'submission_id' => $row['submission_id'],
-				'title' => $row['title'],
+				'title' => $title,
+				'title_short' => $titleShort,
 				'created_at' => $createdAt,
 				'nb_data' => '-',
 				'provider_label' => '-',
@@ -114,6 +130,11 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 				}
 				$selectSubmission->execute($params);
 				$submission = $selectSubmission->fetch();
+
+				// Empty submission id tooltip if is canceled
+				if($submission['step'] === 'CANCEL'){
+					$jddInfo['submission_id_tooltip'] = $translator->translate("Submission identifier"). " : / ";
+				}
 
 				$jddInfo['provider_id'] = $submission['provider_id'];
 				$jddInfo['provider_label'] = $submission['provider_label'];
@@ -156,12 +177,12 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	 */
 	public function updateJdd($jdd) {
 		$data = array(
-			'title' => $jdd->title,
-			'status' => $jdd->status,
-			'model_id' => $jdd->modelId
+			'title' => $jdd['title'],
+			'status' => $jdd['status'],
+			'model_id' => $jdd['modelId']
 		);
 
-		$where = $this->getAdapter()->quoteInto('id = ?', $jdd->id);
+		$where = $this->getAdapter()->quoteInto('id = ?', $jdd['id']);
 		return $this->update($data, $where);
 	}
 
@@ -174,8 +195,7 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	 */
 	public function getJddByMetadataId($id) {
 		$select = $this->select()
-			->where('jdd_metadata_id = ?', $id)
-			->where('status <> ?', 'deleted');
+			->where('jdd_metadata_id = ?', $id);
 		$row = $this->fetchRow($select);
 		if ($row !== null) {
 			return $row->toArray();
@@ -194,6 +214,23 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 			'submission_id' => NULL
 		);
 		$where = $this->getAdapter()->quoteInto('submission_id = ?', $submissionId);
+		return $this->update($data, $where);
+	}
+
+	/**
+	 * Add the export_file_id to the jdd line linked to this export_file_id.
+	 *
+	 * @param Integer $id
+	 *        	the id of the jdd
+	 * @param Integer $exportFileId
+	 *        	the id of the export file
+	 * @return boolean
+	 */
+	public function addExportFile($id, $exportFileId) {
+		$data = array(
+			'export_file_id' => $exportFileId
+		);
+		$where = $this->getAdapter()->quoteInto('id = ?', $id);
 		return $this->update($data, $where);
 	}
 

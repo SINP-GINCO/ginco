@@ -19,6 +19,8 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
     protected $submissionModel = null;
 
+    protected $jddModel = null;
+
     protected $rawdb;
 
     /**
@@ -41,6 +43,9 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         // SubmissionModel
         $this->submissionModel = new Application_Model_RawData_Submission();
+
+        // JddnModel
+        $this->jddModel = new Application_Model_RawData_Jdd();
 
         // The database
         $this->rawdb = Zend_Registry::get('raw_db');
@@ -82,16 +87,17 @@ class Custom_GmlexportController extends AbstractOGAMController {
      */
     public function addJobAction() {
         $submissionId = $this->_getParam("submissionId");
+        $jddId = $this->_getParam("jddId");
         $launch = $this->_getParam("launch", true);
 
         $userSession = new Zend_Session_Namespace('user');
         $userLogin = $userSession->user->login;
 
-        $this->logger->debug('GMLExport: add job in queue, submission id : ' . $submissionId);
+        $this->logger->debug('GMLExport: add job in queue, submission id : ' . $submissionId . ', jdd id : ' . $jddId);
 
         // Test if there is already an export file
         if ( $this->exportFileModel->existsExportFileData($submissionId)) {
-            $this->logger->debug('GMLExport: export_file already exists, delting it.Submission id : ' . $submissionId);
+            $this->logger->debug('GMLExport: export_file already exists, deleting it.Submission id : ' . $submissionId);
             $this->cancelExport($submissionId);
         }
 
@@ -99,15 +105,18 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $filePath = $this->exportFileModel->generateFilePath($submissionId);
 
         // Command to launch the GML Export Job
-        $command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -s ' . $submissionId . ' -f ' . $filePath;
+        $command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -s ' . $submissionId .' -m ' . $jddId . ' -f ' . $filePath;
         // Length of the observation files
         $length = $this->exportFileModel->getJobLengthForSubmission($submissionId);
 
         $jobId = $this->jobManager->addJob( $command, self::JOBTYPE , $length );
 
         if ($jobId) {
-            // Insert an line in export_file table
-            $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath, $userLogin);
+            // Insert a line in export_file table
+            $exportFileId = $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath, $userLogin);
+            // Update jdd with the export file id
+
+            $this->jddModel->addExportFile($jddId, $exportFileId);
         }
         else {
             $this->logger->debug('GMLExport: IMPOSSIBLE to add export_file entry, submission id : ' . $submissionId);
@@ -243,10 +252,13 @@ class Custom_GmlexportController extends AbstractOGAMController {
      */
     public function getAllStatusAction() {
         $submissionIds = $this->_getParam("submissionIds");
+        $jddIds = $this->_getParam("jddIds");
         $this->logger->debug('GMLExport: getAllStatus, submission ids : ' . implode(',',$submissionIds));
 
         $return = array();
+        $i = 0;
         foreach ($submissionIds as $submissionId) {
+            $jddId = $jddIds[$i];
             $jobId = $this->getJobIdForSubmission($submissionId);
             if (!$jobId) {
                 $status = Application_Service_JobManagerService::NOTFOUND;
@@ -256,6 +268,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
             }
 
             $part = array(
+                "jddId" => $jddId,
                 "submissionId" => $submissionId,
                 "status" => $status
             );
@@ -264,6 +277,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
                 $part['progress'] = $this->jobManager->getProgressPercentage($jobId);
             }
             $return[] = $part;
+            $i++;
         }
 
         echo json_encode($return);
