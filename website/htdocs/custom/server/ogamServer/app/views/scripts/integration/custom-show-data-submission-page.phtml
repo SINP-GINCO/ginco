@@ -66,12 +66,12 @@ $user = $userSession->user;
             //}
     ?>
             <tr class="sectiontableentry<?php echo $i % 2?>">
-                <td><?php if($dataset['step'] !== "CANCEL") {
+                <td title="<?php echo $this->escape($dataset['submission_id_tooltip']);?>&#013;<?php echo $this->escape($dataset['jdd_metadata_id_tooltip']);?>"><?php if($dataset['step'] !== "CANCEL") {
                         echo $this->escape($dataset['submission_id']);
                 }?><br/>
-                <?php echo $this->escape($dataset['jdd_metadata_id']); ?></td>
+                <?php echo $this->escape($dataset['jdd_metadata_id_short']); ?></td>
                 <td><?php echo  $this->escape($dataset['created_at']); ?></td>
-                <td><?php echo  $this->escape($dataset['title']); ?></td>
+                <td title="<?php echo $this->escape($dataset['title']); ?>"><?php echo $this->escape($dataset['title_short']); ?></td>
                 <td style="text-align:center"><?php echo $this->escape($dataset['provider_label']);?></td>
                 <td style="text-align:center"><?php echo $this->escape($dataset['nb_data']);?></td>
                 <!-- Begin DSR column  -->
@@ -238,36 +238,39 @@ $user = $userSession->user;
                 </td>
                 <!-- End reports column -->
                 <!-- Begin DEE column -->
-                <td>
-                <?php if ($user->isAllowed('MANAGE_DATASETS') && isset($dataset['submission_id'])) {
-                    if ($hasSubmission && $dataset['status'] != "OK" || $dataset['step'] != "VALIDATE") {?>
-                        <p>Publiez les données <br>pour les exporter en DEE.</p>
+                <td style="text-align:center">
+                <?php if ($user->isAllowed('MANAGE_DATASETS')) {
+                    if ($dataset['status'] != "OK" || $dataset['step'] != "VALIDATE") {?>
+                        <p>-</p>
                         <?php
                     } else { ?>
-                        <div class="dee-status hidden" data-target="<?php echo $dataset['submission_id'] ?>"></div>
+                        <div class="dee-status hidden" data-submission-id="<?php echo $dataset['submission_id'].'/'.$dataset['id']?>"></div>
                         <div class="progress hidden">
                             <script type="text/javascript">
                                 var $label = "<?php echo 'Génération DEE ' . (($dataset['status'] == 'RUNNING') ? 'en cours...' : 'en attente...')?>";
                                 display('deeprogress' + <?php echo $dataset['submission_id'] ?>, $label, 0 ,'/img/');
                             </script>
                         </div>
-                        <div class="dee-content" data-target="<?php echo $dataset['submission_id'] ?>"></div>
+                        <div class="dee-content" data-submission-id="<?php echo $dataset['submission_id'].'/'.$dataset['id']?>"></div>
                     <?php
                     }
                 }?>
                 </td>
                 <!-- End DEE column  -->
                 <!-- Begin remove column -->
-                <td>
+                <td style="text-align:center">
                 <?php if ($dataset['step'] === "CANCEL" && !isset($dataset['export_file_id'])) {
                     if ($dataset['provider_id'] == $userSession->user->provider->id
                         || ($user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION'))) {?>
-                        <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'remove-jdd'), null, true)?>?jddId=<?php echo $dataset['id'];?>
+                        <a style="text-align:center" href="<?php echo $this->url(array('controller'=>'integration','action'=>'remove-jdd'), null, true)?>?jddId=<?php echo $dataset['id'];?>
                                 " onClick="return confirm('<?php echo $this->translate('Are you sure?');?>');"
                                 title="<?php echo $this->translate('Remove dataset');?>">
-                        <img src="<?php echo  $this->baseUrl('img/delete_x_icon.png') ?>" /></a>
+                        <img src="<?php echo $this->baseUrl('img/delete_x_icon.png') ?>"/></a>
                         <?php
                     }
+                } else {?>
+                    <p>-</p>
+                    <?php
                 }?>
                 </td>
                 <!-- End remove column -->
@@ -300,20 +303,21 @@ $user = $userSession->user;
  * Update status and content divs for given submission.
  * If status is not given, launch a ajax request to get it.
  *
+ * @param $jddId
  * @param $submissionId
  * @param $status
  */
-function updateStatusAndContent($submissionId, $status = null) {
+function updateStatusAndContent($jddId, $submissionId, $status = null) {
     if ( $status ) {
-        updateStatusDiv($submissionId, $status);
-        updateContentDiv($submissionId, $status);
+        updateStatusDiv($jddId, $submissionId, $status);
+        updateContentDiv($jddId, $submissionId, $status);
     }
     else {
         $.getJSON("/gmlexport/get-status", {
-            submissionId: $submissionId
+            submissionId: $submissionId,
         }, function (data) {
-            updateStatusDiv($submissionId, data.status);
-            updateContentDiv($submissionId, data.status, data.progress);
+            updateStatusDiv($jddId, $submissionId, data.status);
+            updateContentDiv($jddId, $submissionId, data.status, data.progress);
         });
     }
 }
@@ -325,19 +329,25 @@ function updateStatusAndContent($submissionId, $status = null) {
  */
 function updateAllPendingAndRunningTasks() {
     var $submissionIds = [];
+    var $jddIds = [];
     $('.dee-status').each(function() {
         if ( $(this).html() == 'RUNNING' || $(this).html() == 'PENDING' ) {
-            $submissionIds.push($(this).attr('data-target'));
+            $submissionIdJddId = $(this).attr('data-submission-id');
+            $submissionId = $submissionIdJddId.substring(0, $submissionIdJddId.indexOf("/"));
+            $submissionIds.push($submissionId);
+            $jddId = $submissionIdJddId.substring($submissionIdJddId.indexOf("/")+1, $submissionIdJddId.length);
+            $jddIds.push($jddId);
         }
     });
 
     if ($submissionIds.length) {
         $.getJSON("/gmlexport/get-all-status", {
-            submissionIds: $submissionIds
+            submissionIds: $submissionIds,
+            jddIds: $jddIds
         }, function (data) {
             $.each(data, function (index, value) {
-                updateStatusDiv(value.submissionId, value.status);
-                updateContentDiv(value.submissionId, value.status, value.progress);
+                updateStatusDiv(value.jddId, value.submissionId, value.status);
+                updateContentDiv(value.jddId, value.submissionId, value.status, value.progress);
             });
         });
     }
@@ -351,8 +361,8 @@ function updateAllPendingAndRunningTasks() {
  * @param $submissionId
  * @param $status
  */
-function updateStatusDiv( $submissionId, $status) {
-    var $statusDiv = $("div.dee-status[data-target='" + $submissionId + "']");
+function updateStatusDiv($jddId, $submissionId, $status) {
+    var $statusDiv = $("div.dee-status[data-submission-id='" + $submissionId + "/" + $jddId + "']");
     // Update status
     $statusDiv.html($status);
 }
@@ -360,39 +370,61 @@ function updateStatusDiv( $submissionId, $status) {
 /**
  * Update content div alone.
  * The content div is visible and shows:
- *  - the download link when availabel
- *  - the progress bar when the expot job is running
+ *  - the download link when available
+ *  - the progress bar when the export job is running
  *  - action links: launch, cancel, relaunch
  *
+ * @param $jddId
  * @param $submissionId
  * @param $status
  * @param $progress
  */
-function updateContentDiv($submissionId, $status, $progress = 0) {
-    var $contentDiv = $("div.dee-content[data-target='" + $submissionId + "']");
+function updateContentDiv($jddId, $submissionId, $status, $progress = 0) {
+    var $contentDiv = $("div.dee-content[data-submission-id='" + $submissionId + "/" + $jddId + "']");
 
     var $actions = getActions($status);
 
     $contentDiv.html('');
     var table = $('<table></table>');
-    var row = $('<tr></tr>');
+    var row = $('<tr style="text-align:center"></tr>');
     table.append(row);
 
-
-    if ($.inArray( 'Relancer', $actions ) != -1) {
-        var $launchAgainLink = $("<td><a class='align_images' title='Regénérer' href=''><img src='/img/refresh_arrow.png'></a></td>");
+    // Action links
+    if ($.inArray( 'Lancer', $actions ) != -1) {
+        var $launchLink = $("<td><a href=''><img src='/img/play_publish.png'></a></td>");
+        row.append($launchLink);
+        $launchLink.click( function(e) {
+            e.preventDefault();
+            addExportJob($jddId, $submissionId);
+        });
+    } else if ($.inArray( 'Relancer', $actions ) != -1) {
+        var $launchAgainLink = $("<td><a title='Regénérer' href=''><img src='/img/refresh_arrow.png'></a></td>");
         row.append($launchAgainLink);
         $launchAgainLink.click( function(e) {
             e.preventDefault();
-            addExportJob($submissionId);
+            addExportJob($jddId, $submissionId);
         });
     }
+
     // Download link if file is available
     if ($status == 'COMPLETED') {
-        var $downloadLink = $("<td><a class='align_images' href='/gmlexport/download?submissionId=" + $submissionId+ "'><img src='/img/.png'> Télécharger les DEE</a></td>");
+        var $downloadLink = $("<td><a href='/gmlexport/download?submissionId=" + $submissionId + "'><img title='Télécharger les DEE' src='/img/download.png'></a></td>");
         row.append($downloadLink);
     } else if ($status == 'ABORTED') {
-        row.append("<td class='align_images'><img title='Erreur lors de la génération DEE' src='/img/warning_red.png'/></td>");
+        row.append("<td><img title='Erreur lors de la génération DEE' src='/img/warning_red.png'/></td>");
+    } else {
+        row.append("<td><img src='/img/empty_icon.png'/></td>");
+    }
+
+    if ($.inArray( 'Annuler', $actions ) != -1) {
+        var $cancelLink = $("<td><a href='' title='Annuler'><img src='/img/delete_x_icon.png'></a></td>");
+        row.append($cancelLink);
+        $cancelLink.click( function(e) {
+            e.preventDefault();
+            cancelExport($jddId, $submissionId);
+        });
+    } else {
+        row.append("<td><img src='/img/empty_icon.png'/></td>");
     }
 
     // Update progress bar if RUNNING
@@ -410,23 +442,6 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
         $progressBar.addClass('hidden');
     }
 
-    // Action links
-    if ($.inArray( 'Lancer', $actions ) != -1) {
-        var $launchLink = $("<td><a class='align_images' href=''><img src='/img/play_publish.png'> Générer les DEE</a></td>");
-        row.append($launchLink);
-        $launchLink.click( function(e) {
-            e.preventDefault();
-            addExportJob($submissionId);
-        });
-    }
-    if ($.inArray( 'Annuler', $actions ) != -1) {
-        var $cancelLink = $("<td><a class='align_images' href='' title='Annuler'><img src='/img/delete_x_icon.png'></a></td>");
-        row.append($cancelLink);
-        $cancelLink.click( function(e) {
-            e.preventDefault();
-            cancelExport($submissionId);
-        });
-    }
     $contentDiv.append(table);
 }
 
@@ -461,29 +476,33 @@ function getActions($status) {
 /**
  * Ajax request to add an export job (and launch jobs if not already running)
  *
+ * @param $jddId
  * @param $submissionId
  */
-function addExportJob($submissionId) {
+function addExportJob($jddId, $submissionId) {
     $.getJSON( "/gmlexport/add-job", {
-        submissionId: $submissionId
+        submissionId: $submissionId,
+        jddId: $jddId
     },function( data ) {
         if (data.success) {
-            updateStatusAndContent($submissionId, data.status);
+            updateStatusAndContent($jddId, $submissionId, data.status);
         }
     });
 }
 
 /**
- * Ajax request to cancel a job and delete export file
+ * Ajax request to cancel a job and delete export file.
+ * By SQL cascade it is also removed from jdd table.
  *
  * @param $submissionId
+
  */
-function cancelExport($submissionId) {
+function cancelExport($jddId, $submissionId) {
     $.getJSON( "/gmlexport/cancel-export", {
-        submissionId: $submissionId
+        submissionId: $submissionId,
     },function( data ) {
          if (data.success) {
-            updateStatusAndContent($submissionId, data.status);
+            updateStatusAndContent($jddId, $submissionId, data.status);
         }
     });
 }
@@ -491,8 +510,10 @@ function cancelExport($submissionId) {
 jQuery(document).ready(function() {
 
     $('.dee-content').each(function() {
-        var $submissionId = $(this).attr('data-target');
-        updateStatusAndContent($submissionId);
+        var $submissionIdJddId = $(this).attr('data-submission-id');
+        var $submissionId = $submissionIdJddId.substring(0, $submissionIdJddId.indexOf("/"));
+        var $jddId = $submissionIdJddId.substring($submissionIdJddId.indexOf("/")+1, $submissionIdJddId.length);
+        updateStatusAndContent($jddId, $submissionId);
     });
 
     // Periodically update progress for running and pending jobs

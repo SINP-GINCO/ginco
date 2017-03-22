@@ -233,6 +233,7 @@ Error;Erreur
 The expected fields are<br />:;Les champs attendus sont :<br /> 
 Are you sure?;Etes-vous sur ?
 No dataset found;Aucun jeu de données trouvé.
+No submission found: Aucune soumission trouvée.
 The file contains errors;Le fichier contient des erreurs.
 Upload data file;Téléverser un jeu de données
 Taxon occurrence;Observation de Taxon
@@ -260,6 +261,8 @@ Export to GML;Export GML
 Spatial reference system (SRID);Système de référence (SRID)
 sridDescription;Sous la forme d'un code EPSG. Par exemple :	<ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>Voir le <a href='http://www.epsg-registry.org/' target='_blank'>registre des codes EPSG</a>.<br>Remarque : si les géométries de votre fichier sont vides, indiquez n'importe quel code valide.
 Download submissions list;Télécharger la liste des jeux de données
+Submission identifier;Identifiant de la soumission
+Jdd metadata id;Identifiant de métadonnées
 
 ##########################
 #  Data Copy             #

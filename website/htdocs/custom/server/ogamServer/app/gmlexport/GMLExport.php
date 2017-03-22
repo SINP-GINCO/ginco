@@ -270,9 +270,9 @@ class GMLExport
             $observation = $this->dee->fillValues($observation, array(
                 'orgtransformation' => (isset($params['site_name']) ? $params['site_name'] : 'Plateforme GINCO-SINP')
             ));
- 			$observation = $this->dee->fillValues ( $observation, array (
- 					'deedatetransformation' => (date('c'))
- 			) );            
+            $observation = $this->dee->fillValues ( $observation, array (
+                    'deedatetransformation' => (date('c'))
+            ));
             $observation = $this->dee->specialCharsXML($observation);
             $observation = $this->dee->structureObservation($observation);
 
@@ -445,11 +445,12 @@ class GMLExport
      *  - one to the user who created the DEE
      *  - one to the MNHN
      *
+     * @param $jddId
      * @param $submissionId
      * @param $archivePath
      * @param $dateCreated
      */
-    public function sendDEENotificationMail($submissionId, $archivePath, $dateCreated) {
+    public function sendDEENotificationMail($jddId, $submissionId, $archivePath, $dateCreated) {
 
         $configuration = Zend_Registry::get('configuration');
 
@@ -457,11 +458,17 @@ class GMLExport
 
         $action = 'CREATION';
         $regionCode = $configuration->getConfig('regionCode','REGION');
-        $uuid = $submissionId; // todo remplacer par le vrai uuid du jdd
         $archiveFilename  = pathinfo($archivePath, PATHINFO_BASENAME);
         $archiveUrl = $configuration->getConfig('site_url') . '/dee/' . $archiveFilename;
         $siteName = $configuration->getConfig('site_name');
         $md5 = md5_file($archivePath);
+        // JDD metadata id
+        $jddSession = new Zend_Session_Namespace('jdd');
+
+        $jddModel = new Application_Model_RawData_Jdd();
+        $jddRowset = $jddModel->find($jddId);
+        $jddRowset->next();
+        $uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
         // Provider of the submission and submission files
         $submissionModel = new Application_Model_RawData_CustomSubmission();
         $submission = $submissionModel->getSubmission($submissionId);
@@ -488,6 +495,7 @@ class GMLExport
             "Date de $action du jeu : " . date('d/m/Y H:i:s', $dateCreated) .  "\n" .
             "Fournisseur : " . $provider .  "\n" .
             "Plate-forme : " . $siteName .  "\n" .
+            "Identifiant de métadonnées du jeu de données : " . $uuid .  "\n" .
             "Contact : " . $userName . "\n" .
             "Courriel : " . $userEmail . "\n" .
             "Type d'envoi : " . $action . "\n" .
@@ -500,7 +508,7 @@ class GMLExport
         $mailerService = new Application_Service_MailerService();
         // Create a message
         $message = $mailerService->newMessage($title);
-        
+
         // body
         $bodyMessage = "<p><strong>" . $configuration->getConfig('site_name') . " - " . $title . "</strong></p>" .
             "<p>" . nl2br($body) . "</p>";
@@ -521,9 +529,9 @@ class GMLExport
 
         $body = "<p>Bonjour,</p>";
         $body .= (count($submissionFiles) > 1) ?
-            "<p>Les fichiers de données <em>%s</em> que vous nous avez transmis et dont l'identifiant de jeu de données est 
+            "<p>Les fichiers de données <em>%s</em> que vous nous avez transmis et dont l'identifiant de jeu de données est
              <em>%s</em> ont été standardisés " :
-            "<p>Le fichier de données <em>%s</em> que vous nous avez transmis et dont l'identifiant est 
+            "<p>Le fichier de données <em>%s</em> que vous nous avez transmis et dont l'identifiant est
              <em>%s</em> a été standardisé "
             ;
         $body .= "au format GML d'échange de DEE le %s. La plateforme nationale a été notifiée et va procéder à l'intégration de

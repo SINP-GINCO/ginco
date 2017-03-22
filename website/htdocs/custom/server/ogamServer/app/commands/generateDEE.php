@@ -6,9 +6,10 @@
  *
  * Usage:
  *
- *  php generateDEE.php -s $SUBMISSION_ID -f OUTPUT_FILE.xml [ -j $JOB_ID ]
+ *  php generateDEE.php -s $SUBMISSION_ID -m $JDD_ID -f OUTPUT_FILE.xml [ -j $JOB_ID ]
  *
  * $SUBMISSION_ID: id of the submission (dataset) in table raw_data.submission
+ * $JDD_ID: id of the jdd in table raw_data.jdd
  * $JOB_ID: id of the job in the table website.job_queue. Used to write progress in database during the process.
  * OUTPUT_FILE.xml: file path/name of the output file.
  *
@@ -43,10 +44,13 @@ $jm = new Application_Service_JobManagerService();
 // s : submission Id
 // f : file name to write
 // j (optional) : job id in the job queue
-$options = getopt("j::s:f:");
+$options = getopt("j::s:m:f:");
 
 // Get the submission Id
 $submissionId = intval($options['s']);
+
+// Get the jddId
+$jddId = intval($options['m']);
 
 // Get the filename
 $fileName = $options['f'];
@@ -65,7 +69,7 @@ $archivePath = $gml->createArchiveDeeGml($submissionId, $fileName);
 $logger->debug("GML Archive created for submission $submissionId: $archivePath");
 
 // Send notification emails to the user and to the MNHN
-$gml->sendDEENotificationMail($submissionId, $archivePath, $dateCreated);
+$gml->sendDEENotificationMail($jddId, $submissionId, $archivePath, $dateCreated);
 $logger->debug("GML Notification mail sent");
 
 if ($jobId) {
