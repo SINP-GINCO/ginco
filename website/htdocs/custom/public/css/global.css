@@ -75,7 +75,7 @@ body {
 	height: auto !important;
 	height: 100%;
 	margin-top: 0;
-	margin-bottom: -80px;
+	margin-bottom: -100px;
 	/* the bottom margin is the negative value of the footer's height */
 }
 
@@ -161,7 +161,7 @@ body {
 }
 
 .footer,.push {
-	height: 60px; /* .push must be the same height as .footer */
+	height: 80px; /* .push must be the same height as .footer */
 }
 
 .footer {
@@ -991,16 +991,20 @@ span.align_images img {
 	padding: 0px 20px;
 }
 
+#logo-meem{
+	height: 80px;
+}
+
 .footer-left{
 	float:left;
 	text-align: right;
-	width:45%;
+	width:48%;
 	overflow:hidden;
 }
 
 .footer-right{
 	text-align: left;
-	width:45%;
+	width:48%;
 	overflow:hidden;
-	padding: 0 0 0 10%;
+	padding: 20px 0 0 4%;
 } 
