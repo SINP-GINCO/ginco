@@ -5,3 +5,7 @@
   width: 210px !important;
   text-align: right;
 }
+.x-form-item-default.x-item-disabled {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+}

@@ -122,20 +122,11 @@ Ext.define('Ginco.view.edition.Panel', {
 	},    
 
     /**
-     * Overwrite: dont'show at all non editable/inseratble fields
      * Overwrite: Add formLabel to display form groups
      */
     getFieldConfig : function(record) {
         var field = this.callParent(arguments);
-        
         field.formLabel = record.formLabel;
-
-        if ((this.mode === this.editMode && !Ext.isEmpty(record.editable) && record.editable !== "1")
-            || (this.mode === this.addMode && !Ext.isEmpty(record.insertable) && record.insertable !== "1")) {
-            field.xtype = 'hidden';
-            field.cls = '';
-        }
-
         return field;
     }
 
