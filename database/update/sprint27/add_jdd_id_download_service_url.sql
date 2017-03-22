@@ -1,2 +1,2 @@
 INSERT INTO application_parameters (name, value, description)
-VALUES ('jddMetadataFileDownloadServiceURL', 'https://inpn2.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecordById?id=', 'The URL for retrieving the metadata XML file for a jdd');
+VALUES ('jddMetadataFileDownloadServiceURL', '@metadata.jdd.url@', 'The URL for retrieving the metadata XML file for a jdd');
