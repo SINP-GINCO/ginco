@@ -68,7 +68,7 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 		$translator = Zend_Registry::get('Zend_Translate');
 		Zend_Registry::get("logger")->info('getDatasets');
 		// Retrieve jdd data
-		$jddReq = "SELECT * FROM raw_data.jdd WHERE status <> 'deleted' ORDER BY id";
+		$jddReq = "SELECT * FROM raw_data.jdd WHERE status <> 'deleted' ORDER BY id DESC";
 
 		$selectJdd = $this->dbConn->prepare($jddReq);
 
