@@ -221,6 +221,7 @@ Import a new dataset;Importer un nouveau jeu de données
 Upload Data;Chargement des données
 Check data;Vérifier les données
 Show report;Rapport de conformité et cohérence
+Conformity and consistency;Conformité et cohérence
 Validate data;Valider la soumission
 Cancel Submission;Supprimer la soumission
 Remove dataset; Supprimer le jeu de données
@@ -252,6 +253,8 @@ Fichier SIG optionnel: ;Fichier SIG optionnel:
 You must select all files to upload;Vous devez sélectionner un fichier de données à importer
 <span class="hint-title">;<span class="hint-title">
 Sensibility Report;Rapport de sensibilité
+Sensibility;Sensibilité
+Permanent Ids;Identifiants permanents
 Permanent Ids Report;Rapport des identifiants permanents
 Download reports;Télécharger les rapports
 Number of sensible data;Nombre de données sensibles
@@ -263,6 +266,14 @@ sridDescription;Sous la forme d'un code EPSG. Par exemple :	<ul><li>WGS 84 : 432
 Download submissions list;Télécharger la liste des jeux de données
 Submission identifier;Identifiant de la soumission
 Jdd metadata id;Identifiant de métadonnées
+metadataIdDescription;<br/>L'identifiant de métadonnées renseigné doit être présent dans <a href="https://inpn.mnhn.fr/mtd/cadre/" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="https://ginco.ign.fr/doc/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
+Publish the data to export them as DEE;Publiez les données pour les exporter en DEE
+Publish the data to download the DEE;Publiez les données pour télécharger les DEE
+Generate the DEE to delete it;Générez la DEE pour la supprimer
+Delete the data to upload new data;Supprimez les données pour en télécharger de nouvelles
+The dataset can be deleted only if it not contains DSR and DEE;Le jeu de données ne peut être supprimé que s'il ne contient ni DSR soumise ni DEE générée
+You have to unpublish the data to delete it;Vous devez dépublier les données pour les supprimer
+Upload data to publish them;Téleversez des données pour les publier
 
 ##########################
 #  Data Copy             #

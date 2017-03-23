@@ -172,14 +172,14 @@ $user = $userSession->user;
                                 <img src="<?php echo  $this->baseUrl('img/stop_green.png'); ?>" /></a></td>
                             <?php
                             } else {
-                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                                ?><td><img title="<?php echo $this->translate('Upload data to publish them');?>" src="<?php echo $this->baseUrl('img/play_publish_grey.png') ?>"></td><?php
                             }
                             if ($dataset['step'] === "CANCEL" || $dataset['status'] === "ERROR") {?>
                                 <td><a href="<?php echo $this->url(array('controller'=>'integration','action'=>'show-create-data-submission'), null, true)?>?jddId=<?php echo $dataset['id'];?>">
                                 <img title="<?php echo $this->translate('Upload data file');?>" src="<?php echo $this->baseUrl('img/upload.png') ?>"/></a></td>
                             <?php
                             } else {
-                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                                ?><td title="<?php echo $this->translate('Delete the data to upload new data');?>"><img src="<?php echo $this->baseUrl('img/upload_grey.png') ?>"></td><?php
                             }
                             if ($dataset['step'] === "INSERT" && $dataset['status'] === "OK") {?>
                                 <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>
@@ -199,10 +199,12 @@ $user = $userSession->user;
                                     <img src="<?php echo $this->baseUrl('img/delete_x_icon.png'); ?>" /></a></td>
                                 <?php
                                 } else {
-                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
-                            }
-                            } else {
-                                ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                                    ?><td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                                }
+                            } else if ($dataset['step'] === "VALIDATE") {?>
+                                <td title="<?php echo $this->translate('You have to unpublish the data to delete it');?>"><img src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>"></td><?php
+                            } else {?>
+                                <td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
                             }?>
                         </tr>
                     </table>
@@ -218,16 +220,16 @@ $user = $userSession->user;
                         <?php
                         if ($dataset['step'] !== "INIT" && $dataset['status'] !== "DATARUNNING") {?>
                             <option value="<?php echo $this->url(array('controller'=>'dataset','action'=>'download-report'), 'default', true) ?>?submissionId=<?php echo $dataset['submission_id']; ?>&report=integrationReport">
-                                           <?php echo $this->translate('Show report');?>
+                                           <?php echo $this->translate('Conformity and consistency');?>
                             </option>
                         <?php
                         }
                         if ($dataset['status'] === "OK") {?>
                             <option value="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $dataset['submission_id']; ?>&report=sensibilityReport">
-                                           <?php echo $this->translate('Sensibility Report'); ?>
+                                           <?php echo $this->translate('Sensibility'); ?>
                             </option>
                             <option value="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $dataset['submission_id']; ?>&report=permanentIdsReport">
-                                           <?php echo $this->translate('Permanent Ids Report'); ?>
+                                           <?php echo $this->translate('Permanent Ids'); ?>
                             </option>
                         <?php
                         }
@@ -240,10 +242,15 @@ $user = $userSession->user;
                 <!-- Begin DEE column -->
                 <td style="text-align:center">
                 <?php if ($user->isAllowed('MANAGE_DATASETS')) {
-                    if ($dataset['status'] != "OK" || $dataset['step'] != "VALIDATE") {?>
-                        <p>-</p>
-                        <?php
-                    } else { ?>
+                      if ($dataset['status'] != "OK" || $dataset['step'] != "VALIDATE") {?>
+                      <table><tr>
+                      <td title="<?php echo $this->translate('Publish the data to export them as DEE');?>"><img src="<?php echo $this->baseUrl('img/play_publish_grey.png') ?>"></td>
+                      <td title="<?php echo $this->translate('Publish the data to download the DEE');?>"><img src="<?php echo $this->baseUrl('img/download_grey.png') ?>"></td>
+                      <td title="<?php echo $this->translate('Generate the DEE to delete it');?>"><img src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>"></td>
+                      </tr></table>
+                      <?php
+                      }
+                     else { ?>
                         <div class="dee-status hidden" data-submission-id="<?php echo $dataset['submission_id'].'/'.$dataset['id']?>"></div>
                         <div class="progress hidden">
                             <script type="text/javascript">
@@ -269,7 +276,8 @@ $user = $userSession->user;
                         <?php
                     }
                 } else {?>
-                    <p>-</p>
+                    <img title="<?php echo $this->translate('The dataset can be deleted only if it not contains DSR and DEE');?>"
+                             src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>">
                     <?php
                 }?>
                 </td>

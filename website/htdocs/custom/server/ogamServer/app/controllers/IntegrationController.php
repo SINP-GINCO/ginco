@@ -232,6 +232,8 @@ class Custom_IntegrationController extends IntegrationController {
 		$dataModelElement->setLabel('Data model');
 		$dataModelElement->setRequired(true);
 		$dataModelElement->addMultiOptions($this->customMetadataModel->getDataModels());
+		$dataModelElement->setDescription("metadataIdDescription");
+		$dataModelElement->getDecorator('Description')->setOption('escape', false);
 
 		//
 		// Add the submit element
