@@ -107,7 +107,7 @@
 					{% for champ in fileFields %}
 					<tr>
 						<td id="name" class="hidden">{{ champ.fieldName }}</td>
-						<td id="label">{{ champ.label }}</td>
+						<td id="label"><div style="max-width:180px;" class="longtext"  title="{{ champ.label }}">{{ champ.label }}</div></td>
 						<td id="unit">{{ champ.unitType }}</td>
 						<td id="mandatory" class=text-center">{% if champ.isMandatory ==
 							'1' %} <input type="checkbox" checked="checked"> {% else %} <input
