@@ -218,6 +218,20 @@ class Custom_IntegrationController extends IntegrationController {
 			)
 		));
 
+		// Get URL of metadata application
+		$configuration = Zend_Registry::get("configuration");
+		try {
+			$metadataServiceUrl = $configuration->getConfig('jddMetadataFileDownloadServiceURL');
+		} catch (Exception $e) {
+			$this->logger->err('No jddmetadata file download service URL found: ' . $e);
+			$this->_helper->_flashMessenger($this->translator->translate('Application error'));
+			$this->_redirect($request->getRequestUri());
+		}
+
+		// Format the URL to only get prefix
+		$endUrl = strpos($metadataServiceUrl, "cadre");
+		$metadataServiceUrl = substr($metadataServiceUrl, 0, $endUrl + 6);
+
 		//
 		// Add the jdd id element
 		//
@@ -232,7 +246,7 @@ class Custom_IntegrationController extends IntegrationController {
 		$dataModelElement->setLabel('Data model');
 		$dataModelElement->setRequired(true);
 		$dataModelElement->addMultiOptions($this->customMetadataModel->getDataModels());
-		$dataModelElement->setDescription("metadataIdDescription");
+		$dataModelElement->setDescription($this->view->translate("metadataIdDescription", $metadataServiceUrl));
 		$dataModelElement->getDecorator('Description')->setOption('escape', false);
 
 		//
