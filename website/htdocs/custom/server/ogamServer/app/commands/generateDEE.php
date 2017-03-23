@@ -65,7 +65,7 @@ $gml->generateDeeGml($submissionId, $fileName, $jobId);
 $logger->debug("GML created for submission $submissionId: $fileName");
 
 // Create the archive and put it in the DEE download directory
-$archivePath = $gml->createArchiveDeeGml($submissionId, $fileName);
+$archivePath = $gml->createArchiveDeeGml($jddId, $fileName);
 $logger->debug("GML Archive created for submission $submissionId: $archivePath");
 
 // Send notification emails to the user and to the MNHN
