@@ -266,7 +266,7 @@ sridDescription;Sous la forme d'un code EPSG. Par exemple :	<ul><li>WGS 84 : 432
 Download submissions list;Télécharger la liste des jeux de données
 Submission identifier;Identifiant de la soumission
 Jdd metadata id;Identifiant de métadonnées
-metadataIdDescription;<br/>L'identifiant de métadonnées renseigné doit être présent dans <a href="https://inpn.mnhn.fr/mtd/cadre/" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="https://ginco.ign.fr/doc/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
+metadataIdDescription;<br/>L'identifiant de métadonnées renseigné doit être présent dans <a href="%s" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="https://ginco.ign.fr/doc/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
 Publish the data to export them as DEE;Publiez les données pour les exporter en DEE
 Publish the data to download the DEE;Publiez les données pour télécharger les DEE
 Generate the DEE to delete it;Générez la DEE pour la supprimer
