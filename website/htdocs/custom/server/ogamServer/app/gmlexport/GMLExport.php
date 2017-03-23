@@ -413,7 +413,7 @@ class GMLExport
      * @param $fileName
      * @return string
      */
-    public function createArchiveDeeGml($submissionId, $fileName)
+    public function createArchiveDeeGml($jddId, $fileName)
     {
         // Get filePath, fileName without extension
         $filePath = pathinfo($fileName, PATHINFO_DIRNAME);
@@ -422,10 +422,16 @@ class GMLExport
         $configuration = Zend_Registry::get('configuration');
         $deePublicDir = $configuration->getConfig('deePublicDirectory');
 
-        // Put other file in the directory to create a real test archive - todo use it to put something useful !
-        $otherFile = $filePath . '/truc.txt';
+		// JDD metadata id
+		$jddModel = new Application_Model_RawData_Jdd();
+		$jddRowset = $jddModel->find($jddId);
+		$jddRowset->next();
+		$uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
+
+        // Put other file in the directory to create a real test archive
+        $otherFile = $filePath . '/descriptif.txt';
         $out = fopen($otherFile,'w');
-        fwrite($out, "Export DEE pour la soumission $submissionId");
+        fwrite($out, "Export DEE pour le jeu de données $uuid");
         fclose($out);
 
         // Create an archive of the whole directory
