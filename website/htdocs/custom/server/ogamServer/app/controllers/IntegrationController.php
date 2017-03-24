@@ -744,7 +744,7 @@ class Custom_IntegrationController extends IntegrationController {
 		$reports = $submissionModel->getReportsFilenames($submissionId);
 
 		// Regenerate sensibility report each time (see #815)
-		$submissionModel->writeSensibilityReport($submissionId, $reports["sensibilityReport"]);
+		$submissionModel->generateReport($submissionId, "sensibilityReport");
 
 		foreach ($reports as $report => $reportPath) {
 			if (!is_file($reportPath)) {
