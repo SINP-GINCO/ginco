@@ -68,7 +68,10 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 		$translator = Zend_Registry::get('Zend_Translate');
 		Zend_Registry::get("logger")->info('getDatasets');
 		// Retrieve jdd data
-		$jddReq = "SELECT * FROM raw_data.jdd WHERE status <> 'deleted' ORDER BY id DESC";
+		$jddReq = "SELECT id, jdd_metadata_id, title, substring(title from 0 for 32) as short_title,
+			status, created_at, submission_id, export_file_id
+			FROM raw_data.jdd WHERE status <> 'deleted'
+			ORDER BY id DESC";
 
 		$selectJdd = $this->dbConn->prepare($jddReq);
 
@@ -79,17 +82,17 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 
 			$jddId = $row['id'];
 			$submissionId = $row['submission_id'];
+			$exportFileId = $row['export_file_id'];
 			// Format metadata_id (with this form : ...e682aa)
 			$jddMetadataId = $row['jdd_metadata_id'];
 			$jddMetadataIdShort = "..." . substr($jddMetadataId, strlen($jddMetadataId) - 6, strlen($jddMetadataId));
 			// Format of the tooltip of the submission and jddMetadata id
-			$this->logger->debug($submissionId);
-			$submissionIdTooltip = $translator->translate("Submission identifier"). " : $submissionId";
-			$jddMetadataIdTooltip = $translator->translate("Jdd metadata id"). " : $jddMetadataId";
+			$submissionIdTooltip = $translator->translate("Submission identifier") . " : $submissionId";
+			$jddMetadataIdTooltip = $translator->translate("Jdd metadata id") . " : $jddMetadataId";
 			// Format title
 			$title = $row['title'];
-			$titleShort = substr($title, 0, 32);
-			if(strlen($title) != strlen($titleShort)){
+			$titleShort = $row['short_title'];
+			if (strlen($title) != strlen($titleShort)) {
 				$titleShort = $titleShort . "...";
 			}
 			// Format creation date
@@ -107,7 +110,7 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 				'title_short' => $titleShort,
 				'created_at' => $createdAt,
 				'nb_data' => '-',
-				'provider_label' => '-',
+				'provider_label' => '-'
 			);
 
 			if (isset($submissionId)) {
@@ -132,17 +135,30 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 				$submission = $selectSubmission->fetch();
 
 				// Empty submission id tooltip if is canceled
-				if($submission['step'] === 'CANCEL'){
-					$jddInfo['submission_id_tooltip'] = $translator->translate("Submission identifier"). " : / ";
+				if ($submission['step'] === 'CANCEL') {
+					$jddInfo['submission_id_tooltip'] = $translator->translate("Submission identifier") . " : / ";
+					$jddInfo['provider_id'] = '-';
+					$jddInfo['provider_label'] = '-';
+					$jddInfo['nb_data'] = '-';
+					$jddInfo['file_type'] = '-';
+					$jddInfo['file_name'] = '-';
+					$jddInfo['status'] = $submission['status'];
+					$jddInfo['step'] = $submission['step'];
+				} else {
+					$jddInfo['provider_id'] = $submission['provider_id'];
+					$jddInfo['provider_label'] = $submission['provider_label'];
+					$jddInfo['nb_data'] = $submission['nb_line'];
+					$jddInfo['status'] = $submission['status'];
+					$jddInfo['file_type'] = $submission['file_type'];
+					$jddInfo['file_name'] = $submission['file_name'];
+					$jddInfo['step'] = $submission['step'];
 				}
+			} else {
+				$jddInfo['submission_id_tooltip'] = $translator->translate("Submission identifier") . " : / ";
+			}
 
-				$jddInfo['provider_id'] = $submission['provider_id'];
-				$jddInfo['provider_label'] = $submission['provider_label'];
-				$jddInfo['nb_data'] = $submission['nb_line'];
-				$jddInfo['status'] = $submission['status'];
-				$jddInfo['file_type'] = $submission['file_type'];
-				$jddInfo['file_name'] = $submission['file_name'];
-				$jddInfo['step'] = $submission['step'];
+			if (isset($exportFileId)) {
+				$jddInfo['export_file_id'] = $exportFileId;
 			}
 
 			$result[$jddId] = $jddInfo;
@@ -194,8 +210,7 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	 * @return boolean
 	 */
 	public function getJddByMetadataId($id) {
-		$select = $this->select()
-			->where('jdd_metadata_id = ?', $id);
+		$select = $this->select()->where('jdd_metadata_id = ?', $id);
 		$row = $this->fetchRow($select);
 		if ($row !== null) {
 			return $row->toArray();

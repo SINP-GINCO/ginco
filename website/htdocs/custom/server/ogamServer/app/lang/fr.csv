@@ -272,7 +272,11 @@ Publish the data to download the DEE;Publiez les données pour télécharger les
 Generate the DEE to delete it;Générez la DEE pour la supprimer
 Delete the data to upload new data;Supprimez les données pour en télécharger de nouvelles
 The dataset can be deleted only if it not contains DSR and DEE;Le jeu de données ne peut être supprimé que s'il ne contient ni DSR soumise ni DEE générée
+You don\'t have the permission to delete this dataset;Vous n'avez pas les droits pour supprimer ce jeu de données.
+Do you really want to delete this dataset?;Souhaitez-vous vraiment supprimer ce jeu de données ?
+Do you really want to delete this submission?;Souhaitez-vous vraiment supprimer cette soumission ?
 You have to unpublish the data to delete it;Vous devez dépublier les données pour les supprimer
+You have to upload data to delete it;Vous devez téléversez des données pour les supprimer
 Upload data to publish them;Téleversez des données pour les publier
 
 ##########################
