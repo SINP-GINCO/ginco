@@ -61,7 +61,8 @@ $user = $userSession->user;
     <?php
         $i = 0;
         foreach ($this->datasets as $dataset) {
-            $hasSubmission = isset($dataset['submission_id']);?>
+            $hasSubmission = isset($dataset['submission_id']);
+            $hasExportFile = isset($dataset['export_file_id']);?>
             <tr class="sectiontableentry<?php echo $i % 2?>">
                 <td title="<?php echo $this->escape($dataset['submission_id_tooltip']);?>&#013;<?php echo $this->escape($dataset['jdd_metadata_id_tooltip']);?>"><?php if($hasSubmission && $dataset['step'] !== "CANCEL") {
                         echo $this->escape($dataset['submission_id']);
@@ -191,7 +192,7 @@ $user = $userSession->user;
                                     if ($dataset['provider_id'] == $userSession->user->provider->id
                                         || $user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) {?>
                                         <td><a href="<?php echo $this->url(array('controller'=>'integration','action'=>'cancel-data-submission'), null, true)?>?submissionId=<?php echo $dataset['submission_id'];?>
-                                         " onClick="return confirm('<?php echo $this->translate('Are you sure?');?>');"
+                                         " onClick="return confirm('<?php echo $this->translate('Do you really want to delete this submission?');?>');"
                                          title = "<?php echo $this->translate('Cancel Submission');?>">
                                         <img src="<?php echo $this->baseUrl('img/delete_x_icon.png'); ?>" /></a></td>
                                     <?php
@@ -201,7 +202,7 @@ $user = $userSession->user;
                                 } else if ($dataset['step'] === "VALIDATE") {?>
                                     <td title="<?php echo $this->translate('You have to unpublish the data to delete it');?>"><img src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>"></td><?php
                                 } else {?>
-                                    <td><img src="<?php echo $this->baseUrl('img/empty_icon.png') ?>"></td><?php
+                                    <td title="<?php echo $this->translate('You have to upload data to delete it');?>"><img src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>"></td><?php
                                 }
                             } else {?>
                                 <td><img title="<?php echo $this->translate('Upload data to publish them');?>" src="<?php echo $this->baseUrl('img/play_publish_grey.png') ?>"></td>
@@ -239,7 +240,7 @@ $user = $userSession->user;
                             <?php
                             }
                         } else {
-                            echo $this->translate('-');
+                            echo '-';
                         }
                      }?>
                     </select>
@@ -248,26 +249,25 @@ $user = $userSession->user;
                 <!-- Begin DEE column -->
                 <td style="text-align:center">
                 <?php
-                     if($hasSubmission){
+                     if($hasSubmission) {
                          if ($user->isAllowed('MANAGE_DATASETS')) {
-                             if ($dataset['status'] != "OK" || $dataset['step'] != "VALIDATE") {?>
-                             <table><tr>
-                             <td title="<?php echo $this->translate('Publish the data to export them as DEE');?>"><img src="<?php echo $this->baseUrl('img/play_publish_grey.png') ?>"></td>
-                             <td title="<?php echo $this->translate('Publish the data to download the DEE');?>"><img src="<?php echo $this->baseUrl('img/download_grey.png') ?>"></td>
-                             <td title="<?php echo $this->translate('Generate the DEE to delete it');?>"><img src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>"></td>
-                             </tr></table>
-                             <?php
-                             }
-                             else {?>
-                                 <div class="dee-status hidden" data-submission-id="<?php echo $dataset['submission_id'].'/'.$dataset['id']?>"></div>
+                             if (($dataset['status'] == "OK" && $dataset['step'] == "VALIDATE") || $hasExportFile) {?>
+                             <div class="dee-status hidden" data-submission-id="<?php echo $dataset['submission_id'].'/'.$dataset['id']?>"></div>
                                  <div class="progress hidden">
                                      <script type="text/javascript">
                                          var $label = "<?php echo 'Génération DEE ' . (($dataset['status'] == 'RUNNING') ? 'en cours...' : 'en attente...')?>";
                                          display('deeprogress' + <?php echo $dataset['submission_id'] ?>, $label, 0 ,'/img/');
                                      </script>
                                  </div>
-                                 <div class="dee-content" data-submission-id="<?php echo $dataset['submission_id'].'/'.$dataset['id']?>"></div>
-                             <?php
+                                 <div class="dee-content" data-submission-id="<?php echo $dataset['submission_id'].'/'.$dataset['id']?>"
+                                      data-submission-step="<?php echo $dataset['step']?>"></div>
+                                 <?php
+                             } else {?>
+                                 <table><tr>
+                                 <td title="<?php echo $this->translate('Publish the data to export them as DEE');?>"><img src="<?php echo $this->baseUrl('img/play_publish_grey.png') ?>"></td>
+                                 <td title="<?php echo $this->translate('Publish the data to download the DEE');?>"><img src="<?php echo $this->baseUrl('img/download_grey.png') ?>"></td>
+                                 <td title="<?php echo $this->translate('Generate the DEE to delete it');?>"><img src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>"></td>
+                                 </tr></table><?php
                              }
                          }
                      }?>
@@ -275,27 +275,32 @@ $user = $userSession->user;
                 <!-- End DEE column  -->
                 <!-- Begin remove column -->
                 <td style="text-align:center">
-                <?php
-                    if($hasSubmission){
+                    <?php
+                    if($hasSubmission && !$hasExportFile){
                         if ($dataset['step'] === "CANCEL" && !isset($dataset['export_file_id'])) {
-                            if ($dataset['provider_id'] == $userSession->user->provider->id
-                                || ($user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION'))) {?>
-                                <a style="text-align:center" href="<?php echo $this->url(array('controller'=>'integration','action'=>'remove-jdd'), null, true)?>?jddId=<?php echo $dataset['id'];?>
-                                        " onClick="return confirm('<?php echo $this->translate('Are you sure?');?>');"
-                                        title="<?php echo $this->translate('Remove dataset');?>">
-                                <img src="<?php echo $this->baseUrl('img/delete_x_icon.png') ?>"/></a>
+                            if ($dataset['provider_id'] == $userSession->user->provider->id||($user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION'))) {?>
+                                <a href="<?php echo $this->url(array('controller'=>'integration','action'=>'remove-jdd'), null, true)?>?jddId=<?php echo $dataset['id'];?>"
+                                   onClick="return confirm('<?php echo $this->translate('Do you really want to delete this dataset?');?>');" style="text-align:center"
+                                   title="<?php echo $this->translate('Remove dataset');?>">
+                                    <img src="<?php echo $this->baseUrl('img/delete_x_icon.png') ?>"/>
+                                </a>
                                 <?php
                             }
                         } else {?>
                             <img title="<?php echo $this->translate('The dataset can be deleted only if it not contains DSR and DEE');?>"
                                  src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>">
-                            <?php
+                             <?php
                         }
-                    } else if (!isset($dataset['export_file_id'])) {?>
-                        <a style="text-align:center" href="<?php echo $this->url(array('controller'=>'integration','action'=>'remove-jdd'), null, true)?>?jddId=<?php echo $dataset['id'];?>
-                           " onClick="return confirm('<?php echo $this->translate('Are you sure?');?>');"
-                             title="<?php echo $this->translate('Remove dataset');?>">
-                            <img src="<?php echo $this->baseUrl('img/delete_x_icon.png') ?>"/></a>
+                    } else if (!$hasSubmission && !$hasExportFile) {?>
+                        <a style="text-align:center" href="<?php echo $this->url(array('controller'=>'integration','action'=>'remove-jdd'), null, true)?>?jddId=<?php echo $dataset['id'];?>"
+                           onClick="return confirm('<?php echo $this->translate('Do you really want to delete this dataset?');?>');"
+                           title="<?php echo $this->translate('Remove dataset');?>">
+                           <img src="<?php echo $this->baseUrl('img/delete_x_icon.png') ?>"/>
+                        </a>
+                        <?php
+                    } else {?>
+                        <img title="<?php echo $this->translate('The dataset can be deleted only if it not contains DSR and DEE');?>"
+                        src="<?php echo $this->baseUrl('img/delete_x_icon_grey.png') ?>">
                         <?php
                     }?>
                 </td>
@@ -407,7 +412,7 @@ function updateStatusDiv($jddId, $submissionId, $status) {
  */
 function updateContentDiv($jddId, $submissionId, $status, $progress = 0) {
     var $contentDiv = $("div.dee-content[data-submission-id='" + $submissionId + "/" + $jddId + "']");
-
+    var $submissionStep = $contentDiv.attr('data-submission-step');
     var $actions = getActions($status);
 
     $contentDiv.html('');
@@ -423,13 +428,15 @@ function updateContentDiv($jddId, $submissionId, $status, $progress = 0) {
             e.preventDefault();
             addExportJob($jddId, $submissionId);
         });
-    } else if ($.inArray( 'Relancer', $actions ) != -1) {
+    } else if ($.inArray( 'Relancer', $actions ) != -1 && $submissionStep == 'VALIDATE') {
         var $launchAgainLink = $("<td><a title='Regénérer' href=''><img src='/img/refresh_arrow.png'></a></td>");
         row.append($launchAgainLink);
         $launchAgainLink.click( function(e) {
             e.preventDefault();
             addExportJob($jddId, $submissionId);
         });
+    } else if ($submissionStep != 'VALIDATE'){
+        row.append("<td><img src='/img/refresh_arrow_grey.png'/></td>");
     }
 
     // Download link if file is available
@@ -439,7 +446,7 @@ function updateContentDiv($jddId, $submissionId, $status, $progress = 0) {
     } else if ($status == 'ABORTED') {
         row.append("<td><img title='Erreur lors de la génération DEE' src='/img/warning_red.png'/></td>");
     } else {
-        row.append("<td><img src='/img/empty_icon.png'/></td>");
+        row.append("<td><img src='/img/download_grey.png'/></td>");
     }
 
     if ($.inArray( 'Annuler', $actions ) != -1) {
@@ -450,7 +457,7 @@ function updateContentDiv($jddId, $submissionId, $status, $progress = 0) {
             cancelExport($jddId, $submissionId);
         });
     } else {
-        row.append("<td><img src='/img/empty_icon.png'/></td>");
+        row.append("<td><img src='/img/delete_x_icon_grey.png'/></td>");
     }
 
     // Update progress bar if RUNNING
@@ -512,6 +519,7 @@ function addExportJob($jddId, $submissionId) {
     },function( data ) {
         if (data.success) {
             updateStatusAndContent($jddId, $submissionId, data.status);
+            window.location.reload(true);
         }
     });
 }
@@ -529,6 +537,7 @@ function cancelExport($jddId, $submissionId) {
     },function( data ) {
          if (data.success) {
             updateStatusAndContent($jddId, $submissionId, data.status);
+            window.location.reload(true);
         }
     });
 }
