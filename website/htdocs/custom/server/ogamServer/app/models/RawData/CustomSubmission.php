@@ -137,7 +137,7 @@ class Application_Model_RawData_CustomSubmission extends Application_Model_RawDa
      * @return bool
      * @throws Exception
      */
-    public function writeIntegrationReport($submissionId, $outputFile) {
+    protected function writeIntegrationReport($submissionId, $outputFile) {
         $reportServiceURL = $this->configuration->getConfig('reportGenerationService_url', 'http://localhost:8080/OGAMRG/');
         $errorReport = $this->configuration->getConfig('errorReport', 'ErrorReport.rptdesign');
 
@@ -171,7 +171,7 @@ class Application_Model_RawData_CustomSubmission extends Application_Model_RawDa
      * @return bool
      * @throws Exception
      */
-    public function writeSensibilityReport($submissionId, $outputFile) {
+    protected function writeSensibilityReport($submissionId, $outputFile) {
 
         $schema = 'RAW_DATA';
 
@@ -365,7 +365,7 @@ class Application_Model_RawData_CustomSubmission extends Application_Model_RawDa
      * @return bool
      * @throws Exception
      */
-    public function writePermanentIdsReport($submissionId, $outputFile) {
+    protected function writePermanentIdsReport($submissionId, $outputFile) {
 
         $schema = 'RAW_DATA';
 

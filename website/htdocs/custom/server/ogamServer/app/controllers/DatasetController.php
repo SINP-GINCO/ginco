@@ -136,7 +136,7 @@ class Custom_DatasetController  extends AbstractOGAMController {
 
         // Regenerate sensibility report each time (see #815)
         if ($report == "sensibilityReport") {
-            $customSubmissionModel->writeSensibilityReport($submissionId, $filePath);
+            $customSubmissionModel->generateReport($submissionId, $report);
         }
 
         // tests the existence of the file
