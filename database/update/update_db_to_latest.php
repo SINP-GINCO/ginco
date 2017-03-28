@@ -34,24 +34,80 @@ function getDbVersion($conStr){
 	$row = pg_fetch_row($ret)
 		or exitOnError("Error : no ginco_version found in application_parameters table. Can't migrate.\n");
 	$dbVerStr = $row[0];
-	$dbVerNum = intval(explode('sprint', $dbVerStr)[1])
-		or exitOnError("Error : ginco_version is not correct in application_parameters table .Can't migrate.\n");
+	// Version must be like "sprintX" or "X.Y.Z"
+	if (preg_match('#^sprint(\d+)$#', $dbVerStr)) {
+		$dbVerSprintNum = intval(explode('sprint', $dbVerStr)[1]);
+		$dbVerNum = array(
+			"type" => "sprint",
+			"num" => $dbVerSprintNum
+		);
+	}
+	else if (preg_match('#^\d+\.\d+\.\d+$#', $dbVerStr)) {
+		$dbVerNum = array(
+			"type" => "version",
+			"num" => normalizeVersion($dbVerStr)
+		);
+	}
+	else
+		exitOnError("Error : ginco_version is not correct in application_parameters table .Can't migrate.\n");
 	pg_close($db);
 	return $dbVerNum;
 }
 
-// find the right patches to apply (based on the update/sprint* directories)
+// Normalise version numbers X.Y.Z with 3 digits per number:
+// 1.2.3 ==> 001002003
+// 1.2.30 ==> 001002030
+// 1.12.0 ==> 001012000
+function normalizeVersion($verStr){
+	if (!preg_match('#^\d+\.\d+\.\d+$#', $verStr)) {
+		return false;
+	}
+	$verNums = explode('.',$verStr);
+	$verNums = array_map( function($x){ return sprintf("%'.03d",$x);}, $verNums );
+	return intval(implode('', $verNums));
+}
+
+// Reduce version string by removing 0
+function reduceVersion($verStr){
+	if (!preg_match('#^\d+\.\d+\.\d+$#', $verStr)) {
+		return false;
+	}
+	$verNums = explode('.',$verStr);
+	$verNums = array_map( function($x){ return intval($x);}, $verNums );
+	return implode('.', $verNums);
+}
+
+
+
+
+// find the right patches to apply (based on the update/sprint* and update/v*.*.* directories)
 //------------------------------------------------------------------------------
 function getApplicablePatches($dbVerNum, $updateDir){
+
 	$sprintList = glob("$updateDir/sprint*",GLOB_ONLYDIR);
+	$versionsList = glob("$updateDir/v*",GLOB_ONLYDIR);
 
 	$applicablePatches = array();
-	foreach ($sprintList as $sprint) {
-		$sprintNum = intval(explode('sprint', basename($sprint))[1]);
-		if ($sprintNum > $dbVerNum){
-			$applicablePatches[] = "sprint$sprintNum";
+	$verNum = $dbVerNum["num"];
+
+	// if database was in "sprintX" state, look for updates in sprintY directories
+	if ($dbVerNum['type'] == 'sprint') {
+		foreach ($sprintList as $sprint) {
+			$sprintNum = intval(explode('sprint', basename($sprint))[1]);
+			if ($sprintNum > $verNum) {
+				$applicablePatches[] = basename($sprint);
+			}
 		}
 	}
+
+	// In all cases, look (also) for updates in vX.Y.Z directories
+	foreach ($versionsList as $version) {
+		$versionNum = normalizeVersion(explode('v', basename($version))[1]);
+		if ($versionNum > $verNum) {
+			$applicablePatches[] = basename($version);
+		}
+	}
+
 	return $applicablePatches;
 }
 
@@ -95,12 +151,18 @@ $config = loadPropertiesFromArgs();
 $conStr = "host={$config['db.host']} port={$config['db.port']} user={$config['db.adminuser']} password={$config['db.adminuser.pw']} dbname={$config['db.name']}";
 
 $dbVerNum = getDbVersion($conStr);
-echo ("INFO : db ginco version is sprint$dbVerNum\n");
+echo ("INFO : db ginco version is " . $dbVerNum["num"]. "\n");
 
 $applicablePatches = getApplicablePatches($dbVerNum, $updateDir);
 if (count($applicablePatches)==0){
 	echo "INFO : DB ginco version is already up to date. There is nothing to do.\n";
 	exit();
+}
+else {
+	echo "INFO: applying patches in: \n";
+	foreach($applicablePatches as $patch) {
+		echo $patch ."\n";
+	}
 }
 
 // sauvegarde de la base avant une quelconque modification
@@ -130,7 +192,12 @@ echo "DB patches applied. \n";
 // update db version tag
 $db = pg_connect( $conStr )
 	or exitOnError("ERROR : Unable to open database\n");
-$currentSprint = end($applicablePatches);
-$ret = pg_query($db, "UPDATE website.application_parameters SET value = '$currentSprint' WHERE name='ginco_version';");
+
+$currentVersion = end($applicablePatches);
+if (preg_match('#^v\d+\.\d+\.\d+$#', $currentVersion)) {
+	$currentVersion = reduceVersion(explode('v', end($applicablePatches))[1]);
+}
+
+$ret = pg_query($db, "UPDATE website.application_parameters SET value = '$currentVersion' WHERE name='ginco_version';");
 pg_close($db);
-echo "DB sprint version updated to " . $currentSprint . "\n";
+echo "DB sprint version updated to " . $currentVersion . "\n";
