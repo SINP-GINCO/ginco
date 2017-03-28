@@ -31,3 +31,7 @@ En attendant, le code d'OGAM actuellement utilisé par le projet peut être dema
 à l'équipe de développement GINCO: sinp-dev@ign.fr
 
 Voir [ce document](/INSTALL.md/) pour la procédure complète d'installation.
+
+## Changelog
+Les modifications significatives à partir de la première version de production (V1.0.0) 
+sont listées [ici](/CHANGELOG.md).
