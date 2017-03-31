@@ -166,8 +166,13 @@ if (!$autoLogin) {
 
 					$controller = $container->findOneBy('controller', $controllerName);
 					if ($controller) {
-						$link = $docUrlBase . $controller->help;
-						echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
+						if ($controller->help) {
+							$link = $docUrlBase . $controller->help;
+							echo "$icon <a href='$link' target='_blank'>" . $controller->helpLabel . "</a>";
+						}
+						else {
+							echo "$icon <a href='$docUrlBase' target='_blank'>Aide</a>";
+						}
 					}
 				    ?>
 				</p>
