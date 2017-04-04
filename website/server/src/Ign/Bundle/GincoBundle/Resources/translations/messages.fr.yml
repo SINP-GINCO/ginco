@@ -9,7 +9,6 @@ Home: Accueil
 SINP - Système d'Information Nature et Paysages: SINP - Système d'Information Nature et Paysages
 Legal notice: Mentions légales
 Geoportal copyrights: Copyrights Géoportail
-Contact: Contact
 Close: Close
 Actions: Actions
 
@@ -77,9 +76,21 @@ Homepage:
 # Contact page
 # ----------------------
 Contact:
+  link: Contact
   page:
     title: Contact
-
+  name: Votre nom :
+  email: Votre email :
+  message: Votre message :
+  send:
+    button: Envoyer
+    success: Votre message a bien été envoyé à l'administrateur de la plateforme. Il y répondra au plus vite.
+  validation:
+    name.blank: X
+    email:
+      notblank: Votre email ne soit pas être vide.
+      invalid: Cette adresse email est invalide.
+    message.notblank: Votre messsage ne doit pas être vide.
 
 # Integration - Datasets
 # ----------------------

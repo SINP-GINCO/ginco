@@ -84,9 +84,8 @@
 
         {#== Breadcrumb ==#}
         {# if the breadcrumb block is given by the template, use it. If not, use calculated breadcrumb #}
-        {% set breadcrumbBlock = block('breadcrumb') %}
-        {% if breadcrumbBlock is not empty %}
-            {{ breadcrumbBlock|raw }}
+        {% if block('breadcrumb') is defined and block('breadcrumb') is not empty %}
+            {{ block('breadcrumb')|raw }}
         {% else %}
             {{ wo_render_breadcrumbs() }}
         {% endif %}
@@ -117,7 +116,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="#" data-toggle="modal" data-target="#legalModal">{{ 'Legal notice'|trans }}</a></li>
                 <li><a href="#" data-toggle="modal" data-target="#copyrightsModal">{{ 'Geoportal copyrights'|trans }}</a></li>
-                <li><a href="{{ path('contact') }}">{{ 'Contact'|trans }}</a></li>
+                <li><a href="{{ path('contact') }}">{{ 'Contact.link'|trans }}</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
