@@ -2,12 +2,12 @@
 $sprintDir = dirname(__FILE__);
 require_once "$sprintDir/../../../lib/share.php";
 
-// -------------------------------------------------------------------------------
-// Synopsis: migrate DB GINCO from sprint 25 to sprint 26
-// -------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// Synopsis: migrate DB GINCO from sprint 27 to sprint 28 (Nothing to do because it's the same)
+// -----------------------------------------------------------------------------------------
 function usage($mess = NULL) {
 	echo "------------------------------------------------------------------------\n";
-	echo ("\nUpdate DB from sprint 25 to sprint 26\n");
+	echo ("\nUpdate DB from sprint 27 to 28\n");
 	echo ("> php update_db_sprint.php -f <configFile> [{-D<propertiesName>=<Value>}]\n\n");
 	echo "o <configFile>: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
@@ -24,24 +24,23 @@ if (count($argv) == 1)
 $config = loadPropertiesFromArgs();
 
 try {
-	/* patch code here */
-	execCustSQLFile("$sprintDir/update_postgis_to_2.3.1.sql", $config);
-	execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
-	execCustSQLFile("$sprintDir/update_referentiel_especesensible.sql", $config);
-	execCustSQLFile("$sprintDir/add_missing_indexes.sql", $config);
+	/* patch code here*/
+	execCustSQLFile("$sprintDir/update_jddMtdDEEId.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
 }
 
+
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-system("php $sprintDir/remove_ogam_id_from_dsr_import_model.php $CLIParams", $returnCode1);
-system("php $sprintDir/updateCalculatedFields.php $CLIParams", $returnCode2);
-
+//  system("php $sprintDir/script1.php $CLIParams", $returnCode1);
+// system("php $sprintDir/script2.php $CLIParams", $returnCode2);
+/*
 if ($returnCode1 != 0 || $returnCode2 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
 }
+*/

@@ -6775,6 +6775,11 @@ form label.required:after {
 .alert-error .alert-link {
   color: #843534;
 }
+/* Cut too-long texts and add ellipsis (...) */
+.longtext {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .progress {
   margin-bottom: 10px;
 }

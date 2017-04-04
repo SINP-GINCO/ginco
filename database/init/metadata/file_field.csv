@@ -28,11 +28,11 @@ geometrie;file_observation;0;;27
 heuredatedebut;file_observation;1;HH:mm;28
 heuredatefin;file_observation;1;HH:mm;29
 identifiantorigine;file_observation;0;;30
-identifiantpermanent;file_observation;1;;31
+identifiantpermanent;file_observation;0;;31
 identifiantregroupementpermanent;file_observation;0;;32
 jddcode;file_observation;0;;33
 jddid;file_observation;0;;34
-jddmetadonneedeeid;file_observation;1;;35
+jddmetadonneedeeid;file_observation;0;;35
 jddsourceid;file_observation;0;;36
 jourdatedebut;file_observation;1;yyyy-MM-dd;37
 jourdatefin;file_observation;1;yyyy-MM-dd;38

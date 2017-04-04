@@ -3,11 +3,11 @@ $sprintDir = dirname(__FILE__);
 require_once "$sprintDir/../../../lib/share.php";
 
 // -------------------------------------------------------------------------------
-// Synopsis: migrate DB GINCO from sprint 25 to sprint 26
+// Synopsis: migrate DB GINCO from sprint 26 to sprint 27
 // -------------------------------------------------------------------------------
 function usage($mess = NULL) {
 	echo "------------------------------------------------------------------------\n";
-	echo ("\nUpdate DB from sprint 25 to sprint 26\n");
+	echo ("\nUpdate DB from sprint 26 to sprint 27\n");
 	echo ("> php update_db_sprint.php -f <configFile> [{-D<propertiesName>=<Value>}]\n\n");
 	echo "o <configFile>: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
@@ -24,11 +24,24 @@ if (count($argv) == 1)
 $config = loadPropertiesFromArgs();
 
 try {
-	/* patch code here */
-	execCustSQLFile("$sprintDir/update_postgis_to_2.3.1.sql", $config);
-	execCustSQLFile("$sprintDir/add_sensirefversion.sql", $config);
-	execCustSQLFile("$sprintDir/update_referentiel_especesensible.sql", $config);
-	execCustSQLFile("$sprintDir/add_missing_indexes.sql", $config);
+	/* patch code here*/
+	execCustSQLFile("$sprintDir/add_jdd_table.sql", $config);
+	execCustSQLFile("$sprintDir/add_jdd_id_download_service_url.sql", $config);
+	execCustSQLFile("$sprintDir/add_wfs_natural_spaces.sql", $config);
+} catch (Exception $e) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
+
+
+try {
+	/* update espaces naturels */
+	$config['sprintDir'] = $sprintDir;
+	system("wget 'https://ginco.ign.fr/ref/ESPACES_NATURELS_INPN/espaces_naturels_inpn_20170228.csv' -O $sprintDir/en_inpn.csv --no-verbose");
+	echo "Intégration des données espaces naturels dans la base...";
+	execCustSQLFile("$sprintDir/update_espaces_naturels.sql", $config);
+	echo "Intégration du référentiel espaces naturels terminée.";
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
@@ -37,11 +50,12 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-system("php $sprintDir/remove_ogam_id_from_dsr_import_model.php $CLIParams", $returnCode1);
-system("php $sprintDir/updateCalculatedFields.php $CLIParams", $returnCode2);
+/* system("php $sprintDir/script.php $CLIParams", $returnCode1);
+ system("php $sprintDir/script2.php $CLIParams", $returnCode2);
 
 if ($returnCode1 != 0 || $returnCode2 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
 }
+*/
