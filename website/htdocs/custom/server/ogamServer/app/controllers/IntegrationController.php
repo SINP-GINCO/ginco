@@ -245,7 +245,7 @@ class Custom_IntegrationController extends IntegrationController {
 		$dataModelElement = $form->createElement('select', 'MODEL_ID');
 		$dataModelElement->setLabel('Data model');
 		$dataModelElement->setRequired(true);
-		$dataModelElement->addMultiOptions($this->customMetadataModel->getDataModels());
+		$dataModelElement->addMultiOptions($this->customMetadataModel->getUploadableDataModels());
 		$dataModelElement->setDescription($this->view->translate("metadataIdDescription", $metadataServiceUrl));
 		$dataModelElement->getDecorator('Description')->setOption('escape', false);
 
@@ -274,13 +274,17 @@ class Custom_IntegrationController extends IntegrationController {
 			)
 		));
 
+		// Retrieve the modelId (to filter datasets)
+		$jddSession = new Zend_Session_Namespace('jdd');
+		$modelId = $jddSession->modelId;
+
 		//
 		// Add the dataset element
 		//
 		$requestElement = $form->createElement('select', 'DATASET_ID');
 		$requestElement->setLabel('Dataset');
 		$requestElement->setRequired(true);
-		$datasets = $this->metadataModel->getDatasetsForUpload();
+		$datasets = $this->customMetadataModel->getDatasetsForUploadByModel($modelId);
 		$datasetIds = array();
 		foreach ($datasets as $dataset) {
 			$datasetIds[$dataset->id] = $dataset->label;
@@ -349,6 +353,10 @@ class Custom_IntegrationController extends IntegrationController {
 		$jddId = $values['JDD_ID'];
 		$modelId = $values['MODEL_ID'];
 
+		// Save the model_id in session
+		$jddSession = new Zend_Session_Namespace('jdd');
+		$jddSession->modelId = $modelId;
+
 		// Retrieve jdd data from metadata external service
 		$jddData = $this->getJddDataFromXML($jddId, $modelId, $this->getRequest());
 
@@ -369,14 +377,7 @@ class Custom_IntegrationController extends IntegrationController {
 			$jdd->id = $jddId;
 
 			// Save the jdd_id in session
-			$jddSession = new Zend_Session_Namespace('jdd');
 			$jddSession->jddId = $jddId;
-		} else if ($jdd['status'] === 'deleted') {
-			// Update the jdd
-			$jdd['status'] = 'empty';
-			$jdd['title'] = $jddData['title'];
-			$jdd['modelId'] = $modelId;
-			$jddModel->updateJdd($jdd);
 		} else {
 			// Forbid the creation
 			$this->_helper->_flashMessenger($this->view->translate("The metadata ID '%s' already exists. Please declare another one.", $jddId));
@@ -672,6 +673,40 @@ class Custom_IntegrationController extends IntegrationController {
 	}
 
 	/**
+	 * Check the submitted data.
+	 * Custom: Update status of jdd.
+	 *
+	 * @return a View.
+	 */
+	public function checkSubmissionAction() {
+		$this->logger->debug('custom checkSubmissionAction');
+
+		// Get the submission and jdd ids
+		$jddId = $this->_getParam("jddId");
+		$submissionId = $this->_getParam("submissionId");
+
+		// Send the check request to the integration server
+		try {
+			$this->integrationServiceModel->checkDataSubmission($submissionId);
+		} catch (Exception $e) {
+			$this->logger->err('Error during upload: ' . $e);
+			$this->view->errorMessage = $e->getMessage();
+			return $this->render('show-data-error');
+		}
+
+		// Update jdd status
+		$jddModel = new Application_Model_RawData_Jdd();
+		$jdd = array();
+		$jdd['id'] = $jddId;
+		$jdd['status'] = 'active';
+		$jddModel->updateJdd($jdd);
+
+		// Forward the user to the next step
+		$submission = $this->submissionModel->getSubmission($submissionId);
+		$this->_redirector->gotoUrl('/integration/show-data-submission-page');
+	}
+
+	/**
 	 * Validate the data.
 	 * Custom: send a notification mail to the
 	 */
@@ -748,7 +783,7 @@ class Custom_IntegrationController extends IntegrationController {
 
 		foreach ($reports as $report => $reportPath) {
 			if (!is_file($reportPath)) {
-				$this->logger->debug("validateDataAction: report file $filePath does not exist, trying to generate them");
+				$this->logger->debug("validateDataAction: report file $reportPath does not exist, trying to generate them");
 				// We try to generate the reports, and then re-test
 				$submissionModel->generateReport($submissionId, $report);
 				if (!is_file($reportPath)) {
@@ -761,6 +796,42 @@ class Custom_IntegrationController extends IntegrationController {
 
 		// Send the message
 		$mailerService->sendMessage($message);
+
+		// Forward the user to the next step
+		$this->_redirector->gotoUrl('/integration/show-data-submission-page');
+	}
+
+	/**
+	 * Cancel a data submission.
+	  Custom: Update status of jdd.
+	 *
+	 * @return the HTML view
+	 */
+	public function cancelDataSubmissionAction() {
+		$this->logger->debug('custom cancelDataSubmissionAction');
+
+		// Desactivate the timeout
+		set_time_limit(0);
+
+		// Get the jdd and submission ids
+		$jddId = $this->_getParam("jddId");
+		$submissionId = $this->_getParam("submissionId");
+
+		// Send the cancel request to the integration server
+		try {
+			$this->integrationServiceModel->cancelDataSubmission($submissionId);
+		} catch (Exception $e) {
+			$this->logger->err('Error during upload: ' . $e);
+			$this->view->errorMessage = $e->getMessage();
+			return $this->render('show-data-error');
+		}
+
+		// Update jdd status
+		$jddModel = new Application_Model_RawData_Jdd();
+		$jdd = array();
+		$jdd['id'] = $jddId;
+		$jdd['status'] = 'empty';
+		$jddModel->updateJdd($jdd);
 
 		// Forward the user to the next step
 		$this->_redirector->gotoUrl('/integration/show-data-submission-page');

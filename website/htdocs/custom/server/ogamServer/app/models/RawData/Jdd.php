@@ -192,25 +192,33 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	 * @return Integer the result of the update
 	 */
 	public function updateJdd($jdd) {
-		$data = array(
-			'title' => $jdd['title'],
-			'status' => $jdd['status'],
-			'model_id' => $jdd['modelId']
-		);
+		$data = array();
+		if (isset($jdd['title'])) {
+			$data['title'] = $jdd['title'];
+		}
+		if (isset($jdd['status'])) {
+			$data['status'] = $jdd['status'];
+		}
+		if (isset($jdd['modelId'])) {
+			$data['model_id'] = $jdd['modelId'];
+		}
 
 		$where = $this->getAdapter()->quoteInto('id = ?', $jdd['id']);
 		return $this->update($data, $where);
 	}
 
 	/**
-	 * Get the jdd corresponding to the id.
+	 * Get the jdd corresponding to the metadata_id.
+	 * Only the jdd that is not in deleted status is returned.
 	 *
 	 * @param
 	 *        	$id
 	 * @return boolean
 	 */
 	public function getJddByMetadataId($id) {
-		$select = $this->select()->where('jdd_metadata_id = ?', $id);
+		$select = $this->select()
+		->where('jdd_metadata_id = ?', $id)
+		->where('status <> ?', 'deleted');
 		$row = $this->fetchRow($select);
 		if ($row !== null) {
 			return $row->toArray();

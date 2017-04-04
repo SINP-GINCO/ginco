@@ -21,11 +21,11 @@
 class Application_Object_Website_ExportFile {
 
     /**
-     * The submission Id.
+     * The id.
      *
      * @var int
      */
-    var $submissionId;
+    var $id;
 
     /**
      * The job Id (in table job_queue).
