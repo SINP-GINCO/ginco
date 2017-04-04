@@ -93,7 +93,9 @@ class FileController extends FileControllerBase {
 					'codecommunecalcule',
 					'codedepartementcalcule',
 					'codemaillecalcule',
-					'nomcommunecalcule'
+					'nomcommunecalcule',
+					'nomvalide',
+					'jddmetadonneedeeid',
 				);
 				$calculatedFields = array_intersect($possibleCalculatedFields, $tableDatas);
 				$tableDatas = array_diff($tableDatas, $calculatedFields);
