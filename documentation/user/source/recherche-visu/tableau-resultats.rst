@@ -12,6 +12,12 @@ La navigation entre les pages de résultats se fait via les flèches au bas de l
 
 En cliquant à côté des titres des colonnes, il est possible d’ordonner l’affichage des résultats selon les valeurs de la colonne sélectionnée.
 
+.. image:: ../images/visu/visu-tableau-tri.png
+
+Il est aussi possible de masquer des colonnes en les décochant.
+
+.. image:: ../images/visu/visu-tableau-masquer-colonnes.png
+
 Vous pouvez déplacer les colonnes si vous le souhaitez en les glissant/déposant.
 
 Les icones en début de ligne permettent d’afficher les détails, de visualiser sur la carte, ou d’éditer la donnée correspondante.

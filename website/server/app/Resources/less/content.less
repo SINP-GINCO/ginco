@@ -49,6 +49,12 @@ form label.required:after {
   .alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
 }
 
+/* Cut too-long texts and add ellipsis (...) */
+.longtext {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 // Progress bars: reduce margin-bottom
 // Bar itself
 // -------------------------
