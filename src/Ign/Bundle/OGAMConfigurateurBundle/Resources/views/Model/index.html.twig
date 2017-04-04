@@ -184,7 +184,7 @@
 				{# If the model is published #}
 				{% else %}
 					{# Unpublish button with confirmation modal #}
-					{% if not filled[model.id] %}
+							{% if unpublishable[model.id] %}
 						<td>
 							{# Unpublish button with confirmation modal #}
 							<a	id="unpublish-button-{{ model.id }}" role="button" class="btn btn-default"

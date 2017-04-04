@@ -3,6 +3,8 @@ dee:
 datamodel:
   new:
     forbidden: Vous ne pouvez créer un modèle qu'à partir de la duplication d'un autre modèle.
+  unpublish:
+    hasDataOrJdd: Le modèle '%modelName%' ne peut être dépublié car il est soit lié à un jeu de données, soit il contient des données en production.
 table:
   new:
     forbidden: Vous ne pouvez pas ajouter de nouvelle table à un modèle.
