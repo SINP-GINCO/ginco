@@ -3,7 +3,7 @@ $sprintDir = dirname(__FILE__);
 require_once "$sprintDir/../../../lib/share.php";
 
 // -----------------------------------------------------------------------------------------
-// Synopsis: migrate DB GINCO from sprint 27 to v1.0.0 (Nothing to do because it's the same)
+// Synopsis: migrate DB GINCO from sprint 27 to sprint 28 (Nothing to do because it's the same)
 // -----------------------------------------------------------------------------------------
 function usage($mess = NULL) {
 	echo "------------------------------------------------------------------------\n";
@@ -25,7 +25,7 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here*/
-	// execCustSQLFile("$sprintDir/script.sql", $config);
+	execCustSQLFile("$sprintDir/update_jddMtdDEEId.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
