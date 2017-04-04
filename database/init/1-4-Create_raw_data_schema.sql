@@ -285,17 +285,14 @@ ALTER FUNCTION raw_data.init_trigger()
 
 CREATE TABLE raw_data.export_file
 (
-	submission_id integer NOT NULL,
+	id SERIAL,
 	job_id integer,
 	user_login character varying(50),
 	file_name character varying(500),
 	created_at timestamp without time zone DEFAULT now(),
-	CONSTRAINT pk_submission_id PRIMARY KEY (submission_id),
+	CONSTRAINT PK_EXPORT_FILE PRIMARY KEY (id),
 	CONSTRAINT fk_job_id FOREIGN KEY (job_id)
 	REFERENCES website.job_queue (id) MATCH SIMPLE
-	ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT fk_submission_id FOREIGN KEY (submission_id)
-	REFERENCES raw_data.submission (submission_id) MATCH SIMPLE
 	ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT fk_user_login FOREIGN KEY (user_login)
 	REFERENCES website.users (user_login) MATCH SIMPLE
@@ -318,7 +315,7 @@ GRANT ALL ON TABLE raw_data.export_file TO ogam;
 CREATE TABLE jdd
 (
 	id serial,
-	jdd_metadata_id character varying(36) UNIQUE,
+	jdd_metadata_id character varying(36),
 	title character varying(512),
 	status character varying(16) NOT NULL,
 	model_id character varying(19) NOT NULL,
@@ -334,7 +331,7 @@ CREATE TABLE jdd
 	REFERENCES raw_data.submission (submission_id) MATCH SIMPLE
 	ON UPDATE CASCADE ON DELETE RESTRICT,
 	CONSTRAINT fk_export_file_id FOREIGN KEY (export_file_id)
-	REFERENCES raw_data.export_file (submission_id) MATCH SIMPLE
+	REFERENCES raw_data.export_file (id) MATCH SIMPLE
 	ON UPDATE CASCADE ON DELETE SET NULL
 )
 WITH (
@@ -344,7 +341,7 @@ OIDS=FALSE
 COMMENT ON COLUMN jdd.id IS 'Technical id of the jdd';
 COMMENT ON COLUMN jdd.jdd_metadata_id IS 'Id of the jdd metadata sheet';
 COMMENT ON COLUMN jdd.title IS 'Title of the jdd, from the metadata';
-COMMENT ON COLUMN jdd.status IS 'jdd status, can be ''empty'' (jdd created and active, no DSR nor DEE), ''active'' (at least the DSR or the DEE is created), ''suppressed'' (deleted, but the row is kept)';
+COMMENT ON COLUMN jdd.status IS 'jdd status, can be ''empty'' (jdd created and active, no DSR nor DEE), ''active'' (at least the DSR or the DEE is created), ''deleted'' (deleted, but the row is kept)';
 COMMENT ON COLUMN jdd.model_id IS 'Id of the data model in which the jdd is delivered';
 COMMENT ON COLUMN jdd.created_at IS 'jdd creation timestamp (delivery timestamp is in submission._creationdt)';
 COMMENT ON COLUMN jdd.dsr_updated_at IS 'DSR last edition timestamp';

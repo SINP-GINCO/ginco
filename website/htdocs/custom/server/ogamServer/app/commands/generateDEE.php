@@ -6,7 +6,7 @@
  *
  * Usage:
  *
- *  php generateDEE.php -s $SUBMISSION_ID -m $JDD_ID -f OUTPUT_FILE.xml [ -j $JOB_ID ]
+ *  php generateDEE.php -m $JDD_ID -f OUTPUT_FILE.xml -u $USER_LOGIN [ -j $JOB_ID ]
  *
  * $SUBMISSION_ID: id of the submission (dataset) in table raw_data.submission
  * $JDD_ID: id of the jdd in table raw_data.jdd
@@ -41,13 +41,11 @@ $logger->debug("generateDEE launched...");
 $jm = new Application_Service_JobManagerService();
 
 // Options from the command line :
-// s : submission Id
+// m : jdd_id
 // f : file name to write
+// u : user_login for e-mail
 // j (optional) : job id in the job queue
-$options = getopt("j::s:m:f:");
-
-// Get the submission Id
-$submissionId = intval($options['s']);
+$options = getopt("j::m:f:u:");
 
 // Get the jddId
 $jddId = intval($options['m']);
@@ -55,21 +53,24 @@ $jddId = intval($options['m']);
 // Get the filename
 $fileName = $options['f'];
 
+// Get the user_login
+$userLogin = $options['u'];
+
 // Get the job id (in the job queue)
 $jobId = isset($options['j']) ? $options['j'] : null;
 
 // Generate DEE GML
 $gml = new GMLExport();
 $dateCreated = time();
-$gml->generateDeeGml($submissionId, $fileName, $jobId);
-$logger->debug("GML created for submission $submissionId: $fileName");
+$gml->generateDeeGml($jddId, $fileName, $jobId);
+$logger->debug("GML created for jdd $jddId: $fileName");
 
 // Create the archive and put it in the DEE download directory
 $archivePath = $gml->createArchiveDeeGml($jddId, $fileName);
-$logger->debug("GML Archive created for submission $submissionId: $archivePath");
+$logger->debug("GML Archive created for jdd $jddId: $archivePath");
 
 // Send notification emails to the user and to the MNHN
-$gml->sendDEENotificationMail($jddId, $submissionId, $archivePath, $dateCreated);
+$gml->sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin);
 $logger->debug("GML Notification mail sent");
 
 if ($jobId) {

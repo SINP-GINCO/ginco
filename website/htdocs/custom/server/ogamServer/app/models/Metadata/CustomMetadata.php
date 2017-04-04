@@ -54,26 +54,39 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 	}
 
 	/**
-	 * Get the list of the data models.
+	 * Get the list of the data models that can be uploaded.
 	 *
 	 * @return Array of Object
 	 */
-	public function getDataModels() {
-		$this->logger->debug('getDataModels');
+	public function getUploadableDataModels() {
 		$db = Zend_Db_Table::getDefaultAdapter();
 
-		$req = "SELECT id, name
-				FROM metadata.model
-				ORDER BY name";
+		$req = "SELECT DISTINCT id, name ";
+		$req .= "FROM model d ";
+		$req .= "INNER JOIN model_datasets md ON d.id = md.model_id ";
+		$req .= "INNER JOIN dataset dt ON md.dataset_id = dt.dataset_id AND type = 'IMPORT'";
 
-		$query = $db->prepare($req);
-		$query->execute();
+		// Check the role restrictions
+		$userSession = new Zend_Session_Namespace('user');
+		if ($userSession != null && $userSession->user != null) {
+			$req .= ' WHERE (dt.dataset_id NOT IN (SELECT dataset_id FROM dataset_role_restriction JOIN role_to_user USING (role_code) WHERE user_login = ?))';
+			$params[] = $userSession->login;
+		}
+
+		$req .= " ORDER BY name";
+
+		$this->logger->info('getUploadableDataModels : ' . $req);
+
+		$query = $this->db->prepare($req);
+		$query->execute($params);
 
 		$result = array();
 		foreach ($query->fetchAll() as $row) {
 			$result[$row['id']] = $row['name'];
 		}
 		return $result;
+
+
 	}
 
 	/**
@@ -100,6 +113,42 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 			$modelId = $row['model_id']; // Only one result expected...
 		}
 		return $modelId;
+	}
+
+	/**
+	 * Get the available datasets for upload and by model id.
+	 *
+	 * @return Array[Application_Object_Metadata_Dataset]
+	 */
+	public function getDatasetsForUploadByModel($modelId) {
+		$req = "SELECT DISTINCT dataset_id as id, COALESCE(t.label, d.label) as label, COALESCE(t.definition, d.definition) as definition, is_default ";
+		$req .= " FROM dataset d";
+		$req .= " LEFT JOIN translation t ON (lang = '" . $this->lang . "' AND table_format = 'DATASET' AND row_pk = dataset_id) ";
+		$req .= " INNER JOIN dataset_files using (dataset_id) ";
+		$req .= " INNER JOIN model_datasets using (dataset_id) ";
+		$req .= " WHERE model_id = ? ";
+
+		// Check the role restrictions
+		$userSession = new Zend_Session_Namespace('user');
+		$params = array($modelId);
+		if ($userSession != null && $userSession->user != null) {
+			$req .= ' AND (dataset_id NOT IN (SELECT dataset_id FROM dataset_role_restriction JOIN role_to_user USING (role_code) WHERE user_login = ?))';
+			$params[] = $userSession->login;
+		}
+
+		$req .= " ORDER BY dataset_id";
+
+		$this->logger->info('getDatasetsForUpload : ' . $req);
+
+		$select = $this->db->prepare($req);
+		$select->execute($params);
+
+		$result = array();
+		foreach ($select->fetchAll() as $row) {
+			$dataset = $this->_readDataSet($row);
+			$result[$dataset->id] = $dataset;
+		}
+		return $result;
 	}
 
 	/**
@@ -184,6 +233,22 @@ class Application_Model_Metadata_CustomMetadata extends Application_Model_Metada
 		$tableField->definition = $row['definition'];
 
 		return $tableField;
+	}
+
+	/**
+	 * Read a dataset object from a result line.
+	 *
+	 * @param Result $row
+	 * @return Application_Object_Metadata_Dataset
+	 */
+	private function _readDataSet($row) {
+		$dataset = new Application_Object_Metadata_Dataset();
+		$dataset->id = $row['id'];
+		$dataset->label = $row['label'];
+		$dataset->definition = $row['definition'];
+		$dataset->isDefault = $row['is_default'];
+
+		return $dataset;
 	}
 
 	/**

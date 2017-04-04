@@ -86,26 +86,34 @@ class Custom_GmlexportController extends AbstractOGAMController {
      *
      */
     public function addJobAction() {
-        $submissionId = $this->_getParam("submissionId");
+        $exportFileId = $this->_getParam("exportFileId");
         $jddId = $this->_getParam("jddId");
+        $submissionId = $this->_getParam("submissionId");
         $launch = $this->_getParam("launch", true);
 
         $userSession = new Zend_Session_Namespace('user');
         $userLogin = $userSession->user->login;
 
-        $this->logger->debug('GMLExport: add job in queue, submission id : ' . $submissionId . ', jdd id : ' . $jddId);
+        $this->logger->debug('GMLExport: add job in queue, export file id : ' . $exportFileId . ', jdd id : ' . $jddId);
+
+        // Get the jdd uuid
+        $jddModel = new Application_Model_RawData_Jdd();
+        $jddResult = $jddModel->find($jddId);
+        $jddResult->current();
+        $jdd =  $jddResult->toArray()[0];
+        $uuid = $jdd['jdd_metadata_id'];
 
         // Test if there is already an export file
-        if ( $this->exportFileModel->existsExportFileData($submissionId)) {
-            $this->logger->debug('GMLExport: export_file already exists, deleting it.Submission id : ' . $submissionId);
-            $this->cancelExport($submissionId);
+        if ($exportFileId > 0 && $this->exportFileModel->existsExportFileData($exportFileId)) {
+            $this->logger->debug('GMLExport: export_file already exists, deleting it. Export file id : ' . $exportFileId);
+            $this->cancelExport($exportFileId);
         }
 
         // export file name
-        $filePath = $this->exportFileModel->generateFilePath($submissionId);
+        $filePath = $this->exportFileModel->generateFilePath($uuid);
 
         // Command to launch the GML Export Job
-        $command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -s ' . $submissionId .' -m ' . $jddId . ' -f ' . $filePath;
+        $command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -m ' . $jddId . ' -f ' . $filePath . ' -u ' . $userLogin;
         // Length of the observation files
         $length = $this->exportFileModel->getJobLengthForSubmission($submissionId);
 
@@ -113,19 +121,19 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         if ($jobId) {
             // Insert a line in export_file table
-            $exportFileId = $this->exportFileModel->addExportFile($submissionId, $jobId, $filePath, $userLogin);
+            $exportFileId = $this->exportFileModel->addExportFile($jddId, $jobId, $filePath, $userLogin);
             // Update jdd with the export file id
-
             $this->jddModel->addExportFile($jddId, $exportFileId);
         }
         else {
-            $this->logger->debug('GMLExport: IMPOSSIBLE to add export_file entry, submission id : ' . $submissionId);
+            $this->logger->debug('GMLExport: IMPOSSIBLE to add export_file entry, jdd id : ' . $jddId);
         }
 
         $return = array(
-            'submissionId' => $submissionId,
+            'exportFileId' => $exportFileId,
             'success' => ($jobId > 0)
         );
+
         if ($jobId) {
             $return['status'] = Application_Service_JobManagerService::PENDING;
 
@@ -151,13 +159,13 @@ class Custom_GmlexportController extends AbstractOGAMController {
      * Cancel export action. See cancelExport.
      */
     public function cancelExportAction() {
-        $submissionId = $this->_getParam("submissionId");
-        $this->logger->debug('GMLExport: cancel export, submission id : ' . $submissionId);
+        $id = $this->_getParam("id");
+        $this->logger->debug('GMLExport: cancel export, export file id : ' . $id);
 
-        $success = $this->cancelExport($submissionId);
+        $success = $this->cancelExport($id);
 
         $return = array(
-            'submissionId' => $submissionId,
+            'id' => $id,
             "success" => $success,
         );
         if ($success) {
@@ -178,27 +186,27 @@ class Custom_GmlexportController extends AbstractOGAMController {
      * Delete line in export_file.
      *
      */
-    protected function cancelExport($submissionId) {
+    protected function cancelExport($id) {
         // Test if there is already an export_file entry
-        if (! $this->exportFileModel->existsExportFileData($submissionId) ) {
+        if (! $this->exportFileModel->existsExportFileData($id) ) {
             return false;
         }
 
         // Warning !!! don't change order of following operations (ON DELETE CASCADE...)
 
         // Physically delete old file
-        if ($this->exportFileModel->existsExportFileOnDisk($submissionId)) {
+        if ($this->exportFileModel->existsExportFileOnDisk($id)) {
             $this->logger->debug('GMLExport: physically delete old file');
-            $this->exportFileModel->deleteExportFileFromDisk($submissionId);
+            $this->exportFileModel->deleteExportFileFromDisk($id);
         }
         // Check if file still exists (error on deletion...)
-        $success = !$this->exportFileModel->existsExportFileOnDisk($submissionId);
+        $success = !$this->exportFileModel->existsExportFileOnDisk($id);
         if (!$success) {
             $this->logger->debug('GMLExport: problem, old file still exists.');
         }
 
         // Cancel the job
-        $jobId = $this->getJobIdForSubmission($submissionId);
+        $jobId = $this->getJobIdFromExportFile($id);
         if ($jobId) {
             $success = $success && $this->jobManager->cancelJob($jobId);
         }
@@ -208,7 +216,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
         }
 
         // Delete from the export_file table
-        $success = $success && $this->exportFileModel->deleteExportFileData($submissionId);
+        $success = $success && $this->exportFileModel->deleteExportFileData($id);
 
         return $success;
     }
@@ -222,7 +230,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $submissionId = $this->_getParam("submissionId");
         $this->logger->debug('GMLExport: getStatus, submission id : ' . $submissionId);
 
-        $jobId = $this->getJobIdForSubmission($submissionId);
+        $jobId = $this->getJobIdFromExportFile($submissionId);
         if (!$jobId) {
             $status = Application_Service_JobManagerService::NOTFOUND;
         }
@@ -259,7 +267,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
         $i = 0;
         foreach ($submissionIds as $submissionId) {
             $jddId = $jddIds[$i];
-            $jobId = $this->getJobIdForSubmission($submissionId);
+            $jobId = $this->getJobIdFromExportFile($submissionId);
             if (!$jobId) {
                 $status = Application_Service_JobManagerService::NOTFOUND;
             }
@@ -297,22 +305,22 @@ class Custom_GmlexportController extends AbstractOGAMController {
         // To handle large files
         set_time_limit(0);
 
-        // Get the submission Id
-        $submissionId = $this->_getParam("submissionId");
-        $this->logger->debug('GMLExport: download file, submission id : ' . $submissionId);
+        // Get the export file Id
+        $id = $this->_getParam("id");
+        $this->logger->debug('GMLExport: download file, export file id : ' . $id);
 
         // Check if the job is completed, get the filename, and checks if the file exists
-        $jobId = $this->getJobIdForSubmission($submissionId);
+        $jobId = $this->getJobIdFromExportFile($id);
         if (!$jobId) {
             $this->logger->debug('GMLExport: error, couldn\'t find job id');
-            throw new Exception("Could not find export_file for submission $submissionId");
+            throw new Exception("Could not find export_file with id $id");
         }
         $status = $this->jobManager->getStatus($jobId);
         if ($status != Application_Service_JobManagerService::COMPLETED) {
             $this->logger->debug('GMLExport: DEE generation is not completed');
-            throw new Exception("DEE generation is not completed for submission $submissionId");
+            throw new Exception("DEE generation is not completed for export file with id $id");
         }
-        $exportFile = $this->exportFileModel->getExportFileData($submissionId);
+        $exportFile = $this->exportFileModel->getExportFileData($id);
         $filePath = $exportFile->file_name;
         $fileName = pathinfo($filePath, PATHINFO_FILENAME) . '.zip';
 
@@ -322,7 +330,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
 
         if (!is_file( $archiveFilePath )) {
             $this->logger->debug('GMLExport: DEE archive file does not exist');
-            throw new Exception("DEE archive file does not exist for submission $submissionId");
+            throw new Exception("DEE archive file does not exist for export file with id $id");
         }
 
         // -- Get back the file
@@ -342,16 +350,16 @@ class Custom_GmlexportController extends AbstractOGAMController {
     }
 
     /**
-     * Utility function: get the job id for a given submission id, from table raw_data.export_file
+     * Utility function: get the job id for a given export file id, from table raw_data.export_file
      *
-     * @param $submissionId
+     * @param $exportFileId
      * @return bool
      */
-    protected function getJobIdForSubmission( $submissionId) {
-        if (!$this->exportFileModel->existsExportFileData($submissionId)) {
+    protected function getJobIdFromExportFile($exportFileId) {
+        if (!$this->exportFileModel->existsExportFileData($exportFileId)) {
             return false;
         }
-        $exportFile = $this->exportFileModel->getExportFileData($submissionId);
+        $exportFile = $this->exportFileModel->getExportFileData($exportFileId);
         return $exportFile->job_id; // return the job_id or false
     }
 

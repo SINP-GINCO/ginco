@@ -24,7 +24,7 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
     // Db table name
     protected $_name = 'raw_data.export_file';
     // Primary key column
-    protected $_primary = 'submission_id';
+    protected $_primary = 'id';
 
     protected $logger;
     protected $lang;
@@ -41,13 +41,13 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
 
     /**
      * Get a boolean telling if there is a line in export_file
-     * for the given submission id
+     * for the given id
      *
      * @param $id
      * @return boolean
      */
-    public function existsExportFileData($submissionId) {
-        $row = $this->fetchRow("submission_id = '" . $submissionId . "'");
+    public function existsExportFileData($id) {
+        $row = $this->fetchRow("id = '" . $id . "'");
         if (!$row) {
             return false;
         }
@@ -61,10 +61,10 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      * @return Rowset
      * @throws Exception
      */
-    public function getExportFileData($submissionId) {
-        $row = $this->fetchRow("submission_id = '" . $submissionId . "'");
+    public function getExportFileData($id) {
+        $row = $this->fetchRow("id = '" . $id . "'");
         if (!$row) {
-            throw new Exception("Could not find export_file for submission $submissionId");
+            throw new Exception("Could not find export_file for id $id");
         }
         return $row;
     }
@@ -72,7 +72,6 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
     /**
      * Add a new export_file line
      *
-     * @param $submissionId
      * @param $jobId
      * @param $fileName
      * @param $userLogin : the user who initiated the export
@@ -80,13 +79,9 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      * @return mixed : last id inserted
      * @throws Exception
      */
-    public function addExportFile($submissionId, $jobId, $fileName, $userLogin) {
-        $this->logger->debug("addExportFile $fileName for submission $submissionId (job id $jobId, user: $userLogin)");
-        if ($this->existsExportFileData($submissionId)) {
-            throw new Exception("An export file already exists for submission  $submissionId");
-        }
+    public function addExportFile($jddId, $jobId, $fileName, $userLogin) {
+        $this->logger->debug("addExportFile $fileName for jdd $jddId (job id $jobId, user: $userLogin)");
         $data = array(
-            'submission_id' => $submissionId,
             'job_id' => $jobId,
             'file_name' => $fileName,
             'user_login' => $userLogin,
@@ -95,17 +90,17 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
     }
 
     /**
-     * Delete an export_filefrom Db
+     * Delete an export_file from Db
      *
      * @param $id
      */
-    public function deleteExportFileData($submissionId) {
-        $this->logger->debug("deleteExportFileData for submission $submissionId");
+    public function deleteExportFileData($id) {
+        $this->logger->debug("deleteExportFileData for id $id");
         // As there is a on delete cascade on job_id, chances are good that record is already deleted from export_file
-        if (!$this->existsExportFileData($submissionId)) {
+        if (!$this->existsExportFileData($id)) {
             return true;
         }
-        return $this->delete("submission_id = '" . $submissionId . "'");
+        return $this->delete("id = '" . $id . "'");
     }
 
     /**
@@ -113,21 +108,21 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
      *
      * @param $id
      */
-    public function deleteExportFileFromDisk($submissionId) {
-        $this->logger->debug("deleteExportFileFromDisk for submission $submissionId");
-        if (!$this->existsExportFileData($submissionId)) {
-            return false;
-        }
-        $exportFile = $this->getExportFileData($submissionId);
+    public function deleteExportFileFromDisk($id) {
+        $this->logger->debug("deleteExportFileFromDisk for id $id");
+         if (!$this->existsExportFileData($id)) {
+             return false;
+         }
+        $exportFile = $this->getExportFileData($id);
         $filePath = $exportFile->file_name;
         return unlink($filePath);
     }
 
-    public function existsExportFileOnDisk($submissionId) {
-        if (!$this->existsExportFileData($submissionId)) {
+    public function existsExportFileOnDisk($id) {
+        if (!$this->existsExportFileData($id)) {
             return false;
         }
-        $exportFile = $this->getExportFileData($submissionId);
+        $exportFile = $this->getExportFileData($id);
         $filePath = $exportFile->file_name;
         return is_file($filePath);
     }
@@ -152,15 +147,15 @@ class Application_Model_RawData_ExportFile extends Zend_Db_Table_Abstract {
     /**
      * Generate an absolute file path for export file
      *
-     * @param $submissionId
+     * @param $jddId
      * @return string
      */
-    public function generateFilePath($submissionId) {
+    public function generateFilePath($jddId) {
         $configuration = Zend_Registry::get('configuration');
 
         $regionCode = $configuration->getConfig('regionCode','REGION');
         $date = date('Y-m-d_H-i-s');
-        $uuid = $submissionId; // todo: à changer quand on aura un moyen de récupérer l'UUID du jdd.
+        $uuid = $jddId;
 
         $fileNameWithoutExtension = $regionCode . '_' . $date . '_' . $uuid ;
 

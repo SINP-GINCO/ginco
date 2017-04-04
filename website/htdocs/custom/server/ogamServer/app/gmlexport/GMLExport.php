@@ -51,7 +51,7 @@ class GMLExport
     }
 
     /**
-     * Create the GML of the DEE for submission $submissionId.
+     * Create the GML of the DEE for dataset with the id given.
      * Write it in file $fileName.
      * Optionally, a job id can be passed to the function, in which case
      * the function reports its progress percentage to the Job Manager.
@@ -63,19 +63,27 @@ class GMLExport
      *   - groups (computed from observations)
      * - concatenate the intermediate files and delete them
      *
-     * @param $submissionId
+     * @param $jddId
      * @param $fileName
      * @param null $jobId
      * @throws Exception
      * @return boolean
      */
-    public function generateDeeGml($submissionId, $fileName, $jobId = null) {
+    public function generateDeeGml($jddId, $fileName, $jobId = null) {
         // Configure memory and time limit because the program ask a lot of resources
         $configuration = Zend_Registry::get("configuration");
         ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
         ini_set("max_execution_time", 0); // Not really useful because the script is used in CLI (max_execution_time is already 0)
 
         $schema = 'RAW_DATA';
+
+        // Get the submission id
+        $jddModel = new Application_Model_RawData_Jdd();
+        $jddRowset = $jddModel->find($jddId);
+        $jddRowset->next();
+        $jdd = $jddRowset->toArray()[0];
+        $submissionId = $jdd['submission_id'];
+        $modelId = $jdd['model_id'];
 
         // Get the dataset Id
         $submissionModel = new Application_Model_RawData_Submission();
@@ -84,7 +92,7 @@ class GMLExport
             throw new Exception("Could not find submission $submissionId");
         }
         $datasetId = $dataSubmission->datasetId;
-        $this->logger->debug('generateDEE.php - Submission Id : ' . $submissionId . " DatasetId : " . $datasetId);
+        $this->logger->debug('generateDEE.php - jdd Id : ' . $jddId . " Model id : " . $modelId);
 
         // -- Create a query object : the query must find all lines with given submission_id,
         // And print a list of all fields in the model
@@ -93,7 +101,6 @@ class GMLExport
         $queryObject->datasetId = $datasetId;
 
         $customMetadataModel = new Application_Model_Metadata_CustomMetadata();
-        $modelId = $customMetadataModel->getModelForDataset($datasetId);
         $tableFields = $customMetadataModel->getTableFieldsForModel($modelId);
 
         // -- Criteria fields for the query
@@ -105,7 +112,6 @@ class GMLExport
             }
             $queryObject->addInfoField($tableField);
         }
-
         // -- Result fields for the query : all fields of the model
         foreach ($tableFields as $tableField) {
             $queryObject->addEditableField($tableField);
@@ -409,7 +415,7 @@ class GMLExport
      * - other files...
      * And put the archive in the "deePublicDirectory" from conf (in the public directory).
      *
-     * @param $submissionId
+     * @param $jddId
      * @param $fileName
      * @return string
      */
@@ -452,11 +458,11 @@ class GMLExport
      *  - one to the MNHN
      *
      * @param $jddId
-     * @param $submissionId
      * @param $archivePath
      * @param $dateCreated
+     * @param $userLogin
      */
-    public function sendDEENotificationMail($jddId, $submissionId, $archivePath, $dateCreated) {
+    public function sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin) {
 
         $configuration = Zend_Registry::get('configuration');
 
@@ -474,7 +480,9 @@ class GMLExport
         $jddModel = new Application_Model_RawData_Jdd();
         $jddRowset = $jddModel->find($jddId);
         $jddRowset->next();
-        $uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
+        $jdd = $jddRowset->toArray()[0];
+        $uuid = $jdd['jdd_metadata_id'];
+        $submissionId = $jdd['submission_id'];
         // Provider of the submission and submission files
         $submissionModel = new Application_Model_RawData_CustomSubmission();
         $submission = $submissionModel->getSubmission($submissionId);
@@ -484,9 +492,6 @@ class GMLExport
         $fileNames = array_map("basename",array_column($submissionFiles, "file_name"));
 
         // Contact user
-        $exportFileModel = new Application_Model_RawData_ExportFile();
-        $exportFile = $exportFileModel->getExportFileData($submissionId);
-        $userLogin = $exportFile->user_login;
         $userModel = new Application_Model_Website_User();
         $user = $userModel->getUser($userLogin);
         $userName = $user->username;
