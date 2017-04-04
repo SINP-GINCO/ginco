@@ -50,7 +50,7 @@ statutsource;table_observation;statutsource;0;1;1;1;49;
 jddcode;table_observation;jddcode;0;1;1;0;50;
 jddid;table_observation;jddid;0;1;1;0;51;
 jddsourceid;table_observation;jddsourceid;0;1;1;0;52;
-jddmetadonneedeeid;table_observation;jddmetadonneedeeid;0;1;1;1;53;
+jddmetadonneedeeid;table_observation;jddmetadonneedeeid;1;0;0;1;53;
 organismegestionnairedonnee;table_observation;organismegestionnairedonnee;0;1;1;1;54;
 codeidcnpdispositif;table_observation;codeidcnpdispositif;0;1;1;0;55;
 deedatedernieremodification;table_observation;deedatedernieremodification;1;0;0;1;56;Les règles de mise à jour de ce champ sont définies dans le ticket : #747
