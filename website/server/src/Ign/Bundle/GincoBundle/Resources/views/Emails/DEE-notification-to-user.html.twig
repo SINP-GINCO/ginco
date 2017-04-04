@@ -1,0 +1,37 @@
+{% extends "IgnGincoBundle:Emails:base-email.html.twig" %}
+
+{%- block subject %}
+    [GINCO {{ region }}] Transmission du jeu de données {{ metadata_uuid }} à la plateforme nationale
+{% endblock -%}
+
+{%- block email_body_text %}
+    {% autoescape true %}
+        Bonjour,
+
+        Le fichier de données {{ filename }} que vous nous avez transmis et dont l'identifiant est {{ metadata_uuid }}
+        a été standardisé au format GML d'échange de DEE le {{ created|date("d/m/Y H:i:s") }}.
+
+        La plateforme nationale a été notifiée et va procéder à l'intégration de ce nouveau fichier dans l'INPN.
+
+        Bien cordialement,
+
+        Contact : {{ user.name }} ({{ user.login }})
+        Courriel : {{ user.email }}
+    {% endautoescape %}
+{% endblock -%}
+
+{%- block email_body_html %}
+    {% autoescape false %}
+        <p>Bonjour,</p>
+
+        <p>Le fichier de données <em>{{ filename }}</em> que vous nous avez transmis et dont l'identifiant est <em>{{ metadata_uuid }}</em>
+        a été standardisé au format GML d'échange de DEE le {{ created|date("d/m/Y H:i:s") }}.</p>
+
+        <p>La plateforme nationale a été notifiée et va procéder à l'intégration de ce nouveau fichier dans l'INPN.</p>
+
+        <p>Bien cordialement,</p>
+
+        <p>Contact : {{ user.name }} ({{ user.login }})
+        Courriel : <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+    {% endautoescape %}
+{% endblock -%}

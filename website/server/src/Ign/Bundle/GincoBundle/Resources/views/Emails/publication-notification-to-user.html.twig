@@ -1,0 +1,45 @@
+{% extends "IgnGincoBundle:Emails:base-email.html.twig" %}
+
+{%- block subject %}
+    [GINCO {{ region }}] Publication du jeu de données {{ metadata_uuid }}
+{% endblock -%}
+
+{%- block email_body_text %}
+    {% autoescape true %}
+        Bonjour,
+
+        Le fichier de données {{ filename }} que vous nous avez transmis a été intégré sur la plate-forme :
+        {{ site_name }} et publié le {{ created|date("d/m/Y H:i:s") }}.
+
+        Sur la plate-forme, il porte désormais l'identifiant de sa fiche de métadonnées : {{ metadata_uuid }}.
+
+        Vous trouverez en pièce jointe le rapport final de conformité et de cohérence du fichier, le rapport final
+        sur la sensibilité des observations ainsi que le fichier vous permettant de reporter les identifiants permanents
+        SINP attribués aux données du jeu par la plate-forme.
+
+        Bien cordialement,
+
+        Contact : {{ user.name }} ({{ user.login }})
+        Courriel : {{ user.email }}
+    {% endautoescape %}
+{% endblock -%}
+
+{%- block email_body_html %}
+    {% autoescape false %}
+        <p>Bonjour,</p>
+
+        <p>Le fichier de données <em>{{ filename }}</em> que vous nous avez transmis a été intégré sur la plate-forme :
+            <em>{{ site_name }}</em> et publié le {{ created|date("d/m/Y H:i:s") }}.</p>
+
+        <p>Sur la plate-forme, il porte désormais l'identifiant de sa fiche de métadonnées : <em>{{ metadata_uuid }}.</em></p>
+
+        <p>Vous trouverez en pièce jointe le rapport final de conformité et de cohérence du fichier, le rapport final
+        sur la sensibilité des observations ainsi que le fichier vous permettant de reporter les identifiants permanents
+        SINP attribués aux données du jeu par la plate-forme.</p>
+
+        <p>Bien cordialement,</p>
+
+        <p>Contact : {{ user.name }} ({{ user.login }})
+        Courriel : <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+    {% endautoescape %}
+{% endblock -%}
