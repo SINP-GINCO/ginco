@@ -188,6 +188,8 @@ function buildWebsite($config, $buildMode)
 			'admin_user' => $config['db.adminuser'],
 			'admin_pw' => $config['db.adminuser.pw'],
 			'db_version' => $config['db.version'],
+			'mailer_transport' => $config['mailer.transport'],
+			'mailer_host' => $config['mailer.host'],
 		],
 		'__'
 	);
