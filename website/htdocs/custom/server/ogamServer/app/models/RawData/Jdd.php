@@ -135,7 +135,7 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 				$submission = $selectSubmission->fetch();
 
 				// Empty submission id tooltip if is canceled
-				if ($submission['step'] === 'CANCEL') {
+				if ($submission['step'] === 'CANCEL' || $submission['step'] === 'INIT') {
 					$jddInfo['submission_id_tooltip'] = $translator->translate("Submission identifier") . " : / ";
 					$jddInfo['provider_id'] = '-';
 					$jddInfo['provider_label'] = '-';
@@ -144,8 +144,6 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 					$jddInfo['file_name'] = '-';
 					$jddInfo['status'] = $submission['status'];
 					$jddInfo['step'] = $submission['step'];
-				} else if ($submission['step'] === 'INIT') {
-					$jddInfo['nb_data'] = 0;
 				} else {
 					$jddInfo['provider_id'] = $submission['provider_id'];
 					$jddInfo['provider_label'] = $submission['provider_label'];
@@ -154,6 +152,10 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 					$jddInfo['file_type'] = $submission['file_type'];
 					$jddInfo['file_name'] = $submission['file_name'];
 					$jddInfo['step'] = $submission['step'];
+				}
+
+				if($submission['step'] === 'INIT') {
+					$jddInfo['nb_data'] = 0;
 				}
 			} else {
 				$jddInfo['submission_id_tooltip'] = $translator->translate("Submission identifier") . " : / ";
