@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here*/
 	execCustSQLFile("$sprintDir/update_jddMtdDEEId.sql", $config);
+	// !!!! Attention de script vide la table export_file (donc détruit les DEE générées !!!!
 	execCustSQLFile("$sprintDir/change_export_file_id_column.sql", $config);
 	execCustSQLFile("$sprintDir/alter_table_jdd.sql", $config);
 } catch (Exception $e) {
@@ -37,11 +38,11 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-system("php $sprintDir/delete_all_datas.php $CLIParams", $returnCode1);
-// system("php $sprintDir/script2.php $CLIParams", $returnCode2);
+/* system("php $sprintDir/script2.php $CLIParams", $returnCode1);
 
-if ($returnCode1 != 0 || $returnCode2 != 0) {
+if ($returnCode1 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
 }
+*/
