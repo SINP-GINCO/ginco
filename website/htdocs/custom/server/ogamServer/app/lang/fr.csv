@@ -278,6 +278,7 @@ Do you really want to delete this submission?;Souhaitez-vous vraiment supprimer 
 You have to unpublish the data to delete it;Vous devez dépublier les données pour les supprimer
 You have to upload data to delete it;Vous devez téléversez des données pour les supprimer
 Upload data to publish them;Téleversez des données pour les publier
+You have to unpublish the data to reupload;Vous devez dépublier la DSR pour en téléverser une nouvelle
 
 ##########################
 #  Data Copy             #
