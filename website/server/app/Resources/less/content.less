@@ -76,6 +76,9 @@ form label.required:after {
     background-image: url("/img/bandeau-sinp.jpg");
     #header-logo {
       margin-top: 5px;
+      img {
+        margin-right: 25px;
+      }
     }
     .header-title {
       color: white;
@@ -138,29 +141,44 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  margin-bottom: @footer-height;
+  margin-bottom: @footer-height+@footer-margin;
 }
 .footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: @footer-height;;
+  height: @footer-height;
   border-top: 1px solid @sinp-green-light;
-
+  padding-top: 10px;
+  margin-top: 30px;
+  p {
+    margin-bottom: 5px;
+  }
   .nav > li > a {
-    padding: 10px 15px;
+    padding: 2px 0;
     &:hover,
     &:focus {
       background-color:white;
       text-decoration: underline;
     }
   }
-  .nav > li:first-child > a {
-    padding-left: 0;
+
+  @logo-height-base:70px;
+  .logo {
+    margin-top: 25px;
+    height: @logo-height-base;
+    width: auto;
+    vertical-align: bottom;
+    &.ign, &.mnhn {
+      height: @logo-height-base * 0.75;
+      margin-right: 30px;
+    }
   }
-  .navbar-text {
-    margin: 10px 15px;
+
+  .footer-version {
+    margin-bottom: 10px;
+    color: @gray-light;
   }
 }
 
@@ -168,9 +186,13 @@ body {
 // Footer modals
 //------------------------------
 
-#legalModal, #copyrightsModal {
+#legalModal, #copyrightsIGNModal, #copyrightsMNHNModal {
   .modal-dialog {
     width: 800px;
+  }
+  .logo.inpn {
+    height: 50px;
+    width: auto;
   }
 }
 

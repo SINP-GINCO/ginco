@@ -28,8 +28,13 @@
         {#== Logo and banner ==#}
         <div id="banner" class="container">
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-xs-5">
                     <div id="header-logo">
+                        <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
+                            {% image 'img/logo-ginco.png' %}
+                            <img src="{{ asset_url }}" alt="{{ configurationManager.getConfig('site_name', 'GINCO') }}"/>
+                            {% endimage %}
+                        </a>
                         <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
                             {% image 'img/logo-sinp.png' %}
                             <img src="{{ asset_url }}" alt="{% trans %}SINP - Système d'Information Nature et Paysages{% endtrans %}"/>
@@ -37,7 +42,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-xs-9 text-right h1 header-title">
+                <div class="col-xs-7 text-right h1 header-title">
                     {{ configurationManager.getConfig('site_name', 'GINCO') }}
                 </div>
             </div>
@@ -113,21 +118,48 @@
     {#== Footer ==#}
     <footer class="footer">
         <div class="container">
-            <ul class="nav navbar-nav">
-                <li><a href="#" data-toggle="modal" data-target="#legalModal">{{ 'Legal notice'|trans }}</a></li>
-                <li><a href="#" data-toggle="modal" data-target="#copyrightsModal">{{ 'Geoportal copyrights'|trans }}</a></li>
-                <li><a href="{{ path('contact') }}">{{ 'Contact.link'|trans }}</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <p class="navbar-text">Version : @build.version@</p>
-            </ul>
+            <div class="row">
+                <div class="col-xs-2">
+                    <p><strong>A propos</strong></p>
+                    <ul class="nav">
+                        <li><a href="https://ginco.ign.fr" target="_blank">{{ 'Ginco project'|trans }}</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-2">
+                    <p><strong>Aide</strong></p>
+                    <ul class="nav">
+                        <li><a href="{{ path('contact') }}">{{ 'Contact.link'|trans }}</a></li>
+                        <li><a href="{{ configurationManager.getConfig('documentationUrl', 'documentation_url_missing') }}" target="_blank">{{ 'Online Help'|trans }}</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-2">
+                    <p><strong>Légal</strong></p>
+                    <ul class="nav">
+                        <li><a href="#" data-toggle="modal" data-target="#legalModal">{{ 'Legal notice'|trans }}</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#copyrightsIGNModal">{{ 'Geoportal copyrights'|trans }}</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#copyrightsMNHNModal">{{ 'MNHN copyrights'|trans }}</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 text-right">
+                    {% image 'img/logo-ign.jpg' %}
+                        <img src="{{ asset_url }}" alt="IGN - Institut National de l'Information Géographique et forestière" class="logo ign"/>
+                    {% endimage %}
+                    {% image 'img/logo-mnhn.jpg' %}
+                        <img src="{{ asset_url }}" alt="MNHN - Museum National d'Histoire Naturelle"  class="logo mnhn"/>
+                    {% endimage %}
+                    {% image 'img/logo-meem.jpg' %}
+                        <img src="{{ asset_url }}" alt="MEEM - Ministère de l'Environnement, de l'Energie et de la Mer"  class="logo meem"/>
+                    {% endimage %}
+                </div>
+            </div>
+            <p class="footer-version">Version : @build.version@</p>
         </div>
     </footer>
 
     {# Include Modals (Legal Notices and copyrigths) #}
     {% include 'legalNotices.modal.html.twig' %}
     {% include 'geoportailCopyrigths.modal.html.twig' %}
+    {% include 'mnhnCopyrigths.modal.html.twig' %}
 
     {#== Piwik tracking ==#}
     {% if app.environment != 'dev' %}
