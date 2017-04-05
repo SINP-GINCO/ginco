@@ -1,0 +1,36 @@
+<!-- MNHN Copyrights -->
+<div class="modal fade" id="copyrightsMNHNModal" tabindex="-1" role="dialog" aria-labelledby="copyrightsMNHNModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="copyrightsMNHNModalLabel">Copyrights MNHN</h4>
+			</div>
+			<div class="modal-body">
+				<h3>Listes de références de l'INPN</h3>
+
+				<p>Taxref, sensibilité, Habref, Espaces naturels.</p>
+				<p>{% image 'img/logo-inpn.jpg' %}
+					<img src="{{ asset_url }}" alt="INPN - Inventaire National du Patrimoine Naturel" class="logo inpn"/>
+				{% endimage %}</p>
+
+				<h3>Application Métadonnées</h3>
+
+				<table class="table table-bordered">
+					<tr>
+						<th class="copyrightTh">Organisme en charge</th>
+						<th class="copyrightTh">URL du site</th>
+					</tr>
+					<tr>
+						<td>MNHN (Museum National d'Histoire Naturelle)</td>
+						<td><a href="http://inpn.mnhn.fr/mtd" target="_blank">http://inpn.mnhn.fr/mtd</a></td>
+					</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Close'|trans }}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
