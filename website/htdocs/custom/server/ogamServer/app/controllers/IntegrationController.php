@@ -159,6 +159,7 @@ class Custom_IntegrationController extends IntegrationController {
 		$submissionId = $dataSession->data->submissionId;
 		$submission = $this->submissionModel->getSubmission($submissionId);
 		$dataset = $this->metadataModel->getDataset($submission->datasetId);
+		$dataSession->datasetId = $submission->datasetId;
 
 		$this->view->dataset = $dataset;
 
@@ -582,8 +583,13 @@ class Custom_IntegrationController extends IntegrationController {
 		$form = $this->getDataUploadForm();
 		if (!$form->isValid($_POST)) {
 			$this->logger->debug('form is not valid');
+
+			$dataSession = new Zend_Session_Namespace('submission');
+			$dataset = $this->metadataModel->getDataset($dataSession->datasetId);
+
+			$this->view->dataset = $dataset;
 			$this->view->form = $form;
-			return $this->render('show-upload-data');
+			return $this->render('custom-show-upload-data');
 		}
 
 		// Get the selected values
@@ -652,9 +658,14 @@ class Custom_IntegrationController extends IntegrationController {
 
 		// Check that all the files have been uploaded
 		if (!$allFilesUploaded) {
-			$this->view->errorMessage = $this->translator->translate('You must select all files to upload');
+			$this->logger->debug('form is not valid');
+			$dataSession = new Zend_Session_Namespace('submission');
+			$dataset = $this->metadataModel->getDataset($dataSession->datasetId);
+
+			$this->view->dataset = $dataset;
 			$this->view->form = $form;
-			return $this->render('show-upload-data');
+
+			return $this->render('custom-show-upload-data');
 		} else {
 
 			// Send the files to the integration server
