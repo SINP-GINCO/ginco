@@ -33,7 +33,7 @@ class DefaultController extends Controller
 
                 // Send the email
                 $this->get('app.mail_manager')->sendEmail(
-                    'contact',
+                    'IgnGincoBundle:Emails:contact.html.twig',
                     array(
                         'email' => $form->get('email')->getData(),
                         'message' => $form->get('message')->getData(),

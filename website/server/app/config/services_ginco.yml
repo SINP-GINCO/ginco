@@ -135,5 +135,5 @@ services:
 
     # Mail Manager
     app.mail_manager:
-        class: Ign\Bundle\GincoBundle\Services\MailManager
+        class: Ign\Bundle\OGAMBundle\Services\MailManager
         arguments: ["@mailer", "@twig", "@logger", "noreply@ign.fr", "@=service('ogam.configuration_manager').getConfig('site_name', 'Plateforme GINCO')"]
