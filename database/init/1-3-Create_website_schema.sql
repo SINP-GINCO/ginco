@@ -26,6 +26,7 @@ USER_PASSWORD        VARCHAR(50)          null,
 USER_NAME            VARCHAR(50)          null,
 PROVIDER_ID          VARCHAR(36)          null,
 EMAIL                VARCHAR(250)         null,
+ACTIVATION_CODE		   VARCHAR(50)          null,
 constraint PK_USERS primary key (USER_LOGIN)
 );
 
@@ -35,6 +36,7 @@ COMMENT ON COLUMN USERS.USER_PASSWORD IS 'The password of the user';
 COMMENT ON COLUMN USERS.USER_NAME IS 'The user name';
 COMMENT ON COLUMN USERS.PROVIDER_ID IS 'The identifier of the provider (used to group users and manage dataset accessibility)';
 COMMENT ON COLUMN USERS.EMAIL IS 'The user email address';
+COMMENT ON COLUMN USERS.ACTIVATION_CODE IS 'The activation code for password reset';
 
 /*==============================================================*/
 /* Table : ROLE                                                 */
