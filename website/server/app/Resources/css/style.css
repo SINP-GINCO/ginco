@@ -6753,6 +6753,9 @@ form label.required:after {
   right: 5px;
   top: 7px;
 }
+.has-error .no-error .help-block {
+  color: #737373;
+}
 .alert-notice {
   background-color: #dff0d8;
   border-color: #d6e9c6;

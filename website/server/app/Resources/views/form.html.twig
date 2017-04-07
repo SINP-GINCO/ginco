@@ -1,6 +1,7 @@
 {# Override bootstrap horizontal layout#}
 {% use "bootstrap_3_horizontal_layout.html.twig" %}
 
+{# Display forms horizontally, label in col-sm-4 and inputs in col-sm-4 also #}
 {% block form_label_class -%}
     col-sm-4
 {%- endblock form_label_class %}
@@ -9,7 +10,25 @@
     col-sm-4
 {%- endblock form_group_class %}
 
+{# Put primary color in form buttons #}
 {% block button_widget -%}
     {% set attr = attr|merge({class: (attr.class|default('btn-primary') ~ ' btn')|trim}) %}
     {{- parent() -}}
 {%- endblock %}
+
+{# Add a help block if present in data-help attributes #}
+{% block form_help -%}
+    {% for attrname, attrvalue in attr %}
+        {% if attrname == 'data-help' %}
+            <span class="help-block">{{ attrvalue|trans }}</span>
+        {% endif %}
+    {% endfor %}
+{%- endblock form_help %}
+
+
+{% block form_errors -%}
+    {{ parent() }}
+    <div class="no-error">
+        {{- block('form_help') -}}
+    </div>
+{%- endblock form_errors %}
