@@ -142,7 +142,7 @@ Role:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
     impossible: Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés.
 
-# Re-initialising user password
+# Changing or Re-initialising user password
 #------------------------------
 
-Your password has been changed.: Votre mot de passe a bien été changé, vous pouvez vous connecter.
+Your password has been changed.: Votre mot de passe a bien été changé.

@@ -21,11 +21,11 @@ COMMENT ON COLUMN APPLICATION_PARAMETERS.DESCRIPTION IS 'Description of the para
 /* Table : users                                                */
 /*==============================================================*/
 create table USERS (
-USER_LOGIN           VARCHAR(50)          null,
+USER_LOGIN           VARCHAR(50)          not null,
 USER_PASSWORD        VARCHAR(50)          null,
 USER_NAME            VARCHAR(50)          null,
 PROVIDER_ID          VARCHAR(36)          null,
-EMAIL                VARCHAR(250)         null,
+EMAIL                VARCHAR(250)         not null,
 ACTIVATION_CODE		   VARCHAR(50)          null,
 constraint PK_USERS primary key (USER_LOGIN)
 );

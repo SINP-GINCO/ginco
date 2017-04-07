@@ -26,7 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here*/
 	execCustSQLFile("$sprintDir/update_jddMtdDEEId.sql", $config);
-	execCustSQLFile("$sprintDir/add_activation_code_to_users.sql", $config);
+	execCustSQLFile("$sprintDir/update_users_table.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
