@@ -130,14 +130,13 @@ $BODY$
 		rule_full_citation character varying(500);
 		rule_cd_doc integer;
 	BEGIN
-
 	-- As users can update data with the editor, first check that there is realy something to do.
 	-- If none of the fields used for sensitivity computation have been modified we leave.
-	If (NEW.codedepartementcalcule = OLD.codedepartementcalcule 
-		AND NEW.cdnom = OLD.cdnom 
-		AND NEW.cdref = OLD.cdref 
-		AND NEW.jourdatefin = OLD.jourdatefin 
-		AND NEW.occstatutbiologique = OLD.occstatutbiologique) Then
+	If (NEW.codedepartementcalcule is not distinct from OLD.codedepartementcalcule 
+		AND NEW.cdnom is not distinct from OLD.cdnom 
+		AND NEW.cdref is not distinct from OLD.cdref 
+		AND NEW.jourdatefin is not distinct from OLD.jourdatefin 
+		AND NEW.occstatutbiologique is not distinct from OLD.occstatutbiologique) Then
 		RETURN NEW;
 	End if;
 
@@ -221,6 +220,7 @@ $BODY$
 ALTER FUNCTION raw_data.sensitive_automatic()
   OWNER TO admin;
 
+
 GRANT SELECT on table referentiels.taxref to ogam; --FIXME: why here?
 
 -------------------------------------------------------------------------------
@@ -232,13 +232,11 @@ CREATE OR REPLACE FUNCTION raw_data.sensitive_manual()
 $BODY$
 
   BEGIN
-	  
-	  -- sensitivity is has been changed manually if sensiniveau or sensimanuelle change
+	  -- sensitivity has been changed manually if sensiniveau or sensimanuelle change
 	  -- else the modifications do not concern sensitivity
-	  IF (NEW.sensiniveau = OLD.sensiniveau AND NEW.sensimanuelle = OLD.sensimanuelle) Then
+	  IF (NEW.sensiniveau is not distinct from OLD.sensiniveau AND NEW.sensimanuelle is not distinct from OLD.sensimanuelle) Then
 			RETURN NEW;
 	  END IF;
-	  
 		NEW.sensidateattribution = now();
 		NEW.sensimanuelle = '1';
 		NEW.sensialerte = '0';
