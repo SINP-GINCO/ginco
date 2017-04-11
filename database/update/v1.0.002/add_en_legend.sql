@@ -1,4 +1,4 @@
-DELETE * FROM mapping.layer_tree;
+DELETE FROM mapping.layer_tree;
 
 INSERT INTO layer_tree (item_id, parent_id, is_layer, is_checked, is_hidden, is_disabled, is_expended, name, "position", checked_group) VALUES
 (2, '-1', 0, 1, 0, 0, 1, 'results', 1, NULL),
@@ -49,3 +49,5 @@ INSERT INTO layer (layer_name, layer_label, service_layer_name, istransparent, d
 ('PROTECTEDAREAS_CDL_WFS', 'Conservatoire du littoral : périmètres d''intervention', 'PROTECTEDAREAS.CDL:wld_perimetre_intervention_wm', 1, 100, 0, 1, NULL, NULL, 1, NULL, 'NONE', NULL, NULL, NULL, 'EN_WFS_GetFeature'),
 
 INSERT INTO layer_service VALUES ('EN_WMS_Legend', '{"urls":["https://www.geoportail.gouv.fr/depot/layers/"],"params":{}}');
+
+UPDATE mapping.layer SET legend_service_name='EN_WMS_legend' WHERE view_service_name='geoportal_wmts_png';
