@@ -75,10 +75,14 @@ services:
         parent: ogam.generic_repository
         class: Ign\Bundle\OGAMBundle\Repository\Database\PostgresqlRepository
 
+    ginco.repository.mapping.map:
+        parent: ogam.generic_repository
+        class: Ign\Bundle\GincoBundle\Repository\Mapping\MapRepository
+
     # Managers
     ogam.manager.generic:
         class: Ign\Bundle\OGAMBundle\Manager\GenericManager
-        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ogam.generic_service","@ogam.configuration_manager"]
+        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ogam.generic_service", "@ogam.query_service", "@ogam.configuration_manager"]
         calls:
           - [setLogger, ['@logger']]
 
@@ -90,11 +94,11 @@ services:
 
     # Services
     ogam.generic_service:
-        class: Ign\Bundle\OGAMBundle\Services\GenericService
+        class: Ign\Bundle\GincoBundle\Services\GenericService
         arguments: ["@doctrine.orm.metadata_entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
 
     ogam.query_service:
-        class: Ign\Bundle\OGAMBundle\Services\QueryService
+        class: Ign\Bundle\GincoBundle\Services\QueryService
         arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@=service('security.token_storage').getToken().getUser()", "@=service('ogam.schema_listener').getSchema()", "@ogam.manager.generic"]
 
 

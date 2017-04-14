@@ -143,6 +143,11 @@ Jdd:
   submission:
     add: Ajouter une soumission de données
 
+# Data Query
+# ----------
+
+Forbidden search: Vous n'avez pas les droits suffisants pour utiliser les critères sensiNiveau ou diffusionNiveauPrecision dans la recherche
+
 # Configurateur
 # -------------
 
