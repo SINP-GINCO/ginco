@@ -117,6 +117,11 @@ Integration:
 
 'The expected fields are:': Liste des champs attendus
 
+# Data Query
+# ----------
+
+Forbidden search: Vous n'avez pas les droits suffisants pour utiliser les critères sensiNiveau ou diffusionNiveauPrecision dans la recherche
+
 # Configurateur
 # -------------
 
