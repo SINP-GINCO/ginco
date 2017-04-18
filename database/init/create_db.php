@@ -27,6 +27,35 @@ function usage($mess=NULL){
 	exit;
 }
 
+// Get current databse version from last update directory
+//-------------------------------------------------------
+
+// Reduce version string by removing 0
+function reduceVersion($verStr){
+	if (!preg_match('#^\d+\.\d+\.\d+$#', $verStr)) {
+		return false;
+	}
+	$verNums = explode('.',$verStr);
+	$verNums = array_map( function($x){ return intval($x);}, $verNums );
+	return implode('.', $verNums);
+}
+
+function getCurrentVersion($updateDir){
+
+	$sprintList = glob("$updateDir/sprint*",GLOB_ONLYDIR);
+	$versionsList = glob("$updateDir/v*",GLOB_ONLYDIR);
+
+	if (count($versionsList) > 0) {
+		$version = reduceVersion(explode('v', end($versionsList))[1]);
+	}
+	else {
+		$version = end($sprintList);
+	}
+	return $version;
+}
+
+
+
 #-------------------------------------------------------------------------------
 # MAIN
 #-------------------------------------------------------------------------------
@@ -94,9 +123,7 @@ execSQLFile("$initDir/3-Init_roles.sql",$config);
 execCustSQLFile("$initDir/3-Update_predefined_requests.sql",$config);
 
 # set ginco_version from the last update directory
-$updateDir = "$initDir/../update";
-$sprintList = glob("$updateDir/sprint*",GLOB_ONLYDIR);
-$lastUpdate = basename(array_pop($sprintList));
+$lastUpdate = getCurrentVersion("$initDir/../update");
 execCustSQLFile("$initDir/3-Update_ginco_version.sql", $config + ["ginco.version" => $lastUpdate]);
 
 echo("Database {$config['db.name']} created.\n");
