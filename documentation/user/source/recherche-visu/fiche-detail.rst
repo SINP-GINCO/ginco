@@ -4,7 +4,7 @@ Fiche de detail
 ===============
 
 Le panneau « Détails » s’affiche sur la droite de la carte et présente les différents champs de l'observation 
-ainsi que deux vignettes cartographiques correspondant au zoom communal et départemental sur l'observation.
+regroupés de la même façon que pour le requêteur.
 
 .. image:: ../images/visu/visu-detail.png
 

@@ -13,6 +13,9 @@ avec à sa droite, la liste des couches cartographiques.
 Couches et légendes
 -------------------
 
+Couches
+^^^^^^^
+
 Le panneau à droite de la carte est découpé en deux onglets : "Couches" et "Légendes".
 
 Il permet de masquer les couches que vous ne souhaitez pas afficher en les désélectionnant, et inversement.
@@ -33,6 +36,14 @@ Les dates d'édition des couches EN sont disponibles `ici <https://www.geoportai
 
 L'opacité des couches est modifiable en cliquant avec le bouton droit de la souris sur l'intitulé de la couche, 
 puis en déplaçant le curseur.
+
+Légendes
+^^^^^^^^
+
+Les légendes des couches apparaissent dans l'onglet "Legendes".
+
+.. image:: ../images/visu/visu-legendes.png
+
 
 Vous pouvez masquer totalement le panneau en cliquant sur le symbole représentant deux chevrons vert la droite en haut à droite du panneau.
 
@@ -76,4 +87,14 @@ A partir d'un niveau de zoom suffisamment précis, il est possible d'afficher la
 Lorsque plusieurs observations correspondent à l'endroit cliqué, elles apparaissent toutes dans la table.
 
 .. image:: ../images/visu/visu-carto-table-attributaire.png
+
+Informations sur les couches
+----------------------------
+
+Le bouton "Voir les informations sur la couche sélectionnée" permet de sélectionner une couche puis d'interroger ses entités en cliquant sur la carte.
+
+.. image:: ../images/visu/visu-WFS.png
+
+.. note:: Pour visualiser les entités sur la carte, il est recommandé de sélectionner la couche dans l'arbre des couches également.
+
 

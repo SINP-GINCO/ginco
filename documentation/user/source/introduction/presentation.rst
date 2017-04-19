@@ -7,7 +7,7 @@ GINCO est une application ministérielle open source assurant les principales fo
 Elle est mise à la disposition de l'ensemble des collecteurs de données et des administrateurs de données en région à partir d’instances régionales de test :
 
 ==============================================    =====================================
-Région                                  			Url GINGO
+Région                                  			Url GINGO test
 ==============================================    =====================================
 Auvergne Rhône-Alpes                    			https://test-ara-ginco.ign.fr
 Bretagne                                			https://test-bretagne-ginco.ign.fr
@@ -27,8 +27,20 @@ Occitanie                                 			https://test-occitanie-ginco.ign.fr
 Deux instances supra-régionales de test ont aussi été créées :
 
 ==============================================    =====================================
-Instance                                  			Url GINGO
+Instance                                  			Url GINGO test
 ==============================================    =====================================
 Thématique occurrences de taxons (MNHN) 			https://test-occtax-ginco.ign.fr
 Développement continu (Dailybuild IGN)  			https://dailybuild-ginco.ign.fr
+==============================================    =====================================
+
+Enfin, les instances de production sont actuellement les suivantes :
+
+==============================================    =====================================
+Instance                                  			Url GINGO production
+==============================================    =====================================
+Thématique occurrences de taxons (MNHN)            	https://occtax-ginco.ign.fr/
+Grand Est                                			https://grandest-ginco.ign.fr/
+Nouvelle-Aquitaine                                	https://nouvelleaquitaine-ginco.ign.fr/
+Languedoc-Roussillon                                https://languedocroussillon-ginco.ign.fr/
+Midi-pyrenees                                       https://midipyrenees-ginco.ign.fr/
 ==============================================    =====================================

@@ -52,7 +52,7 @@ Un rapport de sensibilité est disponible pour chaque jeu de données importé �
 
 .. image:: ../images/traitements/lien-rapport-sensibilite.png
 
-Dans la colonne "Actions", le lien "Rapport de sensibilité" permet de charger un tableur listant les données sensibles
+Dans la colonne "Rapports", le lien "Conformité et cohérence" permet de charger un tableur listant les données sensibles
 du jeu de données (c'est-à-dire telles que sensiNiveau > 0).
 
 .. image:: ../images/traitements/sensibilite-rapport.png
