@@ -5,6 +5,8 @@ ALTER TABLE raw_data.export_file RENAME COLUMN submission_id TO id;
 -- Remove foreign constraint towards submission
 ALTER TABLE raw_data.export_file DROP CONSTRAINT IF EXISTS fk_submission_id;
 -- Truncate the table to change id type to serial
+ALTER TABLE raw_data.jdd DROP CONSTRAINT IF EXISTS fk_export_file_id;
+UPDATE raw_data.jdd SET export_file_id=NULL;
 TRUNCATE raw_data.export_file;
 -- Change its type to serial (step-by-step as serial is not recognized for alter table)
 CREATE SEQUENCE raw_data.export_file_id_seq;
