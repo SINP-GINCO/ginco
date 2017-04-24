@@ -1,0 +1,1 @@
+ALTER TABLE website.job_queue ALTER COLUMN command TYPE text,

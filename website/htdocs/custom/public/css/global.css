@@ -1009,3 +1009,21 @@ span.align_images img {
 	overflow:hidden;
 	padding: 20px 0 0 4%;
 } 
+
+/*************************************************************/
+/*     DEE comment popup                                     */
+/*************************************************************/
+#dialogoverlay{
+	display: none;
+}
+#dialogbox{
+	display: none;
+	position: fixed;
+	left : 35%;
+	top:25%;
+	width:550px;
+}
+#dialogbox > div > #dialogboxhead{ background: #9ebc3f; font-size:19px; padding:10px; color:#135cae;}
+#dialogbox > div > #dialogboxbody{ background: #f0edd5; padding:20px; }
+#dialogbox > div > #dialogboxfoot{ background: #9ebc3f; padding:10px; text-align:right; } 
+#dialogbox textarea {width: 100%; height: 100px;}
