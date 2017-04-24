@@ -44,8 +44,10 @@ $jm = new Application_Service_JobManagerService();
 // m : jdd_id
 // f : file name to write
 // u : user_login for e-mail
+// y : is dee yet existing ? update : create
+// c : user comment
 // j (optional) : job id in the job queue
-$options = getopt("j::m:f:u:");
+$options = getopt("j::m:f:u:y:c:");
 
 // Get the jddId
 $jddId = intval($options['m']);
@@ -55,6 +57,14 @@ $fileName = $options['f'];
 
 // Get the user_login
 $userLogin = $options['u'];
+
+// Get is dee yet created
+$deeAction = $options['y'];
+$logger->debug("GML created for jdd deeAction:" . $deeAction);
+
+// Get comment
+$comment = $options['c'];
+$logger->debug("GML created for jdd comment:" . $comment);
 
 // Get the job id (in the job queue)
 $jobId = isset($options['j']) ? $options['j'] : null;
@@ -66,11 +76,11 @@ $gml->generateDeeGml($jddId, $fileName, $jobId);
 $logger->debug("GML created for jdd $jddId: $fileName");
 
 // Create the archive and put it in the DEE download directory
-$archivePath = $gml->createArchiveDeeGml($jddId, $fileName);
+$archivePath = $gml->createArchiveDeeGml($jddId, $fileName, $comment);
 $logger->debug("GML Archive created for jdd $jddId: $archivePath");
 
 // Send notification emails to the user and to the MNHN
-$gml->sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin);
+$gml->sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin, $deeAction, $comment);
 $logger->debug("GML Notification mail sent");
 
 if ($jobId) {

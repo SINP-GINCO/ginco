@@ -24,6 +24,9 @@ class GMLExport
     public function __construct()
     {
         // Bootstrap Zend
+    	if (!isset($ApplicationConf)) {
+    		$ApplicationConf = null;
+    	}
         $application = new Zend_Application(APPLICATION_ENV, $ApplicationConf);
         $application->getBootstrap()->bootstrap();
 
@@ -412,14 +415,15 @@ class GMLExport
     /**
      * Create a gzipped archive containing:
      * - the dee gml file
-     * - other files...
+     * - informations on the jdd
      * And put the archive in the "deePublicDirectory" from conf (in the public directory).
      *
      * @param $jddId
      * @param $fileName
+     * @param $comment
      * @return string
      */
-    public function createArchiveDeeGml($jddId, $fileName)
+    public function createArchiveDeeGml($jddId, $fileName, $comment)
     {
         // Get filePath, fileName without extension
         $filePath = pathinfo($fileName, PATHINFO_DIRNAME);
@@ -434,10 +438,10 @@ class GMLExport
 		$jddRowset->next();
 		$uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
 
-        // Put other file in the directory to create a real test archive
-        $otherFile = $filePath . '/descriptif.txt';
-        $out = fopen($otherFile,'w');
-        fwrite($out, "Export DEE pour le jeu de données $uuid");
+        $descriptionFile = $filePath . '/descriptif.txt';
+        $out = fopen($descriptionFile,'w');
+        fwrite($out, "Export DEE pour le jeu de données $uuid \n \n");
+        fwrite($out, "Raisons amenant à une génération ou regénération de la DEE : " . stripslashes($comment));
         fclose($out);
 
         // Create an archive of the whole directory
@@ -447,11 +451,43 @@ class GMLExport
         system("zip -r $archiveName $fileNameWithoutExtension");
 
         // Delete the other files
-        unlink($otherFile);
+        unlink($descriptionFile);
 
         return $archiveName;
     }
 
+    /**
+     * Create a file which describe the deletion reasons
+     * And put it in the public directory.
+     *
+     * @param $jddId
+     * @param $comment
+     * @return string
+     */
+    public function createDeeGmlDeletionDescriptionFile($jddId, $comment)
+    {
+    	// JDD metadata id
+    	$jddModel = new Application_Model_RawData_Jdd();
+    	$jddRowset = $jddModel->find($jddId);
+    	$jddRowset->next();
+    	$uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
+    
+    	// The export file model
+    	$this->exportFileModel = new Application_Model_RawData_ExportFile();
+     	$exportfilePath = $this->exportFileModel->generateFilePath($uuid);
+     	$desciptionFilePrefix = substr($exportfilePath, 0, -4);
+    	
+    	$descriptionFile = dirname($exportfilePath) . '_descriptif.txt';
+    	$out = fopen($descriptionFile,'w');
+    	fwrite($out, "L'Export DEE pour le jeu de données $uuid a été supprimé. \n \n");
+    	if ($comment != "") {
+    		fwrite($out, "Raisons amenant à une suppression de la DEE : " . stripslashes($comment));
+    	}
+    	fclose($out);
+
+    	return $descriptionFile;
+    }
+    
     /**
      * Send two notification emails after creation of the DEE archive:
      *  - one to the user who created the DEE
@@ -461,14 +497,23 @@ class GMLExport
      * @param $archivePath
      * @param $dateCreated
      * @param $userLogin
+     * @param $deeAction
+     * @param $comment
      */
-    public function sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin) {
+    public function sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin, $deeAction, $comment) {
 
         $configuration = Zend_Registry::get('configuration');
 
         $toEmailAddress =  $configuration->getConfig('deeNotificationMail','sinp-dev@ign.fr');
 
-        $action = 'CREATION';
+        if ($deeAction == 'create') {
+        	$action = 'CREATION';
+        } else if ($deeAction == 'update'){
+        	$action = 'MISE-A-JOUR';
+        } else {
+        	$action = 'SUPPRESSION';
+        }
+        
         $regionCode = $configuration->getConfig('regionCode','REGION');
         $archiveFilename  = pathinfo($archivePath, PATHINFO_BASENAME);
         $archiveUrl = $configuration->getConfig('site_url') . '/dee/' . $archiveFilename;
@@ -510,7 +555,7 @@ class GMLExport
             "Contact : " . $userName . "\n" .
             "Courriel : " . $userEmail . "\n" .
             "Type d'envoi : " . $action . "\n" .
-            "Commentaire : " . "\n" .
+            "Commentaire : " .  stripslashes($comment) . "\n" .
             "URL : <a href='$archiveUrl'>" . $archiveUrl . "</a>\n" .
             "CHECKSUM MD5 : " . $md5 .  "\n" ;
 
@@ -533,7 +578,7 @@ class GMLExport
         $mailerService->sendMessage($message);
 
         // -- Mail 2: to the user who created the DEE
-
+		if ($deeAction != 'delete') {
         $title = "[$regionCode] Transmission du jeu de données $uuid à la plateforme nationale";
 
         $message = $mailerService->newMessage($title);
@@ -549,7 +594,22 @@ class GMLExport
             ce nouveau fichier dans l'INPN.</p>";
         $body .= "<p>Bien cordialement,</p>
                <p>Contact : %s<br>Courriel: %s</p>";
-
+		} else {
+			$title = "[$regionCode] Suppression du jeu de données $uuid standardisé";
+			
+			$message = $mailerService->newMessage($title);
+			
+			$body = "<p>Bonjour,</p>";
+			$body .= (count($submissionFiles) > 1) ?
+				"<p>Les fichiers standardisés, correspondant aux fichiers de données <em>%s</em> que vous nous avez transmis et dont l'identifiant de jeu de données est
+	             <em>%s</em> ont été supprimés " :
+				 "<p>Le fichier standardisé, correspondant au fichier de données <em>%s</em> que vous nous avez transmis et dont l'identifiant est
+	             <em>%s</em> a été supprimé "
+				;
+			$body .= "le %s. La plateforme nationale a été notifiée et va procéder à la suppression de ces données dans l'INPN.</p>";
+			$body .= "<p>Bien cordialement,</p>
+	               <p>Contact : %s<br>Courriel: %s</p>";
+		}
         $body = sprintf($body,
             implode($fileNames, ", "),
             $uuid,

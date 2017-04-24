@@ -339,6 +339,18 @@ $user = $userSession->user;
             $i++;
         }?>
     </table>
+   
+   <!-- DEE regeneration popup -->
+	<div id="dialogoverlay"></div>
+	<div id="dialogbox">
+	  <div>
+	    <div id="dialogboxhead"></div>
+	    <div id="dialogboxbody">
+	    </div>
+	    <div id="dialogboxfoot"></div>
+	  </div>
+	</div>
+
     <?php
 } else { ?>
     <div class="no-submission"><?php echo $this->translate('No dataset found');?></div>
@@ -357,6 +369,47 @@ $user = $userSession->user;
  * - COMPLETED: done, export file is available
  * - ABORTED: problem during export, file is not available
  */
+
+ 
+/**
+ * Custom prompt to get user comment when generating DEE
+ */
+function CustomPrompt(){
+	this.render = function(jddId, exportFileId, deeDialogTitle, deeDialog, deeAction){
+		var dialogoverlay = document.getElementById('dialogoverlay');
+	    var dialogbox = document.getElementById('dialogbox');
+		dialogoverlay.style.display = "block";
+	    dialogbox.style.display = "block";
+	    document.getElementById('dialogboxhead').innerHTML = deeDialogTitle;
+	    document.getElementById('dialogboxbody').innerHTML = deeDialog;
+		document.getElementById('dialogboxfoot').innerHTML = '<button onclick="Prompt.check_empty(\''+jddId+'\', \''+exportFileId+'\', \''+deeAction+'\')">Valider</button> <button onclick="Prompt.cancel()">Annuler</button>';
+	}
+	this.cancel = function(){
+		document.getElementById('dialogbox').style.display = "none";
+		document.getElementById('dialogoverlay').style.display = "none";
+	}
+	this.ok = function(jddId, exportFileId, deeAction){
+		var comment = document.getElementById('prompt_comment').value;
+		if (deeAction != 'delete') {
+			addExportJob(jddId, exportFileId, deeAction, comment);
+		} else {
+            cancelExport(jddId, exportFileId, comment);
+		}
+		document.getElementById('dialogbox').style.display = "none";
+		document.getElementById('dialogoverlay').style.display = "none";
+	}
+	this.check_empty = function(jddId, exportFileId, deeAction){
+		if (document.getElementById('prompt_comment').value == "" && deeAction != 'create') {
+			alert("Vous n'avez pas laissé de commentaire !");
+		} else if (document.getElementById('prompt_comment').value.length > 6000) {
+			alert("Votre commentaire ne doit pas dépasser 6000 caractères.");
+		} else {
+			Prompt.ok(jddId, exportFileId, deeAction);
+		}
+	}
+	
+}
+Prompt = new CustomPrompt();
 
 
 /**
@@ -461,14 +514,24 @@ function updateContentDiv($jddId, $exportFileId, $status, $progress = 0) {
         row.append($launchLink);
         $launchLink.click( function(e) {
             e.preventDefault();
-            addExportJob($jddId, $exportFileId);
+            var deeDialogTitle = "Génération d'une DEE";
+            var deeDialog = "<p>Vous allez générer une DEE. Une notification va être envoyée à la plateforme nationale,";
+            deeDialog += " Vous pouvez éventuellement ajouter un commentaire.</p>";
+            deeDialog += "<textarea id='prompt_comment'></textarea>";
+            var deeAction = 'create';
+            Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction);
         });
     } else if ($.inArray( 'Relancer', $actions ) != -1 && $submissionStep == 'VALIDATE') {
         var $launchAgainLink = $("<td><a title='Regénérer' href=''><img src='/img/refresh_arrow.png'></a></td>");
         row.append($launchAgainLink);
         $launchAgainLink.click( function(e) {
             e.preventDefault();
-            addExportJob($jddId, $exportFileId);
+            var deeDialogTitle = "Génération d'une DEE";
+            var deeDialog = "<p>Vous allez regénérer une DEE. Une notification va être envoyée à la plateforme nationale,";
+            deeDialog += " veuillez décrire les modifications du jeu de données qui amènent à regénérer la DEE.</p>";
+            deeDialog += "<textarea id='prompt_comment'></textarea>";
+            var deeAction = 'update';
+            Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction);
         });
     } else if ($submissionStep != 'VALIDATE'){
         row.append("<td><img src='/img/refresh_arrow_grey.png'/></td>");
@@ -489,7 +552,12 @@ function updateContentDiv($jddId, $exportFileId, $status, $progress = 0) {
         row.append($cancelLink);
         $cancelLink.click( function(e) {
             e.preventDefault();
-            cancelExport($jddId, $exportFileId);
+            var deeDialogTitle = "Suppression d'une DEE";
+            var deeDialog = "<p>Vous allez supprimer une DEE. Une notification va être envoyée à la plateforme nationale,";
+            deeDialog += " veuillez décrire raisons de cette suppression.</p>";
+            deeDialog += "<textarea id='prompt_comment'></textarea>";
+            var deeAction = 'delete';
+            Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction);
         });
     } else {
         row.append("<td><img title='Annuler' src='/img/delete_x_icon_grey.png'/></td>");
@@ -546,11 +614,15 @@ function getActions($status) {
  *
  * @param $jddId
  * @param $exportFileId
+ * @param $deeAction
+ * @parma $comment
  */
-function addExportJob($jddId, $exportFileId) {
+function addExportJob($jddId, $exportFileId, $deeAction, $comment) {
     $.getJSON( "/gmlexport/add-job", {
         exportFileId: $exportFileId,
-        jddId: $jddId
+        jddId: $jddId,
+        deeAction: $deeAction,
+        comment: $comment
     },function( data ) {
         if (data.success) {
             updateStatusAndContent($jddId, $exportFileId, data.status);
@@ -563,12 +635,15 @@ function addExportJob($jddId, $exportFileId) {
  * Ajax request to cancel a job and delete export file.
  * By SQL cascade it is also removed from jdd table.
  *
+ * @param $jddId
  * @param $exportFileId
-
+ * @param $comment
  */
-function cancelExport($jddId, $exportFileId) {
+function cancelExport($jddId, $exportFileId, $comment) {
     $.getJSON( "/gmlexport/cancel-export", {
+        jddId: $jddId,
         id: $exportFileId,
+        comment: $comment
     },function( data ) {
          if (data.success) {
             updateStatusAndContent($jddId, $exportFileId, data.status);

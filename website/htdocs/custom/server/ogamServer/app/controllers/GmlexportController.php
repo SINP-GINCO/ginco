@@ -1,6 +1,8 @@
 <?php
 
 require_once APPLICATION_PATH . '/controllers/AbstractOGAMController.php';
+// GML Export toolbox
+require_once CUSTOM_APPLICATION_PATH . '/gmlexport/GMLExport.php';
 
 /**
  * GMLExportController is the controller that manages the control
@@ -88,13 +90,15 @@ class Custom_GmlexportController extends AbstractOGAMController {
     public function addJobAction() {
         $exportFileId = $this->_getParam("exportFileId");
         $jddId = $this->_getParam("jddId");
+        $deeAction = $this->_getParam("deeAction");
+        $comment = $this->_getParam("comment");
         $submissionId = $this->_getParam("submissionId");
         $launch = $this->_getParam("launch", true);
 
         $userSession = new Zend_Session_Namespace('user');
         $userLogin = $userSession->user->login;
 
-        $this->logger->debug('GMLExport: add job in queue, export file id : ' . $exportFileId . ', jdd id : ' . $jddId);
+        $this->logger->debug('GMLExport: add job in queue, export file id : ' . $exportFileId . ', jdd id : ' . $jddId. ', deeAction : ' . $deeAction . ', comment : ' . $comment);
 
         // Get the jdd uuid
         $jddModel = new Application_Model_RawData_Jdd();
@@ -106,14 +110,20 @@ class Custom_GmlexportController extends AbstractOGAMController {
         // Test if there is already an export file
         if ($exportFileId > 0 && $this->exportFileModel->existsExportFileData($exportFileId)) {
             $this->logger->debug('GMLExport: export_file already exists, deleting it. Export file id : ' . $exportFileId);
-            $this->cancelExport($exportFileId);
+            $this->cancelExport($exportFileId, null);
         }
 
         // export file name
         $filePath = $this->exportFileModel->generateFilePath($uuid);
 
         // Command to launch the GML Export Job
-        $command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -m ' . $jddId . ' -f ' . $filePath . ' -u ' . $userLogin;
+        if ($comment == "") {
+        	$command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -m ' . $jddId . ' -f ' . $filePath . ' -u ' . $userLogin . ' -y '. $deeAction;
+        } else {
+        	$command = 'php ' . CUSTOM_APPLICATION_PATH . '/commands/generateDEE.php -m ' . $jddId . ' -f ' . $filePath . ' -u ' . $userLogin . ' -y '. $deeAction . ' -c "'. addslashes($comment) . '"';
+        }
+        $this->logger->debug('command :' . $command);
+        
         // Length of the observation files
         $length = $this->exportFileModel->getJobLengthForSubmission($submissionId);
 
@@ -159,10 +169,12 @@ class Custom_GmlexportController extends AbstractOGAMController {
      * Cancel export action. See cancelExport.
      */
     public function cancelExportAction() {
+    	$jddId = $this->_getParam("jddId");
         $id = $this->_getParam("id");
+        $comment = $this->_getParam("comment");
         $this->logger->debug('GMLExport: cancel export, export file id : ' . $id);
 
-        $success = $this->cancelExport($id);
+        $success = $this->cancelExport($id, $comment, $jddId);
 
         $return = array(
             'id' => $id,
@@ -170,6 +182,18 @@ class Custom_GmlexportController extends AbstractOGAMController {
         );
         if ($success) {
             $return['status'] = Application_Service_JobManagerService::NOTFOUND;
+            
+            // Create file containing the deletion reasons
+            $gml = new GMLExport();
+            $descriptionFileName = $gml->createDeeGmlDeletionDescriptionFile($jddId, $comment);
+            
+            // Send notification emails to the user and to the MNHN
+            $userSession = new Zend_Session_Namespace('user');
+            $userLogin = $userSession->user->login;
+            $dateCreated = time();
+            $deeAction = 'delete';
+            $gml->sendDEENotificationMail($jddId, $descriptionFileName, $dateCreated, $userLogin, $deeAction, $comment);
+            $this->logger->debug("delete GML Notification mail sent");
         }
         echo json_encode($return);
 
@@ -186,7 +210,7 @@ class Custom_GmlexportController extends AbstractOGAMController {
      * Delete line in export_file.
      *
      */
-    protected function cancelExport($id) {
+    protected function cancelExport($id, $comment) {
         // Test if there is already an export_file entry
         if (! $this->exportFileModel->existsExportFileData($id) ) {
             return false;

@@ -44,7 +44,7 @@ class Job {
                 break;
 
             case self::EXEC_WITH_AT:
-                shell_exec('echo "' . $command . '" |at now');
+                shell_exec('echo "' . addslashes($command) . '" |at now');
                 // The pid of the command launched by the shell, launched by the atd daemon
                 // (child of child of newest atd daemon)
                 $pid = shell_exec('ATDPID=`pgrep --newest atd` && SHPID=`pgrep -P $ATDPID` && pgrep -P $SHPID');

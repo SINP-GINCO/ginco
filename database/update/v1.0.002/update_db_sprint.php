@@ -27,6 +27,7 @@ try {
 	/* patch code here*/
 	 execCustSQLFile("$sprintDir/add_en_legend.sql", $config);
 	 execCustSQLFile("$sprintDir/update_sensitivity_trigger.sql", $config);
+	 execCustSQLFile("$sprintDir/change_job_queue_command_type_to_text.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
