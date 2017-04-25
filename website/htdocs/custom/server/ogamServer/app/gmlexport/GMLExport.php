@@ -477,7 +477,9 @@ class GMLExport
      	$exportfilePath = $this->exportFileModel->generateFilePath($uuid);
      	$desciptionFilePrefix = substr($exportfilePath, 0, -4);
     	
-    	$descriptionFile = dirname($exportfilePath) . '_descriptif.txt';
+     	$configuration = Zend_Registry::get('configuration');
+     	$deePublicDir = $configuration->getConfig('deePublicDirectory');
+    	$descriptionFile = $deePublicDir . '/' . pathinfo($exportfilePath, PATHINFO_FILENAME) . '_descriptif.txt';
     	$out = fopen($descriptionFile,'w');
     	fwrite($out, "L'Export DEE pour le jeu de données $uuid a été supprimé. \n \n");
     	if ($comment != "") {
