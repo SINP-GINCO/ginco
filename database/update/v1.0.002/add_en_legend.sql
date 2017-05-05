@@ -1,6 +1,6 @@
 DELETE FROM mapping.layer_tree;
 
-INSERT INTO layer_tree (item_id, parent_id, is_layer, is_checked, is_hidden, is_disabled, is_expended, name, "position", checked_group) VALUES
+INSERT INTO mapping.layer_tree (item_id, parent_id, is_layer, is_checked, is_hidden, is_disabled, is_expended, name, "position", checked_group) VALUES
 (2, '-1', 0, 1, 0, 0, 1, 'results', 1, NULL),
 (24, '2', 1, 1, 0, 1, 0, 'result_departement', 24, 'results'),
 (23, '2', 1, 0, 0, 1, 0, 'result_maille', 21, 'results'),
@@ -43,7 +43,7 @@ INSERT INTO layer_tree (item_id, parent_id, is_layer, is_checked, is_hidden, is_
 
 DELETE FROM mapping.layer;
 
-INSERT INTO layer (layer_name, layer_label, service_layer_name, istransparent, default_opacity, isbaselayer, isuntiled, maxscale, minscale, has_legend, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES
+INSERT INTO mapping.layer (layer_name, layer_label, service_layer_name, istransparent, default_opacity, isbaselayer, isuntiled, maxscale, minscale, has_legend, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES
 ('Fonds', 'Fonds', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('ORTHOIMAGERY.ORTHOPHOTOS', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL),
 ('ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL),
@@ -105,4 +105,5 @@ INSERT INTO layer (layer_name, layer_label, service_layer_name, istransparent, d
 ('PROTECTEDAREAS_MNHN_CONSERVATOIRES_WFS', 'Sites acquis des Conservatoires d''espaces naturels', 'PROTECTEDAREAS.MNHN.CONSERVATOIRES:cen2013_09', 1, 100, 0, 1, NULL, NULL, 1, NULL, 'NONE', NULL, NULL, NULL, 'EN_WFS_GetFeature'),
 ('PROTECTEDAREAS_CDL_WFS', 'Conservatoire du littoral : périmètres d''intervention', 'PROTECTEDAREAS.CDL:wld_perimetre_intervention_wm', 1, 100, 0, 1, NULL, NULL, 1, NULL, 'NONE', NULL, NULL, NULL, 'EN_WFS_GetFeature');
 
-INSERT INTO layer_service VALUES ('EN_WMS_Legend', '{"urls":["https://www.geoportail.gouv.fr/depot/layers/"],"params":{}}');
+DELETE FROM mapping.layer_service WHERE service_name = 'EN_WMS_Legend';
+INSERT INTO mapping.layer_service VALUES ('EN_WMS_Legend', '{"urls":["https://www.geoportail.gouv.fr/depot/layers/"],"params":{}}');
