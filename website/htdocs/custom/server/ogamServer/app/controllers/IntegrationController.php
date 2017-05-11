@@ -302,6 +302,13 @@ class Custom_IntegrationController extends IntegrationController {
 			}
 		}
 		$requestElement->addMultiOptions($datasetIds);
+		// If no import models, add an alert
+		if (count($datasetIds) == 0) {
+			$requestElement->setDescription('No published datasets for this data model');
+			$requestElement->addDecorator('Description', array(
+				'class' => 'errors hint',
+			));
+		}
 
 		//
 		// Add the provider element

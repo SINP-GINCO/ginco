@@ -27,8 +27,9 @@ h4 {
 	margin: 10px 0 5px 30px;
 }
 
-ul.errors {
+.zend_form .errors {
 	color: #FF0000;
+	margin-top: 10px;
 }
 
 img {
@@ -522,7 +523,6 @@ td.delete-cell{
     background-color:#F0F0F0;
     margin: 10px 0;
 }
-
 /**************************************/
 /**      Zend Form CSS               **/
 /**           Special cases          **/
