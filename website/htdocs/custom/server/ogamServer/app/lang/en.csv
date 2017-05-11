@@ -238,6 +238,7 @@ Export to GML;Export to GML
 Spatial reference system (SRID);Spatial reference system (SRID)
 sridDescription;In the form of EPSG code. For example: <ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>See <a href='http://www.epsg-registry.org/' target='_blank'>EPSG Geodetic Parameter Registry</a>.
 Download submissions list;Download submissions list
+No published datasets for this data model;No published datasets for this data model
 
 ﻿##########################
 #  Data Copy             #
