@@ -56,12 +56,13 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 		$this->lang = strtoupper($translate->getAdapter()->getLocale());
 	}
 
+
 	/**
 	 * Find the datasets (jdd) which are not deleted.
 	 *
-	 * @param Application_Object_Website_Jdd $jdd
+	 * @param Application_Object_RawData_Jdd $jdd
 	 *        	The jdd
-	 * @return Application_Object_Website_Jdd the jdd updated with the last id inserted
+	 * @return Application_Object_RawData_Jdd the jdd updated with the last id inserted
 	 */
 	public function findNotDeleted($providerId = null) {
 		$this->logger->debug("findNotDeleted");
@@ -174,9 +175,9 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	/**
 	 * Add a new jdd in Db.
 	 *
-	 * @param Application_Object_Website_Jdd $jdd
+	 * @param Application_Object_RawData_Jdd $jdd
 	 *        	The jdd
-	 * @return Application_Object_Website_Jdd the jdd updated with the last id inserted
+	 * @return Application_Object_RawData_Jdd the jdd updated with the last id inserted
 	 */
 	public function add($jdd) {
 		$data = array(
@@ -191,7 +192,7 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	/**
 	 * Update an existing jdd.
 	 *
-	 * @param Application_Object_Website_Jdd $jdd
+	 * @param Application_Object_RawData_Jdd $jdd
 	 *        	The jdd
 	 * @return Integer the result of the update
 	 */
@@ -209,6 +210,21 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 
 		$where = $this->getAdapter()->quoteInto('id = ?', $jdd['id']);
 		return $this->update($data, $where);
+	}
+
+	/**
+	 * Get the jdd by its internal id
+	 *
+	 * @param $id
+	 * @return object
+	 * @throws Exception
+	 */
+	public function getJddById($id) {
+		$row = $this->fetchRow("id = '" . $id . "'");
+		if (!$row) {
+			throw new Exception("Could not find jdd $id");
+		}
+		return $row->toArray();
 	}
 
 	/**

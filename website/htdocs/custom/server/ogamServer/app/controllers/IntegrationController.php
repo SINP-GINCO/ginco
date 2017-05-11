@@ -277,7 +277,15 @@ class Custom_IntegrationController extends IntegrationController {
 
 		// Retrieve the modelId (to filter datasets)
 		$jddSession = new Zend_Session_Namespace('jdd');
-		$modelId = $jddSession->modelId;
+		$modelId = null;
+		// Check if the jdd exists
+		$jddModel = new Application_Model_RawData_Jdd();
+		if (isset($jddSession->jddId) && intval($jddSession->jddId) >0) {
+			$jdd = $jddModel->getJddById($jddSession->jddId);
+			if ($jdd) {
+				$modelId = $jdd['model_id'];
+			}
+		}
 
 		//
 		// Add the dataset element
