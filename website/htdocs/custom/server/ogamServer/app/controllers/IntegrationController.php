@@ -556,6 +556,29 @@ class Custom_IntegrationController extends IntegrationController {
 		$this->logger->debug('userLogin : ' . $userLogin);
 		$this->logger->debug('submitted as providerId : ' . $submissionProviderId);
 
+		// First remove old submission linked to the jdd, if there is one
+		$jddModel = new Application_Model_RawData_Jdd();
+		if (isset($jddSession->jddId) && intval($jddSession->jddId) >0) {
+			$jdd = $jddModel->getJddById($jddSession->jddId);
+			if ($jdd) {
+				$oldSubmissionId = $jdd['submission_id'];
+				if (intval($oldSubmissionId)>0) {
+					// Send the cancel request to the integration server
+					try {
+						$this->integrationServiceModel->cancelDataSubmission($oldSubmissionId);
+					} catch (Exception $e) {
+						$this->logger->err('Error during deletion: ' . $e);
+						$this->view->errorMessage = $e->getMessage();
+						return $this->render('show-data-error');
+					}
+					// Update jdd status
+					$jdd['status'] = 'empty';
+					$jdd['submission_id'] = '';
+					$jddModel->updateJdd($jdd);
+				}
+			}
+		}
+
 		// Send the request to the integration server
 		try {
 			$customIntegrationServiceModel = new Application_Model_IntegrationService_CustomIntegrationService();
@@ -847,7 +870,7 @@ class Custom_IntegrationController extends IntegrationController {
 		try {
 			$this->integrationServiceModel->cancelDataSubmission($submissionId);
 		} catch (Exception $e) {
-			$this->logger->err('Error during upload: ' . $e);
+			$this->logger->err('Error during deletion: ' . $e);
 			$this->view->errorMessage = $e->getMessage();
 			return $this->render('show-data-error');
 		}
