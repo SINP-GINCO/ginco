@@ -162,7 +162,7 @@ body {
 }
 
 .footer,.push {
-	height: 80px; /* .push must be the same height as .footer */
+	height: 100px; /* .push must be the same height as .footer */
 }
 
 .footer {
