@@ -19,8 +19,8 @@ try {
 		updateTableFields($schema, 'deedatedernieremodification', 1, 0, 0, 0, "Les règles de mise à jour de ce champ sont définies dans le ticket: #747");
 		updateTableFields($schema, 'identifiantpermanent', 1, 0, 1, 0);
 		updateTableFields($schema, 'geometrie', 0, 1, 1, 0);
-		updateTableFields($schema, 'sensimanuelle', 1, 0, 0, 0, "Modifié par les trigger sensitive_automatic et sensitive_manual");
-		updateTableFields($schema, 'sensialerte', 1, 1, 0, 0, "si lors de l import, on ne peut pas calculer automatiquement la sensibilité (commentaire dans la règle du référentiel de sensibilité), le champ sensiAlerte est mis à un. Si on édite ensuite la donnée est que la valeur de la sensibilité est modifiée, le champ sensiAlerte est mis à zéro. Mais, si on veut conserver la valeur de sensibilité calculée automatiquement, mais indiquer qu elle a été validée manuellement, il faudrait pouvoir le faire en décochant sensiAlerte manuellement. Donc ce champ doit rester editable.");
+		updateTableFields($schema, 'sensimanuelle', 1, 0, 0, 0, "Le champ sensiManuelle est mis à NON par le calcul automatique de sensibilité. Lors d une édition de sensiNiveau ou de sensiManuelle, il est mis à OUI.");
+		updateTableFields($schema, 'sensialerte', 1, 1, 0, 0, "Le champ sensiAlerte est mis à OUI par le calcul automatique de sensibilité lorsque la règle du référentiel de sensibilité appliquée comporte un commentaire. Lors d une édition de sensiNiveau ou de sensiManuelle, il est mis à NON.");
 		updateTableFields($schema, 'codemaillecalcule', 1, 0, 0, 0);
 		updateTableFields($schema, 'codecommunecalcule', 1, 0, 0, 0);
 		updateTableFields($schema, 'nomcommunecalcule', 1, 0, 0, 0);
