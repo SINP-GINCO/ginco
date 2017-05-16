@@ -624,7 +624,7 @@ LISTENER_ID character varying(50) NOT NULL,
 CLASSNAME character varying(255),
 _CREATIONDT timestamp without time zone DEFAULT now(),
 CONSTRAINT pk_event_listener PRIMARY KEY (listener_id)
-)
+);
 
 COMMENT ON COLUMN event_listener.listener_id IS 'The name/identifier of the post-processing treatment';
 COMMENT ON COLUMN event_listener.classname IS 'The fully qualified name of the listener (Ex : fr.ifn.ogam.integration.business.SimpleEventLogger)';
