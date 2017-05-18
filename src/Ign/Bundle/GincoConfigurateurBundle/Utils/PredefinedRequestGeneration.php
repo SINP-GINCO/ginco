@@ -26,7 +26,7 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 
 	/**
 	 * Creates the custom predefined requests
-	 * For each request, the developer needs to give the criteria, results, label, requestName
+	 * For each request, the developer needs to give the criteria, results, label, requestId
 	 *
 	 * @param string $modelId
 	 * @param string $tableName
@@ -46,9 +46,16 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		$row = pg_fetch_assoc($result);
 		$datasetId = $row['dataset_id'];
 		$datasetLabel = $row['label'];
-
+		
+		// Get predefined request group next val sequence id
+		$sqlPRGroupIdNextval = "SELECT nextval('predefined_request_group_group_id_seq');";
+		pg_prepare($dbconn, "", $sqlPRGroupIdNextval);
+		$stmtPRGroupIdNextval = pg_execute($dbconn, "", array());
+		$groupId = pg_fetch_row($stmtPRGroupIdNextval)[0] +1;
+			
+		
 		// Add a group for the predefined request of the dataset
-		$this->addPredefinedRequestGroup($datasetId, $datasetLabel, $datasetLabel, '1', $dbconn);
+		$this->addPredefinedRequestGroup($datasetLabel, $datasetLabel, '1', $dbconn);
 
 		// Describe custom requests
 		// REQUEST 1 : group request
@@ -80,8 +87,8 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 			'statutsource'
 		);
 		$label = 'critères les plus fréquents';
-		$requestName = $datasetId . '_group_request';
-		$this->createPredefinedRequest($datasetId, $tableSchema, $requestName, $criteria, $results, $label, $dbconn);
+		//$requestId = $datasetId . '_group_request';
+		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 
 		// REQUEST 2 : par période
 		$criteria = array(
@@ -90,8 +97,8 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 			'jourdatefin'
 		);
 		$label = 'par période d\'\'observation';
-		$requestName = $datasetId . '_periode';
-		$this->createPredefinedRequest($datasetId, $tableSchema, $requestName, $criteria, $results, $label, $dbconn);
+		//$requestId = $datasetId . '_periode';
+		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 
 		// REQUEST 3 : biogeographique
 		$criteria = array(
@@ -99,8 +106,8 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 			'occstatutbiogeographique'
 		);
 		$label = 'par statut bio-géographique';
-		$requestName = $datasetId . '_biogeo';
-		$this->createPredefinedRequest($datasetId, $tableSchema, $requestName, $criteria, $results, $label, $dbconn);
+		//$requestId = $datasetId . '_biogeo';
+		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 
 		// REQUEST 4 : organisme producteur de données
 		$criteria = array(
@@ -108,8 +115,8 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 			'organismegestionnairedonnee'
 		);
 		$label = 'par organisme producteur de données';
-		$requestName = $datasetId . '_producteur';
-		$this->createPredefinedRequest($datasetId, $tableSchema, $requestName, $criteria, $results, $label, $dbconn);
+		//$requestId = $datasetId . '_producteur';
+		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 
 		// REQUEST 5 : par localisation
 		$criteria = array(
@@ -120,8 +127,8 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 			'codeen'
 		);
 		$label = 'par localisation';
-		$requestName = $datasetId . '_localisation';
-		$this->createPredefinedRequest($datasetId, $tableSchema, $requestName, $criteria, $results, $label, $dbconn);
+		//$requestId = $datasetId . '_localisation';
+		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 
 		// REQUEST 6 : sensibilité
 		$criteria = array(
@@ -145,21 +152,21 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 			'sensiversionreferentiel'
 		);
 		$label = 'données à sensibiliser';
-		$requestName = $datasetId . '_donnees_a_sensibiliser';
-		$this->createPredefinedRequest($datasetId, $tableSchema, $requestName, $criteria, $results, $label, $dbconn);
+		//$requestId = $datasetId . '_donnees_a_sensibiliser';
+		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 	}
 
 	/**
 	 * Add a predefined request
 	 *
+	 * @param string $groupId
 	 * @param string $datasetId
 	 * @param string $tableSchema
-	 * @param string $requestName
 	 * @param string $criteria
 	 * @param string $results
 	 * @param string $label
 	 */
-	public function createPredefinedRequest($datasetId, $tableSchema, $requestName, $criteria, $results, $label, $dbconn) {
+	public function createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn) {
 		// Will the tables contain the columns the request needs?
 		$sqlCriteria = "SELECT ff.data, ff.format
 					FROM metadata.form_field ff, metadata.dataset_forms df
@@ -184,11 +191,17 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		// the fields needed are present in the tables
 		if (pg_num_rows($stmtCriteria) == count($criteria) && pg_num_rows($stmtResults) == count($results)) {
 
+			// Get the sequence nextval for request_id
+			$sqlPRIdNextval = "SELECT nextval('predefined_request_request_id_seq');";
+			pg_prepare($dbconn, "", $sqlPRIdNextval);
+			$stmtPRIdNextval = pg_execute($dbconn, "", array());
+			$requestId = pg_fetch_row($stmtPRIdNextval)[0]+1;
+			
 			// Add the predefined request
-			$this->addPredefinedRequest($requestName, $tableSchema, $datasetId, $label, $dbconn);
+			$this->addPredefinedRequest($tableSchema, $datasetId, $label, $dbconn);
 
 			// Link the request with the group
-			$this->addPredefinedRequestGroupAsso($datasetId, $requestName, $dbconn);
+			$this->addPredefinedRequestGroupAsso($groupId, $requestId, $dbconn);
 
 			// Add the criteria
 			while ($row = pg_fetch_assoc($stmtCriteria)) {
@@ -196,22 +209,19 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 				$form = $row['format'];
 				if ($data == 'cdnom') {
 					$value = '183716';
-					$fixed = 'FALSE';
 				} elseif ($data == 'sensialerte') {
 					$value = '1';
-					$fixed = 'TRUE';
 				} else {
 					$value = '';
-					$fixed = 'FALSE';
 				}
-				$this->addPredefinedRequestCriterion($requestName, $form, $data, $value, $fixed, $dbconn);
+				$this->addPredefinedRequestCriterion($requestId, $form, $data, $value, $dbconn);
 			}
 
 			// Add the results
 			while ($row = pg_fetch_assoc($stmtResults)) {
 				$data = $row['data'];
 				$form = $row['format'];
-				$this->addPredefinedRequestColumn($requestName, $form, $data, $dbconn);
+				$this->addPredefinedRequestColumn($requestId, $form, $data, $dbconn);
 			}
 		}
 	}
@@ -219,8 +229,6 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	/**
 	 * Add a predefined request group
 	 *
-	 * @param string $groupName
-	 *        	the datasetId
 	 * @param string $label
 	 *        	the datasetLabel
 	 * @param string $definition
@@ -228,9 +236,9 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	 * @param string $position
 	 *        	always 1
 	 */
-	public function addPredefinedRequestGroup($groupName, $label, $definition, $position, $dbconn) {
+	public function addPredefinedRequestGroup($label, $definition, $position, $dbconn) {
 		// Add predefined request group (the dataset)
-		$sql = "INSERT INTO website.predefined_request_group(name, label, definition, position) VALUES ('" . $groupName . "','" . $label . "','" . $definition . "', '" . $position . "');";
+		$sql = "INSERT INTO website.predefined_request_group(label, definition, position) VALUES ('" . $label . "','" . $definition . "', '" . $position . "');";
 		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
 	}
@@ -238,26 +246,27 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	/**
 	 * Add values in predefined_request table
 	 *
-	 * @param string $requestName
+	 * @param string $requestId
 	 * @param string $schemaCode
 	 * @param string $datasetId
 	 * @param string $abel
 	 */
-	public function addPredefinedRequest($requestName, $schemaCode, $datasetId, $label, $dbconn) {
+	public function addPredefinedRequest($schemaCode, $datasetId, $label, $dbconn) {
 		// Add the predefined request
-		$sql = "INSERT INTO website.predefined_request (name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('" . $requestName . "','" . $schemaCode . "','" . $datasetId . "', '" . $label . "', null,  now(), null);";		pg_prepare($dbconn, "", $sql);
+		$sql = "INSERT INTO website.predefined_request (schema_code, dataset_id, label, definition, date, user_login, is_public) VALUES ('" . $schemaCode . "','" . $datasetId . "', '" . $label . "', null,  now(), null, TRUE);";
+		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
 	}
 
 	/**
 	 * Add values in predefined_request_group_asso table
 	 *
-	 * @param string $groupName
-	 * @param string $requestName
+	 * @param string $groupId
+	 * @param string $requestId
 	 */
-	public function addPredefinedRequestGroupAsso($groupName, $requestName, $dbconn) {
+	public function addPredefinedRequestGroupAsso($groupId, $requestId, $dbconn) {
 		// Link the request with the group
-		$sql = "INSERT INTO website.predefined_request_group_asso(group_name, request_name, position) VALUES ('" . $groupName . "', '" . $requestName . "', 1);";
+		$sql = "INSERT INTO website.predefined_request_group_asso(group_id, request_id, position) VALUES ('" . $groupId . "', '" . $requestId . "', 1);";
 		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
 	}
@@ -265,15 +274,14 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	/**
 	 * Add criterion to the request
 	 *
-	 * @param string $requestName
+	 * @param string $requestId
 	 * @param string $format
 	 * @param string $data
 	 * @param string $value
-	 * @param string $fixed
 	 */
-	public function addPredefinedRequestCriterion($requestName, $format, $data, $value, $fixed, $dbconn) {
+	public function addPredefinedRequestCriterion($requestId, $format, $data, $value, $dbconn) {
 		// Add the predefined request criterion
-		$sql = "INSERT INTO website.predefined_request_criterion (request_name, format, data, value, fixed) VALUES ('" . $requestName . "','" . $format . "','" . $data . "','" . $value . "','" . $fixed . "');";
+		$sql = "INSERT INTO website.predefined_request_criterion (request_id, format, data, value) VALUES ('" . $requestId . "','" . $format . "','" . $data . "','" . $value . "');";
 		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
 	}
@@ -281,13 +289,13 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	/**
 	 * Add result to the request
 	 *
-	 * @param string $requestName
+	 * @param string $requestId
 	 * @param string $format
 	 * @param string $data
 	 */
-	public function addPredefinedRequestColumn($requestName, $format, $data, $dbconn) {
+	public function addPredefinedRequestColumn($requestId, $format, $data, $dbconn) {
 		// Add the predefined request results
-		$sql = "INSERT INTO website.predefined_request_column (request_name, format, data) VALUES ('" . $requestName . "','" . $format . "','" . $data . "');";
+		$sql = "INSERT INTO website.predefined_request_column (request_id, format, data) VALUES ('" . $requestId . "','" . $format . "','" . $data . "');";
 		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
 	}

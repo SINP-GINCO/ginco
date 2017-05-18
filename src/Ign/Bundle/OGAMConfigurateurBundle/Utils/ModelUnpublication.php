@@ -481,6 +481,10 @@ class ModelUnpublication extends DatabaseUtils {
 			foreach ($rows as $row) {
 				$datasetId = $row['dataset_id'];
 
+
+				// Delete possible predefined requests on this dataset
+				$this->dropPredefinedRequests($datasetId);
+				
 				// delete from dataset_fields
 				$deleteFieldsQuery = "DELETE FROM metadata.dataset_fields WHERE dataset_id = $1";
 				pg_prepare($this->pgConn, "", $deleteFieldsQuery);
@@ -495,15 +499,13 @@ class ModelUnpublication extends DatabaseUtils {
 					$datasetId
 				));
 
+
 				// delete from dataset
 				$deleteQuery = "DELETE FROM metadata.dataset WHERE dataset_id = $1";
 				pg_prepare($this->pgConn, "", $deleteQuery);
 				pg_execute($this->pgConn, "", array(
 					$datasetId
 				));
-
-				// Delete possible predefined requests on this dataset
-				$this->dropPredefinedRequests($datasetId);
 			}
 		}
 	}
@@ -647,24 +649,24 @@ class ModelUnpublication extends DatabaseUtils {
 
 		$this->logger->debug("drop predefined requests for dataset : " . $datasetId);
 
-		$sql = "DELETE FROM website.predefined_request_result WHERE request_name LIKE '" . $datasetId . "_%'";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->execute();
-
-		$sql = "DELETE FROM website.predefined_request_criteria WHERE request_name LIKE '" . $datasetId . "_%'";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->execute();
-
-		$sql = "DELETE FROM website.predefined_request_group_asso WHERE request_name LIKE '" . $datasetId . "_%'";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->execute();
-
-		$sql = "DELETE FROM website.predefined_request WHERE request_name LIKE '" . $datasetId . "_%'";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->execute();
-
-		$sql = "DELETE FROM website.predefined_request_group WHERE group_name = '" . $datasetId . "'";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->execute();
+		// Get the predefined requests and group linked to the dataset_id
+		$sql = "SELECT group_id
+					FROM metadata.dataset d
+					LEFT JOIN website.predefined_request_group prg on prg.label = d.label
+					WHERE d.type = 'QUERY'
+					AND d.dataset_id = :datasetId";
+		$selectStmt = $this->conn->prepare($sql);
+		$selectStmt->bindParam(':datasetId', $datasetId);
+		$selectStmt->execute();
+		$row = $selectStmt->fetch();
+		$datasetGroupId = $row['group_id'];
+		
+		$sql = "DELETE FROM website.predefined_request WHERE dataset_id = '" . $datasetId . "'";
+	 	$stmt = $this->conn->prepare($sql);
+	 	$stmt->execute();
+	 	
+	 	$sql = "DELETE FROM website.predefined_request_group WHERE group_id = '" . $datasetGroupId . "'";
+	 	$stmt = $this->conn->prepare($sql);
+	 	$stmt->execute();
 	}
 }
