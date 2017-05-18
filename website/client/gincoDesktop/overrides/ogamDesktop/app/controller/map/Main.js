@@ -28,11 +28,15 @@ Ext.define('Ginco.controller.map.Main', {
 					+ 'ajaxgetresultsbbox',
 			success : function(response, options) {
 				var result = Ext.decode(response.responseText);
-				if (result.success) {
-					this.setResultsBbox(result.resultsbbox.bbox);
+				if (result.success ) {
+					if (result.resultsbbox){
+						this.setResultsBbox(result.resultsbbox.bbox);
+					} else {
+						this.setResultsBbox(null);
+					}
 					this.updateRequestLayers();
 					Ext.GlobalEvents.fireEvent('resultsPrepared');
-					if (result.resultsbbox.restrained) {
+					if (result.resultsbbox && result.resultsbbox.restrained) {
 						OgamDesktop.toast(this.restrainedBboxWarning,
 								this.restrainedBboxWarningTitle, 5000);
 						this.getMapmainwin().unmask();

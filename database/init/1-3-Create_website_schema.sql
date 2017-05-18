@@ -227,7 +227,7 @@ create table PREDEFINED_REQUEST_CRITERION (
 REQUEST_NAME           VARCHAR(50)          not null,
 FORMAT         		   VARCHAR(36)          not null,
 DATA                   VARCHAR(36)          not null,
-VALUE        		   VARCHAR(500)          not null,
+VALUE        		   text	          not null,
 FIXED 				   boolean,
 constraint PK_PREDEFINED_REQUEST_CRITERION primary key (REQUEST_NAME, FORMAT, DATA)
 );
