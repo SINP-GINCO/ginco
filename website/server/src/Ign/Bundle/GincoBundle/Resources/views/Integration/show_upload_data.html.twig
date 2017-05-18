@@ -75,9 +75,9 @@
 
 {% block _datauploadform_SRID_widget %}
     {{ form_widget(form) }}
-    <p class="help-block">
-        {% trans %}In the form of EPSG code. For example 4326 for WGS84{% endtrans %}
-    </p>
+    <div class="help-block">
+        <span>{{ 'sridDescription'|trans|raw }}</span>
+    </div>
 {% endblock %}
 
 {% block form_group_class -%}
