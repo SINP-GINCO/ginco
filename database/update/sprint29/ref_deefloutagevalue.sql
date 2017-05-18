@@ -1,0 +1,1 @@
+INSERT INTO metadata.dynamode(unit, sql) VALUES ('DEEFloutageValue','SELECT code as code, label || '' ('' || code || '')'' as label FROM referentiels.DEEFloutageValue ORDER BY code ');
