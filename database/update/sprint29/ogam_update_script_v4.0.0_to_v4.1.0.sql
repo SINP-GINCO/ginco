@@ -19,8 +19,8 @@ ALTER TABLE website.predefined_request_column RENAME TO predefined_request_colum
 ALTER TABLE website.predefined_request_criterion RENAME TO predefined_request_criterion_old;
 
 ALTER TABLE website.predefined_request_old RENAME CONSTRAINT pk_predefined_request TO pk_predefined_request_old;
-ALTER TABLE website.predefined_request_old RENAME CONSTRAINT fk_predefined_request_dataset TO fk_predefined_request_dataset_old;
-ALTER TABLE website.predefined_request_group_old RENAME CONSTRAINT pk_predefined_request_group TO pk_predefined_request_group_old;
+ALTER TABLE website.predefined_request_old RENAME CONSTRAINT IF EXISTS fk_predefined_request_dataset TO fk_predefined_request_dataset_old;
+ALTER TABLE website.predefined_request_group_old RENAME CONSTRAINT IF EXISTS pk_predefined_request_group TO pk_predefined_request_group_old;
 ALTER TABLE website.predefined_request_group_asso_old RENAME CONSTRAINT pk_predefined_request_group_asso TO pk_predefined_request_group_asso_old;
 ALTER TABLE website.predefined_request_group_asso_old RENAME CONSTRAINT fk_predefined_request_group_name TO fk_predefined_request_group_name_old;
 ALTER TABLE website.predefined_request_group_asso_old RENAME CONSTRAINT fk_predefined_request_request_name TO fk_predefined_request_request_name_old;
@@ -239,14 +239,16 @@ GRANT ALL ON SEQUENCE website.predefined_request_group_group_id_seq TO ogam;
 --                                                 --
 -----------------------------------------------------
 
-INSERT INTO website.permission(permission_code, permission_label) VALUES ('MANAGE_OWNED_PRIVATE_REQUEST', 'Manage its own private requests');
-INSERT INTO website.permission(permission_code, permission_label) VALUES ('MANAGE_PUBLIC_REQUEST', 'Manage all the public requests');
-INSERT INTO website.permission(permission_code, permission_label) VALUES ('MANAGE_REQUEST_GROUP', 'Manage all the request group');
-INSERT INTO website.permission_per_role(role_code, permission_code) VALUES ('ADMIN', 'MANAGE_OWNED_PRIVATE_REQUEST');
-INSERT INTO website.permission_per_role(role_code, permission_code) VALUES ('ADMIN', 'MANAGE_PUBLIC_REQUEST');
-INSERT INTO website.permission_per_role(role_code, permission_code) VALUES ('ADMIN', 'MANAGE_REQUEST_GROUP');
 
 
+INSERT INTO website.permission(permission_code, permission_label) VALUES ('MANAGE_OWNED_PRIVATE_REQUEST', 'Gérer ses requêtes privées');
+INSERT INTO website.permission(permission_code, permission_label) VALUES ('MANAGE_PUBLIC_REQUEST', 'Gérer les requêtes publiques');
+
+UPDATE website.permission_per_role SET permission_code='MANAGE_OWNED_PRIVATE_REQUEST' WHERE permission_code='MANAGE_PRIVATE_REQUESTS';
+UPDATE website.permission_per_role SET permission_code='MANAGE_PUBLIC_REQUEST' WHERE permission_code='MANAGE_PUBLIC_REQUESTS';
+
+DELETE FROM website.permission WHERE permission_code = 'MANAGE_PUBLIC_REQUESTS';
+DELETE FROM website.permission WHERE permission_code = 'MANAGE_PRIVATE_REQUESTS';
 
 --------------------------------------------------------------
 --------------------------------------------------------------

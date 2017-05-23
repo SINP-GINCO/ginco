@@ -17,3 +17,4 @@ ADD CONSTRAINT fk_predefined_request_request_id FOREIGN KEY (request_id)
 ALTER TABLE website.predefined_request DROP CONSTRAINT fk_predefined_request_dataset;
 
 ALTER TABLE website.predefined_request_criterion ALTER COLUMN value TYPE text;
+
