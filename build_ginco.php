@@ -263,7 +263,7 @@ function buildExtJS($config, $buildMode)
 
 	// Customize app.json and index.html
 	echo("Customize app.json...\n");
-	substituteInFile("$clientDir/gincoDesktop/app_tpl.json", "$clientDirOgam/ogamDesktop/app.json", $config);
+	substituteInFile("$clientDir/gincoDesktop/app_tpl.json", "$clientDir/ogamDesktop/app.json", $config);
 	// in dev mode, keep original file
 	if ($buildMode == 'dev') {
 		system("cp $clientDir/gincoDesktop/index.html $clientDir/gincoDesktop/index.html.keep");
