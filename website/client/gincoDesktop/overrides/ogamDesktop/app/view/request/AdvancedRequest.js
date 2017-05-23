@@ -6,15 +6,18 @@ Ext.define('Ginco.view.request.AdvancedRequest', {
     var bbar = overriddenClass.prototype.bbar;
 
     // Submit button: add the x-btn-submit class
-    Ext.apply(bbar[4], {
+    Ext.apply(bbar[6], {
         cls: 'x-btn-submit'
     });
 
-    // Cancel and reset button: add the x-btn-cancel class
+    // Cancel,reset and save request button: add the x-btn-cancel class
     Ext.apply(bbar[0], {
         cls: 'x-btn-cancel'
     });
     Ext.apply(bbar[2], {
+        cls: 'x-btn-cancel'
+    });
+    Ext.apply(bbar[4], {
         cls: 'x-btn-cancel'
     });
 });
