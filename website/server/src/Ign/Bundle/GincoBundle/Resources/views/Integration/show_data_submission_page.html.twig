@@ -34,7 +34,7 @@
                 <td>{{ submission.creationDate|date("Y-m-d") }}</td>
                 <td>{{ submission.provider.label }}</td>
                 <td>{{ submission.user.login }}</td>
-                <td>{{ submission.dataset.label }}</td>
+                <td>{{ submission.dataset is not null ? submission.dataset.label : 'IntegrationPage.NoDataset'|trans }}</td>
                 <td>{{ submission.step }}</td>
                 {# Status -- see integration-progress-bars.js.twig #}
                 <td>
