@@ -68,7 +68,12 @@ function buildJavaServices($config, $buildMode)
 	chdir("$ogamDir");
 	system("./gradlew service_integration:war");
 	# le war se trouve dans ${ogamDir}/service_integration/build/libs/service_integration-4.0.0.war
+
+	// Cleaning Ogam dir
 	system("mv -f $ogamDir/service_integration/config/log4j.properties.save $ogamDir/service_integration/config/log4j.properties ");
+	foreach($customServicesNames as $serviceName) {
+		system("rm -f $ogamCustomPath/business/$serviceName.java");
+	}
 
 	copy("$ogamDir/service_integration/build/libs/service_integration-4.0.0.war",
 		"$servicesBuildDir/webapps/$ISFilename.war");
