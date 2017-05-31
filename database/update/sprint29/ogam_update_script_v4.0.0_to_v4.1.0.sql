@@ -260,5 +260,3 @@ DELETE FROM website.permission WHERE permission_code = 'MANAGE_PRIVATE_REQUESTS'
 
 DROP TABLE website.layer_role_restriction;
 
-DELETE FROM website.predefined_request_group WHERE label='Recherches sauvegardées publiques';
-DELETE FROM website.predefined_request_group WHERE label='Recherches sauvegardées privées';
