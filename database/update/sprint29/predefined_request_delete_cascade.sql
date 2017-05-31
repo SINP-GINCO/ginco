@@ -18,3 +18,5 @@ ALTER TABLE website.predefined_request DROP CONSTRAINT fk_predefined_request_dat
 
 ALTER TABLE website.predefined_request_criterion ALTER COLUMN value TYPE text;
 
+DELETE FROM website.predefined_request_group WHERE label='Recherches sauvegardées publiques';
+DELETE FROM website.predefined_request_group WHERE label='Recherches sauvegardées privées';
