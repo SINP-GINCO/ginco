@@ -1,52 +1,14 @@
 ﻿SET SEARCH_PATH = mapping, public;
 
-
--- Add the available map zoom_level
-DELETE FROM zoom_level;
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (0, 156543.0339280410, 559082264, '1:560M', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (1, 78271.5169640205, 279541132, '1:280M', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (2, 39135.7584820102, 139770566, '1:140M', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (3, 19567.8792410051, 69885283, '1:70M', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (4, 9783.9396205026, 34942642, '1:35M', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (5, 4891.9698102513, 17471321, '1:17M', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (6, 2445.9849051256, 8735660, '1:8,7M', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (7, 1222.9924525628, 4367830, '1:4,4M', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (8, 611.4962262814, 2183915, '1:2,2M', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (9, 305.7481131407, 1091958, '1:1,1M', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (10, 152.8740565704, 545979, '1:546K', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (11, 76.4370282852, 272989, '1:273K', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (12, 38.2185141426, 136495, '1:136K', TRUE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (13, 19.1092570713, 68247, '1:68K', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (14, 9.5546285356, 34124, '1:34K', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (15, 4.7773142678, 17062, '1:17K', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (16, 2.3886571339, 8531, '1:8,5K', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (17, 1.1943285670, 4265, '1:4,3K', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (18, 0.5971642835, 2133, '1:2,1K', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (19, 0.2985821417, 1066, '1:1,1K', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (20, 0.1492910709, 533, '1:533', FALSE);
-INSERT INTO zoom_level (zoom_level, resolution, approx_scale_denom, scale_label, is_map_zoom_level) VALUES (21, 0.0746455354, 267, '1:267', FALSE);
-
-
--- Conf des services et des layers
-
-DELETE FROM layer_tree_node;
-DELETE FROM layer;
-DELETE FROM layer_service;
-
--- Define the services
+-- Add services
 
 INSERT INTO layer_service (name, config) VALUES
-  ('mapProxy','{"urls":["@ogam.map.services.url@/mapserverProxy.php?"],"params":{"SERVICE":"WMS","VERSION":"1.1.1","REQUEST":"GetMap"}}'),
-  ('legend_mapProxy','{"urls":["@ogam.map.services.url@/mapserverProxy.php?"],"params":{"SERVICE":"WMS","VERSION":"1.1.1","REQUEST":"GetLegendGraphic"}}'),
-  ('Local_MapProxy_WFS_GetFeature','{"urls":["@ogam.map.services.url@/mapserverProxy.php?"],"params":{"SERVICE":"WFS","VERSION":"1.1.0","REQUEST":"GetFeature"}}'),
-  ('geoportal_wms','{"urls":["https://wxs.ign.fr/@view.geoportail.key@/geoportail/r/wms?"],"params":{"SERVICE":"WMS","VERSION":"1.3.0","REQUEST":"GetMap"}}'),
-  ('geoportal_wmts','{"urls":["https://wxs.ign.fr/@view.geoportail.key@/geoportail/wmts?"],"params":{"SERVICE":"WMTS","VERSION":"1.0.0","REQUEST":"getTile","style":"normal","matrixSet":"PM","requestEncoding":"KVP","maxExtent":[-20037508, -20037508, 20037508, 20037508],"serverResolutions":[156543.033928,78271.516964,39135.758482,19567.879241,9783.939621,4891.969810,2445.984905,1222.992453,611.496226,305.748113,152.874057,76.437028,38.218514,19.109257,9.554629,4.777302,2.388657,1.194329,0.597164,0.298582,0.149291,0.074646],"tileOrigin":[-20037508,20037508]}}'),
-  ('geoportal_wmts_png','{"urls":["http://wxs.ign.fr/@view.geoportail.key@/geoportail/wmts?"],"params":{"SERVICE":"WMTS","VERSION":"1.0.0","REQUEST":"getTile","format":"image/png","style":"normal","matrixSet":"PM","requestEncoding":"KVP","maxExtent":[-20037508, -20037508, 20037508, 20037508],"serverResolutions":[156543.033928,78271.516964,39135.758482,19567.879241,9783.939621,4891.969810,2445.984905,1222.992453,611.496226,305.748113,152.874057,76.437028,38.218514,19.109257,9.554629,4.777302,2.388657,1.194329,0.597164,0.298582,0.149291,0.074646],"tileOrigin":[-20037508,20037508]}}');
-  ('EN_WFS_GetFeature', '{"urls":["https://wxs.ign.fr/@view.geoportail.key@/geoportail/wfs?"],"params":{"SERVICE":"WFS","VERSION":"1.0.0","REQUEST":"GetFeature", "outputFormat":"json"}}'),
-  ('EN_WMS_Legend', '{"urls":["https://www.geoportail.gouv.fr/depot/layers/"],"params":{}}');
---
--- Define the layers
---
+('EN_WFS_GetFeature', '{"urls":["https://wxs.ign.fr/@view.geoportail.key@/geoportail/wfs?"],"params":{"SERVICE":"WFS","VERSION":"1.0.0","REQUEST":"GetFeature", "outputFormat":"json"}}'),
+('EN_WMS_Legend', '{"urls":["https://www.geoportail.gouv.fr/depot/layers/"],"params":{}}');
+  
+DELETE FROM layer_tree_node;
+DELETE FROM layer;
+
 INSERT INTO layer (name, label, service_layer_name, is_transparent, default_opacity, is_base_layer, is_untiled, max_zoom_level, min_zoom_level, has_legend, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES
 ('Fonds', 'Fonds', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 ('ORTHOIMAGERY.ORTHOPHOTOS', 'Orthophotographies', 'ORTHOIMAGERY.ORTHOPHOTOS', 0, 100, 0, 0, NULL, NULL, 0, NULL, 'NONE', 'geoportal_wmts', NULL, 'geoportal_wms', NULL),
@@ -109,61 +71,52 @@ INSERT INTO layer (name, label, service_layer_name, is_transparent, default_opac
 ('PROTECTEDAREAS_MNHN_CONSERVATOIRES_WFS', 'Sites acquis des Conservatoires d''espaces naturels', 'PROTECTEDAREAS.MNHN.CONSERVATOIRES:cen2013_09', 1, 100, 0, 1, NULL, NULL, 1, NULL, 'NONE', NULL, NULL, NULL, 'EN_WFS_GetFeature'),
 ('PROTECTEDAREAS_CDL_WFS', 'Conservatoire du littoral : périmètres d''intervention', 'PROTECTEDAREAS.CDL:wld_perimetre_intervention_wm', 1, 100, 0, 1, NULL, NULL, 1, NULL, 'NONE', NULL, NULL, NULL, 'EN_WFS_GetFeature');
 
---
--- And the layer tree
---
-INSERT INTO layer_tree_node (node_id, parent_node_id, is_layer, is_checked, is_hidden, is_disabled, is_expanded, layer_name, "position", checked_group, label, definition) VALUES
-  (33, '3', 1, 1, 0, 0, 0, 'departements', 33, NULL, NULL, NULL),
-  (34, '3', 1, 1, 0, 0, 0, 'regions', 34, NULL, NULL, NULL),
-  (71, '70', 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 71, NULL, NULL, NULL),
-  (72, '70', 1, 0, 0, 0, 0, 'plan_ign', 72, NULL, NULL, NULL),
-  (109, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNC', 109, NULL, NULL, NULL),
-  (61, '-1', 0, 1, 0, 0, 0, NULL, 61, NULL, 'EN - Protections réglementaires', NULL),
-  (62, '-1', 0, 1, 0, 0, 0, NULL, 62, NULL, 'EN - Protections contractuelles', NULL),
-  (63, '-1', 0, 1, 0, 0, 0, NULL, 63, NULL, 'EN - Protections par la maîtrise foncière', NULL),
-  (64, '-1', 0, 1, 0, 0, 0, NULL, 64, NULL, 'EN - Protections au titre de conventions', NULL),
-  (65, '-1', 0, 1, 0, 0, 0, NULL, 65, NULL, 'EN - Natura 2000', NULL),
-  (114, '66', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF1', 114, NULL, NULL, NULL),
-  (66, '-1', 0, 1, 0, 0, 0, NULL, 66, NULL, 'EN - ZNIEFF', NULL),
-  (70, '-1', 0, 1, 0, 0, 0, NULL, 70, NULL, 'Fonds', NULL),
-  (115, '66', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF2', 115, NULL, NULL, NULL),
-  (2, '-1', 0, 1, 0, 0, 1, NULL, 2, NULL, 'Résultats de la recherche', NULL),
-  (3, '-1', 0, 1, 0, 0, 1, NULL, 3, NULL, 'Limites administratives', NULL),
-  (102, '63', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CEN', 102, NULL, NULL, NULL),
-  (103, '63', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CDL', 103, NULL, NULL, NULL),
-  (104, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PN', 104, NULL, NULL, NULL),
-  (108, '64', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.BIOS', 108, NULL, NULL, NULL),
-  (110, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RN', 110, NULL, NULL, NULL),
-  (112, '65', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.SIC', 112, NULL, 'Directive Habitats', NULL),
-  (113, '65', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZPS', 113, NULL, 'Directive Oiseaux', NULL),
-  (116, '64', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RAMSAR', 116, NULL, NULL, NULL),
-  (101, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.APB', 101, NULL, NULL, NULL),
-  (107, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RB', 107, NULL, NULL, NULL),
-  (111, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNCF', 111, NULL, NULL, NULL),
-  (105, '62', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNM', 105, NULL, NULL, NULL),
-  (106, '62', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNR', 106, NULL, NULL, NULL),
-  (21, '2', 1, 0, 0, 1, 0, 'result_geometrie', 21, 'results', NULL, NULL),
-  (22, '2', 1, 0, 0, 1, 0, 'result_commune', 22, 'results', NULL, NULL),
-  (23, '2', 1, 0, 0, 1, 0, 'result_maille', 23, 'results', NULL, NULL),
-  (24, '2', 1, 1, 0, 1, 0, 'result_departement', 24, 'results', NULL, NULL),
-  (31, '3', 1, 1, 0, 0, 0, 'communes', 31, NULL, NULL, NULL),
-  (32, '3', 1, 1, 0, 0, 0, 'mailles', 32, NULL, NULL, NULL);
-  
+
+
+
+INSERT INTO layer_tree_node (node_id, parent_node_id, is_layer, is_checked, is_hidden, is_disabled, is_expanded, layer_name, "position", checked_group) VALUES
+(2, '-1', 0, 1, 0, 0, 1, 'results', 1, NULL),
+(24, '2', 1, 1, 0, 1, 0, 'result_departement', 24, 'results'),
+(23, '2', 1, 0, 0, 1, 0, 'result_maille', 21, 'results'),
+(22, '2', 1, 0, 0, 1, 0, 'result_commune', 23, 'results'),
+(21, '2', 1, 0, 0, 1, 0, 'result_geometrie', 22, 'results'),
+(3, '-1', 0, 1, 0, 0, 1, 'Limites administratives', 3, NULL),
+(31, '3', 1, 1, 0, 0, 0, 'regions', 34, NULL),
+(32, '3', 1, 1, 0, 0, 0, 'departements', 31, NULL),
+(34, '3', 1, 1, 0, 0, 0, 'mailles', 33, NULL),
+(33, '3', 1, 1, 0, 0, 0, 'communes', 32, NULL),
+(61, '-1', 0, 1, 0, 0, 0, 'en_pr', 61, NULL),
+(62, '-1', 0, 1, 0, 0, 0, 'en_pc', 62, NULL),
+(63, '-1', 0, 1, 0, 0, 0, 'en_pmf', 63, NULL),
+(64, '-1', 0, 1, 0, 0, 0, 'en_pconv', 64, NULL),
+(65, '-1', 0, 1, 0, 0, 0, 'en_n2000', 65, NULL),
+(66, '-1', 0, 1, 0, 0, 0, 'en_znieff', 66, NULL),
+(43, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.APB', 1, NULL),
+(49, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RB', 2, NULL),
+(46, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PN', 3, NULL),
+(492, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNC', 4, NULL),
+(493, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RN', 5, NULL),
+(494, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RNCF', 6, NULL),
+(499, '61', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RIPN', 7, NULL),
+(4991, '61', 1, 0, 0, 0, 0, 'PROTECTEDSITES.MNHN.RESERVES-REGIONALES', 8, NULL),
+(47, '62', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNM', 1, NULL),
+(48, '62', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.PNR', 2, NULL),
+(44, '63', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CEN', 1, NULL),
+(45, '63', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.CDL', 2, NULL),
+(461, '63', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.MNHN.CONSERVATOIRES', 3, NULL),
+(491, '64', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.BIOS', 1, NULL),
+(497, '64', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.RAMSAR', 2, NULL),
+(498, '64', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.UNESCO', 3, NULL),
+(495, '65', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.SIC', 1, NULL),
+(496, '65', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZPS', 2, NULL),
+(41, '66', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF1', 1, NULL),
+(42, '66', 1, 0, 0, 0, 0, 'PROTECTEDAREAS.ZNIEFF2', 2, NULL),
+(70, '-1', 0, 1, 0, 0, 1, 'Fonds', 70, NULL),
+(51, '70', 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 1, NULL),
+(52, '70', 1, 0, 0, 0, 0, 'plan_ign', 2, NULL);
+
 UPDATE layer_tree_node SET label = layer.label FROM layer WHERE layer_tree_node.layer_name = layer.name;
 UPDATE layer_tree_node SET definition = layer.label FROM layer WHERE layer_tree_node.layer_name = layer.name;
+alter table layer_tree_node alter column label TYPE character varying(150);
+alter table layer_tree_node alter column definition TYPE character varying(255);
 
---
--- Forbid some layers for some profiles
---
-
-DELETE FROM provider_map_params;
--- Configure the provider_map_params for default data provider
-INSERT INTO provider_map_params (provider_id, zoom_level, bb_xmin, bb_ymin, bb_xmax, bb_ymax) values ('1', '@bb.zoom@', '@bb.xmin@', '@bb.ymin@', '@bb.xmax@', '@bb.ymax@');
-
-DELETE FROM bac_commune;
-DELETE FROM bac_departement;
-DELETE FROM bac_maille;
--- Populate the vizualisation bacs with the referentiels tables
-INSERT INTO bac_commune SELECT r.insee_com, St_Transform(r.geom, 3857) FROM referentiels.geofla_commune AS r;
-INSERT INTO bac_departement SELECT r.code_dept, St_Transform(r.geom, 3857) FROM referentiels.geofla_departement AS r;
-INSERT INTO bac_maille SELECT r.code_10km, St_Transform(r.geom, 3857) FROM referentiels.codemaillevalue AS r;
