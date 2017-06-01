@@ -265,7 +265,7 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 							proxy:{
 								type:'ajax',
 								url : Ext.manifest.OgamDesktop.requestServiceUrl + 'ajaxgettaxrefcodes',
-								extraParams:{unit:record.unit},
+								extraParams:{unit: record.get('unit')},
 								reader:{
 									idProperty : 'code',
 									totalProperty : 'results',
@@ -284,7 +284,7 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 							proxy:{
 								type:'ajax',
 								url:Ext.manifest.OgamDesktop.requestServiceUrl + 'ajaxgettaxrefnodes',
-								extraParams:{unit:record.unit}
+								extraParams:{unit: record.get('unit')}
 							}
 						});
 						
