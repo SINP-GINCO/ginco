@@ -28,6 +28,7 @@ try {
 	execCustSQLFile("$sprintDir/ogam_update_script_v4.0.0_to_v4.1.0.sql", $config);
 	execCustSQLFile("$sprintDir/predefined_request_delete_cascade.sql", $config);
 	execCustSQLFile("$sprintDir/ref_deefloutagevalue.sql", $config);
+	execCustSQLFile("$sprintDir/add_en_wfs_and_legend.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";

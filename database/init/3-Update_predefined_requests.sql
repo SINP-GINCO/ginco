@@ -9,9 +9,6 @@ DELETE FROM predefined_request;
 
 -- Création d'un thème (groupe de requêtes)
 INSERT INTO predefined_request_group(name, label, definition, position) VALUES ('dataset_2', 'Std occ taxon dee v1-2-1', 'Std occ taxon dee v1-2-1', 1);
-INSERT INTO predefined_request_group(name, label, definition, position) VALUES ('public_requests', 'Recherches sauvegardées publiques', 'Recherches visibles par tous les utilisateurs.', 1);
-INSERT INTO predefined_request_group(name, label, definition, position) VALUES ('private_requests', 'Recherches sauvegardées privées', 'Recherches visibles par moi uniquement.', 2);
-
 
 -- Création d'une requête prédéfinie
 INSERT INTO predefined_request (name, schema_code, dataset_id, label, definition, date, user_login) VALUES ('dataset_2_group_request', 'RAW_DATA', 'dataset_2', 'critères les plus fréquents', null,  now(), null);
