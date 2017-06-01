@@ -115,8 +115,8 @@ INSERT INTO layer_tree_node (node_id, parent_node_id, is_layer, is_checked, is_h
 (51, '70', 1, 1, 0, 0, 0, 'ORTHOIMAGERY.ORTHOPHOTOS', 1, NULL),
 (52, '70', 1, 0, 0, 0, 0, 'plan_ign', 2, NULL);
 
-UPDATE layer_tree_node SET label = layer.label FROM layer WHERE layer_tree_node.layer_name = layer.name;
-UPDATE layer_tree_node SET definition = layer.label FROM layer WHERE layer_tree_node.layer_name = layer.name;
 alter table layer_tree_node alter column label TYPE character varying(150);
 alter table layer_tree_node alter column definition TYPE character varying(255);
+UPDATE layer_tree_node SET label = layer.label FROM layer WHERE layer_tree_node.layer_name = layer.name;
+UPDATE layer_tree_node SET definition = layer.label FROM layer WHERE layer_tree_node.layer_name = layer.name;
 
