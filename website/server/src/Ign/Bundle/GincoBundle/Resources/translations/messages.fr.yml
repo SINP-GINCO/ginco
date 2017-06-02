@@ -91,9 +91,24 @@ Contact:
   validation:
     name.blank: X
     email:
-      notblank: Votre email ne soit pas être vide.
+      notblank: Votre email ne doit pas être vide.
       invalid: Cette adresse email est invalide.
     message.notblank: Votre messsage ne doit pas être vide.
+
+
+# Configuration parameters page
+# -----------------------------
+Configuration:
+  page:
+    title: Paramètres de la plateforme
+  edit:
+    email:
+      label: Adresse email de contact
+      help: Indiquez une adresse email ou une liste d'adresses séparées par des virgules.
+    submit:
+      button: Enregistrer
+      success: Les paramètres de la plateforme ont bien été enregistrés.
+    email.success: L'email de contact a été modifié.<br>Vous pouvez tester cette (ces) adresse(s) en envoyant un mail depuis la page <a href="/contact">Contact</a>.
 
 # Integration - Datasets
 # ----------------------
