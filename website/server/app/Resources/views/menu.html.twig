@@ -38,7 +38,7 @@
                     <li><a href="{{ path('usermanagement_showRoles') }}">{{ 'Menu.Roles'|trans }}</a></li>
                 {% endif %}
                 {% if (app.user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')) %}
-                    <li><a href="#">{{ 'Menu.PlatformParameters'|trans }}</a></li>
+                    <li><a href="{{ path('configuration_parameters') }}">{{ 'Menu.PlatformParameters'|trans }}</a></li>
                 {% endif %}
                 {% if (app.user.isAllowed('CHECK_CONF')) %}
                     <li><a href="{{ path('checkconf_showconfig') }}">{{ 'Menu.CheckConfiguration'|trans }}</a></li>

@@ -2,6 +2,7 @@
 
 namespace Ign\Bundle\GincoBundle\Controller;
 
+use Ign\Bundle\GincoBundle\Form\ConfigurationType;
 use Ign\Bundle\GincoBundle\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,5 +52,55 @@ class DefaultController extends Controller
             'form' => $form->createView()
         ));
     }
+
+
+	/**
+	 * Configuration parameters form page
+	 * Editable parameters:
+	 * - contact email address
+	 *
+	 * @Route("/configuration/parameters", _name="configuration_parameters")
+	 */
+	public function configurationParametersAction(Request $request) {
+
+		$em = $this->getDoctrine()->getManager();
+		$confRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\ApplicationParameter', 'website');
+
+		// Get contact Email
+		$emailConf = $confRepo->find('contactEmail');
+
+		$form = $this->createForm(new ConfigurationType(), null, array(
+			'action' => $this->generateUrl('configuration_parameters'),
+			'method' => 'POST'
+		));
+
+		// Set default value(s)
+		$form->get('contactEmail')->setData($emailConf->getValue());
+
+		$form->handleRequest($request);
+
+		if($form->isValid()){
+
+			$contactEmail = $form->get('contactEmail')->getData();
+			// Remove all spaces around email adresses (separetd by commas)
+			$contactEmail = implode(',',array_map('trim', explode(',',$contactEmail)));
+			$emailModified = $emailConf->getValue() != $contactEmail;
+
+			// Persist the value
+			$emailConf->setValue($contactEmail);
+			$em->flush();
+
+			$request->getSession()->getFlashBag()->add('success', 'Configuration.edit.submit.success');
+			if ($emailModified) {
+				$request->getSession()->getFlashBag()->add('success', 'Configuration.edit.email.success');
+			}
+
+			return $this->redirect($this->generateUrl('configuration_parameters'));
+		}
+
+		return $this->render('IgnGincoBundle:Default:configuration_parameters.html.twig', array(
+			'form' => $form->createView()
+		));
+	}
 
 }

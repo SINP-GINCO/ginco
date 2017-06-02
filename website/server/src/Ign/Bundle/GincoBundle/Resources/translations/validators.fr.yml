@@ -1,0 +1,1 @@
+EmailList.invalid: "Cette adresse ou liste d'adresses email n'est pas valide : {{ string }}."
