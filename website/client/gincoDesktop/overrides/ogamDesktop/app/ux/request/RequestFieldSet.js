@@ -288,7 +288,7 @@ Ext.define('Ginco.ux.request.RequestFieldSet', {
 							}
 						});
 						
-						if(record.label == 'cdRef'){
+						if(record.get('label') == 'cdRef'){
 							field.treePickerStore.filter('isReference', true);
 						}
 					break;
