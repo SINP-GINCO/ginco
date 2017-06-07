@@ -5,25 +5,37 @@
 -- REMARQUES:
 -- Le fichier en entrée est supposé être en utf-8 => corriger le client-encoding si ce n'est pas le cas
 -- ------------------------------------------------------------------------------------------
-SET search_path TO public, metadata;
+SET search_path = public, metadata, referentiels;
 SET client_encoding = 'UTF-8';
 
--- Suppression des données de la table mode_taxref
-DELETE FROM metadata.mode_taxref;
---
--- Recopie de la table referentiels.taxref vers la table metadata.mode_taxref
---
---We insert cd_nom and not lb_name in label to see code in TAXREF subtype fields (cdNom and cdRef).
---SELECT 'TaxRefValue', cd_nom,  cd_taxsup, lb_nom, nom_complet, nom_vern, '0', case when (cd_nom = cd_ref) then 1 else 0 end
-INSERT INTO metadata.mode_taxref (unit, code, parent_code, label, lb_name, complete_name, vernacular_name, is_leaf, is_reference)
-SELECT 'TaxRefValue', cd_nom, cd_taxsup, cd_nom, lb_nom, nom_complet, nom_vern, '0', case when (cd_nom = cd_ref) then 1 else 0 end
-FROM referentiels.taxref;
+-- Clean table mode_taxref
+DELETE FROM mode_taxref;
 
--- Marquage des feuilles
-update metadata.mode_taxref set is_leaf = '1' where code not in (select distinct parent_code from metadata.mode_taxref where parent_code is not null);
+--We insert cd_nom and not lb_name in name to see code in TAXREF subtype fields (cdNom and cdRef).
 
--- Remplacement des valeurs 349525 pour * pour signaler une racine à Zend
+-- cd_taxsup not null
+INSERT INTO mode_taxref (unit, code, parent_code, label, lb_name, complete_name, vernacular_name, is_leaf, is_reference)
+(SELECT 'TaxRefValue', tx.cd_nom, tx.cd_taxsup, tx.cd_nom, tx.lb_nom, tx.nom_complet, tx.nom_vern, '0', case when (tx.cd_nom = tx.cd_ref) THEN 1 else 0 END
+FROM taxref tx
+WHERE tx.cd_taxsup IS NOT NULL);
 
-UPDATE metadata.mode_taxref
+-- cd_taxsup is null, we take the one of the cd_ref.
+INSERT INTO mode_taxref (unit, code, parent_code, label, lb_name, complete_name, vernacular_name, is_leaf, is_reference)
+(SELECT 'TaxRefValue', tx.cd_nom, rtf.cd_taxsup, tx.cd_nom, tx.lb_nom, tx.nom_complet, tx.nom_vern, '0', case when (tx.cd_nom = tx.cd_ref) THEN 1 else 0 END 
+FROM taxref tx
+INNER JOIN taxref rtf ON (rtf.cd_nom = tx.cd_ref)
+WHERE tx.cd_taxsup IS NULL
+AND rtf.cd_taxsup IS NOT NULL
+AND tx.cd_nom != rtf.cd_nom);
+
+-- Update is_leaf column
+UPDATE mode_taxref SET is_leaf = '1'
+WHERE code NOT IN
+(SELECT DISTINCT parent_code
+FROM mode_taxref
+WHERE parent_code IS NOT NULL);
+
+-- Replace '349525' values with '*' to signal a root to PHP code
+UPDATE mode_taxref
 SET parent_code='*'
 WHERE parent_code='349525';

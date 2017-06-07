@@ -29,6 +29,7 @@ try {
 	execCustSQLFile("$sprintDir/predefined_request_delete_cascade.sql", $config);
 	execCustSQLFile("$sprintDir/ref_deefloutagevalue.sql", $config);
 	execCustSQLFile("$sprintDir/add_en_wfs_and_legend.sql", $config);
+	execCustSQLFile("$sprintDir/update_bbox_params.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
