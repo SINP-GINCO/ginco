@@ -35,11 +35,11 @@ insert into application_parameters (name, value, description) values ( 'srs_visu
 insert into application_parameters (name, value, description) values ( 'srs_raw_data' , 4326 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'srs_harmonized_data' , 4326 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'usePerProviderCenter' , 1 , 'if true the system will look in the "bounding_box" table for centering info for each provider');
-insert into application_parameters (name, value, description) values ( 'bbox_x_min' , '-20037508' , 'WEB MAPPING ');
-insert into application_parameters (name, value, description) values ( 'bbox_y_min' , '-20037508.342789244' , 'WEB MAPPING ');
-insert into application_parameters (name, value, description) values ( 'bbox_x_max' , '20037508.342789244' , 'WEB MAPPING ');
-insert into application_parameters (name, value, description) values ( 'bbox_y_max' , '20037508' , 'WEB MAPPING ');
-insert into application_parameters (name, value, description) values ( 'zoom_level' , '0' , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'bbox_x_min' , '@bb.xmin@' , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'bbox_y_min' , '@bb.ymin@' , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'bbox_x_max' , '@bb.xmax@' , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'bbox_y_max' , '@bb.ymax@' , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'zoom_level' , '@bb.zoom@' , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'mapserver_dpi' , 72 , 'Default number of dots per inch in mapserv');
 insert into application_parameters (name, value, description) values ( 'mapserver_inch_per_kilometer' , 39370.1 , 'Inch to meter conversion factor');
 insert into application_parameters (name, value, description) values ( 'featureinfo_margin' , 1000 , 'bounding box margin around the user click (in the unit of the map)');

@@ -211,7 +211,7 @@ COMMENT ON COLUMN layer_tree_node.checked_group IS 'Group of layers';
 
 
 /*==============================================================*/
-/*  Table: provider_map_params                                         */
+/*  Table: provider_map_params                                  */
 /*==============================================================*/
 CREATE TABLE provider_map_params
 (
