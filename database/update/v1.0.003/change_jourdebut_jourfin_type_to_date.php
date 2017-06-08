@@ -9,7 +9,7 @@ try {
 	$dbconn = pg_connect($conn_string) or die('Connection failed');
 	
 	/* Change dateDetermination type from dateTime to date, in metadata and metadata_work, and update the data in raw_data. */
-	$columnsToChange = ['jourdatedebut', 'jourdatefin'];
+	$columnsToChange = ['jourdatedebut', 'jourdatefin', 'datedetermination'];
 	
 	foreach ($columnsToChange as $columnToChange) {
 		$updateMetadataQuery = "
