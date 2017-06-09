@@ -30,6 +30,7 @@ try {
 	execCustSQLFile("$sprintDir/ref_deefloutagevalue.sql", $config);
 	execCustSQLFile("$sprintDir/add_en_wfs_and_legend.sql", $config);
 	execCustSQLFile("$sprintDir/update_bbox_params.sql", $config);
+	execCustSQLFile("$sprintDir/change_time_case.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
@@ -40,8 +41,7 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-  system("php $sprintDir/change_datedetermination_type_to_date.php $CLIParams", $returnCode1);
-// system("php $sprintDir/script2.php $CLIParams", $returnCode2);
+  system("php $sprintDir/change_datedetermination_and_jourdate_type_to_date.php $CLIParams", $returnCode1);
 
 if ($returnCode1 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
