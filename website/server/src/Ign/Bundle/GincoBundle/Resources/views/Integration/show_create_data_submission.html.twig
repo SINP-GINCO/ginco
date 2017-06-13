@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% form_theme form 'form.html.twig' %}
+
+{% block body %}
+<h1>
+   {{ 'Data integration module'|trans }} - {{ 'Create data submission'|trans }}
+</h1>
+
+   {{ form_start(form) }}
+   {{ form_errors(form) }}
+
+   {{ form_row(form.dataset) }}
+   {{ form_row(form.provider) }}
+   {{ form_end(form) }}
+
+{% endblock %}

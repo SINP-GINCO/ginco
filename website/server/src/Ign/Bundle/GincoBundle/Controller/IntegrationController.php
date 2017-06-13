@@ -1,6 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
+use Ign\Bundle\GincoBundle\Form\GincoDataSubmissionType;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\Dataset;
 use Ign\Bundle\OGAMBundle\Entity\RawData\Submission;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\File;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\FileFormat;
-use Ign\Bundle\GincoBundle\Form\DataSubmissionType;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -24,57 +24,51 @@ class IntegrationController extends BaseController {
 
 	/**
 	 * Show the create data submission page.
+	 * GINCO: Add a choice for the provider in the form
 	 *
 	 * @Route("/create-data-submission", name="integration_creation")
 	 */
 	public function createDataSubmissionAction(Request $request) {
-		$datasetChoices = $this->getDoctrine()
-			->getRepository('OGAMBundle:Metadata\Dataset', 'metadata')
-			->getDatasetsForUpload();
 
-		$providerChoices = $this->getDoctrine()
-			->getRepository('OGAMBundle:Website\Provider', 'website')
-			->findAll();
+		$em = $this->get('doctrine.orm.entity_manager');
 
-		$defaultProvider = $this->getUser()->getProvider();
+		// Find jddid if given in GET parameters
+		$jddId = intval($request->query->get('jddid', 0));
+		$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
 
-		$formOptions = array(
-			'datasetChoices' => $datasetChoices,
-			'providerChoices' => $providerChoices,
-			'defaultProvider' => $defaultProvider
-		);
-
-		$form = $this->createForm(DataSubmissionType::class, null, $formOptions);
+		$submission = new Submission();
+		$form = $this->createForm(new GincoDataSubmissionType(), $submission, array(
+			'jdd' => $jdd,
+			'default_provider' => $this->getUser()->getProvider(),
+		));
 
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
-			$values = $form->getNormData();
-			$dataset = $values['DATASET_ID'];
+			// Add user relationship
+			$submission->setUser($this->getUser());
 
-			$userLogin = $this->getUser()->getLogin();
-			$providerId = $values['PROVIDER_ID'];
-
-			$this->get('logger')->debug('userLogin : ' . $userLogin);
-			$this->get('logger')->debug('providerId : ' . $providerId->getLabel());
-
-			// Send the create new data submission request to the integration server
-			try {
-				$submissionId = $this->get('ogam.integration_service')->newDataSubmission($providerId->getId(), $dataset->getId(), $userLogin);
-			} catch (\Exception $e) {
-				$this->get('logger')->error('Error while creating new data submission : ' . $e);
-
-				return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
-					'error' => $e->getMessage()
-				));
+			// Add jdd relationship
+			// And update jdd "dataUpdatedAt"
+			if ($form->has('jddid')) {
+				$jddId = $form->get('jddid')->getData();
+				$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
+				$submission->setJdd($jdd);
+				$jdd->setDataUpdatedAt(new \DateTime());
+				$em->merge($jdd);
 			}
 
-			$submission = $this->getEntityManger()->getReference('OGAMBundle:RawData\Submission', $submissionId);
-			return $this->showUploadDataAction($request, $submission);
+			// writes the submission to the database
+			// merge because cascade persist is not set in the entity
+			// and get the merged object to access auto-generated id
+			$attachedSubmission = $em->merge($submission);
+			$em->flush();
+
+			// Redirects to page 2 of the form: upload data
+			return $this->redirect($this->generateUrl('integration_upload_data', array('id' => $attachedSubmission->getId())));
 		}
 
-		return $this->render('OGAMBundle:Integration:show_create_data_submission.html.twig', array(
-			'datasets' => $datasetChoices,
+		return $this->render('IgnGincoBundle:Integration:show_create_data_submission.html.twig', array(
 			'form' => $form->createView()
 		));
 	}
