@@ -30,7 +30,8 @@
         "friendsofsymfony/jsrouting-bundle" : "~1.6",
         "wenzhixin/bootstrap-table": "^1.11",
         "components/jquery": "^1.12",
-        "components/jqueryui": "^1.12"
+        "components/jqueryui": "^1.12",
+        "php-amqplib/rabbitmq-bundle": "^1.12"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

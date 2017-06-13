@@ -137,3 +137,8 @@ services:
     app.mail_manager:
         class: Ign\Bundle\OGAMBundle\Services\MailManager
         arguments: ["@mailer", "@twig", "@logger", "noreply@ign.fr", "@=service('ogam.configuration_manager').getConfig('site_name', 'Plateforme GINCO')"]
+        
+    # RabbitMQ
+    test_class:
+      class:      Ign\Bundle\GincoBundle\GMLExport\testclass
+      arguments:  [@logger]

@@ -20,6 +20,7 @@ class AppKernel extends Kernel {
 			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
 			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+			new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
 		);
 
 		if (in_array($this->getEnvironment(), array(
