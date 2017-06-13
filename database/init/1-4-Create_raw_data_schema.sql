@@ -6,6 +6,67 @@ SET SEARCH_PATH = raw_data, public;
 -- WARNING: The DATASET_ID, PROVIDER_ID columns are used by the system and should keep their names.
 --
 
+-- Sequence: raw_data.jdd_id_seq
+
+-- DROP SEQUENCE raw_data.jdd_id_seq;
+
+CREATE SEQUENCE raw_data.jdd_id_seq
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+START 5
+CACHE 1;
+ALTER TABLE raw_data.jdd_id_seq
+	OWNER TO admin;
+GRANT ALL ON SEQUENCE raw_data.jdd_id_seq TO admin;
+GRANT ALL ON SEQUENCE raw_data.jdd_id_seq TO ogam;
+
+
+-- Table: raw_data.jdd
+
+-- DROP TABLE raw_data.jdd;
+
+CREATE TABLE raw_data.jdd
+(
+	id integer NOT NULL DEFAULT nextval('jdd_id_seq'::regclass), -- Technical id of the jdd
+	status character varying(16) NOT NULL, -- jdd status, can be 'active' or 'deleted' (deleted, but the row is kept)
+	provider_id character varying(36), -- The data provider identifier (country code or organisation name)
+	user_login character varying(50), -- The login of the user doing the submission
+	model_id character varying(19) NOT NULL, -- Id of the data model in which the jdd is delivered
+	created_at timestamp without time zone DEFAULT now(), -- jdd creation timestamp (delivery timestamp is in submission._creationdt)
+	data_updated_at timestamp without time zone DEFAULT now(), -- DATA last edition timestamp
+	CONSTRAINT pk_jdd_id PRIMARY KEY (id),
+
+	CONSTRAINT fk_provider_id FOREIGN KEY (provider_id)
+	REFERENCES website.providers (id) MATCH SIMPLE
+	ON UPDATE CASCADE ON DELETE SET NULL ,
+
+	CONSTRAINT fk_user_login FOREIGN KEY (user_login)
+	REFERENCES website.users (user_login) MATCH SIMPLE
+	ON UPDATE CASCADE ON DELETE SET NULL,
+
+	CONSTRAINT fk_model_id FOREIGN KEY (model_id)
+	REFERENCES metadata.model (id) MATCH SIMPLE
+	ON UPDATE CASCADE ON DELETE RESTRICT
+)
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE raw_data.jdd
+	OWNER TO admin;
+
+GRANT ALL ON TABLE raw_data.jdd TO admin;
+GRANT ALL ON TABLE raw_data.jdd TO ogam;
+
+COMMENT ON COLUMN raw_data.jdd.id IS 'Technical id of the jdd';
+COMMENT ON COLUMN raw_data.jdd.status IS 'jdd status, can be ''empty'' (jdd created and active, no DSR nor DEE), ''active'' (at least the DSR or the DEE is created), ''deleted'' (deleted, but the row is kept)';
+COMMENT ON COLUMN raw_data.jdd.provider_id IS 'The data provider identifier (country code or organisation name)';
+COMMENT ON COLUMN raw_data.jdd.user_login IS 'The login of the user who created the jdd';
+COMMENT ON COLUMN raw_data.jdd.model_id IS 'Id of the data model in which the jdd is delivered';
+COMMENT ON COLUMN raw_data.jdd.created_at IS 'jdd creation timestamp (delivery timestamp is in submission._creationdt)';
+COMMENT ON COLUMN raw_data.jdd.data_updated_at IS 'DATA last edition timestamp';
+
+
 DROP TABLE IF EXISTS SUBMISSION_FILE CASCADE;
 DROP TABLE IF EXISTS SUBMISSION CASCADE;
 DROP SEQUENCE IF EXISTS submission_id_seq;
@@ -29,6 +90,7 @@ CREATE SEQUENCE submission_id_seq
 /*==============================================================*/
 create table IF NOT EXISTS SUBMISSION (
 SUBMISSION_ID        INT4                 not null default nextval('submission_id_seq'),
+JDD_ID			INTEGER,
 STEP		 		 VARCHAR(36)          null,
 STATUS    			 VARCHAR(36)          null,
 PROVIDER_ID          VARCHAR(36)          not null,
@@ -36,11 +98,14 @@ DATASET_ID           VARCHAR(36)          not null,
 USER_LOGIN           VARCHAR(50)          not null,
 _CREATIONDT          DATE                 null DEFAULT current_timestamp,
 _VALIDATIONDT        DATE                 null DEFAULT current_timestamp,
-constraint PK_SUBMISSION primary key (SUBMISSION_ID)
+constraint PK_SUBMISSION primary key (SUBMISSION_ID),
+CONSTRAINT fk_jdd_id FOREIGN KEY (jdd_id)
+REFERENCES raw_data.jdd (id) MATCH SIMPLE
+ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-
 COMMENT ON COLUMN SUBMISSION.SUBMISSION_ID IS 'The identifier of the submission';
+COMMENT ON COLUMN SUBMISSION.JDD_ID IS 'Reference of the jdd of the submission';
 COMMENT ON COLUMN SUBMISSION.STEP IS 'The submission step (INIT, INSERT, CHECK, VALIDATE, CANCEL)';
 COMMENT ON COLUMN SUBMISSION.STATUS IS 'The submission status (OK, WARNING, ERROR, CRASH)';
 COMMENT ON COLUMN SUBMISSION.PROVIDER_ID IS 'The data provider identifier (country code or organisation name)';
@@ -48,8 +113,6 @@ COMMENT ON COLUMN SUBMISSION.DATASET_ID IS 'The dataset identifier';
 COMMENT ON COLUMN SUBMISSION.USER_LOGIN IS 'The login of the user doing the submission';
 COMMENT ON COLUMN SUBMISSION._CREATIONDT IS 'The date of submission';
 COMMENT ON COLUMN SUBMISSION._VALIDATIONDT IS 'The date of validation';
-
-
 
 /*==============================================================*/
 /* Table : SUBMISSION_FILE                                      */
