@@ -1,7 +1,6 @@
 <?php
-namespace Ign\Bundle\GincoBundle\Repository\RawData;
+namespace Ign\Bundle\GincoBundle\Repository\Mapping;
 
-use Doctrine\ORM\Query\ResultSetMapping;
 use Ign\Bundle\OGAMBundle\Repository\GenericRepository;
 
 /**

@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Repository\Mapping;
 
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
@@ -25,7 +24,7 @@ class RequestRepository extends \Doctrine\ORM\EntityRepository {
 
 		$sql = "INSERT INTO requests (session_id) VALUES ('$sessionId') RETURNING id;";
 
-		$reqId = $em->getConnection()->fetchColumn($sql, null, 0);
+		$reqId = $em->getConnection()->fetchColumn($sql, array(), 0);
 		return $reqId;
 	}
 
@@ -50,62 +49,6 @@ class RequestRepository extends \Doctrine\ORM\EntityRepository {
 		));
 
 		return $stmt->fetchColumn();
-	}
-
-	/**
-	 * Populate the result location table.
-	 * This is the Ginco method for Ogam fillResultLocation method.
-	 *
-	 * @param String $from
-	 *        	the FROM part of the SQL Request
-	 * @param String $where
-	 *        	the WHERE part of the SQL Request
-	 * @param String $sessionId
-	 *        	the user session id.
-	 * @param \OGAMBundle\Entity\Metadata\TableFormat $locationTable
-	 *        	the location table
-	 */
-	public function fillResultTable($from, $where, $sessionId, $locationTable) {
-		$this->logger->info('fillResultTable');
-
-		if (empty($from) || empty($where)) {
-			return;
-		}
-		$em = $this->getEntityManager();
-
-		// -- First, insert a "request" record
-		$sql = "INSERT INTO requests (session_id) VALUES ('$sessionId') RETURNING id;";
-		$reqId = $em->getConnection()->fetchColumn($sql, null, 0);
-
-		// -- Then copy references to raw_data results in the "results" table
-
-		// The name of the table holding the geometric information
-		$tableFormat = $locationTable->format;
-
-		// Map the varying two keys in results to the keys in the raw_data table
-		$keys = $this->get('ogam.manager.generic')->getRawDataTablePrimaryKeys($locationTable);
-
-		$permissions = $this->getVisuPermissions();
-		if ($permissions['logged']) {
-			$defaultHidingLevel = 0;
-		} else {
-			$defaultHidingLevel = 1;
-		}
-		// We can use INSERT ... SELECT statement only if we are exactly on the same server
-		$sql = "INSERT INTO results (id_request, id_observation, id_provider, table_format, hiding_level)
-			SELECT DISTINCT $reqId, " . $tableFormat . "." . $keys['id_observation'] . ", $tableFormat." . $keys['id_provider'] . ", ? , $defaultHidingLevel $from $where;";
-
-		$this->logger->info('fillResults : ' . $sql);
-
-		$query = $em->createNativeQuery($sql, new ResultSetMapping());
-		$query->execute();
-
-		// Get back the results and for each, get and fill hiding level
-		$tableValues = $this->getHidingLevels($keys, $locationTable, $this->getVisuPermissions(), $from, $where, $reqId);
-		$this->setHidingLevels($tableValues, $locationTable->format, $sessionId);
-
-		// Remove any values that can be obtained through criterias more precise than the hiding level
-		$this->deleteUnshowableResultsFromCriterias($reqId);
 	}
 
 	/**

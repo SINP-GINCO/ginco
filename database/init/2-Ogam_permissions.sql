@@ -15,7 +15,6 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.predefined_request_group T
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.predefined_request_group_asso TO ogam;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.predefined_request_column TO ogam;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.dataset_role_restriction TO ogam;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.layer_role_restriction TO ogam;
 
 -- raw-data
 GRANT ALL ON SCHEMA raw_data TO ogam;

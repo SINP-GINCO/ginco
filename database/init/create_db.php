@@ -103,7 +103,7 @@ system("$refDir/init_referentiels.sh $connectStr");
 # setting metadata and metadata_work schema
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata']);
 # note: populate_mode_taxref_table need an initialized referentiel schema.
-execSQLFile("$initDir/populate_mode_taxref_table.sql",$config);
+#execSQLFile("$initDir/populate_mode_taxref_table.sql",$config);
 # FIXME: serait-il possible de laisser le méta-modèle de prod vide lors de la livraison?
 system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata");
 

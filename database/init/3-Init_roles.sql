@@ -6,7 +6,6 @@ set search_path = website;
 
 DELETE FROM providers;
 DELETE FROM permission_per_role;
-DELETE FROM layer_role_restriction;
 DELETE FROM role_to_user;
 DELETE FROM role;
 DELETE FROM users;
@@ -101,5 +100,3 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur'
 
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('visiteur', 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('visiteur', 'DATA_QUERY_OTHER_PROVIDER');
-
-INSERT INTO layer_role_restriction (layer_name, role_code) VALUES ('result_geometrie', 'visiteur');

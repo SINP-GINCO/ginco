@@ -113,6 +113,8 @@ doctrine:
                     geometry: string
                     _text: string
                 schema_filter: /website\./i
+                logging: false
+                profiling: false
             mapping:
                 driver:   "%database_driver%"
                 host:     "%database_host%"
@@ -126,6 +128,8 @@ doctrine:
                     geometry: string
                     _text: string
                 schema_filter: /mapping\./i
+                logging: false
+                profiling: false
             metadata:
                 driver:   "%database_driver%"
                 host:     "%database_host%"
@@ -139,6 +143,8 @@ doctrine:
                     geometry: string
                     _text: string
                 schema_filter: /metadata\./i
+                logging: false
+                profiling: false
             raw_data:
                 driver:   "%database_driver%"
                 host:     "%database_host%"
@@ -152,6 +158,8 @@ doctrine:
                     geometry: string
                     _text: string
                 schema_filter: /raw_data\./i
+                logging: false
+                profiling: false
             harmonized_data:
                 driver:   "%database_driver%"
                 host:     "%database_host%"
@@ -165,6 +173,8 @@ doctrine:
                     geometry: string
                     _text: string
                 schema_filter: /harmonized_data\./i
+                logging: false
+                profiling: false
             result_location:
                 driver:   "%database_driver%"
                 host:     "%database_host%"
@@ -180,6 +190,8 @@ doctrine:
                 schema_filter: /mapping\./i
                 options:
                     "PDO::ATTR_TIMEOUT": 480
+                logging: false
+                profiling: false
 
     orm:
         default_entity_manager: website
@@ -197,6 +209,8 @@ doctrine:
                  connection: mapping
                  mappings:
                     OGAMBundle:
+                        dir: Entity/Mapping
+                    IgnGincoBundle:
                         dir: Entity/Mapping
             metadata:
                  connection: metadata

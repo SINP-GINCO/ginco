@@ -1,28 +1,19 @@
 <?php
-namespace Ign\Bundle\OGAMBundle\Services;
+namespace Ign\Bundle\GincoBundle\Services;
 
+use Ign\Bundle\GincoBundle\Entity\Mapping\Request;
+use Ign\Bundle\GincoBundle\Entity\Mapping\Result;
+use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
+use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\Dataset;
+use Ign\Bundle\OGAMBundle\Entity\Metadata\Format;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\FormField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\ResultLocation;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFieldMappingSet;
-use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
-use Ign\Bundle\OGAMBundle\Repository\GenericRepository;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Doctrine\ORM\NoResultException;
+use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
 use Ign\Bundle\OGAMBundle\OGAMBundle;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\FormFormat;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\LayerService;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
-use Ign\Bundle\OGAMBundle\Repository\Mapping\LayerRepository;
-use Ign\Bundle\OGAMBundle\Entity\Generic\BoundingBox;
-use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequest;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Format;
 use Ign\Bundle\OGAMBundle\Services\QueryService as BaseService;
-use Doctrine\ORM\Query\ResultSetMapping;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * The Query Service customized for Ginco.
@@ -43,6 +34,22 @@ class QueryService extends BaseService {
 		'codedepartementcalcule' => 3
 	);
 
+	private static $fieldsToSelect = array(
+		'jourdatedebut',
+		'jourdatefin',
+		'nomcite',
+		'cdref',
+		'nomvalide',
+		'observateuridentite',
+		'organismegestionnairedonnee',
+		'statutobservation',
+		'sensible',
+		'sensiniveau',
+		'dspublique',
+		'diffusionniveauprecision',
+		'pk'
+	);
+
 	private static $submissionJoin = array(
 		'submission'
 	);
@@ -57,6 +64,19 @@ class QueryService extends BaseService {
 	}
 
 	/**
+	 * The map repository.
+	 *
+	 * @var Repository
+	 */
+	protected $mapRepository;
+
+	public function __construct($doctrine, $genericService, $configuration, $logger, $locale, $user, $schema, $genericModel, $mapRepository) {
+		parent::__construct($doctrine, $genericService, $configuration, $logger, $locale, $user, $schema, $genericModel);
+
+		$this->mapRepository = $mapRepository;
+	}
+
+	/**
 	 * Copy the locations of the result in a temporary table.
 	 * MIGRATED
 	 *
@@ -66,32 +86,43 @@ class QueryService extends BaseService {
 	 *        	the WHERE part of the SQL Request
 	 * @param \OGAMBundle\Entity\Generic\QueryForm $queryForm
 	 *        	the form request object
+	 * @param mixed $user
+	 *        	the user in session
 	 * @param Array $userInfos
 	 *        	Few user informations
+	 * @param Session $session
+	 *        	the current session
 	 */
-	public function prepareResults($from, $where, $queryForm, $userInfos) {
-		$this->logger->debug('prepareResults');
+	public function prepareResults($from, $where, $queryForm, $user, $userInfos, $session) {
+		$this->logger->debug('prepareResults ginco');
 
 		// Get the mappings for the query form fields
 		$mappingSet = $queryForm->getFieldMappingSet();
 
+		// Generate and save the table formats in session
+		$tables = $this->genericService->getAllFormats($this->schema, $mappingSet->getFieldMappingArray());
+		$session->set('all_tables_formats', $tables);
+
 		// Generate the SQL Request
-		$from = $this->genericService->generateSQLFromRequest($this->schema, $mappingSet);
-		$where = $this->genericService->generateSQLWhereRequest($this->schema, $queryForm->getCriteria(), $mappingSet, $userInfos);
+		$from = $this->genericService->generateGincoSQLFromRequest($this->schema, $mappingSet, self::$submissionJoin);
+		$where = $this->genericService->generateGincoSQLWhereRequest($this->schema, $queryForm->getCriteria(), $mappingSet, $userInfos, $tables);
 
 		// Clean previously stored results
 		$sessionId = session_id();
 		$this->logger->debug('SessionId : ' . $sessionId);
-		$this->doctrine->getRepository('GincoBundle:Mapping\Result')->cleanPreviousResults($sessionId);
+		$this->logger->debug('truccc8');
+		$repo = $this->doctrine->getManager('mapping')->getRepository(Result::class);
+		$this->logger->debug('truccc');
+		$repo->cleanPreviousResults($sessionId);
 
 		// Identify the field carrying the location information
-		$tables = $this->genericService->getAllFormats($this->schema, $mappingSet->getFieldMappingArray());
+		// $tables = $this->genericService->getAllFormats($this->schema, $mappingSet->getFieldMappingArray());
 		$locationFields = $this->metadataModel->getRepository(TableField::class)->getGeometryFields($this->schema, array_keys($tables), $this->locale);
 		foreach ($locationFields as $locationField) {
 			$locationTableInfo = $this->metadataModel->getRepository(TableFormat::class)->getTableFormat($this->schema, $locationField->getFormat()
 				->getFormat(), $this->locale);
 			// Run the request to store a temporary result table (for the web mapping)
-			$this->fillResultTable($from, $where, $sessionId, $locationTableInfo);
+			$this->fillResultTable($from, $where, $sessionId, $user, $locationTableInfo, $queryForm->getCriteria());
 		}
 	}
 
@@ -105,18 +136,21 @@ class QueryService extends BaseService {
 	 *        	the WHERE part of the SQL Request
 	 * @param String $sessionId
 	 *        	the user session id.
+	 * @param mixed $user
+	 *        	the user in session
 	 * @param \OGAMBundle\Entity\Metadata\TableFormat $locationTable
 	 *        	the location table
+	 * @param array[Ign\Bundle\OGAMBundle\Entity\Generic\Field] $queryCriteria
+	 *        	the form fields (query criteria)
 	 */
-	public function fillResultTable($from, $where, $sessionId, $locationTable) {
+	public function fillResultTable($from, $where, $sessionId, $user, $locationTable, $queryCriteria) {
 		$this->logger->info('fillResultTable');
 
 		if (empty($from) || empty($where)) {
 			return;
 		}
-		$requestRepository = $this->doctrine->getRepository('GincoBundle:Mapping\Request');
-		$resultRepository = $this->doctrine->getRepository('GincoBundle:Mapping\Result');
-		$genericManager = $this->get('ogam.manager.generic');
+		$requestRepository = $this->doctrine->getManager('mapping')->getRepository(Request::class);
+		$resultRepository = $this->doctrine->getManager('mapping')->getRepository(Result::class);
 
 		// First, insert a "request" record
 		$reqId = $requestRepository->createRequest($sessionId);
@@ -124,12 +158,12 @@ class QueryService extends BaseService {
 		// Then copy references in the "results" table
 
 		// The name of the table holding the geometric information
-		$tableFormat = $locationTable->format;
+		$tableFormat = $locationTable->getFormat();
 
 		// Map the varying two keys in results to the keys in the raw_data table
-		$keys = $genericManager->getRawDataTablePrimaryKeys($locationTable);
+		$keys = $this->genericModel->getRawDataTablePrimaryKeys($locationTable);
 
-		$permissions = $this->getVisuPermissions();
+		$permissions = $this->getVisuPermissions($user);
 		if ($permissions['logged']) {
 			$defaultHidingLevel = 0;
 		} else {
@@ -139,11 +173,11 @@ class QueryService extends BaseService {
 		$resultRepository->insert($reqId, $tableFormat, $keys, $defaultHidingLevel, $from, $where);
 
 		// Get back the results and for each, get and fill hiding level
-		$tableValues = $this->getHidingLevels($keys, $locationTable, $this->getVisuPermissions(), $from, $where, $reqId);
-		$resultRepository->bulkUpdate($tableValues, $locationTable->format, $sessionId);
+		$tableValues = $this->getHidingLevels($keys, $locationTable, $this->getVisuPermissions($user), $from, $where, $reqId);
+		$resultRepository->bulkUpdate($tableValues, $locationTable->getFormat(), $sessionId, $permissions);
 
 		// Remove any values that can be obtained through criterias more precise than the hiding level
-		$maxPrecisionLevel = $this->getMaxPrecisionLevel($this->getQueryCriterias());
+		$maxPrecisionLevel = $this->getMaxPrecisionLevel($queryCriteria);
 		$resultRepository->deleteUnshowableResults($reqId, $maxPrecisionLevel);
 	}
 
@@ -171,9 +205,8 @@ class QueryService extends BaseService {
 		// Retrieve parameters for calculation of hiding level
 		$ogamIdColumn = $keys['id_observation'];
 		$providerIdColumn = $keys['id_provider'];
-		$genericManager = $this->get('ogam.manager.generic');
 
-		$results = $genericManager->getHidingLevelParameters($geometryTable, $ogamIdColumn, $providerIdColumn, $from, $where);
+		$results = $this->genericModel->getHidingLevelParameters($geometryTable, $ogamIdColumn, $providerIdColumn, $reqId, $from, $where);
 
 		for ($i = 0; $i < count($results); $i ++) {
 			$sensiNiveau = $results[$i]['sensiniveau'];
@@ -216,31 +249,15 @@ class QueryService extends BaseService {
 	}
 
 	/**
-	 * Returns true if column has geographic type information and if it is more precise
-	 * than the hiding level of the row.
-	 *
-	 * @param string $columnName
-	 * @param integer $hidingLevel
-	 * @return boolean
-	 */
-	public function shouldValueBeHidden($columnName, $hidingLevel) {
-		if (isset(self::$fieldLevels[$columnName])) {
-			$level = self::$fieldLevels[$columnName];
-			if ($level < $hidingLevel) {
-				return true;
-			}
-		}
-	}
-
-	/**
 	 * Gets the permissions linked to visualization : sensitive, private and logged.
 	 * If the user is not logged in, all observations are hidden below level of commune.
 	 * MIGRATED
 	 *
+	 * @param mixed $user
+	 *        	the user in session
 	 * @return array of string|boolean $permissions
 	 */
-	public function getVisuPermissions() {
-		$user = $this->getUser();
+	public function getVisuPermissions($user) {
 		$permissions = array(
 			'sensitive' => $user->isAllowed('VIEW_SENSITIVE'),
 			'private' => $user->isAllowed('VIEW_PRIVATE'),
@@ -309,7 +326,7 @@ class QueryService extends BaseService {
 	 * @param Session $session
 	 *        	the current session
 	 */
-	public function buildRequest(QueryForm $queryForm, $userInfos, $maxPrecisionLevel, $requestId, Session $session) {
+	public function buildRequestGinco(QueryForm $queryForm, $userInfos, $maxPrecisionLevel, $requestId, Session $session) {
 		$this->logger->debug('buildRequest custom');
 
 		// Get the mappings for the query form fields
@@ -317,12 +334,13 @@ class QueryService extends BaseService {
 
 		// Identify the field carrying the location information
 		$tables = $this->genericService->getAllFormats($this->schema, $mappingSet);
+		$tables = $session->get('all_tables_formats');
 		$tableFieldRepository = $this->metadataModel->getRepository('OGAMBundle:Metadata\TableField');
 		$tableFormatRepository = $this->metadataModel->getRepository('OGAMBundle:Metadata\TableFormat');
 		$locationField = $tableFieldRepository->getGeometryField($this->schema, array_keys($tables), $this->locale);
-		$locationTableInfo = $tableFormatRepository->getTableFormat($this->schema, $locationField->format);
-		$geometryTablePKeyIdWithTable = $locationTableInfo->format . "." . $locationTableInfo->primaryKeys[0];
-		$geometryTablePKeyProviderIdWithTable = $locationTableInfo->format . "." . $locationTableInfo->primaryKeys[1];
+		$locationTableInfo = $tableFormatRepository->getTableFormat($this->schema, $locationField->getFormat(), $this->locale);
+		$geometryTablePKeyIdWithTable = $locationTableInfo->getFormat() . "." . $locationTableInfo->getPrimaryKeys()[0];
+		$geometryTablePKeyProviderIdWithTable = $locationTableInfo->getFormat() . "." . $locationTableInfo->getPrimaryKeys()[1];
 
 		// The not customised $from clause contains table_tree joins. Here we add joins with submission table, or submission and results tables.
 		$fromJoinSubmission = $this->genericService->generateGincoSQLFromRequest($this->schema, $mappingSet, self::$submissionJoin);
@@ -331,7 +349,7 @@ class QueryService extends BaseService {
 
 		// Generate the SQL Request
 		$select = $this->genericService->generateGincoSQLSelectRequest($this->schema, $queryForm->getColumns(), $mappingSet, $userInfos);
-		$where = $this->genericService->generateGincoSQLWhereRequest($this->schema, $queryForm->getCriteria(), $mappingSet, $userInfos);
+		$where = $this->genericService->generateGincoSQLWhereRequest($this->schema, $queryForm->getCriteria(), $mappingSet, $userInfos, $tables);
 		$endWhere = $this->genericService->generateSQLEndWhereRequest(str_replace(',', '', explode(' ', $fromJoinSubmission)[3]), $requestId, $maxPrecisionLevel);
 		$sqlPKey = $this->genericService->generateSQLPrimaryKey($this->schema, $mappingSet);
 
@@ -351,74 +369,6 @@ class QueryService extends BaseService {
 	}
 
 	/**
-	 * Return the total count of query result
-	 *
-	 * @param string $from
-	 *        	The FROM part of the query
-	 * @param string $where
-	 *        	The WHERE part of the query
-	 * @throws NoResultException
-	 * @return integer The total count
-	 */
-	private function _getQueryResultsCount($from, $where) {
-		$conn = $this->doctrine->getManager()->getConnection();
-		$sql = "SELECT COUNT(*) as count " . $from . $where;
-		$stmt = $conn->prepare($sql);
-		$stmt->execute();
-		$result = $stmt->fetchColumn();
-		if ($result !== FALSE && $result !== "") {
-			return $result;
-		} else {
-			throw new NoResultException('No result found for the request : ' . $sql);
-		}
-	}
-
-	/**
-	 * Get the form fields corresponding to the columns.
-	 *
-	 * @param QueryForm $queryForm
-	 *        	the request form
-	 * @return [FormField] The form fields corresponding to the columns
-	 */
-	public function getColumns($queryForm) {
-		$formFields = [];
-		foreach ($queryForm->getColumns() as $formField) {
-			// Get the full description of the form field
-			$formFields[] = $this->getFormField($formField->getFormat(), $formField->getData());
-		}
-		return $formFields;
-	}
-
-	/**
-	 * Get a form field.
-	 *
-	 * @param String $format
-	 *        	the format
-	 * @param String $data
-	 *        	the data
-	 * @return FormField The form fields corresponding to the columns
-	 */
-	public function getFormField($format, $data) {
-		return $this->metadataModel->getRepository(FormField::class)->getFormField($format, $data, $this->locale);
-	}
-
-	/**
-	 * Set the fields mappings for the provided schema into the query form.
-	 *
-	 * @param string $schema
-	 * @param \OGAMBundle\Entity\Generic\QueryForm $queryForm
-	 *        	the list of query form fields
-	 * @return the updated form
-	 */
-	public function setQueryFormFieldsMappings($queryForm) {
-		$mappingSet = $this->genericService->getFieldsFormToTableMappings($this->schema, $queryForm->getCriteria());
-		$mappingSet->addFieldMappingSet($this->genericService->getFieldsFormToTableMappings($this->schema, $queryForm->getColumns()));
-		$queryForm->setFieldMappingSet($mappingSet);
-
-		return $queryForm;
-	}
-
-	/**
 	 * Get a page of query result data.
 	 * MIGRATED
 	 *
@@ -430,8 +380,6 @@ class QueryService extends BaseService {
 	 *        	the sort column
 	 * @param String $sortDir
 	 *        	the sort direction (ASC or DESC)
-	 * @param String $idRequest
-	 *        	the id of the request (allows to get results from results table)
 	 * @param Session $session
 	 *        	the current session
 	 * @param Boolean $emptyHidingValue
@@ -440,7 +388,7 @@ class QueryService extends BaseService {
 	 *        	Few user informations
 	 * @return JSON
 	 */
-	public function getResultRows($start, $length, $sort, $sortDir, $idRequest, $session, $userInfos, $emptyHidingValue = false) {
+	public function getResultRowsGinco($start, $length, $sort, $sortDir, $session, $userInfos, $emptyHidingValue = false) {
 		$this->logger->debug('getResultRows');
 
 		$projection = $this->configuration->getConfig('srs_visualisation', 3857);
@@ -523,16 +471,17 @@ class QueryService extends BaseService {
 
 		// Retrieve number of total results
 		$countRequest = "SELECT count(*) $fromJoins WHERE ($pKey) IN ($subquery $order) $andWhere";
-		$countRequestResult = $this->genericModel->executeRequest($countRequest);
+		$this->logger->debug('count request = ' . $countRequest);
+		$countRequestResult = $this->getQueryResults($countRequest);
 		$countResult = $countRequestResult[0]['count'];
-		$session->set('query_SQLCount', $countResult);
+		$session->set('query_Count', $countResult);
 
 		// Retrieve the session-stored info
 		$columnsDstFields = $queryForm->getColumnsDstFields();
 
-		$rows = array();
+		$resultRows = array();
 		foreach ($result as $line) {
-			$row = array();
+			$resultRow = array();
 			$observationId = '';
 			foreach ($line as $key => $value) {
 				if (stripos($key, 'loc_pk') !== false) {
@@ -540,21 +489,23 @@ class QueryService extends BaseService {
 				}
 			}
 
-			foreach ($resultColumns as $tableField) {
+			foreach ($columnsDstFields as $columnDstField) {
+
+				$tableField = $columnDstField->getMetadata();
 				$key = strtolower($tableField->getName());
 				$value = $line[$key];
 				$hidingLevel = $line['hiding_level'];
-				$shouldValueBeHidden = $this->genericModel->shouldValueBeHidden($tableField->columnName, $hidingLevel);
-				$type = $tableField->getData()>getUnit()->getType();
+				$shouldValueBeHidden = $this->genericModel->shouldValueBeHidden($tableField->getColumnName(), $hidingLevel);
+				$type = $tableField->getData()->getUnit()->getType();
 				// Manage code traduction
 				if ($type === "CODE" && $value != "") {
 					if ($shouldValueBeHidden) {
 						$value = ($emptyHidingValue) ? "" : $ĥidingValue;
 					}
-					$row[] = strval($this->genericService->getValueLabel($tableField, $value));
+					$resultRow[] = strval($this->genericService->getValueLabel($tableField, $value));
 				} else if ($type === "ARRAY" && $value != "") {
 					if ($shouldValueBeHidden) {
-						$row[] = ($emptyHidingValue) ? array() : $ĥidingValue;
+						$resultRow[] = ($emptyHidingValue) ? array() : $ĥidingValue;
 					} else {
 						// Split the array items
 						$arrayValues = explode(",", preg_replace("@[{-}]@", "", $value));
@@ -564,41 +515,26 @@ class QueryService extends BaseService {
 							}
 							$arrayValues[$index] = $this->genericService->getValueLabel($tableField, $arrayValues[$index]);
 						}
-						$row[] = $arrayValues;
+						$resultRow[] = $arrayValues;
 					}
 				} else {
 					if ($shouldValueBeHidden) {
 						$value = ($emptyHidingValue) ? "" : $ĥidingValue;
 					}
-					$row[] = $value;
+					$resultRow[] = $value;
 				}
 			}
 
 			// Add the line id
-			$row[] = $line['id'];
+			$resultRow[] = $line['id'];
 
 			// Right management : add the provider id of the data
 			if (!$userInfos['DATA_QUERY_OTHER_PROVIDER']) {
 				$resultRow[] = $line['_provider_id'];
 			}
-			$rows[] = $row;
+			$resultRows[] = $resultRow;
 		}
 		return $resultRows;
-	}
-
-	/**
-	 * Return the query result(s)
-	 *
-	 * @param string $sql
-	 *        	The sql of the query
-	 * @return array The result(s)
-	 */
-	public function getQueryResults($sql) {
-		$conn = $this->doctrine->getManager()->getConnection();
-		$stmt = $conn->prepare($sql);
-		$stmt->execute();
-		$result = $stmt->fetchAll();
-		return $result;
 	}
 
 	/**
@@ -617,7 +553,6 @@ class QueryService extends BaseService {
 		$bboxComputeThreshold = $this->configuration->getConfig('results_bbox_compute_threshold');
 		$regionCode = $this->configuration->getConfig('regionCode');
 		$restrainedBbox = false;
-		$mapRepository = $this->get('ginco.repository.mapping.map');
 
 		$this->logger->info("With regionCode : $regionCode, sessionId : $sessionId, projection : $projection, nbResults : $nbResults");
 
@@ -634,7 +569,7 @@ class QueryService extends BaseService {
 		if (is_null($bboxComputeThreshold) || $nbResults < $bboxComputeThreshold) {
 
 			$this->logger->info("Computing full results bbox...");
-			$bbox = $mapRepository->getPreciseBbox($projection, $resultLayer, $sessionId);
+			$bbox = $this->mapRepository->getPreciseBbox($projection, $resultLayer, $sessionId);
 		} else {
 			$restrainedBbox = true;
 			if (!in_array($regionCode, array(
@@ -655,164 +590,12 @@ class QueryService extends BaseService {
 	}
 
 	/**
-	 * ********************* EDITION ************************************************************************************
-	 */
-
-	/**
-	 * Get the form fields for a data to edit.
-	 *
-	 * @param GenericTableFormat $data
-	 *        	the data object to edit
-	 * @return array Serializable.
-	 */
-	public function getEditForm($data) {
-		$this->logger->debug('getEditForm');
-
-		return $this->_generateEditForm($data);
-	}
-
-	/**
-	 * Generate the JSON structure corresponding to a list of edit fields.
-	 *
-	 * @param GenericTableFormat $data
-	 *        	the data object to edit
-	 * @return array normalize value
-	 */
-	private function _generateEditForm($data) {
-		$return = new \ArrayObject();
-		// / beurk !! stop go view json
-		foreach ($data->getIdFields() as $tablefield) {
-			$formField = $this->genericService->getTableToFormMapping($tablefield); // get some info about the form
-			if (!empty($formField)) {
-				$return->append($this->_generateEditField($formField, $tablefield));
-			}
-		}
-		foreach ($data->getFields() as $tablefield) {
-			$formField = $this->genericService->getTableToFormMapping($tablefield); // get some info about the form
-			if (!empty($formField)) {
-				$return->append($this->_generateEditField($formField, $tablefield));
-			}
-		}
-		return array(
-			'success' => true,
-			'data' => $return->getArrayCopy()
-		);
-	}
-
-	/**
-	 * Convert a java/javascript-style date format to a PHP date format.
-	 *
-	 * @param String $format
-	 *        	the format in java style
-	 * @return String the format in PHP style
-	 */
-	private function _convertDateFormat($format) {
-		$format = str_replace("yyyy", "Y", $format);
-		$format = str_replace("yy", "y", $format);
-		$format = str_replace("MMMMM", "F", $format);
-		$format = str_replace("MMMM", "F", $format);
-		$format = str_replace("MMM", "M", $format);
-		$format = str_replace("MM", "m", $format);
-		$format = str_replace("EEEEEE", "l", $format);
-		$format = str_replace("EEEEE", "l", $format);
-		$format = str_replace("EEEE", "l", $format);
-		$format = str_replace("EEE", "D", $format);
-		$format = str_replace("dd", "d", $format);
-		$format = str_replace("HH", "H", $format);
-		$format = str_replace("hh", "h", $format);
-		$format = str_replace("mm", "i", $format);
-		$format = str_replace("ss", "s", $format);
-		$format = str_replace("A", "a", $format);
-		$format = str_replace("S", "u", $format);
-
-		return $format;
-	}
-
-	/**
-	 *
-	 * @param GenericField $formEntryField
-	 * @param GenericField $tableRowField
-	 */
-	private function _generateEditField($formEntryField, $tableRowField) {
-		$tableField = $tableRowField->getMetadata();
-		$formField = $formEntryField->getMetadata();
-
-		$field = new \stdClass();
-		$field->inputType = $formField->getInputType();
-		$field->decimals = $formField->getDecimals();
-		$field->defaultValue = $formField->getDefaultValue();
-
-		$field->unit = $formField->getData()
-			->getUnit()
-			->getUnit();
-		$field->type = $formField->getData()
-			->getUnit()
-			->getType();
-		$field->subtype = $formField->getData()
-			->getUnit()
-			->getSubType();
-
-		$field->name = $tableRowField->getId();
-		$field->label = $tableField->getLabel();
-
-		$field->isPK = in_array($tableField->getData()->getData(), $tableField->getFormat()->getPrimaryKeys(), true) ? '1' : '0';
-		if ($tableField->getData()->getUnit() === $formField->getData()->getUnit()) {
-			$this->logger->info('query_service :: table field and form field has not the same unit ?!');
-		}
-
-		$field->value = $tableRowField->getValue();
-		$field->valueLabel = $tableRowField->getValueLabel();
-		$field->editable = $tableField->getIsEditable() ? '1' : '0';
-		$field->insertable = $tableField->getIsInsertable() ? '1' : '0';
-		$field->required = $field->isPK ? !($tableField->getIsCalculated()) : $tableField->getIsMandatory();
-		$field->data = $tableField->getData()->getData(); // The name of the data is the table one
-		$field->format = $tableField->getFormat()->getFormat();
-
-		if ($field->value === null) {
-			if ($field->defaultValue === '%LOGIN%') {
-				$user = $this->user;
-				$field->value = $user->login;
-			} else if ($field->defaultValue === '%TODAY%') {
-
-				// Set the current date
-				if ($formField->mask !== null) {
-					$field->value = date($this->_convertDateFormat($formField->mask));
-				} else {
-					$field->value = date($this->_convertDateFormat('yyyy-MM-dd'));
-				}
-			} else {
-				$field->value = $field->defaultValue;
-			}
-		}
-
-		// For the RANGE field, get the min and max values
-		if ($field->type === "NUMERIC" && $field->subtype === "RANGE") {
-			$range = $tableField->getData()
-				->getUnit()
-				->getRange();
-			$field->params = [
-				"min" => $range->getMin(),
-				"max" => $range->getMax()
-			];
-		}
-
-		if ($field->inputType === 'RADIO' && $field->type === 'CODE') {
-
-			$opts = $this->metadataModel->getRepository(Unit::class)->getModes($formField->getUnit());
-
-			$field->options = array_column($opts, 'label', 'code');
-		}
-
-		return $field;
-	}
-
-	/**
 	 * ********************* DETAILS ************************************************************************************
 	 */
 
 	/**
 	 * Get the details associed with a result line (clic on the "detail button").
-	 * MIGRATION IN PROGESS (done is call to getDatum).
+	 * MIGRATED.
 	 *
 	 * @param String $id
 	 *        	The identifier of the line
@@ -822,74 +605,42 @@ class QueryService extends BaseService {
 	 *        	The identifier of the dataset (to filter data)
 	 * @param boolean $withChildren
 	 *        	If true, get the information about the children of the object
+	 * @param String $bbox
+	 *        	The bounding box
 	 * @param Array $userInfos
 	 *        	Few user informations
 	 * @return array Array that represents the details of the result line.
 	 */
-	public function getDetailsData($id, $detailsLayers, $datasetId = null, $withChildren = false, $userInfos) {
+	public function getDetailsDataGinco($id, $detailsLayers, $datasetId, $bbox = '', $withChildren = false, $userInfos) {
 		$this->logger->debug('getDetailsData : ' . $id);
 
 		// Transform the identifier in an array
 		$keyMap = $this->_decodeId($id);
+
+		// The test in the following block code (empty[$keyMap[$infoField->data]])
+		// fails if $infoField->data and the keys of $keyMap don't have the same case...
+		// So we put everything in uppercase
+		$keysKeyMap = array_map("strtoupper", array_keys($keyMap));
+		$valuesKeyMap = array_values($keyMap);
+		$keyMap = array_combine($keysKeyMap, $valuesKeyMap);
 
 		// Prepare a GenericTableFormat to be filled
 		$gTableFormat = $this->genericService->buildGenericTableFormat($keyMap['SCHEMA'], $keyMap['FORMAT'], null);
 
 		// Complete the primary key info
 		foreach ($gTableFormat->getIdFields() as $idField) {
-			if (!empty($keyMap[$idField->getData()])) {
-				$idField->setValue($keyMap[$idField->getData()]);
+			if (!empty($keyMap[strtoupper($idField->getData())])) {
+				$idField->setValue($keyMap[strtoupper($idField->getData())]);
 			}
 		}
 
-		// Get the detailled data
-		$requestId = $this->doctrine->getRepository('GincoBundle:Mapping\Request')->getLastRequestIdFromSession(session_id());
-		$this->genericModel->getDatum($gTableFormat, $requestId);
+		// Get the detailed data
+		$requestId = $this->doctrine->getRepository('IgnGincoBundle:Mapping\Request')->getLastRequestIdFromSession(session_id());
+		$this->genericModel->getDatumGinco($gTableFormat, $requestId);
 
 		// The data ancestors
 		$ancestors = $this->genericModel->getAncestors($gTableFormat);
 		$ancestors = array_reverse($ancestors);
-
-		// Searchs the geometric field and table
-		$bb = null;
-		$bb2 = null;
-		$locationTable = null;
-		foreach ($gTableFormat->all() as $field) {
-			if ($field->getMetadata()
-				->getData()
-				->getUnit()
-				->getType() === 'GEOM' && !$field->isEmpty()) {
-				// define a bbox around the location
-				$bb = $field->getValueBoundingBox()->getSquareBoundingBox(10000);
-				// Prepare an overview bbox
-				$bb2 = $field->getValueBoundingBox()->getSquareBoundingBox(50000);
-				$locationTable = $gTableFormat;
-				break;
-			}
-		}
-		if ($bb === null) {
-			foreach ($ancestors as $ancestor) {
-				foreach ($ancestor->getFields() as $field) {
-					if ($field->getMetadata()
-						->getData()
-						->getUnit()
-						->getType() === 'GEOM' && !$field->isEmpty()) {
-						// define a bbox around the location
-						$bb = $field->getValueBoundingBox()->getSquareBoundingBox(10000);
-						// Prepare an overview bbox
-						$bb2 = $field->getValueBoundingBox()->getSquareBoundingBox(200000);
-						$locationTable = $ancestor;
-						break;
-					}
-				}
-			}
-		}
-
-		// Defines the mapsserver parameters.
-		$mapservParams = '';
-		foreach ($locationTable->getIdFields() as $idField) {
-			$mapservParams .= '&' . $idField->getMetadata()->getColumnName() . '=' . $idField->getValue();
-		}
 
 		// Defines the formats
 		$dataDetails = array();
@@ -918,10 +669,10 @@ class QueryService extends BaseService {
 		$dataDetails['title'] = $dataInfo['title'] . ' (' . $title . ')';
 
 		// Add the localisation maps
-		if (!empty($detailsLayers) && $bb !== null) {
+		if (!empty($detailsLayers) && $bbox !== null) {
 			if ($detailsLayers[0] !== '') {
 				$url = array();
-				$url = explode(";", ($this->getDetailsMapUrl(empty($detailsLayers) ? '' : $detailsLayers[0], $bb, $mapservParams)));
+				$url = explode(";", ($this->getDetailsMapUrl(empty($detailsLayers) ? '' : $detailsLayers[0], $bbox, $mapservParams)));
 
 				$dataDetails['maps1'] = array(
 					'title' => 'image'
@@ -934,21 +685,6 @@ class QueryService extends BaseService {
 					$dataDetails['maps1']['urls'][$i]['url'] = $url[$i];
 				}
 			}
-
-			if ($detailsLayers[1] !== '') {
-				$url = array();
-				$url = explode(";", ($this->getDetailsMapUrl(empty($detailsLayers) ? '' : $detailsLayers[1], $bb2, $mapservParams)));
-				$dataDetails['maps2'] = array(
-					'title' => 'overview'
-				);
-
-				// complete the array with the urls of maps2
-				$dataDetails['maps2']['urls'][] = array();
-				$countUrls = count($url);
-				for ($i = 0; $i < $countUrls; $i ++) {
-					$dataDetails['maps2']['urls'][$i]['url'] = $url[$i];
-				}
-			}
 		}
 
 		// Add the children
@@ -959,8 +695,8 @@ class QueryService extends BaseService {
 
 			// Complete the primary key
 			foreach ($data2->getIdFields() as $idField) {
-				if (!empty($keyMap[$idField->getData()])) {
-					$idField->setValue($keyMap[$idField->getData()]);
+				if (!empty($keyMap[strtoupper($idField->getData())])) {
+					$idField->setValue($keyMap[strtoupper($idField->getData())]);
 				}
 			}
 			// Get children too
@@ -979,118 +715,286 @@ class QueryService extends BaseService {
 	}
 
 	/**
-	 * Decode the identifier
+	 * Get the bounding box of the more precise geometry visible by user (and non-empty geometry).
+	 * This function is called by "See on the map" button.
+	 * This function is specific to Ginco.
+	 * MIGRATED.
 	 *
-	 * @param String $id
-	 * @return Array the decoded id
+	 * @param String $observationId
+	 *        	the observation id composed of schema, format, ogam_id, provider_id
+	 * @param Session $session
+	 *        	the current session
+	 * @param mixed $user
+	 *        	the user in session
+	 * @return String the bbox represented by a WKT character chain
 	 */
-	private function _decodeId($id) {
+	public function getObservationBoundingBox($observationId = null, $session, $user) {
+		$this->logger->info('getObservationBoundingBox');
+
+		$requestId = $this->doctrine->getRepository('IgnGincoBundle:Mapping\Request')->getLastRequestIdFromSession(session_id());
+
+		$from = $session->get('query_SQLFrom');
+		$where = $session->get('query_SQLWhere');
+		$projection = $this->configuration->getConfig('srs_visualisation', 3857);
+
 		// Transform the identifier in an array
-		$keyMap = array();
-		$idElems = explode("/", $id);
-		$i = 0;
-		$count = count($idElems);
-		while ($i < $count) {
-			$keyMap[$idElems[$i]] = $idElems[$i + 1];
-			$i += 2;
+		$keyMap = $this->_decodeId($observationId);
+		$keysKeyMap = array_map("strtoupper", array_keys($keyMap));
+		$valuesKeyMap = array_values($keyMap);
+		$keyMap = array_combine($keysKeyMap, $valuesKeyMap);
+
+		$table = $this->metadataModel->getTableFormat($this->schema, $keyMap['FORMAT']);
+		$keys = $this->genericModel->getRawDataTablePrimaryKeys($table);
+
+		$providerId = $keyMap[strtoupper($keys['id_provider'])];
+		$observationId = $keyMap[strtoupper($keys['id_observation'])];
+
+		$permissions = $this->getVisuPermissions($user);
+		$hidingLevel = $this->getHidingLevels($keys, $table, $permissions, $from, $where, $requestId)[0]['hiding_level'];
+
+		$hidingLevels = array(
+			"geometrie",
+			"commune",
+			"maille",
+			"departement"
+		);
+		$bbox = '';
+
+		for ($i = $hidingLevel; $i < count($hidingLevels); $i ++) {
+			$layer = $hidingLevels[$i];
+			$idKey = ($layer == "geometrie") ? "geom" : $layer;
+
+			$bbQuery = "SELECT ST_AsText(ST_Extent(ST_Transform(geom, $projection ))) AS wkt
+			FROM bac_$layer bac
+			INNER JOIN observation_$layer obs ON obs.id_$idKey = bac.id_$layer
+			INNER JOIN results res ON res.table_format =  obs.table_format
+			AND res.id_provider = obs.id_provider
+			AND res.id_observation = obs.id_observation
+			WHERE res.id_request = $requestId
+			AND res.id_provider = '" . $providerId . "'
+			AND res.id_observation = '$observationId'";
+
+			$select = $this->rawdb->prepare($bbQuery);
+			$select->execute();
+			$bbResult = $select->fetchAll();
+
+			if (count($bbResult) && !empty($bbResult[0]['wkt'])) {
+				$bbox = $bbResult[0]['wkt'];
+				break;
+			}
 		}
-		return $keyMap;
+
+		return $bbox;
 	}
 
 	/**
-	 * Generate an URL for the details map.
+	 * Returns the intersected location information.
+	 * MIGRATED
 	 *
-	 * @param String $detailsLayers
-	 *        	List of layers to display
-	 * @param BoundingBox $bb
-	 *        	bounding box
-	 * @param String $mapservParams
-	 *        	Parameters for mapserver
-	 * @return String
+	 * @param String $sessionId
+	 *        	The session id
+	 * @param Float $lon
+	 *        	the longitude
+	 * @param Float $lat
+	 *        	the latitude
+	 * @param TableField $locationField
+	 *        	the location table field
+	 * @param String $schema
+	 *        	the current Schema
+	 * @param ConfigurationManager $configuration
+	 *        	the configuration manager
+	 * @param String $locale
+	 *        	the current locale
+	 * @param
+	 *        	Array of String $activeLayers
+	 *        	the layers currently visible
+	 * @param
+	 *        	String &$resultsLayer
+	 *        	the more precise layer where results are found
+	 * @return Array
+	 * @throws Exception
 	 */
-	protected function getDetailsMapUrl($detailsLayers, BoundingBox $bb, $mapservParams) {
+	public function getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $configuration, $locale, $activeLayers, &$resultsLayer = null) {
+		$projection = $configuration->getConfig('srs_visualisation', 3857);
+		$selectMode = $configuration->getConfig('featureinfo_selectmode', 'buffer');
+		$margin = $configuration->getConfig('featureinfo_margin', '1000');
 
-		// Configure the projection systems
-		$visualisationSRS = $this->configuration->getConfig('srs_visualisation', '3857');
-		$baseUrls = '';
+		$locationTableFormat = $locationField->getFormat()->getFormat();
+		$genericManager = $this->get('ogam.manager.generic');
+		// Get the location table infos
+		$locationTableInfo = $this->_em->getRepository(TableFormat::class)->getTableFormat($schema, $locationTableFormat, $locale);
+		// Get the location table columns
+		$tableFields = $this->_em->getRepository(TableField::class)->getTableFields($schema, $locationTableFormat, null, $locale);
 
-		// Get the base urls for the services
-		$detailServices = $this->doctrine->getRepository(LayerService::class)->getDetailServices();
+		// Setup the location table columns for the select
+		// Only few columns are selected
+		$cols = '';
+		$joinForMode = '';
+		$i = 0;
+		foreach ($tableFields as $tableField) {
+			$columnName = $tableField->columnName;
+			if ($columnName != $locationField->getColumnName() && $columnName != 'SUBMISSION_ID' && $columnName != 'PROVIDER_ID' && $columnName != 'LINE_NUMBER') {
 
-		// Get the server name for the layers
-		$layerNames = explode(",", $detailsLayers);
-		// $serviceLayerNames = "";
-		$versionWMS = "";
-
-		foreach ($layerNames as $layerName) {
-			$layer = $this->doctrine->getRepository(Layer::class)->find($layerName);
-			$serviceLayerName = $layer->getServiceLayerName();
-
-			// Get the base Url for detail service
-			if ($layer->getDetailService() !== '') {
-				$detailServiceName = $layer->getDetailService()->getName();
-			}
-
-			foreach ($detailServices as $detailService) {
-
-				if ($detailService->getName() === $detailServiceName) {
-
-					$params = json_decode($detailService->getConfig())->params;
-					$service = $params->SERVICE;
-					$baseUrl = json_decode($detailService->getConfig())->urls[0];
-
-					if ($service === 'WMS') {
-
-						$baseUrls .= $baseUrl . 'LAYERS=' . $serviceLayerName;
-						$baseUrls .= '&TRANSPARENT=true';
-						$baseUrls .= '&FORMAT=image%2Fpng';
-						$baseUrls .= '&EXCEPTIONS=BLANK';
-						$baseUrls .= '&SERVICE=' . $params->SERVICE;
-						$baseUrls .= '&VERSION=' . $params->VERSION;
-						$baseUrls .= '&REQUEST=' . $params->REQUEST;
-						$baseUrls .= '&STYLES=';
-						$baseUrls .= '&BBOX=' . $bb->toString();
-						$baseUrls .= '&WIDTH=300';
-						$baseUrls .= '&HEIGHT=300';
-						$baseUrls .= '&map.scalebar=STATUS+embed';
-						$baseUrls .= $mapservParams;
-						$versionWMS = $params->VERSION;
-						if (substr_compare($versionWMS, '1.3', 0, 3) === 0) {
-							$baseUrls .= '&CRS=EPSG%3A' . $visualisationSRS;
-						} elseif (substr_compare($versionWMS, '1.0', 0, 3) === 0 || substr_compare($versionWMS, '1.1', 0, 3) === 0) {
-							$baseUrls .= '&SRS=EPSG%3A' . $visualisationSRS;
-						} else {
-							$this->logger->err("WMS version unsupported, please change the WMS version for the '" . $layerName . "' layer.");
-						}
-						$baseUrls .= ';';
-					} elseif ($service === 'WMTS') {
-
-						$this->logger->err("WMTS service unsupported, please change the detail service for the '" . $layerName . "' layer.");
-
-						// TODO : Gets the tileMatrix, tileCol, tileRow corresponding to the bb
-						/*
-						 * $baseUrls .= $baseUrl . 'LAYER=' . $serviceLayerName;
-						 * $baseUrls .= '&SERVICE='.json_decode($detailService->serviceConfig)->{'params'}->{'SERVICE'};
-						 * $baseUrls .= '&VERSION='.json_decode($detailService->serviceConfig)->{'params'}->{'VERSION'};
-						 * $baseUrls .= '&REQUEST='.json_decode($detailService->serviceConfig)->{'params'}->{'REQUEST'};
-						 * $baseUrls .= '&STYLE='.json_decode($detailService->serviceConfig)->{'params'}->{'STYLE'};
-						 * $baseUrls .= '&FORMAT='.json_decode($detailService->serviceConfig)->{'params'}->{'FORMAT'};
-						 * $baseUrls .= '&TILEMATRIXSET='.json_decode($detailService->serviceConfig)->{'params'}->{'TILEMATRIXSET'};
-						 * $baseUrls .= '&TILEMATRIX='.$tileMatrix;
-						 * $baseUrls .= '&TILECOL='.$tileCol;
-						 * $baseUrls .= '&TILEROW='.$tileRow;
-						 * $baseUrls .=';';
-						 */
+				if (in_array($columnName, self::$fieldsToSelect)) {
+					// Get the mode label if the field is a modality
+					$tableFieldUnit = $tableField->getData()->getUnit();
+					if ($tableFieldUnit->getType() === 'CODE' && $tableFieldUnit->getSubtype() === 'MODE') {
+						$modeAlias = 'm' . $i;
+						$translateAlias = 't' . $i;
+						$cols .= 'COALESCE(' . $translateAlias . '.label, ' . $modeAlias . '.label) as ' . $columnName . ', ';
+						$joinForMode .= 'LEFT JOIN mode ' . $modeAlias . ' ON ' . $modeAlias . '.CODE = ' . $columnName . ' AND ' . $modeAlias . '.UNIT = \'' . $tableFieldUnit->getUnit() . '\' ';
+						$joinForMode .= 'LEFT JOIN translation ' . $translateAlias . ' ON (' . $translateAlias . '.lang = \'' . $locale . '\' AND ' . $translateAlias . '.table_format = \'MODE\' AND ' . $translateAlias . '.row_pk = ' . $modeAlias . '.unit || \',\' || ' . $modeAlias . '.code) ';
+						$i ++;
+					} elseif ($tableFieldUnit->getType() === "DATE") {
+						$cols .= 'to_char(' . $columnName . ', \'YYYY/MM/DD\') as ' . $columnName . ', ';
 					} else {
-						$this->logger->err("'" . $service . "' service unsupported, please change the detail service for the '" . $layerName . "' layer.");
+						$cols .= $columnName . ', ';
 					}
 				}
 			}
 		}
-		if ($baseUrls !== "") {
-			$baseUrls = substr($baseUrls, 0, -1); // remove last semicolon
+
+		// Setup the location table pks for the join on the location table
+		// and for the pk column
+		$pkscols = '';
+		foreach ($locationTableInfo->getPrimaryKeys() as $primaryKey) {
+			$pkscols .= "l." . $primaryKey . "::varchar || '__' || ";
+			$cols .= "'" . strtoupper($primaryKey) . "/' || " . $primaryKey . " || '/' || ";
+		}
+		if ($pkscols != '') {
+			$pkscols = substr($pkscols, 0, -11);
+		} else {
+			throw new \Exception('No pks columns found for the location table.');
+		}
+		if ($cols != '') {
+			$cols = substr($cols, 0, -11) . " as pk ";
+		} else {
+			throw new \Exception('No columns found for the location table.');
+		}
+		/**
+		 * ***A REMPLACER PAR LE CODE GINCO DEBUT***
+		 */
+		$req = "SELECT " . $cols . " ";
+		if ($selectMode === 'distance') {
+			$req .= ", ST_Distance(r.the_geom, ST_SetSRID(ST_Point(?, ?)," . $projection . ")) as dist ";
+		}
+		$req .= "FROM result_location r ";
+		$req .= "LEFT JOIN " . $locationTableInfo->getTableName() . " l on (r.format = '" . $locationTableInfo->getFormat() . "' AND r.pk = " . $pkscols . ") ";
+		$req .= $joinForMode;
+		$req .= "WHERE r.session_id = ? ";
+		if ($selectMode === 'buffer') {
+			$req .= "and ST_DWithin(r.the_geom, ST_SetSRID(ST_Point(?, ?)," . $projection . "), " . $margin . ")";
+		} elseif ($selectMode === 'distance') {
+			$req .= "and ST_Distance(r.the_geom, ST_SetSRID(ST_Point(?, ?)," . $projection . ")) < " . $margin;
+			$req .= "ORDER BY dist";
 		}
 
-		return $baseUrls;
+		$conn = $this->_em->getConnection();
+		$stmt = $conn->prepare($req);
+
+		if ($selectMode === 'buffer') {
+			$stmt->execute(array(
+				$sessionId,
+				$lon,
+				$lat
+			));
+		} elseif ($selectMode === 'distance') {
+			$stmt->execute(array(
+				$lon,
+				$lat,
+				$sessionId,
+				$lon,
+				$lat
+			));
+		}
+
+		return $stmt->fetchAll();
+		/**
+		 * ***A REMPLACER PAR LE CODE GINCO FIN ***
+		 */
+
+		$select = "SELECT " . $cols . " ";
+
+		// Order the active layers from the more precise to the less precise
+		$orderedLayers = array(
+			'geometrie',
+			'commune',
+			'maille',
+			'departement'
+		);
+
+		$findLayer = function ($name) use ($orderedLayers) {
+			foreach ($orderedLayers as $layer) {
+				if (stripos($name, $layer) !== false) {
+					return $layer;
+				}
+			}
+			return false;
+		};
+
+		$activeLayers = array_map($findLayer, $activeLayers);
+		$orderedActiveLayers = array_intersect($orderedLayers, $activeLayers);
+
+		// Build the FROM ... JOIN ... WHERE ... part of the request ;
+		// Then execute it for each $orderedActiveLayers, until you get at least one result.
+
+		$rawDataTableName = $locationTableInfo->getTableName();
+		// Map the varying two keys in results to the keys in the raw_data table
+		$keys = $genericManager->getRawDataTablePrimaryKeys($locationTableInfo);
+
+		$fromTemplate = "FROM bac_# bac
+		INNER JOIN observation_# obs ON obs.id_$ = bac.id_#
+		INNER JOIN results res ON res.table_format =  obs.table_format
+		AND res.id_provider = obs.id_provider
+		AND res.id_observation = obs.id_observation
+		INNER JOIN requests req ON res.id_request = req.id
+		INNER JOIN $rawDataTableName raw ON raw.provider_id = res.id_provider
+		AND raw." . $keys['id_observation'] . " = res.id_observation
+		WHERE req.session_id = ?
+		AND hiding_level <= ?
+		AND ST_DWithin(bac.geom, ST_SetSRID(ST_Point(?, ?),$projection), $margin)
+		ORDER BY res.id_provider, res.id_observation";
+
+		foreach ($orderedActiveLayers as $level => $layer) {
+
+			$idName = ($layer == 'geometrie') ? 'geom' : $layer;
+
+			$fromWhere = str_replace('#', $layer, $fromTemplate);
+			$fromWhere = str_replace('$', $idName, $fromWhere);
+
+			$req = $select . $fromWhere;
+
+			$this->logger->info("getLocationInfo request, layer $layer : $req");
+
+			$conn = $this->_em->getConnection();
+			$stmt = $conn->prepare($req);
+
+			$stmt->execute(array(
+				$sessionId,
+				$level,
+				$lon,
+				$lat
+			));
+
+			$results = $stmt->fetchAll();
+
+			// If results, order and return them, else continue
+			$sortedResult = array();
+			if (!empty($results)) {
+				foreach (self::$fieldsToSelect as $fieldToDisplay) {
+					for ($i = 0; $i < count($results); $i ++) {
+						foreach (array_keys($results[$i]) as $key) {
+							if ($key == $fieldToDisplay) {
+								$sortedResult[$i][$fieldToDisplay] = $results[$i][$key];
+							}
+						}
+					}
+				}
+				$resultsLayer = $layer;
+				return $sortedResult;
+			}
+		}
+		// If no results found in all active layers, return null
+		return null;
 	}
 }

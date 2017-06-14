@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\OGAMBundle\Manager;
+namespace Ign\Bundle\GincoBundle\Manager;
 
 use Ign\Bundle\OGAMBundle\Entity\Generic\BoundingBox;
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericTableFormat;
@@ -30,13 +30,10 @@ class GenericManager extends BaseManager {
 	/**
 	 * Initialisation
 	 */
-	public function __construct($metaModel_em, $raw_em, $genericService, $queryService, $configuration) {
+	public function __construct($metaModel_em, $raw_em, $genericService, $configuration) {
 
 		// Initialize the configuration object
 		$this->configuration = $configuration;
-
-		// Initialize the query service
-		$this->queryService = $queryService;
 
 		parent::__construct($metaModel_em, $raw_em, $genericService, $configuration);
 	}
@@ -53,7 +50,7 @@ class GenericManager extends BaseManager {
 	 * @return GenericTableFormat The complete data object.
 	 * @throws an exception if no data found
 	 */
-	public function getDatum(GenericTableFormat $data, $requestId) {
+	public function getDatumGinco(GenericTableFormat $data, $requestId) {
 		$tableFormat = $data->getTableFormat();
 
 		$this->logger->info('getDatum : ' . $tableFormat->getFormat());
@@ -97,7 +94,7 @@ class GenericManager extends BaseManager {
 			$unit = $field->getMetadata()
 				->getData()
 				->getUnit();
-			$shouldValueBeHidden = $this->queryService->shouldValueBeHidden($field->getData(), $row['hiding_level']);
+			$shouldValueBeHidden = $this->shouldValueBeHidden($field->getData(), $row['hiding_level']);
 			if ($shouldValueBeHidden) {
 				$field->setValue($ĥidingValue);
 			} else {
@@ -134,15 +131,16 @@ class GenericManager extends BaseManager {
 	/**
 	 * Map the varying two keys in results to the keys in the raw_data table
 	 *
+	 * MIGRATED.
 	 * @param Application_Object_Metadata_TableFormat $table
 	 * @return array|bool
 	 */
 	public function getRawDataTablePrimaryKeys($table) {
 		// Map the varying two keys in results to the keys in the raw_data table
-		$tableName = $table->tableName;
+		$tableName = $table->getTableName();
 		$this->logger->debug("getRawDataTablePrimaryKeys with location table $tableName");
 		$keys = array();
-		$keyNames = array_map('strtolower', $table->primaryKeys);
+		$keyNames = array_map('strtolower', $table->getPrimaryKeys());
 		if (count($keyNames) != 2) {
 			throw new \Exception("Nombre de clés primaires dans la table $tableName != 2.");
 			return false;
@@ -168,20 +166,38 @@ class GenericManager extends BaseManager {
 	 *        	the name of the ogam_id column
 	 * @param string $providerIdColumn
 	 *        	the name of the provider_id column
+	 * @param integer $reqiD the id of the request
 	 * @param string $from
 	 *        	the FROM part of the SQL request
 	 * @param string $where
 	 *        	the WHERE part of the SQL request
 	 */
-	public function getHidingLevelParameters($geometryTable, $ogamIdColumn, $providerIdColumn, $from, $where) {
-		$req = "SELECT " . $geometryTable->format . " . $ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
-		INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = " . $geometryTable->format . " . $ogamIdColumn
+	public function getHidingLevelParameters($geometryTable, $ogamIdColumn, $providerIdColumn, $reqId, $from, $where) {
+		$req = "SELECT " . $geometryTable->getFormat() . " . $ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
+		INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = " . $geometryTable->getFormat() . " . $ogamIdColumn
 		$where AND res.id_request = ?
 		ORDER BY res.id_provider, res.id_observation;";
 
-		$select = $this->rawdb->prepare($sql);
-		$select->execute();
+		$select = $this->rawdb->prepare($req);
+		$select->execute(array($reqId));
 
 		return $select->fetchAll();
+	}
+
+	/**
+	 * Returns true if column has geographic type information and if it is more precise
+	 * than the hiding level of the row.
+	 *
+	 * @param string $columnName
+	 * @param integer $hidingLevel
+	 * @return boolean
+	 */
+	public function shouldValueBeHidden($columnName, $hidingLevel) {
+		if (isset((QueryService::getFieldsLevels())[$columnName])) {
+			$level = (QueryService::getFieldsLevels())[$columnName];
+			if ($level < $hidingLevel) {
+				return true;
+			}
+		}
 	}
 }
