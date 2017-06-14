@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\OGAMBundle\Controller;
+namespace Ign\Bundle\GincoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -97,7 +97,6 @@ class QueryController extends BaseController {
 
 	/**
 	 * @Route("/ajaxgetresultsbbox")
-	 * MIGRATED
 	 */
 	public function ajaxgetresultsbboxAction(Request $request) {
 		$logger = $this->get('logger');
@@ -105,9 +104,7 @@ class QueryController extends BaseController {
 
 		$configuration = $this->get('ogam.configuration_manager');
 		ini_set("max_execution_time", $configuration->getConfig('max_execution_time', 480));
-
 		try {
-
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
@@ -120,15 +117,13 @@ class QueryController extends BaseController {
 					->getId() : NULL,
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
 			];
-
 			$where = $request->getSession()->get('query_SQLWhere');
 			$from = $request->getSession()->get('query_SQLFrom');
 			$nbResults = $request->getSession()->get('query_Count');
 
-			$this->get('ogam.manager.query')->prepareResults($from, $where, $queryForm, $userInfos);
-
+			$this->get('ogam.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
 			// Execute the request
-			$resultsbbox = $this->get('ogam.manager.query')->getResultsBBox(session_id(), $nbResults);
+			$resultsbbox = $this->get('ogam.query_service')->getResultsBBox(session_id(), $nbResults);
 			// Send the result as a JSON String
 			return new JsonResponse([
 				'success' => true,
@@ -144,6 +139,38 @@ class QueryController extends BaseController {
 	}
 
 	/**
+	 * AJAX function : Return the results features bounding box in order to zoom on the features.
+	 * MIGRATION IN PROGRESS
+	 * @return JSON.
+	 */
+	public function ajaxgetobservationbboxAction(Request $request) {
+		$logger = $this->get('logger');
+		$observationId = $request->request->getInt('observationId');
+		$logger->debug('ajaxgetobservationbboxAction : ' . $observationId);
+
+		if ($observationId == null) {
+			$observationId = $request->get('observationId');
+		}
+
+		try {
+			$bbox = $this->get('ogam.query_service')->getMapRequestObservationBoundingBox($observationId, $this->getUser());
+			// Send the result as a JSON String
+			return new JsonResponse([
+				'success' => true,
+				'bbox' => $bbox
+			]);
+		} catch (Exception $e) {
+			$logger->error('Error while getting result : ' . $e);
+			return new JsonResponse([
+				'success' => false,
+				'errorMessage' => $e->getMessage()
+			]);
+		}
+
+	}
+
+	/**
+	 * MIGRATED.
 	 * @Route("/ajaxgetresultcolumns")
 	 */
 	public function ajaxgetresultcolumnsAction(Request $request) {
@@ -155,6 +182,10 @@ class QueryController extends BaseController {
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
 			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
+			// Get the request id
+			$requestId = $this->getDoctrine()->getManager('mapping')->getRepository('IgnGincoBundle:Mapping\Request')->getLastRequestIdFromSession(session_id());
+			// Get the maximum precision level
+			$maxPrecisionLevel = $this->get('ogam.query_service')->getMaxPrecisionLevel($queryForm->getCriteria());
 
 			// Call the service to get the definition of the columns
 			$userInfos = [
@@ -164,7 +195,8 @@ class QueryController extends BaseController {
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
 				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 			];
-			$this->get('ogam.query_service')->buildRequest($queryForm, $userInfos, $request->getSession());
+
+			$this->get('ogam.query_service')->buildRequestGinco($queryForm, $userInfos, $maxPrecisionLevel, $requestId, $request->getSession());
 
 			$response = new Response();
 			$response->headers->set('Content-Type', 'application/json');
@@ -200,15 +232,186 @@ class QueryController extends BaseController {
 			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
 		];
 
-		$em = $this->getDoctrine()->getManager();
-		$repository = $em->getRepository('GincoBundle\Mapping:Request');
-		$requestId = $repository->getLastRequestIdFromSession(session_id());
+// 		$em = $this->getDoctrine()->getManager();
+// 		$repository = $em->getRepository('GincoBundle\Mapping:Request');
+// 		$requestId = $repository->getLastRequestIdFromSession(session_id());
 		// Send the result as a JSON String
 		return new JsonResponse([
 			'success' => true,
 			'total' => $request->getSession()->get('query_Count'),
-			'data' => $this->get('ogam.query_service')->getResultRows($start, $length, $sortObj["property"], $sortObj["direction"], $requestId, $request->getSession(), $userInfos)
+			'data' => $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos)
 		]);
+	}
+
+	/**
+	 * AJAX function : Return the list of a location information.
+	 * MIGRATION_IN_PROGRESS
+	 *
+	 * @Route("/ajaxgetlocationinfo")
+	 */
+	public function ajaxgetlocationinfoAction(Request $request) {
+		$logger = $this->get('logger');
+		$logger->debug('ajaxgetlocationinfoAction');
+		try {
+			$lon = $request->query->get('LON');
+			$lat = $request->query->get('LAT');
+			$activeLayers = $request->query->get('layers');
+			if (empty($lon) || empty($lat)) {
+				throw new \InvalidArgumentException("The 'LON' and 'LAT' parameters are required.");
+			}
+			$sessionId = session_id();
+
+			$defaultResponseArray = [
+				'success' => true,
+				"layerLabel" => '',
+				'id' => null,
+				"title" => null,
+				"hasChild" => false,
+				"columns" => [],
+				"fields" => [],
+				"data" => []
+			];
+			$resultLocationRepository = $this->getDoctrine()->getRepository(ResultLocation::class);
+
+			if ($request->getSession()->get('query_Count', 0) == 0 && $resultLocationRepository->getResultsCount($sessionId)) {
+				return new JsonResponse($defaultResponseArray);
+			} else {
+				$schema = $this->get('ogam.schema_listener')->getSchema();
+				$locale = $this->get('ogam.locale_listener')->getLocale();
+				$queryForm = $request->getSession()->get('query_QueryForm');
+				// Get the mappings for the query form fields
+				$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
+
+				// Get the location table information
+				$tables = $this->get('ogam.generic_service')->getAllFormats($schema, $queryForm->getFieldMappingSet()
+					->getFieldMappingArray()); // Extract the location table from the last query
+					$locationField = $this->getDoctrine()
+					->getRepository(TableField::class)
+					->getGeometryField($schema, array_keys($tables), $locale); // Extract the location field from the available tables
+					$locationTableInfo = $this->getDoctrine()
+					->getRepository(TableFormat::class)
+					->getTableFormat($schema, $locationField->getFormat()
+						->getFormat(), $locale); // Get info about the location table
+
+						// Get the intersected locations
+						$locations = $resultLocationRepository->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale);
+
+						// $resultsLayers is the most precise layer where we have found results
+						if ($resultsLayer) {
+							$resultsLayer = 'result_' . $resultsLayer; // real name
+							$layersModel = new Application_Model_Mapping_Layers();
+							$layer = $layersModel->getLayer($resultsLayer);
+						}
+
+						if (!empty($locations)) {
+							// we have at least one plot found
+
+							// The id is used to avoid to display two time the same result (it's a id for the result dataset)
+							$id = array(
+								'Results'
+							); // A small prefix is required here to avoid a conflict between the id when the result contain only one result
+							// The columns config to setup the grid columnModel
+							$columns = array();
+							// The columns max length to setup the column width
+							$columnsMaxLength = array();
+							// The fields config to setup the store reader
+							$locationFields = array(
+								'id'
+							); // The id must stay the first field
+							// The data to full the store
+							$locationsData = array();
+
+							foreach ($locations as $locationsIndex => $location) {
+								$locationData = array();
+
+								// Get the locations identifiers
+								$key = 'SCHEMA/' . $schema . '/FORMAT/' . $locationTableInfo->getFormat();
+								$key .= '/' . $location['pk'];
+								$id[] = $key;
+								$locationData[] = $key;
+
+								$logger->debug('$key : ' . $key);
+
+								// Remove the pk of the available columns
+								unset($location['pk']);
+
+								// Get the other fields
+								// Setup the location data and the column max length
+								foreach ($location as $columnName => $value) {
+									$locationData[] = $value;
+									if (empty($columnsMaxLength[$columnName])) {
+										$columnsMaxLength[$columnName] = array();
+									}
+									$columnsMaxLength[$columnName][] = strlen($value);
+								}
+								// Setup the fields and columns config
+								if ($locationsIndex === (count($locations) - 1)) {
+
+									// Get the table fields
+									$tableFields = $this->getDoctrine()
+									->getRepository(TableField::class)
+									->getTableFields($schema, $locationField->getFormat()
+										->getFormat(), null, $locale);
+									$tFOrdered = array();
+									foreach ($tableFields as $tableField) {
+										$tFOrdered[strtoupper($tableField->getColumnName())] = $tableField;
+									}
+									foreach ($location as $columnName => $value) {
+										$tableField = $tFOrdered[strtoupper($columnName)];
+										// Set the column model and the location fields
+										$dataIndex = $tableField->getName();
+										// Adds the column header to prevent it from being truncated too and 2 for the header margins
+										$columnsMaxLength[$columnName][] = strlen($tableField->getLabel()) + 2;
+										$column = array(
+											'header' => $tableField->getData()->getLabel(),
+											'dataIndex' => $dataIndex,
+											'editable' => false,
+											'tooltip' => $tableField->getData()->getDefinition(),
+											'width' => max($columnsMaxLength[$columnName]) * 7,
+											'type' => $tableField->getData()
+											->getUnit()
+											->getType()
+										);
+										$columns[] = $column;
+										$locationFields[] = $dataIndex;
+									}
+								}
+								$locationsData[] = $locationData;
+							}
+
+							// We must sort the array here because it can't be done
+							// into the mapfile sql request to avoid a lower performance
+							sort($id);
+
+							// Check if the location table has a child table
+							$hasChild = false;
+							$children = $this->getDoctrine()
+							->getRepository(TableTree::class)
+							->getChildrenTableLabels($locationTableInfo);
+							if (!empty($children)) {
+								$hasChild = true;
+							}
+							return new JsonResponse([
+								'success' => true,
+								"layerLabel" => $layer->layerLabel,
+								'id' => implode('', $id),
+								"title" => $locationTableInfo->getLabel() . ' (' . count($locationsData) . ')',
+								"hasChild" => $hasChild,
+								"columns" => $columns,
+								"fields" => $locationFields,
+								"data" => $locationsData
+							]);
+						} else {
+							return new JsonResponse($defaultResponseArray);
+						}
+			}
+		} catch (\Exception $e) {
+			$logger->error('Error while getting details : ' . $e);
+			return new JsonResponse([
+				'success' => false,
+				'errorMessage' => $e->getMessage()
+			]);
+		}
 	}
 
 	/**
@@ -225,12 +428,13 @@ class QueryController extends BaseController {
 		$schema = $this->get('ogam.schema_listener')->getSchema();
 		$locale = $this->get('ogam.locale_listener')->getLocale();
 		$predefinedRequestRepository = $this->get('doctrine')->getRepository(PredefinedRequest::class);
-		$predefinedRequestList = $predefinedRequestRepository->getPredefinedRequestList($schema, $dir, $sort, $locale);
+		$predefinedRequestList = $predefinedRequestRepository->getPredefinedRequestList($schema, $dir, $sort, $locale, $this->getUser());
 
 		$response = new Response();
 		$response->headers->set('Content-Type', 'application/json');
 		return $this->render('OGAMBundle:Query:ajaxgetpredefinedrequestlist.json.twig', array(
-			'data' => $predefinedRequestList
+			'data' => $predefinedRequestList,
+			'user' => $this->getUser()
 		), $response);
 	}
 
@@ -294,17 +498,15 @@ class QueryController extends BaseController {
 
 		try {
 			// Get the names of the layers to display in the details panel
-			$configuration = $this->get('ogam.configuration_manager');
-			$detailsLayers = [];
-			$detailsLayers[] = $configuration->getConfig('query_details_layers1');
-			$detailsLayers[] = $configuration->getConfig('query_details_layers2');
+			// GINCO-802 : disable card details map
+			$detailsLayers = null;
 
 			// Get the current dataset to filter the results
 			$datasetId = $request->getSession()
-				->get('query_QueryForm')
-				->getDatasetId();
+			->get('query_QueryForm')
+			->getDatasetId();
 
-			// Get the id from the request
+			// Get the id and the bbox from the request
 			$id = $request->request->get('id');
 			if (empty($id)) {
 				throw new \InvalidArgumentException('The id parameter is required.');
@@ -312,16 +514,19 @@ class QueryController extends BaseController {
 
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()
-					->getProvider()
-					->getId() : NULL,
+				->getProvider()
+				->getId() : NULL,
 				"DATA_EDITION" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION')
 			];
+
+			// Bbox key is retrieved from POST
+			$bbox = $request->get('bbox');
 
 			$response = new Response();
 			$response->headers->set('Content-Type', 'application/json');
 			return $this->render('OGAMBundle:Query:ajaxgetdetails.json.twig', array(
 				'data' => $this->get('ogam.query_service')
-					->getDetailsData($id, $detailsLayers, $datasetId, true, $userInfos)
+				->getDetailsDataGinco($id, $detailsLayers, $datasetId, true, $userInfos)
 			), $response);
 		} catch (\Exception $e) {
 			$logger->error('Error while getting details : ' . $e);
@@ -1177,163 +1382,4 @@ class QueryController extends BaseController {
 		}
 	}
 
-	/**
-	 * AJAX function : Return the list of a location information.
-	 *
-	 * @Route("/ajaxgetlocationinfo")
-	 */
-	public function ajaxgetlocationinfoAction(Request $request) {
-		$logger = $this->get('logger');
-		$logger->debug('ajaxgetlocationinfoAction');
-		try {
-			$lon = $request->query->get('LON');
-			$lat = $request->query->get('LAT');
-			if (empty($lon) || empty($lat)) {
-				throw new \InvalidArgumentException("The 'LON' and 'LAT' parameters are required.");
-			}
-			$sessionId = session_id();
-
-			$defaultResponseArray = [
-				'success' => true,
-				'id' => null,
-				"title" => null,
-				"hasChild" => false,
-				"columns" => [],
-				"fields" => [],
-				"data" => []
-			];
-			$resultLocationRepository = $this->getDoctrine()->getRepository(ResultLocation::class);
-
-			if ($request->getSession()->get('query_Count', 0) == 0 && $resultLocationRepository->getResultsCount($sessionId)) {
-				return new JsonResponse($defaultResponseArray);
-			} else {
-				$schema = $this->get('ogam.schema_listener')->getSchema();
-				$locale = $this->get('ogam.locale_listener')->getLocale();
-				$queryForm = $request->getSession()->get('query_QueryForm');
-				// Get the mappings for the query form fields
-				$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
-
-				// Get the location table information
-				$tables = $this->get('ogam.generic_service')->getAllFormats($schema, $queryForm->getFieldMappingSet()
-					->getFieldMappingArray()); // Extract the location table from the last query
-				$locationField = $this->getDoctrine()
-					->getRepository(TableField::class)
-					->getGeometryField($schema, array_keys($tables), $locale); // Extract the location field from the available tables
-				$locationTableInfo = $this->getDoctrine()
-					->getRepository(TableFormat::class)
-					->getTableFormat($schema, $locationField->getFormat()
-					->getFormat(), $locale); // Get info about the location table
-
-				// Get the intersected locations
-				$locations = $resultLocationRepository->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale);
-
-				if (!empty($locations)) {
-					// we have at least one plot found
-
-					// The id is used to avoid to display two time the same result (it's a id for the result dataset)
-					$id = array(
-						'Results'
-					); // A small prefix is required here to avoid a conflict between the id when the result contain only one result
-					   // The columns config to setup the grid columnModel
-					$columns = array();
-					// The columns max length to setup the column width
-					$columnsMaxLength = array();
-					// The fields config to setup the store reader
-					$locationFields = array(
-						'id'
-					); // The id must stay the first field
-					   // The data to full the store
-					$locationsData = array();
-
-					foreach ($locations as $locationsIndex => $location) {
-						$locationData = array();
-
-						// Get the locations identifiers
-						$key = 'SCHEMA/' . $schema . '/FORMAT/' . $locationTableInfo->getFormat();
-						$key .= '/' . $location['pk'];
-						$id[] = $key;
-						$locationData[] = $key;
-
-						$logger->debug('$key : ' . $key);
-
-						// Remove the pk of the available columns
-						unset($location['pk']);
-
-						// Get the other fields
-						// Setup the location data and the column max length
-						foreach ($location as $columnName => $value) {
-							$locationData[] = $value;
-							if (empty($columnsMaxLength[$columnName])) {
-								$columnsMaxLength[$columnName] = array();
-							}
-							$columnsMaxLength[$columnName][] = strlen($value);
-						}
-						// Setup the fields and columns config
-						if ($locationsIndex === (count($locations) - 1)) {
-
-							// Get the table fields
-							$tableFields = $this->getDoctrine()
-								->getRepository(TableField::class)
-								->getTableFields($schema, $locationField->getFormat()
-								->getFormat(), null, $locale);
-							$tFOrdered = array();
-							foreach ($tableFields as $tableField) {
-								$tFOrdered[strtoupper($tableField->getColumnName())] = $tableField;
-							}
-							foreach ($location as $columnName => $value) {
-								$tableField = $tFOrdered[strtoupper($columnName)];
-								// Set the column model and the location fields
-								$dataIndex = $tableField->getName();
-								// Adds the column header to prevent it from being truncated too and 2 for the header margins
-								$columnsMaxLength[$columnName][] = strlen($tableField->getLabel()) + 2;
-								$column = array(
-									'header' => $tableField->getData()->getLabel(),
-									'dataIndex' => $dataIndex,
-									'editable' => false,
-									'tooltip' => $tableField->getData()->getDefinition(),
-									'width' => max($columnsMaxLength[$columnName]) * 7,
-									'type' => $tableField->getData()
-										->getUnit()
-										->getType()
-								);
-								$columns[] = $column;
-								$locationFields[] = $dataIndex;
-							}
-						}
-						$locationsData[] = $locationData;
-					}
-
-					// We must sort the array here because it can't be done
-					// into the mapfile sql request to avoid a lower performance
-					sort($id);
-
-					// Check if the location table has a child table
-					$hasChild = false;
-					$children = $this->getDoctrine()
-						->getRepository(TableTree::class)
-						->getChildrenTableLabels($locationTableInfo);
-					if (!empty($children)) {
-						$hasChild = true;
-					}
-					return new JsonResponse([
-						'success' => true,
-						'id' => implode('', $id),
-						"title" => $locationTableInfo->getLabel() . ' (' . count($locationsData) . ')',
-						"hasChild" => $hasChild,
-						"columns" => $columns,
-						"fields" => $locationFields,
-						"data" => $locationsData
-					]);
-				} else {
-					return new JsonResponse($defaultResponseArray);
-				}
-			}
-		} catch (\Exception $e) {
-			$logger->error('Error while getting details : ' . $e);
-			return new JsonResponse([
-				'success' => false,
-				'errorMessage' => $e->getMessage()
-			]);
-		}
-	}
 }

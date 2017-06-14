@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\OGAMBundle\Services;
+namespace Ign\Bundle\GincoBundle\Services;
 
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFieldMappingSet;
@@ -146,7 +146,7 @@ class GenericService extends BaseGenericService {
 	 * @return String a SQL request
 	 */
 	public function generateGincoSQLFromRequest($schema, GenericFieldMappingSet $mappingSet, $joinTables = array(), $geometryTablePKeyIdWithTable = null, $geometryTablePKeyProviderIdWithTable = null) {
-		$this->logger->debug('generateSQLFromRequest');
+		$this->logger->debug('generateGincoSQLFromRequest');
 
 		//
 		// Prepare the FROM clause
@@ -162,7 +162,7 @@ class GenericService extends BaseGenericService {
 		$from = " FROM " . $rootTableName . " " . $rootTableFormat;
 
 		// Add results table
-		$from .= ', mapping.results ';
+// 		$from .= ', mapping.results ';
 
 		// Add the user asked joined tables
 		if (in_array('submission', $joinTables)) {
@@ -205,19 +205,19 @@ class GenericService extends BaseGenericService {
 	 *        	the field mapping set
 	 * @return String a SQL request
 	 */
-	public function generateSQLWhereRequest($schemaCode, $formFields, GenericFieldMappingSet $mappingSet, $userInfos) {
-		$this->logger->debug('generateSQLWhereRequest');
-
-		// Prepare the list of needed tables
-		$tables = $this->getAllFormats($schemaCode, $mappingSet->getFieldMappingArray());
+	public function generateGincoSQLWhereRequest($schemaCode, $formFields, GenericFieldMappingSet $mappingSet, $userInfos, $tables) {
+		$this->logger->debug('generateSQLWhereRequest ginco');
 
 		// Add the root table;
 		$rootTable = array_shift($tables);
 
 		// Get the root table fields
+
 		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schemaCode, $rootTable->getTableFormat()
 			->getFormat(), null, $this->locale);
+
 		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
+		$hasConfirmSubmission = array_key_exists('CONFIRM_SUBMISSION', $rootTableFields);
 
 		//
 		// Prepare the WHERE clause
@@ -241,7 +241,7 @@ class GenericService extends BaseGenericService {
 		}
 
 		// User with "publish data" permission can see submissions all the time
-		if (!$userInfos['CONFIRM_SUBMISSION']) {
+		if ($hasConfirmSubmission) {
 			$where .= " AND submission.step = 'VALIDATE' ";
 		}
 
@@ -270,6 +270,64 @@ class GenericService extends BaseGenericService {
 		$endWhere .= " AND hiding_level <= " . $maxPrecisionLevel;
 
 		return $endWhere;
+	}
+
+	/**
+	 * Get the FROM clause, with JOINS linking youngest requested table to mapping.results table
+	 *
+	 * @param String $schema
+	 * @param string $tableFormat the format of the requested table
+	 */
+	public function getJoinToGeometryTable($schema, $tableFormat) {
+		$this->logger->debug('getJoinToGeometryTable');
+
+		// Get the ancestors of the table
+		$customMetadataModel = new Application_Model_Metadata_CustomMetadata();
+		$ancestors = $customMetadataModel->getTablesTree($tableFormat, $schema);
+
+		// Get the ancestors to the geometry table only
+		$ancestorsToGeometry = $customMetadataModel->getAncestorsToGeometry($schema, $ancestors);
+
+		// Add the requested table (FROM)
+		$ancestorsValue = array_values($ancestorsToGeometry);
+		$requestedTable = array_shift($ancestorsValue);
+
+		$logicalName = $requestedTable->getLogicalName();
+		$this->logger->debug('requested table format : ' . $logicalName);
+
+		$from = " FROM " . $requestedTable->tableName . " " . $logicalName;
+
+		// Add the joined tables (when there is ancestors)
+		foreach ($ancestorsToGeometry as $tableTreeData) {
+			if ($tableTreeData->parentTable != '*') {
+				$parentTableName = $ancestorsToGeometry[$tableTreeData->parentTable]->tableName;
+				$from .= " JOIN " . $parentTableName . " " . $tableTreeData->parentTable . " on (";
+				// Add the join keys
+				$keys = explode(',', $tableTreeData->keys);
+				foreach ($keys as $key) {
+					$from .= $tableTreeData->getLogicalName() . "." . trim($key) . " = " . $tableTreeData->parentTable . "." . trim($key) . " AND ";
+				}
+				$from = substr($from, 0, -5);
+				$from .= ") ";
+			}
+		}
+
+		// Add  JOIN beetween results table and the table which contains the geometry column (last table of the list)
+		$ancestorsValue = array_values($ancestorsToGeometry);
+		$geometryTable = array_pop($ancestorsValue);
+		$this->logger->debug('geometryTable : ' . $geometryTable->tableFormat);
+
+		$geometryTableFormat = $customMetadataModel->getTableFormat($schema, $geometryTable->tableFormat);
+		$geometryTableFormatKeys = $geometryTableFormat->primaryKeys;
+		foreach ($geometryTableFormatKeys as $geometryKey) {
+			if (strtolower(trim($geometryKey)) != 'provider_id') {
+				$geometryTablePKeyId = trim($geometryKey);
+			}
+		}
+		$from .= " LEFT JOIN mapping.results ON results.id_observation = " . $geometryTable->tableFormat . "." . $geometryTablePKeyId . " AND results.id_provider = " . $geometryTable->tableFormat . ".provider_id";
+
+		$this->logger->debug('getJoinToGeometryTable :' . $from);
+		return $from;
 	}
 
 	/**
