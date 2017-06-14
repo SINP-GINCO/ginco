@@ -15,8 +15,8 @@
     {% if (app.user and app.user.isAllowed('DATA_INTEGRATION')) %}
         <h2>{{ 'Menu.Datasets'|trans }}</h2>
         <ul>
-            <li><a href="{{ path('integration_home') }}">{{ 'Menu.ManageDatasets'|trans }}</a></li>
-            <li><a href="{{ path('integration_creation') }}">{{ 'Menu.ImportDataset'|trans }}</a></li>
+            <li><a href="{{ path('jdd_list') }}">{{ 'Menu.ManageDatasets'|trans }}</a></li>
+            <li><a href="{{ path('jdd_new') }}">{{ 'Menu.ImportDataset'|trans }}</a></li>
         </ul>
     {% endif %}
 
