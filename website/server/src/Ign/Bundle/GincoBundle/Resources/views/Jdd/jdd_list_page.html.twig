@@ -8,7 +8,7 @@
 <!-- Show the currently active jdd -->
 {% if jddList is not empty %}
     <p>
-        <a href="{{ path("integration_creation") }}">
+        <a href="{{ path("jdd_new") }}">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Create data submission{% endtrans %}
         </a>
     <p/>
@@ -178,7 +178,7 @@
 {% else %}
     <p>{% trans %}No submission found{% endtrans %}</p>
 {% endif %}
-<p><a href="{{ path("integration_creation") }}">
+<p><a href="{{ path("jdd_new") }}">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Create data submission{% endtrans %}
 </a><p/>
 {% endblock %}
