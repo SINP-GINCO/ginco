@@ -1,0 +1,86 @@
+{# One line for displaying submissions inside a cell of table  #}
+{# Variables : submission #}
+
+{% if submission is not defined %}
+    {# Headline #}
+    <div class="submission-line">
+        {# File and lines #}
+        <div class="file">{{ 'IntegrationPage.File'|trans }}</div>
+        <div class="lines">{{ 'Lines'|trans }}</div>
+        <div class="status" >{{ 'Status'|trans }}</div>
+        <div class="provider">{{ 'Provider'|trans }}</div>
+        <div class="actions">{{ 'Actions'|trans }}</div>
+    </div>
+
+{% else %}
+    {# Real submission line #}
+    <div class="submission-line">
+        {# File and lines #}
+        <div class="file">
+            {% for file in submission.files %}
+                <div>{{ file.fileName|replace({'\\':'/'})|split('/')|last }}</div>
+            {% endfor %}
+        </div>
+        <div class="lines">
+            {% for file in submission.files %}
+                <div>{{ file.nbLines }}</div>
+            {% endfor %}
+        </div>
+        {# Status -- see integration-progress-bars.js.twig #}
+        <div class="status" >
+            <div class="integration-status hidden" data-target="{{ submission.id }}">{{ submission.status }}</div>
+
+            <div class="integration-progress hidden">
+                <div>{{ 'IntegrationPage.import.running'|trans }}</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                        0%
+                    </div>
+                </div>
+            </div>
+            <div class="integration-content" data-target="{{ submission.id }}">
+                {% if submission.status in ['OK','CHECK'] %}
+                    <span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                {% elseif submission.status in ['WARNING'] %}
+                    <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                {% elseif submission.status in ['ERROR'] %}
+                    <span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                {% endif %}
+            </div>
+        </div>
+        {# Provider #}
+        <div class="provider">{{ submission.provider.label }}</div>
+        {# Actions #}
+        <div class="actions">
+            {% if submission.step is constant('STEP_INSERTED', submission)  and submission.status is constant('STATUS_OK', submission) %}
+                <a href="{{ path('integration_check', {'submissionId': submission.id}) }}" title="{{ 'Check data'|trans }}">
+                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                </a>
+            {% endif %}
+            {% if submission.step is not constant('STEP_INIT', submission) and submission.status is not constant('STATUS_RUNNING', submission) %}
+                <a href="{{ absolute_url("../proxy/show-report?submissionId=#{submission.id}") }}" title="{{ 'Show report'|trans }}" >
+                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                </a>
+            {% endif %}
+            {% if (submission.step is same as('CHECK') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
+                <a href="{{ path('integration_validate',{'submissionId': submission.id}) }}" title="{{ 'Confirm submission'|trans }}"
+                   onClick="return confirm('{{ 'Confirm_submission_warning'|trans }}');">
+                    <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                </a>
+            {% endif %}
+            {% if (submission.step is same as('VALIDATE') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
+                <a href="{{ path('integration_invalidate',{'submissionId': submission.id}) }}" title=" {{ 'Invalidate submission'|trans }}"
+                   onClick="return confirm('{{ 'Confirm_invalidation_warning'|trans }}');">
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                </a>
+            {% endif %}
+            {% if (submission.step != "VALIDATE" or user.isAllowed('CANCEL_VALIDATED_SUBMISSION'))
+            and (submission.provider.id is same as(user.provider.id) or user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) %}
+                <a href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" title="{{ 'Cancel Submission'|trans }}"
+                   onClick="return confirm('{{ 'Are you sure?'|trans }}');">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
