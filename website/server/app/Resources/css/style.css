@@ -6895,6 +6895,53 @@ body {
   margin-bottom: 20px;
   margin-top: 20px;
 }
+.submissions {
+  width: 100%;
+}
+.submission-line {
+  padding: 3px 0;
+  width: 100%;
+}
+.submission-line:before,
+.submission-line:after {
+  content: " ";
+  display: table;
+}
+.submission-line:after {
+  clear: both;
+}
+.submission-line:before,
+.submission-line:after {
+  content: " ";
+  display: table;
+}
+.submission-line:after {
+  clear: both;
+}
+.submission-line .file,
+.submission-line .lines,
+.submission-line .status,
+.submission-line .provider,
+.submission-line .actions {
+  display: block;
+  float: left;
+  padding-bottom: 1px;
+}
+.submission-line .file {
+  width: 30%;
+}
+.submission-line .lines {
+  width: 10%;
+}
+.submission-line .status {
+  width: 25%;
+}
+.submission-line .provider {
+  width: 25%;
+}
+.submission-line .actions {
+  width: 10%;
+}
 /* fileFormat or tableFormat edit.html.twig */
 #data-transfer-button {
   margin-top: 15%;
