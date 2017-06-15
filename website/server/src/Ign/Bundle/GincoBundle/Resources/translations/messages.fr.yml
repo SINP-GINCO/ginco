@@ -156,6 +156,7 @@ Jdd:
     createdAt: Créé
     dataUpdatedAt: Dernière modification des données
     dataSubmissions: Soumissions de données
+    nosubmissions: Pas encore de soumissions dans ce jeu de données.
 
 # Configurateur
 # -------------
