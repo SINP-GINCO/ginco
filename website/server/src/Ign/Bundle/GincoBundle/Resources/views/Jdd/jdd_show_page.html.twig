@@ -1,0 +1,69 @@
+{# Page displaying one jdd with all  #}
+{# Variables : jdd #}
+
+{% extends "base.html.twig" %}
+
+{% set user = app.user %}
+
+{% block body %}
+    <h1>{{ 'Jdd.page.title'|trans({'%jddId%':jdd.id}) }}</h1>
+
+    <table class="table table-nonfluid table-bordered">
+        <tr>
+            <th>{{ 'Datamodel'|trans }}</th>
+            <td>{{ jdd.model.name }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Provider'|trans }}</th>
+            <td>{{ jdd.provider.label }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'User'|trans }}</th>
+            <td>{{ jdd.user.login }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Jdd.page.createdAt'|trans }}</th>
+            <td>{{ jdd.createdAt|date("Y-m-d H:i:s")  }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Jdd.page.dataUpdatedAt'|trans }}</th>
+            <td>{{ jdd.dataUpdatedAt|date("Y-m-d H:i:s")  }}</td>
+        </tr>
+    </table>
+
+    <h2>{{ 'Jdd.page.dataSubmissions'|trans }}</h2>
+
+    {% if jdd.activeSubmissions is not empty %}
+    {# List of submissions #}
+        <table class="table table-hover">
+            <thead>
+                {%  include "@IgnGinco/Integration/submission_line_complete.html.twig" %}
+            </thead>
+            <tbody>
+                {% for submission in jdd.activeSubmissions %}
+                    {%  include "@IgnGinco/Integration/submission_line_complete.html.twig" %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>{{ 'Jdd.page.nosubmissions'|trans }}</p>
+    {% endif %}
+
+    {# Add a new submission to dataset #}
+    <div>
+        <a href="{{ path("integration_creation", { 'jddid': jdd.id }) }}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  {{ 'Jdd.submission.add'|trans }}
+        </a>
+    </div>
+
+
+    {# Actions on the dataset #}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        {% include '@IgnGinco/Integration/integration-progress-bars.js.twig' %}
+    </script>
+{% endblock %}

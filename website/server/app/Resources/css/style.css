@@ -6778,6 +6778,10 @@ form label.required:after {
 .alert-error .alert-link {
   color: #843534;
 }
+/* Tables */
+.table-nonfluid {
+  width: auto !important;
+}
 /* Cut too-long texts and add ellipsis (...) */
 .longtext {
   overflow: hidden;
