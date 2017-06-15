@@ -52,35 +52,7 @@
         <div class="provider">{{ submission.provider.label }}</div>
         {# Actions #}
         <div class="actions">
-            {% if submission.step is constant('STEP_INSERTED', submission)  and submission.status is constant('STATUS_OK', submission) %}
-                <a href="{{ path('integration_check', {'submissionId': submission.id}) }}" title="{{ 'Check data'|trans }}">
-                    <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                </a>
-            {% endif %}
-            {% if submission.step is not constant('STEP_INIT', submission) and submission.status is not constant('STATUS_RUNNING', submission) %}
-                <a href="{{ absolute_url("../proxy/show-report?submissionId=#{submission.id}") }}" title="{{ 'Show report'|trans }}" >
-                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-                </a>
-            {% endif %}
-            {% if (submission.step is same as('CHECK') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
-                <a href="{{ path('integration_validate',{'submissionId': submission.id}) }}" title="{{ 'Confirm submission'|trans }}"
-                   onClick="return confirm('{{ 'Confirm_submission_warning'|trans }}');">
-                    <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
-                </a>
-            {% endif %}
-            {% if (submission.step is same as('VALIDATE') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
-                <a href="{{ path('integration_invalidate',{'submissionId': submission.id}) }}" title=" {{ 'Invalidate submission'|trans }}"
-                   onClick="return confirm('{{ 'Confirm_invalidation_warning'|trans }}');">
-                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                </a>
-            {% endif %}
-            {% if (submission.step != "VALIDATE" or user.isAllowed('CANCEL_VALIDATED_SUBMISSION'))
-            and (submission.provider.id is same as(user.provider.id) or user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) %}
-                <a href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" title="{{ 'Cancel Submission'|trans }}"
-                   onClick="return confirm('{{ 'Are you sure?'|trans }}');">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </a>
-            {% endif %}
+            {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
         </div>
     </div>
 {% endif %}

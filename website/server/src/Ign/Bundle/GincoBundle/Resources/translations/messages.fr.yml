@@ -114,10 +114,18 @@ Configuration:
 # ----------------------------
 
 Data integration module: Gérer les jeux de données
+Datamodel: Modèle de données
 Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
 Create data submission: Importer un nouveau jeu de données
 Submission ID: Id
+
+Submission:
+  step:
+    init: Vide
+    insert: Import
+    validate: Publié
+    cancel: Supprimé
 
 IntegrationPage:
   File: Fichier
@@ -142,6 +150,12 @@ Jdd:
     success: Le jeu de données a bien été supprimé.
   submission:
     add: Ajouter une soumission de données
+
+  page:
+    title: Jeu de données %jddId%
+    createdAt: Créé
+    dataUpdatedAt: Dernière modification des données
+    dataSubmissions: Soumissions de données
 
 # Configurateur
 # -------------
