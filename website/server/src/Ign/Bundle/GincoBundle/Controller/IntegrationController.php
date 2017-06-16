@@ -43,10 +43,21 @@ class IntegrationController extends BaseController {
 		$jddId = intval($request->query->get('jddid', 0));
 		$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
 
+		// If the model of the jdd has no published datasets, add a flash error message
+		// And disable the whole form
+		$formDisabled = false;
+		if ( $jdd != null && $jdd->getModel()->getImportDatasets()->count() == 0) {
+			$this->addFlash(
+				'error',
+				'Integration.Submission.noDatasetsForModel'
+			);
+			$formDisabled = true;
+		}
 		$submission = new Submission();
 		$form = $this->createForm(new GincoDataSubmissionType(), $submission, array(
 			'jdd' => $jdd,
 			'default_provider' => $this->getUser()->getProvider(),
+			'disabled' => $formDisabled,
 		));
 
 		$form->handleRequest($request);
