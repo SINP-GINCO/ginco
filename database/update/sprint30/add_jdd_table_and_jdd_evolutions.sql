@@ -24,7 +24,7 @@ CREATE TABLE raw_data.jdd
   status character varying(16) NOT NULL, -- jdd status, can be 'active' or 'deleted' (deleted, but the row is kept)
   provider_id character varying(36), -- The data provider identifier (country code or organisation name)
   user_login character varying(50), -- The login of the user doing the submission
-  model_id character varying(19) NOT NULL, -- Id of the data model in which the jdd is delivered
+  model_id character varying(19), -- Id of the data model in which the jdd is delivered
   created_at timestamp without time zone DEFAULT now(), -- jdd creation timestamp (delivery timestamp is in submission._creationdt)
   data_updated_at timestamp without time zone DEFAULT now(), -- DATA last edition timestamp
   CONSTRAINT pk_jdd_id PRIMARY KEY (id),
@@ -39,7 +39,7 @@ CREATE TABLE raw_data.jdd
 
   CONSTRAINT fk_model_id FOREIGN KEY (model_id)
   REFERENCES metadata.model (id) MATCH SIMPLE
-  ON UPDATE CASCADE ON DELETE RESTRICT
+  ON UPDATE CASCADE ON DELETE SET NULL
 )
 WITH (
 OIDS=FALSE
