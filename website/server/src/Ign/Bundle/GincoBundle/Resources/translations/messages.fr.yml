@@ -23,7 +23,7 @@ Menu:
   RegionalData.Access: Visualiser les données régionales
   Datasets: Jeux de données
   ManageDatasets: Gérer les jeux de données
-  ImportDataset: Importer un jeu de données
+  ImportDataset: Créer un jeu de données
   Configurator: Configuration des modèles
   DataModels: Modèles de données
   ImportModels: Modèles d'import
@@ -117,7 +117,7 @@ Data integration module: Gérer les jeux de données
 Datamodel: Modèle de données
 Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
-Create data submission: Importer un nouveau jeu de données
+Create data submission: Créer un jeu de données
 Submission ID: Id
 
 Submission:
@@ -132,6 +132,9 @@ IntegrationPage:
   NoDataset: Modèle d'import dépublié
   import:
     running: Import en cours...
+
+Confirm submission: Publier la soumission
+Invalidate submission: Dépublier la soumission
 
 Integration:
   Field:
@@ -148,10 +151,10 @@ sridDescription: Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 43
 Jdd:
   delete:
     prompt: Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?
-    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (soumissions de données liées).
+    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données liés).
     success: Le jeu de données a bien été supprimé.
   submission:
-    add: Ajouter une soumission de données
+    add: Importer des données
 
   page:
     title: Jeu de données %jddId%
