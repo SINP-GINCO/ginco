@@ -30,16 +30,34 @@ class IntegrationController extends BaseController {
 	 */
 	public function createDataSubmissionAction(Request $request) {
 
+		// Get the referer url, and put it in session to redirect to it at the end of the process
+		$refererUrl = $request->headers->get('referer');
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		$session = $request->getSession();
+		if (!$session->has('redirectToUrl'))
+			$session->set('redirectToUrl', $redirectUrl);
+
 		$em = $this->get('doctrine.orm.entity_manager');
 
 		// Find jddid if given in GET parameters
 		$jddId = intval($request->query->get('jddid', 0));
 		$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
 
+		// If the model of the jdd has no published datasets, add a flash error message
+		// And disable the whole form
+		$formDisabled = false;
+		if ( $jdd != null && $jdd->getModel()->getImportDatasets()->count() == 0) {
+			$this->addFlash(
+				'error',
+				'Integration.Submission.noDatasetsForModel'
+			);
+			$formDisabled = true;
+		}
 		$submission = new Submission();
 		$form = $this->createForm(new GincoDataSubmissionType(), $submission, array(
 			'jdd' => $jdd,
 			'default_provider' => $this->getUser()->getProvider(),
+			'disabled' => $formDisabled,
 		));
 
 		$form->handleRequest($request);
@@ -236,8 +254,11 @@ class IntegrationController extends BaseController {
 			));
 		}
 
-		// Redirect the user to the show plot location page
-		// This ensure that the user will not resubmit the data by doing a refresh on the page
-		return $this->redirectToRoute('integration_home');
+		// Returns to the page where the action comes from in the first place
+		// (get it from session)
+		$session = $request->getSession();
+		$redirectUrl = $session->get('redirectToUrl', $this->generateUrl('integration_home'));
+		$session->remove('redirectToUrl');
+		return $this->redirect($redirectUrl);
 	}
 }

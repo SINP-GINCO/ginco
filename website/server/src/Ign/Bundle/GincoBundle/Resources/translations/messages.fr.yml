@@ -23,7 +23,7 @@ Menu:
   RegionalData.Access: Visualiser les données régionales
   Datasets: Jeux de données
   ManageDatasets: Gérer les jeux de données
-  ImportDataset: Importer un jeu de données
+  ImportDataset: Créer un jeu de données
   Configurator: Configuration des modèles
   DataModels: Modèles de données
   ImportModels: Modèles d'import
@@ -114,10 +114,18 @@ Configuration:
 # ----------------------------
 
 Data integration module: Gérer les jeux de données
+Datamodel: Modèle de données
 Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
-Create data submission: Importer un nouveau jeu de données
+Create data submission: Créer un jeu de données
 Submission ID: Id
+
+Submission:
+  step:
+    init: Vide
+    insert: Import
+    validate: Publié
+    cancel: Supprimé
 
 IntegrationPage:
   File: Fichier
@@ -125,11 +133,16 @@ IntegrationPage:
   import:
     running: Import en cours...
 
+Confirm submission: Publier la soumission
+Invalidate submission: Dépublier la soumission
+
 Integration:
   Field:
     label: Nom du champ
     definition: Définition
     format: Format
+  Submission:
+    noDatasetsForModel: Attention ! Il n'y a pas de modèles d'import publiés pour le modèle de données choisi. Merci de contacter l'administrateur régional.
 
 'The expected fields are:': Liste des champs attendus
 
@@ -138,10 +151,17 @@ sridDescription: Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 43
 Jdd:
   delete:
     prompt: Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?
-    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (soumissions de données liées).
+    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données liés).
     success: Le jeu de données a bien été supprimé.
   submission:
-    add: Ajouter une soumission de données
+    add: Importer des données
+
+  page:
+    title: Jeu de données %jddId%
+    createdAt: Créé
+    dataUpdatedAt: Dernière modification des données
+    dataSubmissions: Soumissions de données
+    nosubmissions: Pas encore de soumissions dans ce jeu de données.
 
 # Data Query
 # ----------
