@@ -49,16 +49,8 @@ class QueryController extends BaseController {
 			$queryForm->setDatasetId($datasetId);
 			foreach ($request->request->all() as $inputName => $inputValue) {
 				if (strpos($inputName, "criteria__") === 0 && !$this->get('ogam.query_service')->isEmptyCriteria($inputValue)) {
-					$this->logger->debug('POST var added');
 					$criteriaName = substr($inputName, strlen("criteria__"));
 					$split = explode("__", $criteriaName);
-
-					// The user can request on sensiNiveau or diffusionniveauprecision only if he has the permission
-					if (($split[1] != 'sensiniveau' || $this->getUser()->isAllowed('VIEW_SENSITIVE')) && ($split[1] != 'diffusionniveauprecision' || $this->getUser()->isAllowed('VIEW_PRIVATE'))) {
-						$queryForm->addCriterion($split[0], $split[1], $inputValue);
-					} else {
-						throw new \Exception($this->get('translator')->trans('Forbidden search'));
-					}
 				}
 
 				if (strpos($inputName, "column__") === 0) {

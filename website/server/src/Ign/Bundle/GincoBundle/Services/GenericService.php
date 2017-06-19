@@ -226,7 +226,7 @@ class GenericService extends BaseGenericService {
 		foreach ($formFields as $formField) {
 			$tableField = $mappingSet->getDstField($formField)->getMetadata();
 
-			if ($tableField->subtype == 'ID') {
+			if ($tableField->getData()->getUnit()->getSubType() == 'ID') {
 				// Exact search
 				$where .= $this->buildWhereItem($schemaCode, $tableField, $formField->getValue(), true);
 			} else {

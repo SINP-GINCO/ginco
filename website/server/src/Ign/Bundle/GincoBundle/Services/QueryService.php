@@ -110,9 +110,7 @@ class QueryService extends BaseService {
 		// Clean previously stored results
 		$sessionId = session_id();
 		$this->logger->debug('SessionId : ' . $sessionId);
-		$this->logger->debug('truccc8');
 		$repo = $this->doctrine->getManager('mapping')->getRepository(Result::class);
-		$this->logger->debug('truccc');
 		$repo->cleanPreviousResults($sessionId);
 
 		// Identify the field carrying the location information
@@ -234,10 +232,12 @@ class QueryService extends BaseService {
 		$this->logger->debug('getMaxPrecisionLevel');
 
 		$maxPrecisionLevel = 1000;
+		$fieldsLevels = $this->getFieldsLevels();
 
 		foreach ($criterias as $criteria) {
-			$fieldLevel = self::$fieldsLevels[$criteria->data];
-			if (isset($fieldLevel)) {
+			$data = $criteria->getData();
+			if (in_array($data, $fieldsLevels)) {
+				$fieldLevel = $fieldsLevels[$data];
 				if ($fieldLevel < $maxPrecisionLevel) {
 					$maxPrecisionLevel = $fieldLevel;
 				}
@@ -496,7 +496,9 @@ class QueryService extends BaseService {
 				$value = $line[$key];
 				$hidingLevel = $line['hiding_level'];
 				$shouldValueBeHidden = $this->genericModel->shouldValueBeHidden($tableField->getColumnName(), $hidingLevel);
-				$type = $tableField->getData()->getUnit()->getType();
+				$type = $tableField->getData()
+					->getUnit()
+					->getType();
 				// Manage code traduction
 				if ($type === "CODE" && $value != "") {
 					if ($shouldValueBeHidden) {
