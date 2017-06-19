@@ -48,7 +48,7 @@ class QueryController extends BaseController {
 			$queryForm = new QueryForm();
 			$queryForm->setDatasetId($datasetId);
 			foreach ($request->request->all() as $inputName => $inputValue) {
-				if (strpos($inputName, "criteria__") === 0 && !$this->isEmptyCriteria($inputValue)) {
+				if (strpos($inputName, "criteria__") === 0 && !$this->get('ogam.query_service')->isEmptyCriteria($inputValue)) {
 					$this->logger->debug('POST var added');
 					$criteriaName = substr($inputName, strlen("criteria__"));
 					$split = explode("__", $criteriaName);
