@@ -193,8 +193,8 @@ class GenericManager extends BaseManager {
 	 * @return boolean
 	 */
 	public function shouldValueBeHidden($columnName, $hidingLevel) {
-		if (isset((QueryService::getFieldsLevels())[$columnName])) {
-			$level = (QueryService::getFieldsLevels())[$columnName];
+		if (isset(QueryService::getFieldsLevels()[$columnName])) {
+			$level = QueryService::getFieldsLevels()[$columnName];
 			if ($level < $hidingLevel) {
 				return true;
 			}
