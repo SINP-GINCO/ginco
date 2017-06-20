@@ -125,102 +125,102 @@
 					</td>
 				{% endif %}
 
-				{# Publish / Unpublish button #}
-				{# If the model is unpublished #}
-				{% if pubStates[model.id] == false %}
-					{# Publish button #}
-					{# If the model is publishable (not empty) #}
-					{% if publishable[model.id] %}
-						<td>
-							<a	id="publish-button-{{ model.id }}" role="button" class="btn btn-default"
-								href="{{ path('configurateur_model_publish', { modelId: model.id } ) }}"> <span
-								class="glyphicon glyphicon-play" aria-hidden="true"></span>
-							</a>
-						</td>
-					{# Not publishable : disable button and add an explanation modal #}
-					{% else %}
-						<td>
-							<button class="btn btn-default glyphicon glyphicon-play" disabled="disabled" >
-							</button>
-						<a	class="btn btn-default glyphicon glyphicon-question-sign" id="publish-button-{{ model.id }}"
-							data-toggle="modal" data-target="#modal-info-not-publishable-{{ model.id }}"></a>
-						</td>
-						<!-- Info modal - model not publishable -->
-						<div class="modal fade" id="modal-info-not-publishable-{{ model.id }}"
-							 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-							 aria-hidden="true">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-body">
-										{% trans with {'%modelName%': model.name} %} datamodel.publish.impossible {% endtrans %}
+						{# Publish / Unpublish button #}
+						{# If the model is unpublished #}
+						{% if pubStates[model.id] == false %}
+							{# Publish button #}
+							{# If the model is publishable (not empty) #}
+							{% if publishable[model.id] %}
+								<td>
+									<a	id="publish-button-{{ model.id }}" role="button" class="btn btn-default"
+										href="{{ path('configurateur_model_publish', { modelId: model.id } ) }}"> <span
+										class="glyphicon glyphicon-play" aria-hidden="true"></span>
+									</a>
+								</td>
+							{# Not publishable : disable button and add an explanation modal #}
+							{% else %}
+								<td>
+									<button class="btn btn-default glyphicon glyphicon-play" disabled="disabled" >
+									</button>
+								<a	class="btn btn-default glyphicon glyphicon-question-sign" id="publish-button-{{ model.id }}"
+									data-toggle="modal" data-target="#modal-info-not-publishable-{{ model.id }}"></a>
+								</td>
+								<!-- Info modal - model not publishable -->
+								<div class="modal fade" id="modal-info-not-publishable-{{ model.id }}"
+									 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+									 aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-body">
+												{% trans with {'%modelName%': model.name} %} datamodel.publish.impossible {% endtrans %}
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary"
+														data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+											</div>
+										</div>
 									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-primary"
-												data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+								</div>
+							{% endif %}
+						<!-- Edit prompt modal -->
+							<div class="modal fade" id="modal-edit-mappings-{{ model.id }}"
+								tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											{% trans with {'%modelName%': model.name} %} datamodel.edit.mappings {% endtrans %}
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+											<a type="button" class="btn btn-primary"
+												href="{{ path('configurateur_model_edit', { id: model.id } ) }}">
+												{% trans %}Continue{% endtrans %} </a>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					{% endif %}
-				<!-- Edit prompt modal -->
-					<div class="modal fade" id="modal-edit-mappings-{{ model.id }}"
-						tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-						aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									{% trans with {'%modelName%': model.name} %} datamodel.edit.mappings {% endtrans %}
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-									<a type="button" class="btn btn-primary"
-										href="{{ path('configurateur_model_edit', { id: model.id } ) }}">
-										{% trans %}Continue{% endtrans %} </a>
-								</div>
-							</div>
-						</div>
-					</div>
-				{# If the model is published #}
-				{% else %}
-					{# Unpublish button with confirmation modal #}
-					{% if not filled[model.id] %}
-						<td>
+						{# If the model is published #}
+						{% else %}
 							{# Unpublish button with confirmation modal #}
-							<a	id="unpublish-button-{{ model.id }}" role="button" class="btn btn-default"
-								data-toggle="modal" data-target="#modal-unpublish-confirm-{{ model.id }}">
-								<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-							</a>
-						</td>
-					{% else %}
-						<td>
-							{# Unpublish button disabled with not allowed modal explanation #}
-							<button	class="btn btn-default glyphicon glyphicon-stop" disabled="disabled">
-							</button>
-							<button	id="unpublish-button-{{ model.id }}" class="btn btn-default glyphicon glyphicon-question-sign"
-								data-toggle="modal" data-target="#modal-unpublish-impossible-{{ model.id }}">
-								</button>
-						</td>
-					{% endif %}
-					<!-- Edit prompt modal -->
-					<div class="modal fade" id="modal-confirm-edit-{{ model.id }}"
-						tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-						aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									{% trans with {'%modelName%': model.name} %} datamodel.edit.warning {% endtrans %}
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-									<a type="button" class="btn btn-primary"
-										href="{{ path('configurateur_model_unpublish', { 'modelId': model.id, 'redirectToEdit': true } ) }}">
-										{% trans %} ConfirmAndContinue{% endtrans %} </a>
+							{% if unpublishable[model.id] %}
+								<td>
+									{# Unpublish button with confirmation modal #}
+									<a	id="unpublish-button-{{ model.id }}" role="button" class="btn btn-default"
+										data-toggle="modal" data-target="#modal-unpublish-confirm-{{ model.id }}">
+										<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+									</a>
+								</td>
+							{% else %}
+								<td>
+									{# Unpublish button disabled with not allowed modal explanation #}
+									<button	class="btn btn-default glyphicon glyphicon-stop" disabled="disabled">
+									</button>
+									<button	id="unpublish-button-{{ model.id }}" class="btn btn-default glyphicon glyphicon-question-sign"
+										data-toggle="modal" data-target="#modal-unpublish-impossible-{{ model.id }}">
+										</button>
+								</td>
+							{% endif %}
+							<!-- Edit prompt modal -->
+							<div class="modal fade" id="modal-confirm-edit-{{ model.id }}"
+								tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											{% trans with {'%modelName%': model.name} %} datamodel.edit.warning {% endtrans %}
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+											<a type="button" class="btn btn-primary"
+												href="{{ path('configurateur_model_unpublish', { 'modelId': model.id, 'redirectToEdit': true } ) }}">
+												{% trans %} ConfirmAndContinue{% endtrans %} </a>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
 
 					<!-- Unpublish confirm modal -->
 					<div class="modal fade" id="modal-unpublish-confirm-{{ model.id }}"
@@ -242,23 +242,23 @@
 						</div>
 					</div>
 
-					<!-- Unpublish impossible info modal -->
-					<div class="modal fade" id="modal-unpublish-impossible-{{ model.id }}"
-						tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-						aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									{% trans with {'%modelName%': model.name} %} datamodel.unpublish.hasData {% endtrans %}
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+							<!-- Unpublish impossible info modal -->
+							<div class="modal fade" id="modal-unpublish-impossible-{{ model.id }}"
+								tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											{% trans with {'%modelName%': model.name} %} datamodel.unpublish.hasDataOrJdd {% endtrans %}
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				{% endif %}
+						{% endif %}
 
 				<!-- Delete prompt modal -->
 				<div class="modal fade" id="modal-confirm-delete-{{ model.id }}"

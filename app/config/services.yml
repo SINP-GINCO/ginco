@@ -34,7 +34,7 @@ services:
               - [setCopyUtils, ['@app.copyutils']]
 
     app.modelunpublication:
-        class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication
+        class: Ign\Bundle\GincoConfigurateurBundle\Utils\ModelUnpublication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
         
     app.importmodelpublication:

@@ -9,12 +9,7 @@ use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
 use Symfony\Component\HttpFoundation\Request;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelUploadType;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\TableFormatType;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
 
 class ModelController extends Controller {
@@ -37,7 +32,7 @@ class ModelController extends Controller {
 			$modelId = $model->getId();
 			$modelsPubState[$modelId] = $this->get('app.modelPublication')->isPublished($modelId);
 			$modelsPublishable[$modelId] = $this->get('app.modelPublication')->isPublishable($modelId);
-			$modelsFilled[$modelId] = $this->get('app.modelunpublication')->modelHasData($modelId);
+			$modelsUnpublishable[$modelId] = $this->get('app.modelunpublication')->isUnpublishable($modelId);
 			$modelsPermissions[$modelId] = array();
 			$modelsPermissions[$modelId]['editable'] = $this->get('app.permissions')->isModelEditable($modelId);
 			$modelsPermissions[$modelId]['editableMessage'] = $this->get('app.permissions')->getMessage();
@@ -51,7 +46,7 @@ class ModelController extends Controller {
 			'models' => $models,
 			'pubStates' => $modelsPubState,
 			'publishable' => $modelsPublishable,
-			'filled' => $modelsFilled,
+			'unpublishable' => $modelsUnpublishable,
 			'permissions' => $modelsPermissions,
 			'upload_form' => $uploadForm->createView()
 		));
