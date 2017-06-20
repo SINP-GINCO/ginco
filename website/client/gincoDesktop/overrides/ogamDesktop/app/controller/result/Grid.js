@@ -45,6 +45,7 @@ Ext.define('Ginco.controller.result.Grid', {
                         menuDisabled : true,
                         align : 'center',
                         width : 40,
+						hideable: false,
                         items: leftActionColumnItems
                     });
 
@@ -62,6 +63,7 @@ Ext.define('Ginco.controller.result.Grid', {
                             menuDisabled : true,
                             align : 'center',
                             width : 30,
+							hideable: false,
                             items:[{
                                 iconCls: 'o-result-tools-edit-editdetails',
                                 tooltip: "<b>"+gridTab.editDataButtonTitle+"</b><br/>"+gridTab.editDataButtonTip,
@@ -93,12 +95,16 @@ Ext.define('Ginco.controller.result.Grid', {
                             type: field.type ? field.type.toLowerCase() : 'auto',
                             defaultValue : null
                         };
-                        var columnConfig = {
-                            dataIndex: field.name,
-                            text: field.label,
-                            tooltip: field.definition,
-                            hidden: field.hidden
-                        };
+						var columnConfig = {
+								dataIndex: field.name,
+								text: field.label,
+								tooltip: field.definition,
+								hidden: field.hidden,
+								hideable: true
+							};
+    					if (field.label == 'Identifier of the line' || field.label == 'Provider') {
+    						columnConfig.hideable = false;
+    					}
                         switch (field.inputType) {
                             case 'CHECKBOX':
                                 Ext.applyIf(columnConfig, OgamDesktop.ux.grid.column.Factory.buildBooleanColumnConfig());
