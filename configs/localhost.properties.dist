@@ -51,6 +51,13 @@ configurator.path=/path/to/configurator
 # Sur les instances de prod, c'est instance.name
 apache.path.to.app=ginco
 
+# == Application parameters
+
+# Url of the service for getting metadata jdd
+metadata.jdd.url=https://inpn2.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecordById?id=
+# Email to send a notification to when generating DEE
+dee.notification.mail=YOURMAIL@ign.fr
+
 # == Instance customisation parameters
 
 # Site Name
