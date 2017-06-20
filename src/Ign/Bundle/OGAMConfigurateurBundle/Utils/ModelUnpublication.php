@@ -661,12 +661,16 @@ class ModelUnpublication extends DatabaseUtils {
 		$row = $selectStmt->fetch();
 		$datasetGroupId = $row['group_id'];
 		
-		$sql = "DELETE FROM website.predefined_request WHERE dataset_id = '" . $datasetId . "'";
-	 	$stmt = $this->conn->prepare($sql);
-	 	$stmt->execute();
+		if ($datasetId) {
+			$sql = "DELETE FROM website.predefined_request WHERE dataset_id = '" . $datasetId . "'";
+	 		$stmt = $this->conn->prepare($sql);
+	 		$stmt->execute();
+		}
 	 	
-	 	$sql = "DELETE FROM website.predefined_request_group WHERE group_id = '" . $datasetGroupId . "'";
-	 	$stmt = $this->conn->prepare($sql);
-	 	$stmt->execute();
+		if ($datasetGroupId) {
+	 		$sql = "DELETE FROM website.predefined_request_group WHERE group_id = '" . $datasetGroupId . "'";
+	 		$stmt = $this->conn->prepare($sql);
+	 		$stmt->execute();
+		}
 	}
 }
