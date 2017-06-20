@@ -4,13 +4,13 @@
 #    type:     annotation
 #    prefix:   /
 
-ign_ginco:
-    resource: "@IgnGincoBundle/Controller/"
+ign_ogam:
+    resource: "../../src/Ign/Bundle/OGAMBundle/Controller/"
     type:     annotation
     prefix:   /
 
-ign_ogam:
-    resource: "../../src/Ign/Bundle/OGAMBundle/Controller/"
+ign_ginco:
+    resource: "@IgnGincoBundle/Controller/"
     type:     annotation
     prefix:   /
 

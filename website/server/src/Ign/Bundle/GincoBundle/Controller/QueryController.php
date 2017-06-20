@@ -28,7 +28,7 @@ class QueryController extends BaseController {
 	 * AJAX function : Builds the query.
 	 * OK Migrated. TODO : Check the TODO in the code.
 	 *
-	 * @Route("/ajaxbuildrequest")
+	 * @Route("/ajaxbuildrequest", name="query_build_request")
 	 */
 	public function ajaxbuildrequestAction(Request $request) {
 		$logger = $this->get('logger');
@@ -88,7 +88,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/ajaxgetresultsbbox")
+	 * @Route("/ajaxgetresultsbbox", name="query_get_results_bbox")
 	 */
 	public function ajaxgetresultsbboxAction(Request $request) {
 		$logger = $this->get('logger');
@@ -163,7 +163,7 @@ class QueryController extends BaseController {
 
 	/**
 	 * MIGRATED.
-	 * @Route("/ajaxgetresultcolumns")
+	 * @Route("/ajaxgetresultcolumns", name="query_get_result_columns")
 	 */
 	public function ajaxgetresultcolumnsAction(Request $request) {
 		$logger = $this->get('logger');
@@ -207,7 +207,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/ajaxgetresultrows")
+	 * @Route("/ajaxgetresultrows", name="query_get_result_rows")
 	 */
 	public function ajaxgetresultrowsAction(Request $request) {
 		$logger = $this->get('logger');
@@ -239,7 +239,7 @@ class QueryController extends BaseController {
 	 * AJAX function : Return the list of a location information.
 	 * MIGRATION_IN_PROGRESS
 	 *
-	 * @Route("/ajaxgetlocationinfo")
+	 * @Route("/ajaxgetlocationinfo", name="query_get_location_info")
 	 */
 	public function ajaxgetlocationinfoAction(Request $request) {
 		$logger = $this->get('logger');
@@ -407,7 +407,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/ajaxgetpredefinedrequestlist")
+	 * @Route("/ajaxgetpredefinedrequestlist", name="query_get_predefined_request_list")
 	 */
 	public function ajaxgetpredefinedrequestlistAction(Request $request) {
 		$logger = $this->get('logger');
@@ -431,7 +431,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/ajaxgetpredefinedrequestcriteria")
+	 * @Route("/ajaxgetpredefinedrequestcriteria", name="query_get_predefined_request_criteria")
 	 */
 	public function ajaxgetpredefinedrequestcriteriaAction(Request $request) {
 		$logger = $this->get('logger');
@@ -450,7 +450,7 @@ class QueryController extends BaseController {
 
 	/**
 	 * Get the parameters used to initialise the result grid.
-	 * @Route("/getgridparameters")
+	 * @Route("/getgridparameters", name="query_get_grid_parameters")
 	 */
 	public function getgridparametersAction() {
 		$viewParam = array();
@@ -482,7 +482,7 @@ class QueryController extends BaseController {
 	/**
 	 * Get the details associed with a result line (clic on the "detail button").
 	 *
-	 * @Route("/ajaxgetdetails")
+	 * @Route("/ajaxgetdetails", name="query_get_details")
 	 */
 	public function ajaxgetdetailsAction(Request $request) {
 		$logger = $this->get('logger');
@@ -559,7 +559,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/csv-export")
+	 * @Route("/csv-export", name="query_csv_export")
 	 */
 	public function csvExportAction(Request $request) {
 		$logger = $this->get('logger');
@@ -786,7 +786,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/kml-export")
+	 * @Route("/kml-export", name="query_kml_export")
 	 */
 	public function kmlExportAction(Request $request) {
 		$logger = $this->get('logger');
@@ -969,7 +969,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/geojson-export")
+	 * @Route("/geojson-export", name="query_geojson_export")
 	 */
 	public function geojsonExportAction(Request $request) {
 		$logger = $this->get('logger');
@@ -1152,7 +1152,7 @@ class QueryController extends BaseController {
 	/**
 	 * AJAX function : Nodes of a tree under a given node and for a given unit.
 	 *
-	 * @Route("/ajaxgettreenodes")
+	 * @Route("/ajaxgettreenodes", name="query_get_treenodes")
 	 */
 	public function ajaxgettreenodesAction(Request $request) {
 		$logger = $this->get('logger');
@@ -1184,7 +1184,7 @@ class QueryController extends BaseController {
 	/**
 	 * AJAX function : Nodes of a taxonomic referential under a given node.
 	 *
-	 * @Route("/ajaxgettaxrefnodes")
+	 * @Route("/ajaxgettaxrefnodes", name="query_get_taxref_nodes")
 	 */
 	public function ajaxgettaxrefnodesAction(Request $request) {
 		$logger = $this->get('logger');
@@ -1216,7 +1216,7 @@ class QueryController extends BaseController {
 	/**
 	 * AJAX function : Return the list of available codes for a dynamic list.
 	 * (limit 1000)
-	 * @Route("/ajaxgetdynamiccodes")
+	 * @Route("/ajaxgetdynamiccodes", name="query_get_dynamic_codes")
 	 */
 	public function ajaxgetdynamiccodesAction(Request $request) {
 		$logger = $this->get('logger');
@@ -1254,7 +1254,7 @@ class QueryController extends BaseController {
 
 	/**
 	 * AJAX function : Return the list of available codes for a MODE unit.
-	 * @Route("/ajaxgetcodes")
+	 * @Route("/ajaxgetcodes", name="query_get_codes")
 	 */
 	public function ajaxgetcodesAction(Request $request) {
 		$logger = $this->get('logger');
@@ -1293,7 +1293,7 @@ class QueryController extends BaseController {
 
 	/**
 	 * AJAX function : Return the list of available codes for a MODE unit and a filter text.
-	 * @Route("/ajaxgettreecodes")
+	 * @Route("/ajaxgettreecodes", name="query_get_tree_codes")
 	 */
 	public function ajaxgettreecodesAction(Request $request) {
 		$logger = $this->get('logger');
@@ -1336,7 +1336,7 @@ class QueryController extends BaseController {
 
 	/**
 	 * AJAX function : Return the list of available codes for a taxref and a filter text.
-	 * @Route("/ajaxgettaxrefcodes")
+	 * @Route("/ajaxgettaxrefcodes", name="query_get_taxref_codes")
 	 */
 	public function ajaxgettaxrefcodesAction(Request $request) {
 		$logger = $this->get('logger');
