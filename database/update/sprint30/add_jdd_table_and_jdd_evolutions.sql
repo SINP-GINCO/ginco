@@ -65,3 +65,40 @@ ALTER TABLE raw_data.submission ADD CONSTRAINT fk_jdd_id FOREIGN KEY (jdd_id)
 REFERENCES raw_data.jdd (id) MATCH SIMPLE
 ON UPDATE CASCADE ON DELETE RESTRICT;
 COMMENT ON COLUMN raw_data.submission.jdd_id IS 'Reference of the jdd of the submission';
+
+
+-- Table: raw_data.jdd_field
+
+-- DROP TABLE raw_data.jdd_field;
+
+CREATE TABLE raw_data.jdd_field
+(
+  jdd_id integer NOT NULL, -- foreign key to the jdd
+  key character varying(255) NOT NULL, -- key for the field
+  type character varying(20) NOT NULL, -- type of the data stored
+  value_string character varying(255), -- value if of type string
+  value_text text, -- value if of type text
+  value_integer integer, -- value if of type integer
+  value_float double precision, -- value if of type float
+  CONSTRAINT pk_jdd_field_id PRIMARY KEY (jdd_id, key),
+
+  CONSTRAINT fk_jdd_id FOREIGN KEY (jdd_id)
+  REFERENCES raw_data.jdd (id) MATCH SIMPLE
+  ON UPDATE CASCADE ON DELETE CASCADE
+)
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE raw_data.jdd_field
+  OWNER TO admin;
+
+GRANT ALL ON TABLE raw_data.jdd_field TO admin;
+GRANT ALL ON TABLE raw_data.jdd_field TO ogam;
+
+COMMENT ON COLUMN raw_data.jdd_field.jdd_id IS 'foreign key to the jdd';
+COMMENT ON COLUMN raw_data.jdd_field.key IS 'key for the field';
+COMMENT ON COLUMN raw_data.jdd_field.type IS 'type of the data stored';
+COMMENT ON COLUMN raw_data.jdd_field.value_string IS 'value if of type string';
+COMMENT ON COLUMN raw_data.jdd_field.value_text IS 'value if of type text';
+COMMENT ON COLUMN raw_data.jdd_field.value_integer IS  'value if of type integer';
+COMMENT ON COLUMN raw_data.jdd_field.value_float IS  'value if of type float';
