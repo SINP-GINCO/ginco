@@ -1,0 +1,40 @@
+{% extends 'base.json.twig' %}
+{% use  "metadata_entity.json.twig" %}
+
+{% block response_data %}
+[
+    {% for field in columns %}
+    {
+        "name": "{{ field.id }}",
+        "format": "{{ field.format.format }}",
+        "data": "{{ field.data.data }}",
+        "inputType": "{{ field.inputType }}",
+        "decimals": {{ field.decimals|json_encode }},
+        "label": "{{ field.data.label }}",
+        "definition": "{{ field.data.definition }}",
+        "unit": "{{ field.data.unit.unit }}",
+        "type": "{{ field.data.unit.type }}",
+        "subtype": "{{ field.data.unit.subtype }}",
+        "hidden": false
+    },
+    {% endfor %}
+    {# Add the identifier of the line #}
+    {
+        "name":"id",
+        "label":"Identifier of the line",
+        "inputType":"TEXT",
+        "definition":"The plot identifier",
+        "hidden":true
+    },
+    {% if userInfos['DATA_EDITION_OTHER_PROVIDER'] or userInfos['DATA_QUERY_OTHER_PROVIDER'] %}
+     {# Right management : add the provider id of the data #}
+    {
+        "name":"_provider_id",
+        "label":"Provider",
+        "inputType":"TEXT",
+        "definition":"The provider",
+        "hidden":true
+    }
+    {% endif %}
+]
+{% endblock %}
