@@ -578,10 +578,10 @@ class QueryService extends BaseService {
 				'FR',
 				'DAILYBUILD'
 			))) {
-				$bbox = $mapRepository->getRegionBbox($projection, $regionCode);
+				$bbox = $this->mapRepository->getRegionBbox($projection, $regionCode);
 			} else {
 				$this->logger->info("Computing metropolitan country bbox...");
-				$bbox = $mapRepository->getMetropolitanBbox($projection);
+				$bbox = $this->mapRepository->getMetropolitanBbox($projection);
 			}
 		}
 
