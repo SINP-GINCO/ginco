@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here*/
 	execCustSQLFile("$sprintDir/add_jdd_table_and_jdd_evolutions.sql", $config);
+	execCustSQLFile("$sprintDir/update_bbox.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
