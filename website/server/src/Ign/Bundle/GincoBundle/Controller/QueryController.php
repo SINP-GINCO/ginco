@@ -222,14 +222,13 @@ class QueryController extends BaseController {
 			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
 		];
 
-// 		$em = $this->getDoctrine()->getManager();
-// 		$repository = $em->getRepository('GincoBundle\Mapping:Request');
-// 		$requestId = $repository->getLastRequestIdFromSession(session_id());
+		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos);
+
 		// Send the result as a JSON String
 		return new JsonResponse([
 			'success' => true,
 			'total' => $request->getSession()->get('query_Count'),
-			'data' => $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos)
+			'data' => $resultRows
 		]);
 	}
 
