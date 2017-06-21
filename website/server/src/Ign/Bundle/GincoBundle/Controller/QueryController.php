@@ -132,20 +132,18 @@ class QueryController extends BaseController {
 
 	/**
 	 * AJAX function : Return the results features bounding box in order to zoom on the features.
-	 * MIGRATION IN PROGRESS
-	 * @return JSON.
+	 * MIGRATED.
+	 *
+	 * @Route("/ajaxgetobservationbbox", name="query_get_observation_bbox")
 	 */
 	public function ajaxgetobservationbboxAction(Request $request) {
 		$logger = $this->get('logger');
-		$observationId = $request->request->getInt('observationId');
+		$observationId = $request->request->get('observationId');
 		$logger->debug('ajaxgetobservationbboxAction : ' . $observationId);
-
-		if ($observationId == null) {
-			$observationId = $request->get('observationId');
-		}
+		$locale = $this->get('ogam.locale_listener')->getLocale();
 
 		try {
-			$bbox = $this->get('ogam.query_service')->getMapRequestObservationBoundingBox($observationId, $this->getUser());
+			$bbox = $this->get('ogam.query_service')->getObservationBoundingBox($observationId, $request->getSession(), $this->getUser(), $locale);
 			// Send the result as a JSON String
 			return new JsonResponse([
 				'success' => true,
