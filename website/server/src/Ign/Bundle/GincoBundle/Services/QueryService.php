@@ -637,7 +637,7 @@ class QueryService extends BaseService {
 		}
 
 		// Get the detailed data
-		$requestId = $this->doctrine->getRepository('IgnGincoBundle:Mapping\Request')->getLastRequestIdFromSession(session_id());
+		$requestId = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Mapping\Request', 'mapping')->getLastRequestIdFromSession(session_id());
 		$this->genericModel->getDatumGinco($gTableFormat, $requestId);
 
 		// The data ancestors
@@ -728,12 +728,14 @@ class QueryService extends BaseService {
 	 *        	the current session
 	 * @param mixed $user
 	 *        	the user in session
+	 * @param String $locale
+	 *        	the current locale
 	 * @return String the bbox represented by a WKT character chain
 	 */
-	public function getObservationBoundingBox($observationId = null, $session, $user) {
+	public function getObservationBoundingBox($observationId = null, $session, $user, $locale) {
 		$this->logger->info('getObservationBoundingBox');
 
-		$requestId = $this->doctrine->getRepository('IgnGincoBundle:Mapping\Request')->getLastRequestIdFromSession(session_id());
+		$requestId = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Mapping\Request', 'mapping')->getLastRequestIdFromSession($session->getId());
 
 		$from = $session->get('query_SQLFrom');
 		$where = $session->get('query_SQLWhere');
@@ -745,7 +747,7 @@ class QueryService extends BaseService {
 		$valuesKeyMap = array_values($keyMap);
 		$keyMap = array_combine($keysKeyMap, $valuesKeyMap);
 
-		$table = $this->metadataModel->getTableFormat($this->schema, $keyMap['FORMAT']);
+		$table = $this->doctrine->getRepository(TableFormat::class)->getTableFormat($this->schema, $keyMap['FORMAT'], $locale);
 		$keys = $this->genericModel->getRawDataTablePrimaryKeys($table);
 
 		$providerId = $keyMap[strtoupper($keys['id_provider'])];
@@ -776,9 +778,7 @@ class QueryService extends BaseService {
 			AND res.id_provider = '" . $providerId . "'
 			AND res.id_observation = '$observationId'";
 
-			$select = $this->rawdb->prepare($bbQuery);
-			$select->execute();
-			$bbResult = $select->fetchAll();
+			$bbResult = $this->getQueryResults($bbQuery);
 
 			if (count($bbResult) && !empty($bbResult[0]['wkt'])) {
 				$bbox = $bbResult[0]['wkt'];
