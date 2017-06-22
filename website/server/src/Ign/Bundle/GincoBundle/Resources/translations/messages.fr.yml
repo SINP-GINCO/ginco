@@ -146,7 +146,7 @@ Integration:
 
 'The expected fields are:': Liste des champs attendus
 
-sridDescription: Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>Voir le <a href='http://www.epsg-registry.org/' target='_blank'>registre des codes EPSG</a>.<br>Remarque : si les géométries de votre fichier sont vides, indiquez n'importe quel code valide.
+sridDescription: "Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>Voir le <a href='http://www.epsg-registry.org/' target='_blank'>registre des codes EPSG</a>.<br>Remarque : si les géométries de votre fichier sont vides, indiquez n'importe quel code valide."
 
 Jdd:
   delete:
@@ -185,13 +185,13 @@ Users:
 Providers:
   delete:
     prompt: Voulez-vous vraiment supprimer l'organisme '%providerLabel%' ?
-    impossible: Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés.
+    impossible: "Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés."
   no_providers: Pas encore d'organismes.
 
 Role:
   delete:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
-    impossible: Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés.
+    impossible: "Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés."
 
 # Changing or Re-initialising user password
 #------------------------------
