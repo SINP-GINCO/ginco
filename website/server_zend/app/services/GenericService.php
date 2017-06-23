@@ -30,142 +30,30 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 	var $logger;
 
 	/**
-	 * Generate the FROM clause of the SQL request corresponding to a list of parameters.
-	 * Make the table_tree JOIN if necessary.
-	 *
-	 * @param String $schema
-	 *        	the schema
-	 * @param Application_Object_Generic_DataObject $dataObject
-	 *        	the query object (list of TableFields)
-	 * @param Array|String $joinTables
-	 *        	the extra tables to join in the request
-	 * @param String $geometryTablePKeyIdWithTable
-	 *        	the full name of the ogam_id primary key of the table which contains the geometry field (in the form tablename.ogam_id_<xxx>)
-	 * @param String $geometryTablePKeyProviderIdWithTable
-	 *        	the full name of the provider_id primary key of the table which contains the geometry field (in the form tablename.xxx)
-	 * @return String a SQL request
-	 */
-	public function generateSQLFromRequestCustom($schema, $dataObject, $joinTables = array(), $geometryTablePKeyIdWithTable = null, $geometryTablePKeyProviderIdWithTable = null) {
-		$this->logger->debug('generateSQLFromRequest');
-		
-		//
-		// Prepare the FROM clause
-		//
-		
-		// Prepare the list of needed tables
-		$tables = $this->getAllFormats($schema, $dataObject);
-		
-		// Add the root table;
-		$rootTable = array_shift($tables);
-		$logicalName = $rootTable->getLogicalName();
-		$from = " FROM " . $rootTable->tableName . " " . $logicalName;
-		
-		// Add the user asked joined tables
-		if (in_array('submission', $joinTables)) {
-			$from .= " LEFT JOIN $schema.submission ON submission.submission_id = $logicalName.submission_id";
-		}
-		if (in_array('results', $joinTables)) {
-			$from .= " LEFT JOIN mapping.results ON results.id_observation = $geometryTablePKeyIdWithTable AND results.id_provider = $geometryTablePKeyProviderIdWithTable";
-		}
-		
-		// Add the joined tables
-		foreach ($tables as $tableTreeData) {
-			
-			// Join the table
-			$from .= " JOIN " . $tableTreeData->tableName . " " . $tableTreeData->getLogicalName() . " on (";
-			
-			// Add the join keys
-			$keys = explode(',', $tableTreeData->keys);
-			foreach ($keys as $key) {
-				$from .= $tableTreeData->getLogicalName() . "." . trim($key) . " = " . $tableTreeData->parentTable . "." . trim($key) . " AND ";
-			}
-			$from = substr($from, 0, -5);
-			$from .= ") ";
-		}
-		
-		$this->logger->debug('generateSQLFromRequest :' . $from);
-		return $from;
-	}
-
-	/**
-	 * Generate the WHERE clause of the SQL request corresponding to a list of parameters.
-	 *
-	 * @param String $schema
-	 *        	the schema
-	 * @param Application_Object_Generic_DataObject $dataObject
-	 *        	the query object (list of TableFields)
-	 * @return String a SQL request
-	 */
-	public function generateSQLWhereRequestCustom($schemaCode, $dataObject) {
-		$this->logger->debug('generateSQLWhereRequest');
-		
-		// Prepare the list of needed tables
-		$tables = $this->getAllFormats($schemaCode, $dataObject);
-		
-		// Add the root table;
-		$rootTable = array_shift($tables);
-		
-		// Get the root table fields
-		$rootTableFields = $this->metadataModel->getTableFields($schemaCode, $rootTable->getLogicalName());
-		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
-		
-		//
-		// Prepare the WHERE clause
-		//
-		$where = " WHERE (1 = 1)";
-		foreach ($dataObject->infoFields as $tableField) {
-			if ($tableField->subtype == 'ID') {
-				// exact search
-				$where .= $this->buildWhereItem($schemaCode, $tableField, true);
-			} else {
-				$where .= $this->buildWhereItem($schemaCode, $tableField, false);
-			}
-		}
-		
-		// Right management
-		// Check the provider id of the logged user
-		$userSession = new Zend_Session_Namespace('user');
-		if (!empty($userSession->user)) {
-			$providerId = $userSession->user->provider->id;
-			if (!$userSession->user->isAllowed('DATA_QUERY_OTHER_PROVIDER') && $hasColumnProvider) {
-				$where .= " AND " . $rootTable->getLogicalName() . ".provider_id = '" . $providerId . "'";
-			}
-		}
-		
-		if (!$userSession->user->isAllowed('CONFIRM_SUBMISSION')) {
-			// user with "publish data" permission can see submissions all the time
-			$where .= " AND submission.step = 'VALIDATE' ";
-		}
-		
-		// Return the completed SQL request
-		return $where;
-	}
-
-	/**
 	 * Get the FROM clause, with JOINS linking youngest requested table to mapping.results table
 	 *
-	 * @param String $schema        	
-	 * @param string $tableFormat the format of the requested table   	
+	 * @param String $schema
+	 * @param string $tableFormat the format of the requested table
 	 */
 	public function getJoinToGeometryTable($schema, $tableFormat) {
 		$this->logger->debug('getJoinToGeometryTable');
-				
+
 		// Get the ancestors of the table
 		$customMetadataModel = new Application_Model_Metadata_CustomMetadata();
 		$ancestors = $customMetadataModel->getTablesTree($tableFormat, $schema);
-		
+
 		// Get the ancestors to the geometry table only
 		$ancestorsToGeometry = $customMetadataModel->getAncestorsToGeometry($schema, $ancestors);
-		
+
 		// Add the requested table (FROM)
 		$ancestorsValue = array_values($ancestorsToGeometry);
 		$requestedTable = array_shift($ancestorsValue);
-		
+
 		$logicalName = $requestedTable->getLogicalName();
 		$this->logger->debug('requested table format : ' . $logicalName);
-		
+
 		$from = " FROM " . $requestedTable->tableName . " " . $logicalName;
-		
+
 		// Add the joined tables (when there is ancestors)
 		foreach ($ancestorsToGeometry as $tableTreeData) {
 			if ($tableTreeData->parentTable != '*') {
@@ -180,12 +68,12 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 				$from .= ") ";
 			}
 		}
-		
+
 		// Add  JOIN beetween results table and the table which contains the geometry column (last table of the list)
 		$ancestorsValue = array_values($ancestorsToGeometry);
 		$geometryTable = array_pop($ancestorsValue);
 		$this->logger->debug('geometryTable : ' . $geometryTable->tableFormat);
-		
+
 		$geometryTableFormat = $customMetadataModel->getTableFormat($schema, $geometryTable->tableFormat);
 		$geometryTableFormatKeys = $geometryTableFormat->primaryKeys;
 		foreach ($geometryTableFormatKeys as $geometryKey) {
@@ -194,7 +82,7 @@ class Custom_Application_Service_GenericService extends Application_Service_Gene
 			}
 		}
 		$from .= " LEFT JOIN mapping.results ON results.id_observation = " . $geometryTable->tableFormat . "." . $geometryTablePKeyId . " AND results.id_provider = " . $geometryTable->tableFormat . ".provider_id";
-		
+
 		$this->logger->debug('getJoinToGeometryTable :' . $from);
 		return $from;
 	}
