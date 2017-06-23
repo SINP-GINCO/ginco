@@ -1,9 +1,16 @@
-/*
- * To update, convert the .xsl from the MNHN to .csv (be carful with the encoding)
- * Import to postgresql with his command :
- * COPY referentiels.especesensible(cd_dept,cd_nom,nom_cite,duree,codage,autre,cd_sl,cd_occ_statut_biologique) from '/home/annadeb/Téléchargements/especesensible.csv' with delimiter ',' null '' CSV HEADER QUOTE as '"';
- * Save it with pgAdmin : fichier plat, données, pré-données, post-données.
+/* 
+ * Add sensitive species metadata for cvdl
  */
+INSERT INTO referentiels.especesensiblelistes(short_citation, cd_insee_reg, date_liste, full_citation, url, cd_doc, cd_sl)
+    VALUES ('Anonyme (2015)', 24, 2015, 'Anonyme. 2015. Référentiel régional de données sensibles SINP Centre-Val de Loire Volet Occurrence de taxons (validé le 25 juin 2015 en CSRPN). 5 pp.', NULL, 189968, 13);
+
+    
+
+/* 
+ * Delete and replace sensitive species
+ * (can't be launched in pgadmin as it does not accept copy, but work in psql)
+ */
+DROP TABLE referentiels.especesensible CASCADE;
 
 --
 -- PostgreSQL database dump

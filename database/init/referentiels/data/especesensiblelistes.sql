@@ -29,3 +29,5 @@ INSERT INTO referentiels.especesensiblelistes(short_citation, cd_insee_reg, date
     VALUES ('Happe (2015)', 83, 2015, 'Happe, D. 2015. Liste régionale des espèces potentiellement sensibles pour la diffusion des données. Auvergne.<br>', NULL, 124583, 8);
 INSERT INTO referentiels.especesensiblelistes(short_citation, cd_insee_reg, date_liste, full_citation, url, cd_doc, cd_sl)
     VALUES ('Caze & Leblond (2016)', 72, 2016, 'Caze G. & Leblond N. 2016. <em>Liste des especes sensibles de la flore vasculaire en Aquitaine dans le cadre du Systeme d Information sur la Nature et les Paysages (SINP), version 1.0</em>. Conservatoire Botanique National Sud-Atlantique.', NULL, 158568, 10);
+INSERT INTO referentiels.especesensiblelistes(short_citation, cd_insee_reg, date_liste, full_citation, url, cd_doc, cd_sl)
+    VALUES ('Anonyme (2015)', 24, 2015, 'Anonyme. 2015. Référentiel régional de données sensibles SINP Centre-Val de Loire Volet Occurrence de taxons (validé le 25 juin 2015 en CSRPN). 5 pp.', NULL, 189968, 13);
