@@ -23,3 +23,21 @@ Première version de production.
 
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v1.0.1...v1.0.2)
+
+
+## V1.0.3 (02/06/2017)
+
+* \#1136 et \#1139: Corrections de bugs sur la page de jeux de données
+* \#1118: Corrections de bug: le bouton "créer un utilisateur" avait disparu à cause d'un pied de page mal calibré
+
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v1.0.2...v1.0.3)
+
+
+## V1.0.4 (26/06/2017)
+
+* \#1137: Bug sur les formats de date 
+* \#1159: Mise à jour du référentiel de sensibilité intégrant la liste régionale Centre-Val de Loire
+
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v1.0.3...v1.0.4)
