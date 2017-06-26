@@ -1,3 +1,5 @@
+ALTER TABLE website.layer_role_restriction DROP CONSTRAINT IF EXISTS fk_layer_role_restriction_layer_name;
+
 DELETE FROM mapping.layer_tree;
 
 INSERT INTO mapping.layer_tree (item_id, parent_id, is_layer, is_checked, is_hidden, is_disabled, is_expended, name, "position", checked_group) VALUES
