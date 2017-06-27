@@ -40,9 +40,8 @@ class JddController extends Controller {
 	 */
 	public function newAction(Request $request) {
 
-		// Get the referer url, and put it in session to redirect to it at the end of the process
-		$refererUrl = $request->headers->get('referer');
-		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		// Redirect url is integration_home when creating a new jdd, put it in session to redirect to it at the end of the process
+		$redirectUrl = $this->generateUrl('integration_home');
 		$session = $request->getSession();
 		if (!$session->has('redirectToUrl'))
 			$session->set('redirectToUrl', $redirectUrl);
@@ -120,4 +119,43 @@ class JddController extends Controller {
 			'xml' => isset($xml) ? $xml: '',
 		));
 	}
+
+	/**
+	 * Update Metadata for the given jdd
+	 * returns JsonResponse true or false
+	 * Checks, via a service, the xml file on metadata platform, and fills jdd fields with metadata fields
+	 *
+	 * @Route("/{id}/update-metadatas", name = "jdd_update_metadatas", requirements={"id": "\d+"})
+	 */
+	public function updateMetadatas(Request $request, Jdd $jdd) {
+		$metadataId = $jdd->getField('metadataId');
+		$em = $this->get('doctrine.orm.entity_manager');
+		$mr = $this->get('ginco.metadata_reader');
+		try {
+			// Read the metadata XML file
+			$fields = $mr->getMetadata($metadataId);
+			$attachedJdd = $em->merge($jdd);
+			// Ceate the fields for the attched Jdd
+			foreach ($fields as $key => $value) {
+				$attachedJdd->setField($key, $value);
+			}
+			$em->flush();
+			$this->addFlash(
+				'notice',
+				'Jdd.page.metadataUpdateOK'
+			);
+		} catch (MetadataException $e) {
+			$this->addFlash(
+				'error',
+				'Jdd.page.metadataUpdateError'
+			);
+		}
+
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		return $this->redirect($redirectUrl);
+	}
+
 }
