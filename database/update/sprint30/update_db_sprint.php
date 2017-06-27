@@ -27,7 +27,7 @@ try {
 	/* patch code here*/
 	execCustSQLFile("$sprintDir/add_jdd_table_and_jdd_evolutions.sql", $config);
 	execCustSQLFile("$sprintDir/add_jdd_id_download_service_url.sql", $config);
-
+	execCustSQLFile("$sprintDir/add_event_listener_jdd_service.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
