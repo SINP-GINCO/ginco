@@ -6,9 +6,20 @@
 {% set user = app.user %}
 
 {% block body %}
-    <h1>{{ 'Jdd.page.title'|trans({'%jddId%':jdd.id}) }}</h1>
+    <h1><small>{{ 'Jdd.page.title'|trans }} :</small><br>
+    {{ jdd.field('title') }}</h1>
+    <hr>
 
     <table class="table table-nonfluid table-bordered">
+        <tr>
+            <th>{{ 'Jdd.page.metadataId'|trans }}</th>
+            <td>
+                <a href="{{ configurationManager.getConfig('jddMetadataFileDownloadServiceURL') }}{{ jdd.field('metadataId') }}"
+                    target="_blank" title="{{ 'Jdd.page.metadataLinkTitle'|trans }}">
+                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ jdd.field('metadataId') }}
+                </a>
+            </td>
+        </tr>
         <tr>
             <th>{{ 'Datamodel'|trans }}</th>
             <td>{{ jdd.model.name }}</td>
@@ -35,7 +46,7 @@
 
     {% if jdd.activeSubmissions is not empty %}
     {# List of submissions #}
-        <table class="table table-hover">
+        <table class="table table-hover table-bordered submissions-table">
             <thead>
                 {%  include "@IgnGinco/Integration/submission_line_complete.html.twig" %}
             </thead>
@@ -57,7 +68,65 @@
     </div>
 
 
-    {# Actions on the dataset #}
+    {# == Actions on the dataset == #}
+    <hr>
+    {# Update Metadata#}
+
+    <a class="btn btn-primary" href="{{ path("jdd_update_metadatas", { 'id': jdd.id }) }}">
+        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+        {{ 'Jdd.page.metadataUpdate'|trans }}
+    </a>
+
+    {# Delete #}
+    {% if jdd.deletable %}
+        <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            {{ 'Delete'|trans }}
+        </button>
+
+        <!-- Modal - Delete jdd -->
+        <div class="modal fade" id="modal-delete-jdd-{{ jdd.id }}"
+             tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {% trans with {'%jddId%': jdd.field('title')} %} Jdd.delete.prompt {% endtrans %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                        <a type="button" class="btn btn-primary"
+                           href="{{ path('jdd_delete', {'id' : jdd.id}) }}">
+                            {% trans %}Continue{% endtrans %} </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <button class="btn btn-default btn-disabled" data-toggle="modal" data-target="#modal-impossible-delete-jdd-{{ jdd.id }}">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            {{ 'Delete'|trans }}
+        </button>
+
+        <!-- Modal - Delete Jdd -->
+        <div class="modal fade" id="modal-impossible-delete-jdd-{{ jdd.id }}"
+             tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {% trans with {'%jddId%': jdd.field('title')} %} Jdd.delete.impossible {% endtrans %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    </td>
 
 {% endblock %}
 

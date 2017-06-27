@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+{% form_theme form 'form.html.twig' %}
+
+{% block body %}
+    <h1>{{ 'Jdd.new.title'|trans }}</h1>
+
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.model) }}
+
+    <div class="form-group {% if form.metadata_id.vars.errors|length %}has-error{% endif %} }}">
+        {{ form_label(form.metadata_id) }}
+        <div class="col-sm-4">
+            {{ form_widget(form.metadata_id) }}
+            {{ form_errors(form.metadata_id) }}
+            <div class="no-error">
+                <span class="help-block">{{ 'Jdd.new.metadataIdDescription'|trans({'%metadataUrl%': metadataUrl})|raw }}</span>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+
+    {{ xml }}
+
+{% endblock %}
