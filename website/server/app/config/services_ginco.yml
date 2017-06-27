@@ -137,3 +137,8 @@ services:
     app.mail_manager:
         class: Ign\Bundle\OGAMBundle\Services\MailManager
         arguments: ["@mailer", "@twig", "@logger", "noreply@ign.fr", "@=service('ogam.configuration_manager').getConfig('site_name', 'Plateforme GINCO')"]
+
+    # Service reading and parsing the xml metadata files from INPN metadata application
+    ginco.metadata_reader:
+        class: Ign\Bundle\GincoBundle\Services\MetadataReader
+        arguments: ["@ogam.configuration_manager","@logger"]

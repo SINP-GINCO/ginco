@@ -149,6 +149,10 @@ Integration:
 sridDescription: Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>Voir le <a href='http://www.epsg-registry.org/' target='_blank'>registre des codes EPSG</a>.<br>Remarque : si les géométries de votre fichier sont vides, indiquez n'importe quel code valide.
 
 Jdd:
+  new:
+    title: Créer un jeu de données
+    metadataIdLabel: Identifiant de métadonnées
+    metadataIdDescription: L'identifiant de métadonnées renseigné doit être présent dans <a href="%metadataUrl%" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="https://ginco.ign.fr/doc/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
   delete:
     prompt: Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?
     impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données liés).
@@ -156,12 +160,20 @@ Jdd:
   submission:
     add: Importer des données
 
+  list:
+    jdd: Jeux de données
+    view: Détails du jeu de données
+    submissions: Imports de Données Sources Régionales
+    nameAndId: Titre / Identifiant
+
   page:
-    title: Jeu de données %jddId%
+    title: Jeu de données
+    metadataId: Fiche de métadonnées INPN
+    metadataLinkTitle: Voir la fiche de métadonnées INPN
     createdAt: Créé
     dataUpdatedAt: Dernière modification des données
-    dataSubmissions: Soumissions de données
-    nosubmissions: Pas encore de soumissions dans ce jeu de données.
+    dataSubmissions: Imports de Données Sources Régionales
+    nosubmissions: Pas encore d'imports dans ce jeu de données.
 
 # Configurateur
 # -------------
