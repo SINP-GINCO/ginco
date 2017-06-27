@@ -20,6 +20,7 @@
                 <th>{{ 'JDD ID'|trans }}</th>
                 <th>{{ 'Actions JDD'|trans }}</th>
                 <th>{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
+                <th>{{ 'DEE'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -93,10 +94,118 @@
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  {{ 'Jdd.submission.add'|trans }}
                         </a>
                     </div>
+                    <!-- Begin DEE column -->
+					<td style="text-align:center">
+                     {% if (jdd.id) %}
+                         {% if user.isAllowed('MANAGE_DATASETS') %}
+                            {% if jdd.getHasAtLeastOneSuccessfulSubmission and false %}
+                            <!-- and not jdd.hasExportFile -->
+                             <table><tr>
+                                 <td title="{{ 'Publish the data to export them as DEE'|trans }}"> 
+									{% image '@IgnGincoBundle/Resources/public/img/play_publish_grey.png' %}
+                           				<img src="{{ asset_url }}" />
+                       				{% endimage %}
+                       			 </td>
+                                 <td title="{{ 'Publish the data to download the DEE'|trans }}">
+									{% image '@IgnGincoBundle/Resources/public/img/download_grey.png' %}
+                           				<img src="{{ asset_url }}" />
+                       				{% endimage %}
+                                 </td>
+                                 <td title="{{ 'Generate the DEE to delete it'|trans }}">
+									{% image '@IgnGincoBundle/Resources/public/img/delete_x_icon_grey.png' %}
+                           				<img src="{{ asset_url }}" />
+                       				{% endimage %}
+                                 </td>
+                                 </tr></table><?php
+                             {% elseif jdd.getHasAtLeastOneValidatedSubmission and true %}
+                              <!-- and not jdd.hasExportFile -->
+                             <div class="dee-status hidden" data-export-file-id="-1" data-jdd-id="{{ jdd.id }}"></div>
+                                 <div class="progress hidden">
+                                     <script type="text/javascript">
+                                     {% if (jdd.status is same as('RUNNING')) %}
+                                         var $label = "{{ 'Génération DEE en cours...' }}";
+                                     {% else %} 
+                                     	var $label = "{{ 'Génération DEE en attente...' }}";
+									 {% endif %}
+									    <!-- display('deeprogress' + {{ jdd.id }}, $label, 0 ,'/img/');-->
+                                     </script>
+                                     <div class="integration-progress hidden">
+                        				<div>{{ 'IntegrationPage.import.running'|trans }}</div>
+                        					<div class="progress">
+                            					<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                               						 0%
+                            					</div>
+                        					</div>
+                    					</div>
+                                 </div>
+                                 </div>
+                                 <div class="dee-content" data-submission-step=" jdd.step "
+                                      data-export-file-id="-1" data-jdd-id="{{ jdd.id }}"></div>
+                             {% elseif jdd.getHasAtLeastOneValidatedSubmission or false %}
+                             <!--  or jdd.hasExportFile -->
+                             <div class="dee-status hidden" data-export-file-id="17"
+                             data-jdd-id="{{ jdd.id }}"></div>
+                             	<!--  jdd.exportfileid -->
+                                 <div class="progress hidden">
+                                     <script type="text/javascript">
+                 					 {% if (jdd.status is same as('RUNNING')) %}
+                                         var $label = "{{ 'Génération DEE en cours...' }}";
+                                     {% else %} 
+                                     	var $label = "{{ 'Génération DEE en attente...' }}";
+									 {% endif %}
+
+									    <!-- display('deeprogress' + {{ jdd.id }}, $label, 0 ,'/img/');-->
+                                     </script>
+                                     <div class="integration-progress hidden">
+                        				<div>{{ 'IntegrationPage.import.running'|trans }}</div>
+                        					<div class="progress">
+                            					<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                               						 0%
+                            					</div>
+                        					</div>
+                    					</div>
+                                 </div>
+                                 <div class="dee-content" data-submission-step="{{ jdd.getHasAtLeastOneValidatedSubmission }}"
+                                      data-export-file-id="17" data-jdd-id="{{ jdd.id }}"></div>
+                             {% else %}
+                                 <table><tr>
+                                 <td title="{{ 'Publish the data to export them as DEE'|trans }}"> 
+									{% image '@IgnGincoBundle/Resources/public/img/play_publish_grey.png' %}
+                           				<img src="{{ asset_url }}" />
+                       				{% endimage %}
+                       			 </td>
+                                 <td title="{{ 'Publish the data to download the DEE'|trans }}">
+									{% image '@IgnGincoBundle/Resources/public/img/download_grey.png' %}
+                           				<img src="{{ asset_url }}" />
+                       				{% endimage %}
+                                 </td>
+                                 <td title="{{ 'Generate the DEE to delete it'|trans }}">
+									{% image '@IgnGincoBundle/Resources/public/img/delete_x_icon_grey.png' %}
+                           				<img src="{{ asset_url }}" />
+                       				{% endimage %}
+                                 </td>
+                                 </tr></table>
+                             {% endif %}
+                         {% endif %}
+                     {% endif %}
+                </td>
+                <!-- End DEE column  -->
                 </td>
         {% endfor %}
         </tbody>
     </table>
+    
+    <!-- DEE regeneration popup -->
+	<div id="dialogoverlay"></div>
+	<div id="dialogbox">
+	  <div>
+	    <div id="dialogboxhead"></div>
+	    <div id="dialogboxbody">
+	    </div>
+	    <div id="dialogboxfoot"></div>
+	  </div>
+	</div>
+    
 {% else %}
     <p>{% trans %}No submission found{% endtrans %}</p>
 {% endif %}
@@ -110,4 +219,315 @@
     <script>
         {% include '@IgnGinco/Integration/integration-progress-bars.js.twig' %}
     </script>
+    <!-- Scripts of the page -->
+<script type="text/javascript">
+/**
+ * Scripts for DEE Export management
+ * Actions are sent via Ajax, and get back status of the export job.
+ * Status are:
+ * - NOT FOUND: no export initiated
+ * - PENDING: export initiated, but not running yet
+ * - RUNNING: in progess
+ * - COMPLETED: done, export file is available
+ * - ABORTED: problem during export, file is not available
+ */
+
+ 
+/**
+ * Custom prompt to get user comment when generating DEE
+ */
+function CustomPrompt(){
+	this.render = function(jddId, exportFileId, deeDialogTitle, deeDialog, deeAction){
+		var dialogoverlay = document.getElementById('dialogoverlay');
+	    var dialogbox = document.getElementById('dialogbox');
+		dialogoverlay.style.display = "block";
+	    dialogbox.style.display = "block";
+	    document.getElementById('dialogboxhead').innerHTML = deeDialogTitle;
+	    document.getElementById('dialogboxbody').innerHTML = deeDialog;
+		document.getElementById('dialogboxfoot').innerHTML = '<button onclick="Prompt.check_empty(\''+jddId+'\', \''+exportFileId+'\', \''+deeAction+'\')">Valider</button> <button onclick="Prompt.cancel()">Annuler</button>';
+	}
+	this.cancel = function(){
+		document.getElementById('dialogbox').style.display = "none";
+		document.getElementById('dialogoverlay').style.display = "none";
+	}
+	this.ok = function(jddId, exportFileId, deeAction){
+		var comment = document.getElementById('prompt_comment').value;
+		if (deeAction != 'delete') {
+			addExportJob(jddId, exportFileId, deeAction, comment);
+		} else {
+            cancelExport(jddId, exportFileId, comment);
+		}
+		document.getElementById('dialogbox').style.display = "none";
+		document.getElementById('dialogoverlay').style.display = "none";
+	}
+	this.check_empty = function(jddId, exportFileId, deeAction){
+		if (document.getElementById('prompt_comment').value == "" && deeAction != 'create') {
+			alert("Vous n'avez pas laissé de commentaire !");
+		} else if (document.getElementById('prompt_comment').value.length > 6000) {
+			alert("Votre commentaire ne doit pas dépasser 6000 caractères.");
+		} else {
+			Prompt.ok(jddId, exportFileId, deeAction);
+		}
+	}
+	
+}
+Prompt = new CustomPrompt();
+
+
+/**
+ * Update status and content divs for given submission.
+ * If status is not given, launch a ajax request to get it.
+ *
+ * @param $jddId
+ * @param $exportFileId
+ * @param $status
+ */
+function updateStatusAndContent($jddId, $exportFileId, $status = null) {
+    if ($status) {
+        updateStatusDiv($jddId, $exportFileId, $status);
+        updateContentDiv($jddId, $exportFileId, $status);
+    }
+    else {
+        if($exportFileId >= 0){
+            $.getJSON("/gmlexport/get-status", {
+                submissionId: $exportFileId,
+            }, function (data) {
+                updateStatusDiv($jddId, $exportFileId, data.status);
+                updateContentDiv($jddId, $exportFileId, data.status, data.progress);
+            });
+
+        } else {
+            updateStatusDiv($jddId, $exportFileId, 'NOT FOUND');
+            updateContentDiv($jddId, $exportFileId, 'NOT FOUND', 0);
+        }
+    }
+}
+
+/**
+ * Search all PENDING and RUNNING jobs (by the content of the hidden status div)
+ * And launch a ajax request to retrieve their status and progress
+ * Then update status and content divs.
+ */
+function updateAllPendingAndRunningTasks() {
+    var $exportFileIds = [];
+    var $jddIds = [];
+    $('.dee-status').each(function() {
+        if ( $(this).html() == 'RUNNING' || $(this).html() == 'PENDING' ) {
+            $exportFileId = $(this).attr('data-export-file-id');
+            $exportFileIds.push($exportFileId);
+            $jddId = $(this).attr('data-jdd-id');
+            $jddIds.push($jddId);
+        }
+    });
+
+    if ($exportFileIds.length) {
+        $.getJSON("/gmlexport/get-all-status", {
+            submissionIds: $exportFileIds,
+            jddIds: $jddIds
+        }, function (data) {
+            $.each(data, function (index, value) {
+                updateStatusDiv(value.jddId, value.submissionId, value.status);
+                updateContentDiv(value.jddId, value.submissionId, value.status, value.progress);
+            });
+        });
+    }
+}
+
+/**
+ * Update status div alone.
+ * The status div is hidden with css, and is used by the scripts
+ * to know if there is PENDING or RUNNING jobs (needing to ask periodically for their status)
+ *
+ * @param $exportFileId
+ * @param $status
+ */
+function updateStatusDiv($jddId, $exportFileId, $status) {
+    var $statusDiv = $("div.dee-status[data-jdd-id='" + $jddId + "']");
+    // Update status
+    $statusDiv.html($status);
+}
+
+/**
+ * Update content div alone.
+ * The content div is visible and shows:
+ *  - the download link when available
+ *  - the progress bar when the export job is running
+ *  - action links: launch, cancel, relaunch
+ *
+ * @param $jddId
+ * @param $exportFileId
+ * @param $status
+ * @param $progress
+ */
+function updateContentDiv($jddId, $exportFileId, $status, $progress = 0) {
+    var $contentDiv = $("div.dee-content[data-jdd-id='" + $jddId + "']");
+    var $submissionStep = $contentDiv.attr('data-submission-step');
+    var $exportFileId = $contentDiv.attr('data-export-file-id');
+    var $actions = getActions($status);
+
+    $contentDiv.html('');
+    var table = $('<table></table>');
+    var row = $('<tr style="text-align:center"></tr>');
+    table.append(row);
+
+    // Action links
+    if ($.inArray( 'Lancer', $actions ) != -1) {
+        var $launchLink = $("<td><a title='Générer la DEE' href=''> {% image '@IgnGincoBundle/Resources/public/img/play_publish.png' %}<img src='{{ asset_url }}' />{% endimage %} </a></td>");
+        row.append($launchLink);
+        $launchLink.click( function(e) {
+            e.preventDefault();
+            var deeDialogTitle = "Génération d'une DEE";
+            var deeDialog = "<p>Vous allez générer une DEE. Une notification va être envoyée à la plateforme nationale,";
+            deeDialog += " Vous pouvez éventuellement ajouter un commentaire.</p>";
+            deeDialog += "<textarea id='prompt_comment'></textarea>";
+            var deeAction = 'create';
+            
+            Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction);
+        });
+    } else if ($.inArray( 'Relancer', $actions ) != -1 && $submissionStep == 'VALIDATE') {
+        var $launchAgainLink = $("<td><a title='Regénérer' href=''> {% image '@IgnGincoBundle/Resources/public/img/refresh_arrow.png' %}<img src='{{ asset_url }}' />{% endimage %} </a></td>");
+        row.append($launchAgainLink);
+        $launchAgainLink.click( function(e) {
+            e.preventDefault();
+            var deeDialogTitle = "Génération d'une DEE";
+            var deeDialog = "<p>Vous allez regénérer une DEE. Une notification va être envoyée à la plateforme nationale,";
+            deeDialog += " veuillez décrire les modifications du jeu de données qui amènent à regénérer la DEE.</p>";
+            deeDialog += "<textarea id='prompt_comment'></textarea>";
+            var deeAction = 'update';
+            Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction);
+        });
+    } else if ($submissionStep != 'VALIDATE'){
+        row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/refresh_arrow_grey.png' %}<img src='{{ asset_url }}' />{% endimage %} </td>");
+    }
+
+    // Download link if file is available
+    if ($status == 'COMPLETED') {
+        var $downloadLink = $("<td><a href='/gmlexport/download?id=" + $exportFileId + "'> {% image '@IgnGincoBundle/Resources/public/img/download.png' %}<img src='{{ asset_url }}' />{% endimage %} </a></td>");
+        row.append($downloadLink);
+    } else if ($status == 'ABORTED') {
+        row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/warning_red.png' %}<img src='{{ asset_url }}' title='Erreur lors de la génération DEE' />{% endimage %} </td>");
+    } else {
+        row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/download_grey.png' %}<img src='{{ asset_url }}' title='Télécharger les DEE' />{% endimage %} </td>");
+    }
+
+    if ($.inArray( 'Annuler', $actions ) != -1) {
+        var $cancelLink = $("<td><a href='' title='Annuler'> {% image '@IgnGincoBundle/Resources/public/img/delete_x_icon.png' %}<img src='{{ asset_url }}' />{% endimage %} </a></td>");
+        row.append($cancelLink);
+        $cancelLink.click( function(e) {
+            e.preventDefault();
+            var deeDialogTitle = "Suppression d'une DEE";
+            var deeDialog = "<p>Vous allez supprimer une DEE. Une notification va être envoyée à la plateforme nationale,";
+            deeDialog += " veuillez décrire raisons de cette suppression.</p>";
+            deeDialog += "<textarea id='prompt_comment'></textarea>";
+            var deeAction = 'delete';
+            Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction);
+        });
+    } else {
+        row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/delete_x_icon_grey.png' %}<img src='{{ asset_url }}' title='Annuler' />{% endimage %} </td>");
+    }
+
+    // Update progress bar if RUNNING
+    var $progressBar = $contentDiv.parent().find('div.progress');
+    if ($status == 'RUNNING' || $status == 'PENDING') {
+        if ($progressBar.hasClass('hidden')) {
+            $progressBar.removeClass('hidden');
+        }
+        var $label = 'Génération DEE ' + (($status == 'RUNNING') ? 'en cours...' : 'en attente...');
+        setLabel('deeprogress' + $jddId, $label);
+        setProgress('deeprogress' + $jddId, $progress);
+    }
+    // If not RUNNING remove progress bar
+    else {
+        $progressBar.addClass('hidden');
+    }
+
+    $contentDiv.append(table);
+}
+
+/**
+ * Return list of actions available by status
+ *
+ * @param $status
+ * @returns {Array}
+ */
+function getActions($status) {
+    var $actions = [];
+    switch ($status) {
+        case 'NOT FOUND':
+            $actions = ['Lancer'];
+            break;
+        case 'PENDING':
+        case 'RUNNING':
+            $actions = ['Annuler'];
+            break;
+        case 'COMPLETED':
+        case 'ERROR':
+        case 'ABORTED':
+            $actions = ['Relancer', 'Annuler'];
+            break;
+        default:
+            $actions = ['Lancer', 'Annuler'];
+            break;
+    }
+    return $actions;
+}
+
+/**
+ * Ajax request to add an export job (and launch jobs if not already running)
+ *
+ * @param $jddId
+ * @param $exportFileId
+ * @param $deeAction
+ * @parma $comment
+ */
+function addExportJob($jddId, $exportFileId, $deeAction, $comment) {
+    $.getJSON( "{{ path('gmlexport_addjob') }}", {
+        exportFileId: $exportFileId,
+        jddId: $jddId,
+        deeAction: $deeAction,
+        comment: $comment
+    },function( data ) {
+        if (data.success) {
+            updateStatusAndContent($jddId, $exportFileId, data.status);
+            window.location.reload(true);
+        }
+    });
+}
+
+/**
+ * Ajax request to cancel a job and delete export file.
+ * By SQL cascade it is also removed from jdd table.
+ *
+ * @param $jddId
+ * @param $exportFileId
+ * @param $comment
+ */
+function cancelExport($jddId, $exportFileId, $comment) {
+    $.getJSON( "/gmlexport/cancel-export", {
+        jddId: $jddId,
+        id: $exportFileId,
+        comment: $comment
+    },function( data ) {
+         if (data.success) {
+            updateStatusAndContent($jddId, $exportFileId, data.status);
+            window.location.reload(true);
+        }
+    });
+}
+
+jQuery(document).ready(function() {
+
+    $('.dee-content').each(function() {
+        var $exportFileId = $(this).attr('data-export-file-id');
+        var $jddId = $(this).attr('data-jdd-id');
+        console.log($jddId);
+        updateStatusAndContent($jddId, $exportFileId);
+    });
+
+    // Periodically update progress for running and pending jobs
+    var timerId = setInterval(updateAllPendingAndRunningTasks , 1000);
+
+});
+
+</script>
 {% endblock %}

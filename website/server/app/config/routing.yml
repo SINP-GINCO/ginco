@@ -1,8 +1,4 @@
 # @ annotation for the parent bundle creates problem with routes when adding controller in child bundle
-#ign_ogam:
-#    resource: "../../src/Ign/Bundle/OGAMBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
 
 ign_ogam:
     resource: "../../src/Ign/Bundle/OGAMBundle/Controller/"

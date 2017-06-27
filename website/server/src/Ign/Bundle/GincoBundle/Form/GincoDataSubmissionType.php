@@ -20,7 +20,7 @@ class GincoDataSubmissionType extends AbstractType  {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder->add('provider', EntityType::class, array(
 			'class' => 'OGAMBundle:Website\Provider',
-			'query_builder' => function (EntityRepository$er) {
+			'query_builder' => function (EntityRepository $er) {
 				return $er->createQueryBuilder('p')
 					->orderBy('p.label', 'ASC');
 			},

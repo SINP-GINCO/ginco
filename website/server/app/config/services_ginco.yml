@@ -99,8 +99,12 @@ services:
 
     ogam.query_service:
         class: Ign\Bundle\GincoBundle\Services\QueryService
-        arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@=service('security.token_storage').getToken().getUser()", "@=service('ogam.schema_listener').getSchema()", "@ogam.manager.generic", "@ginco.repository.mapping.map"]
+        arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@=service('ogam.schema_listener').getSchema()", "@ogam.manager.generic", "@ginco.repository.mapping.map", "@?=service('security.token_storage').getToken().getUser()"]
 
+    # RabbitMQ Service
+    generate_dee_command_service:
+        class: Ign\Bundle\GincoBundle\Services\GenerateDeeCommand
+        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@ogam.generic_service", "@ogam.query_service"]
 
     #templatehelper
     ogam.helper.AddLink:
