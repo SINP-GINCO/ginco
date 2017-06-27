@@ -39,12 +39,6 @@
 
                     {# Delete #}
                     {% if jdd.deletable %}
-                        <a title="{% trans %}Delete{% endtrans %}" href="{{ path('jdd_delete', {'id' : jdd.id}) }}" onClick="return confirm('{% trans %}Are you sure?{% endtrans %}');">&nbsp;</a>
-                    {% else %}
-                        <a title="{% trans %}Delete{% endtrans %}" href="#" onClick="alert('{% trans %}Impossible to delete this jdd.{% endtrans %}');">&nbsp;</a>
-                    {% endif %}
-
-                    {% if jdd.deletable %}
                         <button class="btn btn-xs btn-danger" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
