@@ -1,1 +1,6 @@
 EmailList.invalid: "Cette adresse ou liste d'adresses email n'est pas valide : {{ string }}."
+
+MetadataException:
+  FailedDownload: Impossible de télécharger la fiche de métadonnnées ; merci de vérifier que l'identifiant correspond à une fiche présente dans l'application de métadonnées de l'INPN.
+  ParsingError: Erreur de lecture de la fiche de métadonnées ; merci de contacter l'administrateur régional.
+Metadata.Unique: Un jeu de données avec cet identifiant de métadonnées existe déjà dans la plateforme régionale.

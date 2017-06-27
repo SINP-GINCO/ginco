@@ -44,10 +44,11 @@ datasets:
   label: Help.datasets
   url: /gestion-jdd/index.html
   routes:
-    - integration_home
-    - integration_list
+    - jdd_list
+    - jdd_show
+    - jdd_new
     - integration_creation
-    - ign_ogam_integration_showuploaddata
+    - integration_upload_data
     - integration_validate_upload
 
 configurator:

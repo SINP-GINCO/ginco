@@ -1,1 +1,3 @@
-GincoComputeGeoAssociationService;fr.ifn.ogam.integration.business.ComputeGeoAssociationServiceChecksDSRGincoService;fr.ifn.ogam.integration.business.ChecksDSRGincoService
+GincoChecksDSRService;fr.ifn.ogam.integration.business.ChecksDSRGincoService
+JddService;fr.ifn.ogam.integration.business.JddService
+GincoComputeGeoAssociationService;fr.ifn.ogam.integration.business.ComputeGeoAssociationService
