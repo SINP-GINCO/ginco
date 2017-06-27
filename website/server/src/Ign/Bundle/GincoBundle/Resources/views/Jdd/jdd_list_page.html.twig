@@ -14,21 +14,30 @@
     </p>
 
     <!-- Show the currently active location submissions -->
-    <table class="table table-hover">
+    <table class="table table-hover table-bordered jdd-table">
         <thead>
             <tr>
-                <th>{{ 'JDD ID'|trans }}</th>
-                <th>{{ 'Actions JDD'|trans }}</th>
-                <th>{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
+                <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
+            </tr>
+            <tr>
+                <th width="7%" class="color1">{{ 'Actions'|trans }}</th>
+                <th width="30%" class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
+                <th width="63%" class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
             </tr>
         </thead>
         <tbody>
         {% for jdd in jddList %}
             <tr>
+
+                {# Actions JDD #}
                 <td>
-                    <a href="{{ path('jdd_show', { 'id': jdd.id }) }}">{{ jdd.id }}</a>
-                </td>
-                <td>
+                    {# View #}
+                    <a class="btn btn-xs btn-primary" title="{{ 'Jdd.list.view'|trans }}" href="{{ path('jdd_show', { 'id': jdd.id }) }}">
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </a>
+
+                    {# Delete #}
                     {% if jdd.deletable %}
                         <a title="{% trans %}Delete{% endtrans %}" href="{{ path('jdd_delete', {'id' : jdd.id}) }}" onClick="return confirm('{% trans %}Are you sure?{% endtrans %}');">&nbsp;</a>
                     {% else %}
@@ -47,7 +56,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-body">
-                                        {% trans with {'%jddId%': jdd.id} %} Jdd.delete.prompt {% endtrans %}
+                                        {% trans with {'%jddId%': jdd.field('title')} %} Jdd.delete.prompt {% endtrans %}
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default"
@@ -71,7 +80,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-body">
-                                        {% trans with {'%jddId%': jdd.id} %} Jdd.delete.impossible {% endtrans %}
+                                        {% trans with {'%jddId%': jdd.field('title')} %} Jdd.delete.impossible {% endtrans %}
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default"
@@ -82,6 +91,14 @@
                         </div>
                     {% endif %}
                 </td>
+
+                {# Title and metadata id of the jdd #}
+                <td>
+                    <p>{{ jdd.field('title') }}</p>
+                    <span class="text-muted">{{ jdd.field('metadataId') }}</span>
+                </td>
+
+                {# Submissions #}
                 <td class="submissions">
                     {# List of submissions #}
                     {% for submission in jdd.activeSubmissions %}

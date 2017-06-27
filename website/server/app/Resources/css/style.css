@@ -6899,6 +6899,15 @@ body {
   margin-bottom: 20px;
   margin-top: 20px;
 }
+.jdd-table thead,
+.submissions-table thead {
+  background-color: #7E931E;
+  color: white;
+}
+.jdd-table th.color2,
+.submissions-table th.color2 {
+  background-color: #50600a;
+}
 .submissions {
   width: 100%;
 }

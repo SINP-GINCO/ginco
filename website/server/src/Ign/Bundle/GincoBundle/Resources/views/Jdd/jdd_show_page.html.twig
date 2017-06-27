@@ -6,9 +6,20 @@
 {% set user = app.user %}
 
 {% block body %}
-    <h1>{{ 'Jdd.page.title'|trans({'%jddId%':jdd.id}) }}</h1>
+    <h1><small>{{ 'Jdd.page.title'|trans }} :</small><br>
+    {{ jdd.field('title') }}</h1>
+    <hr>
 
     <table class="table table-nonfluid table-bordered">
+        <tr>
+            <th>{{ 'Jdd.page.metadataId'|trans }}</th>
+            <td>
+                <a href="{{ configurationManager.getConfig('jddMetadataFileDownloadServiceURL') }}{{ jdd.field('metadataId') }}"
+                    target="_blank" title="{{ 'Jdd.page.metadataLinkTitle'|trans }}">
+                    {{ jdd.field('metadataId') }} <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
         <tr>
             <th>{{ 'Datamodel'|trans }}</th>
             <td>{{ jdd.model.name }}</td>
@@ -35,7 +46,7 @@
 
     {% if jdd.activeSubmissions is not empty %}
     {# List of submissions #}
-        <table class="table table-hover">
+        <table class="table table-hover table-bordered submissions-table">
             <thead>
                 {%  include "@IgnGinco/Integration/submission_line_complete.html.twig" %}
             </thead>
