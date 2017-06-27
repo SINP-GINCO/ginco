@@ -12,11 +12,15 @@
 
     <table class="table table-nonfluid table-bordered">
         <tr>
-            <th>{{ 'Jdd.page.metadataId'|trans }}</th>
+            <th>{{ 'Jdd.page.metadataId'|trans }} <a href="{{ path("jdd_update_metadatas", { 'id': jdd.id }) }}"
+                title="{{ 'Jdd.page.metadataUpdate'|trans }}">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                </a>
+            </th>
             <td>
                 <a href="{{ configurationManager.getConfig('jddMetadataFileDownloadServiceURL') }}{{ jdd.field('metadataId') }}"
                     target="_blank" title="{{ 'Jdd.page.metadataLinkTitle'|trans }}">
-                    {{ jdd.field('metadataId') }} <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ jdd.field('metadataId') }}
                 </a>
             </td>
         </tr>
