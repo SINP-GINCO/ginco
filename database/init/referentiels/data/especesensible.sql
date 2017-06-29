@@ -46,6 +46,10 @@ CREATE TABLE especesensible (
 
 ALTER TABLE especesensible OWNER TO admin;
 
+GRANT ALL ON TABLE especesensible TO admin;
+GRANT ALL ON TABLE especesensible TO ogam;
+GRANT ALL ON TABLE especesensible TO postgres;
+
 --
 -- TOC entry 404 (class 1259 OID 280939)
 -- Name: especesensible_id_seq; Type: SEQUENCE; Schema: referentiels; Owner: admin
