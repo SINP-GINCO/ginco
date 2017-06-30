@@ -1,21 +1,24 @@
 package fr.ifn.ogam.integration.business;
 
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import fr.ifn.ogam.common.business.checks.CheckException;
+import fr.ifn.ogam.common.database.GenericDAO;
 import fr.ifn.ogam.common.database.GenericData;
 import fr.ifn.ogam.common.database.mapping.GeometryDAO;
 import fr.ifn.ogam.common.database.referentiels.CommuneDAO;
 import fr.ifn.ogam.common.database.referentiels.DepartementDAO;
 import fr.ifn.ogam.common.database.referentiels.MailleDAO;
+import fr.ifn.ogam.common.database.referentiels.AdministrativeEntityDAO;
 import fr.ifn.ogam.common.util.DSRConstants;
 
 /**
  * 
- * Service used to calculate the attachments of observations geometries and references to administratives limit
+ * Service used to calculate the attachments of observations geometries and references to administratives limit.
  * 
  * @author gpastakia
  *
@@ -28,6 +31,13 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 	 * @see org.apache.log4j.Logger
 	 */
 	private final transient Logger logger = Logger.getLogger(this.getClass());
+
+	/**
+	 * DAO for generic requests
+	 * 
+	 * @see GenericDao
+	 */
+	private GenericDAO genericDao = new GenericDAO();
 
 	/**
 	 * DAO for accessing geometry table
@@ -58,7 +68,24 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 	private DepartementDAO departementDAO = new DepartementDAO();
 
 	/**
+	 * DAO for accessing administrative entities
+	 * 
+	 * @see AdministrativeEntityDAO
+	 */
+	private AdministrativeEntityDAO administrativeEntityDAO = new AdministrativeEntityDAO();
+
+	/**
+	 * The map of JDBC connections by submission id
+	 */
+	private Map<Integer, Connection> connections;
+
+	public ComputeGeoAssociationService() {
+		this.connections = new HashMap<Integer, Connection>();
+	}
+
+	/**
 	 * Event called before the integration of a submission of data.
+	 * Creates and puts the JDBC connection linked to the submission in the map of connections.
 	 * 
 	 * @param submissionId
 	 *            the submission identifier
@@ -67,12 +94,13 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 	 */
 	@Override
 	public void beforeIntegration(Integer submissionId) throws Exception {
-
-		// DO NOTHING
+		logger.debug("Connection created for submission : " + submissionId);
+		this.connections.put(submissionId, administrativeEntityDAO.getConnection());
 	}
 
 	/**
 	 * Event called after the integration of a submission of data.
+	 * Closes the JDBC connection linked to the submission.
 	 * 
 	 * @param submissionId
 	 *            the submission identifier
@@ -82,7 +110,16 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 	@Override
 	public void afterIntegration(Integer submissionId) throws Exception {
 
-		// DO NOTHING
+		Connection conn = this.connections.get(submissionId);
+		try{
+			if(conn !=null) {
+				logger.debug("Closing connection for submission : " + submissionId);
+				conn.close();
+			}
+		} catch (Exception e) {
+			logger.error("Error while closing connection for submission : " + submissionId, e);
+			throw e;
+		}
 
 	}
 
@@ -93,8 +130,8 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 	 *            the submission identifier
 	 * @param values
 	 *            Entry values
-	 * @throws Exception, CheckException
-	 *             in case of database error
+	 * @throws Exception,
+	 *             CheckException in case of database error
 	 */
 	@Override
 	public void beforeLineInsertion(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException {
@@ -119,11 +156,11 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 	 *             in case of database error
 	 */
 	public void afterLineInsertion(Integer submissionId, String format, String tableName, Map<String, GenericData> values, String id) throws Exception {
-
-		logger.debug("insertAdministrativeAssociations");
 		if (values.size() == 0) {
 			return;
 		}
+		// Get the connection
+		Connection conn = this.connections.get(submissionId);
 		// Administrative associations are computed only if the file contains a geometric field
 		if (values.get(DSRConstants.GEOMETRIE) == null) {
 			return;
@@ -186,37 +223,36 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 
 			logger.debug(geometry);
 			String geometryType = geometryDAO.getGeometryType(geometry);
-			geometryDAO.createGeometryLinksFromGeometry(format, tableName, parameters);
+			geometryDAO.createGeometryLinksFromGeometry(format, tableName, parameters, conn);
 			if ("POINT".equals(geometryType) || "MULTIPOINT".equals(geometryType)) {
-				communeDAO.createCommunesLinksFromPoint(format, tableName, parameters);
-				departementDAO.createDepartmentsLinksFromPoint(format, tableName, parameters);
-				mailleDAO.createMaillesLinksFromPoint(format, tableName, parameters);
+				communeDAO.createCommunesLinksFromPoint(format, tableName, parameters, conn);
+				departementDAO.createDepartmentsLinksFromPoint(format, tableName, parameters, conn);
+				mailleDAO.createMaillesLinksFromPoint(format, tableName, parameters, conn);
 			} else if ("LINESTRING".equals(geometryType) || "MULTILINESTRING".equals(geometryType)) {
-				communeDAO.createCommunesLinksFromLine(format, tableName, parameters);
-				departementDAO.createDepartmentsLinksFromLine(format, tableName, parameters);
-				mailleDAO.createMaillesLinksFromLine(format, tableName, parameters);
+				communeDAO.createCommunesLinksFromLine(format, tableName, parameters, conn);
+				departementDAO.createDepartmentsLinksFromLine(format, tableName, parameters, conn);
+				mailleDAO.createMaillesLinksFromLine(format, tableName, parameters, conn);
 			} else if ("POLYGON".equals(geometryType) || "MULTIPOLYGON".equals(geometryType)) {
-				communeDAO.createCommunesLinksFromPolygon(format, tableName, parameters);
-				departementDAO.createDepartmentsLinksFromPolygon(format, tableName, parameters);
-				mailleDAO.createMaillesLinksFromPolygon(format, tableName, parameters);
+				communeDAO.createCommunesLinksFromPolygon(format, tableName, parameters, conn);
+				departementDAO.createDepartmentsLinksFromPolygon(format, tableName, parameters, conn);
+				mailleDAO.createMaillesLinksFromPolygon(format, tableName, parameters, conn);
 			}
 		} else if (hasCodesCommunes) {
-			communeDAO.createCommunesLinksFromCommunes(format, parameters);
-			mailleDAO.createMaillesLinksFromCommunes(format, parameters);
-			departementDAO.createDepartmentsLinksFromCommunes(format, parameters);
+			communeDAO.createCommunesLinksFromCommunes(format, parameters, conn);
+			mailleDAO.createMaillesLinksFromCommunes(format, parameters, conn);
+			departementDAO.createDepartmentsLinksFromCommunes(format, parameters, conn);
 		} else if (hasCodesMailles) {
-			mailleDAO.createMaillesLinksFromMailles(format, parameters);
-			departementDAO.createDepartmentsLinksFromMailles(format, parameters);
+			mailleDAO.createMaillesLinksFromMailles(format, parameters, conn);
+			departementDAO.createDepartmentsLinksFromMailles(format, parameters, conn);
 		} else if (hasCodesDepartements) {
-			mailleDAO.createMaillesLinksFromDepartements(format, parameters);
-			departementDAO.createDepartmentsLinksFromDepartements(format, parameters);
+			mailleDAO.createMaillesLinksFromDepartements(format, parameters, conn);
+			departementDAO.createDepartmentsLinksFromDepartements(format, parameters, conn);
 		}
 
-		communeDAO.setCodeCommuneCalcule(format, tableName, parameters);
-		communeDAO.setNomCommuneCalcule(format, tableName, parameters);
-		mailleDAO.setCodeMailleCalcule(format, tableName, parameters);
-		departementDAO.setCodeDepartementCalcule(format, tableName, parameters);
-
+		communeDAO.setCodeCommuneCalcule(format, tableName, parameters, conn);
+		communeDAO.setNomCommuneCalcule(format, tableName, parameters, conn);
+		mailleDAO.setCodeMailleCalcule(format, tableName, parameters, conn);
+		departementDAO.setCodeDepartementCalcule(format, tableName, parameters, conn);
 	}
 
 }
