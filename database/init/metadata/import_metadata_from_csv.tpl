@@ -19,7 +19,7 @@ SET CONSTRAINTS ALL DEFERRED;
 --
 delete from translation;
 delete from table_tree;
-
+delete from event_listener;
 
 delete from file_field;
 delete from table_field;
@@ -66,6 +66,7 @@ delete from table_schema;
 @INSERT@ model_tables.csv
 @INSERT@ model_datasets.csv
 @INSERT@ file_format.csv
+@INSERT@ event_listener.csv
 
 -- Fill the parent table
 INSERT INTO format (format, type)
