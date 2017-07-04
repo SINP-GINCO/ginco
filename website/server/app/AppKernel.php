@@ -15,11 +15,12 @@ class AppKernel extends Kernel {
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+			new OldSound\RabbitMqBundle\OldSoundRabbitMqBundle(),
 			new Ign\Bundle\OGAMBundle\OGAMBundle(),	// Order is important for translations !
 			new Ign\Bundle\GincoBundle\IgnGincoBundle(),
 			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
 			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle(),
-			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 		);
 
 		if (in_array($this->getEnvironment(), array(
