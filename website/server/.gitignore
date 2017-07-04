@@ -1,4 +1,9 @@
 /web/bundles/
+/web/assetic/
+/web/css/
+/web/fonts/
+/web/images/
+/web/js/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
