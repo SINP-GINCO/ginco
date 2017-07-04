@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,12 +11,12 @@ use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequest;
 use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequestCriterion;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\Dynamode;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\FormField;
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableTree;
 use Ign\Bundle\OGAMBundle\Controller\QueryController as BaseController;
+use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
 
 /**
  * @Route("/query")
@@ -115,7 +114,7 @@ class QueryController extends BaseController {
 
 			$this->get('ogam.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
 			// Execute the request
-			$resultsbbox = $this->get('ogam.query_service')->getResultsBBox(session_id(), $nbResults);
+			$resultsbbox = $this->get('ogam.query_service')->getResultsBBox($request->getSession()->getId(), $nbResults);
 			// Send the result as a JSON String
 			return new JsonResponse([
 				'success' => true,
@@ -245,8 +244,8 @@ class QueryController extends BaseController {
 			$lon = $request->query->get('LON');
 			$lat = $request->query->get('LAT');
 			$activeLayers = $request->query->get('layers');
-			if (empty($lon) || empty($lat)) {
-				throw new \InvalidArgumentException("The 'LON' and 'LAT' parameters are required.");
+			if (empty($lon) || empty($lat) || empty($activeLayers)) {
+				throw new \InvalidArgumentException("The 'LON', 'LAT' and 'layers' parameters are required.");
 			}
 			$sessionId = session_id();
 
@@ -260,9 +259,8 @@ class QueryController extends BaseController {
 				"fields" => [],
 				"data" => []
 			];
-			$resultLocationRepository = $this->getDoctrine()->getRepository(ResultLocation::class);
 
-			if ($request->getSession()->get('query_Count', 0) == 0 && $resultLocationRepository->getResultsCount($sessionId)) {
+			if ($request->getSession()->get('query_Count', 0) == 0) {
 				return new JsonResponse($defaultResponseArray);
 			} else {
 				$schema = $this->get('ogam.schema_listener')->getSchema();
@@ -283,13 +281,12 @@ class QueryController extends BaseController {
 						->getFormat(), $locale); // Get info about the location table
 
 						// Get the intersected locations
-						$locations = $resultLocationRepository->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale);
-
+						$locations = $this->get('ogam.query_service')->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale, $activeLayers, $resultsLayer);
 						// $resultsLayers is the most precise layer where we have found results
 						if ($resultsLayer) {
 							$resultsLayer = 'result_' . $resultsLayer; // real name
-							$layersModel = new Application_Model_Mapping_Layers();
-							$layer = $layersModel->getLayer($resultsLayer);
+							$layerRepo = $this->getDoctrine()->getRepository(Layer::class);
+							$layer = $layerRepo->findOneBy(array('name' => $resultsLayer));
 						}
 
 						if (!empty($locations)) {
@@ -318,8 +315,6 @@ class QueryController extends BaseController {
 								$key .= '/' . $location['pk'];
 								$id[] = $key;
 								$locationData[] = $key;
-
-								$logger->debug('$key : ' . $key);
 
 								// Remove the pk of the available columns
 								unset($location['pk']);
@@ -382,7 +377,7 @@ class QueryController extends BaseController {
 							}
 							return new JsonResponse([
 								'success' => true,
-								"layerLabel" => $layer->layerLabel,
+								"layerLabel" => $layer->getLabel(),
 								'id' => implode('', $id),
 								"title" => $locationTableInfo->getLabel() . ' (' . count($locationsData) . ')',
 								"hasChild" => $hasChild,

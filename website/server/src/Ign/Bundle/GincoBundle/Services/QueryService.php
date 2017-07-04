@@ -366,6 +366,16 @@ class QueryService extends BaseService {
 		$session->set('query_SQLEndWhere', $endWhere);
 		$session->set('query_SQLPkey', $sqlPKey);
 		$session->set('query_locationField', $locationField); // used in the KML export
+
+		// Subquery (for getting desired rows)
+		$subquery = "SELECT DISTINCT " . $sqlPKey . $fromJoinSubmission . $where;
+
+		// Count the number of results (necessary for getResultsBbox and getResultRows)
+		$countRequest = "SELECT count(*) $fromJoinResults WHERE ($sqlPKey) IN ($subquery) $endWhere";
+		$this->logger->debug('count request = ' . $countRequest);
+		$countRequestResult = $this->getQueryResults($countRequest);
+		$countResult = $countRequestResult[0]['count'];
+		$session->set('query_Count', $countResult);
 	}
 
 	/**
@@ -392,7 +402,6 @@ class QueryService extends BaseService {
 		$this->logger->debug('getResultRows');
 
 		$projection = $this->configuration->getConfig('srs_visualisation', 3857);
-		$ĥidingValue = $this->configuration->getConfig('hiding_value');
 
 		// Get the request from the session
 		$queryForm = $session->get('query_QueryForm');
@@ -406,6 +415,7 @@ class QueryService extends BaseService {
 		$from = $session->get('query_SQLFrom');
 		$where = $session->get('query_SQLWhere');
 		$andWhere = $session->get('query_SQLEndWhere');
+		$countResult = $session->get('query_Count');
 
 		$order = "";
 		$hidingLevelKey = ", hiding_level, ";
@@ -468,13 +478,6 @@ class QueryService extends BaseService {
 		}
 		// Execute the request
 		$result = $this->getQueryResults($query);
-
-		// Retrieve number of total results
-		$countRequest = "SELECT count(*) $fromJoins WHERE ($pKey) IN ($subquery $order) $andWhere";
-		$this->logger->debug('count request = ' . $countRequest);
-		$countRequestResult = $this->getQueryResults($countRequest);
-		$countResult = $countRequestResult[0]['count'];
-		$session->set('query_Count', $countResult);
 
 		// Retrieve the session-stored info
 		$columnsDstFields = $queryForm->getColumnsDstFields();
@@ -822,11 +825,10 @@ class QueryService extends BaseService {
 		$margin = $configuration->getConfig('featureinfo_margin', '1000');
 
 		$locationTableFormat = $locationField->getFormat()->getFormat();
-		$genericManager = $this->get('ogam.manager.generic');
 		// Get the location table infos
-		$locationTableInfo = $this->_em->getRepository(TableFormat::class)->getTableFormat($schema, $locationTableFormat, $locale);
+		$locationTableInfo = $this->doctrine->getManager('mapping')->getRepository(TableFormat::class)->getTableFormat($schema, $locationTableFormat, $locale);
 		// Get the location table columns
-		$tableFields = $this->_em->getRepository(TableField::class)->getTableFields($schema, $locationTableFormat, null, $locale);
+		$tableFields = $this->doctrine->getManager('mapping')->getRepository(TableField::class)->getTableFields($schema, $locationTableFormat, null, $locale);
 
 		// Setup the location table columns for the select
 		// Only few columns are selected
@@ -834,7 +836,7 @@ class QueryService extends BaseService {
 		$joinForMode = '';
 		$i = 0;
 		foreach ($tableFields as $tableField) {
-			$columnName = $tableField->columnName;
+			$columnName = $tableField->getColumnName();
 			if ($columnName != $locationField->getColumnName() && $columnName != 'SUBMISSION_ID' && $columnName != 'PROVIDER_ID' && $columnName != 'LINE_NUMBER') {
 
 				if (in_array($columnName, self::$fieldsToSelect)) {
@@ -856,64 +858,23 @@ class QueryService extends BaseService {
 			}
 		}
 
-		// Setup the location table pks for the join on the location table
-		// and for the pk column
-		$pkscols = '';
-		foreach ($locationTableInfo->getPrimaryKeys() as $primaryKey) {
-			$pkscols .= "l." . $primaryKey . "::varchar || '__' || ";
-			$cols .= "'" . strtoupper($primaryKey) . "/' || " . $primaryKey . " || '/' || ";
-		}
-		if ($pkscols != '') {
-			$pkscols = substr($pkscols, 0, -11);
-		} else {
-			throw new \Exception('No pks columns found for the location table.');
-		}
-		if ($cols != '') {
-			$cols = substr($cols, 0, -11) . " as pk ";
-		} else {
-			throw new \Exception('No columns found for the location table.');
-		}
-		/**
-		 * ***A REMPLACER PAR LE CODE GINCO DEBUT***
-		 */
-		$req = "SELECT " . $cols . " ";
-		if ($selectMode === 'distance') {
-			$req .= ", ST_Distance(r.the_geom, ST_SetSRID(ST_Point(?, ?)," . $projection . ")) as dist ";
-		}
-		$req .= "FROM result_location r ";
-		$req .= "LEFT JOIN " . $locationTableInfo->getTableName() . " l on (r.format = '" . $locationTableInfo->getFormat() . "' AND r.pk = " . $pkscols . ") ";
-		$req .= $joinForMode;
-		$req .= "WHERE r.session_id = ? ";
-		if ($selectMode === 'buffer') {
-			$req .= "and ST_DWithin(r.the_geom, ST_SetSRID(ST_Point(?, ?)," . $projection . "), " . $margin . ")";
-		} elseif ($selectMode === 'distance') {
-			$req .= "and ST_Distance(r.the_geom, ST_SetSRID(ST_Point(?, ?)," . $projection . ")) < " . $margin;
-			$req .= "ORDER BY dist";
-		}
-
-		$conn = $this->_em->getConnection();
-		$stmt = $conn->prepare($req);
-
-		if ($selectMode === 'buffer') {
-			$stmt->execute(array(
-				$sessionId,
-				$lon,
-				$lat
-			));
-		} elseif ($selectMode === 'distance') {
-			$stmt->execute(array(
-				$lon,
-				$lat,
-				$sessionId,
-				$lon,
-				$lat
-			));
-		}
-
-		return $stmt->fetchAll();
-		/**
-		 * ***A REMPLACER PAR LE CODE GINCO FIN ***
-		 */
+        // Setup the location table pks for the join on the location table
+        // and for the pk column
+        $pkscols = '';
+        foreach ($locationTableInfo->getPrimaryKeys() as $primaryKey) {
+            $pkscols .= "l." . $primaryKey . "::varchar || '__' || ";
+            $cols .= "'" . strtoupper($primaryKey) . "/' || " . $primaryKey . " || '/' || ";
+        }
+        if ($pkscols != '') {
+            $pkscols = substr($pkscols, 0, -11);
+        } else {
+            throw new \Exception('No pks columns found for the location table.');
+        }
+        if ($cols != '') {
+            $cols = substr($cols, 0, -11) . " as pk ";
+        } else {
+            throw new \Exception('No columns found for the location table.');
+        }
 
 		$select = "SELECT " . $cols . " ";
 
@@ -942,7 +903,7 @@ class QueryService extends BaseService {
 
 		$rawDataTableName = $locationTableInfo->getTableName();
 		// Map the varying two keys in results to the keys in the raw_data table
-		$keys = $genericManager->getRawDataTablePrimaryKeys($locationTableInfo);
+		$keys = $this->genericModel->getRawDataTablePrimaryKeys($locationTableInfo);
 
 		$fromTemplate = "FROM bac_# bac
 		INNER JOIN observation_# obs ON obs.id_$ = bac.id_#
@@ -967,8 +928,9 @@ class QueryService extends BaseService {
 			$req = $select . $fromWhere;
 
 			$this->logger->info("getLocationInfo request, layer $layer : $req");
+			$this->logger->info("getLocationInfo request parameters, session $sessionId, level $level, lon $lon, lat $lat");
 
-			$conn = $this->_em->getConnection();
+			$conn = $this->doctrine->getManager('mapping')->getConnection();
 			$stmt = $conn->prepare($req);
 
 			$stmt->execute(array(
