@@ -101,6 +101,18 @@ services:
         class: Ign\Bundle\GincoBundle\Services\QueryService
         arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@=service('security.token_storage').getToken().getUser()", "@=service('ogam.schema_listener').getSchema()", "@ogam.manager.generic", "@ginco.repository.mapping.map"]
 
+    # RabbitMQ Decorated Producer
+    ginco.decorating_ginco_generic_producer:
+      class: Ign\Bundle\GincoBundle\Services\GenericProducer
+      decorates: old_sound_rabbit_mq.ginco_generic_producer
+      arguments: ['@ginco.decorating_ginco_generic_producer.inner', '@doctrine.orm.entity_manager']
+      public: false
+
+
+    # RabbitMQ Consumers
+    generic_consumer_service:
+        class: Ign\Bundle\GincoBundle\Services\GenericConsumer
+        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
 
     #templatehelper
     ogam.helper.AddLink:

@@ -255,44 +255,47 @@ COMMENT ON COLUMN website.predefined_request_group_asso."position" IS 'The posit
 
 
 /*==============================================================*/
-/* Table : JOB_QUEUE                                            */
+/* Table : MESSAGES                                             */
 /*==============================================================*/
+-- Sequence: website.messages_id_seq
 
--- Sequence: website.job_queue_id_seq
+-- DROP SEQUENCE website.messages_id_seq;
 
--- DROP SEQUENCE website.job_queue_id_seq;
-
-CREATE SEQUENCE website.job_queue_id_seq
+CREATE SEQUENCE website.messages_id_seq
 INCREMENT 1
 MINVALUE 1
 MAXVALUE 9223372036854775807
-START 1
+START 5
 CACHE 1;
-ALTER TABLE website.job_queue_id_seq
+ALTER TABLE website.messages_id_seq
   OWNER TO admin;
+GRANT ALL ON SEQUENCE website.messages_id_seq TO admin;
+GRANT ALL ON SEQUENCE website.messages_id_seq TO ogam;
 
 
--- Table: website.jobs_queue
+-- Table: website.messages
 
--- DROP TABLE website.jobs_queue;
+-- DROP TABLE website.messages;
 
-CREATE TABLE website.job_queue
+CREATE TABLE website.messages
 (
-  id integer NOT NULL DEFAULT nextval('job_queue_id_seq'::regclass),
-  type character varying(20),
-  status character varying(10) NOT NULL DEFAULT 'PENDING'::character varying,
+  id integer NOT NULL DEFAULT nextval('messages_id_seq'::regclass),
+  action character varying(50) NOT NULL,
+  parameters character varying,
+  status character varying(20) NOT NULL,
   length integer,
   progress integer,
-  created_at timestamp without time zone DEFAULT now(),
-  command character varying(1000) NOT NULL,
-  pid integer,
-  CONSTRAINT pk PRIMARY KEY (id)
+  created_at timestamp without time zone NOT NULL ,
+  updated_at timestamp without time zone NOT NULL ,
+  CONSTRAINT pk_messages PRIMARY KEY (id)
 )
 WITH (
 OIDS=FALSE
 );
-ALTER TABLE website.job_queue
+ALTER TABLE website.messages
   OWNER TO admin;
+GRANT ALL ON TABLE website.messages TO admin;
+GRANT ALL ON TABLE website.messages TO ogam;
 
 
 GRANT ALL ON SCHEMA website TO ogam WITH GRANT OPTION;
