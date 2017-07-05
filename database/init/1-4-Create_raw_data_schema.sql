@@ -375,7 +375,6 @@ ALTER FUNCTION raw_data.init_trigger()
 CREATE TABLE raw_data.export_file
 (
 	submission_id integer NOT NULL,
-	job_id integer,
 	user_login character varying(50),
 	file_name character varying(500) NOT NULL,
 	created_at timestamp without time zone DEFAULT now(),
