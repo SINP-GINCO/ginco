@@ -1,9 +1,10 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services;
 
+use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
-use Ign\Bundle\GincoBundle\GMLExport\GMLExport;
+// use Ign\Bundle\GincoBundle\GMLExport\GMLExport;
 
 class GenericConsumer implements ConsumerInterface {
 
@@ -47,13 +48,10 @@ class GenericConsumer implements ConsumerInterface {
 	public function __construct($em, $configuration, $logger, $locale) {
 		// Initialise the logger
 		$this->logger = $logger;
-		
 		// Initialise the locale
 		$this->locale = $locale;
-		
 		// Initialise the entity manager
 		$this->em = $em;
-		
 		$this->configuration = $configuration;
 
 		echo "GenericConsumer is listening...";
@@ -66,17 +64,52 @@ class GenericConsumer implements ConsumerInterface {
 
 		try {
  			$data = unserialize($msg->body);
+			// Get action and parameters
 			$action = $data['action'];
 			$parameters = $data['parameters'];
 
-			echo "Received message '$action'.\n";
+			// Get Message entity;
+			// if PENDING and mark it as runnning
+			// if TO CANCEL, mark it CANCELLED and discard the task
+			$messageId = $data['message_id']; // Message id in messages table
+			$message = $this->em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
+			echo "Received message $messageId with action '$action' and status ".$message->getStatus(). ".\n";
+
+			if ($message->getStatus() == Message::STATUS_PENDING) {
+				$message->setStatus(Message::STATUS_RUNNING);
+				$this->em->flush();
+			}
+			else if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+				$message->setStatus(Message::STATUS_CANCELLED);
+				$this->em->flush();
+				echo "Message cancelled... discard it.\n";
+				return true;
+			}
 
 			switch ($action) {
 				case 'wait':
+					$message->setLength($parameters['time']);
+					$message->setProgress(0);
+					$this->em->flush();
+
 					for ($i=0; $i<$parameters['time']; $i++) {
+
+						// Check if message has been cancelled externally
+						$this->em->refresh($message);
+						if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+							$message->setStatus(Message::STATUS_CANCELLED);
+							$this->em->flush();
+							echo "Message cancelled... stop waiting.\n";
+							return true;
+						}
+
 						sleep(1);
 						echo '.';
+						$message->setProgress($i+1);
+						$this->em->flush();
 					}
+					$message->setStatus(Message::STATUS_COMPLETED);
+					$this->em->flush();
 					echo "finished\n";
 			}
 
