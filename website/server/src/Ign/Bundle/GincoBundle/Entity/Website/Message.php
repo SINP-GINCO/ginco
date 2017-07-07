@@ -13,6 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Message
 {
+	const STATUS_NOTFOUND  = 'NOT FOUND'; // No message with this id
+	const STATUS_PENDING   = 'PENDING'; // Queued, waiting to be consumed
+	const STATUS_RUNNING   = 'RUNNING'; // Is being consumed
+	const STATUS_COMPLETED = 'COMPLETED'; // Has been consumed and terminated normally
+	const STATUS_TOCANCEL  = 'TO CANCEL'; // A 'cancel' signal has been sent, the consumer must handle it
+	const STATUS_CANCELLED = 'CANCELLED'; // Has been cancelled, the consumer terminated and cancelled the task
+
     /**
      * @var integer
 	 *
@@ -43,7 +50,7 @@ class Message
      *
      * @ORM\Column(name="status", type="string", length=20)
      */
-    private $status = 'QUEUED';
+    private $status = 'PENDING';
 
     /**
      * @var int

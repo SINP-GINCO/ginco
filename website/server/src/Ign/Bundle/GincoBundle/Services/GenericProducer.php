@@ -55,7 +55,8 @@ class GenericProducer extends Producer
 
 		$msgBody = array(
 			'action' => $action,
-			'parameters' => $parameters
+			'parameters' => $parameters,
+			'message_id' => $message->getId(),
 		);
 		$this->producer->publish(serialize($msgBody), $routingKey, $additionalProperties, $headers);
 
