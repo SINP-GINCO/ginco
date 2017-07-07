@@ -224,6 +224,8 @@ doctrine:
                  mappings:
                      OGAMBundle:
                         dir: Entity/RawData
+                     IgnGincoBundle:
+                        dir: Entity/RawData
             harmonized_data:
                  connection: harmonized_data
                  mappings:

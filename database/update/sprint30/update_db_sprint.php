@@ -30,6 +30,8 @@ try {
 	execCustSQLFile("$sprintDir/add_event_listener_jdd_service.sql", $config);
 	execCustSQLFile("$sprintDir/update_bbox.sql", $config);
 	execCustSQLFile("$sprintDir/update_sensitive_species.sql", $config);
+	execCustSQLFile("$sprintDir/add_messages_table.sql", $config);
+	execCustSQLFile("$sprintDir/add_dee_table.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
