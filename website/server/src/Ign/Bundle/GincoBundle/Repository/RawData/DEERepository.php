@@ -32,19 +32,17 @@ class DEERepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	/**
-	 * Find current version of DEE (if there is one)
+	 * Find last version of DEE
 	 *
 	 * @param Jdd $jdd
 	 * @return array
 	 */
-	public function findCurrentByJdd(Jdd $jdd)
+	public function findLastVersionByJdd(Jdd $jdd)
 	{
 		// The ORDER BY version + setMaxResults 1 should not be necessary
 		// if the application guarantees only one CURRENT DEE per Jdd
 
 		$qb = $this->createQueryBuilder('d')
-			->where('d.status = :current')
-			->setParameter('current', DEE::STATUS_CURRENT)
 			->join('d.jdd', 'j')
 			->andWhere('j.id = :jddId')
 			->setParameter('jddId', $jdd->getId())
@@ -54,6 +52,6 @@ class DEERepository extends \Doctrine\ORM\EntityRepository
 
 		$query = $qb->getQuery();
 
-		return $query->getResult();
+		return $query->getOneOrNullResult();
 	}
 }

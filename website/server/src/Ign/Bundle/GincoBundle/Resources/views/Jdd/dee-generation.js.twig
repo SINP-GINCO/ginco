@@ -32,7 +32,7 @@ function CustomPrompt(){
     this.ok = function(jddId, exportFileId, deeAction){
         var comment = document.getElementById('prompt_comment').value;
         if (deeAction != 'delete') {
-            addExportJob(jddId, exportFileId, deeAction, comment);
+            generateDEE(jddId, exportFileId, deeAction, comment);
         } else {
             cancelExport(jddId, exportFileId, comment);
         }
@@ -62,19 +62,19 @@ Prompt = new CustomPrompt();
  * @param $jddId
  * @param $status
  */
-function updateDEEStatusAndContent($jddId, $status = null) {
-    console.log('updateDEEstatusandContent' + $jddId);
+function updateDEEDataAndContent(jddId, data) {
+    console.log('updateDEEstatusandContent' + jddId);
 
-    if ($status) {
-        updateDEEStatusDiv($jddId, $status);
-        updateDEEContentDiv($jddId, $status);
+    if (data) {
+        updateDEEData(jddId, data);
+        updateDEEContent(jddId);
     }
     else {
         $.getJSON("{{ path('dee_status') }}", {
-            jddId: $jddId
+            jddId: jddId
         }, function (data) {
-            updateDEEStatusDiv($jddId, data.status);
-            updateDEEContentDiv($jddId, data.status, data.progress);
+            updateDEEData(jddId, data);
+            updateDEEContent(jddId);
         });
     }
 }
@@ -84,43 +84,57 @@ function updateDEEStatusAndContent($jddId, $status = null) {
  * And launch a ajax request to retrieve their status and progress
  * Then update status and content divs.
  */
-function updateAllDEEPendingAndRunningTasks() {
+function updateAllDEEGeneratingTasks() {
     // var $exportFileIds = [];
-    console.log('updateAllDEEPendingAndRunningTasks');
-    var $jddIds = [];
-    $('.dee-status').each(function() {
-        if ( $(this).html() == 'RUNNING' || $(this).html() == 'PENDING' || $(this).html() == 'TO CANCEL') {
+    console.log('updateAllDEEGeneratingTasks');
+    var jddIds = [];
+    $('div.dee').each(function() {
+        if ( $(this).data('dee-status') == 'GENERATING') {
             // var $exportFileId = $(this).attr('data-export-file-id');
             // $exportFileIds.push($exportFileId);
-            var $jddId = $(this).attr('data-jdd-id');
-            $jddIds.push($jddId);
+            var jddId = $(this).attr('data-jdd-id');
+            jddIds.push(jddId);
         }
     });
 
-    if ($jddIds.length) {
+    if (jddIds.length) {
         $.getJSON("{{ path('dee_status_all') }}", {
             // submissionIds: $exportFileIds,
-            jddIds: $jddIds
+            jddIds: jddIds
         }, function (data) {
             $.each(data, function (index, value) {
-                updateDEEStatusDiv(value.jddId, value.status);
-                updateDEEContentDiv(value.jddId, value.status, value.progress);
+                updateDEEData(value.jddId, value);
+                updateDEEContent(value.jddId);
             });
         });
     }
 }
 
 /**
- * Update status div alone.
- * The status div is hidden with css, and is used by the scripts
- * to know if there is PENDING or RUNNING jobs (needing to ask periodically for their status)
+ * Update data stored in a div.dee
+ * And describinb the state of the dee generation process
  *
- * @param $jddId
- * @param $status
+ * @param jddId
+ * @param data
  */
-function updateDEEStatusDiv($jddId, $status) {
-    var $statusDiv = $("div.dee-status[data-jdd-id='" + $jddId + "']");
-    $statusDiv.html($status);
+function updateDEEData(jddId, data) {
+    var deeDiv = $("div.dee[data-jdd-id='" + jddId + "']");
+
+    // DEE status
+    if ("dee" in data && "status" in data.dee ) {
+        deeDiv.data('dee-status', data.dee.status);
+    } else {
+        deeDiv.data('dee-status', 'NO DEE');
+    }
+
+    // RabbitMQ message status and progress
+     if ("message" in data && "status" in data.message ) {
+        deeDiv.data('message-status', data.message.status);
+        deeDiv.data('message-progress', data.message.progress);
+    } else {
+        deeDiv.data('message-status', 'NOT FOUND');
+        deeDiv.data('message-progress', 0);
+    }
 }
 
 /**
@@ -134,37 +148,49 @@ function updateDEEStatusDiv($jddId, $status) {
  * @param $status
  * @param $progress
  */
-function updateDEEContentDiv($jddId, $status, $progress = 0) {
-    console.log('updateDEEContentDiv '+$jddId);
-    var $contentDiv = $("div.dee-content[data-jdd-id='" + $jddId + "']");
+function updateDEEContent(jddId) {
+    console.log('updateDEEContent '+jddId);
+
+    var deeDiv = $("div.dee[data-jdd-id='" + jddId + "']");
+    var contentDiv = deeDiv.find("div.dee-content");
     // var $submissionStep = $contentDiv.attr('data-submission-step');
     // var $exportFileId = $contentDiv.attr('data-export-file-id');
-    var $actions = getActions($status);
 
-    $contentDiv.html('');
-    var table = $('<table></table>');
-    var row = $('<tr style="text-align:center"></tr>');
-    table.append(row);
+    var deeStatus = deeDiv.data('dee-status');
+    var messageStatus = deeDiv.data('message-status');
+    var messageProgress = deeDiv.data('message-progress');
 
-    // Action links
-    if ($.inArray( 'Lancer', $actions ) != -1) {
-        console.log('Action lancer');
-        var $launchLink = $("<td><a title='Générer la DEE' href=''> " +
-                "<span class='glyphicon glyphicon-play' aria-hidden='true'></span></a></td>");
-        row.append($launchLink);
-        $launchLink.click( function(e) {
+    // Display actions depending on DEEStatus
+    contentDiv.html('');
+    var actions = $('<span class="text-center"></span>');
+    contentDiv.append(actions);
+
+    // GenerateDEE
+    // TODO: check if the jdd a au moins une soumission publiée
+    if (deeStatus != 'GENERATING') {
+
+        console.log('Action lancer/relancer');
+        var icon = 'glyphicon-play-circle';
+        if (deeStatus == 'OK')
+            icon = 'glyphicon-repeat';
+
+        var launchLink = $("<a title='Générer la DEE' href=''> " +
+                "<span class='glyphicon " + icon + "' aria-hidden='true'></span></a>");
+        actions.append(launchLink);
+        launchLink.click( function(e) {
             e.preventDefault();
             /*var deeDialogTitle = "Génération d'une DEE";
-            var deeDialog = "<p>Vous allez générer une DEE. Une notification va être envoyée à la plateforme nationale,";
-            deeDialog += " Vous pouvez éventuellement ajouter un commentaire.</p>";
-            deeDialog += "<textarea id='prompt_comment'></textarea>";
-            var deeAction = 'create';
+             var deeDialog = "<p>Vous allez générer une DEE. Une notification va être envoyée à la plateforme nationale,";
+             deeDialog += " Vous pouvez éventuellement ajouter un commentaire.</p>";
+             deeDialog += "<textarea id='prompt_comment'></textarea>";
+             var deeAction = 'create';
 
-            Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction); */
-            addExportJob($jddId, null, null);
-
+             Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction); */
+             generateDEE(jddId, null, null);
         });
-    } {#else if ($.inArray( 'Relancer', $actions ) != -1 && $submissionStep == 'VALIDATE') {
+    }
+
+    {#else if ($.inArray( 'Relancer', $actions ) != -1 && $submissionStep == 'VALIDATE') {
         var $launchAgainLink = $("<td><a title='Regénérer' href=''> {% image '@IgnGincoBundle/Resources/public/img/refresh_arrow.png' %}<img src='{{ asset_url }}' />{% endimage %} </a></td>");
         row.append($launchAgainLink);
         $launchAgainLink.click( function(e) {
@@ -179,22 +205,35 @@ function updateDEEContentDiv($jddId, $status, $progress = 0) {
     } else if ($submissionStep != 'VALIDATE'){
         row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/refresh_arrow_grey.png' %}<img src='{{ asset_url }}' />{% endimage %} </td>");
     }
-
-    // Download link if file is available
-    if ($status == 'COMPLETED') {
-        var $downloadLink = $("<td><a href='/gmlexport/download?id=" + $exportFileId + "'> {% image '@IgnGincoBundle/Resources/public/img/download.png' %}<img src='{{ asset_url }}' />{% endimage %} </a></td>");
-        row.append($downloadLink);
-    } else if ($status == 'ABORTED') {
-        row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/warning_red.png' %}<img src='{{ asset_url }}' title='Erreur lors de la génération DEE' />{% endimage %} </td>");
-    } else {
-        row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/download_grey.png' %}<img src='{{ asset_url }}' title='Télécharger les DEE' />{% endimage %} </td>");
-    }
 #}
-    if ($.inArray( 'Annuler', $actions ) != -1) {
-        var $cancelLink = $("<td><a href='' title='Annuler'>" +
-                "<span class='glyphicon glyphicon glyphicon-remove-sign' aria-hidden='true'></span></a></td>");
-        row.append($cancelLink);
-        $cancelLink.click( function(e) {
+    // Download link if file is available
+    if (deeStatus == 'OK') {
+        var downloadLink =$("<a title='Télécharger la DEE' href=''> " +
+                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
+        actions.append(downloadLink);
+    }
+
+    // Cancel DEE generation (and come back to last version)
+    if (deeStatus == 'GENERATING') {
+
+        var cancelLink = $("<a href='' title='Annuler'>" +
+                "<span class='glyphicon glyphicon glyphicon-remove-sign' aria-hidden='true'></span></a>");
+        actions.append(cancelLink);
+        cancelLink.click( function(e) {
+            e.preventDefault();
+            $.getJSON( "{{ path('dee_cancel_generation') }}", {
+                jddId: jddId
+            });
+        });
+    }
+
+    // Delete DEE
+    if (deeStatus == 'OK') {
+
+        var deleteLink = $("<a href='' title='Supprimer la DEE'>" +
+                "<span class='glyphicon glyphicon glyphicon-remove-sign' aria-hidden='true'></span></a>");
+        actions.append(deleteLink);
+        deleteLink.click( function(e) {
             e.preventDefault();
             /*var deeDialogTitle = "Suppression d'une DEE";
             var deeDialog = "<p>Vous allez supprimer une DEE. Une notification va être envoyée à la plateforme nationale,";
@@ -203,67 +242,40 @@ function updateDEEContentDiv($jddId, $status, $progress = 0) {
             var deeAction = 'delete';
             Prompt.render($jddId, $exportFileId, deeDialogTitle, deeDialog, deeAction);
             */
-            $.getJSON( "{{ path('dee_cancel_generation') }}", {
-                // exportFileId: $exportFileId,
-                // deeAction: $deeAction,
-                // comment: $comment,
-                jddId: $jddId
-            });
+            deleteDEE(jddId);
         });
-    } {#else {
+    }
+
+    {#else {
         row.append("<td> {% image '@IgnGincoBundle/Resources/public/img/delete_x_icon_grey.png' %}<img src='{{ asset_url }}' title='Annuler' />{% endimage %} </td>");
     }#}
 
-    // Update progress bar if RUNNING
-    var $progressBar = $contentDiv.parent().find('div.progress-bar');
-    var $labelDiv = $contentDiv.parent().find('div.progress-label');
 
-    if ($status == 'RUNNING' || $status == 'PENDING') {
-        if ($progressBar.parent().parent().hasClass('hidden')) {
-            $progressBar.parent().parent().removeClass('hidden');
-            $labelDiv.removeClass('hidden');
+    // todo: remove !
+    var statuss = $('<p></p>').html(deeStatus + '<br>' + messageStatus + '<br>' + messageProgress);
+    contentDiv.append(statuss);
+
+
+    // Update progress bar if DEE is GENERATING
+    var progressBar = deeDiv.find('div.progress-bar');
+    var labelDiv = deeDiv.find('div.progress-label');
+
+    if (deeStatus == 'GENERATING') {
+        if (progressBar.parent().parent().hasClass('hidden')) {
+            progressBar.parent().parent().removeClass('hidden');
+            labelDiv.removeClass('hidden');
         }
-        $progressBar.css('width', $progress+'%').attr('aria-valuenow', $progress).html( $progress+'%');
+        progressBar.css('width', messageProgress +'%').attr('aria-valuenow', messageProgress).html( messageProgress + '%');
 
-        var $label = 'Génération DEE ' + (($status == 'RUNNING') ? 'en cours...' : 'en attente...');
-        $labelDiv.html($label);
+        var label = 'Génération DEE ' + ((messageStatus == 'RUNNING') ? 'en cours...' :
+                        ((messageStatus == 'PENDING') ?  'en attente...' : 'annulation...'));
+        labelDiv.html(label);
     }
-    // If not RUNNING remove progress bar
+    // If not GENERATING remove progress bar
     else {
-        $progressBar.parent().parent().addClass('hidden');
-        $labelDiv.addClass('hidden');
+        progressBar.parent().parent().addClass('hidden');
+        labelDiv.addClass('hidden');
     }
-
-    $contentDiv.append(table);
-}
-
-/**
- * Return list of actions available by status
- *
- * @param $status
- * @returns {Array}
- */
-function getActions($status) {
-    var $actions = [];
-    switch ($status) {
-        case 'NOT FOUND':
-            $actions = ['Lancer'];
-            break;
-        case 'PENDING':
-        case 'RUNNING':
-            $actions = ['Annuler'];
-            break;
-        case 'COMPLETED':
-        case 'ERROR':
-        case 'ABORTED':
-            // $actions = ['Relancer', 'Annuler'];
-            $actions = ['Lancer', 'Annuler'];
-            break;
-        default:
-            $actions = ['Lancer', 'Annuler'];
-            break;
-    }
-    return $actions;
 }
 
 /**
@@ -274,20 +286,43 @@ function getActions($status) {
  * @param $deeAction
  * @parma $comment
  */
-function addExportJob($jddId, $deeAction, $comment) {
+function generateDEE(jddId, $deeAction, $comment) {
     $.getJSON( "{{ path('dee_generate') }}", {
         // exportFileId: $exportFileId,
         // deeAction: $deeAction,
         // comment: $comment,
-        jddId: $jddId
+        jddId: jddId
     },function( data ) {
-        console.log('addExportJob returned');
+        console.log('generateDEE returned');
         if (data.success) {
-            updateDEEStatusAndContent($jddId, data.status);
-         //   window.location.reload(true);
+            updateDEEDataAndContent(jddId, data);
         }
     });
 }
+
+/**
+ * Ajax request to delete a DEE
+ *
+ * @param $jddId
+ * @param $exportFileId
+ * @param $deeAction
+ * @parma $comment
+ */
+function deleteDEE(jddId, $deeAction, $comment) {
+    $.getJSON( "{{ path('dee_delete') }}", {
+        // exportFileId: $exportFileId,
+        // deeAction: $deeAction,
+        // comment: $comment,
+        jddId: jddId
+    },function( data ) {
+        console.log('deleteDEE returned');
+        if (data.success) {
+            updateDEEDataAndContent(jddId, data);
+        }
+    });
+}
+
+
 
 /**
  * Ajax request to cancel a job and delete export file.
@@ -315,12 +350,13 @@ var DEEtimerId;
 
 $(function(){
     console.log('Coucou');
-    $('.dee-content').each(function() {
+    $('.dee').each(function() {
         // var $exportFileId = $(this).attr('data-export-file-id');
         var $jddId = $(this).attr('data-jdd-id');
-        updateDEEStatusAndContent($jddId); //, $exportFileId);
+        // var $deeId =  $(this).attr('data-jdd-id');
+        updateDEEDataAndContent($jddId); //, $exportFileId);
     });
 
     // Periodically update progress for running and pending jobs
-    DEEtimerId = setInterval(updateAllDEEPendingAndRunningTasks , 1000);
+    DEEtimerId = setInterval(updateAllDEEGeneratingTasks , 1000);
 });

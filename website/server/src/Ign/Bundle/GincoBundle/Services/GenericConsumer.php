@@ -1,6 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services;
 
+use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -111,6 +112,43 @@ class GenericConsumer implements ConsumerInterface {
 					$message->setStatus(Message::STATUS_COMPLETED);
 					$this->em->flush();
 					echo "finished\n";
+					break;
+
+				case 'dee':
+					$message->setLength($parameters['time']);
+					$message->setProgress(0);
+					$this->em->flush();
+
+					$deeId = $parameters['deeId'];
+					$deeRepo = $this->em->getRepository('IgnGincoBundle:RawData\DEE');
+					$DEE = $deeRepo->findOneById($deeId);
+
+					for ($i=0; $i<$parameters['time']; $i++) {
+
+						// Check if message has been cancelled externally
+						$this->em->refresh($message);
+						if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+							$message->setStatus(Message::STATUS_CANCELLED);
+							$this->em->flush();
+							echo "Message cancelled... stop waiting.\n";
+							return true;
+						}
+
+						sleep(1);
+						echo '.';
+						$message->setProgress($i+1);
+						$this->em->flush();
+					}
+					$message->setStatus(Message::STATUS_COMPLETED);
+
+					$DEE->setStatus(DEE::STATUS_OK);
+					$DEE->setFilePath('/path/to/my/file.xml');
+
+					$this->em->flush();
+					echo "finished\n";
+					break;
+
+
 			}
 
  			// $decodedData = unserialize($msg);
