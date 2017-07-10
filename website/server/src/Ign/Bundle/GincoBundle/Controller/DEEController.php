@@ -2,6 +2,7 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 
+use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,6 +16,7 @@ class DEEController extends Controller
 {
 	/**
 	 * DEE generation action
+	 * Create a 'DEE' line and
 	 * Publish a RabbitMQ message to generate the DEE in background
 	 *
 	 * @param Request $request
@@ -35,21 +37,34 @@ class DEEController extends Controller
 			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
 		}
 
-		// Dummy action; todo change by real action
-		$messageId = $this->get('old_sound_rabbit_mq.ginco_generic_producer')->publish('wait', ['time' => 20]);
+		// Get last version of DEE attached to the jdd
+		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
+		$lastDEE = $deeRepo->findLastVersionByJdd($jdd);
+		$lastVersion = ($lastDEE) ? $lastDEE->getVersion() : 0;
 
-		// Attach message id to the jdd
-		$jdd->setField('DEEgenerationMessageId', $messageId);
+		// Create a new DEE version and attach it to the jdd
+		$newDEE = new DEE();
+		$newDEE->setJdd($jdd)
+			->setVersion($lastVersion + 1);
+		//	->setUser(TODO);
+		$em->persist($newDEE);
 		$em->flush();
 
-		return new JsonResponse([
-			'success' => true,
-			'status' => 'PENDING'
-		]);
+		// Dummy action; todo change by real action
+		$messageId = $this->get('old_sound_rabbit_mq.ginco_generic_producer')->publish('dee', ['deeId' => $newDEE->getId(),'time' => 20]);
+
+		$message = $em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
+
+		// Attach message id to the DEE
+		$newDEE->setMessage($message);
+		$em->flush();
+
+		return new JsonResponse($this->getStatus($jddId, $newDEE));
 	}
 
 	/**
 	 * Cancel DEE generation
+	 * Delete the 'DEE' line and
 	 * Sets the status of the RabbitMQ Message to 'TO CANCEL';
 	 * the consumer must handle it and terminate the task in a 'cancel' way.
 	 *
@@ -71,18 +86,64 @@ class DEEController extends Controller
 			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
 		}
 
-		// Get RabbitMQ message attached to the jdd
-		$messageId = intval($jdd->getField('DEEgenerationMessageId'));
-		$message =  $em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
+		// Get DEE and RabbitMQ message attached to the jdd
+		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
+		$lastDEE = $deeRepo->findLastVersionByJdd($jdd);
+		if ($lastDEE) {
+			$message = $lastDEE->getMessage();
+		}
 		if (!$message) {
 			return new JsonResponse(['success' => false, 'message' => 'No message found for this jdd: ' . $jddId]);
 		}
 
-		// We got a message, we update his status to: TO CANCEL
+		// We just delete the DEE version from the database
+		$em->remove($lastDEE);
+
+		// For the message, we update his status to: TO CANCEL
 		$message->setStatus(Message::STATUS_TOCANCEL);
 		$em->flush();
 
-		return new JsonResponse(['success' => true]);
+		return new JsonResponse($this->getStatus($jddId, $lastDEE));
+	}
+
+	/**
+	 * Delete the DEE for a Jdd
+	 * i.e. create a new DEE version with status 'DELETED'.
+	 *
+	 * TODO: send email to INPN
+	 *
+	 * @param Request $request
+	 * @return JsonResponse
+	 *
+	 * GET parameter: jddId, the Jdd identifier
+	 *
+	 * @Route("/delete", name = "dee_delete")
+	 */
+	public function deleteDEE(Request $request)
+	{
+		$em = $this->get('doctrine.orm.entity_manager');
+
+		// Find jddId if given in GET parameters
+		$jddId = intval($request->query->get('jddId', 0));
+		$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
+		if (!$jdd) {
+			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
+		}
+
+		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
+		$lastDEE = $deeRepo->findLastVersionByJdd($jdd);
+		$lastVersion = ($lastDEE) ? $lastDEE->getVersion() : 0;
+
+		// Create a new DEE version with status DELETED and attach it to the jdd
+		$newDEE = new DEE();
+		$newDEE->setJdd($jdd)
+			->setVersion($lastVersion + 1)
+			->setStatus(DEE::STATUS_DELETED);
+		//	->setUser(TODO);
+		$em->persist($newDEE);
+		$em->flush();
+
+		return new JsonResponse($this->getStatus($jddId, $newDEE));
 	}
 
 	/**
@@ -97,33 +158,10 @@ class DEEController extends Controller
 	 */
 	public function getDEEStatus(Request $request)
 	{
-		$em = $this->get('doctrine.orm.entity_manager');
-
-		$return = array();
-
 		// Find jddId if given in GET parameters
 		$jddId = intval($request->query->get('jddId', 0));
-		$return['jddId'] = $jddId;
 
-		$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
-		if (!$jdd) {
-			$return['status'] = Message::STATUS_NOTFOUND;
-			$return['error_message'] = 'No jdd found';
-			return new JsonResponse($return);
-		}
-		// Get RabbitMQ message attached to the jdd
-		$messageId = intval($jdd->getField('DEEgenerationMessageId'));
-		$message =  $em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
-		if (!$message) {
-			$return['status'] = Message::STATUS_NOTFOUND;
-			$return['error_message'] = 'No message found for this jdd';
-			return new JsonResponse($return);
-		}
-
-		// We got a message, just send back the infos
-		$return['status'] = $message->getStatus();
-		$return['progress'] = $message->getProgressPercentage();
-		return new JsonResponse($return);
+		return new JsonResponse($this->getStatus($jddId));
 	}
 
 	/**
@@ -138,36 +176,79 @@ class DEEController extends Controller
 	 */
 	public function getDEEStatusAll(Request $request)
 	{
-		$em = $this->get('doctrine.orm.entity_manager');
-
 		// Find jddIds if given in GET parameters
 		$jddIds = $request->query->get('jddIds', []);
 
-		$return = array();
-
+		$json = array();
 		foreach ($jddIds as $jddId ) {
-			$part = array();
-			$part['jddId'] = $jddId;
+			$json[] = $this->getStatus($jddId);
+		}
 
-			$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
-			if (!$jdd) {
-				$part['status'] = Message::STATUS_NOTFOUND;
+		return new JsonResponse($json);
+	}
+
+	/**
+	 * Returns a json array with informations about the DEE generation process
+	 * This is the expected return of all DEE Ajax actions on the Jdd pages
+	 *
+	 * @param $jddId
+	 * @param DEE|null $DEE
+	 * @return array
+	 */
+	protected function getStatus($jddId, DEE $DEE = null) {
+
+		$em = $this->get('doctrine.orm.entity_manager');
+		$jddRepo = $em->getRepository('OGAMBundle:RawData\Jdd');
+		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
+
+		// The returned informations
+		$json = array(
+			'jddId' => $jddId,
+			'success' => true
+		);
+
+		$jdd = $jddRepo->findOneById($jddId);
+		if (!$jdd) {
+			$json['success'] = false;
+			$json['error_message'] = 'No jdd found';
+		}
+		else {
+			if (!$DEE) {
+				// Get last version of DEE attached to the jdd
+				$DEE = $deeRepo->findLastVersionByJdd($jdd);
+			}
+
+			if (!$DEE) {
+				$json['dee'] = array(
+					'status' => DEE::STATUS_NO_DEE
+				);
 			}
 			else {
-				// Get RabbitMQ message attached to the jdd
-				$messageId = intval($jdd->getField('DEEgenerationMessageId'));
-				$message = $em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
-				if (!$message) {
-					$part['status'] = Message::STATUS_NOTFOUND;
-				}
-				else {
-					// We got a message, just send back the infos
-					$part['status'] = $message->getStatus();
-					$part['progress'] = $message->getProgressPercentage();
+				$json['dee'] = array(
+					'status' => $DEE->getStatus(),
+					'downloadLink' => $DEE->getFilePath()
+				);
+
+				// Get message if DEE is GENERATING
+				if ($DEE->getStatus() == DEE::STATUS_GENERATING) {
+					$message = $DEE->getMessage();
+
+					if (!$message) {
+						$json['message'] = array(
+							'status' => Message::STATUS_NOTFOUND,
+							'error_message' => 'No message found for this dee',
+						);
+					}
+					else {
+						$json['message'] = array(
+							'status' => $message->getStatus(),
+							'progress' =>$message->getProgressPercentage(),
+						);
+					}
 				}
 			}
-			$return[] = $part;
 		}
-		return new JsonResponse($return);
+		return $json;
 	}
+
 }
