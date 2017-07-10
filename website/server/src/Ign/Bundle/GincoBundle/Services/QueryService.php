@@ -233,10 +233,9 @@ class QueryService extends BaseService {
 
 		$maxPrecisionLevel = 1000;
 		$fieldsLevels = $this->getFieldsLevels();
-
 		foreach ($criterias as $criteria) {
 			$data = $criteria->getData();
-			if (in_array($data, $fieldsLevels)) {
+			if (in_array($data, array_keys($fieldsLevels))) {
 				$fieldLevel = $fieldsLevels[$data];
 				if ($fieldLevel < $maxPrecisionLevel) {
 					$maxPrecisionLevel = $fieldLevel;
