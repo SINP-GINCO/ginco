@@ -223,16 +223,31 @@
         </tbody>
     </table>
 
-    <!-- DEE regeneration popup -->
-	<div id="dialogoverlay"></div>
-	<div id="dialogbox">
-	  <div>
-	    <div id="dialogboxhead"></div>
-	    <div id="dialogboxbody">
-	    </div>
-	    <div id="dialogboxfoot"></div>
-	  </div>
-	</div>
+    <!-- DEE dialog popup -->
+    <div class="modal fade" id="DEEModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-notice"></p>
+                    <form>
+                        <div class="form-group">
+                            <label class="control-label">{{ 'Comment'|trans }}</label>
+                            <textarea class="form-control" id="DEE-comment"></textarea>
+                            <div class="help-block"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                    <button type="button" class="btn btn-primary" id="modal-submit"></button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% else %}
     <p>{% trans %}No submission found{% endtrans %}</p>

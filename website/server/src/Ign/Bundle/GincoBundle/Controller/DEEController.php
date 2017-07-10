@@ -37,6 +37,9 @@ class DEEController extends Controller
 			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
 		}
 
+		// Get comment in GET parameters
+		$comment = $request->query->get('comment', '');
+
 		// Get last version of DEE attached to the jdd
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		$lastDEE = $deeRepo->findLastVersionByJdd($jdd);
@@ -45,13 +48,14 @@ class DEEController extends Controller
 		// Create a new DEE version and attach it to the jdd
 		$newDEE = new DEE();
 		$newDEE->setJdd($jdd)
-			->setVersion($lastVersion + 1);
+			->setVersion($lastVersion + 1)
+			->setComment($comment);
 		//	->setUser(TODO);
 		$em->persist($newDEE);
 		$em->flush();
 
 		// Dummy action; todo change by real action
-		$messageId = $this->get('old_sound_rabbit_mq.ginco_generic_producer')->publish('dee', ['deeId' => $newDEE->getId(),'time' => 20]);
+		$messageId = $this->get('old_sound_rabbit_mq.ginco_generic_producer')->publish('dee', ['deeId' => $newDEE->getId(),'time' => 5]);
 
 		$message = $em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
 
@@ -130,6 +134,9 @@ class DEEController extends Controller
 			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
 		}
 
+		// Get comment in GET parameters
+		$comment = $request->query->get('comment', '');
+
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		$lastDEE = $deeRepo->findLastVersionByJdd($jdd);
 		$lastVersion = ($lastDEE) ? $lastDEE->getVersion() : 0;
@@ -138,7 +145,8 @@ class DEEController extends Controller
 		$newDEE = new DEE();
 		$newDEE->setJdd($jdd)
 			->setVersion($lastVersion + 1)
-			->setStatus(DEE::STATUS_DELETED);
+			->setStatus(DEE::STATUS_DELETED)
+			->setComment($comment);
 		//	->setUser(TODO);
 		$em->persist($newDEE);
 		$em->flush();
