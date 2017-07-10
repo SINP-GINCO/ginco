@@ -16,9 +16,9 @@ use Ign\Bundle\OGAMBundle\Entity\Website\User;
  */
 class DEE
 {
+	const STATUS_NO_DEE = 'NO DEE';
 	const STATUS_GENERATING = 'GENERATING';
-	const STATUS_CURRENT = 'CURRENT';
-	const STATUS_OLD = 'OLD';
+	const STATUS_OK = 'OK';
 	const STATUS_DELETED = 'DELETED';
 
     /**
@@ -89,9 +89,9 @@ class DEE
 	 *
      * @var array
      *
-     * @ORM\Column(name="submissions", type="simple_array")
+     * @ORM\Column(name="submissions", type="simple_array", nullable=true)
      */
-    private $submissions;
+    private $submissions ;
 
     /**
      * @var \DateTime
