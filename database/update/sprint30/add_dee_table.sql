@@ -27,7 +27,7 @@ CREATE TABLE raw_data.dee
   status character varying(20) NOT NULL,
   version integer NOT NULL,
   comment text,
-  submissions text NOT NULL,
+  submissions text,
   createdat timestamp(0) without time zone NOT NULL,
   CONSTRAINT dee_pkey PRIMARY KEY (id),
   CONSTRAINT fk_fc60c94448ca3048 FOREIGN KEY (user_login)
