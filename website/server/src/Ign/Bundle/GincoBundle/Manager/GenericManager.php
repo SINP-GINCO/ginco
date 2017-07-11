@@ -53,7 +53,7 @@ class GenericManager extends BaseManager {
 	public function getDatumGinco(GenericTableFormat $data, $requestId) {
 		$tableFormat = $data->getTableFormat();
 
-		$this->logger->info('getDatum : ' . $tableFormat->getFormat());
+		$this->logger->info('getDatum Ginco: ' . $tableFormat->getFormat());
 
 		$schema = $tableFormat->getSchema();
 		$ĥidingValue = $this->configuration->getConfig('hiding_value');
@@ -66,12 +66,14 @@ class GenericManager extends BaseManager {
 		// 2- Do the JOINS with each ancestor, to the one who carries the geometry
 		// => rule : it must be forbidden to put hidden fields in older tables than geometry table.
 
-		$joinToGeometryTable = $this->genericService->getJoinToGeometryTable($schema->name, $tableFormat->format);
+		$joinToGeometryTable = $this->genericService->getJoinToGeometryTable($schema->getName(), $tableFormat->getFormat());
 
-		$sql = "SELECT DISTINCT " . $this->genericService->buildSelect($data->getFields());
+		$sql = "SELECT DISTINCT " . $this->genericService->buildSelect(array_map(function ($field) {
+			return $field->getMetadata();
+		}, $data->all()));
 		$sql .= ", hiding_level";
 		$sql .= $joinToGeometryTable;
-		$sql .= " WHERE (1 = 1)" . $this->genericService->buildWhere($schema->code, $data->infoFields);
+		$sql .= " WHERE (1 = 1)" . $this->genericService->buildWhere($schema->getCode(), $data->getIdFields());
 		$sql .= " AND results.id_request = '" . $requestId . "'";
 
 		$this->logger->info('getDatum custom : ' . $sql);
@@ -109,7 +111,6 @@ class GenericManager extends BaseManager {
 				$field->setValueBoundingBox(new BoundingBox($xmin, $xmax, $ymin, $ymax));
 			} else if ($unit->getType() === "ARRAY") {
 				// For array field we transform the value in a array object
-				$field->setValue($this->genericService->stringToArray($field->getValue()));
 				if ($shouldValueBeHidden) {
 					$field->setValue($ĥidingValue);
 				} else {

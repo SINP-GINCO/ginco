@@ -607,10 +607,10 @@ class QueryService extends BaseService {
 	 *        	The names of the layers used to display the images in the detail panel.
 	 * @param String $datasetId
 	 *        	The identifier of the dataset (to filter data)
+	 * @param String $bbox
+	 *        	The bounding box (not used)
 	 * @param boolean $withChildren
 	 *        	If true, get the information about the children of the object
-	 * @param String $bbox
-	 *        	The bounding box
 	 * @param Array $userInfos
 	 *        	Few user informations
 	 * @return array Array that represents the details of the result line.
@@ -652,6 +652,7 @@ class QueryService extends BaseService {
 		$gTables = array_merge($ancestors, [
 			$gTableFormat
 		]);
+
 		foreach ($gTables as $gTable) {
 			$dataDetails['formats'][] = [
 				'id' => $gTable->getId(),
@@ -673,10 +674,10 @@ class QueryService extends BaseService {
 		$dataDetails['title'] = $dataInfo['title'] . ' (' . $title . ')';
 
 		// Add the localisation maps
-		if (!empty($detailsLayers) && $bbox !== null) {
+		if (!empty($detailsLayers)) {
 			if ($detailsLayers[0] !== '') {
 				$url = array();
-				$url = explode(";", ($this->getDetailsMapUrl(empty($detailsLayers) ? '' : $detailsLayers[0], $bbox, $mapservParams)));
+				$url = explode(";", ($this->getDetailsMapUrl(empty($detailsLayers) ? '' : $detailsLayers[0], $bbox, '')));
 
 				$dataDetails['maps1'] = array(
 					'title' => 'image'
