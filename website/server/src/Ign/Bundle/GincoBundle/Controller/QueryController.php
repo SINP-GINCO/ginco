@@ -516,9 +516,9 @@ class QueryController extends BaseController {
 
 			$response = new Response();
 			$response->headers->set('Content-Type', 'application/json');
-			return $this->render('OGAMBundle:Query:ajaxgetdetails.json.twig', array(
+			return $this->render('IgnGincoBundle:Query:ajaxgetdetails.json.twig', array(
 				'data' => $this->get('ogam.query_service')
-				->getDetailsDataGinco($id, $detailsLayers, $datasetId, true, $userInfos)
+				->getDetailsDataGinco($id, $detailsLayers, $datasetId, $bbox, true, $userInfos)
 			), $response);
 		} catch (\Exception $e) {
 			$logger->error('Error while getting details : ' . $e);

@@ -7,6 +7,8 @@ use Ign\Bundle\OGAMBundle\Entity\Metadata\FormField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
 use Ign\Bundle\OGAMBundle\OGAMBundle;
 use Ign\Bundle\OGAMBundle\Services\GenericService as BaseGenericService;
+use Ign\Bundle\OGAMBundle\Entity\Metadata\TableTree;
+use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
 
 /**
  * The Generic Service customized for Ginco.
@@ -15,54 +17,55 @@ use Ign\Bundle\OGAMBundle\Services\GenericService as BaseGenericService;
  */
 class GenericService extends BaseGenericService {
 
-	/**
-	 * Get the form field corresponding to the table field.
-	 * Ginco : add the selection of form_label and form_position.
-	 * MIGRATED.
-	 *
-	 * @param GenericField $tableRowField
-	 *        	the a valuable table row field
-	 * @param Boolean $copyValues
-	 *        	is true the values will be copied
-	 * @return GenericField
-	 */
-	public function getTableToFormMapping(GenericField $tableRowField, $copyValues = false) {
-		$tableField = $tableRowField->getMetadata();
-		// Get the description of the form field
-		$req = "SELECT ff, fofo.label as form_label, fofo.position as form_position
-				FROM OGAMBundle:Metadata\FormField ff
-				JOIN OGAMBundle:Metadata\FieldMapping fm
-				JOIN OGAMBundle:Metadata\FormFormat fofo ON fofo.format = ff.format
-				WHERE fm.mappingType = 'FORM'
-				AND fm.srcData = ff.data
-				AND fm.srcFormat = ff.format
-				AND fm.dstFormat = :format
-				AND fm.dstData = :data";
-		$formField = $this->metadataModel->createQuery($req)
-			->setParameters(array(
-			'format' => $tableField->getFormat()
-				->getFormat(),
-			'data' => $tableField->getData()
-				->getData()
-		))
-			->getOneOrNullResult();
-		$valuedField = null;
-		// Clone the object to avoid modifying existing object
-		if ($formField !== null) {
-			$valuedField = new GenericField($formField->getFormat()->getFormat(), $formField->getData()->getData());
-			$valuedField->setMetadata($formField, $this->locale);
-		}
+// 	/**
+// 	 * Get the form field corresponding to the table field.
+// 	 * Ginco : add the selection of form_label and form_position.
+// 	 * MIGRATION TO DO.
+// 	 *
+// 	 * @param GenericField $tableRowField
+// 	 *        	the a valuable table row field
+// 	 * @param Boolean $copyValues
+// 	 *        	is true the values will be copied
+// 	 * @return GenericField
+// 	 */
+// 	public function getTableToFormMapping(GenericField $tableRowField, $copyValues = false) {
+// 		$tableField = $tableRowField->getMetadata();
+// 		// Get the description of the form field
+// 		$req = "SELECT ff, fofo.label as form_label, fofo.position as form_position
+// 				FROM OGAMBundle:Metadata\FormField ff
+// 				JOIN OGAMBundle:Metadata\FieldMapping fm
+// 				JOIN OGAMBundle:Metadata\FormFormat fofo
+// 				WHERE fm.mappingType = 'FORM'
+// 				AND fm.srcData = ff.data
+// 				AND fofo.format = ff.format
+// 				AND fm.srcFormat = ff.format
+// 				AND fm.dstFormat = :format
+// 				AND fm.dstData = :data";
+// 		$formField = $this->metadataModel->createQuery($req)
+// 			->setParameters(array(
+// 			'format' => $tableField->getFormat()
+// 				->getFormat(),
+// 			'data' => $tableField->getData()
+// 				->getData()
+// 		))
+// 			->getOneOrNullResult();
+// 		$valuedField = null;
+// 		// Clone the object to avoid modifying existing object
+// 		if ($formField !== null) {
+// 			$valuedField = new GenericField($formField->getFormat()->getFormat(), $formField->getData()->getData());
+// 			$valuedField->setMetadata($formField, $this->locale);
+// 		}
 
-		// Copy the values
-		if ($copyValues === true && $formField !== null && $tableRowField->getValue() !== null) {
+// 		// Copy the values
+// 		if ($copyValues === true && $formField !== null && $tableRowField->getValue() !== null) {
 
-			// Copy the value and label
-			$valuedField->setValue($tableRowField->getValue());
-			$valuedField->setValueLabel($tableRowField->getValueLabel());
-		}
+// 			// Copy the value and label
+// 			$valuedField->setValue($tableRowField->getValue());
+// 			$valuedField->setValueLabel($tableRowField->getValueLabel());
+// 		}
 
-		return $valuedField;
-	}
+// 		return $valuedField;
+// 	}
 
 	/**
 	 * Generate the SQL request corresponding the distinct locations of the query result.
@@ -130,7 +133,7 @@ class GenericService extends BaseGenericService {
 
 	/**
 	 * Generate the FROM clause of the SQL request corresponding to a list of parameters.
-	 * Ginco : support for the ogam_id column and results and  joined tables for filtering results;
+	 * Ginco : support for the ogam_id column and results and joined tables for filtering results;
 	 * MIGRATED.
 	 *
 	 * @param String $schema
@@ -162,7 +165,7 @@ class GenericService extends BaseGenericService {
 		$from = " FROM " . $rootTableName . " " . $rootTableFormat;
 
 		// Add results table
-// 		$from .= ', mapping.results ';
+		// $from .= ', mapping.results ';
 
 		// Add the user asked joined tables
 		if (in_array('submission', $joinTables)) {
@@ -226,7 +229,9 @@ class GenericService extends BaseGenericService {
 		foreach ($formFields as $formField) {
 			$tableField = $mappingSet->getDstField($formField)->getMetadata();
 
-			if ($tableField->getData()->getUnit()->getSubType() == 'ID') {
+			if ($tableField->getData()
+				->getUnit()
+				->getSubType() == 'ID') {
 				// Exact search
 				$where .= $this->buildWhereItem($schemaCode, $tableField, $formField->getValue(), true);
 			} else {
@@ -265,7 +270,7 @@ class GenericService extends BaseGenericService {
 	public function generateSQLEndWhereRequest($rawDataTableName, $requestId, $maxPrecisionLevel) {
 		$this->logger->debug('generateSQLEndWhereRequest');
 
-		$endWhere  = " AND table_format = '" . $rawDataTableName . "'";
+		$endWhere = " AND table_format = '" . $rawDataTableName . "'";
 		$endWhere .= " AND id_request = " . $requestId;
 		$endWhere .= " AND hiding_level <= " . $maxPrecisionLevel;
 
@@ -275,56 +280,62 @@ class GenericService extends BaseGenericService {
 	/**
 	 * Get the FROM clause, with JOINS linking youngest requested table to mapping.results table
 	 *
+	 * MIGRATION_IN_PROCESS
+	 *
 	 * @param String $schema
-	 * @param string $tableFormat the format of the requested table
+	 * @param string $tableFormat
+	 *        	the format of the requested table
 	 */
 	public function getJoinToGeometryTable($schema, $tableFormat) {
 		$this->logger->debug('getJoinToGeometryTable');
 
+		$tableTreeRepo = $this->metadataModel->getRepository(TableTree::class);
+		$tableFormatRepo = $this->metadataModel->getRepository(TableFormat::class);
+
 		// Get the ancestors of the table
-		$customMetadataModel = new Application_Model_Metadata_CustomMetadata();
-		$ancestors = $customMetadataModel->getTablesTree($tableFormat, $schema);
+		$ancestors = $tableTreeRepo->getAncestors($tableFormat, $schema);
 
 		// Get the ancestors to the geometry table only
-		$ancestorsToGeometry = $customMetadataModel->getAncestorsToGeometry($schema, $ancestors);
+		$ancestorsToGeometry = $tableTreeRepo->getAncestorsToGeometry($schema, $ancestors);
 
 		// Add the requested table (FROM)
 		$ancestorsValue = array_values($ancestorsToGeometry);
 		$requestedTable = array_shift($ancestorsValue);
 
-		$logicalName = $requestedTable->getLogicalName();
-		$this->logger->debug('requested table format : ' . $logicalName);
+		$logicalName = $requestedTable->getTableFormat()->getFormat();
 
-		$from = " FROM " . $requestedTable->tableName . " " . $logicalName;
+		$from = " FROM " . $requestedTable->getTableFormat()->getTableName() . " " . $logicalName;
 
 		// Add the joined tables (when there is ancestors)
 		foreach ($ancestorsToGeometry as $tableTreeData) {
-			if ($tableTreeData->parentTable != '*') {
-				$parentTableName = $ancestorsToGeometry[$tableTreeData->parentTable]->tableName;
-				$from .= " JOIN " . $parentTableName . " " . $tableTreeData->parentTable . " on (";
+			if ($tableTreeData->getParentTableFormat()->getFormat() != '*') {
+				$parentTableName = $ancestorsToGeometry[$tableTreeData->getParentTableFormat()]->getTableName();
+				$from .= " JOIN " . $parentTableName . " " . $tableTreeData->getParentTableFormat()->getFormat() . " on (";
 				// Add the join keys
-				$keys = explode(',', $tableTreeData->keys);
+				$keys = explode(',', $tableTreeData->getTableFormat()->getPrimaryKeys());
 				foreach ($keys as $key) {
-					$from .= $tableTreeData->getLogicalName() . "." . trim($key) . " = " . $tableTreeData->parentTable . "." . trim($key) . " AND ";
+					$from .= $tableTreeData->getTableFormat()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTableFormat()->getFormat() . "." . trim($key) . " AND ";
 				}
 				$from = substr($from, 0, -5);
 				$from .= ") ";
 			}
 		}
 
-		// Add  JOIN beetween results table and the table which contains the geometry column (last table of the list)
+		// Add JOIN beetween results table and the table which contains the geometry column (last table of the list)
 		$ancestorsValue = array_values($ancestorsToGeometry);
 		$geometryTable = array_pop($ancestorsValue);
-		$this->logger->debug('geometryTable : ' . $geometryTable->tableFormat);
 
-		$geometryTableFormat = $customMetadataModel->getTableFormat($schema, $geometryTable->tableFormat);
-		$geometryTableFormatKeys = $geometryTableFormat->primaryKeys;
+		$geometryTableFormat = $tableFormatRepo->findOneBy(array(
+			'format' => $geometryTable->getTableFormat()
+				->getFormat()
+		));
+		$geometryTableFormatKeys = $geometryTableFormat->getPrimaryKeys();
 		foreach ($geometryTableFormatKeys as $geometryKey) {
 			if (strtolower(trim($geometryKey)) != 'provider_id') {
 				$geometryTablePKeyId = trim($geometryKey);
 			}
 		}
-		$from .= " LEFT JOIN mapping.results ON results.id_observation = " . $geometryTable->tableFormat . "." . $geometryTablePKeyId . " AND results.id_provider = " . $geometryTable->tableFormat . ".provider_id";
+		$from .= " LEFT JOIN mapping.results ON results.id_observation = " . $geometryTable->getTableFormat()->getFormat() . "." . $geometryTablePKeyId . " AND results.id_provider = " . $geometryTable->getTableFormat()->getFormat() . ".provider_id";
 
 		$this->logger->debug('getJoinToGeometryTable :' . $from);
 		return $from;
@@ -370,5 +381,4 @@ class GenericService extends BaseGenericService {
 		}
 		return $result;
 	}
-
 }
