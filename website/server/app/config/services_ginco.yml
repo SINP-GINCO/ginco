@@ -103,7 +103,7 @@ services:
 
     # RabbitMQ Decorated Producer
     ginco.decorating_ginco_generic_producer:
-      class: Ign\Bundle\GincoBundle\Services\GenericProducer
+      class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericProducer
       decorates: old_sound_rabbit_mq.ginco_generic_producer
       arguments: ['@ginco.decorating_ginco_generic_producer.inner', '@doctrine.orm.entity_manager']
       public: false
@@ -111,7 +111,7 @@ services:
 
     # RabbitMQ Consumers
     generic_consumer_service:
-        class: Ign\Bundle\GincoBundle\Services\GenericConsumer
+        class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericConsumer
         arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
 
     #templatehelper
