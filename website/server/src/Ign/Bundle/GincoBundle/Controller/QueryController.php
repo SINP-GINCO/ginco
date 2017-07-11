@@ -559,6 +559,10 @@ class QueryController extends BaseController {
 	}
 
 	/**
+	 * Returns a csv file corresponding to the requested data.
+	 * Fields are empty when the user doesn't have the right to view them.
+	 * (same as "hidden" in the result array).
+	 *
 	 * @Route("/csv-export", name="query_csv_export")
 	 */
 	public function csvExportAction(Request $request) {
@@ -566,184 +570,117 @@ class QueryController extends BaseController {
 		$logger->debug('csvExportAction');
 
 		$user = $this->getUser();
+		$schema = $this->get('ogam.schema_listener')->getSchema();
+		$websiteSession = $request->getSession();
+
+		$requestId = $this->getDoctrine()
+			->getManager('mapping')
+			->getRepository('IgnGincoBundle:Mapping\Request')
+			->getLastRequestIdFromSession(session_id());
 
 		// Configure memory and time limit because the program ask a lot of resources
 		$configuration = $this->get('ogam.configuration_manager');
 		ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", $configuration->getConfig('max_execution_time', '480'));
+
+		// Number of results to export
+		$total = $websiteSession->get('query_Count');
+		$logger->debug('Expected lines : ' . $total);
+
+		// Query by $maxLines batches
 		$maxLines = 5000;
+
+		// Start writing output (CSV file)
+		$content = "";
 
 		// Define the header of the response
 		$charset = $configuration->getConfig('csvExportCharset', 'UTF-8');
 
-		$content = "";
-
-		if ($user->isAllowed('EXPORT_RAW_DATA')) {
-
-			$websiteSession = $request->getSession();
-			$select = $websiteSession->get('query_SQLSelect');
-			$from = $websiteSession->get('query_SQLFrom');
-			$where = $websiteSession->get('query_SQLWhere');
-			$sql = $select . $from . $where;
-
-			// Count the number of lines
-			$total = $websiteSession->get('query_Count');
-			$logger->debug('Expected lines : ' . $total);
-
-			if ($sql == null) {
-				$content .= iconv("UTF-8", $charset, '// No Data');
-			} else if ($total > 65535) {
-				$content .= iconv("UTF-8", $charset, '// Too many result lines');
-			} else {
-
-				// Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
-				if ($charset === 'UTF-8') {
-					$content = chr(0xEF) . chr(0xBB) . chr(0xBF) . $content;
-				}
-
-				// Get the request from the session
-				$queryForm = $request->getSession()->get('query_QueryForm');
-
-				// Get the mappings for the query form fields
-				$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
-
-				// Display the default message
-				$content .= iconv("UTF-8", $charset, '// *************************************************');
-				$content .= iconv("UTF-8", $charset, '// ' . $this->get('translator')->trans('Data Export') . "\n");
-				$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n\n");
-
-				// Request criterias
-				$content .= iconv("UTF-8", $charset, $this->csvExportCriterias($request));
-				$content .= iconv("UTF-8", $charset, "\n");
-
-				// Export the column names
-				$content .= iconv("UTF-8", $charset, '// ');
-				foreach ($queryForm->getColumns() as $genericFormField) {
-					$genericTableField = $queryForm->getFieldMappingSet()->getDstField($genericFormField);
-					$tableField = $genericTableField->getMetadata();
-					$content .= iconv("UTF-8", $charset, $tableField->getLabel() . ';');
-				}
-				$content .= iconv("UTF-8", $charset, "\n");
-
-				// Prepare the columns information
-				$formFields = array();
-				$tableFields = array();
-				foreach ($queryForm->getColumns() as $genericFormField) {
-
-					// Prepare some information for a later use
-					// To avoid Doctrine request for each data line
-					$formField = $this->get('ogam.query_service')->getFormField($genericFormField->getFormat(), $genericFormField->getData());
-					$genericTableField = $queryForm->getFieldMappingSet()->getDstField($genericFormField);
-					$tableField = $genericTableField->getMetadata();
-					$formFields[$genericFormField->getId()] = $formField;
-					$tableFields[$genericFormField->getId()] = $tableField;
-				}
-
-				// Get the order parameters
-				$sort = $request->request->get('sort');
-				$sortDir = $request->request->get('dir');
-
-				$filter = "";
-
-				if ($sort != "") {
-					// $sort contains the form format and field
-					$split = explode("__", $sort);
-					$formField = new GenericField($split[0], $split[1]);
-					$dstField = $queryForm->getFieldMappingSet()->getDstField($formField);
-					$key = $dstField->getFormat() . "." . $dstField->getData();
-					$filter .= " ORDER BY " . $key . " " . $sortDir . ", id";
-				} else {
-					$filter .= " ORDER BY id";
-				}
-
-				// Define the max number of lines returned
-				$limit = " LIMIT " . $maxLines . " ";
-
-				$count = 0;
-				$page = 0;
-				$finished = false;
-				while (!$finished) {
-
-					// Define the position of the cursor in the dataset
-					$offset = " OFFSET " . ($page * $maxLines) . " ";
-
-					// Execute the request
-					$logger->debug('reading data ... page ' . $page);
-
-					// Build complete query
-					$query = $sql . $filter . $limit . $offset;
-
-					// Execute the request
-					$result = $this->get('ogam.query_service')->getQueryResults($query);
-
-					// Export the lines of data
-					foreach ($result as $line) {
-
-						// $columns = $this->get('ogam.query_service')->getColumns($queryForm);
-
-						foreach ($queryForm->getColumns() as $genericFormField) {
-
-							$formField = $formFields[$genericFormField->getId()];
-							$tableField = $tableFields[$genericFormField->getId()];
-
-							$value = $line[strtolower($tableField->getName())];
-
-							if ($value == null) {
-								$content .= iconv("UTF-8", $charset, ';');
-							} else {
-								if ($tableField->getData()
-									->getUnit()
-									->getType() === "CODE") {
-
-									$label = $this->getLabelCache($tableField, $value);
-
-									$content .= iconv("UTF-8", $charset, '"' . $label . '";');
-								} else if ($tableField->getData()
-									->getUnit()
-									->getType() === "ARRAY") {
-									// Split the array items
-									$arrayValues = explode(",", preg_replace("@[{-}]@", "", $value));
-									$label = '';
-									foreach ($arrayValues as $arrayValue) {
-
-										$label .= $this->getLabelCache($tableField, $arrayValue);
-										$label .= ',';
-									}
-									if ($label != '') {
-										$label = substr($label, 0, -1);
-									}
-									$label = '[' . $label . ']';
-
-									$content .= iconv("UTF-8", $charset, '"' . $label . '";');
-								} else if ($formField->getInputType() === "NUMERIC") {
-									// Numeric value
-									if ($formField->getDecimals() !== null && $formField->getDecimals() !== "") {
-										$value = number_format($value, $formField->getDecimals(), ',', '');
-									}
-
-									$content .= iconv("UTF-8", $charset, $value . ';');
-								} else {
-									// Default case : String value
-									$content .= iconv("UTF-8", $charset, '"' . $value . '";');
-								}
-							}
-						}
-						$content .= iconv("UTF-8", $charset, "\n");
-						$count ++;
-					}
-
-					// Check we have read everything
-					if ($count == $total) {
-						$finished = true;
-					}
-
-					$page ++;
-				}
-			}
-		} else {
-			$content .= iconv("UTF-8", $charset, '// No Permissions');
+		// Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
+		if ($charset === 'UTF-8') {
+			$content = chr(0xEF) . chr(0xBB) . chr(0xBF);
 		}
 
+		if (($schema == 'RAW_DATA' && !$user->isAllowed('EXPORT_RAW_DATA'))) {
+			$content .= iconv("UTF-8", $charset, ('// No Permissions'));
+		} else if ($total > 65535) {
+			$content .= iconv("UTF-8", $charset, ('// Too many result lines (>65535)'));
+		} else {
+			// Use fputcsv to return a string
+			$arrayToCsv = function ($fields, $delimiter = ",", $enclosure = '"', $noLineReturn = false) {
+				// Remove original enclosing character from fields
+				$fields = array_map(function ($field) {
+					return trim($field, '"');
+				}, $fields);
+
+				$temp = fopen('php://memory', 'r+');
+				// use the default csv handler
+				fputcsv($temp, $fields, $delimiter, $enclosure);
+				rewind($temp);
+				$csv = stream_get_contents($temp);
+				fclose($temp);
+				if ($noLineReturn) {
+					$csv = substr($csv, 0, -1);
+				}
+				return $csv;
+			};
+
+			// Get the request from the session
+			$queryForm = $request->getSession()->get('query_QueryForm');
+
+			// Get the mappings for the query form fields
+			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
+
+			// Display the default message
+			$content .= iconv("UTF-8", $charset, '// *************************************************');
+			$content .= iconv("UTF-8", $charset, '// ' . $this->get('translator')->trans('Data Export') . "\n");
+			$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n\n");
+
+			// Request criterias
+			$content .= iconv("UTF-8", $charset, $this->csvExportCriterias($request));
+			$content .= iconv("UTF-8", $charset, "\n");
+
+			// Export the column names
+			$line = array();
+			foreach ($queryForm->getColumns() as $genericFormField) {
+				$genericTableField = $queryForm->getFieldMappingSet()->getDstField($genericFormField);
+				$tableField = $genericTableField->getMetadata();
+				$line[] = $tableField->getLabel();
+				$content .= iconv("UTF-8", $charset, $tableField->getLabel() . ';');
+			}
+			$outputLine = $arrayToCsv($line, ';', '"');
+			$content .= iconv("UTF-8", $charset, "// " . $outputLine);
+
+			$pagesTotal = ceil($total / $maxLines);
+
+			for ($page = 0; $page < $pagesTotal; $page ++) {
+
+				$userInfos = [
+					"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER')
+				];
+
+				// Get requested data
+				// they come in the form of a json; convert them associative array and then to csv
+				$data = $this->get('ogam.query_service')->getResultRowsGinco($page*$maxLines, $maxLines, null, null, $request->getSession(), $userInfos);
+
+				if ($data != null) {
+					// Write each line in the csv
+					foreach ($data as $line) {
+						// keep only the first count($resultColumns), because there is 2 or 3 technical fields sent back (after the result columns).
+						$line = array_slice($line, 0, count($queryForm->getColumns()));
+						// implode all arrays
+						foreach ($line as $index => $value) {
+							if (is_array($value)) {
+								$line[$index] = join(",", $value); // just use join because we don't want double enclosure...
+							}
+						}
+						// Write csv line to output
+						$outputLine = $arrayToCsv($line, ';', '"');
+						$content .= iconv("UTF-8", $charset, $outputLine);
+					}
+				}
+			}
+		}
 		$response = new Response($content, 200);
 		$response->headers->set('Content-Type', 'text/csv;charset=' . $charset . ';application/force-download;');
 		$response->headers->set('Content-disposition', 'attachment; filename=DataExport_' . date('dmy_Hi') . '.csv');
