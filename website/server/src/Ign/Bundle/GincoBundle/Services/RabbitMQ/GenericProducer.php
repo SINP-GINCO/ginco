@@ -1,6 +1,6 @@
 <?php
 
-namespace Ign\Bundle\GincoBundle\Services;
+namespace Ign\Bundle\GincoBundle\Services\RabbitMQ;
 
 use Doctrine\ORM\EntityManager;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;

@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\GincoBundle\Services;
+namespace Ign\Bundle\GincoBundle\Services\RabbitMQ;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
