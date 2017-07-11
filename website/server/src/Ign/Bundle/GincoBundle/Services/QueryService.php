@@ -400,7 +400,7 @@ class QueryService extends BaseService {
 	public function getResultRowsGinco($start, $length, $sort, $sortDir, $session, $userInfos, $emptyHidingValue = false) {
 		$this->logger->debug('getResultRows');
 
-		$projection = $this->configuration->getConfig('srs_visualisation', 3857);
+		$ĥidingValue = $this->configuration->getConfig('hiding_value');
 
 		// Get the request from the session
 		$queryForm = $session->get('query_QueryForm');
@@ -414,7 +414,6 @@ class QueryService extends BaseService {
 		$from = $session->get('query_SQLFrom');
 		$where = $session->get('query_SQLWhere');
 		$andWhere = $session->get('query_SQLEndWhere');
-		$countResult = $session->get('query_Count');
 
 		$order = "";
 		$hidingLevelKey = ", hiding_level, ";
