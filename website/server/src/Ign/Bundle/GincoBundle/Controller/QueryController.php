@@ -122,7 +122,8 @@ class QueryController extends BaseController {
 
 			$this->get('ogam.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
 			// Execute the request
-			$resultsbbox = $this->get('ogam.query_service')->getResultsBBox($request->getSession()->getId(), $nbResults);
+			$resultsbbox = $this->get('ogam.query_service')->getResultsBBox($request->getSession()
+				->getId(), $nbResults);
 			// Send the result as a JSON String
 			return new JsonResponse([
 				'success' => true,
@@ -163,7 +164,6 @@ class QueryController extends BaseController {
 				'errorMessage' => $e->getMessage()
 			]);
 		}
-
 	}
 
 	/**
@@ -180,7 +180,10 @@ class QueryController extends BaseController {
 			// Get the mappings for the query form fields
 			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
 			// Get the request id
-			$requestId = $this->getDoctrine()->getManager('mapping')->getRepository('IgnGincoBundle:Mapping\Request')->getLastRequestIdFromSession(session_id());
+			$requestId = $this->getDoctrine()
+				->getManager('mapping')
+				->getRepository('IgnGincoBundle:Mapping\Request')
+				->getLastRequestIdFromSession(session_id());
 			// Get the maximum precision level
 			$maxPrecisionLevel = $this->get('ogam.query_service')->getMaxPrecisionLevel($queryForm->getCriteria());
 
@@ -280,122 +283,124 @@ class QueryController extends BaseController {
 				// Get the location table information
 				$tables = $this->get('ogam.generic_service')->getAllFormats($schema, $queryForm->getFieldMappingSet()
 					->getFieldMappingArray()); // Extract the location table from the last query
-					$locationField = $this->getDoctrine()
+				$locationField = $this->getDoctrine()
 					->getRepository(TableField::class)
 					->getGeometryField($schema, array_keys($tables), $locale); // Extract the location field from the available tables
-					$locationTableInfo = $this->getDoctrine()
+				$locationTableInfo = $this->getDoctrine()
 					->getRepository(TableFormat::class)
 					->getTableFormat($schema, $locationField->getFormat()
-						->getFormat(), $locale); // Get info about the location table
+					->getFormat(), $locale); // Get info about the location table
 
-						// Get the intersected locations
-						$locations = $this->get('ogam.query_service')->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale, $activeLayers, $resultsLayer);
-						// $resultsLayers is the most precise layer where we have found results
-						if ($resultsLayer) {
-							$resultsLayer = 'result_' . $resultsLayer; // real name
-							$layerRepo = $this->getDoctrine()->getRepository(Layer::class);
-							$layer = $layerRepo->findOneBy(array('name' => $resultsLayer));
-						}
+				// Get the intersected locations
+				$locations = $this->get('ogam.query_service')->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale, $activeLayers, $resultsLayer);
+				// $resultsLayers is the most precise layer where we have found results
+				if ($resultsLayer) {
+					$resultsLayer = 'result_' . $resultsLayer; // real name
+					$layerRepo = $this->getDoctrine()->getRepository(Layer::class);
+					$layer = $layerRepo->findOneBy(array(
+						'name' => $resultsLayer
+					));
+				}
 
-						if (!empty($locations)) {
-							// we have at least one plot found
+				if (!empty($locations)) {
+					// we have at least one plot found
 
-							// The id is used to avoid to display two time the same result (it's a id for the result dataset)
-							$id = array(
-								'Results'
-							); // A small prefix is required here to avoid a conflict between the id when the result contain only one result
-							// The columns config to setup the grid columnModel
-							$columns = array();
-							// The columns max length to setup the column width
-							$columnsMaxLength = array();
-							// The fields config to setup the store reader
-							$locationFields = array(
-								'id'
-							); // The id must stay the first field
-							// The data to full the store
-							$locationsData = array();
+					// The id is used to avoid to display two time the same result (it's a id for the result dataset)
+					$id = array(
+						'Results'
+					); // A small prefix is required here to avoid a conflict between the id when the result contain only one result
+					   // The columns config to setup the grid columnModel
+					$columns = array();
+					// The columns max length to setup the column width
+					$columnsMaxLength = array();
+					// The fields config to setup the store reader
+					$locationFields = array(
+						'id'
+					); // The id must stay the first field
+					   // The data to full the store
+					$locationsData = array();
 
-							foreach ($locations as $locationsIndex => $location) {
-								$locationData = array();
+					foreach ($locations as $locationsIndex => $location) {
+						$locationData = array();
 
-								// Get the locations identifiers
-								$key = 'SCHEMA/' . $schema . '/FORMAT/' . $locationTableInfo->getFormat();
-								$key .= '/' . $location['pk'];
-								$id[] = $key;
-								$locationData[] = $key;
+						// Get the locations identifiers
+						$key = 'SCHEMA/' . $schema . '/FORMAT/' . $locationTableInfo->getFormat();
+						$key .= '/' . $location['pk'];
+						$id[] = $key;
+						$locationData[] = $key;
 
-								// Remove the pk of the available columns
-								unset($location['pk']);
+						// Remove the pk of the available columns
+						unset($location['pk']);
 
-								// Get the other fields
-								// Setup the location data and the column max length
-								foreach ($location as $columnName => $value) {
-									$locationData[] = $value;
-									if (empty($columnsMaxLength[$columnName])) {
-										$columnsMaxLength[$columnName] = array();
-									}
-									$columnsMaxLength[$columnName][] = strlen($value);
-								}
-								// Setup the fields and columns config
-								if ($locationsIndex === (count($locations) - 1)) {
-
-									// Get the table fields
-									$tableFields = $this->getDoctrine()
-									->getRepository(TableField::class)
-									->getTableFields($schema, $locationField->getFormat()
-										->getFormat(), null, $locale);
-									$tFOrdered = array();
-									foreach ($tableFields as $tableField) {
-										$tFOrdered[strtoupper($tableField->getColumnName())] = $tableField;
-									}
-									foreach ($location as $columnName => $value) {
-										$tableField = $tFOrdered[strtoupper($columnName)];
-										// Set the column model and the location fields
-										$dataIndex = $tableField->getName();
-										// Adds the column header to prevent it from being truncated too and 2 for the header margins
-										$columnsMaxLength[$columnName][] = strlen($tableField->getLabel()) + 2;
-										$column = array(
-											'header' => $tableField->getData()->getLabel(),
-											'dataIndex' => $dataIndex,
-											'editable' => false,
-											'tooltip' => $tableField->getData()->getDefinition(),
-											'width' => max($columnsMaxLength[$columnName]) * 7,
-											'type' => $tableField->getData()
-											->getUnit()
-											->getType()
-										);
-										$columns[] = $column;
-										$locationFields[] = $dataIndex;
-									}
-								}
-								$locationsData[] = $locationData;
+						// Get the other fields
+						// Setup the location data and the column max length
+						foreach ($location as $columnName => $value) {
+							$locationData[] = $value;
+							if (empty($columnsMaxLength[$columnName])) {
+								$columnsMaxLength[$columnName] = array();
 							}
-
-							// We must sort the array here because it can't be done
-							// into the mapfile sql request to avoid a lower performance
-							sort($id);
-
-							// Check if the location table has a child table
-							$hasChild = false;
-							$children = $this->getDoctrine()
-							->getRepository(TableTree::class)
-							->getChildrenTableLabels($locationTableInfo);
-							if (!empty($children)) {
-								$hasChild = true;
-							}
-							return new JsonResponse([
-								'success' => true,
-								"layerLabel" => $layer->getLabel(),
-								'id' => implode('', $id),
-								"title" => $locationTableInfo->getLabel() . ' (' . count($locationsData) . ')',
-								"hasChild" => $hasChild,
-								"columns" => $columns,
-								"fields" => $locationFields,
-								"data" => $locationsData
-							]);
-						} else {
-							return new JsonResponse($defaultResponseArray);
+							$columnsMaxLength[$columnName][] = strlen($value);
 						}
+						// Setup the fields and columns config
+						if ($locationsIndex === (count($locations) - 1)) {
+
+							// Get the table fields
+							$tableFields = $this->getDoctrine()
+								->getRepository(TableField::class)
+								->getTableFields($schema, $locationField->getFormat()
+								->getFormat(), null, $locale);
+							$tFOrdered = array();
+							foreach ($tableFields as $tableField) {
+								$tFOrdered[strtoupper($tableField->getColumnName())] = $tableField;
+							}
+							foreach ($location as $columnName => $value) {
+								$tableField = $tFOrdered[strtoupper($columnName)];
+								// Set the column model and the location fields
+								$dataIndex = $tableField->getName();
+								// Adds the column header to prevent it from being truncated too and 2 for the header margins
+								$columnsMaxLength[$columnName][] = strlen($tableField->getLabel()) + 2;
+								$column = array(
+									'header' => $tableField->getData()->getLabel(),
+									'dataIndex' => $dataIndex,
+									'editable' => false,
+									'tooltip' => $tableField->getData()->getDefinition(),
+									'width' => max($columnsMaxLength[$columnName]) * 7,
+									'type' => $tableField->getData()
+										->getUnit()
+										->getType()
+								);
+								$columns[] = $column;
+								$locationFields[] = $dataIndex;
+							}
+						}
+						$locationsData[] = $locationData;
+					}
+
+					// We must sort the array here because it can't be done
+					// into the mapfile sql request to avoid a lower performance
+					sort($id);
+
+					// Check if the location table has a child table
+					$hasChild = false;
+					$children = $this->getDoctrine()
+						->getRepository(TableTree::class)
+						->getChildrenTableLabels($locationTableInfo);
+					if (!empty($children)) {
+						$hasChild = true;
+					}
+					return new JsonResponse([
+						'success' => true,
+						"layerLabel" => $layer->getLabel(),
+						'id' => implode('', $id),
+						"title" => $locationTableInfo->getLabel() . ' (' . count($locationsData) . ')',
+						"hasChild" => $hasChild,
+						"columns" => $columns,
+						"fields" => $locationFields,
+						"data" => $locationsData
+					]);
+				} else {
+					return new JsonResponse($defaultResponseArray);
+				}
 			}
 		} catch (\Exception $e) {
 			$logger->error('Error while getting details : ' . $e);
@@ -495,8 +500,8 @@ class QueryController extends BaseController {
 
 			// Get the current dataset to filter the results
 			$datasetId = $request->getSession()
-			->get('query_QueryForm')
-			->getDatasetId();
+				->get('query_QueryForm')
+				->getDatasetId();
 
 			// Get the id and the bbox from the request
 			$id = $request->request->get('id');
@@ -506,8 +511,8 @@ class QueryController extends BaseController {
 
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()
-				->getProvider()
-				->getId() : NULL,
+					->getProvider()
+					->getId() : NULL,
 				"DATA_EDITION" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION')
 			];
 
@@ -518,7 +523,7 @@ class QueryController extends BaseController {
 			$response->headers->set('Content-Type', 'application/json');
 			return $this->render('IgnGincoBundle:Query:ajaxgetdetails.json.twig', array(
 				'data' => $this->get('ogam.query_service')
-				->getDetailsDataGinco($id, $detailsLayers, $datasetId, $bbox, true, $userInfos)
+					->getDetailsDataGinco($id, $detailsLayers, $datasetId, $bbox, true, $userInfos)
 			), $response);
 		} catch (\Exception $e) {
 			$logger->error('Error while getting details : ' . $e);
@@ -1310,5 +1315,4 @@ class QueryController extends BaseController {
 			]);
 		}
 	}
-
 }
