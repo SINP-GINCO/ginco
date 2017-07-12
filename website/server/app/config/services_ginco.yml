@@ -158,3 +158,8 @@ services:
     ginco.metadata_reader:
         class: Ign\Bundle\GincoBundle\Services\MetadataReader
         arguments: ["@ogam.configuration_manager","@logger"]
+
+    # Service generating DEE
+    ginco.dee_generator:
+        class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGenerator
+        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@ogam.generic_service", "@ogam.query_service","@logger"]
