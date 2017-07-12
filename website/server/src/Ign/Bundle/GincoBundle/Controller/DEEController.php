@@ -4,6 +4,7 @@ namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
+use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +15,20 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DEEController extends Controller
 {
+	/**
+	 * Direct generation of DEE (for testing)
+	 *
+	 * @Route("/{id}/generate", name = "dee_direct", requirements={"id": "\d+"})
+	 */
+	public function directDEEAction(Jdd $jdd) {
+		$deeGenerator = $this->get('ginco.dee_generator');
+
+		$deeGenerator->generateDeeGml($jdd->getId(), '/tmp/dee.gml');
+
+		return $this->redirect($this->generateUrl('integration_home'));
+	}
+
+
 	/**
 	 * DEE generation action
 	 * Create a 'DEE' line and

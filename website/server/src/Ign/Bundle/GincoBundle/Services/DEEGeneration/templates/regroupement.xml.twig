@@ -1,0 +1,10 @@
+<gml:featureMember>
+    <cont:RegroupementObservations gml:id="ID#GMLID#">
+        <cont:RegroupementSourcePar>
+            {% include 'source.xml.twig' with {'source': regroupement } %}
+        </cont:RegroupementSourcePar>
+        <cont:typeRegroupement>{{ regroupement.typeregroupement }}</cont:typeRegroupement>
+        <cont:methodeRegroupement>{{ regroupement.methoderegroupement }}</cont:methodeRegroupement>
+        <cont:identifiantRegroupementPermanent>{{ regroupement.identifiantregroupementpermanent }}</cont:identifiantRegroupementPermanent>
+    </cont:RegroupementObservations>
+</gml:featureMember>
