@@ -56,7 +56,7 @@ class QueryController extends BaseController {
 						$queryForm->addCriterion($split[0], $split[1], $inputValue);
 						$logger->debug("Criterion added is : " . $split[1]);
 					} else {
-						throw new \Exception($this->get('translator')->trans('Search forbidden on sensitive fields'));
+						throw new \Exception($this->get('translator')->trans('Forbidden search'));
 					}
 				}
 

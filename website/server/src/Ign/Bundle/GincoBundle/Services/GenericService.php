@@ -280,7 +280,7 @@ class GenericService extends BaseGenericService {
 	/**
 	 * Get the FROM clause, with JOINS linking youngest requested table to mapping.results table
 	 *
-	 * MIGRATION_IN_PROCESS
+	 * MIGRATED.
 	 *
 	 * @param String $schema
 	 * @param string $tableFormat
