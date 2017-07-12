@@ -14,6 +14,7 @@ use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
 use Ign\Bundle\OGAMBundle\OGAMBundle;
 use Ign\Bundle\OGAMBundle\Services\QueryService as BaseService;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
 
 /**
  * The Query Service customized for Ginco.
@@ -395,9 +396,13 @@ class QueryService extends BaseService {
 	 *        	if true, we leave the hided values empty (and not replaced with a string), and we keep their type
 	 * @param Array $userInfos
 	 *        	Few user informations
+	 * @param String $locale
+	 *        	the current locale
+	 * @param Boolean $emptyHidingValue
+	 *        	whether the hiding value should be empty or not
 	 * @return JSON
 	 */
-	public function getResultRowsGinco($start, $length, $sort, $sortDir, $session, $userInfos, $emptyHidingValue = false) {
+	public function getResultRowsGinco($start, $length, $sort, $sortDir, $session, $userInfos, $locale, $emptyHidingValue = false) {
 		$this->logger->debug('getResultRows');
 
 		$ĥidingValue = $this->configuration->getConfig('hiding_value');
@@ -423,12 +428,10 @@ class QueryService extends BaseService {
 			$orderKeyType = "";
 			// $sort contains the form format and field
 			$split = explode("__", $sort);
-			$formField = new FormField();
-			$formField->setFormat($split[0]);
-			$formField->setData($split[1]);
-			$tableField = $this->metadataModel->getRepository(TableField::class)->getFormToTableMapping($this->schema, $formField);
-			$orderKey = $tableField->getFormat() . "." . $tableField->getData();
-			$orderKeyType = $tableField->getType();
+			$formField = new GenericField($split[0], $split[1]);
+			$tableField = $this->metadataModel->getRepository(TableField::class)->getFormToTableMapping($this->schema, $formField, $locale);
+			$orderKey = $tableField->getFormat()->getFormat() . "." . $tableField->getData()->getData();
+			$orderKeyType = $tableField->getData()->getUnit()->getType();
 			$order .= " ORDER BY " . $orderKey . " " . $sortDir;
 			// Customization of select for specific data types
 			if ($orderKeyType == 'GEOM' || $orderKeyType == 'DATE') {

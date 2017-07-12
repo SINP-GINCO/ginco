@@ -232,7 +232,7 @@ class QueryController extends BaseController {
 			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
 		];
 
-		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos);
+		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ogam.locale_listener')->getLocale());
 
 		// Send the result as a JSON String
 		return new JsonResponse([
@@ -666,7 +666,7 @@ class QueryController extends BaseController {
 
 				// Get requested data
 				// they come in the form of a json; convert them associative array and then to csv
-				$data = $this->get('ogam.query_service')->getResultRowsGinco($page*$maxLines, $maxLines, null, null, $request->getSession(), $userInfos);
+				$data = $this->get('ogam.query_service')->getResultRowsGinco($page*$maxLines, $maxLines, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')->getLocale());
 
 				if ($data != null) {
 					// Write each line in the csv
