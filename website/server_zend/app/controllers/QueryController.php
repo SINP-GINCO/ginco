@@ -44,42 +44,4 @@ class Custom_QueryController extends QueryController {
 		$this->_helper->viewRenderer->setNoRender();
 		$this->getResponse()->setHeader('Content-type', 'application/json');
 	}
-
-	/**
-	 * Returns a kml file corresponding to the requested data.
-	 * KML export is not defined in GINCO because of the hiding of geometry
-	 */
-	public function kmlExportAction() {
-		$this->logger->debug('gridKMLExportAction');
-
-		// Define the header of the response
-		$configuration = Zend_Registry::get("configuration");
-		$charset = $configuration->getConfig('csvExportCharset', 'UTF-8');
-		$this->getResponse()->setHeader('Content-Type', 'application/vnd.google-earth.kml+xml;charset=' . $charset . ';application/force-download;', true);
-		$this->getResponse()->setHeader('Content-disposition', 'attachment; filename=DataExport_' . date('dmy_Hi') . '.kml', true);
-
-		$this->outputCharset("// L'export KML n'est pas prévu dans GINCO, merci de contacter l'administrateur.");
-
-		$this->_helper->layout()->disableLayout();
-		$this->_helper->viewRenderer->setNoRender();
-	}
-
-	/**
-	 * Returns a geoJSON file corresponding to the requested data.
-	 * GeoJson export is not defined in GINCO
-	 */
-	public function geojsonExportAction() {
-		$this->logger->debug('geojsonExportAction');
-
-		// Define the header of the response
-		$configuration = Zend_Registry::get("configuration");
-		$charset = $configuration->getConfig('csvExportCharset', 'UTF-8');
-		$this->getResponse()->setHeader('Content-Type', 'application/json;charset=' . $charset . ';application/force-download;', true);
-		$this->getResponse()->setHeader('Content-disposition', 'attachment; filename=DataExport_' . date('dmy_Hi') . '.geojson', true);
-
-		$this->outputCharset("// L'export GeoJson n'est pas prévu dans GINCO, merci de contacter l'administrateur.");
-
-		$this->_helper->layout()->disableLayout();
-		$this->_helper->viewRenderer->setNoRender();
-	}
 }
