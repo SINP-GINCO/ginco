@@ -1,0 +1,2 @@
+UPDATE mapping.layer SET service_layer_name='PROTECTEDAREAS.PNR:pnr' WHERE name='PROTECTEDAREAS_PNR_WFS';
+UPDATE mapping.layer SET service_layer_name='PROTECTEDAREAS.APB:apb' WHERE name='PROTECTEDAREAS_APB_WFS';
