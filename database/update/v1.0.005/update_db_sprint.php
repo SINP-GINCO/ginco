@@ -25,6 +25,7 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here*/
+	execCustSQLFile("$sprintDir/update_apb_and_pnr_en_layer_names.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
