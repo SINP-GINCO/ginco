@@ -132,6 +132,9 @@ function updateDEEData(jddId, data) {
     // DEE status
     if ("dee" in data && "status" in data.dee ) {
         deeDiv.data('dee-status', data.dee.status);
+        if (data.dee.status == 'OK' && "downloadLink" in data.dee) {
+            deeDiv.data('dee-download', data.dee.downloadLink );
+        }
     } else {
         deeDiv.data('dee-status', 'NO DEE');
     }
@@ -192,7 +195,7 @@ function updateDEEContent(jddId) {
 
     // Download link if file is available
     if (deeStatus == 'OK') {
-        var downloadLink =$("<a title='Télécharger la DEE' href=''> " +
+        var downloadLink =$("<a title='Télécharger la DEE' href='"+ deeDiv.data('dee-download') +"'> " +
                 "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
         actions.append(downloadLink);
     }

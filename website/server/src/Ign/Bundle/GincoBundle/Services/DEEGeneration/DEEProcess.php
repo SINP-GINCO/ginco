@@ -123,8 +123,10 @@ class DEEProcess {
 			// Generate the DEE gml file
 			$this->DEEGenerator->generateDeeGml($DEE, $DEEfilePath, $message);
 
-			// Generate the DEE archive
-			$archive = $this->createDEEArchive($DEE, $DEEfilePath);
+			// Generate the DEE archive and set the download path of the DEE
+			$archiveFileSystemPath = $this->createDEEArchive($DEE, $DEEfilePath);
+			$archiveDownloadPath =  '/dee/' . pathinfo($archiveFileSystemPath, PATHINFO_BASENAME);
+			$DEE->setFilePath($archiveDownloadPath);
 
 			// Report message status if not null
 			if ($message) {
@@ -133,7 +135,6 @@ class DEEProcess {
 
 			// Set final statuses on DEE
 			$DEE->setStatus(DEE::STATUS_OK);
-			$DEE->setFilePath($archive);
 			$this->em->flush();
 
 			// Send mail notifications to MNHN and user
@@ -260,6 +261,11 @@ class DEEProcess {
 			$action = ($previousDEE->getStatus() == DEE::STATUS_DELETED) ? 'Création' : 'Mise à jour';
 		}
 
+		// Checksum of the DEE archive
+		$deePublicDir = $this->configuration->getConfig('deePublicDirectory');
+		$fileName = pathinfo($DEE->getFilePath(), PATHINFO_BASENAME);
+		$checksum = md5_file($deePublicDir . '/' . $fileName);
+
 		// Parameters for email notifications
 		$parameters = array(
 			'action' => $action,
@@ -270,8 +276,8 @@ class DEEProcess {
 			'created' => $DEE->getCreatedAt(),
 			'provider' => $jdd->getProvider(),
 			'message' => $DEE->getComment(),
-			'download_url' => $this->configuration->getConfig('site_url') . '/dee/' . pathinfo($DEE->getFilePath(), PATHINFO_BASENAME),
-			'checksum' => md5_file($DEE->getFilePath()),
+			'download_url' => $this->configuration->getConfig('site_url') . $DEE->getFilePath(),
+			'checksum' => $checksum,
 			'user' => $user,
 		);
 
