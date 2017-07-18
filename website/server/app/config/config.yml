@@ -195,7 +195,6 @@ doctrine:
 
     orm:
         default_entity_manager: website
-        auto_generate_proxy_classes: "FILE_NOT_EXISTS"
         entity_managers:
             metadata_work:
                 mappings:

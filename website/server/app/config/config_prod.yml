@@ -25,3 +25,9 @@ monolog:
             level: debug
         console:
             type:  console
+
+# todo: remove as soon as possible
+# bug with integration service if default
+doctrine:
+    orm:
+        auto_generate_proxy_classes: "FILE_NOT_EXISTS"

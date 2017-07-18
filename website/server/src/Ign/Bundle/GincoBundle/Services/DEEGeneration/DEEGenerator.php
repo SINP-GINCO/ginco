@@ -1,10 +1,13 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services\DEEGeneration;
 
+use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
+use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use Ign\Bundle\GincoBundle\Exception\DEEException;
 use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
 use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -100,27 +103,46 @@ class DEEGenerator {
 	 * @return bool
 	 * @throws DEEException
 	 */
-	public function generateDeeGml($jddId, $fileName, $messageId = null, $userLogin = null) {
+	/**
+	 * @param Jdd $jdd
+	 * @param $fileName
+	 * @param Message|null $message
+	 * @param null $userLogin
+	 * @return bool
+	 * @throws DEEException
+	 */
+	public function generateDeeGml(DEE $DEE, $fileName, Message $message = null) {
 		// Configure memory and time limit because the program ask a lot of resources
 		ini_set("memory_limit", $this->configuration->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
-		
-		// Get the jdd and the validated (published) submissions in the jdd
-		$jdd = $this->em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
-		if (!$jdd) {
-			throw new DEEException("Jdd not found for that id: $jddId");
-		}
-		$submissions = $jdd->getValidatedSubmissions();
-		if (count($submissions) == 0 ) {
-			return false;
-		}
-		$submissionsIds = [];
-		foreach ($submissions as $submission) {
-			$submissionsIds[] = $submission->getId();
-		}
-		// Get the data model
-		$model = $jdd->getModel();
 
+
+/*
+		for ($i=0; $i<$parameters['time']; $i++) {
+
+			// Check if message has been cancelled externally
+			$this->em->refresh($message);
+			if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+				$message->setStatus(Message::STATUS_CANCELLED);
+				$this->em->flush();
+				echo "Message cancelled... stop waiting.\n";
+				return true;
+			}
+
+			sleep(1);
+			echo '.';
+			$message->setProgress($i+1);
+			$this->em->flush();
+		}
+
+*/
+
+		// Validated (published) submissions in the jdd, stored in the DEE line
+		$submissionsIds= $DEE->getSubmissions();
+
+		// Get the jdd and the data model
+		$jdd = $DEE->getJdd();
+		$model = $jdd->getModel();
 
 		// -- Create a query object : the query must find all lines with given submission_ids
 		// And print a list of all fields in the model
@@ -128,7 +150,6 @@ class DEEGenerator {
 
 		// Get all table fields for model
 		$tableFields = $this->em->getRepository('OGAMBundle:Metadata\TableField')->getTableFieldsForModel($model->getId());
-		
 		// Get all Form Fields for Model
 		$formFields = $this->em->getRepository('OGAMBundle:Metadata\FormField')->getFormFieldsFromModel($model->getId());
 
@@ -165,7 +186,7 @@ class DEEGenerator {
 		// Get the mappings for the query form fields
 		$queryForm = $this->queryService->setQueryFormFieldsMappings($queryForm);
 		$mappingSet = $queryForm->getFieldMappingSet($queryForm);
-		
+
 		//TODO : set the real user params
 		$userInfos = [
 			"providerId" => NULL,
@@ -179,9 +200,16 @@ class DEEGenerator {
 		$sqlPKey = $this->genericService->generateSQLPrimaryKey('RAW_DATA', $mappingSet);
 		$order = " ORDER BY " . $sqlPKey;
 		$sql = $select . $from . $where . $order;
-		
+
 		// Count Results
 		$total = $this->queryService->getQueryResultsCount($from, $where);
+
+		// Report message progress if given
+		if ($message) {
+			$message->setLength($total);
+			$message->setProgress(0);
+			$this->em->flush();
+		}
 		
 		// -- Export results to a GML file
 		
@@ -223,7 +251,7 @@ class DEEGenerator {
 				
 				// -- Execute query and put results in a formatted array of strings
 				$results = $this->queryService->getQueryResults($batchSQL);
-				
+
 				// Put lines in a formatted array
 				$resultsArray = array();
 				foreach ($results as $line) {
@@ -260,13 +288,13 @@ class DEEGenerator {
 				$params = array(
 					'site_name' => $this->configuration->getConfig('site_name', 'Plateforme GINCO-SINP')
 				);
-				$this->generateObservationsGML($resultsArray, $fileNameObservations, $params, $messageId, $i * $batchLines, $total);
+				$this->generateObservationsGML($resultsArray, $fileNameObservations, $params, $message, $i * $batchLines, $total);
 				
 				// Generate Group of observations (identified by "identifiantregroupementpermanent")
 				// for each batch step, complete the $groups array
 				$groups = $this->dee->groupObservations($resultsArray, $groups, $params);
 			}
-			
+
 			// -- Write the "groups" file
 			$fileNameGroups = $fileName . "_groups";
 			$this->generateGroupsGML($groups, $fileNameGroups);
@@ -300,7 +328,7 @@ class DEEGenerator {
 	 *        	total nb of the entire list of observations
 	 * @throws DEEException
 	 */
-	protected function generateObservationsGML($observations, $outputFile, $params = null, $messageId= null, $startLine = 0, $total = 0) {
+	protected function generateObservationsGML($observations, $outputFile, $params = null, $message= null, $startLine = 0, $total = 0) {
 		// Open the file in append mode
 		$out = fopen($outputFile, 'a');
 		if (!$out) {
@@ -322,11 +350,13 @@ class DEEGenerator {
 			
 			fwrite($out, $this->strReplaceBySequence("#GMLID#", $this->generateObservation($observation)));
 			
-			// report progress every 1, 10, 100 or 1000 lines TODO
-			if ($messageId) {
+			// report progress every 1, 10, 100 or 1000 lines
+			if ($message) {
 				$progress = $startLine + $index + 1;
 				if (($total <= 100) || ($total <= 1000 && ($progress % 10 == 0)) || ($total <= 10000 && ($progress % 100 == 0)) || ($progress % 1000 == 0)) {
-					$this->jm->setProgress($messageId, $progress);
+					// Report message progress if given
+					$message->setProgress($progress);
+					$this->em->flush();
 					// uncomment to see process runnning.. slowly
 					// sleep(1);
 				}
@@ -447,51 +477,6 @@ class DEEGenerator {
 		return $str;
 	}
 
-	/**
-	 * Create a gzipped archive containing:
-	 * - the dee gml file
-	 * - informations on the jdd
-	 * And put the archive in the "deePublicDirectory" from conf (in the public directory).
-	 *
-	 * @param
-	 *        	$jddId
-	 * @param
-	 *        	$fileName
-	 * @param
-	 *        	$comment
-	 * @return string
-	 */
-// 	public function createArchiveDeeGml($jddId, $fileName, $comment) {
-// 		// Get filePath, fileName without extension
-// 		$filePath = pathinfo($fileName, PATHINFO_DIRNAME);
-// 		$fileNameWithoutExtension = pathinfo($fileName, PATHINFO_FILENAME);
-		
-// 		$configuration = Zend_Registry::get('configuration');
-// 		$deePublicDir = $configuration->getConfig('deePublicDirectory');
-		
-// 		// JDD metadata id
-// 		$jddModel = new Application_Model_RawData_Jdd();
-// 		$jddRowset = $jddModel->find($jddId);
-// 		$jddRowset->next();
-// 		$uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
-		
-// 		$descriptionFile = $filePath . '/descriptif.txt';
-// 		$out = fopen($descriptionFile, 'w');
-// 		fwrite($out, "Export DEE pour le jeu de données $uuid \n \n");
-// 		fwrite($out, "Raisons amenant à une génération ou regénération de la DEE : " . stripslashes($comment));
-// 		fclose($out);
-		
-// 		// Create an archive of the whole directory
-// 		$parentDir = dirname($filePath); // deePrivateDirectory
-// 		$archiveName = $deePublicDir . '/' . $fileNameWithoutExtension . '.zip';
-// 		chdir($parentDir);
-// 		system("zip -r $archiveName $fileNameWithoutExtension");
-		
-// 		// Delete the other files
-// 		unlink($descriptionFile);
-		
-// 		return $archiveName;
-// 	}
 
 	/**
 	 * Create a file which describe the deletion reasons
@@ -528,118 +513,5 @@ class DEEGenerator {
 // 		return $descriptionFile;
 // 	}
 
-	/**
-	 * Send two notification emails after creation of the DEE archive:
-	 * - one to the user who created the DEE
-	 * - one to the MNHN
-	 *
-	 * @param
-	 *        	$jddId
-	 * @param
-	 *        	$archivePath
-	 * @param
-	 *        	$dateCreated
-	 * @param
-	 *        	$userLogin
-	 * @param
-	 *        	$deeAction
-	 * @param
-	 *        	$comment
-	 */
-// 	public function sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin, $deeAction, $comment) {
-// 		$configuration = Zend_Registry::get('configuration');
-		
-// 		$toEmailAddress = $configuration->getConfig('deeNotificationMail', 'sinp-dev@ign.fr');
-		
-// 		if ($deeAction == 'create') {
-// 			$action = 'CREATION';
-// 		} else if ($deeAction == 'update') {
-// 			$action = 'MISE-A-JOUR';
-// 		} else {
-// 			$action = 'SUPPRESSION';
-// 		}
-		
-// 		$regionCode = $configuration->getConfig('regionCode', 'REGION');
-// 		$archiveFilename = pathinfo($archivePath, PATHINFO_BASENAME);
-// 		$archiveUrl = $configuration->getConfig('site_url') . '/dee/' . $archiveFilename;
-// 		$siteName = $configuration->getConfig('site_name');
-// 		$md5 = md5_file($archivePath);
-// 		// JDD metadata id
-// 		$jddSession = new Zend_Session_Namespace('jdd');
-		
-// 		$jddModel = new Application_Model_RawData_Jdd();
-// 		$jddRowset = $jddModel->find($jddId);
-// 		$jddRowset->next();
-// 		$jdd = $jddRowset->toArray()[0];
-// 		$uuid = $jdd['jdd_metadata_id'];
-// 		$submissionId = $jdd['submission_id'];
-// 		// Provider of the submission and submission files
-// 		$submissionModel = new Application_Model_RawData_CustomSubmission();
-// 		$submission = $submissionModel->getSubmission($submissionId);
-// 		$provider = $submission->providerLabel . " (" . $submission->providerId . ")";
-// 		// Files of the submission
-// 		$submissionFiles = $submissionModel->getSubmissionFiles($submissionId);
-// 		$fileNames = array_map("basename", array_column($submissionFiles, "file_name"));
-		
-// 		// Contact user
-// 		$userModel = new Application_Model_Website_User();
-// 		$user = $userModel->getUser($userLogin);
-// 		$userName = $user->username;
-// 		$userEmail = $user->email;
-		
-// 		// -- Mail 1: to the MNHN
-		
-// 		// Title and body:
-// 		$title = "[$regionCode] $action du jeu de données $uuid";
-		
-// 		$body = "Nom du fichier : $archiveFilename" . "\n" . "Date de $action du jeu : " . date('d/m/Y H:i:s', $dateCreated) . "\n" . "Fournisseur : " . $provider . "\n" . "Plate-forme : " . $siteName . "\n" . "Identifiant de métadonnées du jeu de données : " . $uuid . "\n" . "Contact : " . $userName . "\n" . "Courriel : " . $userEmail . "\n" . "Type d'envoi : " . $action . "\n" . "Commentaire : " . stripslashes($comment) . "\n" . "URL : <a href='$archiveUrl'>" . $archiveUrl . "</a>\n" . "CHECKSUM MD5 : " . $md5 . "\n";
-		
-// 		// -- Send the email
-// 		// Using the mailer service based on SwiftMailer
-// 		$mailerService = new Application_Service_MailerService();
-// 		// Create a message
-// 		$message = $mailerService->newMessage($title);
-		
-// 		// body
-// 		$bodyMessage = "<p><strong>" . $configuration->getConfig('site_name') . " - " . $title . "</strong></p>" . "<p>" . nl2br($body) . "</p>";
-		
-// 		$message->setTo($toEmailAddress)->setBody($bodyMessage, 'text/html');
-		
-// 		// Send the message
-// 		$mailerService->sendMessage($message);
-		
-// 		// -- Mail 2: to the user who created the DEE
-// 		if ($deeAction != 'delete') {
-// 			$title = "[$regionCode] Transmission du jeu de données $uuid à la plateforme nationale";
-			
-// 			$message = $mailerService->newMessage($title);
-			
-// 			$body = "<p>Bonjour,</p>";
-// 			$body .= (count($submissionFiles) > 1) ? "<p>Les fichiers de données <em>%s</em> que vous nous avez transmis et dont l'identifiant de jeu de données est
-//              <em>%s</em> ont été standardisés " : "<p>Le fichier de données <em>%s</em> que vous nous avez transmis et dont l'identifiant est
-//              <em>%s</em> a été standardisé ";
-// 			$body .= "au format GML d'échange de DEE le %s. La plateforme nationale a été notifiée et va procéder à l'intégration de
-//             ce nouveau fichier dans l'INPN.</p>";
-// 			$body .= "<p>Bien cordialement,</p>
-//                <p>Contact : %s<br>Courriel: %s</p>";
-// 		} else {
-// 			$title = "[$regionCode] Suppression du jeu de données $uuid standardisé";
-			
-// 			$message = $mailerService->newMessage($title);
-			
-// 			$body = "<p>Bonjour,</p>";
-// 			$body .= (count($submissionFiles) > 1) ? "<p>Les fichiers standardisés, correspondant aux fichiers de données <em>%s</em> que vous nous avez transmis et dont l'identifiant de jeu de données est
-// 	             <em>%s</em> ont été supprimés " : "<p>Le fichier standardisé, correspondant au fichier de données <em>%s</em> que vous nous avez transmis et dont l'identifiant est
-// 	             <em>%s</em> a été supprimé ";
-// 			$body .= "le %s. La plateforme nationale a été notifiée et va procéder à la suppression de ces données dans l'INPN.</p>";
-// 			$body .= "<p>Bien cordialement,</p>
-// 	               <p>Contact : %s<br>Courriel: %s</p>";
-// 		}
-// 		$body = sprintf($body, implode($fileNames, ", "), $uuid, date("d/m/Y"), $user->username, $user->email);
-		
-// 		$message->setTo($user->email)->setBody($body, 'text/html');
-		
-// 		// Send the message
-// 		$mailerService->sendMessage($message);
-// 	}
+
 }
