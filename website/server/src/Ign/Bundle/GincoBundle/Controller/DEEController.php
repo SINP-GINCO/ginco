@@ -21,9 +21,11 @@ class DEEController extends Controller
 	 * @Route("/{id}/generate", name = "dee_direct", requirements={"id": "\d+"})
 	 */
 	public function directDEEAction(Jdd $jdd) {
-		$deeGenerator = $this->get('ginco.dee_generator');
+		$deeProcess = $this->get('ginco.dee_process');
 
-		$deeGenerator->generateDeeGml($jdd->getId(), '/tmp/dee.gml');
+		// Create a line in the DEE table
+		$newDEE = $deeProcess->createDEELine($jdd, $this->getUser(), 'commentaire');
+		$deeProcess->generateAndSendDEE($newDEE->getId());
 
 		return $this->redirect($this->generateUrl('integration_home'));
 	}
@@ -55,23 +57,14 @@ class DEEController extends Controller
 		// Get comment in GET parameters
 		$comment = $request->query->get('comment', '');
 
-		// Get last version of DEE attached to the jdd
-		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
-		$lastDEE = $deeRepo->findLastVersionByJdd($jdd);
-		$lastVersion = ($lastDEE) ? $lastDEE->getVersion() : 0;
+		// Create a line in the DEE table
+		$newDEE = $this->get('ginco.dee_process')->createDEELine($jdd, $this->getUser(), $comment);
 
-		// Create a new DEE version and attach it to the jdd
-		$newDEE = new DEE();
-		$newDEE->setJdd($jdd)
-			->setVersion($lastVersion + 1)
-			->setComment($comment);
-		//	->setUser(TODO);
-		$em->persist($newDEE);
-		$em->flush();
-
-		// Dummy action; todo change by real action
-		$messageId = $this->get('old_sound_rabbit_mq.ginco_generic_producer')->publish('dee', ['deeId' => $newDEE->getId(),'time' => 5]);
-
+		// Publish the message to RabbitMQ
+		$messageId = $this->get('old_sound_rabbit_mq.ginco_generic_producer')->publish('deeProcess', [
+					'DEEId' => $newDEE->getId(),
+				]
+		);
 		$message = $em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
 
 		// Attach message id to the DEE

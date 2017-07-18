@@ -3,6 +3,7 @@ namespace Ign\Bundle\GincoBundle\Services\RabbitMQ;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
+use Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 // use Ign\Bundle\GincoBundle\GMLExport\GMLExport;
@@ -34,17 +35,7 @@ class GenericConsumer implements ConsumerInterface {
 	 */
 	protected $configuration;
 
-	/**
-	 *
-	 * @var GenericService
-	protected $genericService;
-
-	/**
-	 *
-	 * @var QueryService
-	protected $queryService;
-	 */
-
+	protected $DEEProcess;
 
 	public function __construct($em, $configuration, $logger, $locale) {
 		// Initialise the logger
@@ -57,6 +48,12 @@ class GenericConsumer implements ConsumerInterface {
 
 		echo "GenericConsumer is listening...";
 	}
+
+
+	public function setDEEProcess(DEEProcess $DEEProcess) {
+		$this->DEEProcess = $DEEProcess;
+	}
+
 
 	public function execute(AMQPMessage $msg) {
 		// $message will be an instance of `PhpAmqpLib\Message\AMQPMessage`.
@@ -88,6 +85,9 @@ class GenericConsumer implements ConsumerInterface {
 			}
 
 			switch ($action) {
+
+				// -- Dummy action just to illustrate the process
+				//
 				case 'wait':
 					$message->setLength($parameters['time']);
 					$message->setProgress(0);
@@ -114,41 +114,14 @@ class GenericConsumer implements ConsumerInterface {
 					echo "finished\n";
 					break;
 
-				case 'dee':
-					$message->setLength($parameters['time']);
-					$message->setProgress(0);
-					$this->em->flush();
+				// -- DEE generation, archive creation and notifications
+				case 'deeProcess':
 
-					$deeId = $parameters['deeId'];
-					$deeRepo = $this->em->getRepository('IgnGincoBundle:RawData\DEE');
-					$DEE = $deeRepo->findOneById($deeId);
+					sleep(1); // let the time to the application to update message before starting
+					$this->DEEProcess->generateAndSendDEE($parameters['DEEId'], $messageId);
 
-					for ($i=0; $i<$parameters['time']; $i++) {
-
-						// Check if message has been cancelled externally
-						$this->em->refresh($message);
-						if ($message->getStatus() == Message::STATUS_TOCANCEL) {
-							$message->setStatus(Message::STATUS_CANCELLED);
-							$this->em->flush();
-							echo "Message cancelled... stop waiting.\n";
-							return true;
-						}
-
-						sleep(1);
-						echo '.';
-						$message->setProgress($i+1);
-						$this->em->flush();
-					}
-					$message->setStatus(Message::STATUS_COMPLETED);
-
-					$DEE->setStatus(DEE::STATUS_OK);
-					$DEE->setFilePath('/path/to/my/file.xml');
-
-					$this->em->flush();
-					echo "finished\n";
+					echo "DEE Process finished\n";
 					break;
-
-
 			}
 
  			// $decodedData = unserialize($msg);
@@ -203,7 +176,8 @@ class GenericConsumer implements ConsumerInterface {
 		} catch (\Exception $e) {
 			// If any of the above fails due to temporary failure, return false,
 			// which will re-queue the current message.
-			echo 'échec...';
+			echo "Erreur : " . $e->getMessage() . "\n\n";
+			echo $e->getTraceAsString();
 			return false;
 		}
 		// Any other return value means the operation was successful and the
