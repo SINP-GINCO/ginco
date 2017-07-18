@@ -220,37 +220,20 @@ class DEEProcess {
 
 	/**
 	 * Send two notification emails after creation of the DEE archive:
-	 *  - one to the user who created the DEE
 	 *  - one to the MNHN
+	 *  - one to the user who created the DEE (except if the DEE is being deleted)
 	 *
-	 * @param $jddId
-	 * @param $archivePath
-	 * @param $dateCreated
-	 * @param $userLogin
-	 * @param $deeAction
-	 * @param $comment
+	 * @param DEE $DEE the DEE object
 	 */
 	public function sendDEENotificationMail(DEE $DEE) {
 
 		$jdd = $DEE->getJdd();
 		$user = $DEE->getUser();
 
-		// Submission and submission files in the jdd
-		$submissionFilesNames = array();
-		$submissionRepo = $this->em->getRepository('OGAMBundle:RawData\Submission');
-
-		$submissionIds = $DEE->getSubmissions();
-
-		foreach ($submissionIds as $submissionId) {
-			$submission = $submissionRepo->findOneById($submissionId);
-			foreach	( $submission->getFiles() as $file ) {
-				$submissionFilesNames[] = $file->getFileName();
-			}
-		}
-		$fileNames = array_map("basename",$submissionFilesNames);
-
 		// DEE action : create or update
-		if ($DEE->getVersion() == 1) {
+		if ($DEE->getStatus() == DEE::STATUS_DELETED) {
+			$action = 'Suppression';
+		} else if ($DEE->getVersion() == 1) {
 			$action = 'Création';
 		} else {
 			$previousDEE = $this->em->getRepository('IgnGincoBundle:RawData\DEE')->findOneBy(array(
@@ -261,10 +244,6 @@ class DEEProcess {
 			$action = ($previousDEE->getStatus() == DEE::STATUS_DELETED) ? 'Création' : 'Mise à jour';
 		}
 
-		// Checksum of the DEE archive
-		$deePublicDir = $this->configuration->getConfig('deePublicDirectory');
-		$fileName = pathinfo($DEE->getFilePath(), PATHINFO_BASENAME);
-		$checksum = md5_file($deePublicDir . '/' . $fileName);
 
 		// Parameters for email notifications
 		$parameters = array(
@@ -272,14 +251,39 @@ class DEEProcess {
 			'region' => $this->configuration->getConfig('regionCode','REGION'),
 			'metadata_uuid' => $jdd->getField('metadataId'),
 			'jdd_title' => $jdd->getField('title'),
-			'filename' => implode(', ',$fileNames),
-			'created' => $DEE->getCreatedAt(),
+			'user' => $user,
 			'provider' => $jdd->getProvider(),
 			'message' => $DEE->getComment(),
-			'download_url' => $this->configuration->getConfig('site_url') . $DEE->getFilePath(),
-			'checksum' => $checksum,
-			'user' => $user,
+			'created' => $DEE->getCreatedAt(),
 		);
+
+		if ($action != 'Suppression') {
+
+			// Submission and submission files in the jdd
+			$submissionFilesNames = array();
+			$submissionRepo = $this->em->getRepository('OGAMBundle:RawData\Submission');
+
+			$submissionIds = $DEE->getSubmissions();
+
+			foreach ($submissionIds as $submissionId) {
+				$submission = $submissionRepo->findOneById($submissionId);
+				foreach	( $submission->getFiles() as $file ) {
+					$submissionFilesNames[] = $file->getFileName();
+				}
+			}
+			$fileNames = array_map("basename",$submissionFilesNames);
+
+			// Checksum of the DEE archive
+			$deePublicDir = $this->configuration->getConfig('deePublicDirectory');
+			$fileName = pathinfo($DEE->getFilePath(), PATHINFO_BASENAME);
+			$checksum = md5_file($deePublicDir . '/' . $fileName);
+
+			$parameters += array(
+				'filename' => implode(', ',$fileNames),
+				'download_url' => $this->configuration->getConfig('site_url') . $DEE->getFilePath(),
+				'checksum' => $checksum,
+			);
+		}
 
 		// Send mail notification to MNHN
 		$this->mailManager->sendEmail(
@@ -289,11 +293,13 @@ class DEEProcess {
 		);
 
 		// Send mail notification to user
-		$this->mailManager->sendEmail(
-			'IgnGincoBundle:Emails:DEE-notification-to-user.html.twig',
-			$parameters,
-			$user->getEmail()
-		);
+		if ($action != 'Suppression') {
+			$this->mailManager->sendEmail(
+				'IgnGincoBundle:Emails:DEE-notification-to-user.html.twig',
+				$parameters,
+				$user->getEmail()
+			);
+		}
 	}
 
 }

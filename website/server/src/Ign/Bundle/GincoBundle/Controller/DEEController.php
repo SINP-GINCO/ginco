@@ -122,8 +122,6 @@ class DEEController extends Controller
 	 * Delete the DEE for a Jdd
 	 * i.e. create a new DEE version with status 'DELETED'.
 	 *
-	 * TODO: send email to INPN
-	 *
 	 * @param Request $request
 	 * @return JsonResponse
 	 *
@@ -154,10 +152,13 @@ class DEEController extends Controller
 		$newDEE->setJdd($jdd)
 			->setVersion($lastVersion + 1)
 			->setStatus(DEE::STATUS_DELETED)
-			->setComment($comment);
-		//	->setUser(TODO);
+			->setComment($comment)
+			->setUser($this->getUser());
 		$em->persist($newDEE);
 		$em->flush();
+
+		// Send notification mail to INPN
+		$this->get('ginco.dee_process')->sendDEENotificationMail($newDEE);
 
 		return new JsonResponse($this->getStatus($jddId, $newDEE));
 	}
