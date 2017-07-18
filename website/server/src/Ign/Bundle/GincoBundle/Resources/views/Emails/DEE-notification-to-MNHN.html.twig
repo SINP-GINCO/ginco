@@ -10,7 +10,6 @@
         ----------------------------------------------------------------------
         Identifiant de métadonnées du jeu de données : {{ metadata_uuid }}
         Titre du jeu de données : {{ jdd_title }}
-        Nom du(des) fichier(s) : {{ filename }}
         Date de {{ action }} du jeu : {{ created|date("d/m/Y H:i:s") }}
         Fournisseur : {{ provider.label }} ({{ provider.id }})
         Plate-forme : {{ site_name }}
@@ -18,8 +17,11 @@
 
         Commentaire : {{ message }}
 
+        {% if action != 'Suppression' %}
+        Nom du(des) fichier(s) : {{ filename }}
         URL : {{ download_url }}
         CHECKSUM MD5 : {{ checksum }}
+        {% endif %}
 
         Contact : {{ user.username }} ({{ user.login }})
         Courriel : {{ user.email }}
@@ -38,10 +40,6 @@
             <tr>
                 <td>Titre du jdd :</td>
                 <td>{{ jdd_title }}</td>
-            </tr>
-            <tr>
-                <td>Nom du(des) fichier(s) :</td>
-                <td>{{ filename }}</td>
             </tr>
             <tr>
                 <td>Date de {{ action }} de la DEE :</td>
@@ -63,6 +61,11 @@
                 <td>Commentaire :</td>
                 <td>{{ message }}</td>
             </tr>
+            {% if action != 'Suppression' %}
+            <tr>
+                <td>Nom du(des) fichier(s) :</td>
+                <td>{{ filename }}</td>
+            </tr>
             <tr>
                 <td>URL :</td>
                 <td><a href="{{ download_url }}">{{ download_url }}</a></td>
@@ -71,6 +74,7 @@
                 <td>Checksum MD5 :</td>
                 <td>{{ checksum }}</td>
             </tr>
+            {% endif %}
             <tr>
                 <td>Contact :</td>
                 <td>{{ user.username }} ({{ user.login }})</td>
