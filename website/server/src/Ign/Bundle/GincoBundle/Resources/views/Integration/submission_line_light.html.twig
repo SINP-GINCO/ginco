@@ -8,7 +8,6 @@
         <div class="file">{{ 'IntegrationPage.File'|trans }}</div>
         <div class="lines">{{ 'Lines'|trans }}</div>
         <div class="status" >{{ 'Status'|trans }}</div>
-        <div class="provider">{{ 'Provider'|trans }}</div>
         <div class="actions">{{ 'Actions'|trans }}</div>
     </div>
 
@@ -48,8 +47,6 @@
                 {% endif %}
             </div>
         </div>
-        {# Provider #}
-        <div class="provider">{{ submission.provider.label }}</div>
         {# Actions #}
         <div class="actions">
             {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}

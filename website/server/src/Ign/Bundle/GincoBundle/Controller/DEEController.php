@@ -233,6 +233,10 @@ class DEEController extends Controller
 			$json['error_message'] = 'No jdd found';
 		}
 		else {
+			// Do the JDD has validated submissions ?
+			// If yes, the DEE can be generated
+			$json['canGenerateDEE'] =  $jdd->getValidatedSubmissions()->count() > 0;
+
 			if (!$DEE) {
 				// Get last version of DEE attached to the jdd
 				$DEE = $deeRepo->findLastVersionByJdd($jdd);
@@ -246,10 +250,25 @@ class DEEController extends Controller
 			else {
 				$json['dee'] = array(
 					'status' => $DEE->getStatus(),
-					'downloadLink' => $DEE->getFilePath()
+					'downloadLink' => $DEE->getFilePath(),
+					'created' => $DEE->getCreatedAt()->format('d/m/Y H:i'),
+					'comment' => $DEE->getComment(),
 				);
+				// DEE action : creation or update
+				if ($DEE->getStatus() == DEE::STATUS_DELETED) {
+					$action = 'Suppression';
+				} else if ($DEE->getVersion() == 1) {
+					$action = 'Création';
+				} else {
+					$previousDEE = $em->getRepository('IgnGincoBundle:RawData\DEE')->findOneBy(array(
+							'jdd' => $jdd,
+							'version' => $DEE->getVersion() - 1
+						)
+					);
+					$action = ($previousDEE->getStatus() == DEE::STATUS_DELETED) ? 'Création' : 'Mise à jour';
+				}
+				$json['dee']['action'] = $action;
 
-				// Get message if DEE is GENERATING
 				if ($DEE->getStatus() == DEE::STATUS_GENERATING) {
 					$message = $DEE->getMessage();
 
