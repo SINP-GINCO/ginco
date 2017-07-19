@@ -67,23 +67,34 @@ class GenericConsumer implements ConsumerInterface {
 			$parameters = $data['parameters'];
 
 			// Get Message entity;
-			// if PENDING and mark it as runnning
-			// if TO CANCEL, mark it CANCELLED and discard the task
 			$messageId = $data['message_id']; // Message id in messages table
 			$message = $this->em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
 			echo "Received message $messageId with action '$action' and status ".$message->getStatus(). ".\n";
 
+			// if PENDING mark it as runnning
 			if ($message->getStatus() == Message::STATUS_PENDING) {
 				$message->setStatus(Message::STATUS_RUNNING);
 				$this->em->flush();
 			}
+
+			// if TO CANCEL, mark it CANCELLED, terminate tasks properly, and discard the message
 			else if ($message->getStatus() == Message::STATUS_TOCANCEL) {
 				$message->setStatus(Message::STATUS_CANCELLED);
 				$this->em->flush();
-				echo "Message cancelled... discard it.\n";
+
+				switch ($action) {
+					// -- DEE generation: delete DEE line
+					case 'deeProcess':
+						// Nothing to do, we deleted the DEE line in the controller
+						echo "Message cancelled... DEE deleted.\n";
+						break;
+					default:
+						echo "Message cancelled... discard it.\n";
+				}
 				return true;
 			}
 
+			// Perform task
 			switch ($action) {
 
 				// -- Dummy action just to illustrate the process
@@ -115,6 +126,7 @@ class GenericConsumer implements ConsumerInterface {
 					break;
 
 				// -- DEE generation, archive creation and notifications
+				//
 				case 'deeProcess':
 
 					sleep(1); // let the time to the application to update message before starting
@@ -123,61 +135,12 @@ class GenericConsumer implements ConsumerInterface {
 					echo "DEE Process finished\n";
 					break;
 			}
-
- 			// $decodedData = unserialize($msg);
-
-			/*
-			//TODO : add if for null values
- 			$command = $decodedData['command'];
- 			$jddId = $decodedData['jdd_id'];
- 			$fileName = $decodedData['filePath'];
-			$userLogin = $decodedData['user_login'];
-			$deeAction = $decodedData['dee_action'];
-			$comment = $decodedData['comment'];
-			
- 			echo $command;
-			echo $jddId;
-			echo $fileName;
-			echo $userLogin;
-			echo $deeAction;
-			echo $comment;
-
-			// Generate DEE
-			
-			// Configure memory and time limit because the program ask a lot of resources
-// 			$configuration = $this->get("ogam.configuration_manager");
-// 			ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
-// 			ini_set("max_execution_time", 0); // Not really useful because the script is used in CLI (max_execution_time is already 0)
-
-// 			$logger->debug("generateDEE launched...");
-
-			// Generate DEE GML
-			$gml = new GMLExport($this->logger, $this->locale, $this->configuration, $this->rawDataModel, $this->metadataModel, $this->genericService, $this->queryService);
-			$dateCreated = time();
-			$gml->generateDeeGml($jddId, $fileName, $jobId, $userLogin);
-			$this->logger->debug("GML created for jdd $jddId: $fileName");
-			
-			// Create the archive and put it in the DEE download directory
-// 			$archivePath = $gml->createArchiveDeeGml($jddId, $fileName, $comment);
-// 			$logger->debug("GML Archive created for jdd $jddId: $archivePath");
-			
-// 			// Send notification emails to the user and to the MNHN
-// 			$gml->sendDEENotificationMail($jddId, $archivePath, $dateCreated, $userLogin, $deeAction, $comment);
-// 			$logger->debug("GML Notification mail sent");
-			
-// 			if ($jobId) {
-// 				$jm->setJobCompleted($jobId);
-// 			}
-			
-// 			// Sleep a little time after complete, to avoid being seen as "aborted"
-// 			sleep(2);
-// 			$logger->debug("End of generateDEE.");
-*/
 		} catch (\Exception $e) {
 			// If any of the above fails due to temporary failure, return false,
 			// which will re-queue the current message.
 			echo "Erreur : " . $e->getMessage() . "\n\n";
 			echo $e->getTraceAsString();
+			echo "\n";
 			return false;
 		}
 		// Any other return value means the operation was successful and the
