@@ -103,7 +103,60 @@ class DEEProcess {
 		return $newDEE;
 	}
 
+	/**
+	 * Remove a DEE line from db and generated files if needed
+	 * (case where DEE generation is cancelled)
+	 *
+	 * @param DEE $DEE
+	 */
+	public function deleteDEELineAndFiles($DEEId, $fileName = null) {
 
+		$this->logger->info("deleteDEELineAndFiles: " . implode(',', func_get_args()));
+		$DEE = $this->em->getRepository('IgnGincoBundle:RawData\DEE')->findOneById($DEEId);
+
+		// Delete GML archive
+		if ($DEE->getFilepath()) {
+			$archive = $this->configuration->getConfig('deePublicDirectory') . '/' . pathinfo($DEE->getFilepath(), PATHINFO_BASENAME);
+			unlink($archive);
+		}
+
+		// Delete intermediate files
+		if ($fileName) {
+			$dir = dirname($fileName);
+			if (is_dir($dir)) {
+				array_map('unlink', glob("$dir/*"));
+				rmdir($dir);
+			}
+		}
+
+		if ($DEE) {
+			$this->em->remove($DEE);
+			$this->em->flush();
+		}
+	}
+
+	/**
+	 * Refresh message from db and test if status is TO_CANCEL
+	 *
+	 * @param $message
+	 * @return bool
+	 */
+	protected function messageToCancel($message) {
+		if ($message) {
+			$this->em->refresh($message);
+			if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 *
+	 *
+	 * @param $DEEId
+	 * @param null $messageId
+	 */
 	public function generateAndSendDEE($DEEId, $messageId = null) {
 
 		$this->logger->info("GenerateAndSendDEE: " . implode(',', func_get_args()));
@@ -112,33 +165,48 @@ class DEEProcess {
 		$DEE = $this->em->getRepository('IgnGincoBundle:RawData\DEE')->findOneById($DEEId);
 
 		if ($DEE) {
-			$jdd = $DEE->getJdd();
-
 			// RabbitMQ Message if given
 			$message = ($messageId) ? $this->em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId) : null;
 
 			// Filepath of the DEE gml file
 			$DEEfilePath = $this->generateFilePath($DEE);
 
-			// Generate the DEE gml file
-			$this->DEEGenerator->generateDeeGml($DEE, $DEEfilePath, $message);
-
-			// Generate the DEE archive and set the download path of the DEE
-			$archiveFileSystemPath = $this->createDEEArchive($DEE, $DEEfilePath);
-			$archiveDownloadPath =  '/dee/' . pathinfo($archiveFileSystemPath, PATHINFO_BASENAME);
-			$DEE->setFilePath($archiveDownloadPath);
-
-			// Report message status if not null
-			if ($message) {
-				$message->setStatus(Message::STATUS_COMPLETED);
+			if (!$this->messageToCancel($message)) {
+				// Generate the DEE gml file
+				$this->DEEGenerator->generateDeeGml($DEE, $DEEfilePath, $message);
 			}
 
-			// Set final statuses on DEE
-			$DEE->setStatus(DEE::STATUS_OK);
-			$this->em->flush();
+			if (!$this->messageToCancel($message)) {
+				// Generate the DEE archive and set the download path of the DEE
+				$archiveFileSystemPath = $this->createDEEArchive($DEE, $DEEfilePath);
+				$archiveDownloadPath = '/dee/' . pathinfo($archiveFileSystemPath, PATHINFO_BASENAME);
+				$DEE->setFilePath($archiveDownloadPath);
+			}
 
-			// Send mail notifications to MNHN and user
-			$this->sendDEENotificationMail($DEE);
+			if (!$this->messageToCancel($message)) {
+				// Report message status if not null
+				if ($message) {
+					$message->setStatus(Message::STATUS_COMPLETED);
+				}
+
+				// Set final statuses on DEE
+				$DEE->setStatus(DEE::STATUS_OK);
+				$this->em->flush();
+			}
+
+			if (!$this->messageToCancel($message)) {
+				// Send mail notifications to MNHN and user
+				$this->sendDEENotificationMail($DEE);
+			}
+
+			// Cancel message and delete DEE if needed
+			if ($this->messageToCancel($message)) {
+				$this->deleteDEELineAndFiles($DEE->getId(), $DEEfilePath);
+
+				$message->setStatus(Message::STATUS_CANCELLED);
+				$this->em->flush();
+			}
+
 		}
 	}
 
@@ -213,6 +281,10 @@ class DEEProcess {
 		}
 		// Delete the other files
 		unlink($descriptionFile);
+
+		// Delete GML file
+		unlink($fileName);
+		rmdir($filePath);
 
 		return $archiveName;
 	}

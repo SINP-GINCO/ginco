@@ -108,8 +108,11 @@ class DEEController extends Controller
 			return new JsonResponse(['success' => false, 'message' => 'No message found for this jdd: ' . $jddId]);
 		}
 
-		// We just delete the DEE version from the database
-		$em->remove($lastDEE);
+		// If DEE generation is still PENDING, we remove the DEE line now
+		if ($message->getStatus() == Message::STATUS_PENDING) {
+			$em->remove($lastDEE);
+			$em->flush();
+		}
 
 		// For the message, we update his status to: TO CANCEL
 		$message->setStatus(Message::STATUS_TOCANCEL);

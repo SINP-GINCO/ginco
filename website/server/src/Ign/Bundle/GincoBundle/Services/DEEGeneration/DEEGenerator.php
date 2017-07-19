@@ -116,27 +116,6 @@ class DEEGenerator {
 		ini_set("memory_limit", $this->configuration->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
 
-
-/*
-		for ($i=0; $i<$parameters['time']; $i++) {
-
-			// Check if message has been cancelled externally
-			$this->em->refresh($message);
-			if ($message->getStatus() == Message::STATUS_TOCANCEL) {
-				$message->setStatus(Message::STATUS_CANCELLED);
-				$this->em->flush();
-				echo "Message cancelled... stop waiting.\n";
-				return true;
-			}
-
-			sleep(1);
-			echo '.';
-			$message->setProgress($i+1);
-			$this->em->flush();
-		}
-
-*/
-
 		// Validated (published) submissions in the jdd, stored in the DEE line
 		$submissionsIds= $DEE->getSubmissions();
 
@@ -244,8 +223,20 @@ class DEEGenerator {
 			// -- Batch execute the request, and write observations to the output file
 			$batchLines = 1000;
 			$batches = ceil($total / $batchLines);
-			
+
+			// Stop if message has been cancelled externally
+			$stop = false;
+
 			for ($i = 0; $i < $batches; $i ++) {
+				if ($message) {
+					// Check if message has been cancelled externally; if yes, just exit the loop
+					// (DEE cancellation is done after)
+					$this->em->refresh($message);
+					if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+						$stop = true;
+						break;
+					}
+				}
 				
 				$batchSQL = $sql . " LIMIT $batchLines OFFSET " . $i * $batchLines;
 				
@@ -295,10 +286,12 @@ class DEEGenerator {
 				$groups = $this->dee->groupObservations($resultsArray, $groups, $params);
 			}
 
-			// -- Write the "groups" file
-			$fileNameGroups = $fileName . "_groups";
-			$this->generateGroupsGML($groups, $fileNameGroups);
-			
+			if (!$stop) {
+				// -- Write the "groups" file
+				$fileNameGroups = $fileName . "_groups";
+				$this->generateGroupsGML($groups, $fileNameGroups);
+			}
+
 			// -- Put the 4 intermediate files together and delete them
 			system("cat $fileNameHeader $fileNameGroups $fileNameObservations $fileNameEnd > $fileName");
 			unlink($fileNameHeader);
@@ -350,10 +343,19 @@ class DEEGenerator {
 			
 			fwrite($out, $this->strReplaceBySequence("#GMLID#", $this->generateObservation($observation)));
 			
-			// report progress every 1, 10, 100 or 1000 lines
 			if ($message) {
+				// Every 1, 10, 100 or 1000 lines: check if message has been cancelled, and report progress
 				$progress = $startLine + $index + 1;
 				if (($total <= 100) || ($total <= 1000 && ($progress % 10 == 0)) || ($total <= 10000 && ($progress % 100 == 0)) || ($progress % 1000 == 0)) {
+
+					// Check if message has been cancelled externally; if yes, just return
+					// (DEE cancellation is done at a upper level)
+					$this->em->refresh($message);
+					if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+						fclose($out);
+						return;
+					}
+
 					// Report message progress if given
 					$message->setProgress($progress);
 					$this->em->flush();
