@@ -129,11 +129,21 @@ function updateAllDEEGeneratingTasks() {
 function updateDEEData(jddId, data) {
     var deeDiv = $("div.dee[data-jdd-id='" + jddId + "']");
 
+    // Can generate DEE for theis jdd ?
+    if ("canGenerateDEE" in data) {
+        deeDiv.data('can-generate-DEE', data.canGenerateDEE);
+    } else {
+        deeDiv.data('can-generate-DEE', false);
+    }
+
     // DEE status
     if ("dee" in data && "status" in data.dee ) {
         deeDiv.data('dee-status', data.dee.status);
-        if (data.dee.status == 'OK' && "downloadLink" in data.dee) {
+        if (data.dee.status == 'OK' || data.dee.status == 'DELETED') {
             deeDiv.data('dee-download', data.dee.downloadLink );
+            deeDiv.data('dee-created', data.dee.created );
+            deeDiv.data('dee-comment', data.dee.comment );
+            deeDiv.data('dee-action', data.dee.action );
         }
     } else {
         deeDiv.data('dee-status', 'NO DEE');
@@ -150,10 +160,10 @@ function updateDEEData(jddId, data) {
 }
 
 /**
- * Update content div and show:
- *  - the download link when available
+ * Update content and show:
+ *  - the DEE state OR
  *  - the progress bar when the export job is running
- *  - action links: create/update, cancel/delete
+ *  - action links: create/update, cancel/delete, download link when available
  *
  * @param jddId
  */
@@ -162,49 +172,36 @@ function updateDEEContent(jddId) {
 
     var deeDiv = $("div.dee[data-jdd-id='" + jddId + "']");
     var contentDiv = deeDiv.find("div.dee-content");
+    var actionsDiv = deeDiv.find("div.dee-actions");
 
+    var canGenerateDEE = deeDiv.data('can-generate-DEE');
     var deeStatus = deeDiv.data('dee-status');
     var messageStatus = deeDiv.data('message-status');
     var messageProgress = deeDiv.data('message-progress');
 
-    // Display actions depending on DEEStatus
-    contentDiv.html('');
-    var actions = $('<span class="text-center"></span>');
-    contentDiv.append(actions);
+    //-- Content OR progress
 
-    // GenerateDEE
-    // TODO: check if the jdd a au moins une soumission publiée
-    if (deeStatus != 'GENERATING') {
-        var icon = 'glyphicon-play-circle';
-        var action = 'create';
-        var title='Générer et transmettre les DEE';
-        if (deeStatus == 'OK') {
-            icon = 'glyphicon-repeat';
-            action = 'update';
-            title='Mettre à jour et transmettre les DEE';
-        }
+    // Update progress bar if DEE is GENERATING
+    var progressBar = deeDiv.find('div.progress-bar');
+    var labelDiv = deeDiv.find('div.progress-label');
+    var progessCancel = deeDiv.find('div.progress-cancel');
 
-        var launchLink = $("<a title='" + title + "' href=''> " +
-                "<span class='glyphicon " + icon + "' aria-hidden='true'></span></a>");
-        actions.append(launchLink);
-        launchLink.click( function(e) {
-            e.preventDefault();
-            showDialogModal(jddId, action);
-        });
-    }
-
-    // Download link if file is available
-    if (deeStatus == 'OK') {
-        var downloadLink =$("<a title='Télécharger la DEE' href='"+ deeDiv.data('dee-download') +"'> " +
-                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
-        actions.append(downloadLink);
-    }
-
-    // Cancel DEE generation (and come back to last version)
     if (deeStatus == 'GENERATING') {
-        var cancelLink = $("<a href='' title='Annuler'>" +
-                "<span class='glyphicon glyphicon glyphicon-remove-sign' aria-hidden='true'></span></a>");
-        actions.append(cancelLink);
+        if (progressBar.parent().parent().hasClass('hidden')) {
+            progressBar.parent().parent().removeClass('hidden');
+            labelDiv.removeClass('hidden');
+            progessCancel.removeClass('hidden');
+        }
+        progressBar.css('width', messageProgress +'%').attr('aria-valuenow', messageProgress).html( messageProgress + '%');
+
+        var label = ((messageStatus == 'RUNNING') ? 'Génération DEE en cours...' :
+                        ((messageStatus == 'PENDING') ?  'En attente...' : 'Annulation...'));
+        labelDiv.html(label);
+
+        // Cancel DEE generation (and come back to last version)
+        var cancelLink = $("<a href='#' title='Annuler'>" +
+                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+        progessCancel.html('').append(cancelLink);
         cancelLink.click( function(e) {
             e.preventDefault();
             $.getJSON( "{{ path('dee_cancel_generation') }}", {
@@ -212,42 +209,104 @@ function updateDEEContent(jddId) {
             });
         });
     }
-
-    // Delete DEE
-    if (deeStatus == 'OK') {
-        var deleteLink = $("<a href='' title='Supprimer la DEE'>" +
-                "<span class='glyphicon glyphicon glyphicon-remove-sign' aria-hidden='true'></span></a>");
-        actions.append(deleteLink);
-        deleteLink.click( function(e) {
-            e.preventDefault();
-            showDialogModal(jddId, 'delete');
-        });
-    }
-
-    //-- todo: remove !
-    var statuss = $('<p></p>').html(deeStatus + '<br>' + messageStatus + '<br>' + messageProgress);
-    contentDiv.append(statuss);
-
-
-    //-- Update progress bar if DEE is GENERATING
-    var progressBar = deeDiv.find('div.progress-bar');
-    var labelDiv = deeDiv.find('div.progress-label');
-
-    if (deeStatus == 'GENERATING') {
-        if (progressBar.parent().parent().hasClass('hidden')) {
-            progressBar.parent().parent().removeClass('hidden');
-            labelDiv.removeClass('hidden');
-        }
-        progressBar.css('width', messageProgress +'%').attr('aria-valuenow', messageProgress).html( messageProgress + '%');
-
-        var label = 'Génération DEE ' + ((messageStatus == 'RUNNING') ? 'en cours...' :
-                        ((messageStatus == 'PENDING') ?  'en attente...' : 'annulation...'));
-        labelDiv.html(label);
-    }
-    //-- If not GENERATING remove progress bar
+    // If not GENERATING remove progress bar
     else {
         progressBar.parent().parent().addClass('hidden');
         labelDiv.addClass('hidden');
+        progessCancel.addClass('hidden');
+    }
+
+    // Content if DEE is not GENERATING
+    if (deeStatus == 'GENERATING') {
+        contentDiv.html('');
+    }
+    else {
+        contentDiv.html('');
+        var content = $('<p></p>');
+        contentDiv.append(content);
+
+        if (deeStatus == 'NO DEE') {
+            content.html('Non transmis');
+        }
+        else {
+            var action = (deeStatus == 'DELETED') ? 'Supprimé' : 'Transmis';
+
+            content.html(action + ' le :<br>' + deeDiv.data('dee-created'));
+            if (deeStatus == 'OK') {
+                content.append('<br>(' + deeDiv.data('dee-action') + ')');
+            }
+            var comment = $("<a role='button' data-toggle='popover' title='Commentaire' data-content='" + deeDiv.data('dee-comment') + "'>" +
+                    "<span class='glyphicon glyphicon-comment' aria-hidden='true'></span></a>" +
+                    "</button>");
+            content.append('<span> </span>').append(comment);
+            // activate popover
+            comment.popover();
+        }
+    }
+
+
+    //-- Display actions depending on DEEStatus
+
+    actionsDiv.html('');
+    var titleRunning = 'Génération DEE déjà en cours...';
+
+   // GenerateDEE
+    if (deeStatus == 'GENERATING') {
+        var launchLink = $("<a role='button' class='btn btn-xs btn-default' title='"+ titleRunning+"' href='#'> " +
+                "<span class='glyphicon glyphicon-repeat' aria-hidden='true'></span></a>");
+        actionsDiv.append(launchLink);
+    } else {
+        var icon = 'glyphicon-play';
+        var action = 'create';
+        var title = 'Générer et transmettre les DEE';
+        var color = (canGenerateDEE) ? 'btn-success' : 'btn-default';
+        if (deeStatus == 'OK') {
+            icon = 'glyphicon-repeat';
+            action = 'update';
+            title = 'Mettre à jour et transmettre les DEE';
+        }
+
+        var launchLink = $("<a role='button' class='btn btn-xs " + color + " ' title='" + title + "' href='#'> " +
+                "<span class='glyphicon " + icon + "' aria-hidden='true'></span></a>");
+        actionsDiv.append(launchLink);
+
+        if (canGenerateDEE) {
+            launchLink.click(function (e) {
+                e.preventDefault();
+                showDialogModal(jddId, action);
+            });
+        }
+        else {
+            launchLink.click(function (e) {
+                e.preventDefault();
+                $('#DEECantGenerateModal').modal('show');
+            });
+        }
+    }
+    // Download link if file is available
+    if (deeStatus == 'OK') {
+        var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='Télécharger la DEE' href='" + deeDiv.data('dee-download') + "'> " +
+                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
+        actionsDiv.append(downloadLink);
+    } else {
+        var downloadLink = $("<a role='button' class='btn btn-xs btn-default' title='Pas de DEE à télécharger' href='#'> " +
+                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
+        actionsDiv.append(downloadLink);
+    }
+
+    // Delete DEE
+    if (deeStatus == 'OK') {
+        var deleteLink = $("<a role='button' class='btn btn-xs btn-danger' href='#' title='Supprimer la DEE'>" +
+                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+        actionsDiv.append(deleteLink);
+        deleteLink.click(function (e) {
+            e.preventDefault();
+            showDialogModal(jddId, 'delete');
+        });
+    } else {
+        var deleteLink = $("<a role='button' class='btn btn-xs btn-default' href='#' title='Pas de DEE à supprimer'>" +
+                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+        actionsDiv.append(deleteLink);
     }
 }
 

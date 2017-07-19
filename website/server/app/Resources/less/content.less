@@ -222,6 +222,8 @@ body {
 //------------------------------
 
 .jdd-table, .submissions-table {
+  table-layout: fixed;
+
   thead {
     background-color: @sinp-green;
     color: white;
@@ -247,12 +249,26 @@ body {
     padding-bottom: 1px;
   }
 
-  .file { width: 30%; }
-  .lines { width: 10%; }
+  .file { width: 50%; }
+  .lines { width: 12%; }
   .status { width: 25%; }
-  .provider { width: 25%; }
-  .actions { width: 10% }
+  .actions { width: 13% }
 }
+
+
+.dee-state, .dee-actions {
+  display: block;
+  float: left;
+}
+.dee-state { width: 65%; }
+.dee-actions {
+  width: 35%;
+  a {
+    margin-left: 4px;
+  }
+}
+
+
 
 //------------------------------
 // Configurator

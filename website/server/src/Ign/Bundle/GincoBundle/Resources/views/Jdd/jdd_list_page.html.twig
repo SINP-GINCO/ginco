@@ -15,17 +15,24 @@
 
     <!-- Show the currently active location submissions -->
     <table class="table table-hover table-bordered jdd-table">
+        <col style="width: 7%;"/>
+        <col style="width: 28%;"/>
+        <col />
+        <col style="width: 25%;"/>
         <thead>
             <tr>
                 <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
                 <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
-                <th class="text-center color1">DEE</th>
+                <th class="text-center color1">Transmission INPN</th>
             </tr>
             <tr>
-                <th width="7%" class="color1">{{ 'Actions'|trans }}</th>
-                <th width="30%" class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
-                <th width="56%" class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
-                <th width="7%" class="color1">{{ 'DEE'|trans }}</th>
+                <th class="color1">{{ 'Actions'|trans }}</th>
+                <th class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
+                <th class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
+                <th class="color1">
+                    <div class="dee-state">Etat DEE</div>
+                    <div class="dee-actions">Actions</div>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -109,115 +116,23 @@
                 </td>
 
                 {# DEE Column - Filled by Ajax#}
-                <td class="text-center">
-                    <div class="dee"
-                         data-jdd-id="{{ jdd.id }}"
-                         data-can-generate-dee="1">
-                        <div class="progress-label hidden"></div>
-                        <div class="progress hidden">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                    0%
+                <td>
+                    <div class="dee" data-jdd-id="{{ jdd.id }}">
+                        <div class="dee-state">
+                            <div class="progress-label hidden"></div>
+                            <div class="progress hidden">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        0%
+                                    </div>
                                 </div>
                             </div>
+                            <div class="progress-cancel"></div>
+                            <div class="dee-content"></div>
                         </div>
-                        <div class="dee-content"></div>
+                        <div class="dee-actions text-center"></div>
                     </div>
-
-
-                    {#
-                    {% if user.isAllowed('MANAGE_DATASETS') %}
-                    {% if jdd.getHasAtLeastOneSuccessfulSubmission and false %}
-                    <!-- and not jdd.hasExportFile -->
-                     <table><tr>
-                         <td title="{{ 'Publish the data to export them as DEE'|trans }}">
-                            {% image '@IgnGincoBundle/Resources/public/img/play_publish_grey.png' %}
-                                <img src="{{ asset_url }}" />
-                            {% endimage %}
-                         </td>
-                         <td title="{{ 'Publish the data to download the DEE'|trans }}">
-                            {% image '@IgnGincoBundle/Resources/public/img/download_grey.png' %}
-                                <img src="{{ asset_url }}" />
-                            {% endimage %}
-                         </td>
-                         <td title="{{ 'Generate the DEE to delete it'|trans }}">
-                            {% image '@IgnGincoBundle/Resources/public/img/delete_x_icon_grey.png' %}
-                                <img src="{{ asset_url }}" />
-                            {% endimage %}
-                         </td>
-                         </tr></table><?php
-                     {% elseif jdd.getHasAtLeastOneValidatedSubmission and true %}
-                      <!-- and not jdd.hasExportFile -->
-                     <div class="dee-status hidden" data-export-file-id="-1" data-jdd-id="{{ jdd.id }}"></div>
-                         <div class="progress hidden">
-                             <script type="text/javascript">
-                             {% if (jdd.status is same as('RUNNING')) %}
-                                 var $label = "{{ 'Génération DEE en cours...' }}";
-                             {% else %}
-                                var $label = "{{ 'Génération DEE en attente...' }}";
-                             {% endif %}
-                                <!-- display('deeprogress' + {{ jdd.id }}, $label, 0 ,'/img/');-->
-                             </script>
-                             <div class="integration-progress hidden">
-                                <div>{{ 'IntegrationPage.import.running'|trans }}</div>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                             0%
-                                        </div>
-                                    </div>
-                                </div>
-                         </div>
-                         </div>
-                         <div class="dee-content" data-submission-step=" jdd.step "
-                              data-export-file-id="-1" data-jdd-id="{{ jdd.id }}"></div>
-                     {% elseif jdd.getHasAtLeastOneValidatedSubmission or false %}
-                     <!--  or jdd.hasExportFile -->
-                     <div class="dee-status hidden" data-export-file-id="17"
-                     data-jdd-id="{{ jdd.id }}"></div>
-                        <!--  jdd.exportfileid -->
-                         <div class="progress hidden">
-                             <script type="text/javascript">
-                             {% if (jdd.status is same as('RUNNING')) %}
-                                 var $label = "{{ 'Génération DEE en cours...' }}";
-                             {% else %}
-                                var $label = "{{ 'Génération DEE en attente...' }}";
-                             {% endif %}
-
-                                <!-- display('deeprogress' + {{ jdd.id }}, $label, 0 ,'/img/');-->
-                             </script>
-                             <div class="integration-progress hidden">
-                                <div>{{ 'IntegrationPage.import.running'|trans }}</div>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                             0%
-                                        </div>
-                                    </div>
-                                </div>
-                         </div>
-                         <div class="dee-content" data-submission-step="{{ jdd.getHasAtLeastOneValidatedSubmission }}"
-                              data-export-file-id="17" data-jdd-id="{{ jdd.id }}"></div>
-                     {% else %}
-                         <table><tr>
-                         <td title="{{ 'Publish the data to export them as DEE'|trans }}">
-                            {% image '@IgnGincoBundle/Resources/public/img/play_publish_grey.png' %}
-                                <img src="{{ asset_url }}" />
-                            {% endimage %}
-                         </td>
-                         <td title="{{ 'Publish the data to download the DEE'|trans }}">
-                            {% image '@IgnGincoBundle/Resources/public/img/download_grey.png' %}
-                                <img src="{{ asset_url }}" />
-                            {% endimage %}
-                         </td>
-                         <td title="{{ 'Generate the DEE to delete it'|trans }}">
-                            {% image '@IgnGincoBundle/Resources/public/img/delete_x_icon_grey.png' %}
-                                <img src="{{ asset_url }}" />
-                            {% endimage %}
-                         </td>
-                         </tr></table>
-                     {% endif %}
-                 {% endif %}
-                 #}
-            </td>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -244,6 +159,21 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
                     <button type="button" class="btn btn-primary" id="modal-submit"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Can't generate DEE modal -->
+    <div class="modal fade" id="DEECantGenerateModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    Pour générer et transmettre la DEE pour ce jeu de données, vous devez y importer avec succès des données puis les publier.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                 </div>
             </div>
         </div>
