@@ -1,35 +1,38 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
+use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Exception\MetadataException;
 use Ign\Bundle\GincoBundle\Form\GincoJddType;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Dataset;
 use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Submission;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\FileFormat;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Ign\Bundle\OGAMBundle\Form\DataSubmissionType;
-use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Ign\Bundle\OGAMBundle\Form\JddType;
+use Ign\Bundle\OGAMBundle\Controller\JddController as BaseController;
 
 /**
  * @Route("/jdd")
  */
-class JddController extends Controller {
+class JddController extends BaseController {
+
+	/**
+	 * Default action: Show the jdd list page
+	 * Ginco customisation: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
+	 *
+	 * @Route("/", name = "jdd_list")
+	 */
+	public function listAction() {
+		$em = $this->get('doctrine.orm.raw_data_entity_manager');
+		$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds();
+		foreach ($jddList as $jdd) {
+			$jdd->trueDeletable = $this->isJddDeletable($jdd);
+		}
+
+		return $this->render('OGAMBundle:Jdd:jdd_list_page.html.twig', array(
+			'jddList' => $jddList
+		));
+	}
+
 
 	/**
 	 * Jdd creation page
@@ -120,6 +123,29 @@ class JddController extends Controller {
 		));
 	}
 
+
+	/**
+	 * Jdd delete action
+	 * Ginco customisation:: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
+	 *
+	 * @Route("/{id}/delete", name = "jdd_delete", requirements={"id": "\d+"})
+	 */
+	public function deleteAction(Jdd $jdd) {
+
+		// Test if deletable
+		if (!$this->isJddDeletable($jdd)) {
+			$this->addFlash('error', [
+					'id' => 'Jdd.delete.impossible',
+					'parameters' => ['%jddId%' => $jdd->getField('title')]
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('jdd_list'));
+		}
+
+		return parent::deleteAction($jdd);
+	}
+
+
 	/**
 	 * Update Metadata for the given jdd
 	 * returns JsonResponse true or false
@@ -156,6 +182,31 @@ class JddController extends Controller {
 		// returns to the page where the action comes from
 		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
 		return $this->redirect($redirectUrl);
+	}
+
+	/**
+	 * Test if a jdd is deletable:
+	 * - must have no active submissions
+	 * - must have no active DEE
+	 *
+	 * @param Jdd $jdd
+	 * @return bool
+	 */
+	protected function isJddDeletable(Jdd $jdd) {
+		// Basic deletability: Jdd has no active submissions
+		if (!$jdd->isDeletable()) {
+			return false;
+		}
+
+		// Do the jdd has an active DEE ?
+		$em = $this->get('doctrine.orm.entity_manager');
+		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
+		// Get last version of DEE attached to the jdd
+		$DEE = $deeRepo->findLastVersionByJdd($jdd);
+		if ($DEE && $DEE->getStatus() != DEE::STATUS_DELETED) {
+			return false;
+		}
+		return true;
 	}
 
 }

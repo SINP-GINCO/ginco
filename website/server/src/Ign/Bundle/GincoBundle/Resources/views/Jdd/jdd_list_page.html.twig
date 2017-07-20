@@ -47,7 +47,7 @@
                     </a>
 
                     {# Delete #}
-                    {% if jdd.deletable %}
+                    {% if jdd.trueDeletable %}
                         <button class="btn btn-xs btn-danger" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
