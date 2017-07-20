@@ -101,6 +101,9 @@ services:
         class: Ign\Bundle\GincoBundle\Services\QueryService
         arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@=service('security.token_storage').getToken().getUser()", "@=service('ogam.schema_listener').getSchema()", "@ogam.manager.generic", "@ginco.repository.mapping.map"]
 
+    ginco.submission_service:
+      class: Ign\Bundle\GincoBundle\Services\SubmissionService
+      arguments: ["@logger", "@ogam.configuration_manager", "@ogam.generic_service","@ogam.query_service", "@doctrine.orm.raw_data_entity_manager", "@doctrine.orm.metadata_entity_manager", "@translator"]
 
     #templatehelper
     ogam.helper.AddLink:

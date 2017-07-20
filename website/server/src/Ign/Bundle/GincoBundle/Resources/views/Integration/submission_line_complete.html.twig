@@ -14,6 +14,7 @@
         <th>{{ 'Status'|trans }}</th>
         <th>{{ 'IntegrationPage.File'|trans }}</th>
         <th>{{ 'Lines'|trans }}</th>
+        <th>{{ 'Reports'|trans }}</th>
         <th>{{ 'Actions'|trans }}</th>
     </tr>
 
@@ -76,6 +77,10 @@
             {% endfor %}
         </td>
 
+        {# Reports #}
+        <td>
+            {%  include "@IgnGinco/Integration/submission_reports.html.twig" %}
+        </td>
         {# Actions #}
         <td>
             {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}

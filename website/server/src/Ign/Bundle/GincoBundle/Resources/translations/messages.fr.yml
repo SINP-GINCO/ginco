@@ -133,6 +133,17 @@ IntegrationPage:
   import:
     running: Import en cours...
 
+Report:
+  DownloadReports: -- Télécharger les rapports --
+  Reports: Rapports
+  Sensitivity:
+    SensibilityReport: Sensibilité
+    SubmissionId: Identifiant de la soumission
+    SensitiveDataNumber: Nombre de données sensibles
+    TotalDataNumber: Nombre de données total dans la soumission
+  Integration: Conformité et cohérence
+  PermanentIds: Identifiants permanents
+
 Confirm submission: Publier la soumission
 Invalidate submission: Dépublier la soumission
 

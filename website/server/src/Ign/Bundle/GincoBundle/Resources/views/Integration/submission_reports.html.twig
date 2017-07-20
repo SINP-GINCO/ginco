@@ -1,0 +1,27 @@
+{# Block for displaying available reports for a submission #}
+{# Variables : submission #}
+
+{% if submission is defined %}
+	{% if submission.step is not constant('STEP_CANCELLED', submission) %}
+	<select onChange="window.location.href=this.value">
+		<option value="">
+			{{ 'Report.DownloadReports'|trans }}
+		</option>
+		{% if submission.step is not constant('STEP_INIT', submission) and submission.status is not constant('STATUS_RUNNING', submission) %}
+			<option value="{{ path('download-report', {'submissionId': submission.id , 'report': 'integrationReport'}) }}" title="{{ 'Show report'|trans }}">
+				{{ 'Report.Integration'|trans }}
+			</option>
+		{% endif %}
+		{% if submission.status is constant('STATUS_OK', submission) %}
+			{% if user.isAllowed('VIEW_SENSITIVE') %}
+				<option value="{{ path('download-report', {'submissionId': submission.id, 'report': 'sensibilityReport'}) }}"  title="{{ 'Show report'|trans }}">
+					{{ 'Report.Sensitivity.SensibilityReport'|trans }}
+				</option>
+			{% endif %}
+			<option value="{{ path('download-report', {'submissionId': submission.id, 'report': 'permanentIdsReport'}) }}"  title="{{ 'Show report'|trans }}">
+				{{ 'Report.PermanentIds'|trans }}
+			</option>
+		{% endif %}
+	</select>
+	{% endif %}
+{% endif %}

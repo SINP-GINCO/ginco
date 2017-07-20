@@ -227,10 +227,12 @@ CREATE OR REPLACE FUNCTION raw_data.sensitive_automatic()
 $BODY$
 
 	DECLARE
-		rule referentiels.especesensible%ROWTYPE;
+		rule_codage integer;
+		rule_autre character varying(500);
+		rule_full_citation character varying(500);
+		rule_cd_doc integer;
 	BEGIN
-
-	-- As users can update data with editor, one checks that there is realy something to do.
+	-- As users can update data with the editor, first check that there is realy something to do.
 	-- If none of the fields used for sensitivity computation have been modified we leave.
 	If (NEW.codedepartementcalcule is not distinct from OLD.codedepartementcalcule 
 		AND NEW.cdnom is not distinct from OLD.cdnom 
@@ -244,47 +246,57 @@ $BODY$
 	-- see #747 for discussion about when to update this date.
 	NEW.deedatedernieremodification = now();
 
+	-- We get the referential applied for the data departement
+	SELECT especesensiblelistes.full_citation, especesensiblelistes.cd_doc INTO rule_full_citation, rule_cd_doc
+	FROM referentiels.especesensible
+	LEFT JOIN referentiels.especesensiblelistes ON especesensiblelistes.cd_sl = especesensible.cd_sl
+	WHERE especesensible.cd_dept = ANY (NEW.codedepartementcalcule)
+	LIMIT 1;
+	
 	-- by default a data is not sensitive
 	NEW.sensible = '0';
 	NEW.sensiniveau = '0';
 	NEW.sensidateattribution = now();
-	NEW.sensireferentiel = 'Référentiel de test (désignation indiquée en dur dans la fonction sensitive_automatic()).';
-	NEW.sensiversionreferentiel = 'version 0.';
+	NEW.sensireferentiel = rule_full_citation;
+	NEW.sensiversionreferentiel = rule_cd_doc;
 	NEW.sensimanuelle = '0';
 	NEW.sensialerte = '0';
 		
 	-- Does the data deals with sensitive taxon for the departement and is under the sensitive duration ?
-	SELECT * INTO rule
+	SELECT especesensible.codage, especesensible.autre INTO rule_codage, rule_autre
 	FROM referentiels.especesensible
+	LEFT JOIN referentiels.especesensiblelistes ON especesensiblelistes.cd_sl = especesensible.cd_sl
 	WHERE 
 		(CD_NOM = NEW.cdNom
 		OR CD_NOM = NEW.cdRef
 		OR CD_NOM = ANY (
-			WITH RECURSIVE node_list( cd_nom, cd_taxsup, lb_nom, nom_vern) AS (
-				SELECT cd_nom, cd_taxsup, lb_nom, nom_vern
-				FROM referentiels.taxref
-				WHERE cd_nom = NEW.cdnom
+			WITH RECURSIVE node_list( code, parent_code, lb_name, vernacular_name) AS (
+				SELECT code, parent_code, lb_name, vernacular_name
+				FROM metadata.mode_taxref
+				WHERE code = NEW.cdnom
 		
-				UNION
+				UNION ALL
 		
-				SELECT parent.cd_nom, parent.cd_taxsup, parent.lb_nom, parent.nom_vern
-				FROM referentiels.taxref parent
-				INNER JOIN node_list on node_list.cd_taxsup = parent.cd_nom
-				WHERE node_list.cd_taxsup != '349525'
+				SELECT parent.code, parent.parent_code, parent.lb_name, parent.vernacular_name
+				FROM node_list, metadata.mode_taxref parent
+				WHERE node_list.parent_code = parent.code
+				AND node_list.parent_code != '349525'
 				)
-			SELECT cd_taxsup
+			SELECT parent_code
 			FROM node_list
-			ORDER BY cd_nom
+			ORDER BY code
 			)
 		)
 		AND CD_DEPT = ANY (NEW.codedepartementcalcule)
 		AND (DUREE IS NULL OR (NEW.jourdatefin::date + DUREE * '1 year'::INTERVAL > now()))
 		AND (NEW.occstatutbiologique IN (NULL, '0', '1', '2') OR cd_occ_statut_biologique IS NULL OR NEW.occstatutbiologique = CAST(cd_occ_statut_biologique AS text))
 	
-	--  Quand on a plusieurs règles applicables il faut choisir la règle avec le codage le plus fort
-	--  puis prendre en priorité une règle sans commentaire (rule.autre is null)
-	ORDER BY codage DESC, autre ASC
-	--  enfin, on prend la première.
+	--  Quand on a plusieurs règles applicables il faut choisir en priorité
+	--  Les règles avec le codage le plus fort
+	--  Parmis elles, la règle sans commentaire (rule_autre is null)
+	--  Voir #579
+	ORDER BY codage DESC, autre DESC
+	--  on prend la première règle, maintenant qu'elles ont été ordonnées
 	LIMIT 1;
 		
 		
@@ -295,10 +307,10 @@ $BODY$
 		
 	-- A rule has been found, the obs is sensitive
 	NEW.sensible = '1';
-	NEW.sensiniveau = rule.codage;
+	NEW.sensiniveau = rule_codage;
 		
 	-- If there is a comment, sensitivity must be defined manually
-	If (rule.autre IS NOT NULL) Then
+	If (rule_autre IS NOT NULL) Then
 		NEW.sensialerte = '1';
 	End if ;
 			
@@ -309,6 +321,7 @@ $BODY$
   COST 100;
 ALTER FUNCTION raw_data.sensitive_automatic()
   OWNER TO admin;
+
 
 GRANT SELECT on table referentiels.taxref to ogam; --FIXME: why here?
 
@@ -321,13 +334,11 @@ CREATE OR REPLACE FUNCTION raw_data.sensitive_manual()
 $BODY$
 
   BEGIN
-	  
-	  -- sensitivity is has been changed manually if sensiniveau or sensimanuelle change
+	  -- sensitivity has been changed manually if sensiniveau or sensimanuelle change
 	  -- else the modifications do not concern sensitivity
 	  IF (NEW.sensiniveau is not distinct from OLD.sensiniveau AND NEW.sensimanuelle is not distinct from OLD.sensimanuelle) Then
 			RETURN NEW;
 	  END IF;
-	  
 		NEW.sensidateattribution = now();
 		NEW.sensimanuelle = '1';
 		NEW.sensialerte = '0';

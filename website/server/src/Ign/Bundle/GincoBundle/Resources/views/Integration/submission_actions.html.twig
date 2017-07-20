@@ -3,14 +3,6 @@
 
 {% if submission is defined %}
 
-    {# Integration report #}
-
-    {% if submission.step is not constant('STEP_INIT', submission) and submission.status is not constant('STATUS_RUNNING', submission) %}
-        <a href="{{ path('proxy_show-report', {'submissionId': submission.id }) }}" title="{{ 'Show report'|trans }}">
-            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-        </a>
-    {% endif %}
-
     {# Publish (Validate) or Unpublish (invalidate) submission #}
 
     {% if ((submission.step is constant('STEP_INSERTED', submission)  and submission.status is constant('STATUS_OK', submission))

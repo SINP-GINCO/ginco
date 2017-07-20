@@ -28,6 +28,7 @@ try {
 	execCustSQLFile("$sprintDir/add_jdd_table_and_jdd_evolutions.sql", $config);
 	execCustSQLFile("$sprintDir/add_jdd_id_download_service_url.sql", $config);
 	execCustSQLFile("$sprintDir/add_event_listener_jdd_service.sql", $config);
+	execCustSQLFile("$sprintDir/add_event_listener_generate_reports_service.sql", $config);
 	execCustSQLFile("$sprintDir/update_bbox.sql", $config);
 	execCustSQLFile("$sprintDir/update_sensitive_species.sql", $config);
 	execCustSQLFile("$sprintDir/update_apb_and_pnr_en_layer_names.sql", $config);

@@ -38,6 +38,7 @@ security:
         - { path: ^/map/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_QUERY', request.getSession().get('_schema', 'RAW_DATA'))"}
         - { path: ^/integration/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/jdd/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
+        - { path: ^/submission/download-report, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION') and user.isAllowed('VIEW_SENSITIVE')"}
         - { path: ^/proxy/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/harmonization/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/checkconf/, allow_if: "user and is_authenticated() and user.isAllowed('CHECK_CONF')"}

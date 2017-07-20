@@ -186,7 +186,7 @@ CREATE TABLE website.predefined_request_criterion
   CONSTRAINT pk_predefined_request_criterion PRIMARY KEY (request_id, format, data),
   CONSTRAINT fk_predefined_request_criterion_request_name FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT
+      ON UPDATE RESTRICT ON DELETE CASCADE
 );
 
 COMMENT ON COLUMN website.predefined_request_criterion.request_id IS 'The request identifier';
@@ -205,7 +205,7 @@ CREATE TABLE website.predefined_request_column
   CONSTRAINT pk_predefined_request_column PRIMARY KEY (request_id, format, data),
   CONSTRAINT fk_predefined_request_column_request_name FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT
+      ON UPDATE RESTRICT ON DELETE CASCADE
 );
 
 COMMENT ON COLUMN website.predefined_request_column.request_id IS 'The request identifier';
@@ -242,10 +242,10 @@ CREATE TABLE website.predefined_request_group_asso
   CONSTRAINT pk_predefined_request_group_asso PRIMARY KEY (group_id, request_id),
   CONSTRAINT fk_predefined_request_group_name FOREIGN KEY (group_id)
       REFERENCES website.predefined_request_group (group_id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT,
+      ON UPDATE RESTRICT ON DELETE CASCADE,
   CONSTRAINT fk_predefined_request_request_name FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT
+      ON UPDATE RESTRICT ON DELETE CASCADE
 );
 
 COMMENT ON COLUMN website.predefined_request_group_asso.group_id IS 'The group identifier';

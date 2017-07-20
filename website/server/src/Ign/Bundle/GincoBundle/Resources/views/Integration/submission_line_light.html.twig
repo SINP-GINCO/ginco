@@ -1,5 +1,5 @@
 {# One line for displaying submissions inside a cell of table  #}
-{# Variables : submission #}
+{# Variables : submission, user - mean logged user- #}
 
 {% if submission is not defined %}
     {# Headline #}
@@ -9,6 +9,7 @@
         <div class="lines">{{ 'Lines'|trans }}</div>
         <div class="status" >{{ 'Status'|trans }}</div>
         <div class="provider">{{ 'Provider'|trans }}</div>
+        <div class="reports">{{ 'Report.Reports'|trans }}</div>
         <div class="actions">{{ 'Actions'|trans }}</div>
     </div>
 
@@ -50,6 +51,10 @@
         </div>
         {# Provider #}
         <div class="provider">{{ submission.provider.label }}</div>
+        {# Reports #}
+        <div class="reports">
+            {%  include "@IgnGinco/Integration/submission_reports.html.twig" %}
+        </div>
         {# Actions #}
         <div class="actions">
             {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
