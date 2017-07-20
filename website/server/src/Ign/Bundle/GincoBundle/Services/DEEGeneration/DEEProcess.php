@@ -152,7 +152,7 @@ class DEEProcess {
 	}
 
 	/**
-	 *
+	 * Whole process for generating the DEE and sending notifications to MNHN and INPN
 	 *
 	 * @param $DEEId
 	 * @param null $messageId
@@ -304,16 +304,16 @@ class DEEProcess {
 
 		// DEE action : create or update
 		if ($DEE->getStatus() == DEE::STATUS_DELETED) {
-			$action = 'Suppression';
+			$action = 'DEE.suppression';
 		} else if ($DEE->getVersion() == 1) {
-			$action = 'Création';
+			$action = 'DEE.creation';
 		} else {
 			$previousDEE = $this->em->getRepository('IgnGincoBundle:RawData\DEE')->findOneBy(array(
 					'jdd' => $jdd,
 					'version' => $DEE->getVersion() - 1
 				)
 			);
-			$action = ($previousDEE->getStatus() == DEE::STATUS_DELETED) ? 'Création' : 'Mise à jour';
+			$action = ($previousDEE->getStatus() == DEE::STATUS_DELETED) ? 'DEE.creation' : 'DEE.update';
 		}
 
 
@@ -329,7 +329,7 @@ class DEEProcess {
 			'created' => $DEE->getCreatedAt(),
 		);
 
-		if ($action != 'Suppression') {
+		if ($action != 'DEE.suppression') {
 
 			// Submission and submission files in the jdd
 			$submissionFilesNames = array();
@@ -365,7 +365,7 @@ class DEEProcess {
 		);
 
 		// Send mail notification to user
-		if ($action != 'Suppression') {
+		if ($action != 'DEE.suppression') {
 			$this->mailManager->sendEmail(
 				'IgnGincoBundle:Emails:DEE-notification-to-user.html.twig',
 				$parameters,

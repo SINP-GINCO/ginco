@@ -51,13 +51,11 @@ class DEEGenerator {
 
 	/**
 	 * DEEGenerator constructor.
-	 * @param $logger
-	 * @param $locale
-	 * @param $configuration
 	 * @param $em
-	 * @param $emm
+	 * @param $configuration
 	 * @param $genericService
 	 * @param $queryService
+	 * @param $logger
 	 */
 	public function __construct($em, $configuration, $genericService, $queryService, $logger) {
 
@@ -95,19 +93,9 @@ class DEEGenerator {
 	 * - groups (computed from observations)
 	 * - concatenate the intermediate files and delete them
 	 *
-	 *
-	 * @param $jddId
-	 * @param $fileName name and path of the gml file to write
-	 * @param null $messageId
-	 * @param null $userLogin
-	 * @return bool
-	 * @throws DEEException
-	 */
-	/**
-	 * @param Jdd $jdd
+	 * @param DEE $DEE
 	 * @param $fileName
-	 * @param Message|null $message
-	 * @param null $userLogin
+	 * @param Message|null $message RabbitMQ Message entity
 	 * @return bool
 	 * @throws DEEException
 	 */
@@ -166,7 +154,7 @@ class DEEGenerator {
 		$queryForm = $this->queryService->setQueryFormFieldsMappings($queryForm);
 		$mappingSet = $queryForm->getFieldMappingSet($queryForm);
 
-		//TODO : set the real user params
+		// Fake user params, OK
 		$userInfos = [
 			"providerId" => NULL,
 			"DATA_QUERY_OTHER_PROVIDER" => true,
@@ -305,20 +293,14 @@ class DEEGenerator {
 	/**
 	 * Generate the observations part of the gml for the DEE
 	 * and write it to an output (intermediate) file.
-	 * Write in "append" mode, so the file can be wited to by batches.
+	 * Write in "append" mode, so the file can be writed to by batches.
 	 *
-	 * @param $observations :
-	 *        	batch of observations
-	 * @param $outputFile :
-	 *        	file name to write.
-	 * @param array $params
-	 *        	: associative id of parameters
-	 * @param int|null $messageId
-	 *        	: job id in the job_queue table. If not null, the function will write its progress in the job_queue table.
-	 * @param $startLine :
-	 *        	start line of the batch in the entire list of observations
-	 * @param $total :
-	 *        	total nb of the entire list of observations
+	 * @param $observations array batch of observations
+	 * @param $outputFile string file name to write.
+	 * @param null $params array associative id of parameters
+	 * @param null $message Message
+	 * @param int $startLine start line of the batch in the entire list of observations
+	 * @param int $total total nb of the entire list of observations
 	 * @throws DEEException
 	 */
 	protected function generateObservationsGML($observations, $outputFile, $params = null, $message= null, $startLine = 0, $total = 0) {
@@ -478,42 +460,4 @@ class DEEGenerator {
 		}
 		return $str;
 	}
-
-
-	/**
-	 * Create a file which describe the deletion reasons
-	 * And put it in the public directory.
-	 *
-	 * @param
-	 *        	$jddId
-	 * @param
-	 *        	$comment
-	 * @return string
-	 */
-// 	public function createDeeGmlDeletionDescriptionFile($jddId, $comment) {
-// 		// JDD metadata id
-// 		$jddModel = new Application_Model_RawData_Jdd();
-// 		$jddRowset = $jddModel->find($jddId);
-// 		$jddRowset->next();
-// 		$uuid = $jddRowset->toArray()[0]['jdd_metadata_id'];
-		
-// 		// The export file model
-// 		$this->exportFileModel = new Application_Model_RawData_ExportFile();
-// 		$exportfilePath = $this->exportFileModel->generateFilePath($uuid);
-// 		$desciptionFilePrefix = substr($exportfilePath, 0, -4);
-		
-// 		$configuration = Zend_Registry::get('configuration');
-// 		$deePublicDir = $configuration->getConfig('deePublicDirectory');
-// 		$descriptionFile = $deePublicDir . '/' . pathinfo($exportfilePath, PATHINFO_FILENAME) . '_descriptif.txt';
-// 		$out = fopen($descriptionFile, 'w');
-// 		fwrite($out, "L'Export DEE pour le jeu de données $uuid a été supprimé. \n \n");
-// 		if ($comment != "") {
-// 			fwrite($out, "Raisons amenant à une suppression de la DEE : " . stripslashes($comment));
-// 		}
-// 		fclose($out);
-		
-// 		return $descriptionFile;
-// 	}
-
-
 }

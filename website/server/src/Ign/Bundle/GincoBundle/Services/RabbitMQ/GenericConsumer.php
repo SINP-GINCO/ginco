@@ -138,7 +138,7 @@ class GenericConsumer implements ConsumerInterface {
 		} catch (\Exception $e) {
 			// If any of the above fails due to temporary failure, return false,
 			// which will re-queue the current message.
-			echo "Erreur : " . $e->getMessage() . "\n\n";
+			echo "Error : " . $e->getMessage() . "\n\n";
 			echo $e->getTraceAsString();
 			echo "\n";
 			return false;
