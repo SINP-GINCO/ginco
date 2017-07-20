@@ -19,7 +19,8 @@ function usage($mess=NULL){
 	echo "  o --website : build the 'server' part of the project (symfony)\n";
 	echo "  o --ext : build the 'client' part of the project (ext)\n";
 	echo "  o --mapfile : build the mapfile for mapserver\n";
-	echo "  o --apacheconf : build the apache configuration file\n\n";
+	echo "  o --apacheconf : build the apache configuration file\n";
+	echo "  o --supervisorconf : build the supervisor configuration file\n\n";
 
 	echo "------------------------------------------------------------------------\n";
 	if (!is_null($mess)){
@@ -195,6 +196,7 @@ function buildWebsite($config, $buildMode)
 			'db_version' => $config['db.version'],
 			'mailer_transport' => $config['mailer.transport'],
 			'mailer_host' => $config['mailer.host'],
+			'instance_name' => $config['instance.name'],
 		],
 		'__'
 	);
@@ -360,6 +362,38 @@ function buildApacheConf($config, $buildMode)
 }
 
 
+# on la range dans ./build/confsupervisor
+function buildSupervisorConf($config, $buildMode)
+{
+	global $projectDir, $buildDir, $postBuildInstructions;
+	chdir($projectDir);
+
+	echo("building supervisor config...\n");
+	echo("-----------------------------\n");
+
+	$confsupervisorBuildDir = "$buildDir/confsupervisor";
+	// Same effect as if ($buildMode=='prod')
+	if ( !is_dir($confsupervisorBuildDir) ) {
+		echo("Creating $confsupervisorBuildDir directory...\n");
+		mkdir($confsupervisorBuildDir, 0755, true);
+	}
+
+	$buildConfFile = "$confsupervisorBuildDir/ginco_{$config['instance.name']}.conf";
+	echo("Creating supervisor configuration file: $buildConfFile...\n");
+
+	substituteInFile("$projectDir/confsupervisor/ginco_supervisor_tpl.conf", $buildConfFile, $config);
+
+	if ($buildMode == 'dev') {
+		$postBuildInstructions[] = "Supervisor configuration file has been built: $buildConfFile\n";
+		$postBuildInstructions[] = "To install, do:\n\n";
+		$postBuildInstructions[] = "sudo cp $buildConfFile /etc/supervisor/conf.d/\n";
+		$postBuildInstructions[] = "sudo service supervisor restart\n\n";
+	}
+
+	echo("Done building supervisor config.\n\n");
+}
+
+
 //------------------------------------------------------------------------------------------------------
 
 if (count($argv)==1) usage();
@@ -376,6 +410,7 @@ $tasksOptions  = array(
 	"ext",		// Build extJS client
 	"mapfile",		// Build mapfile
 	"apacheconf",		// Build apache configuration file
+	"supervisorconf",		// Build supervisor configuration file
 );
 $otherOptions = array(
 	"mode::",     	// Development mode: symlinks instead of copy files
@@ -443,6 +478,9 @@ if (in_array('mapfile', $tasks)) {
 }
 if (in_array('apacheconf', $tasks)) {
 	buildApacheConf($config, $buildMode);
+}
+if (in_array('supervisorconf', $tasks)) {
+	buildSupervisorConf($config, $buildMode);
 }
 // In prod mode, we keep the config parameters to a file which will be sent to the target machine
 // It will be used by database creation/update scripts
