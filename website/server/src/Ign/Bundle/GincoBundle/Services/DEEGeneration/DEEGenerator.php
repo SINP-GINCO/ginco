@@ -274,18 +274,20 @@ class DEEGenerator {
 				$groups = $this->dee->groupObservations($resultsArray, $groups, $params);
 			}
 
+			// -- Write the "groups" file
+			$fileNameGroups = $fileName . "_groups";
 			if (!$stop) {
-				// -- Write the "groups" file
-				$fileNameGroups = $fileName . "_groups";
 				$this->generateGroupsGML($groups, $fileNameGroups);
 			}
 
 			// -- Put the 4 intermediate files together and delete them
-			system("cat $fileNameHeader $fileNameGroups $fileNameObservations $fileNameEnd > $fileName");
-			unlink($fileNameHeader);
-			unlink($fileNameGroups);
-			unlink($fileNameObservations);
-			unlink($fileNameEnd);
+			if (!$stop) {
+				system("cat $fileNameHeader $fileNameGroups $fileNameObservations $fileNameEnd > $fileName");
+			}
+			if (is_file($fileNameHeader)) unlink($fileNameHeader);
+			if (is_file($fileNameGroups)) unlink($fileNameGroups);
+			if (is_file($fileNameObservations)) unlink($fileNameObservations);
+			if (is_file($fileNameEnd)) unlink($fileNameEnd);
 		}
 		return $total != 0;
 	}

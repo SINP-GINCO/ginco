@@ -205,6 +205,7 @@ class DEEProcess {
 
 				$message->setStatus(Message::STATUS_CANCELLED);
 				$this->em->flush();
+				echo "Message cancelled... DEE deleted.\n";
 			}
 
 		}
