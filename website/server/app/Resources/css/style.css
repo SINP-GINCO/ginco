@@ -6899,10 +6899,6 @@ body {
   margin-bottom: 20px;
   margin-top: 20px;
 }
-.jdd-table,
-.submissions-table {
-  table-layout: fixed;
-}
 .jdd-table thead,
 .submissions-table thead {
   background-color: #7E931E;
@@ -6911,6 +6907,9 @@ body {
 .jdd-table th.color2,
 .submissions-table th.color2 {
   background-color: #50600a;
+}
+.jdd-table {
+  table-layout: fixed;
 }
 .submissions {
   width: 100%;
