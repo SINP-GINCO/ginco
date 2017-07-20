@@ -26,7 +26,7 @@
                 <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
                 <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
                 {% if user.isAllowed('MANAGE_DATASETS') %}
-                    <th class="text-center color1">Transmission INPN</th>
+                    <th class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
                 {% endif %}
             </tr>
             <tr>
@@ -35,8 +35,8 @@
                 <th class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
                 {% if user.isAllowed('MANAGE_DATASETS') %}
                     <th class="color1">
-                        <div class="dee-state">Etat DEE</div>
-                        <div class="dee-actions">Actions</div>
+                        <div class="dee-state">{{ 'DEE.table.state'|trans }}</div>
+                        <div class="dee-actions">{{ 'DEE.table.actions'|trans }}</div>
                     </th>
                 {% endif %}
             </tr>
@@ -121,7 +121,7 @@
                     </div>
                 </td>
 
-                {# DEE Column - Filled by Ajax#}
+                {# DEE Column - Empty / filled by Ajax #}
                 {% if user.isAllowed('MANAGE_DATASETS') %}
                     <td>
                         <div class="dee" data-jdd-id="{{ jdd.id }}">
@@ -141,6 +141,7 @@
                         </div>
                     </td>
                 {% endif %}
+
             </tr>
         {% endfor %}
         </tbody>
@@ -178,7 +179,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        Pour générer et transmettre la DEE pour ce jeu de données, vous devez y importer avec succès des données puis les publier.
+                        {{ 'DEE.impossibleModal.body'|trans }}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"

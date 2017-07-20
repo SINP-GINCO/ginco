@@ -1,7 +1,12 @@
 /**
  * Scripts for DEE Export management
  * Actions are sent via Ajax, and get back status of the export job.
- * Status are:
+ *
+ * Status for DEE are:
+ *  - GENERATING
+ *  - OK
+ *  - DELETED
+ * Status for messages are:
  * - 'NOT FOUND'; No message with this id
  * - 'PENDING'; Queued, waiting to be consumed
  * - 'RUNNING'; Is being consumed
@@ -19,7 +24,6 @@
  * @param deeAction
  */
 function showDialogModal(jddId, deeAction) {
-    console.log('showDialogModal', jddId, deeAction);
     var modal = $('#DEEModal');
     var submitButton = modal.find('button#modal-submit');
 
@@ -30,19 +34,19 @@ function showDialogModal(jddId, deeAction) {
     submitButton.off();
 
     // Set title, notice, submit button text, depending on action
-    var title = (deeAction == 'create') ? "Génération des DEE et première transmission à l'INPN" :
-            (deeAction =='update') ? "Mise à jour des DEE et transmission à l'INPN" :
-                    "Suppresssion des DEE";
+    var title = (deeAction == 'create') ? "{{ 'DEE.dialogModal.create.title'|trans }}" :
+            (deeAction =='update') ? "{{ 'DEE.dialogModal.update.title'|trans }}" :
+            "{{ 'DEE.dialogModal.suppress.title'|trans }}";
     modal.find('h4.modal-title').html(title);
 
-    var notice = (deeAction == 'create') ? "Vous allez générer les DEE pour ce jeu de données. Une notification sera envoyée à la plateforme nationale,<br>Vous pouvez éventuellement ajouter un commentaire destiné à l'administrateur de la plateforme nationale :" :
-            (deeAction =='update') ? "Vous allez mettre à jour les DEE pour ce jeu de données. Une notification sera envoyée à la plateforme nationale,<br>Merci de décrire les modifications apportées au jeu de données qui vous amènent à re-transmettre les DEE :" :
-                    "Vous allez supprimer les DEE pour ce jeu de données. Une notification sera envoyée à la plateforme nationale,<br>Merci d'indiquer la raison pour laquelle vous supprimez les DEE :";
+    var notice = (deeAction == 'create') ? "{{ 'DEE.dialogModal.create.notice'|trans }}" :
+            (deeAction =='update') ? "{{ 'DEE.dialogModal.update.notice'|trans }}" :
+            "{{ 'DEE.dialogModal.suppress.notice'|trans }}";
     modal.find('p#modal-notice').html(notice);
 
-    var buttonText = (deeAction == 'create') ? "Générer et transmettre les DEE" :
-            (deeAction =='update') ? "Mettre à jour et transmettre les DEE" :
-                    "Supprimer les DEE";
+    var buttonText = (deeAction == 'create') ? "{{ 'DEE.dialogModal.create.submit'|trans }}" :
+            (deeAction =='update') ? "{{ 'DEE.dialogModal.update.submit'|trans }}" :
+            "{{ 'DEE.dialogModal.suppress.submit'|trans }}";
 
     submitButton.html(buttonText);
 
@@ -52,7 +56,7 @@ function showDialogModal(jddId, deeAction) {
         if (comment.trim() == "" && deeAction != 'create') {
             modal.find('div.form-group').addClass('has-error');
             modal.find('div.form-group').find('div.help-block').html(
-                    "Vous n'avez pas laissé de commentaire !");
+                    "{{ 'DEE.dialogModal.nocomment'|trans }}");
         }
         else {
             if (deeAction == 'create' || deeAction == 'update')
@@ -69,15 +73,13 @@ function showDialogModal(jddId, deeAction) {
 }
 
 /**
- * Update status and content divs for given submission.
- * If status is not given, launch a ajax request to get it.
+ * Update data attributes and content divs for given jdd
+ * If data is not given, launch a ajax request to get it.
  *
- * @param $jddId
- * @param $status
+ * @param jddId
+ * @param data
  */
 function updateDEEDataAndContent(jddId, data) {
-    console.log('updateDEEstatusandContent' + jddId);
-
     if (data) {
         updateDEEData(jddId, data);
         updateDEEContent(jddId);
@@ -93,12 +95,11 @@ function updateDEEDataAndContent(jddId, data) {
 }
 
 /**
- * Search all PENDING and RUNNING and TO CANCEL jobs (by the content of the hidden status div)
+ * Search all GENERATING DEEs (by the data attribute of the .dee divs)
  * And launch a ajax request to retrieve their status and progress
- * Then update status and content divs.
+ * Then update data and content divs.
  */
 function updateAllDEEGeneratingTasks() {
-    console.log('updateAllDEEGeneratingTasks');
     var jddIds = [];
     $('div.dee').each(function() {
         if ( $(this).data('dee-status') == 'GENERATING') {
@@ -169,7 +170,6 @@ function updateDEEData(jddId, data) {
  * @param jddId
  */
 function updateDEEContent(jddId) {
-    console.log('updateDEEContent '+jddId);
 
     var deeDiv = $("div.dee[data-jdd-id='" + jddId + "']");
     var contentDiv = deeDiv.find("div.dee-content");
@@ -195,12 +195,12 @@ function updateDEEContent(jddId) {
         }
         progressBar.css('width', messageProgress +'%').attr('aria-valuenow', messageProgress).html( messageProgress + '%');
 
-        var label = ((messageStatus == 'RUNNING') ? 'Génération DEE en cours...' :
-                        ((messageStatus == 'PENDING') ?  'En attente...' : 'Annulation...'));
+        var label = ((messageStatus == 'RUNNING') ? "{{ 'DEE.progress.running'|trans }}" :
+                        ((messageStatus == 'PENDING') ?  "{{ 'DEE.progress.pending'|trans }}" : "{{ 'DEE.progress.cancel'|trans }}"));
         labelDiv.html(label);
 
         // Cancel DEE generation (and come back to last version)
-        var cancelLink = $("<a href='#' title='Annuler'>" +
+        var cancelLink = $("<a href='#' title=\"{{ 'Cancel'|trans }}\">" +
                 "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
         progessCancel.html('').append(cancelLink);
         cancelLink.click( function(e) {
@@ -227,16 +227,16 @@ function updateDEEContent(jddId) {
         contentDiv.append(content);
 
         if (deeStatus == 'NO DEE') {
-            content.html('Non transmis');
+            content.html("{{ 'DEE.status.noDEE'|trans }}");
         }
         else {
-            var action = (deeStatus == 'DELETED') ? 'Supprimé' : 'Transmis';
+            var action = (deeStatus == 'DELETED') ? "{{ 'DEE.status.suppressed'|trans }}" : "{{ 'DEE.status.transmitted'|trans }}";
 
             content.html(action + ' le :<br>' + deeDiv.data('dee-created'));
             if (deeStatus == 'OK') {
                 content.append('<br>(' + deeDiv.data('dee-action') + ')');
             }
-            var comment = $("<a role='button' data-toggle='popover' title='Commentaire' data-content='" + deeDiv.data('dee-comment') + "'>" +
+            var comment = $("<a role='button' data-toggle='popover' title='{{ 'Comment'|trans }}' data-content='" + deeDiv.data('dee-comment') + "'>" +
                     "<span class='glyphicon glyphicon-comment' aria-hidden='true'></span></a>" +
                     "</button>");
             content.append('<span> </span>').append(comment);
@@ -249,7 +249,7 @@ function updateDEEContent(jddId) {
     //-- Display actions depending on DEEStatus
 
     actionsDiv.html('');
-    var titleRunning = 'Génération DEE déjà en cours...';
+    var titleRunning = "{{ 'DEE.status.generating'|trans }}";
 
    // GenerateDEE
     if (deeStatus == 'GENERATING') {
@@ -259,12 +259,12 @@ function updateDEEContent(jddId) {
     } else {
         var icon = 'glyphicon-play';
         var action = 'create';
-        var title = 'Générer et transmettre les DEE';
+        var title = "{{ 'DEE.dialogModal.create.title'|trans }}";
         var color = (canGenerateDEE) ? 'btn-success' : 'btn-default';
         if (deeStatus == 'OK') {
             icon = 'glyphicon-repeat';
             action = 'update';
-            title = 'Mettre à jour et transmettre les DEE';
+            title = "{{ 'DEE.dialogModal.update.title'|trans }}";
         }
 
         var launchLink = $("<a role='button' class='btn btn-xs " + color + " ' title='" + title + "' href='#'> " +
@@ -286,18 +286,18 @@ function updateDEEContent(jddId) {
     }
     // Download link if file is available
     if (deeStatus == 'OK') {
-        var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='Télécharger la DEE' href='" + deeDiv.data('dee-download') + "'> " +
+        var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='{{ 'DEE.download'|trans }}' href='" + deeDiv.data('dee-download') + "'> " +
                 "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
         actionsDiv.append(downloadLink);
     } else {
-        var downloadLink = $("<a role='button' class='btn btn-xs btn-default' title='Pas de DEE à télécharger' href='#'> " +
+        var downloadLink = $("<a role='button' class='btn btn-xs btn-default' title='{{ 'DEE.noDownload'|trans }}' href='#'> " +
                 "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
         actionsDiv.append(downloadLink);
     }
 
     // Delete DEE
     if (deeStatus == 'OK') {
-        var deleteLink = $("<a role='button' class='btn btn-xs btn-danger' href='#' title='Supprimer la DEE'>" +
+        var deleteLink = $("<a role='button' class='btn btn-xs btn-danger' href='#' title='{{ 'DEE.dialogModal.suppress.title'|trans }}'>" +
                 "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
         actionsDiv.append(deleteLink);
         deleteLink.click(function (e) {
@@ -305,7 +305,7 @@ function updateDEEContent(jddId) {
             showDialogModal(jddId, 'delete');
         });
     } else {
-        var deleteLink = $("<a role='button' class='btn btn-xs btn-default' href='#' title='Pas de DEE à supprimer'>" +
+        var deleteLink = $("<a role='button' class='btn btn-xs btn-default' href='#' title='{{ 'DEE.noDownload'|trans }}'>" +
                 "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
         actionsDiv.append(deleteLink);
     }
@@ -322,7 +322,6 @@ function generateDEE(jddId, comment) {
         jddId: jddId,
         comment: comment
     },function( data ) {
-        console.log('generateDEE returned');
         if (data.success) {
             updateDEEDataAndContent(jddId, data);
         }
@@ -339,7 +338,6 @@ function deleteDEE(jddId, comment) {
         jddId: jddId,
         comment: comment
     },function( data ) {
-        console.log('deleteDEE returned');
         if (data.success) {
             // updateDEEDataAndContent(jddId, data);
             // We reload the page to update the "delete jdd" button if necessary
@@ -352,7 +350,6 @@ function deleteDEE(jddId, comment) {
 var DEEtimerId;
 
 $(function(){
-    console.log('Coucou');
     $('.dee').each(function() {
         // var $exportFileId = $(this).attr('data-export-file-id');
         var $jddId = $(this).attr('data-jdd-id');

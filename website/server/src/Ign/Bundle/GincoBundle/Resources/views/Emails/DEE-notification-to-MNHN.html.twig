@@ -1,23 +1,23 @@
 {% extends "IgnGincoBundle:Emails:base-email.html.twig" %}
 
 {%- block subject %}
-    [GINCO {{ region }}] {{ action }} du jeu de données {{ metadata_uuid }}
+    [GINCO {{ region }}] {{ action|trans }} du jeu de données {{ metadata_uuid }}
 {% endblock -%}
 
 {%- block email_body_text %}
     {% autoescape true %}
-        {{ site_name }} - {{ action }} du jeu de données {{ metadata_uuid }}
+        {{ site_name }} - {{ action|trans }} du jeu de données {{ metadata_uuid }}
         ----------------------------------------------------------------------
         Identifiant de métadonnées du jeu de données : {{ metadata_uuid }}
         Titre du jeu de données : {{ jdd_title }}
-        Date de {{ action }} du jeu : {{ created|date("d/m/Y H:i:s") }}
+        Date de {{ action|trans }} du jeu : {{ created|date("d/m/Y H:i:s") }}
         Fournisseur : {{ provider.label }} ({{ provider.id }})
         Plate-forme : {{ site_name }}
-        Type d'envoi : {{ action }}
+        Type d'envoi : {{ action|trans }}
 
         Commentaire : {{ message }}
 
-        {% if action != 'Suppression' %}
+        {% if action != 'DEE.suppression' %}
         Nom du(des) fichier(s) : {{ filename }}
         URL : {{ download_url }}
         CHECKSUM MD5 : {{ checksum }}
@@ -30,7 +30,7 @@
 
 {%- block email_body_html %}
     {% autoescape false %}
-        <p><strong>{{ site_name }} - {{ action }} du jeu de données {{ metadata_uuid }}</strong></p>
+        <p><strong>{{ site_name }} - {{ action|trans }} du jeu de données {{ metadata_uuid }}</strong></p>
 
         <table>
             <tr>
@@ -42,7 +42,7 @@
                 <td>{{ jdd_title }}</td>
             </tr>
             <tr>
-                <td>Date de {{ action }} de la DEE :</td>
+                <td>Date de {{ action|trans }} de la DEE :</td>
                 <td>{{ created|date("d/m/Y H:i:s") }}</td>
             </tr>
             <tr>
@@ -55,13 +55,13 @@
             </tr>
             <tr>
                 <td>Type d'envoi :</td>
-                <td>{{ action }}</td>
+                <td>{{ action|trans }}</td>
             </tr>
             <tr>
                 <td>Commentaire :</td>
                 <td>{{ message }}</td>
             </tr>
-            {% if action != 'Suppression' %}
+            {% if action != 'DEE.suppression' %}
             <tr>
                 <td>Nom du(des) fichier(s) :</td>
                 <td>{{ filename }}</td>
