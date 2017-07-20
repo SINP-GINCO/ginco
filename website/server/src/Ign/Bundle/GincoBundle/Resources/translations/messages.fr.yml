@@ -155,7 +155,7 @@ Jdd:
     metadataIdDescription: L'identifiant de métadonnées renseigné doit être présent dans <a href="%metadataUrl%" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="https://ginco.ign.fr/doc/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
   delete:
     prompt: Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?
-    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données liés).
+    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données et/ou DEE liés).
     success: Le jeu de données a bien été supprimé.
   submission:
     add: Importer des données

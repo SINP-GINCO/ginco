@@ -138,6 +138,7 @@ function updateDEEData(jddId, data) {
 
     // DEE status
     if ("dee" in data && "status" in data.dee ) {
+
         deeDiv.data('dee-status', data.dee.status);
         if (data.dee.status == 'OK' || data.dee.status == 'DELETED') {
             deeDiv.data('dee-download', data.dee.downloadLink );
@@ -340,7 +341,9 @@ function deleteDEE(jddId, comment) {
     },function( data ) {
         console.log('deleteDEE returned');
         if (data.success) {
-            updateDEEDataAndContent(jddId, data);
+            // updateDEEDataAndContent(jddId, data);
+            // We reload the page to update the "delete jdd" button if necessary
+            location.reload();
         }
     });
 }
