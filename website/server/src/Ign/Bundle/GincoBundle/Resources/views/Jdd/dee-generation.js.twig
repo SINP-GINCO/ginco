@@ -178,7 +178,7 @@ function updateDEEContent(jddId) {
     var canGenerateDEE = deeDiv.data('can-generate-DEE');
     var deeStatus = deeDiv.data('dee-status');
     var messageStatus = deeDiv.data('message-status');
-    var messageProgress = deeDiv.data('message-progress');
+    var messageProgress = Math.round(deeDiv.data('message-progress'));
 
     //-- Content OR progress
 
