@@ -6935,6 +6935,7 @@ body {
 .submission-line .lines,
 .submission-line .status,
 .submission-line .provider,
+.submission-line .reports,
 .submission-line .actions {
   display: block;
   float: left;
@@ -6944,16 +6945,19 @@ body {
   width: 30%;
 }
 .submission-line .lines {
-  width: 10%;
+  width: 8%;
 }
 .submission-line .status {
-  width: 25%;
+  width: 11%;
 }
 .submission-line .provider {
-  width: 25%;
+  width: 12%;
+}
+.submission-line .reports {
+  width: 31%;
 }
 .submission-line .actions {
-  width: 10%;
+  width: 8%;
 }
 /* fileFormat or tableFormat edit.html.twig */
 #data-transfer-button {
