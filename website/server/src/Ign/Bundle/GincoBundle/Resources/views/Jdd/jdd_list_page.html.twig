@@ -18,21 +18,27 @@
         <col style="width: 7%;"/>
         <col style="width: 28%;"/>
         <col />
-        <col style="width: 25%;"/>
+        {% if user.isAllowed('MANAGE_DATASETS') %}
+            <col style="width: 25%;"/>
+        {% endif %}
         <thead>
             <tr>
                 <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
                 <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
-                <th class="text-center color1">Transmission INPN</th>
+                {% if user.isAllowed('MANAGE_DATASETS') %}
+                    <th class="text-center color1">Transmission INPN</th>
+                {% endif %}
             </tr>
             <tr>
                 <th class="color1">{{ 'Actions'|trans }}</th>
                 <th class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
                 <th class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
-                <th class="color1">
-                    <div class="dee-state">Etat DEE</div>
-                    <div class="dee-actions">Actions</div>
-                </th>
+                {% if user.isAllowed('MANAGE_DATASETS') %}
+                    <th class="color1">
+                        <div class="dee-state">Etat DEE</div>
+                        <div class="dee-actions">Actions</div>
+                    </th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -116,68 +122,72 @@
                 </td>
 
                 {# DEE Column - Filled by Ajax#}
-                <td>
-                    <div class="dee" data-jdd-id="{{ jdd.id }}">
-                        <div class="dee-state">
-                            <div class="progress-label hidden"></div>
-                            <div class="progress hidden">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                        0%
+                {% if user.isAllowed('MANAGE_DATASETS') %}
+                    <td>
+                        <div class="dee" data-jdd-id="{{ jdd.id }}">
+                            <div class="dee-state">
+                                <div class="progress-label hidden"></div>
+                                <div class="progress hidden">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                            0%
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="progress-cancel"></div>
+                                <div class="dee-content"></div>
                             </div>
-                            <div class="progress-cancel"></div>
-                            <div class="dee-content"></div>
+                            <div class="dee-actions text-center"></div>
                         </div>
-                        <div class="dee-actions text-center"></div>
-                    </div>
-                </td>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <!-- DEE dialog popup -->
-    <div class="modal fade" id="DEEModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"></h4>
-                </div>
-                <div class="modal-body">
-                    <p id="modal-notice"></p>
-                    <form>
-                        <div class="form-group">
-                            <label class="control-label">{{ 'Comment'|trans }}</label>
-                            <textarea class="form-control" id="DEE-comment"></textarea>
-                            <div class="help-block"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
-                    <button type="button" class="btn btn-primary" id="modal-submit"></button>
+    {% if user.isAllowed('MANAGE_DATASETS') %}
+        <!-- DEE dialog popup -->
+        <div class="modal fade" id="DEEModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal-notice"></p>
+                        <form>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'Comment'|trans }}</label>
+                                <textarea class="form-control" id="DEE-comment"></textarea>
+                                <div class="help-block"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                        <button type="button" class="btn btn-primary" id="modal-submit"></button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Can't generate DEE modal -->
-    <div class="modal fade" id="DEECantGenerateModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    Pour générer et transmettre la DEE pour ce jeu de données, vous devez y importer avec succès des données puis les publier.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+        <!-- Can't generate DEE modal -->
+        <div class="modal fade" id="DEECantGenerateModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        Pour générer et transmettre la DEE pour ce jeu de données, vous devez y importer avec succès des données puis les publier.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
 {% else %}
     <p>{% trans %}No submission found{% endtrans %}</p>
