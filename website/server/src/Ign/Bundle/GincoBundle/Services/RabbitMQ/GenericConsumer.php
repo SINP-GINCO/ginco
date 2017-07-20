@@ -46,7 +46,7 @@ class GenericConsumer implements ConsumerInterface {
 		$this->em = $em;
 		$this->configuration = $configuration;
 
-		echo "GenericConsumer is listening...";
+		echo "GenericConsumer is listening...\n";
 	}
 
 
