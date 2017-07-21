@@ -194,23 +194,7 @@ foreach ($this->submissions as $submission) {
 
     <!-- Actions cell -->
     <td>
-
-    <?php
-    if ($submission->step !== "INIT" && $submission->status !== "DATARUNNING") {
-        ?>
-        <p><a href="<?php echo  $this->url(array('controller'=>'dataset','action'=>'download-report'), 'default', true)?>?submissionId=<?php echo $submission->submissionId;?>&report=integrationReport" ><?php echo $this->translate('Show report');?></a></p>
-    <?php }
-    if ($submission->status === "OK") {
-        ?>
-        <p>
-            <a href="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $submission->submissionId; ?>&report=sensibilityReport"><?php echo $this->translate('Sensibility Report'); ?></a>
-        </p>
-        <p>
-            <a href="<?php echo $this->url(array('controller' => 'dataset', 'action' => 'download-report'), 'default', true) ?>?submissionId=<?php echo $submission->submissionId; ?>&report=permanentIdsReport"><?php echo $this->translate('Permanent Ids Report'); ?></a>
-        </p>
-
-    <?php }
-
+<?php 
     if ($submission->step === "INSERT" && $submission->status === "OK") {
 ?>
     <p><a href="<?php echo  $this->url(array('controller'=>'integration','action'=>'check-submission'), null, true)?>?submissionId=<?php echo $submission->submissionId;?>" ><?php echo $this->translate('Check data');?></a></p>
