@@ -142,7 +142,7 @@ function updateDEEData(jddId, data) {
 
         deeDiv.data('dee-status', data.dee.status);
         if (data.dee.status == 'OK' || data.dee.status == 'DELETED') {
-            deeDiv.data('dee-download', data.dee.downloadLink );
+            deeDiv.data('dee-id', data.dee.id );
             deeDiv.data('dee-created', data.dee.created );
             deeDiv.data('dee-comment', data.dee.comment );
             deeDiv.data('dee-action', data.dee.action );
@@ -286,7 +286,8 @@ function updateDEEContent(jddId) {
     }
     // Download link if file is available
     if (deeStatus == 'OK') {
-        var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='{{ 'DEE.download'|trans }}' href='" + deeDiv.data('dee-download') + "'> " +
+        var href = "{{ path('dee_download', {'id': '0'})}}".replace('0', deeDiv.data('dee-id'));
+        var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='{{ 'DEE.download'|trans }}' href='" + href + "'> " +
                 "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
         actionsDiv.append(downloadLink);
     } else {
