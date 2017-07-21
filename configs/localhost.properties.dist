@@ -79,3 +79,6 @@ geoportail.key=7gr31kqe5xttprd2g7zbkqgo
 # Tracking id Piwik
 # 0 to disable piwik tracking for this site
 piwik.id=0
+
+mailer.transport=smtp
+mailer.host=mailex.ign.fr
