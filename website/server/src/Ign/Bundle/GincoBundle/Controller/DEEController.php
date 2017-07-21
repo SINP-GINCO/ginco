@@ -4,11 +4,14 @@ namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
+use Ign\Bundle\GincoBundle\Exception\DEEException;
 use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * @Route("/dee")
@@ -166,6 +169,41 @@ class DEEController extends Controller
 		return new JsonResponse($this->getStatus($jddId, $newDEE));
 	}
 
+
+	/**
+	 * Download the zip archive of a DEE for a jdd
+	 * Note: direct downloading is prohibited by apache configuration, except for a list of IPs
+	 *
+	 * @param DEE $DEE
+	 * @return BinaryFileResponse
+	 * @throws DEEException
+	 *
+	 * @Route("/{id}/download", name = "dee_download", requirements={"id": "\d+"})
+	 */
+	public function downloadDEE(DEE $DEE)
+	{
+		// Get archive
+		$archivePath = $DEE->getFilePath();
+		if (!$archivePath) {
+			throw new DEEException("No archive file path for this DEE: " . $DEE->getId());
+		}
+
+		// tests the existence of the zip file
+		$fileName = pathinfo($archivePath, PATHINFO_BASENAME);
+		$archiveFilePath =  $this->get('ogam.configuration_manager')->getConfig('deePublicDirectory') . '/' . $fileName;
+		if (!is_file( $archiveFilePath )) {
+			throw new DEEException("DEE archive file does not exist for this DEE: " . $DEE->getId());
+		}
+
+		// -- Get back the file
+		$response = new BinaryFileResponse($archiveFilePath);
+		$response->setContentDisposition(
+			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+			$fileName
+		);
+		return $response;
+	}
+
 	/**
 	 * DEE generation - get status of the background task
 	 *
@@ -249,8 +287,8 @@ class DEEController extends Controller
 			}
 			else {
 				$json['dee'] = array(
+					'id' => $DEE->getId(),
 					'status' => $DEE->getStatus(),
-					'downloadLink' => $DEE->getFilePath(),
 					'created' => $DEE->getCreatedAt()->format('d/m/Y H:i'),
 					'comment' => $DEE->getComment(),
 				);
