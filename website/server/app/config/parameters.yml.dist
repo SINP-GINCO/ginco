@@ -23,3 +23,6 @@ parameters:
     # FOS-jsrouting parameters
     base_url: /app.php
     router.request_context.base_url: "%base_url%"
+
+    # Instance name
+    instance_name: __instance_name__

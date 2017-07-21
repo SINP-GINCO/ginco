@@ -71,8 +71,8 @@ class QueryService extends BaseService {
 	 */
 	protected $mapRepository;
 
-	public function __construct($doctrine, $genericService, $configuration, $logger, $locale, $user, $schema, $genericModel, $mapRepository) {
-		parent::__construct($doctrine, $genericService, $configuration, $logger, $locale, $user, $schema, $genericModel);
+	public function __construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $mapRepository, $user=null) {
+		parent::__construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $user);
 
 		$this->mapRepository = $mapRepository;
 	}

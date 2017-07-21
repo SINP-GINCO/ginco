@@ -1,47 +1,88 @@
 {% extends "IgnGincoBundle:Emails:base-email.html.twig" %}
 
 {%- block subject %}
-    [GINCO {{ region }}] CREATION du jeu de données {{ metadata_uuid }}
+    [GINCO {{ region }}] {{ action|trans }} du jeu de données {{ metadata_uuid }}
 {% endblock -%}
 
 {%- block email_body_text %}
     {% autoescape true %}
-        {{ site_name }} - CREATION du jeu de données {{ metadata_uuid }}
+        {{ site_name }} - {{ action|trans }} du jeu de données {{ metadata_uuid }}
         ----------------------------------------------------------------------
         Identifiant de métadonnées du jeu de données : {{ metadata_uuid }}
-        Nom du fichier : {{ filename }}
-        Date de CREATION du jeu : {{ created|date("d/m/Y H:i:s") }}
+        Titre du jeu de données : {{ jdd_title }}
+        Date de {{ action|trans }} du jeu : {{ created|date("d/m/Y H:i:s") }}
         Fournisseur : {{ provider.label }} ({{ provider.id }})
         Plate-forme : {{ site_name }}
-        Type d'envoi : CREATION
+        Type d'envoi : {{ action|trans }}
 
         Commentaire : {{ message }}
 
+        {% if action != 'DEE.suppression' %}
+        Nom du(des) fichier(s) : {{ filename }}
         URL : {{ download_url }}
         CHECKSUM MD5 : {{ checksum }}
+        {% endif %}
 
-        Contact : {{ user.name }} ({{ user.login }})
+        Contact : {{ user.username }} ({{ user.login }})
         Courriel : {{ user.email }}
     {% endautoescape %}
 {% endblock -%}
 
 {%- block email_body_html %}
     {% autoescape false %}
-        <p><strong>{{ site_name }} - CREATION du jeu de données {{ metadata_uuid }}</strong></p>
+        <p><strong>{{ site_name }} - {{ action|trans }} du jeu de données {{ metadata_uuid }}</strong></p>
 
-        <p> <em>Identifiant de métadonnées du jeu de données :</em> {{ metadata_uuid }}<br>
-            <em>Nom du fichier :</em> {{ filename }}<br>
-            <em>Date de CREATION du jeu :</em> {{ created|date("d/m/Y H:i:s") }}<br>
-            <em>Fournisseur :</em> {{ provider.label }} ({{ provider.id }})<br>
-            <em>Plate-forme :</em> {{ site_name }}<br>
-            <em>Type d'envoi :</em> CREATION</p>
-
-        <p><em>Commentaire :</em> {{ message }}</p>
-
-        <p><em>URL :</em> <a href="{{ download_url }}">{{ download_url }}</a><br>
-            <em>CHECKSUM MD5 :</em> {{ checksum }}</p>
-
-        <p><em>Contact :</em> {{ user.name }} ({{ user.login }})<br>
-            <em>Courriel :</em> <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+        <table>
+            <tr>
+                <td>Identifiant de métadonnées :</td>
+                <td>{{ metadata_uuid }}</td>
+            </tr>
+            <tr>
+                <td>Titre du jdd :</td>
+                <td>{{ jdd_title }}</td>
+            </tr>
+            <tr>
+                <td>Date de {{ action|trans }} de la DEE :</td>
+                <td>{{ created|date("d/m/Y H:i:s") }}</td>
+            </tr>
+            <tr>
+                <td>Fournisseur :</td>
+                <td>{{ provider.label }} ({{ provider.id }})</td>
+            </tr>
+            <tr>
+                <td>Plate-forme :</td>
+                <td>{{ site_name }}</td>
+            </tr>
+            <tr>
+                <td>Type d'envoi :</td>
+                <td>{{ action|trans }}</td>
+            </tr>
+            <tr>
+                <td>Commentaire :</td>
+                <td>{{ message }}</td>
+            </tr>
+            {% if action != 'DEE.suppression' %}
+            <tr>
+                <td>Nom du(des) fichier(s) :</td>
+                <td>{{ filename }}</td>
+            </tr>
+            <tr>
+                <td>URL :</td>
+                <td><a href="{{ download_url }}">{{ download_url }}</a></td>
+            </tr>
+            <tr>
+                <td>Checksum MD5 :</td>
+                <td>{{ checksum }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>Contact :</td>
+                <td>{{ user.username }} ({{ user.login }})</td>
+            </tr>
+            <tr>
+                <td>Courriel :</td>
+                <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+            </tr>
+        </table>
     {% endautoescape %}
 {% endblock -%}

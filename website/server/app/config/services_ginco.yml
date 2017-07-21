@@ -55,7 +55,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    # Listener for the schema
+    # Listener for the schema (todo: unused ?)
     ogam.schema_listener:
         class: Ign\Bundle\OGAMBundle\EventListener\SchemaListener
         tags:
@@ -95,15 +95,30 @@ services:
     # Services
     ogam.generic_service:
         class: Ign\Bundle\GincoBundle\Services\GenericService
-        arguments: ["@doctrine.orm.metadata_entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
+        arguments: ["@doctrine.orm.metadata_entity_manager","@ogam.configuration_manager", "@logger", "%locale%"]
 
     ogam.query_service:
         class: Ign\Bundle\GincoBundle\Services\QueryService
-        arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@=service('security.token_storage').getToken().getUser()", "@=service('ogam.schema_listener').getSchema()", "@ogam.manager.generic", "@ginco.repository.mapping.map"]
+        arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "%locale%", "RAW_DATA", "@ogam.manager.generic", "@ginco.repository.mapping.map"]
 
     ginco.submission_service:
       class: Ign\Bundle\GincoBundle\Services\SubmissionService
       arguments: ["@logger", "@ogam.configuration_manager", "@ogam.generic_service","@ogam.query_service", "@doctrine.orm.raw_data_entity_manager", "@doctrine.orm.metadata_entity_manager", "@translator"]
+
+    # RabbitMQ Decorated Producer
+    ginco.decorating_ginco_generic_producer:
+      class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericProducer
+      decorates: old_sound_rabbit_mq.ginco_generic_producer
+      arguments: ['@ginco.decorating_ginco_generic_producer.inner', '@doctrine.orm.entity_manager']
+      public: false
+
+
+    # RabbitMQ Consumers
+    generic_consumer_service:
+        class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericConsumer
+        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
+        calls:
+          - [setDEEProcess, ['@ginco.dee_process']]
 
     #templatehelper
     ogam.helper.AddLink:
@@ -149,3 +164,13 @@ services:
     ginco.metadata_reader:
         class: Ign\Bundle\GincoBundle\Services\MetadataReader
         arguments: ["@ogam.configuration_manager","@logger"]
+
+    # Service generating DEE
+    ginco.dee_generator:
+        class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGenerator
+        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@ogam.generic_service", "@ogam.query_service","@logger"]
+
+    # Service doing the whole process of generating and sending the DEE file
+    ginco.dee_process:
+        class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess
+        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@ginco.dee_generator", "@app.mail_manager","@logger"]

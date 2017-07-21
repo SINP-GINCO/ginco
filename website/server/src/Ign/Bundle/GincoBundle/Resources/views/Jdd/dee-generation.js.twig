@@ -1,0 +1,363 @@
+/**
+ * Scripts for DEE Export management
+ * Actions are sent via Ajax, and get back status of the export job.
+ *
+ * Status for DEE are:
+ *  - GENERATING
+ *  - OK
+ *  - DELETED
+ * Status for messages are:
+ * - 'NOT FOUND'; No message with this id
+ * - 'PENDING'; Queued, waiting to be consumed
+ * - 'RUNNING'; Is being consumed
+ * - 'COMPLETED'; Has been consumed and terminated normally
+ * - 'TO CANCEL'; A 'cancel' signal has been sent, the consumer must handle it
+ * -  'CANCELLED'; Has been cancelled, the consumer terminated and cancelled the task
+ */
+
+
+/**
+ * Show dialog modal to get comment from user
+ * (mandatory for UPDATE and DELETE actions)
+ *
+ * @param jddId
+ * @param deeAction
+ */
+function showDialogModal(jddId, deeAction) {
+    var modal = $('#DEEModal');
+    var submitButton = modal.find('button#modal-submit');
+
+    // Reset modal
+    modal.find('textarea').val('');
+    modal.find('div.form-group').removeClass('has-error');
+    modal.find('div.form-group').find('div.help-block').html("");
+    submitButton.off();
+
+    // Set title, notice, submit button text, depending on action
+    var title = (deeAction == 'create') ? "{{ 'DEE.dialogModal.create.title'|trans }}" :
+            (deeAction =='update') ? "{{ 'DEE.dialogModal.update.title'|trans }}" :
+            "{{ 'DEE.dialogModal.suppress.title'|trans }}";
+    modal.find('h4.modal-title').html(title);
+
+    var notice = (deeAction == 'create') ? "{{ 'DEE.dialogModal.create.notice'|trans }}" :
+            (deeAction =='update') ? "{{ 'DEE.dialogModal.update.notice'|trans }}" :
+            "{{ 'DEE.dialogModal.suppress.notice'|trans }}";
+    modal.find('p#modal-notice').html(notice);
+
+    var buttonText = (deeAction == 'create') ? "{{ 'DEE.dialogModal.create.submit'|trans }}" :
+            (deeAction =='update') ? "{{ 'DEE.dialogModal.update.submit'|trans }}" :
+            "{{ 'DEE.dialogModal.suppress.submit'|trans }}";
+
+    submitButton.html(buttonText);
+
+    submitButton.click( function(e) {
+        e.preventDefault();
+        var comment = $(this).parent().parent().find('textarea').val();
+        if (comment.trim() == "" && deeAction != 'create') {
+            modal.find('div.form-group').addClass('has-error');
+            modal.find('div.form-group').find('div.help-block').html(
+                    "{{ 'DEE.dialogModal.nocomment'|trans }}");
+        }
+        else {
+            if (deeAction == 'create' || deeAction == 'update')
+                generateDEE(jddId, comment);
+
+            else if (deeAction == 'delete')
+                deleteDEE(jddId, comment);
+
+            modal.modal('hide');
+        }
+    });
+
+    modal.modal('show');
+}
+
+/**
+ * Update data attributes and content divs for given jdd
+ * If data is not given, launch a ajax request to get it.
+ *
+ * @param jddId
+ * @param data
+ */
+function updateDEEDataAndContent(jddId, data) {
+    if (data) {
+        updateDEEData(jddId, data);
+        updateDEEContent(jddId);
+    }
+    else {
+        $.getJSON("{{ path('dee_status') }}", {
+            jddId: jddId
+        }, function (data) {
+            updateDEEData(jddId, data);
+            updateDEEContent(jddId);
+        });
+    }
+}
+
+/**
+ * Search all GENERATING DEEs (by the data attribute of the .dee divs)
+ * And launch a ajax request to retrieve their status and progress
+ * Then update data and content divs.
+ */
+function updateAllDEEGeneratingTasks() {
+    var jddIds = [];
+    $('div.dee').each(function() {
+        if ( $(this).data('dee-status') == 'GENERATING') {
+            var jddId = $(this).attr('data-jdd-id');
+            jddIds.push(jddId);
+        }
+    });
+
+    if (jddIds.length) {
+        $.getJSON("{{ path('dee_status_all') }}", {
+            jddIds: jddIds
+        }, function (data) {
+            $.each(data, function (index, value) {
+                updateDEEData(value.jddId, value);
+                updateDEEContent(value.jddId);
+            });
+        });
+    }
+}
+
+/**
+ * Update data stored in a div.dee
+ * And describing the state of the dee generation process
+ *
+ * @param jddId
+ * @param data
+ */
+function updateDEEData(jddId, data) {
+    var deeDiv = $("div.dee[data-jdd-id='" + jddId + "']");
+
+    // Can generate DEE for theis jdd ?
+    if ("canGenerateDEE" in data) {
+        deeDiv.data('can-generate-DEE', data.canGenerateDEE);
+    } else {
+        deeDiv.data('can-generate-DEE', false);
+    }
+
+    // DEE status
+    if ("dee" in data && "status" in data.dee ) {
+
+        deeDiv.data('dee-status', data.dee.status);
+        if (data.dee.status == 'OK' || data.dee.status == 'DELETED') {
+            deeDiv.data('dee-id', data.dee.id );
+            deeDiv.data('dee-created', data.dee.created );
+            deeDiv.data('dee-comment', data.dee.comment );
+            deeDiv.data('dee-action', data.dee.action );
+        }
+    } else {
+        deeDiv.data('dee-status', 'NO DEE');
+    }
+
+    // RabbitMQ message status and progress
+     if ("message" in data && "status" in data.message ) {
+        deeDiv.data('message-status', data.message.status);
+        deeDiv.data('message-progress', data.message.progress);
+    } else {
+        deeDiv.data('message-status', 'NOT FOUND');
+        deeDiv.data('message-progress', 0);
+    }
+}
+
+/**
+ * Update content and show:
+ *  - the DEE state OR
+ *  - the progress bar when the export job is running
+ *  - action links: create/update, cancel/delete, download link when available
+ *
+ * @param jddId
+ */
+function updateDEEContent(jddId) {
+
+    var deeDiv = $("div.dee[data-jdd-id='" + jddId + "']");
+    var contentDiv = deeDiv.find("div.dee-content");
+    var actionsDiv = deeDiv.find("div.dee-actions");
+
+    var canGenerateDEE = deeDiv.data('can-generate-DEE');
+    var deeStatus = deeDiv.data('dee-status');
+    var messageStatus = deeDiv.data('message-status');
+    var messageProgress = Math.round(deeDiv.data('message-progress'));
+
+    //-- Content OR progress
+
+    // Update progress bar if DEE is GENERATING
+    var progressBar = deeDiv.find('div.progress-bar');
+    var labelDiv = deeDiv.find('div.progress-label');
+    var progessCancel = deeDiv.find('div.progress-cancel');
+
+    if (deeStatus == 'GENERATING') {
+        if (progressBar.parent().parent().hasClass('hidden')) {
+            progressBar.parent().parent().removeClass('hidden');
+            labelDiv.removeClass('hidden');
+            progessCancel.removeClass('hidden');
+        }
+        progressBar.css('width', messageProgress +'%').attr('aria-valuenow', messageProgress).html( messageProgress + '%');
+
+        var label = ((messageStatus == 'RUNNING') ? "{{ 'DEE.progress.running'|trans }}" :
+                        ((messageStatus == 'PENDING') ?  "{{ 'DEE.progress.pending'|trans }}" : "{{ 'DEE.progress.cancel'|trans }}"));
+        labelDiv.html(label);
+
+        // Cancel DEE generation (and come back to last version)
+        var cancelLink = $("<a href='#' title=\"{{ 'Cancel'|trans }}\">" +
+                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+        progessCancel.html('').append(cancelLink);
+        cancelLink.click( function(e) {
+            e.preventDefault();
+            $.getJSON( "{{ path('dee_cancel_generation') }}", {
+                jddId: jddId
+            });
+        });
+    }
+    // If not GENERATING remove progress bar
+    else {
+        progressBar.parent().parent().addClass('hidden');
+        labelDiv.addClass('hidden');
+        progessCancel.addClass('hidden');
+    }
+
+    // Content if DEE is not GENERATING
+    if (deeStatus == 'GENERATING') {
+        contentDiv.html('');
+    }
+    else {
+        contentDiv.html('');
+        var content = $('<p></p>');
+        contentDiv.append(content);
+
+        if (deeStatus == 'NO DEE') {
+            content.html("{{ 'DEE.status.noDEE'|trans }}");
+        }
+        else {
+            var action = (deeStatus == 'DELETED') ? "{{ 'DEE.status.suppressed'|trans }}" : "{{ 'DEE.status.transmitted'|trans }}";
+
+            content.html(action + ' le :<br>' + deeDiv.data('dee-created'));
+            if (deeStatus == 'OK') {
+                content.append('<br>(' + deeDiv.data('dee-action') + ')');
+            }
+            var comment = $("<a role='button' data-toggle='popover' title='{{ 'Comment'|trans }}' data-content='" + deeDiv.data('dee-comment') + "'>" +
+                    "<span class='glyphicon glyphicon-comment' aria-hidden='true'></span></a>" +
+                    "</button>");
+            content.append('<span> </span>').append(comment);
+            // activate popover
+            comment.popover();
+        }
+    }
+
+
+    //-- Display actions depending on DEEStatus
+
+    actionsDiv.html('');
+    var titleRunning = "{{ 'DEE.status.generating'|trans }}";
+
+   // GenerateDEE
+    if (deeStatus == 'GENERATING') {
+        var launchLink = $("<a role='button' class='btn btn-xs btn-default' title='"+ titleRunning+"' href='#'> " +
+                "<span class='glyphicon glyphicon-repeat' aria-hidden='true'></span></a>");
+        actionsDiv.append(launchLink);
+    } else {
+        var icon = 'glyphicon-play';
+        var action = 'create';
+        var title = "{{ 'DEE.dialogModal.create.title'|trans }}";
+        var color = (canGenerateDEE) ? 'btn-success' : 'btn-default';
+        if (deeStatus == 'OK') {
+            icon = 'glyphicon-repeat';
+            action = 'update';
+            title = "{{ 'DEE.dialogModal.update.title'|trans }}";
+        }
+
+        var launchLink = $("<a role='button' class='btn btn-xs " + color + " ' title='" + title + "' href='#'> " +
+                "<span class='glyphicon " + icon + "' aria-hidden='true'></span></a>");
+        actionsDiv.append(launchLink);
+
+        if (canGenerateDEE) {
+            launchLink.click(function (e) {
+                e.preventDefault();
+                showDialogModal(jddId, action);
+            });
+        }
+        else {
+            launchLink.click(function (e) {
+                e.preventDefault();
+                $('#DEECantGenerateModal').modal('show');
+            });
+        }
+    }
+    // Download link if file is available
+    if (deeStatus == 'OK') {
+        var href = "{{ path('dee_download', {'id': '0'})}}".replace('0', deeDiv.data('dee-id'));
+        var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='{{ 'DEE.download'|trans }}' href='" + href + "'> " +
+                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
+        actionsDiv.append(downloadLink);
+    } else {
+        var downloadLink = $("<a role='button' class='btn btn-xs btn-default' title='{{ 'DEE.noDownload'|trans }}' href='#'> " +
+                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
+        actionsDiv.append(downloadLink);
+    }
+
+    // Delete DEE
+    if (deeStatus == 'OK') {
+        var deleteLink = $("<a role='button' class='btn btn-xs btn-danger' href='#' title='{{ 'DEE.dialogModal.suppress.title'|trans }}'>" +
+                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+        actionsDiv.append(deleteLink);
+        deleteLink.click(function (e) {
+            e.preventDefault();
+            showDialogModal(jddId, 'delete');
+        });
+    } else {
+        var deleteLink = $("<a role='button' class='btn btn-xs btn-default' href='#' title='{{ 'DEE.noDownload'|trans }}'>" +
+                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+        actionsDiv.append(deleteLink);
+    }
+}
+
+/**
+ * Ajax request to add a RabbitMQ message for generating DEE
+ *
+ * @param jddId
+ * @param comment
+ */
+function generateDEE(jddId, comment) {
+    $.getJSON( "{{ path('dee_generate') }}", {
+        jddId: jddId,
+        comment: comment
+    },function( data ) {
+        if (data.success) {
+            updateDEEDataAndContent(jddId, data);
+        }
+    });
+}
+
+/**
+ * Ajax request to delete a DEE
+ * @param jddId
+ * @param comment
+ */
+function deleteDEE(jddId, comment) {
+    $.getJSON( "{{ path('dee_delete') }}", {
+        jddId: jddId,
+        comment: comment
+    },function( data ) {
+        if (data.success) {
+            // updateDEEDataAndContent(jddId, data);
+            // We reload the page to update the "delete jdd" button if necessary
+            location.reload();
+        }
+    });
+}
+
+
+var DEEtimerId;
+
+$(function(){
+    $('.dee').each(function() {
+        // var $exportFileId = $(this).attr('data-export-file-id');
+        var $jddId = $(this).attr('data-jdd-id');
+        // var $deeId =  $(this).attr('data-jdd-id');
+        updateDEEDataAndContent($jddId); //, $exportFileId);
+    });
+
+    // Periodically update progress for running and pending jobs
+    DEEtimerId = setInterval(updateAllDEEGeneratingTasks , 1000);
+});

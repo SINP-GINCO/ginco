@@ -195,7 +195,6 @@ doctrine:
 
     orm:
         default_entity_manager: website
-        auto_generate_proxy_classes: "FILE_NOT_EXISTS"
         entity_managers:
             metadata_work:
                 mappings:
@@ -204,6 +203,8 @@ doctrine:
                  connection: website
                  mappings:
                      OGAMBundle: 
+                        dir: Entity/Website
+                     IgnGincoBundle:
                         dir: Entity/Website
             mapping:
                  connection: mapping
@@ -221,6 +222,8 @@ doctrine:
                  connection: raw_data
                  mappings:
                      OGAMBundle:
+                        dir: Entity/RawData
+                     IgnGincoBundle:
                         dir: Entity/RawData
             harmonized_data:
                  connection: harmonized_data
@@ -251,3 +254,32 @@ fos_js_routing:
 
 ign_ogam_configurateur:
     database_name: "%database_name%"
+    
+# Rabbit_mq configuration
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host:     'localhost'
+            port:     5672
+            user:     'guest'
+            password: 'guest'
+            vhost:    '/'
+            lazy:     true
+            connection_timeout: 3
+            read_write_timeout: 3
+
+            # requires php-amqplib v2.4.1+ and PHP5.4+
+            keepalive: false
+            # requires php-amqplib v2.4.1+
+            heartbeat: 0
+
+    producers:
+        ginco_generic:
+            connection:       default
+            exchange_options: {name: 'ginco_%instance_name%_generic', type: direct}
+    consumers:
+        ginco_generic:
+            connection:       default
+            exchange_options: {name: 'ginco_%instance_name%_generic', type: direct}
+            queue_options: {name: 'ginco_%instance_name%_generic'}
+            callback: generic_consumer_service
