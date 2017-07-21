@@ -6785,6 +6785,8 @@ form label.required:after {
 /* Cut too-long texts and add ellipsis (...) */
 .longtext {
   overflow: hidden;
+  hyphens: none;
+  word-break: keep-all;
   text-overflow: ellipsis;
 }
 .progress {
@@ -6937,23 +6939,28 @@ body {
 .submission-line .file,
 .submission-line .lines,
 .submission-line .status,
-.submission-line .provider,
+.submission-line .reports,
 .submission-line .actions {
   display: block;
   float: left;
   padding-bottom: 1px;
 }
 .submission-line .file {
-  width: 50%;
+  width: 35%;
 }
 .submission-line .lines {
-  width: 12%;
+  width: 10%;
 }
 .submission-line .status {
+  width: 20%;
+}
+.submission-line .reports {
   width: 25%;
+  padding-right: 5px;
 }
 .submission-line .actions {
-  width: 13%;
+  width: 10%;
+  text-align: center;
 }
 .dee-state,
 .dee-actions {
@@ -6961,10 +6968,10 @@ body {
   float: left;
 }
 .dee-state {
-  width: 65%;
+  width: 60%;
 }
 .dee-actions {
-  width: 35%;
+  width: 40%;
 }
 .dee-actions a {
   margin-left: 4px;
