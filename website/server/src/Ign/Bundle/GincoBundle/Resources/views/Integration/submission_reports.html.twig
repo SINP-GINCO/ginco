@@ -3,7 +3,7 @@
 
 {% if submission is defined %}
 	{% if submission.step is not constant('STEP_CANCELLED', submission) %}
-	<select onChange="window.location.href=this.value">
+	<select onChange="window.location.href=this.value" class="form-control input-sm">
 		<option value="">
 			{{ 'Report.DownloadReports'|trans }}
 		</option>
