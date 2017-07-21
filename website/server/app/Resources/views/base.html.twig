@@ -105,7 +105,11 @@
                 {% for message in messages %}
                     <div class="alert alert-{{ type }} alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        {{ message|trans|raw }}
+                        {% if message is iterable %}
+                            {{ message.id|trans(message.parameters|default({}), message.domain|default(null), message.locale|default(null))|raw }}
+                        {% else %}
+                            {{ message|trans|raw }}
+                        {% endif %}
                     </div>
                 {% endfor %}
             {% endfor %}

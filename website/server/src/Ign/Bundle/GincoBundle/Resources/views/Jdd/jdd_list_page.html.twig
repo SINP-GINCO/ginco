@@ -15,15 +15,30 @@
 
     <!-- Show the currently active location submissions -->
     <table class="table table-hover table-bordered jdd-table">
+        <col style="width: 7%;"/>
+        <col style="width: 28%;"/>
+        <col />
+        {% if user.isAllowed('MANAGE_DATASETS') %}
+            <col style="width: 25%;"/>
+        {% endif %}
         <thead>
             <tr>
                 <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
                 <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
+                {% if user.isAllowed('MANAGE_DATASETS') %}
+                    <th class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
+                {% endif %}
             </tr>
             <tr>
-                <th width="7%" class="color1">{{ 'Actions'|trans }}</th>
-                <th width="30%" class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
-                <th width="63%" class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
+                <th class="color1">{{ 'Actions'|trans }}</th>
+                <th class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
+                <th class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
+                {% if user.isAllowed('MANAGE_DATASETS') %}
+                    <th class="color1">
+                        <div class="dee-state">{{ 'DEE.table.state'|trans }}</div>
+                        <div class="dee-actions">{{ 'DEE.table.actions'|trans }}</div>
+                    </th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -38,7 +53,7 @@
                     </a>
 
                     {# Delete #}
-                    {% if jdd.deletable %}
+                    {% if jdd.trueDeletable %}
                         <button class="btn btn-xs btn-danger" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
@@ -105,9 +120,76 @@
                         </a>
                     </div>
                 </td>
+
+                {# DEE Column - Empty / filled by Ajax #}
+                {% if user.isAllowed('MANAGE_DATASETS') %}
+                    <td>
+                        <div class="dee" data-jdd-id="{{ jdd.id }}">
+                            <div class="dee-state">
+                                <div class="progress-label hidden"></div>
+                                <div class="progress hidden">
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                            0%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="progress-cancel"></div>
+                                <div class="dee-content"></div>
+                            </div>
+                            <div class="dee-actions text-center"></div>
+                        </div>
+                    </td>
+                {% endif %}
+
+            </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    {% if user.isAllowed('MANAGE_DATASETS') %}
+        <!-- DEE dialog popup -->
+        <div class="modal fade" id="DEEModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'Close'|trans }}"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal-notice"></p>
+                        <form>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'Comment'|trans }}</label>
+                                <textarea class="form-control" id="DEE-comment"></textarea>
+                                <div class="help-block"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Cancel'|trans }}</button>
+                        <button type="button" class="btn btn-primary" id="modal-submit"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Can't generate DEE modal -->
+        <div class="modal fade" id="DEECantGenerateModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {{ 'DEE.impossibleModal.body'|trans }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
 {% else %}
     <p>{% trans %}No submission found{% endtrans %}</p>
 {% endif %}
@@ -120,5 +202,6 @@
     {{ parent() }}
     <script>
         {% include '@IgnGinco/Integration/integration-progress-bars.js.twig' %}
+        {% include '@IgnGinco/Jdd/dee-generation.js.twig' %}
     </script>
 {% endblock %}

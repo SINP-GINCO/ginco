@@ -1,4 +1,11 @@
 /web/bundles/
+/web/assetic/
+/web/css/
+/web/fonts/
+/web/images/
+/web/js/
+!web/dee/.gitkeep
+/web/dee/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml

@@ -1,9 +1,9 @@
 <?php
-
+namespace Ign\Bundle\GincoBundle\Services\DEEGeneration;
 /**
  * Class DEEModel
  *
- * Transformations and structuration of the DSR datas into DEE.
+ * Transformations and structuration of the flat DSR datas into DEE.
  *
  */
 class DEEModel {
@@ -59,7 +59,7 @@ class DEEModel {
 		);
 		foreach ($dateFormats as $dateField => $dateFormat) {
 			if (isset($observation[$dateField]) && !empty($observation[$dateField])) {
-				$date = new DateTime($observation[$dateField]);
+				$date = new \DateTime($observation[$dateField]);
 				$observation[$dateField] = $date->format($dateFormat);
 			}
 		}

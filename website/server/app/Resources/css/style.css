@@ -6908,6 +6908,9 @@ body {
 .submissions-table th.color2 {
   background-color: #50600a;
 }
+.jdd-table {
+  table-layout: fixed;
+}
 .submissions {
   width: 100%;
 }
@@ -6935,29 +6938,36 @@ body {
 .submission-line .lines,
 .submission-line .status,
 .submission-line .provider,
-.submission-line .reports,
 .submission-line .actions {
   display: block;
   float: left;
   padding-bottom: 1px;
 }
 .submission-line .file {
-  width: 30%;
+  width: 50%;
 }
 .submission-line .lines {
-  width: 8%;
-}
-.submission-line .status {
-  width: 11%;
-}
-.submission-line .provider {
   width: 12%;
 }
-.submission-line .reports {
-  width: 31%;
+.submission-line .status {
+  width: 25%;
 }
 .submission-line .actions {
-  width: 8%;
+  width: 13%;
+}
+.dee-state,
+.dee-actions {
+  display: block;
+  float: left;
+}
+.dee-state {
+  width: 65%;
+}
+.dee-actions {
+  width: 35%;
+}
+.dee-actions a {
+  margin-left: 4px;
 }
 /* fileFormat or tableFormat edit.html.twig */
 #data-transfer-button {
