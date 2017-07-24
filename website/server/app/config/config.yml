@@ -194,6 +194,7 @@ doctrine:
                 profiling: false
 
     orm:
+        auto_generate_proxy_classes: "FILE_NOT_EXISTS"
         default_entity_manager: website
         entity_managers:
             metadata_work:
