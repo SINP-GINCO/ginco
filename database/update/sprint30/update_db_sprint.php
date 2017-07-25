@@ -34,6 +34,7 @@ try {
 	execCustSQLFile("$sprintDir/update_apb_and_pnr_en_layer_names.sql", $config);
 	execCustSQLFile("$sprintDir/add_messages_table.sql", $config);
 	execCustSQLFile("$sprintDir/add_dee_table.sql", $config);
+	execCustSQLFile("$sprintDir/enable_model_to_be_null_in_jdd_table.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
