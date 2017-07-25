@@ -9,6 +9,7 @@ use Ign\Bundle\OGAMBundle\OGAMBundle;
 use Ign\Bundle\OGAMBundle\Services\GenericService as BaseGenericService;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableTree;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFormField;
 
 /**
  * The Generic Service customized for Ginco.
@@ -17,55 +18,62 @@ use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
  */
 class GenericService extends BaseGenericService {
 
-// 	/**
-// 	 * Get the form field corresponding to the table field.
-// 	 * Ginco : add the selection of form_label and form_position.
-// 	 * MIGRATION TO DO.
-// 	 *
-// 	 * @param GenericField $tableRowField
-// 	 *        	the a valuable table row field
-// 	 * @param Boolean $copyValues
-// 	 *        	is true the values will be copied
-// 	 * @return GenericField
-// 	 */
-// 	public function getTableToFormMapping(GenericField $tableRowField, $copyValues = false) {
-// 		$tableField = $tableRowField->getMetadata();
-// 		// Get the description of the form field
-// 		$req = "SELECT ff, fofo.label as form_label, fofo.position as form_position
-// 				FROM OGAMBundle:Metadata\FormField ff
-// 				JOIN OGAMBundle:Metadata\FieldMapping fm
-// 				JOIN OGAMBundle:Metadata\FormFormat fofo
-// 				WHERE fm.mappingType = 'FORM'
-// 				AND fm.srcData = ff.data
-// 				AND fofo.format = ff.format
-// 				AND fm.srcFormat = ff.format
-// 				AND fm.dstFormat = :format
-// 				AND fm.dstData = :data";
-// 		$formField = $this->metadataModel->createQuery($req)
-// 			->setParameters(array(
-// 			'format' => $tableField->getFormat()
-// 				->getFormat(),
-// 			'data' => $tableField->getData()
-// 				->getData()
-// 		))
-// 			->getOneOrNullResult();
-// 		$valuedField = null;
-// 		// Clone the object to avoid modifying existing object
-// 		if ($formField !== null) {
-// 			$valuedField = new GenericField($formField->getFormat()->getFormat(), $formField->getData()->getData());
-// 			$valuedField->setMetadata($formField, $this->locale);
-// 		}
+	/**
+	 * Get the form field corresponding to the table field.
+	 * Ginco : add the selection of form_label and form_position.
+	 * MIGRATION TO DO.
+	 *
+	 * @param GenericField $tableRowField
+	 *        	the a valuable table row field
+	 * @param Boolean $copyValues
+	 *        	is true the values will be copied
+	 * @return GenericFormField
+	 */
+	public function getTableToFormMapping(GenericField $tableRowField, $copyValues = false) {
+		$this->logger->debug('getTableToFormMapping custom');
+		$tableField = $tableRowField->getMetadata();
+		// Get the description of the form field
+		$req = "SELECT ff, fofo.label as form_label, fofo.position as form_position
+				FROM OGAMBundle:Metadata\FormField ff
+				JOIN OGAMBundle:Metadata\FieldMapping fm WITH fm.mappingType = 'FORM'
+ 				JOIN OGAMBundle:Metadata\FormFormat fofo WITH fofo.format = ff.format
+				WHERE fm.srcData = ff.data
+				AND fm.srcFormat = ff.format
+				AND fm.dstFormat = :format
+				AND fm.dstData = :data";
+		$formField = $this->metadataModel->createQuery($req)
+			->setParameters(array(
+			'format' => $tableField->getFormat()
+				->getFormat(),
+			'data' => $tableField->getData()
+				->getData()
+		))
+			->getOneOrNullResult();
+		foreach($formField as $row){
+			if(is_string($row)){
+				$this->logger->debug($row);
+			}
+		}
 
-// 		// Copy the values
-// 		if ($copyValues === true && $formField !== null && $tableRowField->getValue() !== null) {
+		$valuedField = null;
+		// Clone the object to avoid modifying existing object
+		if ($formField[0] !== null) {
+			$valuedField = new GenericFormField($formField[0]->getFormat()->getFormat(), $formField[0]->getData()->getData());
+			$valuedField->setMetadata($formField[0], $this->locale);
+			$valuedField->setFormPosition($formField['form_position']);
+			$valuedField->setFormLabel($formField['form_label']);
+		}
 
-// 			// Copy the value and label
-// 			$valuedField->setValue($tableRowField->getValue());
-// 			$valuedField->setValueLabel($tableRowField->getValueLabel());
-// 		}
+		// Copy the values
+		if ($copyValues === true && $formField[0] !== null && $tableRowField->getValue() !== null) {
 
-// 		return $valuedField;
-// 	}
+			// Copy the value and label
+			$valuedField->setValue($tableRowField->getValue());
+			$valuedField->setValueLabel($tableRowField->getValueLabel());
+		}
+
+		return $valuedField;
+	}
 
 	/**
 	 * Generate the SQL request corresponding the distinct locations of the query result.
@@ -296,7 +304,7 @@ class GenericService extends BaseGenericService {
 		$ancestors = $tableTreeRepo->getAncestors($tableFormat, $schema);
 
 		// Get the ancestors to the geometry table only
-		$ancestorsToGeometry = $tableTreeRepo->getAncestorsToGeometry($schema, $ancestors);
+		$ancestorsToGeometry = $this->getAncestorsToGeometry($schema, $ancestors);
 
 		// Add the requested table (FROM)
 		$ancestorsValue = array_values($ancestorsToGeometry);
@@ -339,6 +347,46 @@ class GenericService extends BaseGenericService {
 
 		$this->logger->debug('getJoinToGeometryTable :' . $from);
 		return $from;
+	}
+
+	/**
+	 * Troncates the array of the ancestors, ends it with the table containing the geometry
+	 *
+	 * @param String $schema
+	 * @param Array[Application_Object_Metadata_TableTreeData] $ancestors
+	 * @return Array[Application_Object_Metadata_TableTreeData] $ancestorsToGeometry
+	 */
+	public function getAncestorsToGeometry($schema, $ancestors) {
+		$this->logger->info('getAncestorsToGeometry');
+
+		$ancestorsToGeometry = array();
+		$ĥasGeometryColumn = 0;
+
+		while ($ĥasGeometryColumn != 1) {
+			$ancestor = array_shift($ancestors);
+			$ancestorsToGeometry[$ancestor->getLogicalName()] = $ancestor;
+
+			$req = " SELECT 1 as has_geometry ";
+			$req .= " FROM INFORMATION_SCHEMA.COLUMNS ";
+			$req .= " WHERE table_name = ? ";
+			$req .= " and column_name = 'geometrie' ";
+			$req .= " and table_schema = ? ";
+
+			$this->logger->info('getAncestorsToGeometry : ' . $req);
+
+			$select = $this->genericManager->rawdb->prepare($req);
+			$select->execute(array(
+				$ancestor->getTableName(),
+				strtolower($schema)
+			));
+			$this->logger->info('ancestor table name : ' . $ancestor->getTableName() . ", join keys : " . $ancestor->keys);
+
+			$row = $select->fetch();
+			if ($row['has_geometry'] != null) {
+				$ĥasGeometryColumn = 1;
+			}
+		}
+		return $ancestorsToGeometry;
 	}
 
 	/**

@@ -15,6 +15,7 @@ use Ign\Bundle\OGAMBundle\OGAMBundle;
 use Ign\Bundle\OGAMBundle\Services\QueryService as BaseService;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
+use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFormField;
 
 /**
  * The Query Service customized for Ginco.
@@ -962,5 +963,48 @@ class QueryService extends BaseService {
 		}
 		// If no results found in all active layers, return null
 		return null;
+	}
+
+	/**
+	 * Generate the JSON structure corresponding to a list of edit fields.
+	 *
+	 * @param GenericTableFormat $data
+	 *        	the data object to edit
+	 * @return array normalize value
+	 */
+	protected function _generateEditForm($data) {
+		$return = new \ArrayObject();
+		// / beurk !! stop go view json
+		foreach ($data->getIdFields() as $tablefield) {
+			$formField = $this->genericService->getTableToFormMapping($tablefield); // get some info about the form
+			if (!empty($formField)) {
+				$return->append($this->_generateEditFieldGinco($formField, $tablefield));
+			}
+		}
+		foreach ($data->getFields() as $tablefield) {
+			$formField = $this->genericService->getTableToFormMapping($tablefield); // get some info about the form
+			if (!empty($formField)) {
+				$return->append($this->_generateEditFieldGinco($formField, $tablefield));
+			}
+		}
+		$this->logger->debug("----Array copy.");
+		$this->logger->debug(print_r($return->getArrayCopy(), true));
+		return array(
+			'success' => true,
+			'data' => $return->getArrayCopy()
+		);
+	}
+
+	/**
+	 *
+	 * @param GenericFormField $formEntryField
+	 * @param GenericFormField $tableRowField
+	 */
+	protected function _generateEditFieldGinco($formEntryField, $tableRowField) {
+		// Add form_label and form_position
+		$field = $this->_generateEditField($formEntryField, $tableRowField);
+		$field->formLabel = $formEntryField->getFormLabel();
+		$field->formPosition = $formEntryField->getFormPosition();
+		return $field;
 	}
 }
