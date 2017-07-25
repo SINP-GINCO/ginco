@@ -286,7 +286,8 @@ class Application_Model_RawData_Jdd extends Zend_Db_Table_Abstract {
 	 */
 	public function cancel($id) {
 		$data = array(
-			'status' => 'deleted'
+			'status' => 'deleted',
+			'model_id' => null
 		);
 		$where = $this->getAdapter()->quoteInto('id = ?', $id);
 		return $this->update($data, $where);
