@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericTableFormat;
 use Ign\Bundle\OGAMBundle\Controller\DataEditionController as BaseController;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * @Route ("/dataedition")
@@ -32,25 +35,61 @@ class DataEditionController extends BaseController {
 
 	/**
 	 * AJAX function : Get the AJAX structure corresponding to the edition form.
-	 * Disabled in Ginco.
 	 *
 	 * @return JSON The list of forms
 	 *         @Route("/ajax-get-edit-form/{id}", requirements={"id"= ".*"}, name="dataedition_ajaxGetEditForm")
 	 */
 	public function ajaxGetEditFormAction(Request $request, $id = null) {
-		// Redirect to home page
-		return $this->redirectToRoute('homepage');
+		$data = $this->getDataFromRequest($request);
+
+		// Complete the data object with the existing values from the database.
+		$genericModel = $this->get('ogam.manager.generic');
+		$data = $genericModel->getDatum($data);
+
+		// The service used to manage the query module
+		$res = $this->getQueryService()->getEditForm($data);
+
+		$bag = $request->getSession();
+
+		json_encode($data);
+		$objectNormalizer = new ObjectNormalizer();
+		$objectNormalizer->setCircularReferenceLimit(2);
+		// $objectNormalizer->setCircularReferenceHandler(function ($object) {
+		// return $object->getFormat();
+		// });
+
+		$propertyNormalizer = new PropertyNormalizer();
+		// $propertyNormalizer->setCircularReferenceLimit(2);
+		$propertyNormalizer->setCircularReferenceHandler(function ($object) {
+			$class = get_class($object);
+			// $this->get('logger')->debug("Class of object is : ". $class);
+			if ($class == 'Ign\Bundle\OGAMBundle\Entity\Metadata\Model') {
+				return $object->getId();
+			} else if ($class == 'Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat') {
+				return $object->getFormat();
+			}
+		});
+
+		$ser = new Serializer(array(
+			$propertyNormalizer,
+			$objectNormalizer
+		));
+		$ser->normalize($data); // FIXME : treewalker force loading proxy element ...
+		$bag->set('data', $data);
+		$this->get('logger')->debug($this->json($res)->getContent());
+		$this->get('logger')->debug('-------------------------------------------------------------------');
+		return $this->json($res);
 	}
 
-	/**
-	 * AJAX function : Get the AJAX structure corresponding to the add form.
-	 * Disabled in Ginco.
-	 *
-	 * @return JSON The list of forms
-	 *         @Route("/ajax-get-add-form/{id}", requirements={"id"= ".*"}, name="dataedition_ajaxGetAddForm")
-	 */
-	public function ajaxGetAddFormAction(Request $request, $id = null) {
-		// Redirect to home page
-		return $this->redirectToRoute('homepage');
-	}
+/**
+ * AJAX function : Get the AJAX structure corresponding to the add form.
+ * Disabled in Ginco.
+ *
+ * @return JSON The list of forms
+ *         @Route("/ajax-get-add-form/{id}", requirements={"id"= ".*"}, name="dataedition_ajaxGetAddForm")
+ */
+	// public function ajaxGetAddFormAction(Request $request, $id = null) {
+	// // Redirect to home page
+	// return $this->redirectToRoute('homepage');
+	// }
 }
