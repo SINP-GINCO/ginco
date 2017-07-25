@@ -316,7 +316,7 @@ CREATE TABLE jdd
 	jdd_metadata_id character varying(36),
 	title character varying(512),
 	status character varying(16) NOT NULL,
-	model_id character varying(19) NOT NULL,
+	model_id character varying(19),
 	created_at timestamp without time zone DEFAULT now(),
 	dsr_updated_at timestamp without time zone DEFAULT now(),
 	submission_id int4,
