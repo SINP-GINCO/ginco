@@ -41,3 +41,11 @@ Première version de production.
 
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v1.0.3...v1.0.4)
+
+# V1.0.5 (25/07/2017)
+
+* Corrections de noms de couches WFS pour les espaces naturels
+* \#1197: Corrections de bug sur la dépublication des modèles de données
+
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v1.0.4...v1.0.5)
