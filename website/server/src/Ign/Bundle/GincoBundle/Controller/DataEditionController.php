@@ -50,34 +50,14 @@ class DataEditionController extends BaseController {
 		$res = $this->getQueryService()->getEditForm($data);
 
 		$bag = $request->getSession();
-
 		json_encode($data);
-		$objectNormalizer = new ObjectNormalizer();
-		$objectNormalizer->setCircularReferenceLimit(2);
-		// $objectNormalizer->setCircularReferenceHandler(function ($object) {
-		// return $object->getFormat();
-		// });
-
-		$propertyNormalizer = new PropertyNormalizer();
-		// $propertyNormalizer->setCircularReferenceLimit(2);
-		$propertyNormalizer->setCircularReferenceHandler(function ($object) {
-			$class = get_class($object);
-			// $this->get('logger')->debug("Class of object is : ". $class);
-			if ($class == 'Ign\Bundle\OGAMBundle\Entity\Metadata\Model') {
-				return $object->getId();
-			} else if ($class == 'Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat') {
-				return $object->getFormat();
-			}
-		});
-
 		$ser = new Serializer(array(
-			$propertyNormalizer,
-			$objectNormalizer
+			new PropertyNormalizer(),
+			new ObjectNormalizer()
 		));
-		$ser->normalize($data); // FIXME : treewalker force loading proxy element ...
-		$bag->set('data', $data);
-		$this->get('logger')->debug($this->json($res)->getContent());
-		$this->get('logger')->debug('-------------------------------------------------------------------');
+		//FIXME: Comes from OGAM and not useful?
+		//$ser->normalize($data); // FIXME : treewalker force loading proxy element ...
+		//$bag->set('data', $data);
 		return $this->json($res);
 	}
 
