@@ -16,6 +16,7 @@ use Ign\Bundle\OGAMBundle\Services\QueryService as BaseService;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
 use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFormField;
+use Ign\Bundle\OGAMBundle\Entity\Website\User;
 
 /**
  * The Query Service customized for Ginco.
@@ -972,7 +973,7 @@ class QueryService extends BaseService {
 	 *        	the data object to edit
 	 * @return array normalize value
 	 */
-	protected function _generateEditForm($data) {
+	protected function _generateEditForm($data, User $user = null) {
 		$return = new \ArrayObject();
 		// / beurk !! stop go view json
 		foreach ($data->getIdFields() as $tablefield) {
