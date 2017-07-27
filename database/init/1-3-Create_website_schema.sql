@@ -160,6 +160,9 @@ create table website.predefined_request
   CONSTRAINT fk_predefined_request_users FOREIGN KEY (user_login)
       REFERENCES website.users (user_login) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE RESTRICT,
+  CONSTRAINT predefined_request_dataset_id FOREIGN KEY (dataset_id)
+      REFERENCES metadata.dataset (dataset_id) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT uk_predefined_request UNIQUE (label, user_login, dataset_id, is_public)
 );
 
@@ -245,7 +248,7 @@ CREATE TABLE website.predefined_request_group_asso
       ON UPDATE RESTRICT ON DELETE CASCADE,
   CONSTRAINT fk_predefined_request_request_name FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE CASCADE
+      ON UPDATE RESTRICT ON DELETE CASCADE;
 );
 
 COMMENT ON COLUMN website.predefined_request_group_asso.group_id IS 'The group identifier';
