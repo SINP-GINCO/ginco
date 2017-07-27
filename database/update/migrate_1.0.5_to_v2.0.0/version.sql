@@ -1,0 +1,1 @@
+UPDATE website.application_parameters SET value = '2.0.0' WHERE name='ginco_version';
