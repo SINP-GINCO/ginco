@@ -15,6 +15,7 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.predefined_request_group T
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.predefined_request_group_asso TO ogam;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.predefined_request_column TO ogam;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE website.dataset_role_restriction TO ogam;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA website TO ogam;
 
 -- raw-data
 GRANT ALL ON SCHEMA raw_data TO ogam;
@@ -24,7 +25,7 @@ GRANT SELECT, INSERT ON TABLE raw_data.check_error TO ogam;
 GRANT ALL ON TABLE raw_data.submission TO ogam;
 GRANT ALL ON TABLE raw_data.submission_file TO ogam;
 --GRANT EXECUTE ON FUNCTION raw_data.geomfromcoordinate() TO ogam;
-
+GRANT ALL ON ALL SEQUENCES IN SCHEMA raw_data TO ogam;
 
 -- harmonized-data
 

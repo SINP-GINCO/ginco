@@ -80,6 +80,22 @@ WHERE jdd.submission_id = submission.submission_id;
 
 -- Table export_file --> dee, and complete data
 
+-- Sequence: raw_data.dee_id_seq
+
+-- DROP SEQUENCE raw_data.dee_id_seq;
+
+CREATE SEQUENCE raw_data.dee_id_seq
+INCREMENT 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+START 1
+CACHE 1;
+ALTER TABLE raw_data.dee_id_seq
+  OWNER TO admin;
+GRANT ALL ON SEQUENCE raw_data.dee_id_seq TO admin;
+GRANT ALL ON SEQUENCE raw_data.dee_id_seq TO ogam;
+
+
 -- Table: raw_data.dee
 
 -- DROP TABLE raw_data.dee;
@@ -177,3 +193,4 @@ COMMENT ON COLUMN raw_data.jdd.model_id IS 'Id of the data model in which the jd
 COMMENT ON COLUMN raw_data.jdd.created_at IS 'jdd creation timestamp (delivery timestamp is in submission._creationdt)';
 COMMENT ON COLUMN raw_data.jdd.data_updated_at IS 'DSR last edition timestamp';
 
+GRANT ALL ON ALL SEQUENCES IN SCHEMA raw_data TO ogam;
