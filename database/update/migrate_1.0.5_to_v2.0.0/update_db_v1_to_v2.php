@@ -86,6 +86,7 @@ try {
 	execCustSQLFile("$sprintDir/add_event_listener_jdd_service.sql", $config);
 	execCustSQLFile("$sprintDir/add_event_listener_generate_reports_service.sql", $config);
 	execCustSQLFile("$sprintDir/update_bbox.sql", $config);
+	execCustSQLFile("$sprintDir/enable_model_to_be_null_in_jdd_table.sql", $config);
 } catch (Exception $e) {
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
