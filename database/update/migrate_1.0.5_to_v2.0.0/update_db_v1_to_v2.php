@@ -105,7 +105,7 @@ try {
 //-- Migration of predefined requests with datas
 //
 try {
-	execCustSQLFile("$currentDir/migrate_jdds_and_dee.sql", $config); // Migrate structure and datas
+	execCustSQLFile("$currentDir/migrate_saved_requests.sql", $config); // Migrate structure and datas
 } catch (Exception $e) {
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
