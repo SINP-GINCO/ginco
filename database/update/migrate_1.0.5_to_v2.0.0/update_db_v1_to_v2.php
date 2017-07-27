@@ -32,6 +32,8 @@ try {
 	execCustSQLFile("$sprintDir/add_extension_pg_trgm.sql", $config);
 	execCustSQLFile("$currentDir/update_db_to_v4.sql", $config); // new one - without predefined requests migration
 	execCustSQLFile("$sprintDir/update_layers_and_layer_tree.sql", $config);
+	/* Restore a result_location table - temporary - to test visu in Ogam */
+	execCustSQLFile("$sprintDir/restore_result_location.sql", $config);
 
 	// Other
 	execCustSQLFile("$sprintDir/reorder_layer_tree.sql", $config);
