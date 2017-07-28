@@ -1,0 +1,1 @@
+UPDATE website.application_parameters SET value='@metadata.jdd.url@' WHERE name='jddMetadataFileDownloadServiceURL';
