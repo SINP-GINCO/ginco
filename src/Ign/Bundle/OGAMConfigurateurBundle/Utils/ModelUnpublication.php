@@ -1,10 +1,10 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\ORMException;
+use Doctrine\DBAL\DBALException;
 use Monolog\Logger;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 
 /**
  * Utility class for unpublication of a model into a database.
@@ -41,34 +41,38 @@ class ModelUnpublication extends DatabaseUtils {
 	 * @return true if unpublication succeded, false otherwise
 	 */
 	public function unpublishModel($modelId) {
-		if ($this->isModelPresentInProdSchema($modelId)) {
-			$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-			$this->conn->beginTransaction();
-
-			$this->deleteFormFields($modelId);
-			$this->deleteQueryDataset($modelId);
-			$this->deleteTranslationData($modelId);
-			$this->deleteModelTablesData($modelId);
-			$this->deleteTableTreeData($modelId);
-			$this->deleteTableFieldData($modelId);
-			$this->deleteFieldData($modelId);
-			$this->deleteDataData($modelId);
-			$this->deleteTableFormatData($modelId);
-			$this->deleteFormatData($modelId);
-			$this->deleteModelData($modelId);
-			$this->dropTables($modelId);
-			$this->dropTriggerFunctions($modelId);
-		} else {
-			return false;
-		}
-
 		try {
-			$this->conn->commit();
-			$this->conn->close();
-		} catch (ORMException $e) {
-			$this->conn->rollback();
-			$this->conn->close();
+			if ($this->isModelPresentInProdSchema($modelId)) {
+				pg_query($this->adminPgConn, "BEGIN");
+				$this->deleteFormFields($modelId);
+				$this->deleteQueryDataset($modelId);
+				$this->deleteTranslationData($modelId);
+				$this->deleteModelTablesData($modelId);
+				$this->deleteTableTreeData($modelId);
+				$this->deleteTableFieldData($modelId);
+				$this->deleteFieldData($modelId);
+				$this->deleteDataData($modelId);
+				$this->deleteTableFormatData($modelId);
+				$this->deleteFormatData($modelId);
+				$this->deleteModelData($modelId);
+				$this->dropTables($modelId);
+				$this->dropTriggerFunctions($modelId);
+			} else {
+				return false;
+			}
+			pg_query($this->adminPgConn, "COMMIT");
+		} catch (ContextErrorException $e) {
+			$this->logger->error($e);
+			pg_query($this->adminPgConn, "ROLLBACK");
 			return false;
+		} catch (DBALException $e) {
+			$this->logger->error($e);
+			pg_query($this->adminPgConn, "ROLLBACK");
+			return false;
+		} finally {
+			$this->conn->close();
+			pg_close($this->pgConn);
+			pg_close($this->adminPgConn);
 		}
 		return true;
 	}
@@ -89,14 +93,14 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata_work.table_field as tfi ON tfi.format = tfo.format
 				INNER JOIN metadata_work.data as dtj ON dtj.data = tfi.data
 				AND m.id = $1";
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each data value
 		$deleteSql = "DELETE FROM metadata.data WHERE data = $1";
-		pg_prepare($this->pgConn, "", $deleteSql);
+		pg_prepare($this->adminPgConn, "", $deleteSql);
 
 		// Count the number of occurences of the data field. Only single occurences are deleted
 		$count = "SELECT DISTINCT count(*) FROM metadata.field WHERE data = :data";
@@ -107,7 +111,7 @@ class ModelUnpublication extends DatabaseUtils {
 			$stmt->execute();
 			$count = $stmt->fetchColumn(0);
 			if ($count == 0) {
-				pg_execute($this->pgConn, "", array(
+				pg_execute($this->adminPgConn, "", array(
 					$row['data']
 				));
 			}
@@ -129,28 +133,19 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata_work.format as fo ON fo.format = mt.table_id
 				WHERE m.id = $1 AND fo.type = 'TABLE'";
 
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.format WHERE format = $1";
-		pg_prepare($this->pgConn, "", $deleteQuery);
-
-		// Count the number of occurences of the data field. Only single occurences are deleted
-		$count = "SELECT DISTINCT count(*) FROM metadata.field WHERE format = :format";
-		$stmt = $this->conn->prepare($count);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			$stmt->bindParam(':format', $row['format']);
-			$stmt->execute();
-			$count = $stmt->fetchColumn(0);
-			if ($count == 0) {
-				pg_execute($this->pgConn, "", array(
-					$row['format']
-				));
-			}
+			pg_execute($this->adminPgConn, "", array(
+				$row['format']
+			));
 		}
 	}
 
@@ -169,17 +164,17 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
 				WHERE m.id = $1";
 
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.table_format WHERE format = $1";
-		pg_prepare($this->pgConn, "", $deleteQuery);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			pg_execute($this->pgConn, "", array(
+			pg_execute($this->adminPgConn, "", array(
 				$row['format']
 			));
 		}
@@ -201,17 +196,17 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata_work.table_schema as tsc ON tsc.schema_code = tfo.schema_code
 				INNER JOIN metadata_work.table_tree as ttr ON ttr.schema_code = tsc.schema_code AND ttr.child_table = tfo.format";
 
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.table_tree WHERE schema_code = $1 AND child_table = $2";
-		pg_prepare($this->pgConn, "", $deleteQuery);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			pg_execute($this->pgConn, "", array(
+			pg_execute($this->adminPgConn, "", array(
 				$row['schema_code'],
 				$row['child_table']
 			));
@@ -228,36 +223,26 @@ class ModelUnpublication extends DatabaseUtils {
 	public function deleteFieldData($modelId) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT f.data, f.format
-				FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
-				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
-				INNER JOIN metadata_work.field as f ON f.format = tfo.format";
+					FROM metadata_work.model m
+					INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
+					INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
+					INNER JOIN metadata_work.field as f ON f.format = tfo.format";
 
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.field WHERE data = $1 AND format = $2";
-		pg_prepare($this->pgConn, "", $deleteQuery);
-
-		// Count the number of occurences of the data field. Only single occurences are deleted
-		$count = "SELECT DISTINCT count(*) FROM metadata.field_mapping
-					WHERE dst_data = :data AND dst_format = :format";
-		$stmt = $this->conn->prepare($count);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			$stmt->bindParam(':data', $row['data']);
-			$stmt->bindParam(':format', $row['format']);
-			$stmt->execute();
-			$count = $stmt->fetchColumn(0);
-			if ($count == 0) {
-				pg_execute($this->pgConn, "", array(
-					$row['data'],
-					$row['format']
-				));
-			}
+			pg_execute($this->adminPgConn, "", array(
+				$row['data'],
+				$row['format']
+			));
 		}
 	}
 
@@ -275,17 +260,17 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
 				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
 				INNER JOIN metadata_work.table_field as tfi ON tfi.format = tfo.format";
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.table_field WHERE data = $1 AND format = $2";
-		pg_prepare($this->pgConn, "", $deleteQuery);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			pg_execute($this->pgConn, "", array(
+			pg_execute($this->adminPgConn, "", array(
 				$row['data'],
 				$row['format']
 			));
@@ -303,17 +288,17 @@ class ModelUnpublication extends DatabaseUtils {
 		$selectQuery = "SELECT DISTINCT m.id
 				FROM metadata_work.model m
 				WHERE m.id = $1";
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.model WHERE id = $1";
-		pg_prepare($this->pgConn, "", $deleteQuery);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			pg_execute($this->pgConn, "", array(
+			pg_execute($this->adminPgConn, "", array(
 				$row['id']
 			));
 		}
@@ -330,17 +315,17 @@ class ModelUnpublication extends DatabaseUtils {
 		$selectQuery = "SELECT DISTINCT mt.model_id, mt.table_id
 				FROM metadata_work.model m
 				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1";
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.model_tables WHERE model_id = $1 AND table_id = $2";
-		pg_prepare($this->pgConn, "", $deleteQuery);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			pg_execute($this->pgConn, "", array(
+			pg_execute($this->adminPgConn, "", array(
 				$row['model_id'],
 				$row['table_id']
 			));
@@ -362,17 +347,17 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata_work.translation as t ON t.table_format = mt.table_id
 				WHERE m.id = $1";
 
-		pg_prepare($this->pgConn, "", $selectQuery);
-		$results = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $selectQuery);
+		$results = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.translation WHERE table_format = $1";
-		pg_prepare($this->pgConn, "", $deleteQuery);
+		pg_prepare($this->adminPgConn, "", $deleteQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
-			pg_execute($this->pgConn, "", array(
+			pg_execute($this->adminPgConn, "", array(
 				$row['table_format']
 			));
 		}
@@ -391,8 +376,8 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata.dataset d ON d.dataset_id = md.dataset_id
 				WHERE md.model_id = $1
 				AND d.type = 'QUERY'";
-		pg_prepare($this->pgConn, "", $sql);
-		$result = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $sql);
+		$result = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 		$datasets = pg_fetch_all($result);
@@ -407,8 +392,8 @@ class ModelUnpublication extends DatabaseUtils {
 				 		FROM metadata.form_format ff
 						INNER JOIN metadata.dataset_forms df ON ff.format = df.format
 						WHERE df.dataset_id = $1";
-				pg_prepare($this->pgConn, "", $sql);
-				$result = pg_execute($this->pgConn, "", array(
+				pg_prepare($this->adminPgConn, "", $sql);
+				$result = pg_execute($this->adminPgConn, "", array(
 					$datasetId
 				));
 				$forms = pg_fetch_all($result);
@@ -418,35 +403,35 @@ class ModelUnpublication extends DatabaseUtils {
 						$format = $form['format'];
 						// Delete form_fields, fields, and field_mappings related the form_format
 						$deleteQuery = "DELETE FROM metadata.field_mapping WHERE src_format = $1";
-						pg_prepare($this->pgConn, "", $deleteQuery);
-						pg_execute($this->pgConn, "", array(
+						pg_prepare($this->adminPgConn, "", $deleteQuery);
+						pg_execute($this->adminPgConn, "", array(
 							$format
 						));
 						$deleteQuery = "DELETE FROM metadata.form_field WHERE format = $1";
-						pg_prepare($this->pgConn, "", $deleteQuery);
-						pg_execute($this->pgConn, "", array(
+						pg_prepare($this->adminPgConn, "", $deleteQuery);
+						pg_execute($this->adminPgConn, "", array(
 							$format
 						));
 						$deleteQuery = "DELETE FROM metadata.field WHERE format = $1";
-						pg_prepare($this->pgConn, "", $deleteQuery);
-						pg_execute($this->pgConn, "", array(
+						pg_prepare($this->adminPgConn, "", $deleteQuery);
+						pg_execute($this->adminPgConn, "", array(
 							$format
 						));
 
 						// Delete form_format, format and dataset_forms
 						$deleteQuery = "DELETE FROM metadata.dataset_forms WHERE format = $1";
-						pg_prepare($this->pgConn, "", $deleteQuery);
-						pg_execute($this->pgConn, "", array(
+						pg_prepare($this->adminPgConn, "", $deleteQuery);
+						pg_execute($this->adminPgConn, "", array(
 							$format
 						));
 						$deleteQuery = "DELETE FROM metadata.form_format WHERE format = $1";
-						pg_prepare($this->pgConn, "", $deleteQuery);
-						pg_execute($this->pgConn, "", array(
+						pg_prepare($this->adminPgConn, "", $deleteQuery);
+						pg_execute($this->adminPgConn, "", array(
 							$format
 						));
 						$deleteQuery = "DELETE FROM metadata.format WHERE format = $1";
-						pg_prepare($this->pgConn, "", $deleteQuery);
-						pg_execute($this->pgConn, "", array(
+						pg_prepare($this->adminPgConn, "", $deleteQuery);
+						pg_execute($this->adminPgConn, "", array(
 							$format
 						));
 					}
@@ -470,8 +455,8 @@ class ModelUnpublication extends DatabaseUtils {
 				INNER JOIN metadata.dataset d ON d.dataset_id = md.dataset_id
 				WHERE md.model_id = $1
 				AND d.type = 'QUERY'";
-		pg_prepare($this->pgConn, "", $sql);
-		$result = pg_execute($this->pgConn, "", array(
+		pg_prepare($this->adminPgConn, "", $sql);
+		$result = pg_execute($this->adminPgConn, "", array(
 			$modelId
 		));
 		$rows = pg_fetch_all($result);
@@ -481,29 +466,27 @@ class ModelUnpublication extends DatabaseUtils {
 			foreach ($rows as $row) {
 				$datasetId = $row['dataset_id'];
 
-
 				// Delete possible predefined requests on this dataset
 				$this->dropPredefinedRequests($datasetId);
-				
+
 				// delete from dataset_fields
 				$deleteFieldsQuery = "DELETE FROM metadata.dataset_fields WHERE dataset_id = $1";
-				pg_prepare($this->pgConn, "", $deleteFieldsQuery);
-				pg_execute($this->pgConn, "", array(
+				pg_prepare($this->adminPgConn, "", $deleteFieldsQuery);
+				pg_execute($this->adminPgConn, "", array(
 					$datasetId
 				));
 
 				// delete form model_datasets
 				$deleteLinkQuery = "DELETE FROM metadata.model_datasets WHERE dataset_id = $1";
-				pg_prepare($this->pgConn, "", $deleteLinkQuery);
-				pg_execute($this->pgConn, "", array(
+				pg_prepare($this->adminPgConn, "", $deleteLinkQuery);
+				pg_execute($this->adminPgConn, "", array(
 					$datasetId
 				));
 
-
 				// delete from dataset
 				$deleteQuery = "DELETE FROM metadata.dataset WHERE dataset_id = $1";
-				pg_prepare($this->pgConn, "", $deleteQuery);
-				pg_execute($this->pgConn, "", array(
+				pg_prepare($this->adminPgConn, "", $deleteQuery);
+				pg_execute($this->adminPgConn, "", array(
 					$datasetId
 				));
 			}
@@ -683,11 +666,11 @@ class ModelUnpublication extends DatabaseUtils {
 	/**
 	 * Drops predefined requests
 	 *
-	 * @param string $datasetId the query dataset
+	 * @param string $datasetId
+	 *        	the query dataset
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
 	public function dropPredefinedRequests($datasetId) {
-
 		$this->logger->debug("drop predefined requests for dataset : " . $datasetId);
 
 		// Get the predefined requests and group linked to the dataset_id
@@ -701,17 +684,21 @@ class ModelUnpublication extends DatabaseUtils {
 		$selectStmt->execute();
 		$row = $selectStmt->fetch();
 		$datasetGroupId = $row['group_id'];
-		
+
 		if ($datasetId) {
-			$sql = "DELETE FROM website.predefined_request WHERE dataset_id = '" . $datasetId . "'";
-	 		$stmt = $this->conn->prepare($sql);
-	 		$stmt->execute();
+			$sql = "DELETE FROM website.predefined_request WHERE dataset_id = $1";
+			pg_prepare($this->adminPgConn, "", $sql);
+			pg_execute($this->adminPgConn, "", array(
+				$datasetId
+			));
 		}
-	 	
+
 		if ($datasetGroupId) {
-	 		$sql = "DELETE FROM website.predefined_request_group WHERE group_id = '" . $datasetGroupId . "'";
-	 		$stmt = $this->conn->prepare($sql);
-	 		$stmt->execute();
+			$sql = "DELETE FROM website.predefined_request_group WHERE group_id = $1";
+			pg_prepare($this->adminPgConn, "", $sql);
+			pg_execute($this->adminPgConn, "", array(
+				$datasetGroupId
+			));
 		}
 	}
 }
