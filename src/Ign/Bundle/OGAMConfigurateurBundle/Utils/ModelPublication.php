@@ -2,9 +2,11 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Monolog\Logger;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 
 /**
  * Utility class for publication of a model into a database.
@@ -43,39 +45,49 @@ class ModelPublication extends DatabaseUtils {
 	 * @return true if publication succeded, false otherwise
 	 */
 	public function publishModel($modelId) {
-		if ($this->copyUtils->isModelPresentInWorkSchema($modelId) && $this->isPublishable($modelId)) {
-			$dbconn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-			pg_query($dbconn, "BEGIN");
-			if (!$this->copyUtils->copyData($modelId, $dbconn)) {
-				pg_query($dbconn, "ROLLBACK");
-				return false;
-			}
-
-			$destSchema = 'metadata';
-			$this->copyUtils->copyFormat($modelId, $destSchema, false);
-			$this->copyUtils->copyTableFormat($modelId, $destSchema, false);
-			$this->copyUtils->copyTableTree($modelId, $destSchema, false);
-			$this->copyUtils->copyField($modelId, $destSchema, false);
-			$this->copyUtils->copyTableField($modelId, $destSchema, false);
-			$this->copyUtils->copyModel($modelId, $destSchema, false);
-			$this->copyUtils->copyModelTables($modelId, $destSchema, false);
-			$datasetId = $this->copyUtils->createQueryDataset($modelId, $dbconn);
-			$this->copyUtils->createFormFields($modelId, $datasetId, $dbconn);
-
-			// Generate the tables
-			if ($this->tablesGeneration) {
-				$result = $this->tablesGeneration->createTables($modelId, $dbconn);
-				if (!$result) {
+		try {
+			if ($this->copyUtils->isModelPresentInWorkSchema($modelId) && $this->isPublishable($modelId)) {
+				$dbconn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+				pg_query($dbconn, "BEGIN");
+				if (!$this->copyUtils->copyData($modelId, $dbconn)) {
 					pg_query($dbconn, "ROLLBACK");
-					pg_close($dbconn);
 					return false;
 				}
+
+				$destSchema = 'metadata';
+				$this->copyUtils->copyFormat($modelId, $destSchema, false);
+				$this->copyUtils->copyTableFormat($modelId, $destSchema, false);
+				$this->copyUtils->copyTableTree($modelId, $destSchema, false);
+				$this->copyUtils->copyField($modelId, $destSchema, false);
+				$this->copyUtils->copyTableField($modelId, $destSchema, false);
+				$this->copyUtils->copyModel($modelId, $destSchema, false);
+				$this->copyUtils->copyModelTables($modelId, $destSchema, false);
+				$datasetId = $this->copyUtils->createQueryDataset($modelId, $dbconn);
+				$this->copyUtils->createFormFields($modelId, $datasetId, $dbconn);
+
+				// Generate the tables
+				if ($this->tablesGeneration) {
+					$result = $this->tablesGeneration->createTables($modelId, $dbconn);
+					if (!$result) {
+						pg_query($dbconn, "ROLLBACK");
+						return false;
+					}
+				}
+				pg_query($dbconn, "COMMIT");
+				return true;
+			} else {
+				return false;
 			}
-			pg_query($dbconn, "COMMIT");
-			pg_close($dbconn);
-			return true;
-		} else {
+		} catch (ContextErrorException $e) {
+			$this->logger->error($e);
+			pg_query($dbconn, "ROLLBACK");
 			return false;
+		} catch (DBALException $e) {
+			$this->logger->error($e);
+			pg_query($dbconn, "ROLLBACK");
+			return false;
+		} finally {
+			pg_close($dbconn);
 		}
 	}
 
