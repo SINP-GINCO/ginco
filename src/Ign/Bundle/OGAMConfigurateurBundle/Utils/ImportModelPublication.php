@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
 
@@ -55,7 +54,7 @@ class ImportModelPublication extends DatabaseUtils {
 			$this->conn->close();
 			return false;
 		}
-		
+
 		return true;
 	}
 

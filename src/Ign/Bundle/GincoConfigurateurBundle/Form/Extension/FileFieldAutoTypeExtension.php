@@ -1,15 +1,14 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Form\Extension;
 
-use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Validator\Constraints\NotNull;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 
@@ -24,12 +23,12 @@ class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 
 	/**
 	 *
-	 * @param FormBuilderInterface $builder        	
-	 * @param array $options        	
+	 * @param FormBuilderInterface $builder
+	 * @param array $options
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $formOptions) {
 		$modelId = $formOptions['modelId'];
-		
+
 		$builder->add('table_format', EntityType::class, array(
 			'class' => 'IgnOGAMConfigurateurBundle:TableFormat',
 			'choice_label' => 'label',

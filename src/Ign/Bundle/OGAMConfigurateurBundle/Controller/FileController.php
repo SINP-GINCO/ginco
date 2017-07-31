@@ -1,26 +1,21 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFormatType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportType;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingAutoType;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Assetic\Exception\Exception;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFormatType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 
 class FileController extends Controller {
 

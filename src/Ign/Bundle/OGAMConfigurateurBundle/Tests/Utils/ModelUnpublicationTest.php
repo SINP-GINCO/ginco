@@ -2,9 +2,9 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
 use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication;
-use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication;
 use Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication;
 
 /**
  * Test class for model unpublication service (see Story #202).

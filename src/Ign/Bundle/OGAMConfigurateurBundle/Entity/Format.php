@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

@@ -1,10 +1,10 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Data
@@ -192,7 +192,7 @@ class Data {
 		return $this->unit;
 	}
 
- 
+
     /**
      * Add fields
      *
@@ -219,7 +219,7 @@ class Data {
     /**
      * Get fields
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getFields()
     {

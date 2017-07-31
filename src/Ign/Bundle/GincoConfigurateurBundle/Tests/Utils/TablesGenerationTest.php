@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\GincoConfigurateurBundle\Utils\TablesGeneration;
 use Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils\TablesGenerationTest as TablesGenerationTestBase;
 
 /**
@@ -23,7 +22,7 @@ class TablesGenerationTest extends TablesGenerationTestBase {
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertTrue($row['count'] == 0);
-		
+
 		$sql = "select count(trigger_name)
 				from information_schema.triggers
 				where event_object_schema = 'raw_data'
@@ -48,7 +47,7 @@ class TablesGenerationTest extends TablesGenerationTestBase {
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertTrue($row['count'] == 1);
-		
+
 		$sql = "select count(trigger_name)
 				from information_schema.triggers
 				where event_object_schema = 'raw_data'

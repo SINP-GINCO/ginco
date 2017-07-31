@@ -1,24 +1,16 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\ORMException;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
-use Monolog\Logger;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\DataType;
-use Symfony\Component\Config\Definition\Exception\Exception;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Monolog\Logger;
 
 /**
  * Utility class for all copy methods in a database used for publication and duplication services.
  *
  * @author Gautam Pastakia
- *        
+ *
  */
 class CopyUtils extends DatabaseUtils {
 
@@ -45,7 +37,7 @@ class CopyUtils extends DatabaseUtils {
 		if ($dbConn == null) {
 			$dbConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 		}
-		
+
 		$sql = 'CREATE TEMPORARY TABLE data_temp(data varchar(174),
 				unit varchar(36), label varchar(60), definition varchar(255),
 				comment varchar(255)) ON COMMIT DROP;
@@ -88,23 +80,23 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyFormat($modelId, $destSchema, $duplicate) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		
+
 		// Select all values
 		$selectQuery = "SELECT DISTINCT fo.format, fo.type
 				FROM metadata_work.model m
 				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = m.id
 				INNER JOIN metadata_work.format as fo ON fo.format = mt.table_id
 				WHERE m.id = $1 AND fo.type = 'TABLE'";
-		
+
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
 			$modelId
 		));
-		
+
 		// Prepare insert statement for each value
 		$insertQuery = "INSERT INTO " . $destSchema . ".format(format, type) VALUES ($1, $2)";
 		pg_prepare($this->pgConn, "", $insertQuery);
-		
+
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
 				pg_execute($this->pgConn, "", array(
@@ -135,24 +127,24 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyTableFormat($modelId, $destSchema, $duplicate, $copiedModelId = NULL) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		
+
 		// Select all values
 		$selectQuery = "SELECT DISTINCT tfo.format, tfo.table_name, tfo.schema_code, tfo.primary_key, tfo.label , tfo.definition
 				FROM metadata_work.model m
 				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = m.id
 				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
 				WHERE m.id = $1";
-		
+
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
 			$modelId
 		));
-		
+
 		// Prepare insert statement for each value
 		$insertQuery = "INSERT INTO " . $destSchema . ".table_format(format, table_name, schema_code, primary_key, label, definition)
 						VALUES ($1, $2, $3, $4, $5, $6)";
 		pg_prepare($this->pgConn, "", $insertQuery);
-		
+
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
 				pg_execute($this->pgConn, "", array(
@@ -189,7 +181,7 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyTableTree($modelId, $destSchema, $duplicate) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		
+
 		// Select all values
 		$selectQuery = "SELECT DISTINCT ttr.schema_code, ttr.child_table, ttr.parent_table, ttr.join_key, ttr.comment
 				FROM metadata_work.model m
@@ -197,17 +189,17 @@ class CopyUtils extends DatabaseUtils {
 				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
 				INNER JOIN metadata_work.table_schema as tsc ON tsc.schema_code = tfo.schema_code
 				INNER JOIN metadata_work.table_tree as ttr ON ttr.schema_code = tsc.schema_code AND ttr.child_table = tfo.format";
-		
+
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
 			$modelId
 		));
-		
+
 		// Prepare insert statement for each value
 		$insertQuery = "INSERT INTO " . $destSchema . ".table_tree(schema_code, child_table, parent_table, join_key, comment)
 						VALUES ($1, $2, $3, $4, $5)";
 		pg_prepare($this->pgConn, "", $insertQuery);
-		
+
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
 				if ($row['parent_table'] == '*') {
@@ -247,28 +239,28 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyField($modelId, $destSchema, $duplicate) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		
+
 		// Select all values
 		$selectQuery = "SELECT DISTINCT f.data, f.format, f.type
 				FROM metadata_work.model m
 				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
 				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
 				INNER JOIN metadata_work.field as f ON f.format = tfo.format";
-		
+
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
 			$modelId
 		));
-		
+
 		// Prepare insert statement for each value
 		$insertQuery = "INSERT INTO " . $destSchema . ".field(data, format, type) VALUES ($1, $2, $3);";
 		pg_prepare($this->pgConn, "", $insertQuery);
-		
+
 		// Count the number of occurences of the data field. Only single occurences are deleted
 		$count = "SELECT DISTINCT count(*) FROM metadata.field
 					WHERE data = :data AND format = :format AND type = :type";
 		$stmt = $this->conn->prepare($count);
-		
+
 		while ($row = pg_fetch_assoc($results)) {
 			$stmt->bindParam(':data', $row['data']);
 			$stmt->bindParam(':format', $row['format']);
@@ -306,23 +298,23 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyTableField($modelId, $destSchema, $duplicate) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		
+
 		// Select all values
 		$selectQuery = "SELECT DISTINCT tfi.data, tfi.format, tfi.column_name, tfi.is_calculated, tfi.is_editable, tfi.is_insertable, tfi.is_mandatory, tfi.position, tfi.comment
 				FROM metadata_work.model m
 				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
 				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
 				INNER JOIN metadata_work.table_field as tfi ON tfi.format = tfo.format";
-		
+
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
 			$modelId
 		));
-		
+
 		// Prepare insert statement for each value
 		$insertQuery = "INSERT INTO " . $destSchema . ".table_field(data, format, column_name, is_calculated, is_editable, is_insertable, is_mandatory, position, comment) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);";
 		pg_prepare($this->pgConn, "", $insertQuery);
-		
+
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
 				pg_execute($this->pgConn, "", array(
@@ -367,21 +359,21 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyModel($modelId, $destSchema, $duplicate, $copyModelName = NULL) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		
+
 		// Select all values
 		$selectQuery = "SELECT DISTINCT m.id, m.name, m.description, m.schema_code
 				FROM metadata_work.model m
 				WHERE m.id = $1";
-		
+
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
 			$modelId
 		));
-		
+
 		// Prepare insert statement for each value
 		$insertQuery = "INSERT INTO " . $destSchema . ".model(id, name, description, schema_code) VALUES ($1, $2, $3, $4);";
 		pg_prepare($this->pgConn, "", $insertQuery);
-		
+
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
 				$copiedModelId = uniqid('model_');
@@ -417,12 +409,12 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyModelTables($modelId, $destSchema, $duplicate, $copiedModelId = NULL) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		
+
 		// Select all values
 		$selectQuery = "SELECT DISTINCT mt.model_id, mt.table_id
 				FROM metadata_work.model m
 				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1";
-		
+
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
 			$modelId
@@ -430,7 +422,7 @@ class CopyUtils extends DatabaseUtils {
 		// Prepare insert statement for each value
 		$insertQuery = "INSERT INTO " . $destSchema . ".model_tables(model_id, table_id) VALUES ($1, $2);";
 		pg_prepare($this->pgConn, "", $insertQuery);
-		
+
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
 				pg_execute($this->pgConn, "", array(
@@ -457,13 +449,13 @@ class CopyUtils extends DatabaseUtils {
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
 	public function createQueryDataset($modelId, $dbconn) {
-		
+
 		// Don't create a query dataset if a dataset linked to the model
 		// already have entries in dataset_fields
 		if ($this->hasQueryDataset($modelId)) {
 			return;
 		}
-		
+
 		// Get model attributes
 		$sql = "SELECT name, schema_code FROM metadata_work.model
 				WHERE id = $1";
@@ -471,15 +463,15 @@ class CopyUtils extends DatabaseUtils {
 		$result = pg_execute($dbconn, "", array(
 			$modelId
 		));
-		
+
 		if (!$row = pg_fetch_assoc($result)) {
 			return;
 		}
 		$modelName = $row['name'];
-		
+
 		// Generates an id for the dataset with the same method as for other datasets (uniqid())
 		$datasetId = (new Dataset())->addId()->getId();
-		
+
 		// Create a query Dataset in metadata ;
 		$definition = "Dataset de visualisation pour le modèle '$modelName '";
 		$sql = "INSERT INTO metadata.dataset(dataset_id, label, is_default, definition, type )
@@ -490,7 +482,7 @@ class CopyUtils extends DatabaseUtils {
 			$modelName,
 			$definition
 		));
-		
+
 		// Create a link with the model
 		$sql = "INSERT INTO metadata.model_datasets(model_id, dataset_id)
  				VALUES ($1, $2)";
@@ -499,7 +491,7 @@ class CopyUtils extends DatabaseUtils {
 			$modelId,
 			$datasetId
 		));
-		
+
 		// Creates all Datasets_Fields from tableFields linked to the model
 		$sql = "SELECT tfo.schema_code, tfo.format, tfi.data
 				FROM metadata_work.table_format tfo
@@ -511,7 +503,7 @@ class CopyUtils extends DatabaseUtils {
 			$modelId
 		));
 		$rows = pg_fetch_all($result);
-		
+
 		foreach ($rows as $row) {
 			$sql = "INSERT INTO metadata.dataset_fields(dataset_id, schema_code, format, data)
 					VALUES ($1, $2, $3, $4)";
@@ -523,7 +515,7 @@ class CopyUtils extends DatabaseUtils {
 				$row['data']
 			));
 		}
-		
+
 		return $datasetId;
 	}
 
@@ -531,9 +523,9 @@ class CopyUtils extends DatabaseUtils {
 	 * Creates entries in Form_Field table, and also in Form_Format.
 	 * Needed by OGAM to query the data.
 	 *
-	 * @param string $modelId        	
-	 * @param unknown $datasetId        	
-	 * @param unknown $dbconn        	
+	 * @param string $modelId
+	 * @param unknown $datasetId
+	 * @param unknown $dbconn
 	 */
 	public function createFormFields($modelId, $datasetId, $dbconn) {
 		// Create a form_format entry for each table_format of the model.
@@ -548,15 +540,15 @@ class CopyUtils extends DatabaseUtils {
 			$modelId
 		));
 		$rows = pg_fetch_all($results);
-		
+
 		// A table for keeping track of which table_format corresponds to each form_format
 		$table_form = array();
-		
+
 		foreach ($rows as $count => $row) {
 			// Generate a new format using uniquid()
 			$format = uniqid('form_');
 			$table_form[$row['format']] = $format;
-			
+
 			// Inserting a format
 			$sql = "INSERT INTO metadata.format(format, type)
 					VALUES ($1, 'FORM')";
@@ -564,7 +556,7 @@ class CopyUtils extends DatabaseUtils {
 			$results = pg_execute($dbconn, "", array(
 				$format
 			));
-			
+
 			// Inserting the corresponding form_format
 			$definition = "Formulaire de visualisation pour '" . $row['label'] . "'";
 			$position = $count + 1;
@@ -577,7 +569,7 @@ class CopyUtils extends DatabaseUtils {
 				$definition,
 				$position
 			));
-			
+
 			// Create dataset_forms
 			$sql = "INSERT INTO metadata.dataset_forms(dataset_id, format)
 					VALUES ($1, $2)";
@@ -587,7 +579,7 @@ class CopyUtils extends DatabaseUtils {
 				$format
 			));
 		}
-		
+
 		// Insert form_field entries for each table_field
 		$sql = "SELECT tfo.schema_code, tfo.format, tfi.data, u.type, u.subtype
 				FROM metadata_work.table_format tfo
@@ -601,7 +593,7 @@ class CopyUtils extends DatabaseUtils {
 			$modelId
 		));
 		$rows = pg_fetch_all($results);
-		
+
 		foreach ($rows as $count => $row) {
 			// Insert the field
 			$sql = "INSERT INTO metadata.field(data, format, type)
@@ -611,13 +603,13 @@ class CopyUtils extends DatabaseUtils {
 				$row['data'],
 				$table_form[$row['format']]
 			));
-			
+
 			// Insert the form_field
 			$convert = new TypesConvert();
 			$type = $convert->UnitToInput($row['type'], $row['subtype']);
 			$mask = ($type == 'DATE') ? 'yyyy-MM-dd' : null;
 			$position = $count + 1;
-			
+
 			$sql = "INSERT INTO metadata.form_field(data, format, is_criteria, is_result,
 					input_type, position, is_default_criteria, is_default_result, mask)
 					VALUES ($1, $2, 1, 1, $3, $4, 0, 1, $5)";
@@ -629,7 +621,7 @@ class CopyUtils extends DatabaseUtils {
 				$position,
 				$mask
 			));
-			
+
 			// Insert the field mapping
 			$sql = "INSERT INTO metadata.field_mapping(src_data, src_format, dst_data, dst_format, mapping_type)
 					VALUES ($1, $2, $3, $4, 'FORM')";
@@ -680,7 +672,7 @@ class CopyUtils extends DatabaseUtils {
 		$stmt = $this->conn->prepare($sql);
 		$stmt->bindValue(1, $modelId);
 		$stmt->execute();
-		
+
 		if ($datasetId = $stmt->fetchColumn(0)) {
 			return $datasetId;
 		} else {
@@ -701,7 +693,7 @@ class CopyUtils extends DatabaseUtils {
 				WHERE m.name = :modelName";
 		$stmt = $this->conn->prepare($sql);
 		$copyName = $modelName . '_copy';
-		
+
 		$stmt->bindParam(':modelName', $copyName);
 		$stmt->execute();
 		if ($stmt->fetchColumn(0) == 0) {

@@ -1,16 +1,16 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
-use Symfony\Component\HttpFoundation\Request;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelUploadType;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class ModelController extends Controller {
 

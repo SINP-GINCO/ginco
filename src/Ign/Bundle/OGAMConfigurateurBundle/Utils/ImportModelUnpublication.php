@@ -1,10 +1,8 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
-use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 
 /**

@@ -1,17 +1,15 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingType;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingAutoType;
-use Symfony\Component\Form\FormError;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\FieldMappingType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class FieldMappingController extends Controller {
 

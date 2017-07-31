@@ -1,13 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Utils;
 
-use Symfony\Component\DependencyInjection;
-use \Symfony\Component\Config\FileLocator;
-use Doctrine\DBAL\Connection;
-use Monolog\Logger;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Ign\Bundle\OGAMConfigurateurBundle\Utils\TablesGeneration as TableGenerationBase2;
-use Assetic\Exception\Exception;
 
 /**
  * Extends table generation class for predefined request service.
@@ -46,14 +40,14 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		$row = pg_fetch_assoc($result);
 		$datasetId = $row['dataset_id'];
 		$datasetLabel = $row['label'];
-		
+
 		// Get predefined request group next val sequence id
 		$sqlPRGroupIdNextval = "SELECT nextval('predefined_request_group_group_id_seq');";
 		pg_prepare($dbconn, "", $sqlPRGroupIdNextval);
 		$stmtPRGroupIdNextval = pg_execute($dbconn, "", array());
 		$groupId = pg_fetch_row($stmtPRGroupIdNextval)[0] +1;
-			
-		
+
+
 		// Add a group for the predefined request of the dataset
 		$this->addPredefinedRequestGroup($datasetLabel, $datasetLabel, '1', $dbconn);
 
@@ -196,7 +190,7 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 			pg_prepare($dbconn, "", $sqlPRIdNextval);
 			$stmtPRIdNextval = pg_execute($dbconn, "", array());
 			$requestId = pg_fetch_row($stmtPRIdNextval)[0]+1;
-			
+
 			// Add the predefined request
 			$this->addPredefinedRequest($tableSchema, $datasetId, $label, $dbconn);
 

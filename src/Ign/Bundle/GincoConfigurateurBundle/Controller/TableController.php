@@ -1,28 +1,17 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableTree;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\TableFormatType;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateType;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateFieldsType;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormError;
-use Assetic\Exception\Exception;
-use Doctrine\DBAL\Connection;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Ign\Bundle\OGAMConfigurateurBundle\Controller\TableController as TableControllerBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\TableUpdateFieldsType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class TableController extends TableControllerBase {
 

@@ -1,10 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @ORM\Table(name="website.role")

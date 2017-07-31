@@ -1,13 +1,9 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Utils;
 
-use Symfony\Component\DependencyInjection;
-use \Symfony\Component\Config\FileLocator;
-use Doctrine\DBAL\Connection;
-use Monolog\Logger;
 use Ign\Bundle\OGAMConfigurateurBundle\Utils\TablesGeneration as TablesGenerationBase;
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Doctrine\DBAL\DBALException;
 
 /**
  * Extends utility class for table generation service.
@@ -34,7 +30,7 @@ class TablesGeneration extends TablesGenerationBase {
 	 * Gets all the tables related to a model, and then generates each one.
 	 * Adds foreign key constraints afterwise.
 	 *
-	 * @param string $modelId        	
+	 * @param string $modelId
 	 */
 	public function createTables($modelId, $dbconn) {
 		$stmt = $this->selectTablesFormat($modelId, $dbconn);
@@ -86,9 +82,9 @@ class TablesGeneration extends TablesGenerationBase {
 	 *
 	 * [protocol][ site host name ][const][ uuid (ISO/IEC 9834‐8:2008) ]
 	 *
-	 * @param string $tableName        	
-	 * @param string $tableSchema        	
-	 * @param string $tableFormat        	
+	 * @param string $tableName
+	 * @param string $tableSchema
+	 * @param string $tableFormat
 	 */
 	public function createIdentifierTrigger($tableSchema, $tableFormat, $tableName, $dbconn) {
 		// Will the table contain the "identifiantpermanent" column?
@@ -102,15 +98,15 @@ class TablesGeneration extends TablesGenerationBase {
 		));
 		// The identifier column is present in the table
 		if (pg_fetch_row($result)[0] > 0) {
-			
+
 			$request = $this->requestStack->getCurrentRequest();
-			
+
 			// Prefix is siteUrl
 			// $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 			$protocol = 'http://'; // Always http because redirections exists from http to https, but not reverse.
 			$domainName = ($request) ? strtolower($request->getHttpHost()) : 'test'; // strtolower($_SERVER['SERVER_NAME']);
 			$siteUrl = $protocol . $domainName . '/';
-			
+
 			$sql = "CREATE OR REPLACE FUNCTION " . $tableSchema . ".perm_id_generate" . $tableName . "()
 				RETURNS TRIGGER
 				LANGUAGE plpgsql
@@ -124,7 +120,7 @@ class TablesGeneration extends TablesGenerationBase {
 				$$;";
 			pg_prepare($dbconn, "", $sql);
 			pg_execute($dbconn, "", array());
-			
+
 			$sql = "CREATE TRIGGER perm_id_generate" . $tableName . " BEFORE INSERT ON " . $tableSchema . "." . $tableName . "
 				FOR EACH ROW
 				EXECUTE PROCEDURE " . $tableSchema . ".perm_id_generate" . $tableName . "();";
@@ -137,10 +133,10 @@ class TablesGeneration extends TablesGenerationBase {
 	 *
 	 * Creates the call of the triggers which calculate the sensitivity of an observation.
 	 *
-	 * @param string $tableName        	
-	 * @param string $tableSchema        	
-	 * @param string $tableFormat        	
-	 * @param string $tableLabel        	
+	 * @param string $tableName
+	 * @param string $tableSchema
+	 * @param string $tableFormat
+	 * @param string $tableLabel
 	 */
 	public function createSensitiveTriggers($tableSchema, $tableFormat, $tableName, $tableLabel, $dbconn) {
 		// Will the table contains the columns the trigger needs?
@@ -154,17 +150,17 @@ class TablesGeneration extends TablesGenerationBase {
 		$result = pg_execute($dbconn, "", array(
 			$tableFormat
 		));
-		
+
 		// the fields needed are present in the table
 		if (pg_fetch_row($result)[0] == 13) {
-			
+
 			// Add automatic calcul trigger
 			$sql = "CREATE TRIGGER sensitive_automatic" . $tableName . " BEFORE UPDATE OF codedepartementcalcule, cdnom, cdref, jourdatefin, occstatutbiologique ON " . $tableSchema . "." . $tableName . "
 						FOR EACH ROW
 						EXECUTE PROCEDURE " . $tableSchema . ".sensitive_automatic();";
 			pg_prepare($dbconn, "", $sql);
 			pg_execute($dbconn, "", array());
-			
+
 			// Add manual calcul trigger
 			$sql = "CREATE TRIGGER sensitive_manual" . $tableName . " BEFORE UPDATE OF sensiniveau, sensimanuelle ON " . $tableSchema . "." . $tableName . "
 						FOR EACH ROW
@@ -178,10 +174,10 @@ class TablesGeneration extends TablesGenerationBase {
 	 *
 	 * Creates the call of the triggers which init mandatory fields
 	 *
-	 * @param string $tableName        	
-	 * @param string $tableSchema        	
-	 * @param string $tableFormat        	
-	 * @param string $tableLabel        	
+	 * @param string $tableName
+	 * @param string $tableSchema
+	 * @param string $tableFormat
+	 * @param string $tableLabel
 	 */
 	public function createInitTrigger($tableSchema, $tableFormat, $tableName, $tableLabel, $dbconn) {
 		// Will the table contains the columns the trigger needs?
@@ -196,7 +192,7 @@ class TablesGeneration extends TablesGenerationBase {
 		$result = pg_execute($dbconn, "", array(
 			$tableFormat
 		));
-		
+
 		// the fields needed are present in the table
 		if (pg_fetch_row($result)[0] == 3) {
 			// Add automatic calcul trigger
@@ -213,7 +209,7 @@ class TablesGeneration extends TablesGenerationBase {
 	 *
 	 * @param $ogamType ogam
 	 *        	type coming from unit table type column.
-	 *        	
+	 *
 	 * @return Postgres type
 	 */
 	public function getPostgresTypeFromOgamType($ogamType, $ogamUnit, $columnName) {

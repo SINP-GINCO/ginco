@@ -1,9 +1,9 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\TableFieldController as TableFieldControllerBase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Ign\Bundle\OGAMConfigurateurBundle\Controller\TableFieldController as TableFieldControllerBase;
 
 class TableFieldController extends TableFieldControllerBase {
 

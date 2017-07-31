@@ -1,10 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class FieldMappingControllerTest extends ConfiguratorTest {
 

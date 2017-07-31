@@ -1,18 +1,16 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableSchema;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportUploadType;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportType;
+use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportUploadType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DatasetImportController extends Controller {
 

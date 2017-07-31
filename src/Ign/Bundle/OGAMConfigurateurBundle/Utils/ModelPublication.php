@@ -1,16 +1,10 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\ORMException;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Assetic\Exception\Exception;
 
 /**
  * Utility class for publication of a model into a database.

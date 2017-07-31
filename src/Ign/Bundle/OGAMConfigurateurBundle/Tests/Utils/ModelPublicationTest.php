@@ -1,9 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils;
 use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication;
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 /**
  * Test class for model publication service (see Story #148).

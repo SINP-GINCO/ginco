@@ -1,8 +1,8 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 class FieldRepository extends EntityRepository {
 

@@ -1,15 +1,15 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
 use Monolog\Logger;
-use Doctrine\DBAL\Connection;
 
 /**
  * Utility class to reset tomcat caches after model publication.
  *
  * @author Anna Mouget
- *        
+ *
  */
 class ResetTomcatCaches {
 
@@ -20,8 +20,8 @@ class ResetTomcatCaches {
 	/**
 	 * Reset Tomcat Caches Constructor.
 	 *
-	 * @param Connection $conn        	
-	 * @param logger $logger        	
+	 * @param Connection $conn
+	 * @param logger $logger
 	 */
 	public function __construct(Connection $conn, Logger $logger) {
 		$this->conn = $conn;
@@ -42,25 +42,25 @@ class ResetTomcatCaches {
 			$stmt = $this->conn->prepare($sql);
 			$stmt->execute();
 			$rows = $stmt->fetch();
-			
+
 			$ResetCachesUrl = $rows['value'] . "/MetadataServlet?action=ResetCaches";
-			
+
 			// use cURL to call external URL
 			$req = curl_init();
 			curl_setopt($req, CURLOPT_URL, $ResetCachesUrl);
 			curl_exec($req);
-			
+
 			// check that the URL called exists
 			$http_status = curl_getinfo($req, CURLINFO_HTTP_CODE);
 			if ($http_status != 200) {
 				return false;
 			}
-			
+
 			curl_close($req);
 		} catch (ORMException $e) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }

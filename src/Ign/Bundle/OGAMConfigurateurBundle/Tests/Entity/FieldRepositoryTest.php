@@ -2,8 +2,6 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Modele;
 
 class FieldRepositoryTest extends WebTestCase {
 

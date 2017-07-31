@@ -2,7 +2,6 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Assetic\Exception\Exception;
 
 /**
  * TableTree
@@ -96,7 +95,7 @@ class TableTree {
 	 */
 	public function setParentTable($parentTable) {
 		$this->parentTable = $parentTable;
-		
+
 		return $this;
 	}
 
@@ -107,7 +106,7 @@ class TableTree {
 	 */
 	public function getParentTable() {
 		return $this->parentTable;
-		
+
 	}
 
 	/**

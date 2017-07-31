@@ -1,19 +1,18 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FieldMappingType extends AbstractType {
 

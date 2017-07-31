@@ -1,9 +1,9 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController as ModelControllerBase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController as ModelControllerBase;
 
 class ModelController extends ModelControllerBase {
 

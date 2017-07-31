@@ -1,9 +1,7 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle;
 
 class TableTreeRepository extends EntityRepository {
 
@@ -12,7 +10,7 @@ class TableTreeRepository extends EntityRepository {
 	 *
 	 * @param
 	 *        	tableFormat the name of the table format
-	 *        	
+	 *
 	 * @return Array of tableFormat
 	 */
 	public function findChildTablesByTableFormat($tableFormat, $conn) {
@@ -28,7 +26,7 @@ class TableTreeRepository extends EntityRepository {
 					SELECT child_table
 					FROM table_tree
 					LIMIT 50';
-		
+
 		$stmt = $conn->prepare($sql);
 		$stmt->bindParam(':tableFormat', $tableFormat);
 		$stmt->execute();
@@ -36,7 +34,7 @@ class TableTreeRepository extends EntityRepository {
 		while ($row = $stmt->fetch()) {
 			$childTables[] = $row['child_table'];
 		}
-		
+
 		return $childTables;
 	}
 }

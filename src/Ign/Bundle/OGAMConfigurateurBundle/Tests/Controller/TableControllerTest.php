@@ -1,11 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 
 class TableControllerTest extends ConfiguratorTest {
 

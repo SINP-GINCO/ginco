@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 

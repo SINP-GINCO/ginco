@@ -1,11 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class GincoFileControllerTest extends ConfiguratorTest {
 
@@ -21,10 +19,10 @@ class GincoFileControllerTest extends ConfiguratorTest {
 	public function setUp() {
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
-		
+
 		$this->container = static::$kernel->getContainer();
 		$this->translator = $this->container->get('translator');
-		
+
 		$this->em = $this->container->get('doctrine')->getManager();
 	}
 
@@ -52,16 +50,16 @@ class GincoFileControllerTest extends ConfiguratorTest {
 	public function testAutoAction() {
 		//exit();
 		$crawler = $this->client->request('GET', '/datasetsimport/ginco_my_import_model/files/file_auto/fields/');
-		
+
  		//var_dump($crawler->html());
  		//exit();
-		
+
 		// Performs auto-add fields, FIRST ON MANDATORY FIELDS
 		$form = $crawler->selectButton('Ajout automatique')->form();
 		$form['ign_bundle_configurateurbundle_file_field_auto[table_format]'] = 'my_table';
 		$form['ign_bundle_configurateurbundle_file_field_auto[only_mandatory]']->tick();
 		$crawler = $this->client->submit($form);
-		
+
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
@@ -70,13 +68,13 @@ class GincoFileControllerTest extends ConfiguratorTest {
 			'fileFormat' => 'file_auto'
 		));
 		$fields = $query->getResult();
-		
+
 		$altMax = false;
 		$altMin = false;
 		$cdNom = false;
 		$cdRef = false;
 		$sensiNiveau = false;
-		
+
 		foreach ($fields as $field) {
 			if ($field['data'] == 'altitudemax') {
 				$altMax = true;
@@ -94,18 +92,18 @@ class GincoFileControllerTest extends ConfiguratorTest {
 				$sensiNiveau = true;
 			}
 		}
-		
+
 		$this->assertTrue($altMin); // already there
 		$this->assertFalse($altMax); // Must not be added
 		$this->assertTrue($cdNom); // Must be added
 		$this->assertTrue($cdRef); // Must be added
 		$this->assertFalse($sensiNiveau); // Must not be added (calculated)
-		                                  
+
 		// Performs auto-add fields, NOW ON ALL FIELDS except those calculated
 		$form = $crawler->selectButton('Ajout automatique')->form();
 		$form['ign_bundle_configurateurbundle_file_field_auto[table_format]'] = 'my_table';
 		$crawler = $this->client->submit($form);
-		
+
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
@@ -114,14 +112,14 @@ class GincoFileControllerTest extends ConfiguratorTest {
 			'fileFormat' => 'file_auto'
 		));
 		$fields = $query->getResult();
-		
+
 		$altMax = false;
 		$altMin = false;
 		$altMinMandatory = false;
 		$cdNom = false;
 		$cdRef = false;
 		$sensiNiveau = false;
-		
+
 		foreach ($fields as $field) {
 			if ($field['data'] == 'altitudemax') {
 				$altMax = true;
@@ -142,20 +140,20 @@ class GincoFileControllerTest extends ConfiguratorTest {
 				$sensiNiveau = true;
 			}
 		}
-		
+
 		$this->assertTrue($altMin); // already there
 		$this->assertTrue($altMinMandatory); // already there
 		$this->assertTrue($altMax); // Must be added
 		$this->assertTrue($cdNom); // Already there
 		$this->assertTrue($cdRef); // Already there
 		$this->assertFalse($sensiNiveau); // Must not be added
-		                                  
+
 		// Performs auto-add fields, NOW ON ALL FIELDS
 		$form = $crawler->selectButton('Ajout automatique')->form();
 		$form['ign_bundle_configurateurbundle_file_field_auto[table_format]'] = 'my_table';
 		$form['ign_bundle_configurateurbundle_file_field_auto[with_calculated]']->tick();
 		$crawler = $this->client->submit($form);
-		
+
 		// Extract direct info from DB (table field_mapping) :
 		$query = $this->em->createQuery('SELECT
 					ff.data, ff.isMandatory
@@ -164,14 +162,14 @@ class GincoFileControllerTest extends ConfiguratorTest {
 			'fileFormat' => 'file_auto'
 		));
 		$fields = $query->getResult();
-		
+
 		$altMax = false;
 		$altMin = false;
 		$altMinMandatory = false;
 		$cdNom = false;
 		$cdRef = false;
 		$sensiNiveau = false;
-		
+
 		foreach ($fields as $field) {
 			if ($field['data'] == 'altitudemax') {
 				$altMax = true;
@@ -192,7 +190,7 @@ class GincoFileControllerTest extends ConfiguratorTest {
 				$sensiNiveau = true;
 			}
 		}
-		
+
 		$this->assertTrue($altMin); // already there
 		$this->assertTrue($altMinMandatory); // already there
 		$this->assertTrue($altMax); // Must be added

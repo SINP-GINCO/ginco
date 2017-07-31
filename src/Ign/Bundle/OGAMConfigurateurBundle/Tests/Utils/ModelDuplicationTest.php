@@ -1,8 +1,8 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication;
 use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication;
 
 /**
  * Test class for model duplication service (see Story #36).

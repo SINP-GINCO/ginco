@@ -1,9 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Utils;
 
-use \Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\GincoConfigurateurBundle\Utils\CopyUtils;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 /**
  * Test class for copy utils class

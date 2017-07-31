@@ -1,9 +1,7 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\EntityRepository;
-use Assetic\Exception\Exception;
 
 class DataRepository extends EntityRepository {
 

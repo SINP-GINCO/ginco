@@ -1,5 +1,4 @@
 <?php
-
 namespace Ign\Bundle\OGAMConfigurateurBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -10,22 +9,25 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
-class Configuration implements ConfigurationInterface
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
-    {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ign_configurateur');
+class Configuration implements ConfigurationInterface {
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-        
-        $rootNode->children()->scalarNode( 'database_name' )->end();
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 */
+	public function getConfigTreeBuilder() {
+		$treeBuilder = new TreeBuilder();
+		$rootNode = $treeBuilder->root('ign_configurateur');
 
-        return $treeBuilder;
-    }
+		// Here you should define the parameters that are allowed to
+		// configure your bundle. See the documentation linked above for
+		// more information on that topic.
+
+		$rootNode->children()
+			->scalarNode('database_name')
+			->end();
+
+		return $treeBuilder;
+	}
 }

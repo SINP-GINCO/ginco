@@ -1,11 +1,8 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class FileFieldControllerTest extends ConfiguratorTest {
 

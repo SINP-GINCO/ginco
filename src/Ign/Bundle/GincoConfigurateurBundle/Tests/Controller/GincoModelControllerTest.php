@@ -1,12 +1,12 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Controller;
 
+use Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
-use Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
+use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * TODO correct issue on delete complex model

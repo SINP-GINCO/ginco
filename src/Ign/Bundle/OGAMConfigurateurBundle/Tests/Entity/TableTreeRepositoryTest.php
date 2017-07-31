@@ -1,8 +1,6 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableTree;
 use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
@@ -16,18 +14,18 @@ class TableTreeRepositoryTest extends ConfiguratorTest {
 		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/insert_script_for_table_tree_repository.sql');
 		pg_query($adminConn, $sql) or die('Request failed: ' . pg_last_error());
 	}
-	
+
 	public function setUp() {
 		static::$kernel = static::createKernel();
 		static::$kernel->boot();
-		
+
 		$this->container = static::$kernel->getContainer();
 		$this->translator = $this->container->get('translator');
-		
+
 		$this->em = $this->container->get('doctrine')->getManager();
 		$this->client = static::createClient();
 		$this->client->followRedirects(true);
-		
+
 		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableTree');
 	}
 
@@ -40,5 +38,5 @@ class TableTreeRepositoryTest extends ConfiguratorTest {
 		$this->assertEquals(count($childTables), 1);
 		$childTables = $this->repository->findChildTablesByTableFormat('table3', $conn);
 		$this->assertEquals(count($childTables), 0);
-	}	
+	}
 }

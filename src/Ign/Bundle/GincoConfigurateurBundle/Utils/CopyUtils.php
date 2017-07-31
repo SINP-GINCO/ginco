@@ -1,10 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Utils;
 
-use Monolog\Logger;
-use Ign\Bundle\OGAMConfigurateurBundle\Utils\TypesConvert;
 use Ign\Bundle\OGAMConfigurateurBundle\Utils\CopyUtils as CopyUtilsBase;
-use Assetic\Exception\Exception;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\TypesConvert;
 
 /**
  * Extends utility class for copying and publishing metadata.

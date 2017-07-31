@@ -1,10 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Utils;
 
-use Ign\Bundle\GincoConfigurateurBundle\Utils\TablesGeneration;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Unit Tests for PredefinedRequest class

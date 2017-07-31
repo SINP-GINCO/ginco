@@ -1,10 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Entity;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FileFieldRepositoryTest extends WebTestCase {
 

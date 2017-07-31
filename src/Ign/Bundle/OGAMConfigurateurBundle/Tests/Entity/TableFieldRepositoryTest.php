@@ -1,10 +1,8 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Modele;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TableFieldRepositoryTest extends WebTestCase {
 

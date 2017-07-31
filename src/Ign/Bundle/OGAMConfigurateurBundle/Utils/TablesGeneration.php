@@ -1,16 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use \Doctrine\DBAL\DriverManager;
-use \Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use \Symfony\Component\Config\FileLocator;
-use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Statement;
 use Monolog\Logger;
-use Assetic\Exception\Exception;
 
 /**
  * Utility class for table generation service.
