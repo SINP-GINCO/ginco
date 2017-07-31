@@ -8,14 +8,30 @@ Ext.define('Ginco.controller.map.Main', {
 	},
 
 	/**
+	* Manage the launch event
+	* 
+	* Override: call ajaxresetresult instead of ajaxresetresultlocation.
+	* @private
+	*/
+	onLaunch:function(){
+		//clean previous request or result in server side
+		Ext.Ajax.request({
+			url: Ext.manifest.OgamDesktop.requestServiceUrl +'ajaxresetresult',
+			failure: function(response, opts) {
+				console.warn('server-side failure with status code ' + response.status);
+			}
+		});
+	},
+
+	/**
 	 * Update the map on request success
-	 * 
+	 *
 	 * Override: fire a custom Event 'resultsPrepared', listened by Grids.js, in
 	 * order to have a sequential order in ajax requests :
-	 * 
+	 *
 	 * ajaxBuildRequest --> ajaxGetResultsBBox --> // ajaxGetResultsColumns -->
 	 * ajaxGetResultsRows // mapProxy (map images)
-	 * 
+	 *
 	 * @private
 	 */
 	onRequestSuccess : function() {
@@ -53,11 +69,11 @@ Ext.define('Ginco.controller.map.Main', {
 
 	/**
 	 * Show the map container and zoom on the result BBox.
-	 * 
+	 *
 	 * Override: - Doesn't "zoomToFeature" if a record has no geometry visible. -
 	 * Ajax request for dynamic result instead of pre-calculcation on search
 	 * click.
-	 * 
+	 *
 	 * @private
 	 * @param {Object}
 	 *            feature The feature corresponding to the grid row, contains id

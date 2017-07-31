@@ -1,27 +1,87 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\ResultLocation;
+use Ign\Bundle\GincoBundle\Entity\Mapping\Result;
+use Ign\Bundle\OGAMBundle\Controller\QueryController as BaseController;
 use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
-use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequest;
-use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequestCriterion;
+use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\Dynamode;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableTree;
-use Ign\Bundle\OGAMBundle\Controller\QueryController as BaseController;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
+use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
+use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequest;
+use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequestCriterion;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/query")
  */
 class QueryController extends BaseController {
+
+	/**
+	 * Show the main query page.
+	 * GINCO : Change the results table that is cleaned (result instead of result_location)
+	 *
+	 * @Route("/show-query-form", name = "query_show-query-form")
+	 */
+	public function showQueryFormAction(Request $request) {
+		$logger = $this->get('logger');
+		$logger->debug('showQueryFormAction');
+
+		// Clean previous results
+		$repo = $this->getDoctrine()
+			->getManager('mapping')
+			->getRepository(Result::class);
+		$repo->cleanPreviousResults(session_id());
+
+		// Check if the parameter of the default page is set
+		if ($request->query->get('tab') === "predefined") {
+			$logger->debug('defaultTab predefined');
+			$defaultTab = 'predefined_request';
+		} elseif ($request->query->get('tab') === "edition") {
+			$logger->debug('defaultTab edition');
+			$defaultTab = 'edition-add';
+		}
+
+		// Add the configuration parameters to the session for the map proxies (mapserverProxy and tilecacheProxy)
+		if (!$request->getSession()->has('proxy_ConfigurationParameters')) {
+			$configuration = $this->get('ogam.configuration_manager');
+			$request->getSession()->set('proxy_ConfigurationParameters', $configuration->getParameters());
+		}
+
+		// Forward the user to the next step
+		$visuUrl = ($this->container->getParameter('kernel.environment') == 'dev') ? '/odd' : '/odp';
+		if (isset($defaultTab) && $defaultTab === "edition-add") {
+			$providerId = $this->getUser() ? $this->getUser()
+				->getProvider()
+				->getId() : NULL;
+			return $this->redirect($visuUrl . '/index.html?locale=' . $request->getLocale() . (isset($defaultTab) ? '#' . $defaultTab : '') . '/SCHEMA/RAW_DATA/FORMAT/LOCATION_DATA/PROVIDER_ID/' . $providerId);
+		} else {
+			return $this->redirect($visuUrl . '/index.html?locale=' . $request->getLocale() . (isset($defaultTab) ? '#' . $defaultTab : ''));
+		}
+	}
+
+	/**
+	 * @Route("/ajaxresetresult")
+	 */
+	public function ajaxresetresultAction() {
+		$this->get('logger')->debug('ajaxresetresultAction');
+
+		$sessionId = session_id();
+
+		$repo = $this->getDoctrine()
+			->getManager('mapping')
+			->getRepository(Result::class);
+		$repo->cleanPreviousResults($sessionId);
+
+		return new JsonResponse([
+			'success' => true
+		]);
+	}
 
 	/**
 	 * AJAX function : Builds the query.
@@ -232,7 +292,8 @@ class QueryController extends BaseController {
 			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
 		];
 
-		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ogam.locale_listener')->getLocale());
+		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
+			->getLocale());
 
 		// Send the result as a JSON String
 		return new JsonResponse([
@@ -666,7 +727,8 @@ class QueryController extends BaseController {
 
 				// Get requested data
 				// they come in the form of a json; convert them associative array and then to csv
-				$data = $this->get('ogam.query_service')->getResultRowsGinco($page*$maxLines, $maxLines, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')->getLocale());
+				$data = $this->get('ogam.query_service')->getResultRowsGinco($page * $maxLines, $maxLines, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
+					->getLocale());
 
 				if ($data != null) {
 					// Write each line in the csv
@@ -728,7 +790,7 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 *  KML export is not defined in GINCO because of the hiding of geometry
+	 * KML export is not defined in GINCO because of the hiding of geometry
 	 * @Route("/kml-export", name="query_kml_export")
 	 */
 	public function kmlExportAction(Request $request) {
