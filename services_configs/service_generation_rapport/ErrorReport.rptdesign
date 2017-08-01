@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="comments">Copyright (c) 2006 &lt;&lt;Your Company Name here>></property>
-    <property name="createdBy">Eclipse BIRT Designer Version 4.6.0.v201606072122</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.4.2.v201410272105 Build &lt;4.4.2.v20150217-1805></property>
     <html-property name="description">Creates a blank report with no predefined content.</html-property>
     <property name="units">in</property>
     <text-property name="displayName">Blank Report</text-property>
@@ -55,6 +55,16 @@
                     <text-property name="heading">submissiondate</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">max_import_error</property>
+                    <text-property name="displayName">max_import_error</text-property>
+                    <text-property name="heading">max_import_error</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">number_import_error</property>
+                    <text-property name="displayName">number_import_error</text-property>
+                    <text-property name="heading">number_import_error</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">dataset_id</property>
                     <text-property name="displayName">dataset_id</text-property>
                     <text-property name="heading">dataset_id</text-property>
@@ -93,16 +103,26 @@
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">dataset_id</property>
+                        <property name="name">max_import_error</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">step</property>
+                        <property name="name">number_import_error</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
+                        <property name="name">dataset_id</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">step</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
                         <property name="name">status</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -118,32 +138,46 @@
                 </structure>
                 <structure>
                     <property name="position">2</property>
+                    <property name="name">max_import_error</property>
+                    <property name="nativeName">max_import_error</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">number_import_error</property>
+                    <property name="nativeName">number_import_error</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
                     <property name="name">dataset_id</property>
                     <property name="nativeName">dataset_id</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">3</property>
+                    <property name="position">5</property>
                     <property name="name">step</property>
                     <property name="nativeName">step</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">4</property>
+                    <property name="position">6</property>
                     <property name="name">status</property>
                     <property name="nativeName">status</property>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select _creationdt as  submissiondate,
-	label as dataset_id,
+            <xml-property name="queryText"><![CDATA[select _creationdt as submissiondate, 	label as dataset_id,
 	step,
 	status,
 	 submission.submission_id as submission_id,
-	 submission.submission_id as submissionid
-from raw_data.submission
+	 submission.submission_id as submissionid,
+ CAST(value as integer) as max_import_error,
+	CAST((SELECT COUNT(*) FROM check_error WHERE check_error.submission_id = submission.submission_id) as integer) AS number_import_error
+from website.application_parameters,raw_data.submission 
 left join metadata.dataset using (dataset_id)
-where submission_id = ?;]]></xml-property>
+where submission_id = ?
+and name = 'limit_import_error';]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="submitted_files" id="447">
             <list-property name="columnHints">
@@ -753,6 +787,16 @@ group by check_id]]></xml-property>
                     <property name="dataType">date</property>
                 </structure>
                 <structure>
+                    <property name="name">max_import_error</property>
+                    <expression name="expression">dataSetRow["max_import_error"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">number_import_error</property>
+                    <expression name="expression">dataSetRow["number_import_error"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
                     <property name="name">step</property>
                     <expression name="expression" type="javascript">"Etape : "+dataSetRow["step"]</expression>
                     <property name="dataType">string</property>
@@ -804,7 +848,7 @@ group by check_id]]></xml-property>
                 <row id="1190">
                     <cell id="1191">
                         <text-data id="1193">
-                            <expression name="valueExpr">"Identifiant de la soumission : "+row["submission_id"]</expression>
+                            <expression name="valueExpr" type="javascript">"Identifiant de la soumission : "+row["submission_id"]</expression>
                             <property name="contentType">html</property>
                         </text-data>
                     </cell>
@@ -819,8 +863,18 @@ group by check_id]]></xml-property>
                 <row id="948">
                     <cell id="949">
                         <data id="958">
+                            <structure name="toc"/>
                             <property name="resultSetColumn">status</property>
                         </data>
+                    </cell>
+                </row>
+                <row id="1205">
+                    <cell id="1206">
+                        <text-data id="1207">
+                            <structure name="toc"/>
+                            <expression name="valueExpr" type="javascript">if (row["status"] == "Statut : ERROR") { if (row["max_import_error"]==row["number_import_error"]) {"Votre soumission comporte un trop grand nombre d'erreurs pour toutes les afficher ici. Seules les "+row["max_import_error"]+" premières erreurs de votre soumission apparaissent ci-dessous. Veuillez les corriger et refaire votre import afin de voir les erreurs suivantes."} else {"Votre soumission comporte "+row["number_import_error"]+" erreur(s), détaillée(s) ci-dessous."}}</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
                     </cell>
                 </row>
             </detail>
@@ -1589,7 +1643,7 @@ group by check_id]]></xml-property>
                 QyXooAkOPPWsaPVIVEUAgxtUoAU6qBIIoICLAQCDCNgBwQ5AcIAdJCetgA0sRaJaqd4sQFcgcIExCqGM
                 BGySTssUrGQnS51xesRDVjjAFnBAUMp69rMDIWxCiCWCJ4L2tKgNrWVTy9rWdkS0ro2ta2Er29oYnpa2
                 ts3tZHGr294C1gS+Da5wh0tc4gYEADs=
-            </property>
+</property>
         </structure>
         <structure>
             <property name="name">Eforest-banner.jpg</property>
@@ -3209,7 +3263,7 @@ group by check_id]]></xml-property>
                 j38w/dDv4boQIX4ux7+Yfuh38N0IEL8XY9/MP3Q7+G6ECF+Lse/mH7od/DdCBC/F2PfzD90O/huhAhfi
                 7Hv5h+6Hfw3QgQvxdj38w/dDv4boQIX4ux7+Yfuh38N0IEL8XY9/MP3Q7+G6ECF+Lse/mH7od/DdCBDJ
                 keR0x9MYIIZ7pEvy/tx/LlM7uwqCR33pIGMThjFX1VPh0IEf/9k=
-            </property>
+</property>
         </structure>
         <structure>
             <property name="name">banner.jpg</property>
@@ -3702,7 +3756,7 @@ group by check_id]]></xml-property>
                 AFBT1Eznyj+UgMCIAFBF2AQt1jdsF8a07AaDw+/cfpOjtAgt+oAjyBiZmSvaE3aCl9NiyWv8y5PtlF6m
                 W8EVZkfcMpIKMFlBRPVjGjd2tW9A48GW+fGkdTmFfFtiCS+Zu/fl1B1OP/wqA6gEgQVKOoVwLlYgm0NQ
                 3BiE38GoajxNIaizNvHaGv4t46hqbeB15BmGoblfz0huOvLqGWVHU2jqcyo48rif/9k=
-            </property>
+</property>
         </structure>
         <structure>
             <property name="name">banner-sinp.png</property>
@@ -5047,7 +5101,7 @@ group by check_id]]></xml-property>
                 2KD/qTEGoUeQEq0C2iYkOqo7az0fa32tjaygxMCCEBWnZzFE02P82TmLkW2mBi7HAeU4KAq3Dd5u1/Hf
                 OcBREwmaSIWeZHvrQHUcYE+yjQNVZxmmUO+W1vzTuN63Burb6ybV7KWWf+e5uXHa9M/53fwdEhxo0p8b
                 a6yxxv4f4/GBAD9aCGMAAAAASUVORK5CYII=
-            </property>
+</property>
         </structure>
     </list-property>
 </report>

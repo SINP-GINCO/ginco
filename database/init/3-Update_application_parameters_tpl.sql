@@ -13,7 +13,6 @@ insert into application_parameters (name, value, description) values ( 'defaultU
 insert into application_parameters (name, value, description) values ( 'fileMaxSize' , 150 , 'UPLOAD');
 insert into application_parameters (name, value, description) values ( 'integrationService_url' , '@ogam.services.host@/SINP@instance.name@IntegrationService/' , 'INTEGRATION SERVICE');
 insert into application_parameters (name, value, description) values ( 'uploadDir' , '/var/data/ginco/@instance.name@/tmp' , 'INTEGRATION SERVICE');
-insert into application_parameters (name, value, description) values ( 'harmonizationService_url' , '@ogam.services.host@/SINP@instance.name@HarmonizationService/' , 'HARMONIZATION SERVICE');
 insert into application_parameters (name, value, description) values ( 'reportGenerationService_url' , '@ogam.services.host@/SINP@instance.name@RGService/' , 'REPORT GENERATION SERVICE');
 insert into application_parameters (name, value, description) values ( 'errorReport' , 'ErrorReport.rptdesign' , 'REPORT GENERATION SERVICE');
 insert into application_parameters (name, value, description) values ( 'plotErrorReport' , 'PlotErrorReport.rptdesign' , 'REPORT GENERATION SERVICE');
@@ -71,5 +70,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ('sendEmail
 INSERT INTO application_parameters (name, value, description) VALUES ( 'contactEmail','sinp-dev@ign.fr','Destination mail of the contact form');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'results_bbox_compute_threshold', 1000, 'Results bounding box compute value threshold. Above this value no calculation is done.');
 INSERT INTO application_parameters (name, value, description) VALUES ('jddMetadataFileDownloadServiceURL', '@metadata.jdd.url@', 'The URL for retrieving the metadata XML file for a jdd');
+INSERT INTO application_parameters (name, value, description) VALUES ('limit_import_error', '1000', 'The max number of errors searched in a submission (and writed in check_error table)');
+
 -- Pour utiliser le tilecache
 -- insert into application_parameters (name, value, description) values ( 'tilecache_private_url' , 'http://localhost/tilecache-ogam?' , 'The private URL used by tilecacheProxy to request a tile cache.');
