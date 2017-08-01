@@ -14,6 +14,7 @@ import fr.ifn.ogam.common.database.GenericData;
 import fr.ifn.ogam.common.database.metadata.MetadataDAO;
 import fr.ifn.ogam.common.util.DSRConstants;
 import fr.ifn.ogam.common.business.checks.CheckException;
+import fr.ifn.ogam.common.business.checks.CheckExceptionArrayList;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.*;
 import static fr.ifn.ogam.common.business.UnitTypes.*;
 
@@ -39,6 +40,11 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	private MetadataDAO metadataDAO = new MetadataDAO();
 
 	/**
+	 * The exception array to store errors
+	 */
+	private ArrayList<CheckException> alce;
+	
+	/**
 	 * Perfoms all coherence checks for GINCO DSR
 	 * 
 	 * @param submissionId
@@ -48,157 +54,160 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 * @throws Exception, CheckException
 	 *             in case of database error
 	 */
-	public void beforeLineInsertion(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException {
+	public void beforeLineInsertion(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException, CheckExceptionArrayList {
 
 		logger.debug("coherenceChecks");
 		if (values.size() == 0) {
 			return;
 		}
 
-//		try {
+		alce = new ArrayList<CheckException>();
+		
+		// ----- SUJET OBSERVATION ------
 
-			// ----- SUJET OBSERVATION ------
+		// If cdNom or cdRef Given, versionTaxref must be present
+		taxrefVersion(values);
 
-			// If cdNom or cdRef Given, versionTaxref must be present
-			taxrefVersion(values);
+		// jourDateDebut < jourDateFin < today
+		observationDatesAreCoherent(values);
 
-			// jourDateDebut < jourDateFin < today
-			observationDatesAreCoherent(values);
+		// Fills nomValide" if empty
+		calculateValuesSujetObservation(values);
 
-			// Fills nomValide" if empty
-			calculateValuesSujetObservation(values);
+		// ----- SOURCE ------
 
-			// ----- SOURCE ------
+		// If statutSource = "LI", then refernceBiblio must not be empty
+		biblioReference(values);
 
-			// If statutSource = "LI", then refernceBiblio must not be empty
-			biblioReference(values);
+		// ----- DESCRIPTIF SUJET ------
 
-			// ----- DESCRIPTIF SUJET ------
+		// descriptifSujet is 0..1 with 8 mandatory fields
+		String[] descriptifSujetAll = { DSRConstants.OBS_METHODE, DSRConstants.OCC_ETAT_BIOLOGIQUE, DSRConstants.OCC_NATURALITE, DSRConstants.OCC_SEXE,
+				DSRConstants.OCC_STADE_DE_VIE, DSRConstants.OCC_STATUT_BIOGEOGRAPHIQUE, DSRConstants.OCC_STATUT_BIOLOGIQUE, DSRConstants.PREUVE_EXISTANTE,
+				DSRConstants.OBS_DESCRIPTION, DSRConstants.OCC_METHODE_DETERMINATION, DSRConstants.PREUVE_NUMERIQUE, DSRConstants.OBS_CONTEXTE,
+				DSRConstants.PREUVE_NON_NUMERIQUE };
+		String[] descriptifSujetMandatory = { DSRConstants.OBS_METHODE, DSRConstants.OCC_ETAT_BIOLOGIQUE, DSRConstants.OCC_NATURALITE,
+				DSRConstants.OCC_SEXE, DSRConstants.OCC_STADE_DE_VIE, DSRConstants.OCC_STATUT_BIOGEOGRAPHIQUE, DSRConstants.OCC_STATUT_BIOLOGIQUE,
+				DSRConstants.PREUVE_EXISTANTE };
 
-			// descriptifSujet is 0..1 with 8 mandatory fields
-			String[] descriptifSujetAll = { DSRConstants.OBS_METHODE, DSRConstants.OCC_ETAT_BIOLOGIQUE, DSRConstants.OCC_NATURALITE, DSRConstants.OCC_SEXE,
-					DSRConstants.OCC_STADE_DE_VIE, DSRConstants.OCC_STATUT_BIOGEOGRAPHIQUE, DSRConstants.OCC_STATUT_BIOLOGIQUE, DSRConstants.PREUVE_EXISTANTE,
-					DSRConstants.OBS_DESCRIPTION, DSRConstants.OCC_METHODE_DETERMINATION, DSRConstants.PREUVE_NUMERIQUE, DSRConstants.OBS_CONTEXTE,
-					DSRConstants.PREUVE_NON_NUMERIQUE };
-			String[] descriptifSujetMandatory = { DSRConstants.OBS_METHODE, DSRConstants.OCC_ETAT_BIOLOGIQUE, DSRConstants.OCC_NATURALITE,
-					DSRConstants.OCC_SEXE, DSRConstants.OCC_STADE_DE_VIE, DSRConstants.OCC_STATUT_BIOGEOGRAPHIQUE, DSRConstants.OCC_STATUT_BIOLOGIQUE,
-					DSRConstants.PREUVE_EXISTANTE };
+		// Tests if one field of descriptif sujet is not empty
+		ArrayList<String> notEmptyFieldsinDescriptifSujet = notEmptyInList(descriptifSujetAll, values);
+		if (notEmptyFieldsinDescriptifSujet.size() > 0) {
+			// If previous test is true, then fill mandatory fields with default values
+			calculateValuesDescriptifSujet(values);
+		}
 
-			// Tests if one field of descriptif sujet is not empty
-			ArrayList<String> notEmptyFieldsinDescriptifSujet = notEmptyInList(descriptifSujetAll, values);
-			if (notEmptyFieldsinDescriptifSujet.size() > 0) {
-				// If previous test is true, then fill mandatory fields with default values
-				calculateValuesDescriptifSujet(values);
-			}
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(descriptifSujetAll, descriptifSujetMandatory, values, "Descriptif Sujet");
 
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(descriptifSujetAll, descriptifSujetMandatory, values, "Descriptif Sujet");
+		// If preuveExistante = "OUI", then preuveNumerique or preuveNonNumerique must be given
+		// If preuveExistante = "NON", then preuveNumerique and preuveNonNumerique must be empty
+		existingProof(values);
 
-			// If preuveExistante = "OUI", then preuveNumerique or preuveNonNumerique must be given
-			// If preuveExistante = "NON", then preuveNumerique and preuveNonNumerique must be empty
-			existingProof(values);
+		// ----- REGROUPEMENT ------
 
-			// ----- REGROUPEMENT ------
+		String[] regroupementAll = { DSRConstants.IDENTIFIANT_REGROUPEMENT_PERMANENT, DSRConstants.METHODE_REGROUPEMENT, DSRConstants.TYPE_REGROUPEMENT };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(regroupementAll, regroupementAll, values, "Regroupement");
 
-			String[] regroupementAll = { DSRConstants.IDENTIFIANT_REGROUPEMENT_PERMANENT, DSRConstants.METHODE_REGROUPEMENT, DSRConstants.TYPE_REGROUPEMENT };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(regroupementAll, regroupementAll, values, "Regroupement");
+		// ----- DENOMBREMENT ------
 
-			// ----- DENOMBREMENT ------
+		String[] denombrementAll = { DSRConstants.DENOMBREMENT_MAX, DSRConstants.DENOMBREMENT_MIN, DSRConstants.OBJET_DENOMBREMENT,
+				DSRConstants.TYPE_DENOMBREMENT };
+		String[] denombrementMandatory = { DSRConstants.DENOMBREMENT_MAX, DSRConstants.DENOMBREMENT_MIN, DSRConstants.OBJET_DENOMBREMENT };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(denombrementAll, denombrementMandatory, values, "Dénombrement");
 
-			String[] denombrementAll = { DSRConstants.DENOMBREMENT_MAX, DSRConstants.DENOMBREMENT_MIN, DSRConstants.OBJET_DENOMBREMENT,
-					DSRConstants.TYPE_DENOMBREMENT };
-			String[] denombrementMandatory = { DSRConstants.DENOMBREMENT_MAX, DSRConstants.DENOMBREMENT_MIN, DSRConstants.OBJET_DENOMBREMENT };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(denombrementAll, denombrementMandatory, values, "Dénombrement");
+		// ----- HABITAT ------
 
-			// ----- HABITAT ------
+		String[] habitatAll = { DSRConstants.REF_HABITAT, DSRConstants.VERSION_REF_HABITAT, DSRConstants.CODE_HABITAT, DSRConstants.CODE_HAB_REF };
+		String[] habitatMandatory = { DSRConstants.REF_HABITAT, DSRConstants.VERSION_REF_HABITAT };
+		// Habitat is 0..*, with 2 mandatory fields
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(habitatAll, habitatMandatory, values, "Habitat");
 
-			String[] habitatAll = { DSRConstants.REF_HABITAT, DSRConstants.VERSION_REF_HABITAT, DSRConstants.CODE_HABITAT, DSRConstants.CODE_HAB_REF };
-			String[] habitatMandatory = { DSRConstants.REF_HABITAT, DSRConstants.VERSION_REF_HABITAT };
-			// Habitat is 0..*, with 2 mandatory fields
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(habitatAll, habitatMandatory, values, "Habitat");
+		// If exists habitats...
+		String[] habitatArrays = { DSRConstants.REF_HABITAT, DSRConstants.CODE_HABITAT, DSRConstants.CODE_HAB_REF };
+		ArrayList<String> notEmptyHabitats = notEmptyInList(habitatArrays, values);
+		if (notEmptyHabitats.size() > 0) {
+			// ... same number of elements in refHabitat, codeHabitat, codeHabRef
+			sameLengthForAllFields(habitatArrays, values);
 
-			// If exists habitats...
-			String[] habitatArrays = { DSRConstants.REF_HABITAT, DSRConstants.CODE_HABITAT, DSRConstants.CODE_HAB_REF };
-			ArrayList<String> notEmptyHabitats = notEmptyInList(habitatArrays, values);
-			if (notEmptyHabitats.size() > 0) {
-				// ... same number of elements in refHabitat, codeHabitat, codeHabRef
-				sameLengthForAllFields(habitatArrays, values);
+			// Coherence between refHabitat, codeHabitat and codeHabref
+			habitatsCoherence(values);
+		}
 
-				// Coherence between refHabitat, codeHabitat and codeHabref
-				habitatsCoherence(values);
-			}
+		// ----- DETERMINATEUR ------
 
-			// ----- DETERMINATEUR ------
+		// Determinateur is 0..* (0..1 for now), with 2 mandatory fields
+		String[] determinateurAll = { DSRConstants.DETERMINATEUR_IDENTITE, DSRConstants.DETERMINATEUR_NOM_ORGANISME, DSRConstants.DETERMINATEUR_MAIL };
+		String[] determinateurMandatory = { DSRConstants.DETERMINATEUR_IDENTITE, DSRConstants.DETERMINATEUR_NOM_ORGANISME };
 
-			// Determinateur is 0..* (0..1 for now), with 2 mandatory fields
-			String[] determinateurAll = { DSRConstants.DETERMINATEUR_IDENTITE, DSRConstants.DETERMINATEUR_NOM_ORGANISME, DSRConstants.DETERMINATEUR_MAIL };
-			String[] determinateurMandatory = { DSRConstants.DETERMINATEUR_IDENTITE, DSRConstants.DETERMINATEUR_NOM_ORGANISME };
+		// Tests if one field of determinateur is not empty
+		ArrayList<String> notEmptyFieldsinDeterminateur = notEmptyInList(determinateurAll, values);
+		if (notEmptyFieldsinDeterminateur.size() > 0) {
+			// If previous test is true, then fill mandatory fields with default values
+			calculateValuesDeterminateur(values);
+		}
 
-			// Tests if one field of determinateur is not empty
-			ArrayList<String> notEmptyFieldsinDeterminateur = notEmptyInList(determinateurAll, values);
-			if (notEmptyFieldsinDeterminateur.size() > 0) {
-				// If previous test is true, then fill mandatory fields with default values
-				calculateValuesDeterminateur(values);
-			}
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(determinateurAll, determinateurMandatory, values, "Déterminateur");
 
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(determinateurAll, determinateurMandatory, values, "Déterminateur");
+		// ----- VALIDATEUR ------
 
-			// ----- VALIDATEUR ------
+		// Validateur is 0..* (0..1 for now), with 2 mandatory fields
+		String[] validateurAll = { DSRConstants.VALIDATEUR_IDENTITE, DSRConstants.VALIDATEUR_NOM_ORGANISME, DSRConstants.VALIDATEUR_MAIL };
+		String[] validateurMandatory = { DSRConstants.VALIDATEUR_IDENTITE, DSRConstants.VALIDATEUR_NOM_ORGANISME };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(validateurAll, validateurMandatory, values, "Validateur");
 
-			// Validateur is 0..* (0..1 for now), with 2 mandatory fields
-			String[] validateurAll = { DSRConstants.VALIDATEUR_IDENTITE, DSRConstants.VALIDATEUR_NOM_ORGANISME, DSRConstants.VALIDATEUR_MAIL };
-			String[] validateurMandatory = { DSRConstants.VALIDATEUR_IDENTITE, DSRConstants.VALIDATEUR_NOM_ORGANISME };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(validateurAll, validateurMandatory, values, "Validateur");
+		// ----- OBJET GEOGRAPHIQUE ------
 
-			// ----- OBJET GEOGRAPHIQUE ------
+		// Objet Geographique is 0..1
+		String[] objetGeoAll = { DSRConstants.GEOMETRIE, DSRConstants.NATURE_OBJET_GEO, DSRConstants.PRECISION_GEOMETRIE };
+		String[] objetGeoMandatory = { DSRConstants.GEOMETRIE, DSRConstants.NATURE_OBJET_GEO };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(objetGeoAll, objetGeoMandatory, values, "Objet Géographique");
 
-			// Objet Geographique is 0..1
-			String[] objetGeoAll = { DSRConstants.GEOMETRIE, DSRConstants.NATURE_OBJET_GEO, DSRConstants.PRECISION_GEOMETRIE };
-			String[] objetGeoMandatory = { DSRConstants.GEOMETRIE, DSRConstants.NATURE_OBJET_GEO };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(objetGeoAll, objetGeoMandatory, values, "Objet Géographique");
+		// ----- COMMUNES ------
 
-			// ----- COMMUNES ------
+		// Commune is 0..*
+		String[] communeAll = { DSRConstants.CODE_COMMUNE, DSRConstants.NOM_COMMUNE, DSRConstants.ANNEE_REF_COMMUNE, DSRConstants.TYPE_INFO_GEO_COMMUNE };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(communeAll, communeAll, values, "Communes");
 
-			// Commune is 0..*
-			String[] communeAll = { DSRConstants.CODE_COMMUNE, DSRConstants.NOM_COMMUNE, DSRConstants.ANNEE_REF_COMMUNE, DSRConstants.TYPE_INFO_GEO_COMMUNE };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(communeAll, communeAll, values, "Communes");
+		// same number of elements in codeCommune and nomCommune
+		String[] codeNomCommune = { DSRConstants.CODE_COMMUNE, DSRConstants.NOM_COMMUNE };
+		ArrayList<String> notEmptyCommunes = notEmptyInList(codeNomCommune, values);
+		if (notEmptyCommunes.size() > 0) {
+			sameLengthForAllFields(codeNomCommune, values);
+		}
 
-			// same number of elements in codeCommune and nomCommune
-			String[] codeNomCommune = { DSRConstants.CODE_COMMUNE, DSRConstants.NOM_COMMUNE };
-			ArrayList<String> notEmptyCommunes = notEmptyInList(codeNomCommune, values);
-			if (notEmptyCommunes.size() > 0) {
-				sameLengthForAllFields(codeNomCommune, values);
-			}
+		// ----- DEPARTEMENT ------
 
-			// ----- DEPARTEMENT ------
+		// Departement is 0..*
+		String[] departementAll = { DSRConstants.CODE_DEPARTEMENT, DSRConstants.ANNEE_REF_DEPARTEMENT, DSRConstants.TYPE_INFO_GEO_DEPARTEMENT };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(departementAll, departementAll, values, "Départements");
 
-			// Departement is 0..*
-			String[] departementAll = { DSRConstants.CODE_DEPARTEMENT, DSRConstants.ANNEE_REF_DEPARTEMENT, DSRConstants.TYPE_INFO_GEO_DEPARTEMENT };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(departementAll, departementAll, values, "Départements");
+		// ----- MAILLE ------
 
-			// ----- MAILLE ------
+		// Maille is 0..*
+		String[] mailleAll = { DSRConstants.CODE_MAILLE, DSRConstants.VERSION_REF_MAILLE, DSRConstants.NOM_REF_MAILLE, DSRConstants.TYPE_INFO_GEO_MAILLE };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(mailleAll, mailleAll, values, "Mailles");
 
-			// Maille is 0..*
-			String[] mailleAll = { DSRConstants.CODE_MAILLE, DSRConstants.VERSION_REF_MAILLE, DSRConstants.NOM_REF_MAILLE, DSRConstants.TYPE_INFO_GEO_MAILLE };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(mailleAll, mailleAll, values, "Mailles");
+		// ----- MASSE D'EAU ------
 
-			// ----- MASSE D'EAU ------
+		// Masse d'eau is 0..*
+		String[] massedeauAll = { DSRConstants.CODE_ME, DSRConstants.VERSION_ME, DSRConstants.DATE_ME, DSRConstants.TYPE_INFO_GEO_ME };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(massedeauAll, massedeauAll, values, "Masses d'Eau");
 
-			// Masse d'eau is 0..*
-			String[] massedeauAll = { DSRConstants.CODE_ME, DSRConstants.VERSION_ME, DSRConstants.DATE_ME, DSRConstants.TYPE_INFO_GEO_ME };
-			ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(massedeauAll, massedeauAll, values, "Masses d'Eau");
+		// todo Espace Naturel is 0..*
 
-			// todo Espace Naturel is 0..*
+		// ----- GEOREFERENCE ------
 
-			// ----- GEOREFERENCE ------
+		// One and only one georeferenced object must be given
+		oneGeoreferencedObject(values);
 
-			// One and only one georeferenced object must be given
-			oneGeoreferencedObject(values);
-
-//		} catch (CheckException e) {
-//			throw e;
-//		} catch (Exception e) {
-//			throw e;
-//		}
+		// if errors have been found while doing the checks, return an exception containing those to write in check_error
+		if( alce.size() > 0) {
+			// The arrayList of exceptions
+			CheckExceptionArrayList checkExceptionArrayList = new CheckExceptionArrayList();
+			checkExceptionArrayList.setCheckExceptionArrayList(alce);
+			
+			throw checkExceptionArrayList;
+		}
 	}
 	
 	/**
@@ -384,7 +393,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 						+ StringUtils.join(emptyFieldsinB, ", ") + " (\"" + nameOfSet + "\" doit être fourni car les champs suivants sont remplis : "
 						+ StringUtils.join(notEmptyFieldsinA, ", ") + ").";
 				CheckException ce = new CheckException(MANDATORY_CONDITIONAL_FIELDS, errorMessage);
-				throw ce;
+				// Add the exception in the array list and continue doing the checks
+				alce.add(ce);
 			}
 		}
 	}
@@ -434,7 +444,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			String errorMessage = "Les champs suivants doivent avoir le même nombre d'éléments (séparés par des virgules), ou être vides : "
 					+ StringUtils.join(list, ", ") + ".";
 			CheckException ce = new CheckException(ARRAY_OF_SAME_LENGTH, errorMessage);
-			throw ce;
+			// Add the exception in the array list and continue doing the checks
+			alce.add(ce);
 		}
 	}
 
@@ -456,7 +467,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 				String errorMessage = DSRConstants.VERSION_TAXREF + " est obligatoire car cdNom et/ou cdRef est rempli : " + StringUtils.join(notEmpty, ", ")
 						+ ".";
 				CheckException ce = new CheckException(TAXREF_VERSION, errorMessage);
-				throw ce;
+				// Add the exception in the array list and continue doing the checks
+				alce.add(ce);
 			}
 		}
 	}
@@ -479,7 +491,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 					String errorMessage = DSRConstants.REF_BIBLIO + " est obligatoire car " + DSRConstants.STATUT_SOURCE + " a la valeur \"Li\".";
 					CheckException ce = new CheckException(BIBLIO_REF, errorMessage);
-					throw ce;
+					// Add the exception in the array list and continue doing the checks
+					alce.add(ce);
 				}
 			}
 		}
@@ -507,7 +520,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 					String errorMessage = DSRConstants.PREUVE_NUMERIQUE + " ou " + DSRConstants.PREUVE_NON_NUMERIQUE + " sont obligatoires car "
 							+ DSRConstants.PREUVE_EXISTANTE + " vaut \"1\" (Oui).";
 					CheckException ce = new CheckException(PROOF, errorMessage);
-					throw ce;
+					// Add the exception in the array list and continue doing the checks
+					alce.add(ce);
 				}
 
 				// preuveNumerique doit commencer comme une url
@@ -517,7 +531,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 						String errorMessage = DSRConstants.PREUVE_NUMERIQUE
 								+ " doit être une adresse web et commencer par \"http://\", \"https://\" ou \"ftp://\".";
 						CheckException ce = new CheckException(NUMERIC_PROOF_URL, errorMessage);
-						throw ce;
+						// Add the exception in the array list and continue doing the checks
+						alce.add(ce);
 					}
 				}
 
@@ -530,7 +545,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 					String errorMessage = DSRConstants.PREUVE_EXISTANTE + " ne vaut pas \"1\" (oui) donc les champs suivants doivent être vides : "
 							+ StringUtils.join(notEmpty, ", ") + ".";
 					CheckException ce = new CheckException(PROOF, errorMessage);
-					throw ce;
+					// Add the exception in the array list and continue doing the checks
+					alce.add(ce);
 				}
 			}
 		}
@@ -575,13 +591,16 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 					String errorMessage = DSRConstants.CODE_HABITAT + " est obligatoire car " + DSRConstants.REF_HABITAT + " n'est pas HABREF (position "
 							+ (i + 1) + ").";
 					CheckException ce = new CheckException(HABITAT, errorMessage);
-					throw ce;
+					// Add the exception in the array list and continue doing the checks
+					alce.add(ce);
 				}
 			} else {
 				// codeHabitat ou codeHabRef doit être fourni.
 				if ((codeHabitatArray == null || empty(codeHabitatArray[i])) && (codeHabRefArray == null || empty(codeHabRefArray[i]))) {
 					String errorMessage = DSRConstants.CODE_HABITAT + " ou " + DSRConstants.CODE_HAB_REF + " doit être fourni (position " + (i + 1) + ").";
 					CheckException ce = new CheckException(HABITAT, errorMessage);
+					// Add the exception in the array list and continue doing the checks
+					alce.add(ce);
 				}
 			}
 		}
@@ -636,11 +655,14 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 				errorMessage += " GINCO n'accepte pas les géoréférencements aux espaces naturels ou masses d'eau.";
 			}
 			CheckException ce = new CheckException(NO_GEOREFERENCE, errorMessage);
-			throw ce;
+			// Add the exception in the array list and continue doing the checks
+			alce.add(ce);
+		
 		} else if (georeferencedObjectsNumber > 1) {
 			String errorMessage = "Un seul des champs typeInfoGeo peut valoir 1 (parmi " + StringUtils.join(typeInfoGeoAll, ", ") + ").";
 			CheckException ce = new CheckException(MORE_THAN_ONE_GEOREFERENCE, errorMessage);
-			throw ce;
+			// Add the exception in the array list and continue doing the checks
+			alce.add(ce);
 		}
 	}
 
@@ -755,13 +777,15 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			if (jourDateDebutValue.after(jourDateFinValue)) {
 				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_DEBUT + " est ultérieure à celle de " + DSRConstants.JOUR_DATE_FIN + ".";
 				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
-				throw ce;
+				// Add the exception in the array list and continue doing the checks
+				alce.add(ce);
 			}
 
 			if (jourDateFinValue.after(now)) {
 				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_FIN + " est ultérieure à la date du jour.";
 				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
-				throw ce;
+				// Add the exception in the array list and continue doing the checks
+				alce.add(ce);
 			}
 		}
 
