@@ -248,7 +248,7 @@ CREATE TABLE website.predefined_request_group_asso
       ON UPDATE RESTRICT ON DELETE CASCADE,
   CONSTRAINT fk_predefined_request_request_name FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE CASCADE;
+      ON UPDATE RESTRICT ON DELETE CASCADE
 );
 
 COMMENT ON COLUMN website.predefined_request_group_asso.group_id IS 'The group identifier';
