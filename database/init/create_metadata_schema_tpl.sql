@@ -289,7 +289,9 @@ FORMAT               VARCHAR(255)          not null,
 IS_MANDATORY         CHAR(1)          	  null,
 MASK                 VARCHAR(100)         null,
 POSITION             INT4                 null,
-constraint PK_FILE_FIELD primary key (DATA, FORMAT)
+LABEL_CSV			 VARCHAR(60)		   not null,
+constraint PK_FILE_FIELD primary key (DATA, FORMAT),
+constraint file_field_format_label_csv_key UNIQUE (format, label_csv)
 );
 
 COMMENT ON COLUMN FILE_FIELD.DATA IS 'The logical name of the field';

@@ -9,13 +9,13 @@
     or (submission.step is same as('CHECK') and (submission.status is same as("OK") or submission.status is same as('WARNING')))) %}
         <a href="{{ path('integration_validate',{'submissionId': submission.id}) }}" title="{{ 'Confirm submission'|trans }}"
            onClick="return confirm('{{ 'Confirm_submission_warning'|trans }}');">
-            <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
         </a>
     {% endif %}
     {% if (submission.step is same as('VALIDATE') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
         <a href="{{ path('integration_invalidate',{'submissionId': submission.id}) }}" title=" {{ 'Invalidate submission'|trans }}"
            onClick="return confirm('{{ 'Confirm_invalidation_warning'|trans }}');">
-            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
         </a>
     {% endif %}
 
