@@ -28,6 +28,7 @@ try {
 	 execCustSQLFile("$sprintDir/update_mtd_to_preprod.sql", $config);
 	 execCustSQLFile("$sprintDir/add_limit_import_error.sql", $config);
 	 execCustSQLFile("$sprintDir/add_label_csv_in_file_field.sql", $config);
+	 execCustSQLFile("$sprintDir/enable_zoom_levels.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
