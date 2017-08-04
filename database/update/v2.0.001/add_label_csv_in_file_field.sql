@@ -6,12 +6,12 @@ ALTER TABLE metadata_work.file_field ADD COLUMN label_csv varchar(60);
 UPDATE metadata_work.file_field SET label_csv =
 (SELECT data.label
   FROM data
-  WHERE data.data = file_field.data)
+  WHERE data.data = file_field.data);
   
 UPDATE metadata.file_field SET label_csv =
 (SELECT data.label
   FROM data
-  WHERE data.data = file_field.data)
+  WHERE data.data = file_field.data);
 
 -- Add unicity constraint
 ALTER TABLE metadata.file_field ADD UNIQUE (format, label_csv);
