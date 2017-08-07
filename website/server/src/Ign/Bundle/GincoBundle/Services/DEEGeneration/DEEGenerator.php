@@ -316,9 +316,16 @@ class DEEGenerator {
 		foreach ($observations as $index => $observation) {
 			$observation = $this->dee->formatDates($observation);
 			$observation = $this->dee->transformCodes($observation);
+			
+			if (isset($observation['orgtransformation'])) {
+				$orgTransformation = $observation['orgtransformation'];
+			} else {
+				$orgTransformation = (isset($params['site_name'])) ? $params['site_name'] : 'Plateforme GINCO-SINP';
+			}
 			$observation = $this->dee->fillValues($observation, array(
-				'orgtransformation' => (isset($params['site_name']) ? $params['site_name'] : 'Plateforme GINCO-SINP')
+				'orgtransformation' => $orgTransformation
 			));
+			
 			$observation = $this->dee->fillValues($observation, array(
 				'deedatetransformation' => (date('c'))
 			));
