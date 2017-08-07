@@ -522,7 +522,11 @@ class DEEModel {
         // date de transformation = date où l'on génère la DEE = maintenant
         $transformationDate = date('c');
         // organisme de transformation
-        $orgTransformation = (isset($params['site_name'])) ? $params['site_name'] : 'Plateforme GINCO-SINP';
+        if (isset($observation['orgtransformation'])) {
+        	$orgTransformation = $observation['orgtransformation'];
+        } else {
+        	$orgTransformation = (isset($params['site_name'])) ? $params['site_name'] : 'Plateforme GINCO-SINP';
+        }
 
 		// Group observations and compute attributes
 		foreach ($observations as $observation) {
