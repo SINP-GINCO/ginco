@@ -77,6 +77,8 @@ class DEEGenerator {
 		
 		// gmlId is generated as a sequence of integer
 		$this->gmlId = 1;
+		
+		$this->logger = $logger;
 	}
 
 	/**
@@ -317,7 +319,7 @@ class DEEGenerator {
 			$observation = $this->dee->formatDates($observation);
 			$observation = $this->dee->transformCodes($observation);
 			
-			if (isset($observation['orgtransformation'])) {
+			if (!empty($observation['orgtransformation'])) {
 				$orgTransformation = $observation['orgtransformation'];
 			} else {
 				$orgTransformation = (isset($params['site_name'])) ? $params['site_name'] : 'Plateforme GINCO-SINP';
