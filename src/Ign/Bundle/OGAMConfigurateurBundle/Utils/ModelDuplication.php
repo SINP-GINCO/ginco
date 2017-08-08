@@ -32,9 +32,11 @@ class ModelDuplication extends DatabaseUtils {
 	 *        	the model to copy
 	 * @param $copyModelName string
 	 *        	the name of the copied model.
+	 * @param $copyModelDescription string
+	 *        	the description of the copied model.
 	 * @return a message id explaining the result of the operation.
 	 */
-	public function duplicateModel($model, $copyModelName) {
+	public function duplicateModel($model, $copyModelName, $copyModelDescription) {
 		$this->conn->beginTransaction();
 		$copyUtils = new CopyUtils($this->conn, $this->logger, $this->adminName, $this->adminPassword);
 		$modelId = $model->getId();
@@ -49,7 +51,7 @@ class ModelDuplication extends DatabaseUtils {
 		$destSchema = 'metadata_work';
 
 		// Copy data without modifying primary keys
-		$copiedModelId = $copyUtils->copyModel($modelId, $destSchema, true, $copyModelName);
+		$copiedModelId = $copyUtils->copyModel($modelId, $destSchema, true, $copyModelName, $copyModelDescription);
 		$copyUtils->copyFormat($modelId, $destSchema, true);
 		$copyUtils->copyTableFormat($modelId, $destSchema, true, $copiedModelId);
 		$copyUtils->copyTableTree($modelId, $destSchema, true);

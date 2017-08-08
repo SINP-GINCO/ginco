@@ -355,9 +355,11 @@ class CopyUtils extends DatabaseUtils {
 	 *        	wether the method is called for duplication or not.
 	 * @param $copyModelName string
 	 *        	the name of the copied model. Only for duplication.
+	 * @param $copyModelDescription string
+	 *        	the description of the copied model. Only for duplication.
 	 * @return the generated id of the model if duplicate is true.
 	 */
-	public function copyModel($modelId, $destSchema, $duplicate, $copyModelName = NULL) {
+	public function copyModel($modelId, $destSchema, $duplicate, $copyModelName = NULL, $copyModelDescription = NULL) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
@@ -380,7 +382,7 @@ class CopyUtils extends DatabaseUtils {
 				pg_execute($this->pgConn, "", array(
 					$copiedModelId,
 					$copyModelName,
-					$row['description'],
+					$copyModelDescription,
 					$row['schema_code']
 				));
 				return $copiedModelId;

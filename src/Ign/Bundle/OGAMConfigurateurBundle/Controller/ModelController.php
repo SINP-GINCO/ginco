@@ -455,7 +455,8 @@ class ModelController extends Controller {
 
 			if ($form->isValid()) {
 				$copyModelName = $form->getData()->getName();
-				$successStatus = $this->get('app.modelduplication')->duplicateModel($model, $copyModelName);
+				$copyModelDescription = $form->getData()->getDescription();
+				$successStatus = $this->get('app.modelduplication')->duplicateModel($model, $copyModelName, $copyModelDescription);
 				$modelName = $model->getName();
 				if ($successStatus == 'datamodel.duplicate.success') {
 					$this->addFlash('notice', $this->get('translator')
