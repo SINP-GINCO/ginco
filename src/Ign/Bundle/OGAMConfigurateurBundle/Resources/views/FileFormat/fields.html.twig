@@ -38,7 +38,7 @@
 			<h4>{% trans %}file.edit.dictionary.title{% endtrans %}</h4>
 			<table id="all-data-table" data-toggle="table" data-height="400"
 				data-click-to-select="true" data-search="true"
-				data-maintain-selected = "true" data-search-align="left"
+				data-maintain-selected ="true" data-search-align="left"
 				class="table table-hover table-condensed">
 				<thead>
 					<tr>
@@ -52,7 +52,7 @@
 						{% if champ.dataName[0:5] != 'OGAM_' and champ.dataName != 'PROVIDER_ID'
 						and champ.dataName != 'SUBMISSION_ID' %}
 							<tr>
-								<td>ee</td>
+								<td></td>
 								<td id="name" class="hidden">{{ champ.dataName }} [{{ champ.unitType }}]</td>
 								<td id="label">{{ champ.label }} [{{ champ.unitType }}]</td>
 							</tr>
