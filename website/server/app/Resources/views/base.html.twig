@@ -177,8 +177,23 @@
     '@jquery_and_bootstrap'
      %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    
+    {% if app.environment == 'prod' %}
+		<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes.js') }}"></script>
+	{% else %}
+		<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes_dev.js') }}"></script>
+	{% endif %}
+		
+	<script>
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip();
+		});
+	</script>
+	{% endjavascripts %}
 {% endblock %}
+
+	{% block specificjavascripts %}
+	{% endblock %}
 
 </body>
 </html>
