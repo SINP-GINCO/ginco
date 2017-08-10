@@ -13,16 +13,15 @@ FONTSET "@deploy.dir@/mapserver/data/fonts/fonts.txt"
 SYMBOLSET "@deploy.dir@/mapserver/data/fonts/symbols.sym"
 
 CONFIG  "MS_ERRORFILE" "@deploy.dir@/website/server/app/logs/mapserver_errors.log"
+DEBUG 0
+# Erreurs seulement
 # Mode verbeux
 # DEBUG 5
-# Erreurs seulement
-DEBUG 0
 
 #
 # Start of web interface definition
 #
 WEB
-   LOG "@deploy.dir@/website/server/app/logs/mapserver.log"
    METADATA
 
       WFS_TITLE   				"GINCO MapServer"
