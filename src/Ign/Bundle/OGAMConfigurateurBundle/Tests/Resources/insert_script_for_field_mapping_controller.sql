@@ -111,17 +111,17 @@ INSERT INTO dataset_files (dataset_id, format) VALUES ('4', 'file_with_mapping')
 INSERT INTO dataset_files (dataset_id, format) VALUES ('4', 'file_without_mapping');
 INSERT INTO dataset_files (dataset_id, format) VALUES ('5', 'file_with_cdnom');
 
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('datedebut', 'file_mapped_with_table_to_delete', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('altitudemax', 'file_with_fields', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('jddcode', 'file_with_fields', '0', '', '2');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('jddid', 'file_with_fields', '0', '', '3');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('cdnom', 'file_with_cdnom', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('identite', 'file_with_field', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('identite', 'file_with_mapping', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('altitudemin', 'file_auto_mapping', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('altitudemax', 'file_auto_mapping', '0', '', '2');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('cdnom', 'file_auto_mapping', '0', '', '3');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('codecommune', 'file_auto_mapping', '0', '', '4');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datedebut', 'file_mapped_with_table_to_delete', '0', '', 'datedebut');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_with_fields', '0', '', 'altitudemax');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddcode', 'file_with_fields', '0', '', 'jddcode');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddid', 'file_with_fields', '0', '', 'jddid');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('cdnom', 'file_with_cdnom', '0', '', 'cdnom');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('identite', 'file_with_field', '0', '', 'identite');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('identite', 'file_with_mapping', '0', '', 'identite');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file_auto_mapping', '0', '', 'altitudemin');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_auto_mapping', '0', '', 'altitudemax');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('cdnom', 'file_auto_mapping', '0', '', 'cdnom');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('codecommune', 'file_auto_mapping', '0', '', 'codecommune');
 
 INSERT INTO field_mapping (src_data, src_format, dst_data, dst_format, mapping_type) VALUES ('datedebut', 'file_mapped_with_table_to_delete', 'datedebut', 'table_to_delete', 'FILE');
 INSERT INTO field_mapping (src_data, src_format, dst_data, dst_format, mapping_type) VALUES ('jddid', 'file_with_fields', 'jddid', 'table_with_fields', 'FILE');

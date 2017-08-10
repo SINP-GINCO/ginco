@@ -40,11 +40,9 @@
 					<tr>
 						<th data-field="name">{% trans %}Field name{% endtrans %}</th>
 						<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
+						<th data-field="labelCSV">{% trans %}Nom de colonne dans le fichier{% endtrans %}</th>
 						<th data-field="mandatory">{% trans %}Mandatory{% endtrans %}</th>
 						<th data-field="mask">{% trans %}fileField.mask{% endtrans %}</th>
-						<th data-field="order"><span data-toggle="tooltip"
-							title="{% trans %}fileField.order.tooltip{% endtrans %}">{%
-								trans %}fileField.position{% endtrans %}</span></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -53,6 +51,7 @@
 						<td id="name">{{ champ.label
 								}}</td>
 						<td id="unit">{{ champ.unitType }}</td>
+						<td id="unit">{{ champ.labelCSV }}</td>
 						<td id="mandatory" class=text-center">{% if champ.isMandatory ==
 							'1' %}
 						 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% trans %} yes{% endtrans %}
@@ -61,8 +60,6 @@
 						 {% endif %}
 						</td>
 						<td>{{ champ.mask}}</td>
-						<td id="order" class="priority text-center">{{
-								champ.position}}</td>
 					</tr>
 					{% endfor %}
 				</tbody>
@@ -70,8 +67,6 @@
 		</div>
 	</div>
 </div>
-
-{{ include('IgnOGAMConfigurateurBundle:FieldMapping:view.html.twig') }}
 
 {% endblock %}
 

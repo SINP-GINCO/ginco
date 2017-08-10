@@ -125,7 +125,7 @@ class DatasetImportController extends Controller {
 			$finalTargetDataModel = $form->get('model')->getViewData();
 			if ($initialTargetDataModel != $finalTargetDataModel) {
 				// Delete the mappings of this model
-				$mappingsRemoved = false;
+				$fieldsRemoved = false;
 				$fmRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
 				$ffRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FileField");
 
@@ -134,16 +134,18 @@ class DatasetImportController extends Controller {
 					$fields = $ffRepository->findFieldsByFileFormat($file->getFormat());
 					if (count($fields) > 0) {
 						// Check if there are mappings to delete
-						$mappings = $fmRepository->findMappings($file->getFormat(), 'FILE');
-						if (count($mappings) > 0) {
-							$fmRepository->removeAllByFileFormat($file->getFormat());
-							$mappingsRemoved = true;
-						}
+ 						$mappings = $fmRepository->findMappings($file->getFormat(), 'FILE');
+ 						if (count($mappings) > 0) {
+ 							$fmRepository->removeAllByFileFormat($file->getFormat());
+ 						}
+ 						// Delete fields
+ 						$ffRepository->deleteAllByFileFormat($file->getFormat());
+ 						$fieldsRemoved = true;
 					}
 				}
-				if ($mappingsRemoved) {
+				if ($fieldsRemoved) {
 					$this->addFlash('warning', $this->get('translator')
-						->trans('importmodel.edit.mappings_removed'));
+						->trans('importmodel.edit.file_fields_removed'));
 				}
 			}
 			$em->flush();

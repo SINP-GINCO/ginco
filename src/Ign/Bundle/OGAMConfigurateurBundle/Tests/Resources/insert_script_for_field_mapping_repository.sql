@@ -42,10 +42,10 @@ INSERT INTO dataset_files (dataset_id, format) VALUES ('4', 'file_removeAllByFil
 INSERT INTO dataset_files (dataset_id, format) VALUES ('4', 'file_removeAllByFileField');
 INSERT INTO dataset_files (dataset_id, format) VALUES ('4', 'file1');
 
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('altitudemax', 'file_removeAllByFileFormat', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('altitudemax', 'file_removeAllByFileField', '0', '', '1');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('altitudemax', 'file1', '0', '', '0');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('altitudemin', 'file1', '0', '', '1');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_removeAllByFileFormat', '0', '', 'altitudemax');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_removeAllByFileField', '0', '', 'altitudemax');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file1', '0', '', 'altitudemax');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file1', '0', '', 'altitudemin');
 
 INSERT INTO field_mapping (src_data, src_format, dst_data, dst_format, mapping_type) VALUES ('altitudemax', 'file_removeAllByFileFormat', 'altitudemax', 'table1', 'FILE');
 INSERT INTO field_mapping (src_data, src_format, dst_data, dst_format, mapping_type) VALUES ('altitudemax', 'file_removeAllByFileField', 'altitudemax', 'table1', 'FILE');

@@ -26,7 +26,7 @@ INSERT INTO file_format (format, file_extension, file_type, "position", label, d
 
 INSERT INTO dataset_files (dataset_id, format) VALUES ('ginco_my_import_model', 'file_auto');
 
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('altitudemin', 'file_auto', '1', NULL, 1);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file_auto', '1', NULL, 'altitudemin');
 
 
 INSERT INTO table_format VALUES ('my_table', '14_table', 'RAW_DATA', 'PROVIDER_ID', 'table', NULL);

@@ -28,14 +28,6 @@ fileFormat:
   description:
     notBlank: Veuillez saisir une description pour le format de fichier.
     maxLength: La description du format de fichier ne peut dépasser 255 caractères.
-fieldMapping:
-    unique: Le champ de cette table est déjà utilisé par une relation.
-    srcData:
-        notBlank: Veuillez sélectionner un champ du fichier.
-    dstData:
-        notBlank: Veuillez sélectionner un champ dans la table.
-    dstFormat:
-        notBlank: Veuillez sélectionner une table.
 
 data:
   name:

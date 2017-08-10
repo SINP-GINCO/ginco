@@ -60,7 +60,6 @@ breadcrumb:
     view: Visualisation du modèle d'import %modelName%
   file:
     edit: Edition du fichier %fileName%
-    mapping: Mapping du fichier %fileName%
     new: Création d'un fichier
     view: Visualisation du fichier %fileName%
   inputmodel:
@@ -108,8 +107,7 @@ datamodel:
     warning: Pour modifier le modèle, il doit d'abord être dépublié. Pour valider vos modifications en production, vous devrez donc le publier à nouveau en production. Souhaitez-vous dépublier le modèle ?
     published: Le modèle %modelName% ne peut être modifié car il est publié.
     impossible: Le modèle ne peut être modifié car il contient des données en production.
-    mappings: Attention, la modification du modèle %modelName% entraînera la suppression des éventuels mappings liés à ce modèle.
-    mappings_removed: Les mappings liés à ce modèle ont été supprimés. 
+    files: Attention, la modification du modèle %modelName% entraînera la suppression d'éventuels champs des fichiers d'import liés à ce modèle.
     tables:
       title: Tables
       add: Créer une nouvelle table
@@ -183,9 +181,10 @@ Models: Modèles
 Tables: Tables
 
 Table: Table %table.label%
-Field name: Nom du champ
+Field name: Nom du champ dans la table
 Unit: Unité
-Mandatory: Obligatoire 
+Mandatory: Obligatoire
+LabelCSV: Nom du champ dans le fichier
 
 Parent table: Table parente
 HierarchicalRelationsTitle: Définition des relations hiérarchiques
@@ -200,8 +199,8 @@ importmodel:
   edit:
     title: Edition du modèle d'import %labelDataset%
     warning: Pour modifier ce modèle d'import, il doit d'abord être dépublié. Pour valider vos modifications en production, vous devrez donc le publier à nouveau en production. Souhaitez-vous dépublier le modèle ?
-    targetModelChanged: ATTENTION. La modification du modèle de données cible entraînera la suppression des éventuels mappings liés à ce modèle d'import à l'enregistrement.
-    mappings_removed: Les mappings liés à ce modèle d'import ont été supprimés.
+    targetModelChanged: ATTENTION. La modification du modèle de données cible entraînera la suppression d'éventuels champs de fichiers liés à ce modèle d'import à l'enregistrement.
+    file_fields_removed: Les champs liés à ce modèle d'import ont été supprimés.
     published: Le modèle d'import %importModelName% ne peut être modifié car il est publié en production.
   delete:
     success: Le modèle d'import '%modelName%' a été supprimé avec succès.
@@ -215,7 +214,7 @@ importmodel:
       1: >-
         <p>Le modèle d'import '%importModelName%' ne peut pas être publié, car :</p>
       2: <ul><li>Soit le modèle de données cible '%modelName%' n'est pas publié;</li><li>Soit il ne comporte aucun fichier d'import;</li>
-      3: <li>Soit certains de ses fichiers d'import ne comportent aucun champ;</li><li>Soit certains de ses fichiers d'import ne comportent aucun mapping.</li></ul>
+      3: <li>Certains de ses fichiers d'import ne comportent aucun champ;</li></ul>
       4: <p>Pour publier le modèle d'import, vous devez corriger ces points.</p>
     badid: Le modèle d'import '%importModelId%' n'a pas pu être publié car il n'existe pas.   
   unpublish:
@@ -253,12 +252,11 @@ file:
       title: Description du format de fichier CSV %file.label%
       success: Les champs du fichier %file.label% ont été mis à jour avec succès.
       button: Gérer les Champs
-      saveAndManageMappings: Enregistrer et gérer les mappings
     definition:
       success: La définition du fichier %file.label% a été mise à jour avec succès.
       fail: La définition du fichier %file.label% n'a pas été mise à jour suite à une erreur.
     title: Fichier "%file.label%" du modèle d'import "%dataset.label%"
-    dictionary.title: Dictionnaire de données
+    table.title: Champs présents dans le modèle de données cible
     order.help: Cette colonne permet de définir l'ordre d'import des fichiers. Le fichier d'ordre 1 doit être celui qui correspond à la table parente. L'ordre est modifiable par glisser-déposer des lignes du tableau.
   new.title: Définition du fichier du modèle d'import %dataset.label%
   dataset.notfound: Le modèle d'import spécifié avec l'identifiant "%datasetId%" n'existe pas.
@@ -280,7 +278,6 @@ File Format Visualisation: Visualisation des fichiers
 File: Description du format de fichier %file.label%
 fileField.mask: Format de date
 fileField:
-  position: Ordre
   mask:
     label: Format de date
     help: Le masque d'un champ est l'expression régulière que la valeur d'un champ doit vérifier lors de l'import. Lorsqu'aucun masque n'est indiqué, aucune vérification n'est faite sur les valeurs.
@@ -305,59 +302,8 @@ fileField:
        5: <p>Aucun champ n'a été rajouté dans le fichier.</p>
        6: >-
          <p>%fieldsAddedCount% champs ont été ajoutés au fichier : <strong>%fieldsAdded%</strong></p>
-       7: <p>Voulez-vous aussi effectuer le <a href='%mappingLink%'>Mapping automatique</a> ?</p>
        8: >-
           <p>Les %calculatedFieldsCount% champs suivants n'ont pas été ajoutés : %calculatedFields%. Ils seront calculés automatiquement lors de l'import de données.</p>
-
-# mapping
-
-fieldMapping:
-  add: Ajouter une règle d'import dans le modèle
-  CSVMapping: Mapping du format de fichier CSV %file.label%
-  mappingMethod: Methode de mapping
-  fileField: Champ du fichier
-  mappedTable: Table en base
-  mappedTableField: Champ de la table
-  selectFileField: Sélectionner un champ du fichier...
-  selectTable: Sélectionner une table...
-  copy: Copier
-  ignore: Ignorer
-  stayOnPage: Rester sur la page
-  manageMappingsButton: Gérer les mappings
-  saveFileAndMappings: Certains champs du fichier '%file.label%' ne sont pas reliés à un champ de table. Ils ne seront pas insérés dans la base de données
-  unique: Le champ de cette table est déjà utilisé par une relation.
-  none: Aucun mapping défini.
-  table: Table
-  tableField: Champ de la table
-  method: Méthode de mapping
-  rule: Règle de mapping
-  in: dans
-  manual:
-    title: Mapping manuel
-  auto:
-    title: Mapping automatique
-    label: "Mapper sur la table :"
-    chooseatable: Veuillez choisir une table cible pour le mapping
-    report:
-      1: <p>Les champs du fichier "%fileLabel%" ont été mappés automatiquement sur ceux de la table "%tableName%".</p>
-      2: >-
-        <p>Initialement, il y avait : </p><ul><li>%alreadyMapped% champs du fichier déjà mappés ;</li><li>%toMap% champs du fichier à mapper.</li></ul>
-      3:
-        1: <p>Rapport de mapping automatique :</p><ul><li>%autoMapped% champs ont été mappés automatiquement.</li>
-        2: >-
-          <li>%alreadyMappedInTable% champs n'ont pas pu être mappés car le champ correspondant dans la table est déjà mappé : %alreadyMappedInTableList%</li>
-        3: >-
-          <li>%notFoundInTable% champs n'ont pas pu être mappés car il n'y a pas de correspondance dans la table : %notFoundInTableList%</li>
-        4: </ul>
-      4:
-        1: <p><strong>Tous les champs du fichier sont maintenant mappés aux champs de la table et inversement.</strong></p>
-        2: >-
-         <p>Après le mapping automatique, il reste : </p><ul>
-        3: >-
-          <li>Dans le fichier : %notMappedInFile% champs non mappés : <strong>%notMappedInFileList%</strong></li>
-        4: >-
-          <li>Dans la table : %notMappedInTable% champs non mappés : <strong>%notMappedInTableList%</strong></li>
-        5: </ul>
  
 # Dictionnaire de données
 data:

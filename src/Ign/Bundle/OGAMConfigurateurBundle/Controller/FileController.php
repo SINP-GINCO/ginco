@@ -129,9 +129,10 @@ class FileController extends Controller {
 			throw $this->createNotFoundException($errMsg);
 		}
 
-		// Get dictionary
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
-		$allFields = $dataRepository->findAllFields();
+		// Get Table Fields
+		$modelId = $dataset->getModel();
+		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
+		$tableFields = $tableFieldRepository->getTableFieldsForModel($modelId);
 		// Get File Fields
 		$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 		$fileFields = $fileFieldRepository->findFieldsByFileFormat($format);
@@ -142,7 +143,7 @@ class FileController extends Controller {
 		return $this->render('IgnOGAMConfigurateurBundle:FileFormat:fields.html.twig', array(
 			'file' => $file,
 			'dataset' => $dataset,
-			'allFields' => $allFields,
+			'tableFields' => $tableFields,
 			'fileFields' => $fileFields,
 			'autoAddFieldsForm' => $autoAddFieldsForm->createView(),
 		));
@@ -373,14 +374,6 @@ class FileController extends Controller {
 			}
 			$em->flush();
 
-			$link = $this->generateUrl("configurateur_field_automapping_direct", array(
-				'datasetId' => $datasetId,
-				'fileFormat' => $fileFormat,
-				'tableFormat' => $tableFormat,
-			));
-
-			$report['mappingLink'] = $link;
-
 			$notice = $this->generateReportAutoAddFields($report);
 
 			$this->addFlash('notice-autoaddfields', $notice );
@@ -431,8 +424,6 @@ class FileController extends Controller {
 			$reportMessage .= $translator->trans('fileField.auto.report.6',
 					array('%fieldsAddedCount%' => count($report['fieldsToAdd']),
 							'%fieldsAdded%' => implode(', ',$report['fieldsToAdd'])));
-			$reportMessage .= $translator->trans('fileField.auto.report.7',
-					array('%mappingLink%' => $report['mappingLink']));
 		}
 
 		return $reportMessage;

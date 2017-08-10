@@ -44,7 +44,6 @@ datasetForm 'bootstrap_3_horizontal_layout.html.twig' %} {% block title
 							</th>
 							<th data-align="center">{% trans %}Edit{% endtrans %}</th>
 							<th data-align="center">{% trans %}Fields{% endtrans %}</th>
-							<th data-align="center">{% trans %}Mappings{% endtrans %}</th>
 							<th data-align="center">{% trans %}Delete{% endtrans %}</th>
 						</tr>
 					</thead>
@@ -65,13 +64,6 @@ datasetForm 'bootstrap_3_horizontal_layout.html.twig' %} {% block title
 									   title="Gérer les champs"
 									   href="{{ path('configurateur_file_fields',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">
 										<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-									</a>
-								</td>
-								<td class=col-md-1>
-									<a type="button" class="btn btn-default"
-									   title="Gérer les mappings"
-									   href="{{ path('configurateur_file_mappings',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">
-										<span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
 									</a>
 								</td>
 								<td class=col-md-1>

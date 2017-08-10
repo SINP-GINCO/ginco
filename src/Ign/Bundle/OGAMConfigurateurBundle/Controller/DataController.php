@@ -55,73 +55,40 @@ class DataController extends Controller {
 			$em->persist($entity);
 			$em->flush();
 
-			// Attach the new Data to a table/file ?
+			// Attach the new Data to a table ?
 			$attachField = false;
-			$type = "";
 
 			if ($form->has('add_to_format')) {
-				// Checks if the table/file exists and is editable
+				// Checks if the table exists and is editable
 				$formatSubmitted = $form->get('add_to_format')->getData();
 				$theFormat = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($formatSubmitted);
 				$type = ($theFormat) ? $theFormat->getType() : "";
-				switch ($type) {
-					case 'TABLE':
-						$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($formatSubmitted);
-						if ($tableFormat) {
-							// Do you have the right to modify the tableFormat object ?
-							$modelsPubState = $this->get('app.modelPublication')->isPublished($tableFormat->getModel()
-								->getId());
-							$modelsHasData = $this->get('app.modelUnpublication')->modelHasData($tableFormat->getModel()
-								->getId());
-							if (!$modelsPubState && !$modelsHasData) {
-								$attachField = true;
-							}
-						}
-						break;
-					case 'FILE':
-						$fileFormat = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($formatSubmitted);
-						if ($fileFormat) {
-							// Do you have the right to modify the tableFormat object ?
-							$importModelPubState = $this->get('app.importmodelPublication')->isPublished($fileFormat->getDataset()
-								->getId());
-							if (!$importModelPubState) {
-								$attachField = true;
-							}
-						}
-						break;
+				$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($formatSubmitted);
+				if ($tableFormat) {
+					// Do you have the right to modify the tableFormat object ?
+					$modelsPubState = $this->get('app.modelPublication')->isPublished($tableFormat->getModel()
+						->getId());
+					$modelsHasData = $this->get('app.modelUnpublication')->modelHasData($tableFormat->getModel()
+						->getId());
+					if (!$modelsPubState && !$modelsHasData) {
+						$attachField = true;
+					}
 				}
 			}
 
-			// Redirects to "Add Fields to the table/file" page (which then redirects to the "edit table/file" page).
+			// Redirects to "Add Fields to the table" page (which then redirects to the "edit table" page).
 			if ($attachField) {
-				switch ($type) {
-					case 'TABLE':
-						$this->addFlash('notice', $this->get('translator')
-							->trans('data.add.attachsuccess.table', array(
-							'%dataName%' => $entity->getName()
-						)));
+				$this->addFlash('notice', $this->get('translator')
+					->trans('data.add.attachsuccess.table', array(
+					'%dataName%' => $entity->getName()
+				)));
 
-						return $this->redirect($this->generateUrl('configurateur_table_add_fields', array(
-							'modelId' => $tableFormat->getModel()
-								->getId(),
-							'format' => $formatSubmitted,
-							'fields' => $entity->getName()
-						)));
-						break;
-					case 'FILE':
-						$this->addFlash('notice', $this->get('translator')
-							->trans('data.add.attachsuccess.file', array(
-							'%dataName%' => $entity->getName()
-						)));
-
-						return $this->redirect($this->generateUrl('configurateur_file_add_fields', array(
-							'datasetId' => $fileFormat->getDataset()
-								->getId(),
-							'format' => $formatSubmitted,
-							'addedFields' => $entity->getName()
-						)));
-						break;
-				}
+				return $this->redirect($this->generateUrl('configurateur_table_add_fields', array(
+					'modelId' => $tableFormat->getModel()
+						->getId(),
+					'format' => $formatSubmitted,
+					'fields' => $entity->getName()
+				)));
 			} else			// Redirects to the Data Dictionnary index
 			{
 				$this->addFlash('notice', $this->get('translator')

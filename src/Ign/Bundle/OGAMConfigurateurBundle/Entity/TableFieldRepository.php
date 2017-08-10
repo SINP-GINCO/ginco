@@ -76,6 +76,29 @@ class TableFieldRepository extends EntityRepository {
 		));
 		return $query->getResult();
 	}
+	
+	/**
+	 * Get all table_fields for a given dataset
+	 *
+	 * @param
+	 *        	$datasetId
+	 * @return Array[TableField]
+	 */
+	public function getTableFieldsForModel($modelId) {
+		
+		$query = $this->_em->createQuery("SELECT tfi.data, d.label, u.type
+				FROM IgnOGAMConfigurateurBundle:TableField tfi
+				LEFT JOIN IgnOGAMConfigurateurBundle:ModelTables mt WITH tfi.tableFormat = mt.table
+				LEFT JOIN IgnOGAMConfigurateurBundle:Data d WITH tfi.data = d.name
+				LEFT JOIN IgnOGAMConfigurateurBundle:Unit u WITH d.unit = u.name
+				WHERE mt.model = :modelId
+				ORDER BY d.label");
+		$query->setParameters(array(
+			'modelId' => $modelId
+		));
+
+		return $query->getResult();
+	}
 
 	/**
 	 * Deletes all the fields of the table.

@@ -45,9 +45,9 @@ class FileField {
 
 	/**
 	 *
-	 * @var integer @ORM\Column(name="position", type="integer", nullable=true)
+	 * @var string @ORM\Column(name="label_csv", type="string", nullable=true)
 	 */
-	private $position;
+	private $labelCSV;
 
 	/**
 	 * Get format
@@ -137,23 +137,23 @@ class FileField {
 	}
 
 	/**
-	 * Set position
+	 * Set labelCSV
 	 *
-	 * @param integer $position        	
+	 * @param string $labelCSV        	
 	 * @return FileField
 	 */
-	public function setPosition($position) {
-		$this->position = $position;
+	public function setLabelCSV($labelCSV) {
+		$this->labelCSV = $labelCSV;
 		
 		return $this;
 	}
 
 	/**
-	 * Get position
+	 * Get labelCSV
 	 *
-	 * @return integer
+	 * @return string
 	 */
-	public function getPosition() {
-		return $this->position;
+	public function getLabelCSV() {
+		return $this->labelCSV;
 	}
 }

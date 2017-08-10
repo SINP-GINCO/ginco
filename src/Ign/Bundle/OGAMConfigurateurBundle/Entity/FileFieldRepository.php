@@ -16,10 +16,10 @@ class FileFieldRepository extends EntityRepository {
 	 */
 	public function findFieldsByFileFormat($fileFormat) {
 		$em = $this->getEntityManager();
-		$query = $em->createQuery('SELECT DISTINCT tfi.data as fieldName,
+		$query = $em->createQuery('SELECT DISTINCT tfi.data as fieldName, tfi.labelCSV,
 						dt.label as label,
 						u.type as unitType, tfi.isMandatory,
-						tfi.mask, tfi.position
+						tfi.mask
 					FROM IgnOGAMConfigurateurBundle:FileField tfi
 					LEFT JOIN IgnOGAMConfigurateurBundle:FileFormat tfo
 						WITH tfo.format = tfi.fileFormat
@@ -28,7 +28,7 @@ class FileFieldRepository extends EntityRepository {
 					LEFT JOIN IgnOGAMConfigurateurBundle:Unit u
 						WITH dt.unit = u.name
 					WHERE tfi.fileFormat = :fileFormat
-					ORDER BY tfi.position');
+					ORDER BY tfi.labelCSV');
 
 		$query->setParameters(array(
 			'fileFormat' => $fileFormat

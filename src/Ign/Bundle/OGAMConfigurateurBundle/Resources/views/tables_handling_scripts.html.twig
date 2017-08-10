@@ -8,10 +8,11 @@ var $allDataTable = $('#all-data-table');
 var $selectedDataTable = $('#selected-data-table');
 var $transferButton = $('#transfer-data');
 var $saveFileButton = $('#save-file-form');
-var $saveFileToMappingsButton = $('#save-file-form-to-mappings');
 var $saveTableButton = $('#save-table-form');
 var $saveFileOrderButton = $('#save-file-order');
 var $deleteAllFieldsButton = $('#remove-all-fields');
+
+console.log('script');
 
 /*
 Calls the transfer action of the TableController or FileController.
@@ -25,23 +26,24 @@ $transferButton.click(function() {
 	})
 
 	var names = "";
+	var labelCSVs = "";
 	var mandatorys = "";
 	var masks = "";
-	var orders = "";
 
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
+		var $labelCSV = $(this).find('#labelCSV').val();
+		console.log($labelCSV);
 		var $mandatory = $(this).find('input:checked').is(':checked');
 		var $mask = $(this).find('#mask').val();
-		var $order = $(this).find('#order').text();
 		if($name != ""){
 			names = names + $name + ",";
+			labelCSVs = labelCSVs + $labelCSV + ",";
 			mandatorys = mandatorys + $mandatory + ",";
 			if($mask === ""){
 				$mask = "null";
 			}
 			masks = masks + encodeURIComponent($mask) + ",";
-			orders = orders + $order + ",";
 		}
 	});
 
@@ -65,9 +67,9 @@ $transferButton.click(function() {
 					datasetId : '{{dataset.id}}',
 					addedFields : addedNames,
 					fields : names,
+					labelCSVs : labelCSVs,
 					mandatorys : mandatorys,
 					masks : masks,
-					orders :orders,
 					format: '{{ file.format }}'
 				});
 			} else {
@@ -92,18 +94,7 @@ Calls the update fields action of the FileController.
 */
 $saveFileButton.click(function() {
 	{% if file.format is defined %}
-		var form = getFormFromFileTable(false);
-		$('body').append(form);
-		form.submit();
-	{% endif %}
-});
-
-/*
-Calls the update fields action of the FileController (then goes to mapping section).
-*/
-$saveFileToMappingsButton.click(function() {
-	{% if file.format is defined %}
-		var form = getFormFromFileTable(true);
+		var form = getFormFromFileTable();
 		$('body').append(form);
 		form.submit();
 	{% endif %}
@@ -128,23 +119,23 @@ function addClickEventOnRemoveFields() {
 	$("a[id^='remove-field']").click(function(){
 		var fieldToRemove = $(this).attr("id").slice(13);
 		var names = "";
+		var labelCSVs = "";
 		var mandatorys = "";
 		var masks = "";
-		var orders = "";
 
 		$('#selected-data-table > tbody > tr').each(function(){
 			var $name = $(this).find('#name').text();
+			var $labelCSV = $(this).find('#labelCSV').val();
 			var $mandatory = $(this).find('input:checked').is(':checked');
 			var $mask = $(this).find('#mask').val();
-			var $order = $(this).find('#order').text();
 
 			names = names + $name + ",";
+			labelCSVs = labelCSVs + $labelCSV + ",";
 			mandatorys = mandatorys + $mandatory + ",";
 			if($mask === ""){
 				$mask = "null";
 			}
 			masks = masks + encodeURIComponent($mask) + ",";
-			orders = orders + $order + ",";
 		});
 
 		{% if file.format is defined %}
@@ -152,9 +143,9 @@ function addClickEventOnRemoveFields() {
 				datasetId : '{{dataset.id}}',
 				field : fieldToRemove,
 				fields : names,
+				labelCSVs :labelCSVs,
 				mandatorys : mandatorys,
 				masks : masks,
-				orders :orders,
 				format: '{{ file.format }}'
 			});
 
@@ -185,18 +176,15 @@ Calls the update files action of the FileController.
 */
 $saveFileOrderButton.click(function() {
 	var formats = "";
-	var orders = "";
 
 	$('#import-model-file-list-table > tbody > tr').each(function(){
 		var $format = $(this).find('#name').data('format');
-		var $order = $(this).find('#order').text();
 		formats = formats + $format + ",";
-		orders = orders + $order + ",";
 	});
 
 	if(formats !== ""){
 		{% if dataset.id is defined %}
-			var url = Routing.generate('configurateur_dataset_import_update_file_order', { id : '{{ dataset.id }}', formats : formats, orders :orders});
+			var url = Routing.generate('configurateur_dataset_import_update_file_order', { id : '{{ dataset.id }}', formats : formats});
 			var form = $('<form action="' + url + '" method="post">' +
 			  '<input type="text" name="api_url" value="' + url + '" />' +
 			  '</form>');
@@ -271,43 +259,42 @@ function getFormFromTableTable(){
 /*
  * Constructs an HTML form based on all the fields on the file format table.
  */
-function getFormFromFileTable(toMapping){
+function getFormFromFileTable(){
 	var names = "";
+	var labelCSVs = "";
 	var mandatorys = "";
 	var masks = "";
-	var orders = "";
-
+	
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
+		var $labelCSV = $(this).find('#labelCSV').val();
 		var $mandatory = $(this).find('input:checked').is(':checked');
 		var $mask = $(this).find('#mask').val();
-		var $order = $(this).find('#order').text();
 
 		names = names + $name + ",";
+		labelCSVs = labelCSVs + $labelCSV + ",";
 		mandatorys = mandatorys + $mandatory + ",";
 		if($mask === ""){
 			$mask = "null";
 		}
 		masks = masks + encodeURIComponent($mask) + ",";
-		orders = orders + $order + ",";
 	});
 
 	// Remove trailing coma
 	names = names.slice(0, -1);
+	labelCSVs = labelCSVs.slice(0, -1);
 	mandatorys = mandatorys.slice(0, -1);
 	masks = masks.slice(0, -1);
-	orders = orders.slice(0, -1);
 
 	if(names !== ""){
 		{% if file.format is defined %}
 			var url = Routing.generate('configurateur_file_update_fields', {
 				datasetId : '{{ dataset.id }}',
 				fields : names,
+				labelCSVs :labelCSVs,
 				mandatorys : mandatorys,
 				masks : masks,
-				orders :orders,
-				format: '{{ file.format }}',
-				toMapping: toMapping
+				format: '{{ file.format }}'
 			});
 			var form = $('<form action="' + url + '" method="post">' +
 			  '<input type="text" name="api_url" value="' + url + '" />' +

@@ -31,4 +31,4 @@ INSERT INTO file_format (format, file_extension, file_type, "position", label, d
 INSERT INTO dataset_files (dataset_id, format) VALUES ('2', 'my_file');
 
 INSERT INTO field (data, format, type) VALUES ('related_to_file_data_field', 'my_file', 'FILE');
-INSERT INTO file_field (data, format, is_mandatory, mask, position) VALUES ('related_to_file_data_field', 'my_file', '1', '', '1');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('related_to_file_data_field', 'my_file', '1', '', 'related_to_file_data_field');

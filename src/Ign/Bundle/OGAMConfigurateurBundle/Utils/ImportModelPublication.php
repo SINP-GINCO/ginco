@@ -204,8 +204,8 @@ class ImportModelPublication extends DatabaseUtils {
 	 *        	id of the import model
 	 */
 	public function copyFileField($importModelId) {
-		$sql = "INSERT INTO metadata.file_field(data, format, is_mandatory, mask, position)
-				SELECT DISTINCT ffi.data, ffi.format, ffi.is_mandatory, ffi.mask, ffi.position
+		$sql = "INSERT INTO metadata.file_field(data, format, is_mandatory, mask, label_csv)
+				SELECT DISTINCT ffi.data, ffi.format, ffi.is_mandatory, ffi.mask, ffi.label_csv
 				FROM metadata_work.dataset d
 				INNER JOIN metadata_work.dataset_files as df ON df.dataset_id = d.dataset_id
 				INNER JOIN metadata_work.file_format as ffo ON ffo.format = df.format

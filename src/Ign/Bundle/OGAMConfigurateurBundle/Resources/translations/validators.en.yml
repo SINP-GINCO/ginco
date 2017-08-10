@@ -27,11 +27,3 @@ fileFormat:
   description:
     notBlank: Please input a file description.
     maxLength: The file description cannot be longer than 255 characters.
-fieldMapping:
-    unique: This table field is already used.
-    srcData:
-        notBlank: Please select a file field.
-    dstData:
-        notBlank: Please select a table field.
-    dstFormat:
-        notBlank: Please select a table.

@@ -158,14 +158,6 @@ class FileController extends FileControllerBase {
 			}
 			$em->flush();
 
-			$link = $this->generateUrl("configurateur_field_automapping_direct", array(
-				'datasetId' => $datasetId,
-				'fileFormat' => $fileFormat,
-				'tableFormat' => $tableFormat
-			));
-
-			$report['mappingLink'] = $link;
-
 			$notice = $this->generateReportAutoAddFields($report);
 
 			$this->addFlash('notice-autoaddfields', $notice);
@@ -224,11 +216,7 @@ class FileController extends FileControllerBase {
 				'%calculatedFieldsCount%' => count($report['calculatedFields'])
 			));
 		}
-		if ($report['fieldsToAdd'] > 0) {
-			$reportMessage .= $translator->trans('fileField.auto.report.7', array(
-				'%mappingLink%' => $report['mappingLink']
-			));
-		}
+
 		return $reportMessage;
 	}
 }

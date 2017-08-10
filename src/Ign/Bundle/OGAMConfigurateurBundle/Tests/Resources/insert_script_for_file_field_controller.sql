@@ -52,15 +52,15 @@ INSERT INTO dataset_files (dataset_id, format) VALUES ('my_import_model', 'file_
 INSERT INTO dataset_files (dataset_id, format) VALUES ('my_import_model', 'file_decrease');
 INSERT INTO dataset_files (dataset_id, format) VALUES ('import_model_view', 'file_view');
 
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('jddid', 'my_add_file', '0', NULL, 1);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('jddid', 'my_remove_file', '0', NULL, 1);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('altitudemin', 'file_to_delete_complex', '0', NULL, 1);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('altitudemax', 'file_to_delete_complex', '0', NULL, 1);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('commentaire', 'file_to_delete_complex', '0', NULL, 1);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('altitudemax', 'file_positions', '0', NULL, 1);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('datedebut', 'file_increase', '0', NULL, 14);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('datefin', 'file_increase', '0', NULL, 15);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('datefin', 'file_decrease', '0', NULL, 14);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('datedebut', 'file_decrease', '0', NULL, 15);
-INSERT INTO file_field (data, format, is_mandatory, mask, "position") VALUES ('datefin', 'file_view', '0', NULL, 1);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddid', 'my_add_file', '0', NULL, jddid);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddid', 'my_remove_file', '0', NULL, jddid);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file_to_delete_complex', '0', NULL, altitudemin);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_to_delete_complex', '0', NULL, altitudemax);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('commentaire', 'file_to_delete_complex', '0', NULL, commentaire);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_positions', '0', NULL, altitudemax);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datedebut', 'file_increase', '0', NULL, datedebut);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_increase', '0', NULL, datefin);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_decrease', '0', NULL, datefin);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datedebut', 'file_decrease', '0', NULL, datedebut);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_view', '0', NULL, datefin);
 

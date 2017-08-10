@@ -38,7 +38,6 @@ breadcrumb:
     view: Import model visualisation for %modelName%
   file:
     edit: File editing for %fileName%
-    mapping: File mapping for %fileName%
     new: File creation
     view: ile visualisation for %fileName%
   inputmodel:
@@ -162,7 +161,6 @@ file:
 File: File fields format description %file.label%
 file.edit.fields.title: File fields definition for %file.label%
 fileField:
-  position: Ordre
   mask:
     help: The mask of the field is the regular expression the field value must correspond with during the import. If ther is no mask, no checks are made.
     doc: You can <a href="http://www.expreg.com/memo.php"> report to a documentation</a>.
@@ -171,20 +169,3 @@ fileField:
     example2: A date.
 fileField.mask: Mask
 fileField.order.tooltip: The field order can be modified with drag-and-drop.
-
-# mapping
-
-fieldMapping:
-  AddImportRule: Add an import rule for model %dataset.label%
-  CSVMapping: Mapping of CSV file format %file.label%
-  FileField: file field
-  MappedTable: Table
-  MappedTableField: Table field
-  SelectFileField: Selct file field
-  SelectTable: Select a table
-  Copy: Copy
-  Ignore: Ignore
-  StayOnPage: Stay on the page
-  SaveFileAndMappings: Some file fields of %file.label% are not mapped with table field.
-  fieldMapping.unique: This relation already exists.
-  none: no mapping defined.
