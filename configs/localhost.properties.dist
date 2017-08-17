@@ -15,7 +15,7 @@ ogam.map.services.url=http://localhost.ogam-ginco.ign.fr
 # Part between the protocol and .ign.fr in the url of the project
 http.host.name=localhost.ogam-ginco
 
-# == Database configurattion
+# == Database configuration
 
 db.host=localhost
 db.port=5432
@@ -26,7 +26,7 @@ db.adminuser=admin
 db.adminuser.pw=#####
 db.version=9.6.0
 
-# == Target machoine configuration / Unused on localhost
+# == Target machine configuration / Unused on localhost
 
 # La machine sur laquelle déployer cette instance
 deploy.host=localhost
@@ -58,7 +58,7 @@ metadata.jdd.url=https://inpn2.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecordById?id
 # Email to send a notification to when generating DEE
 dee.notification.mail=YOURMAIL@ign.fr
 
-# == Instance customisation parameters
+# == Instance customization parameters
 
 # Site Name
 site.name="Plateforme de test GINCO Localhost"
