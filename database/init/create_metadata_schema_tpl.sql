@@ -297,7 +297,6 @@ COMMENT ON COLUMN FILE_FIELD.DATA IS 'The logical name of the field';
 COMMENT ON COLUMN FILE_FIELD.FORMAT IS 'The name of the file format containing this field';
 COMMENT ON COLUMN FILE_FIELD.IS_MANDATORY IS 'Is the field mandatory?';
 COMMENT ON COLUMN FILE_FIELD.MASK IS 'A mask used to validate the data';
-COMMENT ON COLUMN FILE_FIELD.POSITION IS 'The position of this field in the file';
 
 /*==============================================================*/
 /* Table : FORM_FIELD                                           */
