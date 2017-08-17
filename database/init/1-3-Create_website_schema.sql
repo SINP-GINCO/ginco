@@ -187,7 +187,7 @@ CREATE TABLE website.predefined_request_criterion
   data character varying(36) NOT NULL, -- The form field of the criterion
   value text NOT NULL, -- The field value (multiple values are separated by a semicolon)
   CONSTRAINT pk_predefined_request_criterion PRIMARY KEY (request_id, format, data),
-  CONSTRAINT fk_predefined_request_criterion_request_name FOREIGN KEY (request_id)
+  CONSTRAINT fk_predefined_request_criterion_request_id FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE CASCADE
 );
@@ -206,7 +206,7 @@ CREATE TABLE website.predefined_request_column
   format character varying(36) NOT NULL, -- The form format of the column
   data character varying(36) NOT NULL, -- The form field of the column
   CONSTRAINT pk_predefined_request_column PRIMARY KEY (request_id, format, data),
-  CONSTRAINT fk_predefined_request_column_request_name FOREIGN KEY (request_id)
+  CONSTRAINT fk_predefined_request_column_request_id FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE CASCADE
 );
@@ -243,10 +243,10 @@ CREATE TABLE website.predefined_request_group_asso
   request_id integer NOT NULL, -- The request identifier
   "position" smallint, -- The position of the request inside the group
   CONSTRAINT pk_predefined_request_group_asso PRIMARY KEY (group_id, request_id),
-  CONSTRAINT fk_predefined_request_group_name FOREIGN KEY (group_id)
+  CONSTRAINT fk_predefined_request_group_id FOREIGN KEY (group_id)
       REFERENCES website.predefined_request_group (group_id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE CASCADE,
-  CONSTRAINT fk_predefined_request_request_name FOREIGN KEY (request_id)
+  CONSTRAINT fk_predefined_request_request_id FOREIGN KEY (request_id)
       REFERENCES website.predefined_request (request_id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE CASCADE
 );
