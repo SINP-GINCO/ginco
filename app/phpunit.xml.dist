@@ -8,10 +8,11 @@
          bootstrap="bootstrap.php.cache"
 >
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
-            <directory>../src/*Bundle/Tests</directory>
+        <testsuite name="ogamConfigurator">
+            <directory>../src/Ign/Bundle/OGAMConfigurateurBundle/Tests</directory>
+        </testsuite>
+        <testsuite name="gincoConfigurator">
+            <directory>../src/Ign/Bundle/GincoConfigurateurBundle/Tests</directory>
         </testsuite>
     </testsuites>
 

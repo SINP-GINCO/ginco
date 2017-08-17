@@ -15,14 +15,14 @@ class FileFieldRepositoryTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 
 		$this->container = static::$kernel->getContainer();
 		$this->translator = $this->container->get('translator');
 
 		$this->em = $this->container->get('doctrine')->getManager();
-		$this->client = static::createClient();
+		$this->client = static::createClient(array('environment' => 'test_ogam'));
 		$this->client->followRedirects(true);
 
 		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping');

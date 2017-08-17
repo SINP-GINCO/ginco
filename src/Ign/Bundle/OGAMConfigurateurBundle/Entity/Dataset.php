@@ -195,7 +195,7 @@ class Dataset {
 	 */
 	public function __construct() {
 		$this->files = new ArrayCollection();
-		$this->model = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->model = new ArrayCollection();
 	}
 
 	/**

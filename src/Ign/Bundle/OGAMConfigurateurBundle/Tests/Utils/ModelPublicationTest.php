@@ -37,7 +37,7 @@ class ModelPublicationTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 
 		$container = static::$kernel->getContainer();

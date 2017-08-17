@@ -3,19 +3,15 @@ namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Entity;
 
 use Ign\Bundle\OGAMConfigurateurBundle\Entity;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
-class FileFieldRepositoryTest extends WebTestCase {
+class FileFieldRepositoryTest extends ConfiguratorTest {
 
-	/**
-	 *
-	 * @var \Doctrine\ORM\EntityManager
-	 */
-	private $em;
+	public static function executeScripts($adminConn) {}
 
 	public function setUp() {
 		// Entity Manager
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 		$this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
 	}

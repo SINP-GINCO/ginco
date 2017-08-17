@@ -1,8 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Controller;
 
+use Ign\Bundle\GincoConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class GincoTableControllerTest extends ConfiguratorTest {
 

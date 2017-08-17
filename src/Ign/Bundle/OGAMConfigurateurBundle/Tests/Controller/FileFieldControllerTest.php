@@ -16,7 +16,7 @@ class FileFieldControllerTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		$this->client = static::createClient();
+		$this->client = static::createClient(array('environment' => 'test_ogam'));
 		$this->client->followRedirects(true);
 
 		$this->container = static::$kernel->getContainer();
@@ -32,16 +32,17 @@ class FileFieldControllerTest extends ConfiguratorTest {
 
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/my_add_file/fields/');
 
-		$this->assertContains('<td id="label">Identifiant de la provenance [STRING]</td>', $crawler->html());
-		$this->assertContains('<td id="name" class="hidden">jddid [STRING]</td>', $crawler->html());
-		$this->assertContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
-		$this->assertNotContains('<td id="label">Code identifiant la provenance</td>', $crawler->html());
+		$this->assertContains('<td id="name" class="hidden">jddid</td>', $crawler->html());
+		$this->assertContains('class="longtext" title="Identifiant de la provenance">Identifiant de la provenance</div></td>', $crawler->html());
+		$this->assertNotContains('<td id="name" class="hidden">jddcode</td>', $crawler->html());
+		$this->assertNotContains('class="longtext" title="Code identifiant de la provenance">Code identifiant de la provenance</div></td>', $crawler->html());
 
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/my_add_file/fields/add/' . $fields . '/');
 
-		$this->assertContains('<td id="label">Identifiant de la provenance [STRING]</td>', $crawler->html());
-		$this->assertContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
-		$this->assertContains('<td id="label">Code identifiant la provenance</td>', $crawler->html());
+		$this->assertContains('<td id="name" class="hidden">jddid</td>', $crawler->html());
+		$this->assertContains('class="longtext" title="Identifiant de la provenance">Identifiant de la provenance</div></td>', $crawler->html());
+		$this->assertContains('<td id="name" class="hidden">jddcode</td>', $crawler->html());
+		$this->assertContains('class="longtext" title="Code identifiant la provenance">Code identifiant la provenance</div></td>', $crawler->html());
 	}
 
 	public function testRemoveField() {
@@ -49,11 +50,11 @@ class FileFieldControllerTest extends ConfiguratorTest {
 
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/my_remove_file/fields/');
 
-		$this->assertContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
+		$this->assertContains('class="longtext" title="Identifiant de la provenance">Identifiant de la provenance</div></td>', $crawler->html());
 
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/my_remove_file/fields/remove/' . $field . '/');
 
-		$this->assertNotContains('<td id="label">Identifiant de la provenance</td>', $crawler->html());
+		$this->assertNotContains('class="longtext" title="Identifiant de la provenance">Identifiant de la provenance</div></td>', $crawler->html());
 	}
 
 	public function testDeleteSimpleFile() {

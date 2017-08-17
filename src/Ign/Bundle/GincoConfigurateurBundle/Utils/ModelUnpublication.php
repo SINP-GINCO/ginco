@@ -1,7 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Utils;
 
-use Ign\Bundle\ConfigurateurBundle\Utils\ModelUnpublication as ModelUnpublicationBase;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication as ModelUnpublicationBase;
 
 /**
  * Extends utility class for copying and publishing metadata.

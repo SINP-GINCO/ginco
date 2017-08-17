@@ -17,7 +17,7 @@ class FileControllerTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		$this->client = static::createClient();
+		$this->client = static::createClient(array('environment' => 'test_ogam'));
 		$this->client->followRedirects(true);
 
 		$this->container = static::$kernel->getContainer();

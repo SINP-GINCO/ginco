@@ -2,6 +2,8 @@
 
 SET search_path = metadata_work;
 
+INSERT INTO data (data, unit, label, definition, comment) VALUES ('OGAM_ID_table_view1', 'IDString', 'primary key', 'primary key', NULL);
+
 INSERT INTO model (id, name, description, schema_code) VALUES ('2', 'model_to_edit', 'model', 'RAW_DATA');
 INSERT INTO model (id, name, description, schema_code) VALUES ('3', 'model_to_delete_simple', 'model_to_delete', 'RAW_DATA');
 INSERT INTO model (id, name, description, schema_code) VALUES ('4', 'model_to_delete_complex', 'model', 'RAW_DATA');
@@ -59,13 +61,14 @@ INSERT INTO field (data, format, type) VALUES ('cdnom', 'file_mappings_1', 'FILE
 INSERT INTO field (data, format, type) VALUES ('codecommune', 'file_mappings_1', 'FILE');
 INSERT INTO field (data, format, type) VALUES ('datedebut', 'file_mappings_2', 'FILE');
 INSERT INTO field (data, format, type) VALUES ('datefin', 'file_mappings_2', 'FILE');
+INSERT INTO field (data, format, type) VALUES ('OGAM_ID_table_view1', 'table_view1', 'TABLE');
 
-INSERT INTO table_format (format, table_name, label) VALUES ('table_son', '_2_table_son', 'table_son');
-INSERT INTO table_format (format, table_name, label) VALUES ('table_father', '_2_table_father', 'table_father');
-INSERT INTO table_format (format, table_name, label) VALUES ('table', '_8_table', 'table');
-INSERT INTO table_format (format, table_name, label) VALUES ('table_view1', '_14_table', 'table_view1');
-INSERT INTO table_format (format, table_name, label) VALUES ('table_mappings_1', 'table_mappings_1', 'table_mappings_1');
-INSERT INTO table_format (format, table_name, label) VALUES ('table_mappings_2', 'table_mappings_1', 'table_mappings_2');
+INSERT INTO table_format (format, table_name, primary_key, label) VALUES ('table_son', '_2_table_son', NULL, 'table_son');
+INSERT INTO table_format (format, table_name, primary_key, label) VALUES ('table_father', '_2_table_father', NULL, 'table_father');
+INSERT INTO table_format (format, table_name, primary_key, label) VALUES ('table', '_8_table', NULL, 'table');
+INSERT INTO table_format (format, table_name, primary_key, label) VALUES ('table_view1', '_14_table', 'OGAM_ID_table_view1, PROVIDER_ID, SUBMISSION_ID', 'table_view1');
+INSERT INTO table_format (format, table_name, primary_key, label) VALUES ('table_mappings_1', 'table_mappings_1', NULL, 'table_mappings_1');
+INSERT INTO table_format (format, table_name, primary_key, label) VALUES ('table_mappings_2', 'table_mappings_1', NULL, 'table_mappings_2');
 
 INSERT INTO file_format(format, file_type, "position") VALUES ('file_mappings_1', 'file_mappings_1', 1);
 INSERT INTO file_format(format, file_type, "position") VALUES ('file_mappings_2', 'file_mappings_2', 1);
@@ -86,6 +89,8 @@ INSERT INTO table_field (data, format) VALUES ('cdnom', 'table_mappings_1');
 INSERT INTO table_field (data, format) VALUES ('codecommune', 'table_mappings_2');
 INSERT INTO table_field (data, format) VALUES ('datedebut', 'table_mappings_2');
 INSERT INTO table_field (data, format) VALUES ('datefin', 'table_mappings_2');
+INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('OGAM_ID_table_view1', 'table_view1', 'OGAM_ID_table_view1', '0');
+
 
 INSERT INTO file_field (data, format) VALUES ('altitudemin', 'file_mappings_1');
 INSERT INTO file_field (data, format) VALUES ('altitudemax', 'file_mappings_1');

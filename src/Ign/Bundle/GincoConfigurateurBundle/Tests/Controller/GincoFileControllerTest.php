@@ -1,9 +1,9 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
+use Ign\Bundle\GincoConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle;
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 class GincoFileControllerTest extends ConfiguratorTest {
 
@@ -17,7 +17,9 @@ class GincoFileControllerTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		$this->client = static::createClient();
+		$this->client = static::createClient(array(
+			'environment' => 'test'
+		));
 		$this->client->followRedirects(true);
 
 		$this->container = static::$kernel->getContainer();

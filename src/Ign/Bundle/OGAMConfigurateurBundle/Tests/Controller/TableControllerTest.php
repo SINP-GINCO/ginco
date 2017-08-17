@@ -17,25 +17,20 @@ class TableControllerTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 
 		$this->container = static::$kernel->getContainer();
 		$this->translator = $this->container->get('translator');
 
 		$this->em = $this->container->get('doctrine')->getManager();
-		$this->client = static::createClient();
+		$this->client = static::createClient(array('environment' => 'test_ogam'));
 		$this->client->followRedirects(true);
 
 		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
 	}
 
-	/**
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
-	 */
-	public function untestNewWithCorrectName() {
+	public function testNewWithCorrectName() {
 		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('2')
 			->getName();
@@ -118,11 +113,8 @@ class TableControllerTest extends ConfiguratorTest {
 	/**
 	 * This case should show a warning message concerning table already existing.
 	 * And it should not show a warning message concerning missing description.
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
 	 */
-	public function untestNewTableWhichAlreadyExistsInSameModel() {
+	public function testNewTableWhichAlreadyExistsInSameModel() {
 		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('3')
 			->getName();
@@ -149,11 +141,8 @@ class TableControllerTest extends ConfiguratorTest {
 	/**
 	 * This case should show a warning message concerning table already existing.
 	 * It should also show a warning message concerning missing description.
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
 	 */
-	public function untestNewTableWhichAlreadyExistsInSameModelAndWithoutDescription() {
+	public function testNewTableWhichAlreadyExistsInSameModelAndWithoutDescription() {
 		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find('3')
 			->getName();
@@ -173,12 +162,7 @@ class TableControllerTest extends ConfiguratorTest {
 			->isSuccessful());
 	}
 
-	/**
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
-	 */
-	public function untestNewTableWhichAlreadyExistsInAnotherModel() {
+	public function testNewTableWhichAlreadyExistsInAnotherModel() {
 		$model = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')->find('2');
 
 		$crawler = $this->client->request('GET', '/models/2/tables/new/');
@@ -207,12 +191,7 @@ class TableControllerTest extends ConfiguratorTest {
 			->isSuccessful());
 	}
 
-	/**
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
-	 */
-	public function untestNewWithoutDescription() {
+	public function testNewWithoutDescription() {
 		$crawler = $this->client->request('GET', '/models/2/tables/new/');
 
 		$form = $crawler->filter('form[name=ign_bundle_configurateurbundle_table_format_edit]')->form();
@@ -227,11 +206,8 @@ class TableControllerTest extends ConfiguratorTest {
 
 	/**
 	 * Only characters authorized are lowercase letters, underscore and numbers.
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
 	 */
-	public function untestNewWithSpecialCharacters() {
+	public function testNewWithSpecialCharacters() {
 		$crawler = $this->client->request('GET', '/models/2/tables/new/');
 
 		$form = $crawler->filter('form[name=ign_bundle_configurateurbundle_table_format_edit]')->form();
@@ -259,12 +235,7 @@ class TableControllerTest extends ConfiguratorTest {
 			->count() == 0);
 	}
 
-	/**
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
-	 */
-	public function untestNewWithNameAndDescriptionLongerThanMaxLength() {
+	public function testNewWithNameAndDescriptionLongerThanMaxLength() {
 		$crawler = $this->client->request('GET', '/models/3/tables/new/');
 
 		$form = $crawler->filter('form[name=ign_bundle_configurateurbundle_table_format_edit]')->form();
@@ -288,18 +259,14 @@ class TableControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * FIXME #600 introduced denial of creating new tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
+	 * FIXME Test à revoir (données incorrectes).
 	 */
 	public function untestNewChildTable() {
-		$modelName = $this->em->getRepository('IgnOGAMConfigurateurBundle:Model')
-			->find('2')
-			->getName();
 		$crawler = $this->client->request('GET', '/models/2/tables/child_table/edit/');
+
 		$form = $crawler->filter('form[name=ign_bundle_configurateurbundle_table_format_edit]')->form();
 
-		$parentFormat = $this->repository->findOneByLabel('my_new_table')->getFormat();
+		$parentFormat = $this->repository->findOneByFormat('table')->getFormat();
 		$form['ign_bundle_configurateurbundle_table_format_edit[parent]'] = $parentFormat;
 
 		$crawler = $this->client->submit($form);
@@ -321,12 +288,7 @@ class TableControllerTest extends ConfiguratorTest {
 		$this->assertTrue(in_array('OGAM_ID_' . $parentFormat, $keys));
 	}
 
-	/**
-	 * FIXME #600 introduced denial of deleting tables.
-	 * But it is only effective with GincoConfigurateurBundle.
-	 * Tests fails now because of this.
-	 */
-	public function untestDeleteSimpleTable() {
+	public function testDeleteSimpleTable() {
 		$conn = $this->container->get('database_connection');
 		$pgConn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 

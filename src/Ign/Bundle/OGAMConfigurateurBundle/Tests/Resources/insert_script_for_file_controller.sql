@@ -65,18 +65,18 @@ INSERT INTO dataset_files (dataset_id, format) VALUES ('my_import_model', 'file_
 INSERT INTO dataset_files (dataset_id, format) VALUES ('import_model_view', 'file_view');
 INSERT INTO dataset_files (dataset_id, format) VALUES ('my_import_model', 'file_auto');
 
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddid', 'my_add_file', '0', NULL, jddid);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddid', 'my_remove_file', '0', NULL, jddid);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file_to_delete_complex', '0', NULL, altitudemin);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_to_delete_complex', '0', NULL, altitudemax);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('commentaire', 'file_to_delete_complex', '0', NULL, commentaire);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_positions', '0', NULL, altitudemax);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datedebut', 'file_increase', '0', NULL, 1datedebut);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_increase', '0', NULL, datefin);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_decrease', '0', NULL, datefin);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datedebut', 'file_decrease', '0', NULL, datedebut);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_view', '0', NULL, datefin);
-INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file_auto', '1', NULL, altitudemin);
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddid', 'my_add_file', '0', NULL, 'jddid');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('jddid', 'my_remove_file', '0', NULL, 'jddid');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file_to_delete_complex', '0', NULL, 'altitudemin');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_to_delete_complex', '0', NULL, 'altitudemax');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('commentaire', 'file_to_delete_complex', '0', NULL, 'commentaire');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemax', 'file_positions', '0', NULL, 'altitudemax');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datedebut', 'file_increase', '0', NULL, 'datedebut');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_increase', '0', NULL, 'datefin');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_decrease', '0', NULL, 'datefin');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datedebut', 'file_decrease', '0', NULL, 'datedebut');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('datefin', 'file_view', '0', NULL, 'datefin');
+INSERT INTO file_field (data, format, is_mandatory, mask, label_csv) VALUES ('altitudemin', 'file_auto', '1', NULL, 'altitudemin');
 
 
 INSERT INTO table_format VALUES ('my_table', '13_table', 'RAW_DATA', 'OGAM_ID,PROVIDER_ID', 'table', NULL);

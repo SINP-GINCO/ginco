@@ -7,12 +7,14 @@
 		"psr-0" : {
 			"" : "src/",
 			"SymfonyStandard" : "app/"
-		}
+		},
+		"psr-4" : {"": "src/" },
+		"classmap": [ "app/AppKernel.php", "app/AppCache.php", "app/TestOgamKernel.php" ]
 	},
 	"require" : {
 		"php" : ">=5.3.9",
 		"symfony/symfony" : "^2.8",
-		"twig/twig": "^1.28",
+		"twig/twig" : "^1.28",
 		"doctrine/orm" : "^2.4.8",
 		"doctrine/doctrine-bundle" : "~1.4",
 		"symfony/assetic-bundle" : "^2.8",
@@ -23,13 +25,13 @@
 		"incenteev/composer-parameter-handler" : "~2.0",
 		"twbs/bootstrap" : "3.3.*",
 		"friendsofsymfony/jsrouting-bundle" : "~1.6",
-		"wenzhixin/bootstrap-table": "^1.11",
-		"components/jquery": "^1.12",
-		"components/jqueryui": "^1.12"
+		"wenzhixin/bootstrap-table" : "^1.11",
+		"components/jquery" : "^1.12",
+		"components/jqueryui" : "^1.12"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~3.0",
-		"symfony/phpunit-bridge": "~2.7"
+		"symfony/phpunit-bridge" : "~2.7"
 	},
 	"scripts" : {
 		"post-install-cmd" : [

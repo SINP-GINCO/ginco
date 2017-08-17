@@ -100,7 +100,7 @@ INSERT INTO format (format, type) VALUES ('complex_table2', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('altitudemin', 'complex_table1', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('altitudemax', 'complex_table1', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('OGAM_FK_5__COMPLEX_TABLE2', 'complex_table1', 'TABLE');
-INSERT INTO field (data, format, type) VALUES ('THE_GEOM', 'complex_table1', 'TABLE');
+INSERT INTO field (data, format, type) VALUES ('geometrie', 'complex_table1', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('profondeurMin', 'complex_table2', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('profondeurMax', 'complex_table2', 'TABLE');
 INSERT INTO model (id, name, description, schema_code) VALUES ('5', 'complex_model', 'model used for unpublishing tests', 'RAW_DATA');
@@ -111,7 +111,7 @@ INSERT INTO model_tables (model_id, table_id) VALUES ('5', 'complex_table2');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('altitudemin', 'complex_table1', 'altitudemin', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('altitudemax', 'complex_table1', 'altitudemax', '1');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('OGAM_FK_5__COMPLEX_TABLE2', 'complex_table1', 'OGAM_FK_5__COMPLEX_TABLE2', '1');
-INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('THE_GEOM', 'complex_table1', 'THE_GEOM', '1');
+INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('geometrie', 'complex_table1', 'geometrie', '1');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('profondeurMin', 'complex_table2', 'profondeurMin', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('profondeurMax', 'complex_table2', 'profondeurMax', '0');
 INSERT INTO table_tree (schema_code, child_table, parent_table, join_key, comment) VALUES ('RAW_DATA', 'complex_table1', 'complex_table2', NULL, NULL);
@@ -137,7 +137,7 @@ CREATE TABLE RAW_DATA._5_complex_table2(
 
 CREATE TABLE RAW_DATA._5_complex_table1(
 	OGAM_ID bigint NOT NULL DEFAULT nextval('raw_data.ogam_id_5_complex_table2_seq'::regclass),
-	the_geom geometry(Geometry,4326),
+	geometrie geometry(Geometry,4326),
   
 	CONSTRAINT _5_complex_table1_pkey PRIMARY KEY (ogam_id),
 	CONSTRAINT ogam_fk_5__5_complex_table1 FOREIGN KEY (ogam_id)
@@ -237,7 +237,7 @@ INSERT INTO format (format, type) VALUES ('complex_table2', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('altitudemin', 'complex_table1', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('altitudemax', 'complex_table1', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('OGAM_FK_5__COMPLEX_TABLE2', 'complex_table1', 'TABLE');
-INSERT INTO field (data, format, type) VALUES ('THE_GEOM', 'complex_table1', 'TABLE');
+INSERT INTO field (data, format, type) VALUES ('geometrie', 'complex_table1', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('profondeurMin', 'complex_table2', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('profondeurMax', 'complex_table2', 'TABLE');
 INSERT INTO model (id, name, description, schema_code) VALUES ('5', 'complex_model', 'model used for unpublishing tests', 'RAW_DATA');
@@ -248,7 +248,7 @@ INSERT INTO model_tables (model_id, table_id) VALUES ('5', 'complex_table2');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('altitudemin', 'complex_table1', 'altitudemin', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('altitudemax', 'complex_table1', 'altitudemax', '1');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('OGAM_FK_5__COMPLEX_TABLE2', 'complex_table1', 'OGAM_FK_5__COMPLEX_TABLE2', '1');
-INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('THE_GEOM', 'complex_table1', 'THE_GEOM', '1');
+INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('geometrie', 'complex_table1', 'geometrie', '1');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('profondeurMin', 'complex_table2', 'profondeurMin', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('profondeurMax', 'complex_table2', 'profondeurMax', '0');
 INSERT INTO table_tree (schema_code, child_table, parent_table, join_key, comment) VALUES ('RAW_DATA', 'complex_table1', 'complex_table2', NULL, NULL);

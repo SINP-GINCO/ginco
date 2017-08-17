@@ -3,12 +3,16 @@ parameters:
     database_driver: pdo_pgsql
     database_host: localhost
     database_port: 5432
-    database_name: sinp_unit_test
+    database_name: ginco_symfony_ut
     database_user: ogam
     database_password: ogam
+    database_admin_user: postgres
+    database_admin_password: postgres
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
     mailer_password: null
     locale: fr
-    secret: edffrzgrqegtegeg
+    secret: ThisTokenIsNotSoSecretChangeIt
+    base_url: /configurateur
+    router.request_context.base_url: '%base_url%'

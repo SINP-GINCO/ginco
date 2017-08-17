@@ -153,7 +153,7 @@ INSERT INTO data VALUES ('codeME','CodeMasseEauValue','Code masse d''eau','Code 
 INSERT INTO data VALUES ('versionME','VersionMasseDEauValue','Version du référentiel Masse d''Eau','Version du référentiel masse d''eau utilisé et prélevé sur le site du SANDRE, telle que décrite sur le site du SANDRE.',NULL);
 INSERT INTO data VALUES ('dateME','Date','Date du référentiel Masse d''Eau','Date de consultation ou de prélèvement du référentiel sur le site du SANDRE.',NULL);
 INSERT INTO data VALUES ('typeInfoGeoMasseDEau','TypeInfoGeoValue','Type d''information géographique','Indique le type d''information géographique suivant la nomenclature TypeInfoGeoValue.',NULL);
-INSERT INTO data VALUES ('THE_GEOM','GEOM','Géométrie','La géométrie de la localisation (au format WKT)',NULL);
+INSERT INTO data VALUES ('geometrie','GEOM','Géométrie','La géométrie de la localisation (au format WKT)',NULL);
 INSERT INTO data VALUES ('natureObjetGeo','NatureObjetGeoValue','Nature de l’objet géographique ','Nature de la localisation transmise ',NULL);
 INSERT INTO data VALUES ('precisionGeometrie','Integer','Précision de l''objet géographique (m)','Estimation en mètres d’une zone tampon autour de l''objet géographique. Cette précision peut inclure la précision du moyen technique d’acquisition des coordonnées (GPS,…) et/ou du protocole naturaliste.',NULL);
 INSERT INTO data VALUES ('nomorganisme','CharacterString','Nom officiel de(s) l''organisme(s).','Nom officiel de l''organisme. Si plusieurs organismes sont nécessaires, les séparer par des virgules.',NULL);
@@ -250,7 +250,7 @@ INSERT INTO format VALUES ('localisation_form', 'FORM');
 --
 
 INSERT INTO field VALUES ('OGAM_ID_1_LOCALISATION', 'localisation_file', 'FILE');
-INSERT INTO field VALUES ('THE_GEOM', 'localisation_file', 'FILE');
+INSERT INTO field VALUES ('geometrie', 'localisation_file', 'FILE');
 INSERT INTO field VALUES ('natureObjetGeo', 'localisation_file', 'FILE');
 INSERT INTO field VALUES ('precisionGeometrie', 'localisation_file', 'FILE');
 INSERT INTO field VALUES ('OGAM_ID_1_OBSERVATION', 'observation_file', 'FILE');
@@ -349,7 +349,7 @@ INSERT INTO field VALUES ('typeRegroupement', 'observation_file', 'FILE');
 INSERT INTO field VALUES ('altitudeMoyenne', 'observation_file', 'FILE');
 INSERT INTO field VALUES ('profondeurMoyenne', 'observation_file', 'FILE');
 INSERT INTO field VALUES ('REGIONS', 'observation_file', 'FILE');
-INSERT INTO field VALUES ('THE_GEOM', 'localisation_data', 'TABLE');
+INSERT INTO field VALUES ('geometrie', 'localisation_data', 'TABLE');
 INSERT INTO field VALUES ('natureObjetGeo', 'localisation_data', 'TABLE');
 INSERT INTO field VALUES ('precisionGeometrie', 'localisation_data', 'TABLE');
 INSERT INTO field VALUES ('SUBMISSION_ID', 'localisation_data', 'TABLE');
@@ -453,7 +453,7 @@ INSERT INTO field VALUES ('typeRegroupement', 'observation_data', 'TABLE');
 INSERT INTO field VALUES ('altitudeMoyenne', 'observation_data', 'TABLE');
 INSERT INTO field VALUES ('profondeurMoyenne', 'observation_data', 'TABLE');
 INSERT INTO field VALUES ('REGIONS', 'observation_data', 'TABLE');
-INSERT INTO field VALUES ('THE_GEOM', 'localisation_form', 'FORM');
+INSERT INTO field VALUES ('geometrie', 'localisation_form', 'FORM');
 INSERT INTO field VALUES ('natureObjetGeo', 'localisation_form', 'FORM');
 INSERT INTO field VALUES ('precisionGeometrie', 'localisation_form', 'FORM');
 INSERT INTO field VALUES ('PROVIDER_ID', 'localisation_form', 'FORM');
@@ -561,7 +561,7 @@ INSERT INTO field VALUES ('REGIONS', 'observation_form', 'FORM');
 
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','PROVIDER_ID');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','SUBMISSION_ID');
-INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','localisation_data','THE_GEOM');
+INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','localisation_data','geometrie');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','codecommune');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','nomCommune');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','anneeRefCommune');
@@ -734,7 +734,7 @@ INSERT INTO dynamode VALUES ('OccurrenceEtatBiologiqueValue','SELECT code as cod
 
 INSERT INTO field_mapping VALUES ('PROVIDER_ID','localisation_form','PROVIDER_ID','localisation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','localisation_form','OGAM_ID_1_LOCALISATION','localisation_data','FORM');
-INSERT INTO field_mapping VALUES ('THE_GEOM','localisation_form','THE_GEOM','localisation_data','FORM');
+INSERT INTO field_mapping VALUES ('geometrie','localisation_form','geometrie','localisation_data','FORM');
 INSERT INTO field_mapping VALUES ('PROVIDER_ID','observation_form','PROVIDER_ID','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_OBSERVATION','observation_form','OGAM_ID_1_OBSERVATION','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','observation_form','OGAM_ID_1_LOCALISATION','observation_data','FORM');
@@ -835,7 +835,7 @@ INSERT INTO field_mapping VALUES ('altitudeMoyenne','observation_form','altitude
 INSERT INTO field_mapping VALUES ('profondeurMoyenne','observation_form','profondeurMoyenne','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('REGIONS','observation_form','REGIONS','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','localisation_file','OGAM_ID_1_LOCALISATION','localisation_data','FILE');
-INSERT INTO field_mapping VALUES ('THE_GEOM','localisation_file','THE_GEOM','localisation_data','FILE');
+INSERT INTO field_mapping VALUES ('geometrie','localisation_file','geometrie','localisation_data','FILE');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_OBSERVATION','observation_file','OGAM_ID_1_OBSERVATION','observation_data','FILE');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','observation_file','OGAM_ID_1_LOCALISATION','observation_data','FILE');
 INSERT INTO field_mapping VALUES ('codecommune','observation_file','codecommune','observation_data','FILE');
@@ -941,7 +941,7 @@ INSERT INTO field_mapping VALUES ('REGIONS','observation_file','REGIONS','observ
 --
 
 INSERT INTO file_field VALUES ('OGAM_ID_1_LOCALISATION','localisation_file','1',NULL,1);
-INSERT INTO file_field VALUES ('THE_GEOM','localisation_file','0',NULL,2);
+INSERT INTO file_field VALUES ('geometrie','localisation_file','0',NULL,2);
 INSERT INTO file_field VALUES ('natureObjetGeo','localisation_file','0',NULL,3);
 INSERT INTO file_field VALUES ('precisionGeometrie','localisation_file','0',NULL,4);
 INSERT INTO file_field VALUES ('OGAM_ID_1_OBSERVATION','observation_file','1',NULL,1);
@@ -1045,7 +1045,7 @@ INSERT INTO file_field VALUES ('REGIONS','observation_file','0',NULL,97);
 -- Data for Name: form_field; Type: TABLE DATA; Schema: metadata; Owner: admin
 --
 
-INSERT INTO form_field VALUES ('THE_GEOM','localisation_form','1','1','SELECT',1,'0','0',NULL,NULL,NULL);
+INSERT INTO form_field VALUES ('geometrie','localisation_form','1','1','SELECT',1,'0','0',NULL,NULL,NULL);
 INSERT INTO form_field VALUES ('natureObjetGeo','localisation_form','1','1','SELECT',2,'0','0',NULL,NULL,NULL);
 INSERT INTO form_field VALUES ('precisionGeometrie','localisation_form','1','1','NUMERIC',3,'0','0',NULL,NULL,NULL);
 INSERT INTO form_field VALUES ('PROVIDER_ID','localisation_form','0','0','SELECT',4,'0','0',NULL,NULL,NULL);
@@ -1228,7 +1228,7 @@ INSERT INTO model_tables VALUES ('1','localisation_data');
 -- Data for Name: table_field; Type: TABLE DATA; Schema: metadata; Owner: admin
 --
 
-INSERT INTO table_field VALUES ('THE_GEOM','localisation_data','THE_GEOM','1','1','1','0',1,NULL);
+INSERT INTO table_field VALUES ('geometrie','localisation_data','geometrie','1','1','1','0',1,NULL);
 INSERT INTO table_field VALUES ('natureObjetGeo','localisation_data','natureObjetGeo','0','1','1','0',2,NULL);
 INSERT INTO table_field VALUES ('precisionGeometrie','localisation_data','precisionGeometrie','0','1','1','0',3,NULL);
 INSERT INTO table_field VALUES ('SUBMISSION_ID','localisation_data','SUBMISSION_ID','1','0','0','1',4,NULL);
@@ -1354,11 +1354,11 @@ INSERT INTO translation VALUES ('observation_data','OGAM_ID_1_OBSERVATION','EN',
 INSERT INTO translation VALUES ('localisation_data','PROVIDER_ID','FR','Fournisseur de données','L''identifiant du fournisseur de données');
 INSERT INTO translation VALUES ('localisation_data','SUBMISSION_ID','FR','Identifiant de soumission','L''identifiant de soumission');
 INSERT INTO translation VALUES ('localisation_data','OGAM_ID_1_LOCALISATION','FR','Observation','L''identifiant de l''observation');
-INSERT INTO translation VALUES ('localisation_data','THE_GEOM','FR','Géométrie','La géométrie');
+INSERT INTO translation VALUES ('localisation_data','geometrie','FR','Géométrie','La géométrie');
 INSERT INTO translation VALUES ('localisation_data','PROVIDER_ID','EN','The identifier of the provider','The identifier of the provider');
 INSERT INTO translation VALUES ('localisation_data','SUBMISSION_ID','EN','Submission ID','The identifier of a submission');
 INSERT INTO translation VALUES ('localisation_data','OGAM_ID_1_LOCALISATION','EN','Observation','The identifier of a observation');
-INSERT INTO translation VALUES ('localisation_data','THE_GEOM','EN','Polygon','The geometrical criteria intersected with the plot location');
+INSERT INTO translation VALUES ('localisation_data','geometrie','EN','Polygon','The geometrical criteria intersected with the plot location');
 
 
 -- Purge metadata_work schema 
@@ -1512,7 +1512,7 @@ INSERT INTO data VALUES ('codeME','CodeMasseEauValue','Code masse d''eau','Code 
 INSERT INTO data VALUES ('versionME','VersionMasseDEauValue','Version du référentiel Masse d''Eau','Version du référentiel masse d''eau utilisé et prélevé sur le site du SANDRE, telle que décrite sur le site du SANDRE.',NULL);
 INSERT INTO data VALUES ('dateME','Date','Date du référentiel Masse d''Eau','Date de consultation ou de prélèvement du référentiel sur le site du SANDRE.',NULL);
 INSERT INTO data VALUES ('typeInfoGeoMasseDEau','TypeInfoGeoValue','Type d''information géographique','Indique le type d''information géographique suivant la nomenclature TypeInfoGeoValue.',NULL);
-INSERT INTO data VALUES ('THE_GEOM','GEOM','Géométrie','La géométrie de la localisation (au format WKT)',NULL);
+INSERT INTO data VALUES ('geometrie','GEOM','Géométrie','La géométrie de la localisation (au format WKT)',NULL);
 INSERT INTO data VALUES ('natureObjetGeo','NatureObjetGeoValue','Nature de l’objet géographique ','Nature de la localisation transmise ',NULL);
 INSERT INTO data VALUES ('precisionGeometrie','Integer','Précision de l''objet géographique (m)','Estimation en mètres d’une zone tampon autour de l''objet géographique. Cette précision peut inclure la précision du moyen technique d’acquisition des coordonnées (GPS,…) et/ou du protocole naturaliste.',NULL);
 INSERT INTO data VALUES ('nomorganisme','CharacterString','Nom officiel de(s) l''organisme(s).','Nom officiel de l''organisme. Si plusieurs organismes sont nécessaires, les séparer par des virgules.',NULL);
@@ -1607,7 +1607,7 @@ INSERT INTO format VALUES ('localisation_form', 'FORM');
 --
 
 INSERT INTO field VALUES ('OGAM_ID_1_LOCALISATION', 'localisation_file', 'FILE');
-INSERT INTO field VALUES ('THE_GEOM', 'localisation_file', 'FILE');
+INSERT INTO field VALUES ('geometrie', 'localisation_file', 'FILE');
 INSERT INTO field VALUES ('natureObjetGeo', 'localisation_file', 'FILE');
 INSERT INTO field VALUES ('precisionGeometrie', 'localisation_file', 'FILE');
 INSERT INTO field VALUES ('OGAM_ID_1_OBSERVATION', 'observation_file', 'FILE');
@@ -1706,7 +1706,7 @@ INSERT INTO field VALUES ('typeRegroupement', 'observation_file', 'FILE');
 INSERT INTO field VALUES ('altitudeMoyenne', 'observation_file', 'FILE');
 INSERT INTO field VALUES ('profondeurMoyenne', 'observation_file', 'FILE');
 INSERT INTO field VALUES ('REGIONS', 'observation_file', 'FILE');
-INSERT INTO field VALUES ('THE_GEOM', 'localisation_data', 'TABLE');
+INSERT INTO field VALUES ('geometrie', 'localisation_data', 'TABLE');
 INSERT INTO field VALUES ('natureObjetGeo', 'localisation_data', 'TABLE');
 INSERT INTO field VALUES ('precisionGeometrie', 'localisation_data', 'TABLE');
 INSERT INTO field VALUES ('SUBMISSION_ID', 'localisation_data', 'TABLE');
@@ -1810,7 +1810,7 @@ INSERT INTO field VALUES ('typeRegroupement', 'observation_data', 'TABLE');
 INSERT INTO field VALUES ('altitudeMoyenne', 'observation_data', 'TABLE');
 INSERT INTO field VALUES ('profondeurMoyenne', 'observation_data', 'TABLE');
 INSERT INTO field VALUES ('REGIONS', 'observation_data', 'TABLE');
-INSERT INTO field VALUES ('THE_GEOM', 'localisation_form', 'FORM');
+INSERT INTO field VALUES ('geometrie', 'localisation_form', 'FORM');
 INSERT INTO field VALUES ('natureObjetGeo', 'localisation_form', 'FORM');
 INSERT INTO field VALUES ('precisionGeometrie', 'localisation_form', 'FORM');
 INSERT INTO field VALUES ('PROVIDER_ID', 'localisation_form', 'FORM');
@@ -1920,7 +1920,7 @@ INSERT INTO field VALUES ('REGIONS', 'observation_form', 'FORM');
 
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','PROVIDER_ID');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','SUBMISSION_ID');
-INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','localisation_data','THE_GEOM');
+INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','localisation_data','geometrie');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','codecommune');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','nomCommune');
 INSERT INTO dataset_fields VALUES ('std_occ_taxon_dee_v1-2','RAW_DATA','observation_data','anneeRefCommune');
@@ -2094,7 +2094,7 @@ INSERT INTO dynamode VALUES ('OccurrenceEtatBiologiqueValue','SELECT code as cod
 
 INSERT INTO field_mapping VALUES ('PROVIDER_ID','localisation_form','PROVIDER_ID','localisation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','localisation_form','OGAM_ID_1_LOCALISATION','localisation_data','FORM');
-INSERT INTO field_mapping VALUES ('THE_GEOM','localisation_form','THE_GEOM','localisation_data','FORM');
+INSERT INTO field_mapping VALUES ('geometrie','localisation_form','geometrie','localisation_data','FORM');
 INSERT INTO field_mapping VALUES ('PROVIDER_ID','observation_form','PROVIDER_ID','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_OBSERVATION','observation_form','OGAM_ID_1_OBSERVATION','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','observation_form','OGAM_ID_1_LOCALISATION','observation_data','FORM');
@@ -2195,7 +2195,7 @@ INSERT INTO field_mapping VALUES ('altitudeMoyenne','observation_form','altitude
 INSERT INTO field_mapping VALUES ('profondeurMoyenne','observation_form','profondeurMoyenne','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('REGIONS','observation_form','REGIONS','observation_data','FORM');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','localisation_file','OGAM_ID_1_LOCALISATION','localisation_data','FILE');
-INSERT INTO field_mapping VALUES ('THE_GEOM','localisation_file','THE_GEOM','localisation_data','FILE');
+INSERT INTO field_mapping VALUES ('geometrie','localisation_file','geometrie','localisation_data','FILE');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_OBSERVATION','observation_file','OGAM_ID_1_OBSERVATION','observation_data','FILE');
 INSERT INTO field_mapping VALUES ('OGAM_ID_1_LOCALISATION','observation_file','OGAM_ID_1_LOCALISATION','observation_data','FILE');
 INSERT INTO field_mapping VALUES ('codecommune','observation_file','codecommune','observation_data','FILE');
@@ -2301,7 +2301,7 @@ INSERT INTO field_mapping VALUES ('REGIONS','observation_file','REGIONS','observ
 --
 
 INSERT INTO file_field VALUES ('OGAM_ID_1_LOCALISATION','localisation_file','1',NULL,1);
-INSERT INTO file_field VALUES ('THE_GEOM','localisation_file','0',NULL,2);
+INSERT INTO file_field VALUES ('geometrie','localisation_file','0',NULL,2);
 INSERT INTO file_field VALUES ('natureObjetGeo','localisation_file','0',NULL,3);
 INSERT INTO file_field VALUES ('precisionGeometrie','localisation_file','0',NULL,4);
 INSERT INTO file_field VALUES ('OGAM_ID_1_OBSERVATION','observation_file','1',NULL,1);
@@ -2406,7 +2406,7 @@ INSERT INTO file_field VALUES ('REGIONS','observation_file','0',NULL,97);
 -- Data for Name: form_field; Type: TABLE DATA; Schema: metadata; Owner: admin
 --
 
-INSERT INTO form_field VALUES ('THE_GEOM','localisation_form','1','1','SELECT',1,'0','0',NULL,NULL,NULL);
+INSERT INTO form_field VALUES ('geometrie','localisation_form','1','1','SELECT',1,'0','0',NULL,NULL,NULL);
 INSERT INTO form_field VALUES ('natureObjetGeo','localisation_form','1','1','SELECT',2,'0','0',NULL,NULL,NULL);
 INSERT INTO form_field VALUES ('precisionGeometrie','localisation_form','1','1','NUMERIC',3,'0','0',NULL,NULL,NULL);
 INSERT INTO form_field VALUES ('PROVIDER_ID','localisation_form','0','0','SELECT',4,'0','0',NULL,NULL,NULL);
@@ -2590,7 +2590,7 @@ INSERT INTO model_tables VALUES ('1','localisation_data');
 -- Data for Name: table_field; Type: TABLE DATA; Schema: metadata; Owner: admin
 --
 
-INSERT INTO table_field VALUES ('THE_GEOM','localisation_data','THE_GEOM','1','1','1','0',1,NULL);
+INSERT INTO table_field VALUES ('geometrie','localisation_data','geometrie','1','1','1','0',1,NULL);
 INSERT INTO table_field VALUES ('natureObjetGeo','localisation_data','natureObjetGeo','0','1','1','0',2,NULL);
 INSERT INTO table_field VALUES ('precisionGeometrie','localisation_data','precisionGeometrie','0','1','1','0',3,NULL);
 INSERT INTO table_field VALUES ('SUBMISSION_ID','localisation_data','SUBMISSION_ID','1','0','0','1',4,NULL);
@@ -2716,10 +2716,10 @@ INSERT INTO translation VALUES ('observation_data','OGAM_ID_1_OBSERVATION','EN',
 INSERT INTO translation VALUES ('localisation_data','PROVIDER_ID','FR','Fournisseur de données','L''identifiant du fournisseur de données');
 INSERT INTO translation VALUES ('localisation_data','SUBMISSION_ID','FR','Identifiant de soumission','L''identifiant de soumission');
 INSERT INTO translation VALUES ('localisation_data','OGAM_ID_1_LOCALISATION','FR','Observation','L''identifiant de l''observation');
-INSERT INTO translation VALUES ('localisation_data','THE_GEOM','FR','Géométrie','La géométrie');
+INSERT INTO translation VALUES ('localisation_data','geometrie','FR','Géométrie','La géométrie');
 INSERT INTO translation VALUES ('localisation_data','PROVIDER_ID','EN','The identifier of the provider','The identifier of the provider');
 INSERT INTO translation VALUES ('localisation_data','SUBMISSION_ID','EN','Submission ID','The identifier of a submission');
 INSERT INTO translation VALUES ('localisation_data','OGAM_ID_1_LOCALISATION','EN','Observation','The identifier of a observation');
-INSERT INTO translation VALUES ('localisation_data','THE_GEOM','EN','Polygon','The geometrical criteria intersected with the plot location');
+INSERT INTO translation VALUES ('localisation_data','geometrie','EN','Polygon','The geometrical criteria intersected with the plot location');
 
 

@@ -95,3 +95,16 @@ INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('sensi
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('sensireferentiel', 'table2', 'sensireferentiel','0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('sensiversionreferentiel', 'table2', 'sensiversionreferentiel','0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('jddid', 'table2', 'jddid','0');
+
+SET search_path TO metadata;
+
+INSERT INTO dataset (dataset_id, label, is_default, definition, type) VALUES ('dataset_2_predefined', 'dataset_2_not_pub', '0', 'def', 'QUERY');
+
+SET search_path TO mapping;
+
+INSERT INTO requests (id, session_id) VALUES (115, '785kl');
+
+SET search_path TO website;
+
+INSERT INTO predefined_request (request_id, dataset_id, schema_code, label) VALUES (115, 'dataset_2_predefined', 'RAW_DATA', 'testAddPredefinedRequestCriterion');
+INSERT INTO predefined_request_group (group_id, label) VALUES (10, 'testCreatePredefinedRequest');

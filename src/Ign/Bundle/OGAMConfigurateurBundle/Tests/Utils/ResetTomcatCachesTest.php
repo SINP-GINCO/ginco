@@ -21,7 +21,7 @@ class ResetTomcatCachesTest extends ConfiguratorTest {
 	public static function executeScripts($adminConn) {}
 
 	public function setUp() {
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 	}
 

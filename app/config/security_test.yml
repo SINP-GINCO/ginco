@@ -1,6 +1,0 @@
-# This security config file is uniquely used for unit testing
-security:
-    firewalls:
-        main:
-            pattern:  ^/
-            security: false

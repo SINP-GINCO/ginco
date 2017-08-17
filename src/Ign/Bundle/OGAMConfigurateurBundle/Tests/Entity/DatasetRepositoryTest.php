@@ -13,7 +13,7 @@ class DatasetRepositoryTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		$this->client = static::createClient();
+		$this->client = static::createClient(array('environment' => 'test_ogam'));
 
 		$this->container = static::$kernel->getContainer();
 		$this->em = $this->container->get('doctrine')->getManager();

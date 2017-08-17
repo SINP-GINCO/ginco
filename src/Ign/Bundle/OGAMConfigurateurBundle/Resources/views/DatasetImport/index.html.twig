@@ -172,7 +172,7 @@
 								<div class="modal-content">
 									<div class="modal-body">
 										{% trans with {'%importModelName%': dataset.label} %} importmodel.publish.impossible.1 {% endtrans %}
-										{% trans with {'%modelName%': dataset.model.name} %} importmodel.publish.impossible.2 {% endtrans %}
+										{% trans with {'%modelName%': dataset.model.name|default('')} %} importmodel.publish.impossible.2 {% endtrans %}
 										{% trans %} importmodel.publish.impossible.3 {% endtrans %}
 										{% trans %} importmodel.publish.impossible.4 {% endtrans %}
 									</div>

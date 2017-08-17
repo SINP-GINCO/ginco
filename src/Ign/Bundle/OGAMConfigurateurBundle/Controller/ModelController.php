@@ -174,7 +174,6 @@ class ModelController extends Controller {
 			->getRepository('IgnOGAMConfigurateurBundle:Model')
 			->find($modelId);
 		if ($model) {
-
 			// Reset tomcat caches
 			$cachesCleared = $this->get('app.resettomcatcaches')->performRequest();
 			if ($cachesCleared == false) {

@@ -1,19 +1,15 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
-class FieldRepositoryTest extends WebTestCase {
+class FieldRepositoryTest extends ConfiguratorTest {
 
-	/**
-	 *
-	 * @var \Doctrine\ORM\EntityManager
-	 */
-	private $em;
+	public static function executeScripts($adminConn) {}
 
 	public function setUp() {
 		// Entity Manager
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 		$this->em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
 	}

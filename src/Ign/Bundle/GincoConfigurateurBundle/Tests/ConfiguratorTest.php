@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\OGAMConfigurateurBundle\Tests;
+namespace Ign\Bundle\GincoConfigurateurBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -84,7 +84,7 @@ abstract class ConfiguratorTest extends WebTestCase {
 	 */
 	public static function setUpBeforeClass() {
 		static::$kernel = static::createKernel(array(
-			'environment' => 'test_ogam'
+			'environment' => 'test'
 		));
 		static::$kernel->boot();
 
@@ -109,9 +109,9 @@ abstract class ConfiguratorTest extends WebTestCase {
 	 */
 	abstract static function executeScripts($adminConn);
 
-	protected static function getKernelClass() {
-		return 'TestOgamKernel';
-	}
+// 	protected static function getKernelClass() {
+// 		return 'TestOgamKernel';
+// 	}
 
 	// this is needed because the KernelTestCase class keeps a reference to
 	// the previously created kernel in its static $kernel property. Thus,

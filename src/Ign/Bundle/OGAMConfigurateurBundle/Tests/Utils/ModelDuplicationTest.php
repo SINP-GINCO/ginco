@@ -30,7 +30,7 @@ class ModelDuplicationTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 
 		$this->container = static::$kernel->getContainer();
@@ -56,19 +56,19 @@ class ModelDuplicationTest extends ConfiguratorTest {
 		$modelWithBadId = $repository->find('5');
 		$modelWithBadId->addId('badId');
 
-		$duplicateStatus = $md->duplicateModel($modelWithBadId, 'my_copied_model');
+		$duplicateStatus = $md->duplicateModel($modelWithBadId, 'my_copied_model', 'description');
 		$this->assertEquals('datamodel.duplicate.badid', $duplicateStatus);
 
 		// Test with a model already copied
 		$modelAlreadyCopied = $repository->find('2');
 
-		$duplicateStatus = $md->duplicateModel($modelAlreadyCopied, 'my_copied_model');
+		$duplicateStatus = $md->duplicateModel($modelAlreadyCopied, 'my_copied_model', 'description');
 		$this->assertEquals('datamodel.duplicate.hasCopy', $duplicateStatus);
 
 		// Test with a model to be copied
 		$modelToCopy = $repository->find('4');
 
-		$duplicateStatus = $md->duplicateModel($modelToCopy, 'my_copied_model');
+		$duplicateStatus = $md->duplicateModel($modelToCopy, 'my_copied_model', 'description');
 		$this->assertEquals('datamodel.duplicate.success', $duplicateStatus);
 	}
 

@@ -24,7 +24,7 @@ INSERT INTO field (data, format, type) VALUES ('OGAM_ID', 'table_son', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('PROVIDER_ID', 'table_father', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('SUBMISSION_ID', 'table_father', 'TABLE');
 INSERT INTO field (data, format, type) VALUES ('OGAM_ID', 'table_father', 'TABLE');
-INSERT INTO field (data, format, type) VALUES ('THE_GEOM', 'table_father', 'TABLE');
+INSERT INTO field (data, format, type) VALUES ('geometrie', 'table_father', 'TABLE');
 
 INSERT INTO model (id, name, description, schema_code) VALUES ('2', 'model_to_publish', 'model used for publishing tests', 'RAW_DATA');
 INSERT INTO model (id, name, description, schema_code) VALUES ('3', 'model_with_data', 'model used for publishing tests', 'RAW_DATA');
@@ -70,7 +70,7 @@ INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('OGAM_
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('PROVIDER_ID', 'table_father', 'PROVIDER_ID', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('SUBMISSION_ID', 'table_father', 'SUBMISSION_ID', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('OGAM_ID', 'table_father', 'OGAM_ID', '0');
-INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('THE_GEOM', 'table_father', 'THE_GEOM', '0');
+INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('geometrie', 'table_father', 'geometrie', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('PROVIDER_ID', 'table_son', 'PROVIDER_ID', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('SUBMISSION_ID', 'table_son', 'SUBMISSION_ID', '0');
 INSERT INTO table_field (data, format, column_name, is_mandatory) VALUES ('OGAM_ID', 'table_son', 'OGAM_ID', '0');

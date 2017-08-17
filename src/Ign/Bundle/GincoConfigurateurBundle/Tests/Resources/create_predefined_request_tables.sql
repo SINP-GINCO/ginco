@@ -1,10 +1,10 @@
 set search_path = website;
 
-DROP TABLE predefined_request_group_asso;
-DROP TABLE predefined_request_group;
-DROP TABLE predefined_request_criteria;
-DROP TABLE predefined_request_result;
-DROP TABLE predefined_request;
+DROP TABLE IF EXISTS predefined_request_group_asso;
+DROP TABLE IF EXISTS predefined_request_group;
+DROP TABLE IF EXISTS predefined_request_criterion;
+DROP TABLE IF EXISTS predefined_request_column;
+DROP TABLE IF EXISTS predefined_request;
 
 /*==============================================================*/
 /* Table : PREDEFINED_REQUEST                                   */

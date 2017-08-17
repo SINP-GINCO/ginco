@@ -87,7 +87,9 @@ class ModelPublication extends DatabaseUtils {
 			pg_query($dbconn, "ROLLBACK");
 			return false;
 		} finally {
-			pg_close($dbconn);
+			if (isset($dbconn)) {
+				pg_close($dbconn);
+			}
 		}
 	}
 
@@ -112,7 +114,6 @@ class ModelPublication extends DatabaseUtils {
 		}
 
 		$this->conn->close();
-
 		return $published;
 	}
 
@@ -129,7 +130,6 @@ class ModelPublication extends DatabaseUtils {
 	 */
 	public function isPublishable($modelId) {
 		$publishable = (!$this->isPublished($modelId) && $this->modelHasTables($modelId) && $this->modelTablesHaveFields($modelId) && $this->modelHasGeometricalField($modelId));
-
 		return $publishable;
 	}
 
@@ -149,7 +149,6 @@ class ModelPublication extends DatabaseUtils {
 		$hasTables = ($stmt->fetchColumn(0) >= 1);
 
 		$this->conn->close();
-
 		return $hasTables;
 	}
 
@@ -178,7 +177,6 @@ class ModelPublication extends DatabaseUtils {
 				$tablesHaveFields = false;
 			}
 		}
-
 		return $tablesHaveFields;
 	}
 
@@ -205,7 +203,6 @@ class ModelPublication extends DatabaseUtils {
 		if ($row['nbgeomfield'] < 1) {
 			$modelHasGeometricalField = false;
 		}
-
 		return $modelHasGeometricalField;
 	}
 

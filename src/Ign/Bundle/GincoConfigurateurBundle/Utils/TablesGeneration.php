@@ -34,7 +34,9 @@ class TablesGeneration extends TablesGenerationBase {
 	 */
 	public function createTables($modelId, $dbconn) {
 		$stmt = $this->selectTablesFormat($modelId, $dbconn);
+		$numberOfTables = 0;
 		while ($row = pg_fetch_assoc($stmt)) {
+			$numberOfTables++;
 			$tableFormat = $row['format'];
 			$tableSchema = $row['schema_code'];
 			$tableName = $row['table_name'];
@@ -62,7 +64,7 @@ class TablesGeneration extends TablesGenerationBase {
 			}
 		}
 		try {
-			if ($this->predefinedRequestGeneration) {
+			if ($this->predefinedRequestGeneration && $numberOfTables > 0) {
 				$this->predefinedRequestGeneration->createPredefinedRequests($modelId, $tableSchema, $dbconn); // Ginco specific
 			}
 			$this->addConstraints($modelId, $dbconn);

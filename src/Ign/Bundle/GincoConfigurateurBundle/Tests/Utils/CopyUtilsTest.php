@@ -1,8 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Utils;
 
+use Ign\Bundle\GincoConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\GincoConfigurateurBundle\Utils\CopyUtils;
-use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 
 /**
  * Test class for copy utils class

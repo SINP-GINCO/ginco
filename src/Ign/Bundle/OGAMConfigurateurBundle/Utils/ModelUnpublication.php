@@ -21,15 +21,19 @@ class ModelUnpublication extends DatabaseUtils {
 	private $adminPgConn;
 
 	/**
-	 *
-	 * @var PDO connection with user 'ogam' rights.
+	 * @var string The PDO connection with admin rights connections parameters
 	 */
-	private $pgConn;
+	private $connParams;
 
 	public function __construct(Connection $conn, Logger $logger, $adminName, $adminPassword) {
 		parent::__construct($conn, $logger, $adminName, $adminPassword);
-		$this->pgConn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-		$this->adminPgConn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $adminName . " password=" . $adminPassword) or die('Connection is impossible : ' . pg_last_error());
+		$this->connParams = "host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $adminName . " password=" . $adminPassword;
+		try{
+			$this->adminPgConn = pg_connect($this->connParams);
+		} catch(ContextErrorException $e){
+			$this->logger->error($e);
+		}
+
 	}
 
 	/**
@@ -43,6 +47,7 @@ class ModelUnpublication extends DatabaseUtils {
 	public function unpublishModel($modelId) {
 		try {
 			if ($this->isModelPresentInProdSchema($modelId)) {
+				$this->adminPgConn = pg_connect($this->connParams);
 				pg_query($this->adminPgConn, "BEGIN");
 				$this->deleteFormFields($modelId);
 				$this->deleteQueryDataset($modelId);
@@ -71,7 +76,6 @@ class ModelUnpublication extends DatabaseUtils {
 			return false;
 		} finally {
 			$this->conn->close();
-			pg_close($this->pgConn);
 			pg_close($this->adminPgConn);
 		}
 		return true;

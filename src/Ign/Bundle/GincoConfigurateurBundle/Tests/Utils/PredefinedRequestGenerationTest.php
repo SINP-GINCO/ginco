@@ -1,13 +1,13 @@
 <?php
 namespace Ign\Bundle\GincoConfigurateurBundle\Tests\Utils;
 
+use Ign\Bundle\GincoConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Unit Tests for PredefinedRequest class
  */
-class PredefinedRequestTest extends WebTestCase {
+class PredefinedRequestTest extends ConfiguratorTest {
 
 	/**
 	 *
@@ -17,34 +17,23 @@ class PredefinedRequestTest extends WebTestCase {
 	 */
 	protected $dbconn;
 
-	/**
-	 * Instanciates the unit_test db with data.
-	 * Purges it before.
-	 */
-	public static function setUpBeforeClass() {
-		// Launch kernel in order to get connection
-		static::$kernel = static::createKernel();
-		static::$kernel->boot();
-
-		$container = static::$kernel->getContainer();
-
-		$conn = $container->get('database_connection');
-
-		// Create a specific admin connection to execute admin necessary privileges script
-		$adminName = $container->getParameter('database_admin_user');
-		$adminPassword = $container->getParameter('database_admin_password');
-		$adminDbconn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $adminName . " password=" . $adminPassword) or die('Connection is impossible : ' . pg_last_error());
-
+	public static function executeScripts($adminConn) {
 		// Execute insert scripts
 		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/insert_script_common.sql');
-		pg_query($adminDbconn, $sql) or die('Request failed: ' . pg_last_error());
-		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/insert_script_for_predefined_request_service.sql');
-		pg_query($adminDbconn, $sql) or die('Request failed: ' . pg_last_error());
+		pg_query($adminConn, $sql) or die('Request failed: ' . pg_last_error());
+		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/3-Delete_predefined_requests.sql');
+		pg_query($adminConn, $sql) or die('Request failed: ' . pg_last_error());
+		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/1-3-Create_website_schema.sql');
+		pg_query($adminConn, $sql) or die('Request failed: ' . pg_last_error());
 		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/1-4-Create_raw_data_schema.sql');
-		pg_query($adminDbconn, $sql) or die('Request failed: ' . pg_last_error());
-		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/create_predefined_request_tables.sql');
-		pg_query($adminDbconn, $sql) or die('Request failed: ' . pg_last_error());
+		pg_query($adminConn, $sql) or die('Request failed: ' . pg_last_error());
+		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/insert_script_for_predefined_request_service.sql');
+		pg_query($adminConn, $sql) or die('Request failed: ' . pg_last_error());
+// 		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/create_predefined_request_tables.sql');
+// 		pg_query($adminConn, $sql) or die('Request failed: ' . pg_last_error());
+
 	}
+
 
 	public function setUp() {
 		static::$kernel = static::createKernel();
@@ -75,7 +64,7 @@ class PredefinedRequestTest extends WebTestCase {
 	 * @covers Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration::addPredefinedRequestGroup
 	 */
 	public function testAddPredefinedRequestGroup() {
-		$this->prg->addPredefinedRequestGroup('dataset_2_predefined', 'dataset_2_predefined', 'dataset_2_predefined', '1', $this->dbconn);
+		$this->prg->addPredefinedRequestGroup('dataset_2_predefined', 'dataset_2_predefined', '1', $this->dbconn);
 
 		$sql = "select count(group_id), group_id
 				from website.predefined_request_group
@@ -84,7 +73,7 @@ class PredefinedRequestTest extends WebTestCase {
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertEquals(1, $row['count']);
-		$this->assertTrue($row['group_id'] == 'dataset_2_predefined');
+		$this->assertTrue($row['group_id'] == 1);
 	}
 
 	/**
@@ -98,18 +87,17 @@ class PredefinedRequestTest extends WebTestCase {
 		$criteria = array();
 		$results = array();
 		$label = 'critères les plus fréquents';
-		$requestId = $datasetId . '_periode';
 
-		$this->prg->createPredefinedRequest($datasetId, $tableSchema, $requestId, $criteria, $results, $label, $this->dbconn);
+		$this->prg->createPredefinedRequest(10, $datasetId, $tableSchema, $criteria, $results, $label, $this->dbconn);
 
 		$sql = "select count(request_id), request_id
 				from website.predefined_request
+				where label = '$label'
 				group by request_id";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertEquals(1, $row['count']);
-		$this->assertTrue($row['request_id'] == 'dataset_2_predefined_periode');
 	}
 
 	/**
@@ -118,38 +106,37 @@ class PredefinedRequestTest extends WebTestCase {
 	 * @covers Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration::addPredefinedRequestCriterion
 	 */
 	public function testAddPredefinedRequestCriterion() {
-		$datasetId = 'dataset_2_predefined';
-		$requestId = $datasetId . '_periode';
+		$requestId = 115;
+
 		$this->prg->addPredefinedRequestCriterion($requestId, 'form_localisation', 'codeen', '', $this->dbconn);
 
 		$sql = "select count(request_id), request_id
-				from website.predefined_request_criteria
+				from website.predefined_request_criterion
 				group by request_id";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertEquals(1, $row['count']);
-		$this->assertTrue($row['request_id'] == 'dataset_2_predefined_periode');
+		$this->assertTrue($row['request_id'] == 115);
 	}
 
 	/**
 	 * Test predefined request result creation
 	 *
-	 * @covers Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration::addPredefinedRequestResult
+	 * @covers Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration::addPredefinedRequestColumn
 	 */
-	public function testAddPredefinedRequestResult() {
-		$datasetId = 'dataset_2_predefined';
-		$requestId = $datasetId . '_periode';
-		$this->prg->addPredefinedRequestResult($requestId, 'form_localisation', 'codeen', $this->dbconn);
+	public function testAddPredefinedRequestColumn() {
+		$requestId = 115;
+		$this->prg->addPredefinedRequestColumn($requestId, 'form_localisation', 'codeen', $this->dbconn);
 
 		$sql = "select count(request_id), request_id
-				from website.predefined_request_result
+				from website.predefined_request_column
 				group by request_id";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertEquals(1, $row['count']);
-		$this->assertTrue($row['request_id'] == 'dataset_2_predefined_periode');
+		$this->assertTrue($row['request_id'] == 115);
 	}
 
 	/**
@@ -159,12 +146,19 @@ class PredefinedRequestTest extends WebTestCase {
 	 */
 	public function testDropPredefinedRequest() {
 		$datasetId = 'dataset_2_predefined';
-		$this->mu->dropPredefinedRequests($datasetId);
 
 		$sql = "select count(request_id), request_id
 				from website.predefined_request
+				where dataset_id = '$datasetId'
 				group by request_id";
 		$stmt = $this->prg->getConnection()->prepare($sql);
+		$stmt->execute();
+
+		$row = $stmt->fetch();
+		$this->assertEquals(1, $row['count']);
+
+		$this->mu->dropPredefinedRequests($datasetId);
+
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertEquals(0, $row['count']);
@@ -172,7 +166,7 @@ class PredefinedRequestTest extends WebTestCase {
 
 	/**
 	 * Test predefined requests are created when a model is published
-	 *
+
 	 * @covers Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration::createPredefinedRequests
 	 */
 	public function testCreatePredefinedRequests() {
@@ -193,7 +187,8 @@ class PredefinedRequestTest extends WebTestCase {
 		$this->assertEquals(5, $row['count']);
 
 		$sql = "select count(group_id)
-				from website.predefined_request_group";
+				from website.predefined_request_group
+				where label = 'model_to_publish_for_predefined_request'";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
@@ -207,14 +202,14 @@ class PredefinedRequestTest extends WebTestCase {
 		$this->assertEquals(5, $row['count']);
 
 		$sql = "select count(request_id)
-				from website.predefined_request_criteria";
+				from website.predefined_request_criterion";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertEquals(21, $row['count']);
 
 		$sql = "select count(request_id)
-				from website.predefined_request_result";
+				from website.predefined_request_column";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
@@ -240,7 +235,8 @@ class PredefinedRequestTest extends WebTestCase {
 		$this->assertEquals(0, $row['count']);
 
 		$sql = "select count(group_id)
-				from website.predefined_request_group";
+				from website.predefined_request_group
+				where label = 'model_to_publish_for_predefined_request'";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
@@ -254,14 +250,14 @@ class PredefinedRequestTest extends WebTestCase {
 		$this->assertEquals(0, $row['count']);
 
 		$sql = "select count(request_id)
-				from website.predefined_request_criteria";
+				from website.predefined_request_criterion";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();
 		$this->assertEquals(0, $row['count']);
 
 		$sql = "select count(request_id)
-				from website.predefined_request_result";
+				from website.predefined_request_column";
 		$stmt = $this->prg->getConnection()->prepare($sql);
 		$stmt->execute();
 		$row = $stmt->fetch();

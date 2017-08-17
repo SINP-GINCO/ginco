@@ -3,7 +3,7 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\Container;
 
-class AppKernel extends Kernel {
+class TestOgamKernel extends Kernel {
 
 	public function registerBundles() {
 		$bundles = array(
@@ -16,14 +16,13 @@ class AppKernel extends Kernel {
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle(),
-			new Ign\Bundle\GincoConfigurateurBundle\IgnGincoConfigurateurBundle()
+			new Ign\Bundle\OGAMConfigurateurBundle\IgnOGAMConfigurateurBundle()
 		);
 
 		if (in_array($this->getEnvironment(), array(
 			'dev',
-			'test',
 			'test_auth',
+			'test_ogam'
 		))) {
 			$bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
 			$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -35,7 +34,7 @@ class AppKernel extends Kernel {
 	}
 
 	public function registerContainerConfiguration(LoaderInterface $loader) {
-		$loader->load($this->getRootDir() . '/config/config_' . $this->getEnvironment() . '.yml');
+		$loader->load($this->getRootDir() . '/config/test_ogam/config_' . $this->getEnvironment() . '.yml');
 	}
 
 	public function getCacheDir() {
@@ -44,7 +43,10 @@ class AppKernel extends Kernel {
 		if (!array_key_exists('SYMFONY__DATABASE__NAME', $_SERVER)) {
 			$_SERVER['SYMFONY__DATABASE__NAME'] = "";
 		}
-		return $this->rootDir . '/cache/' . $this->environment . '/' . $_SERVER['SYMFONY__DATABASE__NAME'];
+		return $this->rootDir . '/cache/test_ogam/' . $this->environment . '/' . $_SERVER['SYMFONY__DATABASE__NAME'];
 	}
 
+	public function getLogDir() {
+		return dirname(__DIR__) . '/app/logs/test_ogam/';
+	}
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Tests\Utils;
 
-use \Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Ign\Bundle\OGAMConfigurateurBundle\Tests\ConfiguratorTest;
 use Ign\Bundle\OGAMConfigurateurBundle\Utils\TablesGeneration;
 
 /**
@@ -12,7 +12,7 @@ use Ign\Bundle\OGAMConfigurateurBundle\Utils\TablesGeneration;
  * @author Anna Mouget
  *
  */
-class TablesGenerationTest extends WebTestCase {
+class TablesGenerationTest extends ConfiguratorTest {
 
 	/**
 	 *
@@ -28,13 +28,15 @@ class TablesGenerationTest extends WebTestCase {
 	 */
 	protected $dbconn;
 
+	public static function executeScripts($adminConn) {}
+
 	/**
 	 * Instanciates the unit_test db with data.
 	 * Purges it before.
 	 */
 	public static function setUpBeforeClass() {
 		// Launch kernel in order to get connection
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 
 		$container = static::$kernel->getContainer();
@@ -48,6 +50,8 @@ class TablesGenerationTest extends WebTestCase {
 
 		// Execute insert scripts
 		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/insert_script_common.sql');
+		pg_query($adminDbconn, $sql) or die('Request failed: ' . pg_last_error());
+		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/1-3-Create_website_schema.sql');
 		pg_query($adminDbconn, $sql) or die('Request failed: ' . pg_last_error());
 		$sql = file_get_contents(dirname(__FILE__) . '/../Resources/1-4-Create_raw_data_schema.sql');
 		pg_query($adminDbconn, $sql) or die('Request failed: ' . pg_last_error());
@@ -67,7 +71,7 @@ class TablesGenerationTest extends WebTestCase {
 	}
 
 	public function setUp() {
-		static::$kernel = static::createKernel();
+		static::$kernel = static::createKernel(array('environment' => 'test_ogam'));
 		static::$kernel->boot();
 
 		$container = static::$kernel->getContainer();
@@ -182,10 +186,10 @@ class TablesGenerationTest extends WebTestCase {
 
 		$result = $this->tg->getPostgresTypeFromOgamType('DATE', 'DateTime', 'champTest');
 		$this->assertEquals('timestamp with time zone', $result);
-		
+
 		$result = $this->tg->getPostgresTypeFromOgamType('TIME', 'Time', 'champTest');
 		$this->assertEquals('time', $result);
-		
+
 		$result = $this->tg->getPostgresTypeFromOgamType('STRING', 'UnitTest', 'commentaire');
 		$this->assertEquals('text', $result);
 	}
