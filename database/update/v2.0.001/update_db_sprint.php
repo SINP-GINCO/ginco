@@ -36,12 +36,50 @@ try {
 	exit(1);
 }
 
+try {
+	/* add  commune carto 2017 ADMIN EXPRESS COG */
+	$config['sprintDir'] = $sprintDir;
+	system("wget 'https://ginco.ign.fr/ref/commune_carto_2017.sql' -O $sprintDir/commune_carto_2017.sql --no-verbose");
+	echo "Intégration des données communes dans la base...";
+	execCustSQLFile("$sprintDir/commune_carto_2017.sql", $config);
+	echo "Intégration du référentiel communes terminée.";
+	
+	/* update departement carto 2017 ADMIN EXPRESS COG */
+	$config['sprintDir'] = $sprintDir;
+	system("wget 'https://ginco.ign.fr/ref/departement_carto_2017.sql' -O $sprintDir/departement_carto_2017.sql --no-verbose");
+	echo "Intégration des données departements dans la base...";
+	execCustSQLFile("$sprintDir/departement_carto_2017.sql", $config);
+	echo "Intégration du référentiel departements terminée.";
+	
+	/* update region carto 2017 ADMIN EXPRESS COG */
+	$config['sprintDir'] = $sprintDir;
+	system("wget 'https://ginco.ign.fr/ref/region_carto_2017.sql' -O $sprintDir/region_carto_2017.sql --no-verbose");
+	echo "Intégration des données regions dans la base...";
+	execCustSQLFile("$sprintDir/region_carto_2017.sql", $config);
+	echo "Intégration du référentiel regions terminée.";
+	
+} catch (Exception $e) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
   system("php $sprintDir/update_orgtransformation_sensible_not_editable_not_mandatory.php $CLIParams", $returnCode1);
+  system("php $sprintDir/update_commune_referentiel_in_data.php $CLIParams", $returnCode2);
+  
+if (($returnCode1 != 0) || ($returnCode2 != 0)) {
+	echo "$sprintDir/update_db_sprint.php\n";
+	echo "exception: " . $e->getMessage() . "\n";
+	exit(1);
+}
 
-if ($returnCode1 != 0) {
+try {
+	execCustSQLFile("$sprintDir/replace_geofla_commune_by_admin_express-cog_2017.sql", $config);
+	execCustSQLFile("$sprintDir/replace_geofla_departement_by_admin_express-cog_2017.sql", $config);
+	execCustSQLFile("$sprintDir/replace_geofla_region_by_admin_express-cog_2017.sql", $config);
+} catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
