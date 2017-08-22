@@ -264,8 +264,8 @@ COMMENT ON TABLE bac_commune IS 'The visualization bac for communes geometries i
 COMMENT ON COLUMN bac_commune.id_commune IS 'The INSEE code id of the commune';
 COMMENT ON COLUMN bac_commune.geom IS 'The geometry of the commune in Web Mercator projection';
 
-ALTER TABLE bac_commune ADD CONSTRAINT FK_bac_commune_geofla_commune
-FOREIGN KEY (id_commune) REFERENCES referentiels.geofla_commune (insee_com)
+ALTER TABLE bac_commune ADD CONSTRAINT FK_bac_commune_commune_carto_2017
+FOREIGN KEY (id_commune) REFERENCES referentiels.commune_carto_2017 (insee_com)
 ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX IX_BAC_COMMUNE_SPATIAL_INDEX ON bac_commune USING GIST ( geom  );
 
@@ -283,8 +283,8 @@ COMMENT ON TABLE bac_departement IS 'The visualization bac for departements geom
 COMMENT ON COLUMN bac_departement.id_departement IS 'The INSEE code id of the departement';
 COMMENT ON COLUMN bac_departement.geom IS 'The geometry of the departement in Web Mercator projection';
 
-ALTER TABLE bac_departement ADD CONSTRAINT FK_bac_departement_geofla_departement
-FOREIGN KEY (id_departement) REFERENCES referentiels.geofla_departement (code_dept)
+ALTER TABLE bac_departement ADD CONSTRAINT FK_bac_departement_departement_carto_2017
+FOREIGN KEY (id_departement) REFERENCES referentiels.departement_carto_2017 (code_dept)
 ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX IX_BAC_DEPARTEMENT_SPATIAL_INDEX ON bac_departement USING GIST ( geom  );
 /*==============================================================*/
@@ -301,8 +301,8 @@ COMMENT ON TABLE bac_region IS 'The visualization bac for regions geometries in 
 COMMENT ON COLUMN bac_region.id_region IS 'The code id of the region';
 COMMENT ON COLUMN bac_region.geom IS 'The geometry of the region in Web Mercator projection';
 
-ALTER TABLE bac_region ADD CONSTRAINT FK_bac_region_geofla_region
-FOREIGN KEY (id_region) REFERENCES referentiels.geofla_region (code_reg)
+ALTER TABLE bac_region ADD CONSTRAINT FK_bac_region_region_carto_2017
+FOREIGN KEY (id_region) REFERENCES referentiels.region_carto_2017 (code_reg)
 ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX IX_BAC_REGION_SPATIAL_INDEX ON bac_region USING GIST ( geom  );
 /*==============================================================*/
