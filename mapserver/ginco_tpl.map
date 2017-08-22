@@ -518,7 +518,7 @@ LAYER
     CONNECTIONTYPE postgis
     PROCESSING "LABEL_NO_CLIP=ON"
     CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
-    DATA "geom FROM referentiels.geofla_region USING srid=4326"
+    DATA "geom FROM referentiels.region_carto_2017 USING srid=4326"
 
 
     METADATA
@@ -571,7 +571,7 @@ LAYER
     CONNECTIONTYPE postgis
         PROCESSING "LABEL_NO_CLIP=ON"
     CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
-        DATA "geom FROM referentiels.geofla_departement USING srid=4326"
+        DATA "geom FROM referentiels.departement_carto_2017 USING srid=4326"
 
 
     METADATA
@@ -624,7 +624,7 @@ LAYER
     CONNECTIONTYPE postgis
     PROCESSING "LABEL_NO_CLIP=ON"
     CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
-    DATA "geom FROM referentiels.geofla_commune USING srid=4326"
+    DATA "geom FROM referentiels.commune_carto_2017 USING srid=4326"
 
     METADATA
         WFS_TITLE          "communes"
