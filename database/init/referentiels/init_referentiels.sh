@@ -56,7 +56,7 @@ then
 	echo "$communes a été trouvé localement..."
 else
 	echo "téléchargement de la dernière version des limites administratives (admin express-cog communes carto 2017)..."
-	wget "https://ginco.ign.fr/ref/commmune_carto_2017.sql" -O $communes --no-verbose
+	wget "https://ginco.ign.fr/ref/commune_carto_2017.sql" -O $communes --no-verbose
 
 fi
 
