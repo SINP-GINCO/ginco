@@ -288,7 +288,6 @@ DATA                 VARCHAR(277)          not null,
 FORMAT               VARCHAR(255)          not null,
 IS_MANDATORY         CHAR(1)          	  null,
 MASK                 VARCHAR(100)         null,
-POSITION             INT4                 null,
 LABEL_CSV			 VARCHAR(60)		   not null,
 constraint PK_FILE_FIELD primary key (DATA, FORMAT),
 constraint file_field_format_label_csv_key UNIQUE (format, label_csv)
@@ -298,7 +297,6 @@ COMMENT ON COLUMN FILE_FIELD.DATA IS 'The logical name of the field';
 COMMENT ON COLUMN FILE_FIELD.FORMAT IS 'The name of the file format containing this field';
 COMMENT ON COLUMN FILE_FIELD.IS_MANDATORY IS 'Is the field mandatory?';
 COMMENT ON COLUMN FILE_FIELD.MASK IS 'A mask used to validate the data';
-COMMENT ON COLUMN FILE_FIELD.POSITION IS 'The position of this field in the file';
 
 /*==============================================================*/
 /* Table : FORM_FIELD                                           */
