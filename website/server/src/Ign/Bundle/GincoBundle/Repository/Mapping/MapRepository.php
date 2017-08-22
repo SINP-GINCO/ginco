@@ -44,13 +44,13 @@ class MapRepository extends GenericRepository {
 	 * @param int $projection
 	 *        	the projection used for the results
 	 * @param string $regionCode
-	 *        	the code of the region (in GEOFLA)
+	 *        	the code of the region (in region_carto_2017)
 	 */
 	public function getRegionBbox($projection, $regionCode) {
 		$conn = $this->getConnection();
 
 		$req = "SELECT st_astext(st_envelope(st_transform(geom, $projection))) as wkt
-				FROM referentiels.geofla_region
+				FROM referentiels.region_carto_2017
 				WHERE code_reg = ?";
 
 		$query = $conn->prepare($req);
@@ -72,7 +72,7 @@ class MapRepository extends GenericRepository {
 		$conn = $this->getConnection();
 
 		$req = "SELECT st_astext(st_extent(st_transform(geom, 3857))) as wkt
-				FROM referentiels.geofla_region
+				FROM referentiels.region_carto_2017
 				WHERE code_reg NOT LIKE '0%'";
 
 		$query = $conn->prepare($req);

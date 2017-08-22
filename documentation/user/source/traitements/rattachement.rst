@@ -7,7 +7,7 @@ Lors de l'import, un rattachement administratif de chaque observation est effect
 
 Selon les données livrées, chaque observation sera rattachée à une ou plusieurs entités administratives de réference (communes, mailles et départements).
 
-.. warning:: Les données de référence actuellement utilisées dans le calcul sont les données issues du GeoFLA version 2015.1. Il se peut donc qu'il y ait des incohérences aux limites si vous utilisez un autre référentiel (BDTopo par exemple).
+.. warning:: Les données de référence actuellement utilisées dans le calcul sont les données ADMIN EXPRESS-COG carto 2017. Il se peut donc qu'il y ait des incohérences aux limites si vous utilisez un autre référentiel.
 
 Algorithme
 ----------
