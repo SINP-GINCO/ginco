@@ -25,9 +25,9 @@ rootDir=$(dirname $(readlink -f $0))
 dataDir=$rootDir/data
 
 taxref=$dataDir/download/taxrefv10.txt
-communes=$dataDir/download/visu_communes_geofla_2015.1.sql
-departements=$dataDir/download/visu_departements_geofla_2015.1.sql
-regions=$dataDir/download/visu_regions_geofla_2015.1.sql
+communes=$dataDir/download/commune_carto_2017.sql
+departements=$dataDir/download/departement_carto_2017.sql
+regions=$dataDir/download/region_carto_2017.sql
 espacesnaturels=$dataDir/download/en_inpn.csv
 
 # Note NV: Il aurait été sympa de pouvoir récupérer n'importe quelle version de
@@ -55,8 +55,8 @@ if [ -f "$communes" ]
 then
 	echo "$communes a été trouvé localement..."
 else
-	echo "téléchargement de la dernière version des limites administratives (geoFLA communes)..."
-	wget "https://ginco.ign.fr/ref/geofla_last_communes.sql" -O $communes --no-verbose
+	echo "téléchargement de la dernière version des limites administratives (admin express-cog communes carto 2017)..."
+	wget "https://ginco.ign.fr/ref/commmune_carto_2017.sql" -O $communes --no-verbose
 
 fi
 
@@ -64,16 +64,16 @@ if [ -f "$departements" ]
 then
 	echo "$departements a été trouvé localement..."
 else
-	echo "téléchargement de la dernière version des limites administratives (geoFLA départements)..."
-	wget "https://ginco.ign.fr/ref/geofla_last_departements.sql" -O $departements --no-verbose
+	echo "téléchargement de la dernière version des limites administratives (admin express-cog départements carto 2017)..."
+	wget "https://ginco.ign.fr/ref/departement_carto_2017.sql" -O $departements --no-verbose
 fi
 
 if [ -f "$regions" ]
 then
 	echo "$regions a été trouvé localement..."
 else
-	echo "téléchargement de la dernière version des limites administratives (geoFLA régions)..."
-	wget "https://ginco.ign.fr/ref/geofla_last_regions.sql"      -O $regions --no-verbose
+	echo "téléchargement de la dernière version des limites administratives (admin express-cog régions carto 2017)..."
+	wget "https://ginco.ign.fr/ref/region_carto_2017.sql"      -O $regions --no-verbose
 fi
 
 echo "Intégration des limites administratives pour la visu..."
