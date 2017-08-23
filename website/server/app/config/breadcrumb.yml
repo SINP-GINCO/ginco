@@ -44,9 +44,13 @@ home:
             id: 1
     jdd:
       label: Breadcrumb.Integration
-      route: jdd_show
-      defaults:
-        id: 1
+      route: jdd_list
+      pages:
+        showDetail:
+          label: Breadcrumb.Integration.Show
+          route: jdd_show 
+          defaults:
+            id: 1
     checkconf:
       label: Breadcrumb.Check.Configuration
       route: checkconf_showconfig

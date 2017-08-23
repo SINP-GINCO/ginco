@@ -41,6 +41,7 @@ Breadcrumb:
   Home: Accueil
   Integration: Gérer les jeux de données
   Integration.New: Importer un nouveau jeu de données
+  Integration.Show: Détails du jeu de données
   User: Mon compte
   Check.Configuration: Vérifier la configuration technique
   Users.Administration: Administrer les utilisateurs
