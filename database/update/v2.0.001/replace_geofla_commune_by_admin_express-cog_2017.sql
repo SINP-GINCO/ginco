@@ -28,7 +28,7 @@ FOREIGN KEY (id_commune) REFERENCES referentiels.commune_carto_2017 (insee_com)
 ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 --Add a forgotten foreign key 
-ALTER TABLE observation_commune ADD CONSTRAINT fk_observation_departement_id_departement FOREIGN KEY (id_departement)
- REFERENCES mapping.bac_departement (id_departement) MATCH SIMPLE
+ALTER TABLE observation_commune ADD CONSTRAINT fk_observation_commune_id_commune FOREIGN KEY (id_commune)
+ REFERENCES mapping.bac_commune (id_commune) MATCH SIMPLE
  ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
