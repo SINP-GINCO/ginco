@@ -256,7 +256,7 @@ CREATE INDEX IX_BAC_GEOMETRIE_SPATIAL_INDEX ON bac_geometrie USING GIST ( geom  
 CREATE TABLE bac_commune
 (
   id_commune character varying(5),
-  geom geometry(MultiPolygon,3857),
+  geom geometry(Geometry,3857),
   CONSTRAINT bac_commune_pkey PRIMARY KEY (id_commune)
 );
 
@@ -275,7 +275,7 @@ CREATE INDEX IX_BAC_COMMUNE_SPATIAL_INDEX ON bac_commune USING GIST ( geom  );
 CREATE TABLE bac_departement
 (
   id_departement character varying(3),
-  geom geometry(MultiPolygon,3857),
+  geom geometry(Geometry,3857),
   CONSTRAINT bac_departement_pkey PRIMARY KEY (id_departement)
 );
 
@@ -293,7 +293,7 @@ CREATE INDEX IX_BAC_DEPARTEMENT_SPATIAL_INDEX ON bac_departement USING GIST ( ge
 CREATE TABLE bac_region
 (
   id_region character varying(3),
-  geom geometry(MultiPolygon,3857),
+  geom geometry(Geometry,3857),
   CONSTRAINT bac_region_pkey PRIMARY KEY (id_region)
 );
 
