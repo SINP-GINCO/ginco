@@ -1,8 +1,8 @@
-ALTER TABLE bac_departement DROP CONSTRAINT FK_bac_departement_geofla_departement,
-ADD CONSTRAINT FK_bac_departement_departement_carto_2017
-FOREIGN KEY (id_departement) REFERENCES referentiels.departement_carto_2017 (code_dept)
-ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
+-- 1) First delete constraints
+ALTER TABLE bac_departement DROP CONSTRAINT FK_bac_departement_geofla_departement;
+ALTER TABLE observation_departement DROP CONSTRAINT fk_observation_departement_id_departement;
 
+-- 2) Update departement
 DROP TABLE referentiels.geofla_departement;
 
 -- Update bac_departement
@@ -20,3 +20,13 @@ UPDATE metadata.dynamode SET sql='SELECT code_dept as code, nom_dept || '' ('' |
 
 UPDATE metadata_work.dynamode SET sql='SELECT code_dept as code, nom_dept || '' ('' || code_dept || '')'' as label, ''''::text as definition, ''''::text as position FROM referentiels.departement_carto_2017 ORDER BY code_dept' WHERE unit='CodeDepartementCalculeValue';
 UPDATE metadata_work.dynamode SET sql='SELECT code_dept as code, nom_dept || '' ('' || code_dept || '')'' as label, ''''::text as definition, ''''::text as position  FROM referentiels.departement_carto_2017 ORDER BY code_dept' WHERE unit='CodeDepartementValue';
+
+
+-- 3) Recreate constraints
+ALTER TABLE bac_departement ADD CONSTRAINT FK_bac_departement_departement_carto_2017
+FOREIGN KEY (id_departement) REFERENCES referentiels.departement_carto_2017 (code_dept)
+ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE observation_departement ADD CONSTRAINT fk_observation_departement_id_departement FOREIGN KEY (id_departement)
+REFERENCES mapping.bac_departement (id_departement) MATCH SIMPLE
+ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED
