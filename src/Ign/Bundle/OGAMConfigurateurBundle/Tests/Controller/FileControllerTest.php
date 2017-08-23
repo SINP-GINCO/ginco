@@ -17,7 +17,9 @@ class FileControllerTest extends ConfiguratorTest {
 	}
 
 	public function setUp() {
-		$this->client = static::createClient(array('environment' => 'test_ogam'));
+		$this->client = static::createClient(array(
+			'environment' => 'test_ogam'
+		));
 		$this->client->followRedirects(true);
 
 		$this->container = static::$kernel->getContainer();
@@ -54,7 +56,6 @@ class FileControllerTest extends ConfiguratorTest {
 			->isSuccessful());
 	}
 
-
 	public function testFileOrderHelpExists() {
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/edit');
 
@@ -63,7 +64,6 @@ class FileControllerTest extends ConfiguratorTest {
 		$this->assertTrue($crawler->filter($filter)
 			->count() == 1);
 	}
-
 
 	public function testEdit() {
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/my_file/edit');
@@ -153,7 +153,7 @@ class FileControllerTest extends ConfiguratorTest {
 
 		$filter = 'html:contains("' . $this->translator->trans('fileField.auto.chooseatable') . '")';
 		$this->assertTrue($crawler->filter($filter)
-						->count() > 0);
+			->count() > 0);
 	}
 
 	/**
@@ -163,7 +163,7 @@ class FileControllerTest extends ConfiguratorTest {
 	 * TABLE
 	 * altitudemin
 	 * altitudemax
-	 * cdnom  (mandatory)
+	 * cdnom (mandatory)
 	 * cdref (mandatory)
 	 *
 	 * FILE
@@ -190,7 +190,7 @@ class FileControllerTest extends ConfiguratorTest {
 					ff.data, ff.isMandatory
 					FROM IgnOGAMConfigurateurBundle:FileField ff
 					WHERE ff.fileFormat = :fileFormat')->setParameters(array(
-				'fileFormat' => 'file_auto'
+			'fileFormat' => 'file_auto'
 		));
 		$fields = $query->getResult();
 
@@ -214,7 +214,7 @@ class FileControllerTest extends ConfiguratorTest {
 			}
 		}
 
-		$this->assertTrue($altMin);	// already there
+		$this->assertTrue($altMin); // already there
 		$this->assertFalse($altMax); // Must not be added
 		$this->assertTrue($cdNom); // Must be added
 		$this->assertTrue($cdRef); // Must be added
@@ -229,7 +229,7 @@ class FileControllerTest extends ConfiguratorTest {
 					ff.data, ff.isMandatory
 					FROM IgnOGAMConfigurateurBundle:FileField ff
 					WHERE ff.fileFormat = :fileFormat')->setParameters(array(
-				'fileFormat' => 'file_auto'
+			'fileFormat' => 'file_auto'
 		));
 		$fields = $query->getResult();
 
@@ -257,12 +257,11 @@ class FileControllerTest extends ConfiguratorTest {
 			}
 		}
 
-		$this->assertTrue($altMin);	// already there
-		$this->assertTrue($altMinMandatory);	// already there
+		$this->assertTrue($altMin); // already there
+		$this->assertTrue($altMinMandatory); // already there
 		$this->assertTrue($altMax); // Must be added
 		$this->assertTrue($cdNom); // Already there
 		$this->assertTrue($cdRef); // Already there
 	}
-
 }
 

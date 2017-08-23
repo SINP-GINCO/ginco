@@ -19,7 +19,9 @@ class DataControllerTest extends ConfiguratorTest {
 	 * Sets up the entity manager and the test client.
 	 */
 	public function setUp() {
-		$this->client = static::createClient(array('environment' => 'test_ogam'));
+		$this->client = static::createClient(array(
+			'environment' => 'test_ogam'
+		));
 		$this->client->followRedirects(true);
 
 		$this->container = static::$kernel->getContainer();

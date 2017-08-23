@@ -279,7 +279,6 @@ class DatasetImportController extends Controller {
 	 *
 	 */
 	public function unpublishAction($importModelId, $unpublishFromModel = false, $redirectToEdit = false) {
-		$logger = $this->get('logger');
 		// Get the model to check if it exists
 		$importModel = $this->getDoctrine()
 			->getManager('metadata_work')

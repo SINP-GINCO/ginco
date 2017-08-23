@@ -87,12 +87,12 @@ INSERT INTO table_field (data, format) VALUES ('codecommune', 'table_mappings_2'
 INSERT INTO table_field (data, format) VALUES ('datedebut', 'table_mappings_2');
 INSERT INTO table_field (data, format) VALUES ('datefin', 'table_mappings_2');
 
-INSERT INTO file_field (data, format) VALUES ('altitudemin', 'file_mappings_1');
-INSERT INTO file_field (data, format) VALUES ('altitudemax', 'file_mappings_1');
-INSERT INTO file_field (data, format) VALUES ('cdnom', 'file_mappings_1');
-INSERT INTO file_field (data, format) VALUES ('codecommune', 'file_mappings_1');
-INSERT INTO file_field (data, format) VALUES ('datedebut', 'file_mappings_2');
-INSERT INTO file_field (data, format) VALUES ('datefin', 'file_mappings_2');
+INSERT INTO file_field (data, format, label_csv) VALUES ('altitudemin', 'file_mappings_1', 'altitudemin');
+INSERT INTO file_field (data, format, label_csv) VALUES ('altitudemax', 'file_mappings_1', 'altitudemax');
+INSERT INTO file_field (data, format, label_csv) VALUES ('cdnom', 'file_mappings_1', 'cdnom');
+INSERT INTO file_field (data, format, label_csv) VALUES ('codecommune', 'file_mappings_1', 'codecommune');
+INSERT INTO file_field (data, format, label_csv) VALUES ('datedebut', 'file_mappings_2', 'datedebut');
+INSERT INTO file_field (data, format, label_csv) VALUES ('datefin', 'file_mappings_2', 'datefin');
 
 INSERT INTO field_mapping (src_data, src_format, dst_data, dst_format, mapping_type) VALUES ('altitudemin', 'file_mappings_1', 'altitudemin', 'table_mappings_1', 'FILE');
 INSERT INTO field_mapping (src_data, src_format, dst_data, dst_format, mapping_type) VALUES ('altitudemax', 'file_mappings_1', 'altitudemax', 'table_mappings_1', 'FILE');

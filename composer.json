@@ -8,8 +8,14 @@
 			"" : "src/",
 			"SymfonyStandard" : "app/"
 		},
-		"psr-4" : {"": "src/" },
-		"classmap": [ "app/AppKernel.php", "app/AppCache.php", "app/TestOgamKernel.php" ]
+		"psr-4" : {
+			"" : "src/"
+		},
+		"classmap" : [
+			"app/AppKernel.php",
+			"app/AppCache.php",
+			"app/TestOgamKernel.php"
+		]
 	},
 	"require" : {
 		"php" : ">=5.3.9",
