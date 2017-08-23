@@ -18,6 +18,7 @@ doctrine:
 
 parameters:
     database_name: ginco_symfony_ut
+    locale: fr
 
 web_profiler:
     toolbar: false
