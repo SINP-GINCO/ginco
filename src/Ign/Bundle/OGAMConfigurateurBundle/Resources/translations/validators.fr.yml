@@ -16,7 +16,7 @@ dataset:
 tableFormat:
   label:
     notBlank: Veuillez saisir un nom de table.
-    maxLength: Le nom de la table ne peut dépasser 255 caractères.
+    maxLength: Le nom de la table ne peut dépasser 100 caractères.
     regex: Les caractères autorisés sont les lettres minuscules, chiffres et _.
   description:
     notBlank: Veuillez saisir une description de la table.
@@ -39,7 +39,7 @@ data:
     notNull: Veuillez choisir une unité.
   label:
     notBlank: Veuillez saisir un label pour le champ du dictionnaire de données.
-    maxLength: Le label du champ ne peut dépasser 60 caractères.
+    maxLength: Le label du champ ne peut dépasser 100 caractères.
   definition:
     maxLength: La description du champ ne peut dépasser 255 caractères.
   comment:

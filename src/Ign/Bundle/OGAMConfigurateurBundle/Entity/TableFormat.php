@@ -59,9 +59,9 @@ class TableFormat {
 	 * The label contains the name of the table as entered by the user.
 	 *
 	 * @var string @Assert\NotBlank(message="tableFormat.label.notBlank")
-	 *      @ORM\Column(name="label", type="string", length=255, nullable=true)
+	 *      @ORM\Column(name="label", type="string", length=100, nullable=true)
 	 *      @Assert\Regex(pattern="/^[a-z0-9_]*$/", match=true, message="tableFormat.label.regex")
-	 *      @Assert\Length(max="255", maxMessage="tableFormat.label.maxLength")
+	 *      @Assert\Length(max="100", maxMessage="tableFormat.label.maxLength")
 	 */
 	private $label;
 

@@ -15,7 +15,7 @@ dataset:
 tableFormat:
   label:
     notBlank: Please input a table name.
-    maxLength: The table name cannot be longer than 255 characters.
+    maxLength: The table name cannot be longer than 100 characters.
     regex: Authorized characters are lower letter, numbers and _.
   description:
     notBlank: Please input a table description.
@@ -27,3 +27,4 @@ fileFormat:
   description:
     notBlank: Please input a file description.
     maxLength: The file description cannot be longer than 255 characters.
+ 
