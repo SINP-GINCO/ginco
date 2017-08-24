@@ -24,12 +24,13 @@ if (count($argv) == 1)
 $config = loadPropertiesFromArgs();
 
 try {
-	/* patch code here*/
-	 execCustSQLFile("$sprintDir/update_mtd_to_preprod.sql", $config);
-	 execCustSQLFile("$sprintDir/add_limit_import_error.sql", $config);
-	 execCustSQLFile("$sprintDir/add_label_csv_in_file_field.sql", $config);
-	 execCustSQLFile("$sprintDir/enable_zoom_levels.sql", $config);
-	 execCustSQLFile("$sprintDir/delete_position_column_in_file_field_table.sql", $config);
+	/* patch code here */
+	execCustSQLFile("$sprintDir/alter_label_table_data.sql", $config);
+	execCustSQLFile("$sprintDir/update_mtd_to_preprod.sql", $config);
+	execCustSQLFile("$sprintDir/add_limit_import_error.sql", $config);
+	execCustSQLFile("$sprintDir/add_label_csv_in_file_field.sql", $config);
+	execCustSQLFile("$sprintDir/enable_zoom_levels.sql", $config);
+	execCustSQLFile("$sprintDir/delete_position_column_in_file_field_table.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
@@ -37,7 +38,7 @@ try {
 }
 
 try {
-	/* add  commune carto 2017 ADMIN EXPRESS COG */
+	/* add commune carto 2017 ADMIN EXPRESS COG */
 	$config['sprintDir'] = $sprintDir;
 	system("wget 'https://ginco.ign.fr/ref/commune_carto_2017.sql' -O $sprintDir/commune_carto_2017.sql --no-verbose");
 	echo "Intégration des données communes dans la base...";
@@ -57,7 +58,6 @@ try {
 	echo "Intégration des données regions dans la base...";
 	execCustSQLFile("$sprintDir/region_carto_2017.sql", $config);
 	echo "Intégration du référentiel regions terminée.";
-	
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
@@ -66,9 +66,9 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-  system("php $sprintDir/update_orgtransformation_sensible_not_editable_not_mandatory.php $CLIParams", $returnCode1);
-  system("php $sprintDir/update_commune_referentiel_in_data.php $CLIParams", $returnCode2);
-  
+system("php $sprintDir/update_orgtransformation_sensible_not_editable_not_mandatory.php $CLIParams", $returnCode1);
+system("php $sprintDir/update_commune_referentiel_in_data.php $CLIParams", $returnCode2);
+
 if ($returnCode1 != 0 || $returnCode2 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
