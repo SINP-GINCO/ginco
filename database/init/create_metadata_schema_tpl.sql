@@ -28,7 +28,7 @@ SET search_path TO @schema@, public ;
 create table DATA (
 DATA                 VARCHAR(277)         not null,
 UNIT                 VARCHAR(36)          not null,
-LABEL                VARCHAR(60)          null,
+LABEL                VARCHAR(125)         null,
 DEFINITION           VARCHAR(255)         null,
 COMMENT              VARCHAR(255)         null,
 constraint PK_DATA primary key (DATA)
@@ -253,7 +253,7 @@ FORMAT				VARCHAR(255)		not null,
 TABLE_NAME			VARCHAR(278)	null,
 SCHEMA_CODE			VARCHAR(36)		null,
 PRIMARY_KEY			VARCHAR(255)	null,
-LABEL				VARCHAR(255)	null,
+LABEL				VARCHAR(100)	null,
 DEFINITION			VARCHAR(255)	null,	
 constraint PK_TABLE_FORMAT primary key (FORMAT)
 );
