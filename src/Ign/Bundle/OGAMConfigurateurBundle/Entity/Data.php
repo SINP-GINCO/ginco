@@ -35,9 +35,9 @@ class Data {
 
 	/**
 	 *
-	 * @var string @ORM\Column(name="label", type="string", length=60, nullable=true)
+	 * @var string @ORM\Column(name="label", type="string", length=255, nullable=true)
 	 * 		@Assert\NotBlank(message="data.label.notBlank")
-	 *      @Assert\Length(max="60", maxMessage="data.label.maxLength")
+	 *      @Assert\Length(max="255", maxMessage="data.label.maxLength")
 	 */
 	private $label;
 
