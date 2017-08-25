@@ -243,55 +243,6 @@ class DataControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * Tests new correct Data insertion, from a file edition page.
-	 * The new entity must be attached to the file.
-	 * FIXME
-	 */
-	public function untestNewAttachToFile() {
-		// Go to table edition page
-		$fileEditPath = '/datasetsimport/2/files/my_file/fields/';
-		$crawler = $this->client->request('GET', $fileEditPath);
-		// From there, go to add a new data field page
-		$link = $crawler->selectLink($this->translator->trans('data.add.button'))
-			->link();
-		$crawler = $this->client->click($link);
-
-		$this->assertTrue($this->client->getResponse()
-			->isSuccessful());
-
-		$fileEditPath = '/data/new/addto/my_file';
-		$crawler = $this->client->request('GET', $fileEditPath);
-
-		// Fill form
-		$form = $crawler->selectButton($this->translator->trans('data.add.attach.file'))
-			->form();
-		$form['ign_bundle_configurateurbundle_data[name]'] = "data_to_attach_to_file2";
-		$form['ign_bundle_configurateurbundle_data[unit]'] = 'BOOLEAN';
-		$form['ign_bundle_configurateurbundle_data[label]'] = "Test label";
-		$form['ign_bundle_configurateurbundle_data[definition]'] = "Test definition";
-		$form['ign_bundle_configurateurbundle_data[comment]'] = "Test comment";
-
-		// Tests redirection to table edit page
-		$crawler = $this->client->submit($form);
-
-		$fileEditPath = '/datasetsimport/2/files/my_file/fields/';
-		$crawler = $this->client->request('GET', $fileEditPath);
-
-		// Tests if the new entity is found and if it is related to the table
-		$data = $this->repository->findOneByName('data_to_attach_to_file2');
-		$this->assertEquals('data_to_attach_to_file2', $data->getName());
-		$this->assertEquals($data->getUnit()
-			->getName(), 'BOOLEAN');
-		$this->assertEquals($data->getLabel(), 'Test label');
-		$this->assertEquals($data->getDefinition(), 'Test definition');
-		$this->assertEquals($data->getComment(), 'Test comment');
-
-		$field = $data->getFields()->first();
-		$this->assertEquals($field->getFormat()
-			->getFormat(), 'my_file');
-	}
-
-	/**
 	 * Tests edition of data with the same value for the name
 	 */
 	public function testEditWithSameName() {

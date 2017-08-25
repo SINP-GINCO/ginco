@@ -27,7 +27,7 @@ class FileFieldControllerTest extends ConfiguratorTest {
 		$this->repository = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField');
 	}
 
-	public function testAddFieldsAction() {
+	public function testAddFieldsWithNoMappingPossibleAction() {
 		$fields = "jddid,jddcode";
 
 		$crawler = $this->client->request('GET', '/datasetsimport/my_import_model/files/my_add_file/fields/');
@@ -43,6 +43,79 @@ class FileFieldControllerTest extends ConfiguratorTest {
 		$this->assertContains('class="longtext" title="Identifiant de la provenance">Identifiant de la provenance</div></td>', $crawler->html());
 		$this->assertContains('<td id="name" class="hidden">jddcode</td>', $crawler->html());
 		$this->assertContains('class="longtext" title="Code identifiant la provenance">Code identifiant la provenance</div></td>', $crawler->html());
+	
+		// Extract direct info from DB to check field_mapping has been done
+		$query = $this->em->createQuery('SELECT
+					fm.srcData as srcData, fm.dstData as dstData
+					FROM IgnOGAMConfigurateurBundle:FieldMapping fm
+					WHERE fm.mappingType = :mappingType
+					AND fm.srcFormat = :fileFormat
+					AND fm.dstFormat = :tableFormat')->setParameters(array(
+								'fileFormat' => 'my_add_file',
+								'tableFormat' => 'my_table',
+								'mappingType' => 'FILE'
+							));
+		$mappings = $query->getResult();
+		
+		$jddidMappedtojddid = false;
+		$jddcodeMappedtojddcode = false;
+		
+		foreach ($mappings as $mapping) {
+			if ($mapping['srcData'] == 'jddid' && $mapping['dstData'] == 'jddid') {
+				$jddidMappedtojddid = true;
+			}
+			if ($mapping['srcData'] == 'jddcode' && $mapping['dstData'] == 'jddcode') {
+				$jddcodeMappedtojddcode = true;
+			}
+
+		}
+		// Fields does not exist in model tables which does not exists too : can't be mapped
+		$this->assertFalse($jddcodeMappedtojddcode);
+		$this->assertFalse($jddidMappedtojddid);
+	
+	}
+	
+	public function testAddFieldsAndMappingAction() {
+		$fields = "cdnom,cdref";
+	
+		$crawler = $this->client->request('GET', '/datasetsimport/3/files/file_auto_mapping/fields/add/' . $fields . '/');
+	
+		$this->assertContains('<td id="name" class="hidden">cdnom</td>', $crawler->html());
+		$this->assertContains('<td id="name" class="hidden">cdref</td>', $crawler->html());
+
+		// Extract direct info from DB (table field_mapping) :
+		$query = $this->em->createQuery('SELECT
+					fm.srcData as srcData, fm.dstData as dstData
+					FROM IgnOGAMConfigurateurBundle:FieldMapping fm
+					WHERE fm.mappingType = :mappingType
+					AND fm.srcFormat = :fileFormat
+					AND fm.dstFormat = :tableFormat')->setParameters(array(
+			'fileFormat' => 'file_auto_mapping',
+			'tableFormat' => 'table_auto_mapping',
+			'mappingType' => 'FILE'
+		));
+		$mappings = $query->getResult();
+
+		$altMinMapped = false;
+		$cdnomMappedtoCdnom = false;
+		$cdrefMappedtoCdref = false;
+
+		foreach ($mappings as $mapping) {
+			if ($mapping['srcData'] == 'altitudemin') {
+				$altMinMapped = true;
+			}
+			if ($mapping['srcData'] == 'cdnom' && $mapping['dstData'] == 'cdnom') {
+				$cdnomMappedtoCdnom = true;
+			}
+			if ($mapping['srcData'] == 'cdref' && $mapping['dstData'] == 'cdref') {
+				$cdrefMappedtoCdref = true;
+			}
+		}
+
+		$this->assertFalse($altMinMapped);
+		$this->assertTrue($cdnomMappedtoCdnom);
+		$this->assertTrue($cdrefMappedtoCdref);
+	
 	}
 
 	public function testRemoveField() {
@@ -110,6 +183,65 @@ class FileFieldControllerTest extends ConfiguratorTest {
 		$this->assertTrue($this->client->getResponse()
 			->isSuccessful());
 	}
-
+	
+	public function testAddLabelCSV() {
+		$field = "altitudemax";
+	
+		$crawler = $this->client->request('GET', '/datasetsimport/3/files/file_auto_mapping/fields/add/' . $field . '/');
+		$this->assertNotContains('value="altitudemax"', $crawler->html());
+		$this->assertContains('<input id="labelCSV"', $crawler->html());
+		$this->assertContains('value="altitudeMax"', $crawler->html());
+		$this->assertTrue($this->client->getResponse()
+			->isSuccessful());
+	}
+	
+	public function testDeleteMappingsWhenDeletingFile() {
+		$crawler = $this->client->request('GET', '/datasetsimport/3/files/file_auto_mapping/delete/');
+	
+		$filter = 'html:contains("' . $this->translator->trans('file.delete.success', array(
+			'%file.label%' => 'file_auto_mapping',
+			'%datasetLabel%' => 'dataset_import_to_edit'
+		)) . '")';
+	
+		$this->assertTrue($crawler->filter($filter)
+			->count() == 1);
+		$this->assertTrue($this->client->getResponse()
+			->isSuccessful());
+	
+		$fields = $this->em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat('file_auto_mapping');
+		$this->assertEmpty($fields);
+		
+		// Extract direct info from DB (table field_mapping) :
+		$query = $this->em->createQuery('SELECT
+					fm.srcData as srcData, fm.dstData as dstData
+					FROM IgnOGAMConfigurateurBundle:FieldMapping fm
+					WHERE fm.mappingType = :mappingType
+					AND fm.srcFormat = :fileFormat
+					AND fm.dstFormat = :tableFormat')->setParameters(array(
+								'fileFormat' => 'file_auto_mapping',
+								'tableFormat' => 'table_auto_mapping',
+								'mappingType' => 'FILE'
+							));
+		$mappings = $query->getResult();
+		
+		$altMinMapped = false;
+		$cdnomMappedtoCdnom = false;
+		$cdrefMappedtoCdref = false;
+		
+		foreach ($mappings as $mapping) {
+			if ($mapping['srcData'] == 'altitudemin') {
+				$altMinMapped = true;
+			}
+			if ($mapping['srcData'] == 'cdnom' && $mapping['dstData'] == 'cdnom') {
+				$cdnomMappedtoCdnom = true;
+			}
+			if ($mapping['srcData'] == 'cdref' && $mapping['dstData'] == 'cdref') {
+				$cdrefMappedtoCdref = true;
+			}
+		}
+		
+		$this->assertFalse($altMinMapped);
+		$this->assertFalse($cdnomMappedtoCdnom);
+		$this->assertFalse($cdrefMappedtoCdref);
+	}
 }
-

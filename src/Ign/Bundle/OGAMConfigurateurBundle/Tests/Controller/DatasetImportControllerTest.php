@@ -87,7 +87,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	 * FIXME
 	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::editAction
 	 */
-	public function untestEditWithMappings() {
+	public function testEditWithMappings() {
 		$conn = $this->container->get('database_connection');
 		$pgConn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
@@ -106,7 +106,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 		$crawler = $this->client->submit($form);
 
 		// Check that the confirmation message is given
-		$filter = 'html:contains("' . $this->translator->trans('importmodel.edit.mappings_removed') . '")';
+		$filter = 'html:contains("' . $this->translator->trans('importmodel.edit.file_fields_removed') . '")';
 
 		$this->assertTrue($crawler->filter($filter)
 			->count() == 1);
@@ -190,7 +190,7 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * FIXME field_mapping issue to resolve.
+	 * FIXME publish model issue to resolve.
 	 * Test publication scenario, with application-created import model
 	 * Checks :
 	 * - try to publish an import model with no files fails
@@ -222,9 +222,6 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 		// Add fields to the table
 		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/tables/' . $table->getFormat() . '/fields/add/jddid/');
 		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/tables/' . $table->getFormat() . '/fields/add/geometrie/');
-
-		// Publish the model
-		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/publish/');
 
 		// Create the import model
 		$crawler = $this->client->request('GET', '/datasetsimport/new/');
@@ -266,26 +263,8 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 		// Add a field to the file of the import model :
 		$file = $dataset->getFiles()->first();
 		$crawler = $this->client->request('GET', '/datasetsimport/' . $dataset->getId() . '/files/' . $file->getFormat() . '/fields/add/jddid/');
-		// The import model now contains a file which has one field, but no mapping : it is not publishable yet
-		// Try to publish, must fail :
-		$crawler = $this->client->request('GET', '/datasetsimport/' . $dataset->getId() . '/publish/');
-		$filter = 'html:contains("' . $this->translator->trans('importmodel.publish.fail', array(
-			'%importModelName%' => $importModelName
-		)) . '")';
-		$this->assertTrue($crawler->filter($filter)
-			->count() == 1);
-
-		// Add a mapping (directly in SQL because of the Ajax in the application...) :
-		$conn = $this->container->get('database_connection');
-		$pgConn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-
-		$sql = "INSERT INTO metadata_work.field_mapping (src_data, src_format, dst_data, dst_format, mapping_type)
-				VALUES ('jddid', '" . $file->getFormat() . "', 'jddid', '" . $table->getFormat() . "', 'FILE');";
-		pg_query($pgConn, $sql) or die('Request failed: ' . pg_last_error());
-
-		// First unpublish the data model :
-		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/unpublish');
-
+		$crawler = $this->client->request('GET', '/datasetsimport/' . $dataset->getId() . '/files/' . $file->getFormat() . '/fields/add/geometrie/');
+		
 		// The import model now contains a file which has one field and a mapping, but the related data model is unpublished : it is not publishable
 		// Try to publish, must fail :
 		$crawler = $this->client->request('GET', '/datasetsimport/' . $dataset->getId() . '/publish');
@@ -295,8 +274,14 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 		$this->assertTrue($crawler->filter($filter)
 			->count() == 1);
 
-		// Then re-publish the data model :
+		// Then publish the data model :
 		$crawler = $this->client->request('GET', '/models/' . $model->getId() . '/publish/');
+		$filter = 'html:contains("' . $this->translator->trans('datamodel.publish.success', array(
+			'%modelName%' => $modelName
+		)) . '")';
+		var_dump($crawler->html());
+		$this->assertTrue($crawler->filter($filter)
+			->count() == 1);
 
 		// The import model now contains a file which has one field and a mapping, and the related data model is published : it IS publishable
 		// Try to publish, must succeed :

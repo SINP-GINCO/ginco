@@ -541,15 +541,14 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * FIXME Test failing due to mappings.
 	 * This case should go straight to edit page.
 	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::editAction
 	 */
-	public function untestEditUnpublishedModel() {
+	public function testEditUnpublishedModel() {
 		$modelName = $this->repository->find('6')->getName();
 		$crawler = $this->client->request('GET', '/models/');
 
-		$linkOnModal = $crawler->filter('#modal-edit-mappings-6')
+		$linkOnModal = $crawler->filter('#modal-edit-files-6')
 			->children()
 			->filter('a')
 			->first();
@@ -669,9 +668,8 @@ class ModelControllerTest extends ConfiguratorTest {
 	 *  on table "field_mapping" --> Related to field_mapping, will be redone.
 	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\ModelController::unpublishAction
 	 */
-	public function untestUnpublishDEEEModel() {
+	public function untestUnpublishDEEModel() {
 		$crawler = $this->client->request('GET', '/models/1/unpublish');
-
 		$filter = 'html:contains("' . $this->translator->trans('datamodel.unpublish.success', array(
 			'%modelName%' => 'std_occ_taxon_dee_v1-2'
 		)) . '")';
