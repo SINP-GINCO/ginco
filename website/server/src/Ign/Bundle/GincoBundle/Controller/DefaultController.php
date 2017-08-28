@@ -1,5 +1,4 @@
 <?php
-
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Form\ConfigurationType;
@@ -9,51 +8,48 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends BaseController
-{
+class DefaultController extends BaseController {
 
-    /**
-     * Contact form page
-     *
-     * @Route("/contact", _name="contact")
-     */
-    public function contactAction(Request $request)
-    {
-        $form = $this->createForm(new ContactType(), null, array(
-            'action' => $this->generateUrl('contact'),
-            'method' => 'POST'
-        ));
+	/**
+	 * Contact form page
+	 *
+	 * @Route("/contact", _name="contact")
+	 */
+	public function contactAction(Request $request) {
+		$form = $this->createForm(new ContactType(), null, array(
+			'action' => $this->generateUrl('contact'),
+			'method' => 'POST'
+		));
 
-        if ($request->isMethod('POST')) {
-            // Refill the fields in case the form is not valid.
-            $form->handleRequest($request);
+		if ($request->isMethod('POST')) {
+			// Refill the fields in case the form is not valid.
+			$form->handleRequest($request);
 
-            if($form->isValid()){
-                // Contact recipients
-                $contactRecipients = $this->get('ogam.configuration_manager')->getConfig('contactEmail','sinp-dev@ign.fr');
-                $contactRecipients = explode(',',$contactRecipients);
+			if ($form->isValid()) {
+				// Contact recipients
+				$contactRecipients = $this->get('ogam.configuration_manager')->getConfig('contactEmail', 'sinp-dev@ign.fr');
+				$contactRecipients = explode(',', $contactRecipients);
 
-                // Send the email
-                $this->get('app.mail_manager')->sendEmail(
-                    'IgnGincoBundle:Emails:contact.html.twig',
-                    array(
-                        'email' => $form->get('email')->getData(),
-                        'message' => $form->get('message')->getData(),
-                    ),
-                    $contactRecipients
-                );
+				// Send the email
+				$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:contact.html.twig', array(
+					'email' => $form->get('email')
+						->getData(),
+					'message' => $form->get('message')
+						->getData()
+				), $contactRecipients);
 
-                $request->getSession()->getFlashBag()->add('success', 'Contact.send.success');
+				$request->getSession()
+					->getFlashBag()
+					->add('success', 'Contact.send.success');
 
-                return $this->redirect($this->generateUrl('contact'));
-            }
-        }
+				return $this->redirect($this->generateUrl('contact'));
+			}
+		}
 
-        return $this->render('IgnGincoBundle:Default:contact.html.twig', array(
-            'form' => $form->createView()
-        ));
-    }
-
+		return $this->render('IgnGincoBundle:Default:contact.html.twig', array(
+			'form' => $form->createView()
+		));
+	}
 
 	/**
 	 * Configuration parameters form page
@@ -63,7 +59,6 @@ class DefaultController extends BaseController
 	 * @Route("/configuration/parameters", _name="configuration_parameters")
 	 */
 	public function configurationParametersAction(Request $request) {
-
 		$em = $this->getDoctrine()->getManager();
 		$confRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\ApplicationParameter', 'website');
 
@@ -80,20 +75,24 @@ class DefaultController extends BaseController
 
 		$form->handleRequest($request);
 
-		if($form->isValid()){
+		if ($form->isValid()) {
 
 			$contactEmail = $form->get('contactEmail')->getData();
 			// Remove all spaces around email adresses (separetd by commas)
-			$contactEmail = implode(',',array_map('trim', explode(',',$contactEmail)));
+			$contactEmail = implode(',', array_map('trim', explode(',', $contactEmail)));
 			$emailModified = $emailConf->getValue() != $contactEmail;
 
 			// Persist the value
 			$emailConf->setValue($contactEmail);
 			$em->flush();
 
-			$request->getSession()->getFlashBag()->add('success', 'Configuration.edit.submit.success');
+			$request->getSession()
+				->getFlashBag()
+				->add('success', 'Configuration.edit.submit.success');
 			if ($emailModified) {
-				$request->getSession()->getFlashBag()->add('success', 'Configuration.edit.email.success');
+				$request->getSession()
+					->getFlashBag()
+					->add('success', 'Configuration.edit.email.success');
 			}
 
 			return $this->redirect($this->generateUrl('configuration_parameters'));
@@ -103,5 +102,4 @@ class DefaultController extends BaseController
 			'form' => $form->createView()
 		));
 	}
-
 }
