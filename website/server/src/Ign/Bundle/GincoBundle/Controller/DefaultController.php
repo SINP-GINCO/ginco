@@ -4,11 +4,12 @@ namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Form\ConfigurationType;
 use Ign\Bundle\GincoBundle\Form\ContactType;
+use Ign\Bundle\OGAMBundle\Controller\DefaultController as BaseController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class DefaultController extends Controller
+class DefaultController extends BaseController
 {
 
     /**

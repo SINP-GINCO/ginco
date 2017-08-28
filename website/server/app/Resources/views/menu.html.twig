@@ -3,9 +3,7 @@
 
     <li class="active"><a href="{{ path('homepage') }}">{{ 'Menu.Home'|trans }}</a></li>
 
-    {% if (app.user and app.user.isAllowed('DATA_QUERY') and app.user.isSchemaAllowed('RAW_DATA')) %}
-        <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Menu.RegionalData'|trans }}</a><li>
-    {% endif %}
+    <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Menu.RegionalData'|trans }}</a><li>
 
     {% if (app.user and app.user.isAllowed('DATA_INTEGRATION')) %}
         <li class="dropdown">
