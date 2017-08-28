@@ -21,7 +21,8 @@ security:
             security: false
 
         main:
-            anonymous: ~
+            pattern: ^/
+            anonymous: true
             form_login:
                 login_path: user_login
                 check_path: user_validatelogin
@@ -34,8 +35,8 @@ security:
         - { path: ^/usermanagement/, allow_if: "user and is_authenticated() and user.isAllowed('MANAGE_USERS')"}
         - { path: ^/admin/, roles: ROLE_ADMIN }
         - { path: ^/dataedition/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_EDITION')"}
-        - { path: ^/query/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_QUERY', request.getSession().get('_schema', 'RAW_DATA'))"}
-        - { path: ^/map/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_QUERY', request.getSession().get('_schema', 'RAW_DATA'))"}
+        - { path: ^/query/, roles: "IS_AUTHENTICATED_ANONYMOUSLY"}
+        - { path: ^/map/, roles: "IS_AUTHENTICATED_ANONYMOUSLY"}
         - { path: ^/integration/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/jdd/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/submission/download-report, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION') and user.isAllowed('VIEW_SENSITIVE')"}
