@@ -108,7 +108,7 @@ execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' =
 system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata");
 
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata_work']);
-# mode_taxref is not usefull in metadata_work.
+# mode_taxref is not useful in metadata_work.
 # execCustSQLFile("$initDir/populate_mode_taxref_table_tpl.sql", $config + ['schema' => 'metadata_work']);
 system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata_work");
 
