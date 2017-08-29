@@ -73,7 +73,7 @@ class QueryService extends BaseService {
 	 */
 	protected $mapRepository;
 
-	public function __construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $mapRepository, $user=null) {
+	public function __construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $mapRepository, $user = null) {
 		parent::__construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $user);
 
 		$this->mapRepository = $mapRepository;
@@ -442,7 +442,9 @@ class QueryService extends BaseService {
 			$formField = new GenericField($split[0], $split[1]);
 			$tableField = $this->metadataModel->getRepository(TableField::class)->getFormToTableMapping($this->schema, $formField, $locale);
 			$orderKey = $tableField->getFormat()->getFormat() . "." . $tableField->getData()->getData();
-			$orderKeyType = $tableField->getData()->getUnit()->getType();
+			$orderKeyType = $tableField->getData()
+				->getUnit()
+				->getType();
 			$order .= " ORDER BY " . $orderKey . " " . $sortDir;
 			// Customization of select for specific data types
 			if ($orderKeyType == 'GEOM' || $orderKeyType == 'DATE') {
@@ -839,9 +841,13 @@ class QueryService extends BaseService {
 
 		$locationTableFormat = $locationField->getFormat()->getFormat();
 		// Get the location table infos
-		$locationTableInfo = $this->doctrine->getManager('mapping')->getRepository(TableFormat::class)->getTableFormat($schema, $locationTableFormat, $locale);
+		$locationTableInfo = $this->doctrine->getManager('mapping')
+			->getRepository(TableFormat::class)
+			->getTableFormat($schema, $locationTableFormat, $locale);
 		// Get the location table columns
-		$tableFields = $this->doctrine->getManager('mapping')->getRepository(TableField::class)->getTableFields($schema, $locationTableFormat, null, $locale);
+		$tableFields = $this->doctrine->getManager('mapping')
+			->getRepository(TableField::class)
+			->getTableFields($schema, $locationTableFormat, null, $locale);
 
 		// Setup the location table columns for the select
 		// Only few columns are selected
@@ -871,23 +877,23 @@ class QueryService extends BaseService {
 			}
 		}
 
-        // Setup the location table pks for the join on the location table
-        // and for the pk column
-        $pkscols = '';
-        foreach ($locationTableInfo->getPrimaryKeys() as $primaryKey) {
-            $pkscols .= "l." . $primaryKey . "::varchar || '__' || ";
-            $cols .= "'" . strtoupper($primaryKey) . "/' || " . $primaryKey . " || '/' || ";
-        }
-        if ($pkscols != '') {
-            $pkscols = substr($pkscols, 0, -11);
-        } else {
-            throw new \Exception('No pks columns found for the location table.');
-        }
-        if ($cols != '') {
-            $cols = substr($cols, 0, -11) . " as pk ";
-        } else {
-            throw new \Exception('No columns found for the location table.');
-        }
+		// Setup the location table pks for the join on the location table
+		// and for the pk column
+		$pkscols = '';
+		foreach ($locationTableInfo->getPrimaryKeys() as $primaryKey) {
+			$pkscols .= "l." . $primaryKey . "::varchar || '__' || ";
+			$cols .= "'" . strtoupper($primaryKey) . "/' || " . $primaryKey . " || '/' || ";
+		}
+		if ($pkscols != '') {
+			$pkscols = substr($pkscols, 0, -11);
+		} else {
+			throw new \Exception('No pks columns found for the location table.');
+		}
+		if ($cols != '') {
+			$cols = substr($cols, 0, -11) . " as pk ";
+		} else {
+			throw new \Exception('No columns found for the location table.');
+		}
 
 		$select = "SELECT " . $cols . " ";
 

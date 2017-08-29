@@ -2,7 +2,7 @@
 /**
  * @var Composer\Autoload\ClassLoader
  */
-require __DIR__.'/../app/autoload.php';
+require __DIR__ . '/../app/autoload.php';
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
