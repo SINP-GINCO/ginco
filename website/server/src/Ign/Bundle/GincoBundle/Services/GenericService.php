@@ -350,8 +350,8 @@ class GenericService extends BaseGenericService {
 	}
 
 	/**
-	 * Troncates the array of the ancestors, ends it with the table containing the geometry
-	 *
+	 * Truncates the array of the ancestors, ends it with the table containing the geometry
+	 * MIGRATED
 	 * @param String $schema
 	 * @param Array[Application_Object_Metadata_TableTreeData] $ancestors
 	 * @return Array[Application_Object_Metadata_TableTreeData] $ancestorsToGeometry
@@ -364,7 +364,7 @@ class GenericService extends BaseGenericService {
 
 		while ($ĥasGeometryColumn != 1) {
 			$ancestor = array_shift($ancestors);
-			$ancestorsToGeometry[$ancestor->getLogicalName()] = $ancestor;
+			$ancestorsToGeometry[$ancestor->getTableFormat()->getTableName()] = $ancestor;
 
 			$req = " SELECT 1 as has_geometry ";
 			$req .= " FROM INFORMATION_SCHEMA.COLUMNS ";
@@ -374,14 +374,13 @@ class GenericService extends BaseGenericService {
 
 			$this->logger->info('getAncestorsToGeometry : ' . $req);
 
-			$select = $this->genericManager->rawdb->prepare($req);
-			$select->execute(array(
-				$ancestor->getTableName(),
+			$conn = $this->metadataModel->getConnection();
+			$results = $conn->fetchAll($req, array(
+				$ancestor->getTableFormat()->getTableName(),
 				strtolower($schema)
 			));
-			$this->logger->info('ancestor table name : ' . $ancestor->getTableName() . ", join keys : " . $ancestor->keys);
 
-			$row = $select->fetch();
+			$row = $results[0];
 			if ($row['has_geometry'] != null) {
 				$ĥasGeometryColumn = 1;
 			}
