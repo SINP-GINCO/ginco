@@ -252,7 +252,7 @@ class QueryService extends BaseService {
 
 	/**
 	 * Gets the permissions linked to visualization : sensitive, private and logged.
-	 * If the user is not logged in, all observations are hidden below level of commune.
+	 * If the user is not logged in (i.e, one of his role is 'visiteur', all observations are hidden below level of commune.
 	 * MIGRATED
 	 *
 	 * @param mixed $user
@@ -260,11 +260,20 @@ class QueryService extends BaseService {
 	 * @return array of string|boolean $permissions
 	 */
 	public function getVisuPermissions($user) {
+		$logged = true;
+		foreach ($user->getRoles() as $role) {
+			if ($role->getRole() == 'visiteur') {
+				$logged = false;
+				break;
+			}
+		}
+
 		$permissions = array(
 			'sensitive' => $user->isAllowed('VIEW_SENSITIVE'),
 			'private' => $user->isAllowed('VIEW_PRIVATE'),
-			'logged' => !array_key_exists('visiteur', $user->getRoles())
+			'logged' => $logged
 		);
+
 		return $permissions;
 	}
 

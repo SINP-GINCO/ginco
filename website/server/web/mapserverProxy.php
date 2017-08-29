@@ -75,9 +75,6 @@ if(empty($url)){
 // Set the uri (url + urn)
 $uri = rtrim($url,'?').'?'.http_build_query($queriesArg);
 
-//echo $uri;exit;
-//error_log($uri);
-
 $content = file_get_contents($uri);
 if ($content !== FALSE) {
     if ($content === "" && $geoJSONOFRequired) { // BugFix: gdal-bin 1.10 OGR driver return nothing when there are no feature

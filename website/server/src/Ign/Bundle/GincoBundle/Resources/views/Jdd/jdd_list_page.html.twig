@@ -18,14 +18,14 @@
         <col style="width: 7%;"/>
         <col style="width: 20%;"/>
         <col />
-        {% if user.isAllowed('MANAGE_DATASETS') %}
+        {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
             <col style="width: 22%;"/>
         {% endif %}
         <thead>
             <tr>
                 <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
                 <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
-                {% if user.isAllowed('MANAGE_DATASETS') %}
+                {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
                     <th class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
                 {% endif %}
             </tr>
@@ -33,7 +33,7 @@
                 <th class="color1">{{ 'Actions'|trans }}</th>
                 <th class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
                 <th class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
-                {% if user.isAllowed('MANAGE_DATASETS') %}
+                {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
                     <th class="color1">
                         <div class="dee-state">{{ 'DEE.table.state'|trans }}</div>
                         <div class="dee-actions">{{ 'DEE.table.actions'|trans }}</div>
@@ -122,7 +122,7 @@
                 </td>
 
                 {# DEE Column - Empty / filled by Ajax #}
-                {% if user.isAllowed('MANAGE_DATASETS') %}
+                {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
                     <td>
                         <div class="dee" data-jdd-id="{{ jdd.id }}">
                             <div class="dee-state">
@@ -147,7 +147,7 @@
         </tbody>
     </table>
 
-    {% if user.isAllowed('MANAGE_DATASETS') %}
+    {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
         <!-- DEE dialog popup -->
         <div class="modal fade" id="DEEModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="dialog">
