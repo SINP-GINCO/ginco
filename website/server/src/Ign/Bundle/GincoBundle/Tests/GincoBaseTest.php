@@ -11,7 +11,7 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
  * @author Gautam Pastakia
  *
  */
-abstract class GincoBaseTest extends WebTestCase {
+abstract class GincoBaseTest extends WebTestCase implements GincoBaseInterface {
 
 	/**
 	 *
@@ -98,12 +98,4 @@ abstract class GincoBaseTest extends WebTestCase {
 		// Execute insert scripts
 		static::executeScripts($adminDbconn);
 	}
-
-	/**
-	 * This function execute SQL scripts needed for specific test.
-	 *
-	 * @param $adminConn connection
-	 *        	to postgres
-	 */
-	abstract static function executeScripts($adminConn);
 }
