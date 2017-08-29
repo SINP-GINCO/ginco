@@ -5,12 +5,10 @@
 {% block body %}
     <h1>{{ configurationManager.getConfig('site_name', 'Plateforme GINCO') }}</h1>
 
-    {% if (app.user and app.user.isAllowed('DATA_QUERY') and app.user.isSchemaAllowed('RAW_DATA')) %}
       <h2>{{ 'Menu.RegionalData'|trans }}</h2>
       <ul>
         <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Menu.RegionalData.Access'|trans }}</a></li>
       </ul>
-    {% endif %}
 
     {% if (app.user and app.user.isAllowed('DATA_INTEGRATION')) %}
         <h2>{{ 'Menu.Datasets'|trans }}</h2>
