@@ -25,6 +25,7 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
+	execCustSQLFile("$sprintDir/fix_saved_request_permission_name.sql", $config);
 	execCustSQLFile("$sprintDir/alter_label_table_data.sql", $config);
 	execCustSQLFile("$sprintDir/update_mtd_to_preprod.sql", $config);
 	execCustSQLFile("$sprintDir/add_limit_import_error.sql", $config);
