@@ -8,9 +8,29 @@ framework:
     profiler:
         collect: false
 
+doctrine:
+    dbal:
+        dbname: ginco_symfony_ut
+
+parameters:
+    database_name: ginco_symfony_ut
+    locale: fr
+
 web_profiler:
     toolbar: false
     intercept_redirects: false
 
 swiftmailer:
     disable_delivery: true
+
+monolog:
+    handlers:
+        main:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            level:  debug
+            channels: ["!doctrine"]
+        doctrine:
+            type: stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.doctrine.log"
+            channels: doctrine

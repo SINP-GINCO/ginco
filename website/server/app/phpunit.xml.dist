@@ -14,11 +14,13 @@
         -->
     </php>
 
+    <!-- Disable failing on deprecation notices -->
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+    </php>
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
-            <directory>../src/*Bundle/Tests</directory>
+        <testsuite name="ginco">
+            <directory>../src/Ign/Bundle/GincoBundle/Tests</directory>
         </testsuite>
     </testsuites>
 
