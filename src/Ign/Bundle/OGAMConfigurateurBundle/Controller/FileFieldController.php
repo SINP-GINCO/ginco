@@ -125,7 +125,23 @@ class FileFieldController extends Controller {
 			} else {
 				$labelCSV = $labelCSVs[$i];
 			}
-
+			
+			// Custom validator to check unicity of labelCSV in the file
+			// Entity constraint is impossible to use as labelCSV is set after form is valid.
+			$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
+			$existingLabelCSVFileField = $fileFieldRepository->findOneBy(array('labelCSV' => $labelCSV, 'fileFormat' => $format->getFormat()));
+			if ($existingLabelCSVFileField and $existingLabelCSVFileField->getData() != $name) {
+				// labelCSV already exists : we add a flash error
+				$this->addFlash('error', $this->get('translator')
+					->trans('fileField.labelCSV.unique', array(
+						'%existingLabelCSV%' => $existingLabelCSVFileField->getLabelCSV()
+					)));
+				return $this->redirectToRoute('configurateur_file_fields', array(
+					'datasetId' => $datasetId,
+					'format' => $format->getFormat()
+				));
+			}
+		
 			if ($mandatorys[$i] == 'true') {
 				$mandatory = '1';
 			} else {

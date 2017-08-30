@@ -278,6 +278,7 @@ File Format Visualisation: Visualisation des fichiers
 File: Description du format de fichier %file.label%
 fileField.mask: Format de date
 fileField:
+  labelCSV.unique: Le nom du champ dans le fichier "%existingLabelCSV%" est déjà utilisé dans ce modèle d'import.
   mask:
     label: Format de date
     help: Le masque d'un champ est l'expression régulière que la valeur d'un champ doit vérifier lors de l'import. Lorsqu'aucun masque n'est indiqué, aucune vérification n'est faite sur les valeurs.

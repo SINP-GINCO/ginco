@@ -140,7 +140,7 @@ class ModelControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * FIXME This test checks if all mappings between files and tables are correctly
+	 * This test checks if all mappings between files and tables are correctly
 	 * removed on edit action.
 	 * The model tested has 2 tables, each containing 3 fields.
 	 * It has an import model which targets it, and which has 2 files containing

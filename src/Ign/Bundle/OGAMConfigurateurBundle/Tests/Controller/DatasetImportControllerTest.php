@@ -84,7 +84,6 @@ class DatasetImportControllerTest extends ConfiguratorTest {
 	}
 
 	/**
-	 * FIXME
 	 * @covers Ign\Bundle\OGAMConfigurateurBundle\Controller\DatasetImportController::editAction
 	 */
 	public function testEditWithMappings() {
