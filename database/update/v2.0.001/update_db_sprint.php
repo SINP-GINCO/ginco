@@ -25,7 +25,6 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here */
-	execCustSQLFile("$sprintDir/fix_saved_request_permission_name.sql", $config);
 	execCustSQLFile("$sprintDir/alter_label_table_data.sql", $config);
 	execCustSQLFile("$sprintDir/update_mtd_to_preprod.sql", $config);
 	execCustSQLFile("$sprintDir/add_limit_import_error.sql", $config);
@@ -80,6 +79,7 @@ try {
 	execCustSQLFile("$sprintDir/replace_geofla_commune_by_admin_express-cog_2017.sql", $config);
 	execCustSQLFile("$sprintDir/replace_geofla_departement_by_admin_express-cog_2017.sql", $config);
 	execCustSQLFile("$sprintDir/replace_geofla_region_by_admin_express-cog_2017.sql", $config);
+	execCustSQLFile("$sprintDir/fix_saved_request_permission_name.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
