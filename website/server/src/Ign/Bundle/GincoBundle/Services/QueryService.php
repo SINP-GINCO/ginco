@@ -3,6 +3,8 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Ign\Bundle\GincoBundle\Entity\Mapping\Request;
 use Ign\Bundle\GincoBundle\Entity\Mapping\Result;
+use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
+use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFormField;
 use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
 use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\Dataset;
@@ -11,12 +13,10 @@ use Ign\Bundle\OGAMBundle\Entity\Metadata\FormField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
 use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
+use Ign\Bundle\OGAMBundle\Entity\Website\User;
 use Ign\Bundle\OGAMBundle\OGAMBundle;
 use Ign\Bundle\OGAMBundle\Services\QueryService as BaseService;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFormField;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
 
 /**
  * The Query Service customized for Ginco.
@@ -183,7 +183,7 @@ class QueryService extends BaseService {
 	}
 
 	/**
-	 * Updates the hiding levels for all rows provided in the array of values.
+	 * Gets the hiding levels for all rows provided in the array of values.
 	 * MIGRATED
 	 *
 	 * @param
@@ -206,7 +206,6 @@ class QueryService extends BaseService {
 		// Retrieve parameters for calculation of hiding level
 		$ogamIdColumn = $keys['id_observation'];
 		$providerIdColumn = $keys['id_provider'];
-
 		$results = $this->genericModel->getHidingLevelParameters($geometryTable, $ogamIdColumn, $providerIdColumn, $reqId, $from, $where);
 
 		for ($i = 0; $i < count($results); $i ++) {
@@ -772,6 +771,9 @@ class QueryService extends BaseService {
 		$observationId = $keyMap[strtoupper($keys['id_observation'])];
 
 		$permissions = $this->getVisuPermissions($user);
+		$where = "WHERE res.id_request = $requestId
+			AND res.id_provider = '" . $providerId . "'
+			AND res.id_observation = '$observationId'";
 		$hidingLevel = $this->getHidingLevels($keys, $table, $permissions, $from, $where, $requestId)[0]['hiding_level'];
 
 		$hidingLevels = array(
@@ -791,10 +793,7 @@ class QueryService extends BaseService {
 			INNER JOIN observation_$layer obs ON obs.id_$idKey = bac.id_$layer
 			INNER JOIN results res ON res.table_format =  obs.table_format
 			AND res.id_provider = obs.id_provider
-			AND res.id_observation = obs.id_observation
-			WHERE res.id_request = $requestId
-			AND res.id_provider = '" . $providerId . "'
-			AND res.id_observation = '$observationId'";
+			AND res.id_observation = obs.id_observation $where";
 
 			$bbResult = $this->getQueryResults($bbQuery);
 
