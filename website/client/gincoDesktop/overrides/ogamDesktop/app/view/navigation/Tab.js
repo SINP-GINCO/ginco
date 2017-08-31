@@ -116,7 +116,7 @@ Ext.define('Ginco.view.navigation.Tab', {
                 }
 
                 // TODO : add foreach on data.format[i] ?
-                data.formats[0].fields.sort(dynamicSortMultiple("formPosition", "position"));   
+                data.formats[0].fields.sort(dynamicSortMultiple("formPosition", "label"));   
                 
                 var formArrays = Object.create(null);
 
