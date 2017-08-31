@@ -18,7 +18,9 @@
             "type": "{{ field.metadata.data.unit.type }}",
             "subtype": "{{ field.metadata.data.unit.subtype }}",
             "value": {{ field.value|json_encode }},
-            "valueLabel": {{ field.valueLabel|json_encode }}
+            "valueLabel": {{ field.valueLabel|json_encode }},
+            "formLabel": {{ field.formLabel|json_encode }},
+            "formPosition": {{ field.formPosition|json_encode }}
         }
         {%- if not loop.last -%}
             ,
