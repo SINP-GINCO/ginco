@@ -271,7 +271,7 @@ class GenericService extends BaseGenericService {
 	 *        	the name of the table prefixed by the schema name
 	 * @param Integer $requestId
 	 *        	the id of the request
-	 * @param Integer $hidingLevel
+	 * @param Integer $maxPrecisionLevel
 	 *        	the value of the hiding_level
 	 * @return String a SQL request
 	 */

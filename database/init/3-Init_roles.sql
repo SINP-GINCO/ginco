@@ -16,7 +16,7 @@ DELETE FROM permission;
 INSERT INTO role(role_code, role_label, role_definition) VALUES ('developpeur','Développeur', 'developpeur');
 INSERT INTO role(role_code, role_label, role_definition) VALUES ('administrateur','Administrateur', 'Administrateur de plateforme régionale ou thématique');
 INSERT INTO role(role_code, role_label, role_definition) VALUES ('producteur','Producteur', 'producteur');
-INSERT INTO role(role_code, role_label, role_definition) VALUES ('visiteur','Visiteur', 'Visiteur non loggué');
+INSERT INTO role(role_code, role_label, role_definition) VALUES ('grand_public','Grand public', 'Utilisateur par défaut non identifié et non-modifiable');
 
 -- Create a provider
 INSERT INTO website.providers(id,label,definition) VALUES ('1', 'Defaut', 'Organisme par défaut');
@@ -29,13 +29,13 @@ INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALU
 
 -- Link the users to their roles
 INSERT INTO role_to_user(user_login, role_code) VALUES ('developpeur', 'developpeur');
-INSERT INTO role_to_user(user_login, role_code) VALUES ('visiteur', 'visiteur');
+INSERT INTO role_to_user(user_login, role_code) VALUES ('visiteur', 'grand_public');
 
 -- Link the role to schemas
-INSERT INTO ROLE_TO_SCHEMA(ROLE_CODE, SCHEMA_CODE) VALUES ('developpeur', 'RAW_DATA');
-INSERT INTO ROLE_TO_SCHEMA(ROLE_CODE, SCHEMA_CODE) VALUES ('administrateur', 'RAW_DATA');
-INSERT INTO ROLE_TO_SCHEMA(ROLE_CODE, SCHEMA_CODE) VALUES ('producteur', 'RAW_DATA');
-INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('visiteur', 'RAW_DATA');
+INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('developpeur', 'RAW_DATA');
+INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('administrateur', 'RAW_DATA');
+INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('producteur', 'RAW_DATA');
+INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('grand_public', 'RAW_DATA');
 
 -- List the permissions of the web site
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_USERS', 'Administrer les utilisateurs');
@@ -98,5 +98,5 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur'
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur', 'EXPORT_RAW_DATA');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur', 'MANAGE_OWNED_PRIVATE_REQUEST');
 
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('visiteur', 'DATA_QUERY');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('visiteur', 'DATA_QUERY_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES ('grand_public', 'DATA_QUERY');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES ('grand_public', 'DATA_QUERY_OTHER_PROVIDER');
