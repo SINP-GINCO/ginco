@@ -6,7 +6,6 @@
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>{% trans %}Code{% endtrans %}</th>
 			<th>{% trans %}Label{% endtrans %}</th>
 			<th>{% trans %}Definition{% endtrans %}</th>
 			<th>{% trans %}Actions{% endtrans %}</th>
@@ -15,7 +14,6 @@
 	<tbody>
 		{% for role in roles %}
 			<tr>
-				<td>{{ role.code }}</td>
 				<td>{{ role.label }}</td>
 				<td>{{ role.definition }}</td>
 				<td>
