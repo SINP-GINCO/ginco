@@ -91,4 +91,48 @@ class UsermanagementController extends BaseController {
 			'users' => $users
 		));
 	}
+
+	/**
+	 * Show the list of roles.
+	 * Ginco: Remove the default role.
+	 *
+	 * @Route("/showRoles", name="usermanagement_showRoles")
+	 */
+	public function showRolesAction() {
+		$logger = $this->get('logger');
+		$logger->info('showRolesAction');
+
+		// Get the list of roles
+		$rolesRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+		$roles = $rolesRepo->findAll();
+
+		// Remove default role
+		for ($i = 0; $i < count($roles); $i ++) {
+			if ($roles[$i]->getCode() === 'grand_public') {
+				unset($roles[$i]);
+				break;
+			}
+		}
+
+		// Calculate if each role can be deleted or not
+		$isDeletableRole = array();
+		foreach ($roles as $role) {
+
+			$isDeletable = true;
+
+			// If a user is using this role then we cannot delete
+			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+			$nbUsers = $roleRepo->userCount($role->getCode());
+			if ($nbUsers > 0) {
+				$isDeletable = false;
+			}
+
+			$isDeletableRole[$role->getCode()] = $isDeletable;
+		}
+
+		return $this->render('OGAMBundle:UsermanagementController:show_roles.html.twig', array(
+			'roles' => $roles,
+			'isDeletableRole' => $isDeletableRole
+		));
+	}
 }
