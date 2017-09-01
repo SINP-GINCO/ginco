@@ -30,23 +30,6 @@ class Custom_IntegrationController extends IntegrationController {
 	}
 
 	/**
-	 * Show the data submission page.
-	 *
-	 * @return the HTML view
-	 */
-	public function showDataSubmissionPageAction() {
-		$this->logger->debug('custom showCustomDataPageAction');
-
-		// Get some info about the user
-		$userSession = new Zend_Session_Namespace('user');
-
-		// Get the current data submissions
-		$this->view->submissions = $this->submissionModel->getActiveSubmissions();
-
-		$this->render('custom-show-data-submission-page');
-	}
-
-	/**
 	 * Download the list of submisssions/datasets as a csv file
 	 */
 	public function downloadActiveSubmissionsCsvAction() {
