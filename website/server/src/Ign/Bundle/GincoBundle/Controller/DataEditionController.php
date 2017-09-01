@@ -44,7 +44,10 @@ class DataEditionController extends BaseController {
 
 		// Complete the data object with the existing values from the database.
 		$genericModel = $this->get('ogam.manager.generic');
-		$data = $genericModel->getDatum($data);
+		// A user not allowed to see sensitive data should not have rights to edit data.
+		// As it is permitted by the persmission configuration, we use getDatumGinco to hide sensitive fields all the same.
+		$requestId = $this->get('doctrine')->getRepository('Ign\Bundle\GincoBundle\Entity\Mapping\Request', 'mapping')->getLastRequestIdFromSession(session_id());
+		$data = $genericModel->getDatumGinco($data, $requestId);
 
 		// The service used to manage the query module
 		$res = $this->getQueryService()->getEditForm($data);
