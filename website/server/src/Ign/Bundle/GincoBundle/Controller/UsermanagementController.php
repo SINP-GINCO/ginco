@@ -1,17 +1,16 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Ign\Bundle\GincoBundle\Form\GincoRoleType;
-use Ign\Bundle\OGAMBundle\Entity\Website\Role;
-use Symfony\Component\HttpFoundation\Request;
 use Ign\Bundle\OGAMBundle\Controller\UsermanagementController as BaseController;
+use Ign\Bundle\OGAMBundle\Entity\Website\Role;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/usermanagement")
  */
 class UsermanagementController extends BaseController {
-
 
 	/**
 	 * Edit a role.
@@ -66,4 +65,30 @@ class UsermanagementController extends BaseController {
 		));
 	}
 
+	/**
+	 * Show the list of users.
+	 * Ginco : Remove the default user (visiteur).
+	 *
+	 * @Route("/showUsers", name="usermanagement_showUsers")
+	 */
+	public function showUsersAction() {
+		$logger = $this->get('logger');
+		$logger->info('showUsersAction');
+
+		// Get the list of roles
+		$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+		$users = $usersRepo->findAll();
+
+		// Remove default user
+		for ($i = 0; $i < count($users); $i ++) {
+			if ($users[$i]->getLogin() === 'visiteur') {
+				unset($users[$i]);
+				break;
+			}
+		}
+
+		return $this->render('OGAMBundle:UsermanagementController:show_users.html.twig', array(
+			'users' => $users
+		));
+	}
 }
