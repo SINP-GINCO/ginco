@@ -13,10 +13,10 @@ DELETE FROM role_to_schema;
 DELETE FROM permission;
 
 -- Create some roles
-INSERT INTO role(role_code, role_label, role_definition) VALUES ('developpeur','Développeur', 'developpeur');
-INSERT INTO role(role_code, role_label, role_definition) VALUES ('administrateur','Administrateur', 'Administrateur de plateforme régionale ou thématique');
-INSERT INTO role(role_code, role_label, role_definition) VALUES ('producteur','Producteur', 'producteur');
-INSERT INTO role(role_code, role_label, role_definition) VALUES ('grand_public','Grand public', 'Utilisateur par défaut non identifié et non-modifiable');
+INSERT INTO role(role_label, role_definition) VALUES ('Développeur', 'developpeur');
+INSERT INTO role(role_label, role_definition) VALUES ('Administrateur', 'Administrateur de plateforme régionale ou thématique');
+INSERT INTO role(role_label, role_definition) VALUES ('Producteur', 'producteur');
+INSERT INTO role(role_label, role_definition) VALUES ('Grand public', 'Rôle par défaut non-modifiable pour un utilisateur non identifié');
 
 -- Create a provider
 INSERT INTO website.providers(id,label,definition) VALUES ('1', 'Defaut', 'Organisme par défaut');
@@ -28,14 +28,14 @@ INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALU
 INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALUES ('visiteur', '922391a72f5d8792a0b66b6cb3674d5eae454bda', 'visiteur', '1', 'sinp-dev@ign.fr');
 
 -- Link the users to their roles
-INSERT INTO role_to_user(user_login, role_code) VALUES ('developpeur', 'developpeur');
-INSERT INTO role_to_user(user_login, role_code) VALUES ('visiteur', 'grand_public');
+INSERT INTO role_to_user(user_login, role_code) VALUES ('developpeur', 1);
+INSERT INTO role_to_user(user_login, role_code) VALUES ('visiteur', 4);
 
 -- Link the role to schemas
-INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('developpeur', 'RAW_DATA');
-INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('administrateur', 'RAW_DATA');
-INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('producteur', 'RAW_DATA');
-INSERT INTO role_to_schema(ROLE_CODE, SCHEMA_CODE) VALUES ('grand_public', 'RAW_DATA');
+INSERT INTO role_to_schema(role_code, schema_code) VALUES (1, 'RAW_DATA');
+INSERT INTO role_to_schema(role_code, schema_code) VALUES (2, 'RAW_DATA');
+INSERT INTO role_to_schema(role_code, schema_code) VALUES (3, 'RAW_DATA');
+INSERT INTO role_to_schema(role_code, schema_code) VALUES (4, 'RAW_DATA');
 
 -- List the permissions of the web site
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_USERS', 'Administrer les utilisateurs');
@@ -58,45 +58,45 @@ INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_OWNED_
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_WEBSITE_PARAMETERS', 'Configurer les paramètres de la plateforme');
 
 -- Add the permissions per role
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'MANAGE_USERS');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'DATA_INTEGRATION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'DATA_QUERY');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'DATA_QUERY_OTHER_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'EXPORT_RAW_DATA');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'DATA_EDITION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'DATA_EDITION_OTHER_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CANCEL_VALIDATED_SUBMISSION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CANCEL_OTHER_PROVIDER_SUBMISSION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CHECK_CONF');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CONFIGURE_METAMODEL');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'VIEW_SENSITIVE');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'VIEW_PRIVATE');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'MANAGE_DATASETS');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CONFIRM_SUBMISSION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'MANAGE_PUBLIC_REQUEST');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'MANAGE_OWNED_PRIVATE_REQUEST');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('developpeur', 'CONFIGURE_WEBSITE_PARAMETERS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_INTEGRATION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'EXPORT_RAW_DATA');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_EDITION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_EDITION_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CANCEL_VALIDATED_SUBMISSION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CANCEL_OTHER_PROVIDER_SUBMISSION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CHECK_CONF');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_METAMODEL');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_SENSITIVE');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_PRIVATE');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIRM_SUBMISSION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_PUBLIC_REQUEST');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_PRIVATE_REQUEST');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_WEBSITE_PARAMETERS');
 
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'MANAGE_USERS');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'DATA_INTEGRATION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'DATA_QUERY');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'DATA_QUERY_OTHER_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'EXPORT_RAW_DATA');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'CANCEL_VALIDATED_SUBMISSION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'CANCEL_OTHER_PROVIDER_SUBMISSION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'CONFIGURE_METAMODEL');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'VIEW_SENSITIVE');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'VIEW_PRIVATE');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'DATA_EDITION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'DATA_EDITION_OTHER_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'CONFIRM_SUBMISSION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'MANAGE_PUBLIC_REQUEST');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'MANAGE_OWNED_PRIVATE_REQUEST');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('administrateur', 'CONFIGURE_WEBSITE_PARAMETERS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_USERS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_INTEGRATION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EXPORT_RAW_DATA');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CANCEL_VALIDATED_SUBMISSION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CANCEL_OTHER_PROVIDER_SUBMISSION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGURE_METAMODEL');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VIEW_SENSITIVE');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VIEW_PRIVATE');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIRM_SUBMISSION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_PUBLIC_REQUEST');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_PRIVATE_REQUEST');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGURE_WEBSITE_PARAMETERS');
 
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur', 'DATA_QUERY');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur', 'EXPORT_RAW_DATA');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('producteur', 'MANAGE_OWNED_PRIVATE_REQUEST');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'DATA_QUERY');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'EXPORT_RAW_DATA');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'MANAGE_PRIVATE_REQUEST');
 
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('grand_public', 'DATA_QUERY');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES ('grand_public', 'DATA_QUERY_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (4, 'DATA_QUERY');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (4, 'DATA_QUERY_OTHER_PROVIDER');
