@@ -1,1 +1,1 @@
-UPDATE role SET role_label = 'Grand public', role_definition = 'Rôle par défaut non-modifiable pour un utilisateur non identifié' WHERE role_label = 'visiteur';
+UPDATE role SET role_label = 'Grand public', role_definition = 'Rôle par défaut non-modifiable pour un utilisateur non identifié' WHERE lower(role_label) = 'visiteur';
