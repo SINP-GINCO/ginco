@@ -16,7 +16,7 @@ DELETE FROM permission;
 INSERT INTO role(role_label, role_definition) VALUES ('Développeur', 'developpeur');
 INSERT INTO role(role_label, role_definition) VALUES ('Administrateur', 'Administrateur de plateforme régionale ou thématique');
 INSERT INTO role(role_label, role_definition) VALUES ('Producteur', 'producteur');
-INSERT INTO role(role_label, role_definition) VALUES ('Visiteur', 'Visiteur non loggué');
+INSERT INTO role(role_label, role_definition) VALUES ('Grand public','Utilisateur par défaut non identifié et non-modifiable');
 
 -- Create a provider
 INSERT INTO website.providers(id,label,definition) VALUES ('1', 'Defaut', 'Organisme par défaut');

@@ -42,9 +42,10 @@ COMMENT ON COLUMN USERS.ACTIVATION_CODE IS 'The activation code for password res
 /* Table : ROLE                                                 */
 /*==============================================================*/
 create table ROLE (
-ROLE_CODE            SERIAL PRIMARY KEY,
+ROLE_CODE            VARCHAR(36)             	not null,
 ROLE_LABEL           VARCHAR(100)             	null,
-ROLE_DEFINITION      VARCHAR(255)         		null
+ROLE_DEFINITION      VARCHAR(255)         		null,
+constraint PK_ROLE primary key (ROLE_CODE)
 );
 
 COMMENT ON TABLE ROLE IS 'A role in the application';
@@ -56,7 +57,7 @@ COMMENT ON COLUMN ROLE.ROLE_DEFINITION IS 'Definition of the role';
 /* Table : ROLE_TO_SCHEMA                                       */
 /*==============================================================*/
 create table ROLE_TO_SCHEMA (
-ROLE_CODE            INTEGER					not null,
+ROLE_CODE            VARCHAR(36)             	not null,
 SCHEMA_CODE       	 VARCHAR(100)             	not null,
 constraint PK_ROLE_TO_SCHEMA  primary key (ROLE_CODE, SCHEMA_CODE)
 );
@@ -71,7 +72,7 @@ COMMENT ON COLUMN ROLE_TO_SCHEMA.SCHEMA_CODE IS 'Code of the schema (as defined 
 /*==============================================================*/
 create table ROLE_TO_USER (
 USER_LOGIN              VARCHAR(50)                 not null,
-ROLE_CODE              	INTEGER                		not null,
+ROLE_CODE              	VARCHAR(36)                 not null,
 constraint PK_ROLE_TO_USER primary key (USER_LOGIN, ROLE_CODE)
 );
 
@@ -84,7 +85,7 @@ COMMENT ON COLUMN ROLE_TO_USER.ROLE_CODE IS 'The role';
 /*==============================================================*/
 create table PERMISSION (
 PERMISSION_CODE      	VARCHAR(36)             not null,
-PERMISSION_LABEL      	VARCHAR(255)            not null,
+PERMISSION_LABEL      	VARCHAR(255)             not null,
 constraint PK_PERMISSION primary key (PERMISSION_CODE)
 );
 
@@ -97,8 +98,8 @@ COMMENT ON COLUMN PERMISSION.PERMISSION_LABEL IS 'The label';
 /* Table : PERMISSION_PER_ROLE                                  */
 /*==============================================================*/
 create table PERMISSION_PER_ROLE (
-ROLE_CODE              	INTEGER               	not null,
-PERMISSION_CODE      	VARCHAR(36)           	not null,
+ROLE_CODE              	VARCHAR(36)                 not null,
+PERMISSION_CODE      	VARCHAR(36)             not null,
 constraint PK_PERMISSION_PER_ROLE primary key (ROLE_CODE, PERMISSION_CODE)
 );
 
@@ -112,7 +113,7 @@ COMMENT ON COLUMN PERMISSION_PER_ROLE.PERMISSION_CODE IS 'A permission';
 /*==============================================================*/
 create table DATASET_ROLE_RESTRICTION (
 DATASET_ID           VARCHAR(36)          NOT NULL,
-ROLE_CODE            INTEGER          	  NOT NULL,
+ROLE_CODE            VARCHAR(36)          NOT NULL,
 constraint PK_DATASET_ROLE_RESTRICTION primary key (DATASET_ID, ROLE_CODE)
 );
 
@@ -303,4 +304,3 @@ GRANT ALL ON TABLE website.messages TO ogam;
 GRANT ALL ON SCHEMA website TO ogam WITH GRANT OPTION;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA website TO ogam;
 GRANT ALL ON ALL TABLES IN SCHEMA website TO ogam;
-
