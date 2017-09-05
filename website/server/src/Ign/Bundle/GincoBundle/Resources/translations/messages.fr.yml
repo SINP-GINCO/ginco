@@ -268,6 +268,17 @@ Role:
   delete:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
     impossible: "Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés."
+    grand_public: "Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle technique par défaut"
+  edit:
+    impossible: "Impossible d'éditer le rôle '%roleLabel%' car c'est le rôle technique par défaut."
+
+User:
+  delete:
+    impossible: "Impossible de supprimer l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
+  change_password:
+    impossible: "Impossible de changer le mot de passe de l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
+  edit:
+    impossible: "Impossible de modifier l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
 
 # Changing or Re-initialising user password
 #------------------------------
