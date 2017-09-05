@@ -121,6 +121,11 @@ INSERT INTO dataset_role_restriction(dataset_id,role_code)
    WHERE odrr.role_code = oldr.role_code
    AND oldr.role_label = r.role_label;
 
+-- Add user rights on tables
+GRANT ALL ON SCHEMA website TO ogam WITH GRANT OPTION;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA website TO ogam;
+GRANT ALL ON ALL TABLES IN SCHEMA website TO ogam;
+
 ------ End of data migration --------------
 
 ---- Drop old tables

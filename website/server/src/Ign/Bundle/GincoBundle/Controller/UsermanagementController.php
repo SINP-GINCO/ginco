@@ -67,7 +67,7 @@ class UsermanagementController extends BaseController {
 
 	/**
 	 * Show the list of users.
-	 * Ginco : Remove the default user (visiteur).
+	 * Ginco : The default user (visiteur) cannot be edited.
 	 *
 	 * @Route("/showUsers", name="usermanagement_showUsers")
 	 */
@@ -79,22 +79,28 @@ class UsermanagementController extends BaseController {
 		$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
 		$users = $usersRepo->findAll();
 
-		// Remove default user
-		for ($i = 0; $i < count($users); $i ++) {
-			if ($users[$i]->getLogin() === 'visiteur') {
-				unset($users[$i]);
-				break;
+		// Calculate if each user can be deleted (thus, modified or change-password ability given) or not
+		$isDeletableUser = array();
+		foreach ($users as $user) {
+
+			$isDeletable = true;
+
+			if ($user->getLogin() === 'visiteur') {
+				$isDeletable = false;
 			}
+
+			$isDeletableUser[$user->getLogin()] = $isDeletable;
 		}
 
 		return $this->render('OGAMBundle:UsermanagementController:show_users.html.twig', array(
-			'users' => $users
+			'users' => $users,
+			'isDeletableUser' => $isDeletableUser
 		));
 	}
 
 	/**
 	 * Show the list of roles.
-	 * Ginco: Remove the default role.
+	 * Ginco:  The default role (Grand public) cannot be edited.
 	 *
 	 * @Route("/showRoles", name="usermanagement_showRoles")
 	 */
@@ -105,14 +111,6 @@ class UsermanagementController extends BaseController {
 		// Get the list of roles
 		$rolesRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
 		$roles = $rolesRepo->findAll();
-
-		// Remove default role
-		for ($i = 0; $i < count($roles); $i ++) {
-			if ($roles[$i]->getCode() === 'grand_public') {
-				unset($roles[$i]);
-				break;
-			}
-		}
 
 		// Calculate if each role can be deleted or not
 		$isDeletableRole = array();
@@ -127,12 +125,30 @@ class UsermanagementController extends BaseController {
 				$isDeletable = false;
 			}
 
+			if ($role->getLabel() === 'Grand public') {
+				$isDeletable = false;
+			}
+
 			$isDeletableRole[$role->getCode()] = $isDeletable;
+		}
+
+		// Calculate if each role can be modified or not
+		$isModifiableRole = array();
+		foreach ($roles as $role) {
+
+			$isModifiable = true;
+
+			if ($role->getLabel() === 'Grand public') {
+				$isModifiable = false;
+			}
+
+			$isModifiableRole[$role->getCode()] = $isModifiable;
 		}
 
 		return $this->render('OGAMBundle:UsermanagementController:show_roles.html.twig', array(
 			'roles' => $roles,
-			'isDeletableRole' => $isDeletableRole
+			'isDeletableRole' => $isDeletableRole,
+			'isModifiableRole' => $isModifiableRole
 		));
 	}
 }
