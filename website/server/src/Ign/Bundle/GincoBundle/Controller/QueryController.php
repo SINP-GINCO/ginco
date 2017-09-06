@@ -55,6 +55,7 @@ class QueryController extends BaseController {
 
 		// Forward the user to the next step
 		$visuUrl = ($this->container->getParameter('kernel.environment') == 'dev') ? '/odd' : '/odp';
+		$visuUrl = $request->getBasePath() . $visuUrl ;
 		if (isset($defaultTab) && $defaultTab === "edition-add") {
 			$providerId = $this->getUser() ? $this->getUser()
 				->getProvider()
