@@ -12,11 +12,21 @@
 # for example:
 # if $tag='__' text should contain: __wordToSubtitute__ instead of @wordToSubtitute@
 #-------------------------------------------------------------------------------
-function substituteInFile($filePathIn, $filePathOut, $config, $tag = "@"){
+function substituteInFile($filePathIn, $filePathOut, $config, $tag = "@", $tagDirective = "%"){
 	$content = file_get_contents($filePathIn);
+
+	// Replace variables
 	foreach ($config as $pattern => $value){
 		$content = str_replace($tag . $pattern . $tag, $value, $content);
 	}
+
+	// Performs tests
+	$testPatternMatch = str_replace('%', $tagDirective, '%if \s*\S+\s*%([^%]*)(?>%else%([^%]*))?%endif%');
+	$testPatternEmpty = str_replace('%', $tagDirective, '%if \s*%([^%]*)(?>%else%([^%]*))?%endif%');
+
+	$content = preg_replace("/$testPatternMatch/", '${1}', $content);
+	$content = preg_replace("/$testPatternEmpty/", '${2}', $content);
+
 	file_put_contents($filePathOut, $content);
 }
 
