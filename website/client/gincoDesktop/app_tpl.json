@@ -317,10 +317,10 @@
      },
 
     "OgamDesktop": {
-    	"requestServiceUrl": "/query/",
-    	"mapServiceUrl": "/map/",
-    	"editionServiceUrl": "/dataedition/",
-    	"userServiceUrl": "/user/",
+    	"requestServiceUrl": "@url.basepath@/query/",
+    	"mapServiceUrl": "@url.basepath@/map/",
+    	"editionServiceUrl": "@url.basepath@/dataedition/",
+    	"userServiceUrl": "@url.basepath@/user/",
     	"OpenLayers": {
     		"theme":  "lib/OpenLayers/theme/default/style.css", // Tell OpenLayers where the css default theme is
     		"imgPath":  "lib/OpenLayers/img/" // Tell OpenLayers where the control images are (remember the trailing slash)
@@ -364,10 +364,10 @@
      */
     "development": {
         "OgamDesktop": {
-            "requestServiceUrl": "/app_dev.php/query/",
-            "mapServiceUrl": "/app_dev.php/map/",
-            "editionServiceUrl": "/app_dev.php/dataedition/",
-            "userServiceUrl": "/app_dev.php/user/"
+            "requestServiceUrl": "@url.basepath@/app_dev.php/query/",
+            "mapServiceUrl": "@url.basepath@/app_dev.php/map/",
+            "editionServiceUrl": "@url.basepath@/app_dev.php/dataedition/",
+            "userServiceUrl": "@url.basepath@/app_dev.php/user/"
         },
         "tags": [
             // You can add this tag to enable Fashion when using app watch or
