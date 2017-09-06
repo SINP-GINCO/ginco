@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block description %}{% endblock %}
-
+{% block breadcrumb %}
+<ol class="breadcrumb">
+	{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}&nbsp;{% endtrans %}</a></li>{% endif %}
+	
+</ol>
+{% endblock breadcrumb %}
 {% block body %}
     <h1>{{ configurationManager.getConfig('site_name', 'Plateforme GINCO') }}</h1>
 
