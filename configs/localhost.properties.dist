@@ -5,18 +5,11 @@
 # Usage:
 # php build_ginco.php -f localhost.properties -i instance <options>
 
-# == Instance configuration
-
 # Instance name (ex localhost)
 instance.name=localhost
 
-# Complete URL of the project
-ogam.map.services.url=http://localhost.ogam-ginco.ign.fr
-# Part between the protocol and .ign.fr in the url of the project
-http.host.name=localhost.ogam-ginco
-
-# == Database configuration
-
+# Database configuration
+#=======================
 db.host=localhost
 db.port=5432
 db.name=database_name
@@ -26,18 +19,13 @@ db.adminuser=admin
 db.adminuser.pw=#####
 db.version=9.6.0
 
-# == Target machine configuration / Unused on localhost
 
+
+
+# Deployment  / parameters unused on localhost
+#==================================
 # La machine sur laquelle déployer cette instance
 deploy.host=localhost
-# L'utilisateur sur la machine cible exécutant les commandes de déploiement local
-deploy.user=XXXXX
-# Le mot de passe de l'utilisateur de déploiement
-deploy.user.pw=#####
-# Inutilisé en local
-deploy.port=22
-
-# == Build machine configuration
 
 # Chemins des répertoires contenant les projets ogam et configurateur pendant la phase de build
 # absolu ou relatif au répertoire courant (répertoire où est installé le projet ginco)
@@ -51,34 +39,55 @@ configurator.path=/path/to/configurator
 # Sur les instances de prod, c'est instance.name
 apache.path.to.app=ginco
 
-# == Application parameters
+# Mailer configuration
+#=====================
+mailer.transport=smtp
+mailer.host=mailex.ign.fr
 
-# Url of the service for getting metadata jdd
-metadata.jdd.url=https://inpn2.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecordById?id=
-# Email to send a notification to when generating DEE
-dee.notification.mail=YOURMAIL@ign.fr
+# Application parameters
+#=======================
 
-# == Instance customization parameters
+# Url of the site: protocol
+url.protocol=http
+# Url of the site: complete domain (without protocol)
+url.domain=ginco.localhost.fr
+# Basepath of the site with slash (leave blank if no basepath)
+# Current configuration results in the application is located at: http://ginco.localhost.fr/localhost
+url.basepath=/localhost
 
 # Site Name
 site.name="Plateforme de test GINCO Localhost"
 
-# INSEE/ISO Code of region
-region.code=LOCAL
+#url des services ogam avec le protocole et le domaine exemple http://services.ign.fr ou localhost
+ogam.services.host=http://localhost:8080
+# service accédé par le map-proxy
+ogam.local.map.services.url=http://localhost
 
-# Bounding box pour l'initialisation de la visualisation
+# Contact mail (initial config, can be changed on the platform)
+contact.mail=YOURMAIL@ign.fr
+
+# URL du service WXS du Géoportail
+geoportail.wxs.url=https://wxs-i.ign.fr
+# Geoportail key to access the map services see http://api.ign.fr/services#web to get one.
+view.geoportail.key=7gr31kqe5xttprd2g7zbkqgo
+print.geoportail.key=7gr31kqe5xttprd2g7zbkqgo
+
+# Url of the service for getting metadata jdd
+metadata.jdd.url=https://preprod-inpn.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecordById?id=
+# Email to send a notification to when generating DEE
+dee.notification.mail=YOURMAIL@ign.fr
+
+# Bounding box pour l'initialisation de la visualisation en WebMercator
 bb.xmin=-899390
 bb.ymin=6742320
 bb.xmax=1351350
 bb.ymax=4883370
 bb.zoom=3
 
-# Geoportal API key
-geoportail.key=7gr31kqe5xttprd2g7zbkqgo
+# INSEE/ISO Code of region
+region.code=LOCAL
 
 # Tracking id Piwik
 # 0 to disable piwik tracking for this site
 piwik.id=0
 
-mailer.transport=smtp
-mailer.host=mailex.ign.fr
