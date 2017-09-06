@@ -64,7 +64,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ( 'site_nam
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePrivateDirectory','/var/data/ginco/@instance.name@/dee/private','Directory where DEE GML files are generated and stored');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/data/ginco/@instance.name@/dee/public','Directory where DEE archive are stored and can be downloaded');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'regionCode','@region.code@','INSEE Code for region, or ISO code for country');
-INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@ogam.map.services.url@','URL of the site');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@url.protocol@://@url.domain@@url.basepath@','URL of the site');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deeNotificationMail', 'sinp-dev@ign.fr', 'Contact mail to send notifications when the DEE is created/updated');
 INSERT INTO application_parameters (name, value, description) VALUES ('sendEmail','1','Send emails for real ? 1/true, 0/false');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'contactEmail','sinp-dev@ign.fr','Destination mail of the contact form');

@@ -27,6 +27,7 @@ try {
 	/* patch code here */
 	execCustSQLFile("$sprintDir/update_website_role.sql", $config);
 	execCustSQLFile("$sprintDir/update_role_visiteur_to_grand_public.sql", $config);
+	execCustSQLFile("$sprintDir/update_url_related_parameters.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
