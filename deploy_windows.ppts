@@ -1,7 +1,0 @@
-# specific path common for windows server
-
-www.dir = C:/ms4w/Apache/htdocs
-mapfile.dir = C:/workspace/demo-sinp/mapserver
-cgi-bin.dir = C:/ms4w/Apache/cgi-bin
-
-mapserv.exe = mapserv.exe
