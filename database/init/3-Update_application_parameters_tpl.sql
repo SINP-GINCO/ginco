@@ -34,10 +34,10 @@ insert into application_parameters (name, value, description) values ( 'srs_visu
 insert into application_parameters (name, value, description) values ( 'srs_raw_data' , 4326 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'srs_harmonized_data' , 4326 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'usePerProviderCenter' , 1 , 'if true the system will look in the "bounding_box" table for centering info for each provider');
-insert into application_parameters (name, value, description) values ( 'bbox_x_min' , '20037508.342789244' , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'bbox_x_min' , '-20037508.342789244' , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'bbox_y_min' , '-20037508.342789244' , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'bbox_x_max' , '20037508.342789244' , 'WEB MAPPING ');
-insert into application_parameters (name, value, description) values ( 'bbox_y_max' , '-20037508.342789244' , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'bbox_y_max' , '20037508.342789244' , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'zoom_level' , '1' , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'default_provider_bbox_x_min' , '@bb.xmin@' , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'default_provider_bbox_y_min' , '@bb.ymin@' , 'WEB MAPPING ');
