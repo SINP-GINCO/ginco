@@ -65,12 +65,13 @@ INSERT INTO application_parameters (name, value, description) VALUES ( 'deePriva
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/data/ginco/@instance.name@/dee/public','Directory where DEE archive are stored and can be downloaded');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'regionCode','@region.code@','INSEE Code for region, or ISO code for country');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@url.protocol@://@url.domain@@url.basepath@','URL of the site');
-INSERT INTO application_parameters (name, value, description) VALUES ( 'deeNotificationMail', 'sinp-dev@ign.fr', 'Contact mail to send notifications when the DEE is created/updated');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'deeNotificationMail', '@dee.notification.mail@', 'Contact mail to send notifications when the DEE is created/updated');
 INSERT INTO application_parameters (name, value, description) VALUES ('sendEmail','1','Send emails for real ? 1/true, 0/false');
-INSERT INTO application_parameters (name, value, description) VALUES ( 'contactEmail','sinp-dev@ign.fr','Destination mail of the contact form');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'contactEmail','@contact.mail@','Destination mail of the contact form');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'results_bbox_compute_threshold', 1000, 'Results bounding box compute value threshold. Above this value no calculation is done.');
 INSERT INTO application_parameters (name, value, description) VALUES ('jddMetadataFileDownloadServiceURL', '@metadata.jdd.url@', 'The URL for retrieving the metadata XML file for a jdd');
 INSERT INTO application_parameters (name, value, description) VALUES ('limit_import_error', '1000', 'The max number of errors searched in a submission (and writed in check_error table)');
+INSERT INTO application_parameters (name, value, description) VALUES ('https_proxy', '@https.proxy@', 'The URL of the proxy if necessary');
 
 -- Pour utiliser le tilecache
 -- insert into application_parameters (name, value, description) values ( 'tilecache_private_url' , 'http://localhost/tilecache-ogam?' , 'The private URL used by tilecacheProxy to request a tile cache.');

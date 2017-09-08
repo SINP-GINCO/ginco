@@ -30,6 +30,7 @@ deploy.host=localhost
 # Chemins des répertoires contenant les projets ogam et configurateur pendant la phase de build
 # absolu ou relatif au répertoire courant (répertoire où est installé le projet ginco)
 ogam.path=/path/to/ogam
+ginco.path=/path/to/ginco
 configurator.path=/path/to/configurator
 
 # Nom du lien symbolique (ou portion de chemin) entre /var/www/ et
@@ -54,6 +55,8 @@ url.domain=ginco.localhost.fr
 # Basepath of the site with slash (leave blank if no basepath)
 # Current configuration results in the application is located at: http://ginco.localhost.fr/localhost
 url.basepath=/localhost
+# Proxy URL if needed. If not necessary, leave empty as it is but do not remove it
+https.proxy=
 
 # Site Name
 site.name="Plateforme de test GINCO Localhost"
