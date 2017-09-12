@@ -59,7 +59,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ('showUploa
 INSERT INTO application_parameters (name, value, description) VALUES ('showUploadFileModel', 1, 'Display on the upload screen a link to a sample CSV file (0 for false, 1 for true)');
 INSERT INTO application_parameters (name, value, description) VALUES ('featureinfo_selectmode', 'buffer', 'Method to return closest features : "distance" or "buffer"');
 insert into application_parameters (name, value, description) values ( 'mapserver_private_url' , '@ogam.local.map.services.url@/mapserv_@instance.name@.ginco?' , 'The private URL used by mapserverProxy to request a map server.');
-insert into application_parameters (name, value, description) values ( 'hiding_value' , 'Masqué' , 'The value to display when a field value should not be displayed');
+insert into application_parameters (name, value, description) values ( 'hiding_value' , '@hidden.value@' , 'The value to display when a field value should not be displayed');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_name', '@site.name@', 'Name of the website');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePrivateDirectory','/var/data/ginco/@instance.name@/dee/private','Directory where DEE GML files are generated and stored');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/data/ginco/@instance.name@/dee/public','Directory where DEE archive are stored and can be downloaded');
