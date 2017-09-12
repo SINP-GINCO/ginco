@@ -347,18 +347,53 @@ function buildApacheConf($config, $buildMode)
 		mkdir($confapacheBuildDir, 0755, true);
 	}
 
-	$buildConfFile = "$confapacheBuildDir/ginco_{$config['instance.name']}.conf";
-	echo("Creating apache configuration file: $buildConfFile...\n");
+	// No basepath: the Ginco application is alone on the domain and the virtual host
+	if (empty($config['url.basepath'])) {
+		$buildConfFile = "$confapacheBuildDir/ginco_{$config['instance.name']}.conf";
+		echo("Creating apache configuration file: $buildConfFile...\n");
 
-	substituteInFile("$projectDir/confapache/ginco_apache2_tpl_$buildMode.conf", $buildConfFile, $config);
+		substituteInFile("$projectDir/confapache/ginco_own_domain_tpl_$buildMode.conf", $buildConfFile, $config);
 
-	if ($buildMode == 'dev') {
-		$postBuildInstructions[] = "Apache configuration file has been built: $buildConfFile\n";
-		$postBuildInstructions[] = "To install, do:\n\n";
-		$postBuildInstructions[] = "sudo cp $buildConfFile /etc/apache2/sites-available/\n";
-		$postBuildInstructions[] = "sudo a2ensite " . pathinfo($buildConfFile, PATHINFO_BASENAME) . "\n";
-		$postBuildInstructions[] = "sudo service apache2 reload\n\n";
+		if ($buildMode == 'dev') {
+			$postBuildInstructions[] = "Apache configuration file has been built: $buildConfFile\n";
+			$postBuildInstructions[] = "To install, do:\n\n";
+			$postBuildInstructions[] = "sudo cp $buildConfFile /etc/apache2/sites-available/\n";
+			$postBuildInstructions[] = "sudo a2ensite " . pathinfo($buildConfFile, PATHINFO_BASENAME) . "\n";
+			$postBuildInstructions[] = "sudo service apache2 reload\n\n";
+		}
 	}
+	// Basepath: the Ginco application can share the virtual host with other apps
+	else {
+		echo("Creating apache configuration files: \n");
+
+		$buildConfFileVHost = "$confapacheBuildDir/ginco_{$config['url.domain']}.conf";
+		substituteInFile("$projectDir/confapache/ginco_vhost_tpl.conf", $buildConfFileVHost, $config);
+		echo("* $buildConfFileVHost\n");
+
+		$buildConfFileMapserver = "$confapacheBuildDir/include_mapserver_{$config['instance.name']}.conf";
+		substituteInFile("$projectDir/confapache/include_mapserver_tpl.conf", $buildConfFileMapserver, $config);
+		echo("* $buildConfFileMapserver\n");
+
+		$buildConfFileLogs = "$confapacheBuildDir/include_customlog_{$config['instance.name']}.conf";
+		substituteInFile("$projectDir/confapache/include_customlog_tpl.conf", $buildConfFileLogs, $config);
+		echo("* $buildConfFileLogs\n");
+
+		$buildConfFileGinco = "$confapacheBuildDir/include_ginco_{$config['instance.name']}.conf";
+		substituteInFile("$projectDir/confapache/include_ginco_tpl.conf", $buildConfFileGinco, $config);
+		echo("* $buildConfFileGinco\n");
+
+		if ($buildMode == 'dev') {
+			$postBuildInstructions[] = "Apache configuration files has been built: $buildConfFileVHost, $buildConfFileGinco, $buildConfFileLogs, $buildConfFileMapserver\n";
+			$postBuildInstructions[] = "To install, do:\n\n";
+			$postBuildInstructions[] = "sudo cp $buildConfFileVHost /etc/apache2/sites-available/\n";
+			$postBuildInstructions[] = "sudo cp $buildConfFileGinco /etc/apache2/sites-available/\n";
+			$postBuildInstructions[] = "sudo cp $buildConfFileLogs /etc/apache2/sites-available/\n";
+			$postBuildInstructions[] = "sudo cp $buildConfFileMapserver /etc/apache2/sites-available/\n";
+			$postBuildInstructions[] = "sudo a2ensite " . pathinfo($buildConfFileVHost, PATHINFO_BASENAME) . "\n";
+			$postBuildInstructions[] = "sudo service apache2 reload\n\n";
+		}
+	}
+
 
 	echo("Done building apache config.\n\n");
 }
