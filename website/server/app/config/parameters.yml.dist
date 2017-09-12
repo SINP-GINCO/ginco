@@ -23,8 +23,9 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     # FOS-jsrouting parameters
-    base_url: /app.php
+    base_url: __url_basepath__/app.php
     router.request_context.base_url: "%base_url%"
 
     # Instance name
     instance_name: __instance_name__
+    basepath: __basepath__
