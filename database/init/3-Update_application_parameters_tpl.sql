@@ -54,7 +54,7 @@ insert into application_parameters (name, value, description) values ( 'contactE
 insert into application_parameters (name, value, description) values ( 'csvExportCharset' , 'UTF-8' , 'Csv Export');
 insert into application_parameters (name, value, description) values ( 'language_flags1' , 'fr' , 'Language');
 insert into application_parameters (name, value, description) values ( 'language_flags2' , 'en' , 'Language');
-insert into application_parameters (name, value, description) values ( 'documentationUrl', 'http://ginco.ign.fr/doc', 'URL de base pour le site de documentation');
+insert into application_parameters (name, value, description) values ( 'documentationUrl', '@documentation.url@', 'URL de base pour le site de documentation');
 INSERT INTO application_parameters (name, value, description) VALUES ('showUploadFileDetail', 0, 'Display on the upload screen the columns for each file (0 for false, 1 for true)');
 INSERT INTO application_parameters (name, value, description) VALUES ('showUploadFileModel', 1, 'Display on the upload screen a link to a sample CSV file (0 for false, 1 for true)');
 INSERT INTO application_parameters (name, value, description) VALUES ('featureinfo_selectmode', 'buffer', 'Method to return closest features : "distance" or "buffer"');
