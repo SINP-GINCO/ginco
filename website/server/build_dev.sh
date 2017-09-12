@@ -23,3 +23,8 @@ curl -sS https://getcomposer.org/installer | php
 
 # install assets
 php app/console assets:install --symlink
+
+# Dump Assetic assets for env environnement
+php app/console assetic:dump --env=dev
+php app/console cache:clear --env=dev
+php app/console cache:warmup --env=dev
