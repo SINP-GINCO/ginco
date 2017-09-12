@@ -35,6 +35,7 @@ security:
         - { path: ^/usermanagement/, allow_if: "user and is_authenticated() and user.isAllowed('MANAGE_USERS')"}
         - { path: ^/admin/, roles: ROLE_ADMIN }
         - { path: ^/dataedition/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_EDITION')"}
+        - { path: ^/query/csv-export, allow_if: "user and is_authenticated() and user.isAllowed('EXPORT_RAW_DATA')"}
         - { path: ^/query/, roles: "IS_AUTHENTICATED_ANONYMOUSLY"}
         - { path: ^/map/, roles: "IS_AUTHENTICATED_ANONYMOUSLY"}
         - { path: ^/integration/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
