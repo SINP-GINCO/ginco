@@ -99,4 +99,3 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'EXPORT_R
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'MANAGE_PRIVATE_REQUEST');
 
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (4, 'DATA_QUERY');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (4, 'DATA_QUERY_OTHER_PROVIDER');
