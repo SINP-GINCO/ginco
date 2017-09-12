@@ -4,11 +4,11 @@ namespace Ign\Bundle\GincoBundle\Controller;
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Exception\MetadataException;
 use Ign\Bundle\GincoBundle\Form\GincoJddType;
+use Ign\Bundle\OGAMBundle\Controller\JddController as BaseController;
 use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Ign\Bundle\OGAMBundle\Controller\JddController as BaseController;
 
 /**
  * @Route("/jdd")
@@ -32,7 +32,6 @@ class JddController extends BaseController {
 			'jddList' => $jddList
 		));
 	}
-
 
 	/**
 	 * Jdd creation page
@@ -60,7 +59,7 @@ class JddController extends BaseController {
 		$jdd = new Jdd();
 		$form = $this->createForm(new GincoJddType(), $jdd, array(
 			// the entity manager used for model choices must be the same as the one used to persist the $jdd entity
-			'entity_manager' => $em,
+			'entity_manager' => $em
 		));
 
 		$form->handleRequest($request);
@@ -71,13 +70,11 @@ class JddController extends BaseController {
 			$metadataId = $form->get('metadata_id')->getData();
 
 			// Test if another jdd already exists with this metadataId
-			$jddWithSameMetadataId = $em->getRepository('OGAMBundle:RawData\Jdd')->findByField(array('metadataId' => $metadataId));
+			$jddWithSameMetadataId = $em->getRepository('OGAMBundle:RawData\Jdd')->findByField(array(
+				'metadataId' => $metadataId
+			));
 			if (count($jddWithSameMetadataId) > 0) {
-				$error = new FormError($this->get('translator')->trans(
-					'Metadata.Unique',
-					array(),
-					'validators'
-				));
+				$error = new FormError($this->get('translator')->trans('Metadata.Unique', array(), 'validators'));
 				$form->get('metadata_id')->addError($error);
 				$formIsValid = false;
 			}
@@ -88,11 +85,7 @@ class JddController extends BaseController {
 			try {
 				$fields = $mr->getMetadata($metadataId);
 			} catch (MetadataException $e) {
-				$error = new FormError($this->get('translator')->trans(
-					$e->getMessage(),
-					array(),
-					'validators'
-				));
+				$error = new FormError($this->get('translator')->trans($e->getMessage(), array(), 'validators'));
 				$form->get('metadata_id')->addError($error);
 				$formIsValid = false;
 			}
@@ -100,7 +93,8 @@ class JddController extends BaseController {
 		if ($formIsValid) {
 			// Add user and provider relationship
 			$jdd->setUser($this->getUser());
-			$jdd->setProvider($this->getUser()->getProvider());
+			$jdd->setProvider($this->getUser()
+				->getProvider());
 
 			// writes the jdd to the database
 			// persist won't work (because user and provider are not retrieved via the same entity manager ?)
@@ -113,16 +107,17 @@ class JddController extends BaseController {
 			$em->flush();
 
 			// Redirects to the new submission form: upload data
-			return $this->redirect($this->generateUrl('integration_creation', array('jddid' => $attachedJdd->getId())));
+			return $this->redirect($this->generateUrl('integration_creation', array(
+				'jddid' => $attachedJdd->getId()
+			)));
 		}
 
 		return $this->render('IgnGincoBundle:Jdd:jdd_new_page.html.twig', array(
 			'form' => $form->createView(),
 			'metadataUrl' => $metadataServiceUrl,
-			'xml' => isset($xml) ? $xml: '',
+			'xml' => isset($xml) ? $xml : ''
 		));
 	}
-
 
 	/**
 	 * Jdd delete action
@@ -135,8 +130,10 @@ class JddController extends BaseController {
 		// Test if deletable
 		if (!$this->isJddDeletable($jdd)) {
 			$this->addFlash('error', [
-					'id' => 'Jdd.delete.impossible',
-					'parameters' => ['%jddId%' => $jdd->getField('title')]
+				'id' => 'Jdd.delete.impossible',
+				'parameters' => [
+					'%jddId%' => $jdd->getField('title')
+				]
 			]);
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('jdd_list'));
@@ -144,7 +141,6 @@ class JddController extends BaseController {
 
 		return parent::deleteAction($jdd);
 	}
-
 
 	/**
 	 * Update Metadata for the given jdd
@@ -166,15 +162,9 @@ class JddController extends BaseController {
 				$attachedJdd->setField($key, $value);
 			}
 			$em->flush();
-			$this->addFlash(
-				'notice',
-				'Jdd.page.metadataUpdateOK'
-			);
+			$this->addFlash('notice', 'Jdd.page.metadataUpdateOK');
 		} catch (MetadataException $e) {
-			$this->addFlash(
-				'error',
-				'Jdd.page.metadataUpdateError'
-			);
+			$this->addFlash('error', 'Jdd.page.metadataUpdateError');
 		}
 
 		// Get the referer url
@@ -208,5 +198,4 @@ class JddController extends BaseController {
 		}
 		return true;
 	}
-
 }
