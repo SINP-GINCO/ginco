@@ -321,6 +321,8 @@
     	"mapServiceUrl": "@url.basepath@/map/",
     	"editionServiceUrl": "@url.basepath@/dataedition/",
     	"userServiceUrl": "@url.basepath@/user/",
+    	"appHomeUrl": "@url.basepath@",
+    	"documentationUrl": "@documentation.url@",
     	"OpenLayers": {
     		"theme":  "lib/OpenLayers/theme/default/style.css", // Tell OpenLayers where the css default theme is
     		"imgPath":  "lib/OpenLayers/img/" // Tell OpenLayers where the control images are (remember the trailing slash)
@@ -367,7 +369,8 @@
             "requestServiceUrl": "@url.basepath@/app_dev.php/query/",
             "mapServiceUrl": "@url.basepath@/app_dev.php/map/",
             "editionServiceUrl": "@url.basepath@/app_dev.php/dataedition/",
-            "userServiceUrl": "@url.basepath@/app_dev.php/user/"
+            "userServiceUrl": "@url.basepath@/app_dev.php/user/",
+            "appHomeUrl": "@url.basepath@/app_dev.php"
         },
         "tags": [
             // You can add this tag to enable Fashion when using app watch or
