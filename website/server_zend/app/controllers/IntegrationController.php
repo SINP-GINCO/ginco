@@ -119,33 +119,4 @@ class Custom_IntegrationController extends IntegrationController {
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender();
 	}
-
-	/**
-	 * Show the upload data page.
-	 *
-	 * @return the HTML view
-	 */
-	public function showUploadDataAction() {
-		$this->logger->debug('showUploadDataAction');
-
-		// Get the parameters from configuration file
-		$configuration = Zend_Registry::get("configuration");
-
-		$showDetail = ($configuration->getConfig('showUploadFileDetail', true) == 1);
-		$showModel = ($configuration->getConfig('showUploadFileModel', true) == 1);
-
-		$this->logger->debug('$showDetail : ' . $showDetail);
-
-		// Get the submission object from the database, and the dataset id and name
-		$dataSession = new Zend_Session_Namespace('submission');
-		$submissionId = $dataSession->data->submissionId;
-		$submission = $this->submissionModel->getSubmission($submissionId);
-		$dataset = $this->metadataModel->getDataset($submission->datasetId);
-
-		$this->view->dataset = $dataset;
-
-		$this->view->form = $this->getDataUploadForm($showDetail, $showModel);
-
-		$this->render('custom-show-upload-data');
-	}
 }
