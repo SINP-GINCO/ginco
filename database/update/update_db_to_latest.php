@@ -166,13 +166,10 @@ else {
 }
 
 // sauvegarde de la base avant une quelconque modification
-// FIXME: la restauration de la base ne fonctionne jamais, du coup en attendant de le corriger
-//        Je désactive le système de dump/restore 
-/*
-$sqlDumpFilemane = "dump_" . $config['db.name'] . "_sprint" . $dbVerNum . ".sql";
+$sqlDumpFilemane = "dump_" . $config['db.name'] . "update_db.sql";
 $sqlDumpFilePath = "$updateDir/dumps/$sqlDumpFilemane";
 dumpSql($sqlDumpFilePath, $conStr);
-*/
+
 
 // apply patches
 // $CLIParams is argv without the command name. Useful to give the params to the sprint scripts 
@@ -183,7 +180,7 @@ foreach ($applicablePatches as $patchDir) {
 	system("php $updateDir/$patchDir/update_db_sprint.php $CLIParams", $returnCode);
 	if ($returnCode != 0){
 		echo "ERROR : Problem occured on patch $patchDir: DB is going to be restored...";
-		/*restoreSql($sqlDumpFilePath, $config);*/
+		restoreSql($sqlDumpFilePath, $config);
 		exit(1);
 	}
 }
