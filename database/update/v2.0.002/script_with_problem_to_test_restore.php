@@ -10,7 +10,15 @@ try {
 	
 	$sqlCodeWithError = "SELECT erreur FROM erreur;";
 	
-	pg_query($sqlCodeWithError);
+	$result = pg_query($sqlCodeWithError);
+	
+	// If an error occurred pg_query will return false
+	if (!$result) {
+		echo "An sql error occurred.\n";
+		echo "$sprintDir/update_db_sprint.php\n";
+		echo "exception: " . pg_last_error($dbconn) . "\n";
+		exit(1);
+	}
 	
 	pg_close($dbconn);
 } catch (Exception $e) {
