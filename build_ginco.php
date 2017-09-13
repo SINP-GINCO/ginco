@@ -221,6 +221,7 @@ function buildWebsite($config, $buildMode)
 	if ($buildMode == 'dev') {
         echo("Installing assets...\n");
         system("php app/console assets:install --symlink");
+		system("php app/console assetic:dump --env=dev");
     }
 
     // Directories used in application:
