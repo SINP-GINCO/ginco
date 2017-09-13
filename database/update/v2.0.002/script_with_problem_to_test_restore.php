@@ -1,4 +1,10 @@
 <?php
+/* All pg_query functions must put its return in a variable
+ * to catch sql error and escape from the script to stop the build.
+ * If an error occurred pg_query will return false
+ */
+
+
 $sprintDir = dirname(__FILE__);
 require_once "$sprintDir/../../../lib/share.php";
 
@@ -12,16 +18,16 @@ try {
 	
 	$result = pg_query($sqlCodeWithError);
 	
-	// If an error occurred pg_query will return false
 	if (!$result) {
 		echo "An sql error occurred.\n";
-		echo "$sprintDir/update_db_sprint.php\n";
-		echo "exception: " . pg_last_error($dbconn) . "\n";
+		pg_close($dbconn);
 		exit(1);
 	}
 	
 	pg_close($dbconn);
+	
 } catch (Exception $e) {
+	// Only php exceptions are catched here
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);

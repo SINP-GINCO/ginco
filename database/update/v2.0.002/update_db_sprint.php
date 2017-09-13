@@ -41,8 +41,8 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 // system("php $sprintDir/script2.php $CLIParams", $returnCode2);
 
  if ($returnCode1 != 0) {
- echo "$sprintDir/update_db_sprint.php\n";
- echo "exception: " . $e->getMessage() . "\n";
- exit(1);
+ 	echo "$sprintDir/update_db_sprint.php\n";
+ 	echo "exception: error code returned from php sql script \n";
+ 	exit(1);
  }
  
