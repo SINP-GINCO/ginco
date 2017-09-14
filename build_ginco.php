@@ -14,6 +14,7 @@ function usage($mess=NULL){
 	echo "o -D : inline options to complete or override the config file.\n";
 	echo "o --mode : accepted values are prod and dev. 'prod' will create a build/ directory and put all builded services in it. 
 	   'dev' will put builded services in the project, and output post-installation instructions.\n";
+	echo "o --builddir : directory where builded output will be put (only in prod mode).\n";
 	echo "o The available tasks are:\n";
 	echo "  o --java : build java integration and report services\n";
 	echo "  o --website : build the 'server' part of the project (symfony)\n";
@@ -452,6 +453,7 @@ $tasksOptions  = array(
 );
 $otherOptions = array(
 	"mode::",     	// Development mode: symlinks instead of copy files
+	"builddir::",   // Directory where build output will be put (only in prod mode)
 );
 $longOpts = array_merge($tasksOptions,$otherOptions);
 
@@ -484,7 +486,7 @@ $buildMode = (isset($params['mode']) && $params['mode']=='dev') ? 'dev' : 'prod'
 // build dir: where to put resulting builded files
 // In prod mod, always erase build directory to have a coherent set of builded services
 if ($buildMode == 'prod') {
-	$buildDir = "$projectDir/build";
+	$buildDir = (isset($params['builddir']) && !empty($params['builddir'])) ? $params['builddir'] : "$projectDir/build";
 	if (is_dir($buildDir) && $buildDir != $projectDir) {
 		system("rm -rf $buildDir");
 	}
