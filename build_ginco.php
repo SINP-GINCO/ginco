@@ -487,6 +487,7 @@ $buildMode = (isset($params['mode']) && $params['mode']=='dev') ? 'dev' : 'prod'
 // In prod mod, always erase build directory to have a coherent set of builded services
 if ($buildMode == 'prod') {
 	$buildDir = (isset($params['builddir']) && !empty($params['builddir'])) ? $params['builddir'] : "$projectDir/build";
+	$buildDir = realpath($buildDir);
 	if (is_dir($buildDir) && $buildDir != $projectDir) {
 		system("rm -rf $buildDir");
 	}
