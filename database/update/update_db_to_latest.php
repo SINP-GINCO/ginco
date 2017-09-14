@@ -166,7 +166,7 @@ else {
 }
 
 // sauvegarde de la base avant une quelconque modification
-$sqlDumpFilemane = "dump_" . $config['db.name'] . "update_db.sql";
+$sqlDumpFilemane = "dump_" . $config['db.name'] . "_update_db.sql";
 $sqlDumpFilePath = "$updateDir/dumps/$sqlDumpFilemane";
 dumpSql($sqlDumpFilePath, $conStr);
 

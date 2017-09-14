@@ -37,12 +37,12 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-  system("php $sprintDir/script_with_problem_to_test_restore.php $CLIParams", $returnCode1);
+// system("php $sprintDir/script1.php $CLIParams", $returnCode1);
 // system("php $sprintDir/script2.php $CLIParams", $returnCode2);
 
- if ($returnCode1 != 0) {
+/* if ($returnCode1 != 0 || $returnCode2) {
  	echo "$sprintDir/update_db_sprint.php\n";
  	echo "exception: error code returned from php sql script \n";
  	exit(1);
- }
+ }*/
  
