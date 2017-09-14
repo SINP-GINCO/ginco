@@ -1,3 +1,5 @@
 ginco_*.conf
+include_*.conf
 !ginco_*_tpl.conf
 !ginco_*_tpl_*.conf
+!include_*_tpl.conf
