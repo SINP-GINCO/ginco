@@ -27,8 +27,6 @@ function substituteInFile($filePathIn, $filePathOut, $config, $tag = "@", $tagDi
 	$content = preg_replace("/$testPatternMatch/", '${1}', $content);
 	$content = preg_replace("/$testPatternEmpty/", '${2}', $content);
 
-	$content = iconv("ISO-8859-1", "UTF-8", $content);
-
 	file_put_contents($filePathOut, $content);
 }
 
