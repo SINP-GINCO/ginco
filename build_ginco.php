@@ -221,6 +221,7 @@ function buildWebsite($config, $buildMode)
 	// --> done by the installer in switch_version.sh, on the target server.
 	if ($buildMode == 'dev') {
         echo("Installing assets...\n");
+        system('php app/console fos:js-routing:dump --env=dev --target="./src/Ign/Bundle/OGAMConfigurateurBundle/Resources/public/js/fos_js_routes_dev.js"');
         system("php app/console assets:install --symlink");
 		system("php app/console assetic:dump --env=dev");
     }
