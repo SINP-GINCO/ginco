@@ -11,22 +11,24 @@ use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class TableFieldController extends Controller {
 
 	/**
 	 * Adds the fields given as argument to the table.
 	 * Redirects to table edition page.
-	 * @Route("models/{modelId}/tables/{format}/fields/add/{fields}/", name="configurateur_table_add_fields", options={"expose"=true})
+	 * @Route("models/{modelId}/tables/{format}/fields/add/", name="configurateur_table_add_fields", options={"expose"=true})
 	 * @Template()
 	 */
-	public function addFieldsAction($modelId, $format, $fields) {
+	public function addFieldsAction($modelId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
 		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+		$fields = $request->get('addedNames');
 
 		// Handle the name of the fields
 		$names = explode(",", $fields);
@@ -88,24 +90,28 @@ class TableFieldController extends Controller {
 			$em->flush();
 		}
 
-		return $this->redirectToRoute('configurateur_table_fields', array(
+		return $this->redirectToRoute('configurateur_table_update_fields', array(
 			'modelId' => $modelId,
-			'format' => $format->getFormat()
-		));
+			'format' => $format->getFormat(),
+			'request' => $request
+		), 307);
 	}
 
 	/**
 	 * Updates the fields given as argument to the table.
 	 * Redirects to model edition page.
-	 * @Route("models/{modelId}/tables/{format}/fields/update/{fields}/{mandatorys}/", name="configurateur_table_update_fields", options={"expose"=true})
+	 * @Route("models/{modelId}/tables/{format}/fields/update/", name="configurateur_table_update_fields", options={"expose"=true})
 	 * @Template()
 	 */
-	public function updateFieldsAction($modelId, $fields, $mandatorys = null, $format) {
+	public function updateFieldsAction($modelId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
 		$tableName = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format)->getLabel();
+
+		$fields = $request->get('fields');
+		$mandatorys = $request->get('mandatorys');
 
 		// Handle the name of the fields
 		$data = explode(",", $fields);
@@ -184,10 +190,10 @@ class TableFieldController extends Controller {
 	/**
 	 * Removes a field from a table.
 	 * (including from TableField and Field). Redirects to table edition page.
-	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field")
+	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field_and_update", options={"expose"=true})
 	 * @Template()
 	 */
-	public function removeFieldAction($modelId, $field, $format) {
+	public function removeFieldAction($modelId, $field, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		// remove mapping relations first
@@ -208,9 +214,10 @@ class TableFieldController extends Controller {
 		$em->remove($fieldToRemove);
 		$em->flush();
 
-		return $this->redirectToRoute('configurateur_table_fields', array(
+		return $this->redirectToRoute('configurateur_table_update_fields', array(
 			'modelId' => $modelId,
-			'format' => $format
-		));
+			'format' => $format,
+			'request' => $request
+		), 307);
 	}
 }

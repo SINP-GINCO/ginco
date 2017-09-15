@@ -87,7 +87,7 @@ class DataController extends Controller {
 					'modelId' => $tableFormat->getModel()
 						->getId(),
 					'format' => $formatSubmitted,
-					'fields' => $entity->getName()
+					'request' => $request
 				)));
 			} else			// Redirects to the Data Dictionnary index
 			{

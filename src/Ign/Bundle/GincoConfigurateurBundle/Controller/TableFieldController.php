@@ -4,6 +4,7 @@ namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 use Ign\Bundle\OGAMConfigurateurBundle\Controller\TableFieldController as TableFieldControllerBase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class TableFieldController extends TableFieldControllerBase {
 
@@ -35,10 +36,10 @@ class TableFieldController extends TableFieldControllerBase {
 	/**
 	 * Removes a field from a table.
 	 * (including from TableField and Field). Redirects to table edition page.
-	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field")
+	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field_and_update", options={"expose"=true})
 	 * @Template()
 	 */
-	public function removeFieldAction($modelId, $field, $format) {
+	public function removeFieldAction($modelId, $field, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		// Check if the field is not derived from a field included in a reference model
@@ -49,11 +50,6 @@ class TableFieldController extends TableFieldControllerBase {
 				->trans('data.delete.ref.forbidden', array(
 				'%dataName%' => $field
 			)));
-
-			return $this->redirectToRoute('configurateur_table_fields', array(
-				'modelId' => $modelId,
-				'format' => $format
-			));
 		} else {
 			// remove mapping relations first
 			$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
@@ -72,11 +68,12 @@ class TableFieldController extends TableFieldControllerBase {
 			));
 			$em->remove($fieldToRemove);
 			$em->flush();
-
-			return $this->redirectToRoute('configurateur_table_fields', array(
-				'modelId' => $modelId,
-				'format' => $format
-			));
 		}
+
+		return $this->redirectToRoute('configurateur_table_update_fields', array(
+			'modelId' => $modelId,
+			'format' => $format,
+			'request' => $request
+		), 307);
 	}
 }

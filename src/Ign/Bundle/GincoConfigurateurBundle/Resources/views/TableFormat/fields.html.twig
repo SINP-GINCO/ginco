@@ -118,8 +118,7 @@
 						</td>
 						<td>
 							{% if champ.ref == false %}
-								<a href="{{ path('configurateur_table_remove_field', { 'modelId' : model.id, 'field': champ.fieldName, 'format': table.format })}}"
-								class="btn btn-default btn-xs" role="button">
+								<a id="remove-field-{{ champ.fieldName }}" class="btn btn-default btn-xs" type="button">
 									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 								</a>
 							{% else %}

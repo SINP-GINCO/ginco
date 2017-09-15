@@ -4,30 +4,38 @@ namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class FileFieldController extends Controller {
 
 	/**
 	 * Adds the fields given as argument to the file.
 	 * Redirects to file fields page.
-	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/add/{addedFields}/update/{fields}/{labelCSVs}/{mandatorys}/{masks}/", name="configurateur_file_add_fields_and_update", options={"expose"=true})
-	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/add/{addedFields}/", name="configurateur_file_add_fields", options={"expose"=true})
+	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/addAndUpdate/", name="configurateur_file_add_fields_and_update", options={"expose"=true})
+	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/add/", name="configurateur_file_add_fields", options={"expose"=true})
 	 * @Template()
 	 */
-	public function addFieldsAction($datasetId, $addedFields, $fields = null, $labelCSVs = null, $mandatorys = null, $masks = null, $format) {
+	public function addFieldsAction($datasetId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
 		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+
+		// Retrieve data from form
+		$addedFields = $request->get('addedFields');
+		$fields = $request->get('fields');
+		$labelCSVs = $request->get('labelCSVs');
+		$mandatorys = $request->get('mandatorys');
+		$masks = $request->get('masks');
 
 		// Handle the name of the fields
 		$data = explode(",", $addedFields);
@@ -55,7 +63,7 @@ class FileFieldController extends Controller {
 					$fileField->setMask("yyyy-MM-dd'T'HH:mmZ");
 				} elseif ($dataField->getUnit()->getName() == 'Time') {
 					$fileField->setMask("HH:mm");
- 				}  else {
+				} else {
 					$fileField->setMask('');
 				}
 
@@ -67,13 +75,13 @@ class FileFieldController extends Controller {
 		}
 
 		if ($fields === null) {
-			
+
 			$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 			$tables = $dataset->getModel()->getTables();
 			foreach ($tables as $table) {
 				$this->doAutoMapping($table->getFormat(), $format->getFormat());
 			}
-			
+
 			return $this->redirectToRoute('configurateur_file_fields', array(
 				'datasetId' => $datasetId,
 				'format' => $format->getFormat()
@@ -88,27 +96,30 @@ class FileFieldController extends Controller {
 
 		return $this->redirectToRoute('configurateur_file_update_fields', array(
 			'datasetId' => $datasetId,
-			'fields' => $fields,
-			'labelCSVs' => $labelCSVs,
-			'mandatorys' => $mandatorys,
-			'masks' => $masks,
-			'format' => $format->getFormat()
-		));
+			'format' => $format->getFormat(),
+			'request' => $request
+		), 307);
 	}
 
 	/**
 	 * Updates the fields given as argument to the file.
 	 * Redirects to import model edition page.
-	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/update/{fields}/{labelCSVs}/{mandatorys}/{masks}/", name="configurateur_file_update_fields", options={"expose"=true})
+	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/update/", name="configurateur_file_update_fields", options={"expose"=true})
 	 * @Template()
 	 */
-	public function updateFieldsAction($datasetId, $fields, $labelCSVs = null, $mandatorys = null, $masks = null, $format, $toMapping = false) {
+	public function updateFieldsAction($datasetId, $format, $toMapping = false, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
 
 		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+
+		// Retrieve data from form
+		$fields = $request->get('fields');
+		$labelCSVs = $request->get('labelCSVs');
+		$mandatorys = $request->get('mandatorys');
+		$masks = $request->get('masks');
 
 		// Handle the name of the fields
 		$data = explode(",", $fields);
@@ -119,29 +130,32 @@ class FileFieldController extends Controller {
 
 		for ($i = 0; $i < sizeof($data); $i ++) {
 			$name = $data[$i];
-			
+
 			if ($labelCSVs[$i] == 'null') {
 				$labelCSV = $data[$i];
 			} else {
 				$labelCSV = $labelCSVs[$i];
 			}
-			
+
 			// Custom validator to check unicity of labelCSV in the file
 			// Entity constraint is impossible to use as labelCSV is set after form is valid.
 			$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
-			$existingLabelCSVFileField = $fileFieldRepository->findOneBy(array('labelCSV' => $labelCSV, 'fileFormat' => $format->getFormat()));
+			$existingLabelCSVFileField = $fileFieldRepository->findOneBy(array(
+				'labelCSV' => $labelCSV,
+				'fileFormat' => $format->getFormat()
+			));
 			if ($existingLabelCSVFileField and $existingLabelCSVFileField->getData() != $name) {
 				// labelCSV already exists : we add a flash error
 				$this->addFlash('error', $this->get('translator')
 					->trans('fileField.labelCSV.unique', array(
-						'%existingLabelCSV%' => $existingLabelCSVFileField->getLabelCSV()
-					)));
+					'%existingLabelCSV%' => $existingLabelCSVFileField->getLabelCSV()
+				)));
 				return $this->redirectToRoute('configurateur_file_fields', array(
 					'datasetId' => $datasetId,
 					'format' => $format->getFormat()
 				));
 			}
-		
+
 			if ($mandatorys[$i] == 'true') {
 				$mandatory = '1';
 			} else {
@@ -185,13 +199,13 @@ class FileFieldController extends Controller {
 			->trans('file.edit.fields.success', array(
 			'%file.label%' => $file->getLabel()
 		)));
-		
+
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 		$tables = $dataset->getModel()->getTables();
 		foreach ($tables as $table) {
 			$this->doAutoMapping($table->getFormat(), $format->getFormat());
 		}
-			
+
 		if ($toMapping == 'true') {
 			return $this->redirectToRoute('configurateur_file_mappings', array(
 				'datasetId' => $datasetId,
@@ -208,28 +222,29 @@ class FileFieldController extends Controller {
 	/**
 	 * Performs auto-mapping between table with format $tableFormat, file with format $fileFormat
 	 *
-	 * @param $tableFormat
-	 * @param $fileFormat
+	 * @param
+	 *        	$tableFormat
+	 * @param
+	 *        	$fileFormat
 	 * @return string : the report to show to the user
 	 */
-	public function doAutoMapping($tableFormat, $fileFormat)
-	{
+	public function doAutoMapping($tableFormat, $fileFormat) {
 		$this->get('logger')->debug('doAutoMapping');
 		$em = $this->getDoctrine()->getManager('metadata_work');
-	
+
 		$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
-	
+
 		$fieldMappings = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findMappings($fileFormat, 'FILE');
 		$notMappedFields = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findNotMappedFields($fileFormat, 'FILE');
-		
+
 		// We try to auto-map the notMappedFields
 		foreach ($notMappedFields as $fileField) {
 			$srcData = $fileField['data'];
-	
+
 			// Search same DATA in tableFields
 			$destField = null;
 			$alreadyMapped = false;
-	
+
 			foreach ($tableFields as $tableField) {
 				if ($tableField['fieldName'] == $srcData) {
 					$destField = $tableField;
@@ -241,7 +256,7 @@ class FileFieldController extends Controller {
 					}
 				}
 			}
-	
+
 			if ($destField && !$alreadyMapped) {
 				// Create a new mapping
 				$fieldMapping = new FieldMapping();
@@ -255,7 +270,7 @@ class FileFieldController extends Controller {
 			}
 		}
 	}
-	
+
 	/**
 	 * Removes all the fields of a file.
 	 * (including from FileField and Field). Redirects to file fields page.
@@ -284,10 +299,10 @@ class FileFieldController extends Controller {
 	/**
 	 * Removes a field from a file and updates also the file fields.
 	 * (including from FileField and Field).
-	 * @Route("/datasetsimport/{datasetId}/files/{format}/fields/remove/{field}/update/{fields}/{labelCSVs}/{mandatorys}/{masks}/", name="configurateur_file_remove_field_and_update", options={"expose"=true})
+	 * @Route("/datasetsimport/{datasetId}/files/{format}/fields/remove/{field}/", name="configurateur_file_remove_field_and_update", options={"expose"=true})
 	 * @Template()
 	 */
-	public function removeFieldAction($datasetId, $field, $fields = null, $labelCSVs = null, $mandatorys = null, $masks = null, $format) {
+	public function removeFieldAction($datasetId, $field, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$fileFieldToRemove = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
@@ -299,6 +314,11 @@ class FileFieldController extends Controller {
 			"data" => $field,
 			"format" => $format
 		));
+
+		$fields = $request->get('fields');
+		$labelCSVs = $request->get('labelCSVs');
+		$mandatorys = $request->get('mandatorys');
+		$masks = $request->get('masks');
 
 		// Remove trailing comas of fields to update
 		$fields = rtrim($fields, ",");
@@ -348,11 +368,8 @@ class FileFieldController extends Controller {
 
 		return $this->redirectToRoute('configurateur_file_update_fields', array(
 			'datasetId' => $datasetId,
-			'fields' => implode(',', $fields),
-			'labelCSVs' => implode(',', $labelCSVs),
-			'mandatorys' => implode(',', $mandatorys),
-			'masks' => implode(',', $masks),
+			'request' => $request,
 			'format' => $format
-		));
+		), 307);
 	}
 }

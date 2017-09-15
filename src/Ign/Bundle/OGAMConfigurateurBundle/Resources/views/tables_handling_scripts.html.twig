@@ -53,37 +53,41 @@ $transferButton.click(function() {
 		{% if table.format is defined %}
 			var url = Routing.generate('configurateur_table_add_fields', {
 				modelId : '{{model.Id }}',
-				fields : addedNames,
 				format: '{{ table.format }}'
 			});
-			var form = $('<form action="' + url + '" method="post">' +
-			  '<input type="text" name="api_url" value="' + url + '" />' +
+			var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
+			  '<input type="text" name="addedNames" value="' + addedNames + '" />' +
+			  '<input type="text" name="fields" value="' + names + '" />' +
+			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
 			  '</form>');
 			$('body').append(form);
+			$('form[name=form_fields_update]').hide();
 			form.submit();
 		{% elseif file.format is defined %}
 			if(names != ""){
 				var url = Routing.generate('configurateur_file_add_fields_and_update', {
 					datasetId : '{{dataset.id}}',
-					addedFields : addedNames,
-					fields : names,
-					labelCSVs : labelCSVs,
-					mandatorys : mandatorys,
-					masks : masks,
 					format: '{{ file.format }}'
 				});
+				var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
+					  '<input type="text" name="addedFields" value="' + addedNames + '" />' +
+					  '<input type="text" name="fields" value="' + names + '" />' +
+					  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
+					  '<input type="text" name="masks" value="' + masks + '" />' +
+					  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
+					  '</form>');
 			} else {
 				var url = Routing.generate('configurateur_file_add_fields', {
 					datasetId : '{{dataset.id}}',
-					addedFields : addedNames,
 					format: '{{ file.format }}'
 				});
+				var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
+					  '<input type="text" name="addedFields" value="' + addedNames + '" />' +
+					  '</form>');
 			}
 
-			var form = $('<form action="' + url + '" method="post">' +
-			  '<input type="text" name="api_url" value="' + url + '" />' +
-			  '</form>');
 			$('body').append(form);
+			$('form[name=form_fields_update]').hide()
 			form.submit();
 		{% endif %}
 	}
@@ -96,6 +100,7 @@ $saveFileButton.click(function() {
 	{% if file.format is defined %}
 		var form = getFormFromFileTable();
 		$('body').append(form);
+		$('form[name=form_fields_update]').hide()
 		form.submit();
 	{% endif %}
 });
@@ -107,6 +112,7 @@ $saveTableButton.click(function() {
 	{% if table.format is defined %}
 		var form = getFormFromTableTable();
 		$('body').append(form);
+		$('form[name=form_fields_update]').hide()
 		form.submit();
 	{% endif %}
 });
@@ -129,32 +135,47 @@ function addClickEventOnRemoveFields() {
 			var $mandatory = $(this).find('input:checked').is(':checked');
 			var $mask = $(this).find('#mask').val();
 
-			names = names + $name + ",";
-			labelCSVs = labelCSVs + $labelCSV + ",";
-			mandatorys = mandatorys + $mandatory + ",";
-			if($mask === ""){
-				$mask = "null";
+			if($name !== fieldToRemove){
+				names = names + $name + ",";
+				labelCSVs = labelCSVs + $labelCSV + ",";
+				mandatorys = mandatorys + $mandatory + ",";
+				if($mask === ""){
+					$mask = "null";
+				}
+				masks = masks + encodeURIComponent($mask) + ",";
 			}
-			masks = masks + encodeURIComponent($mask) + ",";
 		});
 
 		{% if file.format is defined %}
 			var url = Routing.generate('configurateur_file_remove_field_and_update', {
 				datasetId : '{{dataset.id}}',
 				field : fieldToRemove,
-				fields : names,
-				labelCSVs :labelCSVs,
-				mandatorys : mandatorys,
-				masks : masks,
 				format: '{{ file.format }}'
 			});
 
-			var form = $('<form action="' + url + '" method="post">' +
-			  '<input type="text" name="api_url" value="' + url + '" />' +
+			var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
+			  '<input type="text" name="fields" value="' + names + '" />' +
+			  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
+			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
+			  '<input type="text" name="masks" value="' + masks + '" />' +
 			  '</form>');
-			$('body').append(form);
-			form.submit();
+		{% elseif table.format is defined %}
+			var url = Routing.generate('configurateur_table_remove_field_and_update', {
+				modelId : '{{model.id}}',
+				field : fieldToRemove,
+				format: '{{ table.format }}'
+			});
+
+			var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
+			  '<input type="text" name="fields" value="' + names + '" />' +
+			  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
+			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
+			  '<input type="text" name="masks" value="' + masks + '" />' +
+			  '</form>');
 		{% endif %}
+		$('body').append(form);
+		$('form[name=form_fields_update]').hide()
+		form.submit();
 	});
 }
 
@@ -185,10 +206,11 @@ $saveFileOrderButton.click(function() {
 	if(formats !== ""){
 		{% if dataset.id is defined %}
 			var url = Routing.generate('configurateur_dataset_import_update_file_order', { id : '{{ dataset.id }}', formats : formats});
-			var form = $('<form action="' + url + '" method="post">' +
+			var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
 			  '<input type="text" name="api_url" value="' + url + '" />' +
 			  '</form>');
 			$('body').append(form);
+			$('form[name=form_fields_update]').hide()
 			form.submit();
 		{% endif %}
 	}
@@ -247,9 +269,10 @@ function getFormFromTableTable(){
 
 	{% if table.format is defined %}
 		if(names !== ""){
-			var url = Routing.generate('configurateur_table_update_fields', { modelId : '{{ model.id }}', fields : names, mandatorys : mandatorys, format: '{{ table.format }}'});
-			var form = $('<form action="' + url + '" method="post">' +
-			  '<input type="text" name="api_url" value="' + url + '" />' +
+			var url = Routing.generate('configurateur_table_update_fields', { modelId : '{{ model.id }}', format: '{{ table.format }}'});
+			var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
+			  '<input type="text" name="fields" value="' + names + '" />' +
+			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
 			  '</form>');
 			return form;
 		}
@@ -290,14 +313,13 @@ function getFormFromFileTable(){
 		{% if file.format is defined %}
 			var url = Routing.generate('configurateur_file_update_fields', {
 				datasetId : '{{ dataset.id }}',
-				fields : names,
-				labelCSVs :labelCSVs,
-				mandatorys : mandatorys,
-				masks : masks,
 				format: '{{ file.format }}'
 			});
-			var form = $('<form action="' + url + '" method="post">' +
-			  '<input type="text" name="api_url" value="' + url + '" />' +
+			var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
+			  '<input type="text" name="fields" value="' + names + '" />' +
+			  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
+			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
+			  '<input type="text" name="masks" value="' + masks + '" />' +
 			  '</form>');
 			return form;
 		{% endif %}
