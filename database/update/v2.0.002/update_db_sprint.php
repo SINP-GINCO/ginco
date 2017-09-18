@@ -29,6 +29,7 @@ try {
 	execCustSQLFile("$sprintDir/update_role_visiteur_to_grand_public.sql", $config);
 	execCustSQLFile("$sprintDir/update_url_related_parameters.sql", $config);
 	execCustSQLFile("$sprintDir/update_grand_public_permissions.sql", $config);
+	execCustSQLFile("$sprintDir/update_documentation_url.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
