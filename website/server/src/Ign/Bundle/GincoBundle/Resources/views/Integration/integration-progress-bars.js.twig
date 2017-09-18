@@ -28,7 +28,11 @@ function updateStatusAndContent($submissionId, $status = null) {
             updateStatusDiv($submissionId, data.status);
             var $progress = 0;
             if (data.status == 'RUNNING') {
-                $progress = Math.floor( data.currentCount * 100.0 / data.totalCount );
+                if(data.totalCount > 0) {
+                    $progress = Math.floor( data.currentCount * 100.0 / data.totalCount );
+                } else {
+                    $progress = 0;
+                }
                 updateContentDiv($submissionId, data.status, $progress);
             }
             else {
