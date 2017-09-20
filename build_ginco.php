@@ -213,8 +213,8 @@ function buildWebsite($config, $buildMode)
 		// https://github.com/composer/composer/issues/6538#issuecomment-328311429
 		for ($i=1; $i<=5; $i++) {
 			echo "Try $i...\n";
-			system("curl -sS https://getcomposer.org/installer | php", $returnCode);
-			if ($returnCode == 0){
+			system("curl -sS https://getcomposer.org/installer | php");
+			if (is_file("composer.phar")){
 				break;
 			}
 			elseif ($i==5) {
