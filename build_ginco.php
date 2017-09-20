@@ -209,7 +209,22 @@ function buildWebsite($config, $buildMode)
 	// Get composer and install vendors (but don't run scripts, we do it after
 	if (!is_file("composer.phar")) {
 		echo "Installing composer...\n";
-		system("curl -sS https://getcomposer.org/installer | php");
+		// We allow the program to try a few times because we often go on a curl error...
+		// https://github.com/composer/composer/issues/6538#issuecomment-328311429
+		for ($i=1; $i<=5; $i++) {
+			echo "Try $i...\n";
+			system("curl -sS https://getcomposer.org/installer | php", $returnCode);
+			if ($returnCode == 0){
+				break;
+			}
+			elseif ($i==5) {
+				echo "ERROR: couldn't download composer.\n";
+				exit(1);
+			}
+			else {
+				sleep(60); // wait before making another attempt
+			}
+		}
 	}
 	echo "Installing project vendors...\n";
 	system("./composer.phar install --no-scripts");
