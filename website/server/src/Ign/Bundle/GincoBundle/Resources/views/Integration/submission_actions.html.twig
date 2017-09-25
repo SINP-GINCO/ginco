@@ -23,9 +23,11 @@
 
     {% if (submission.step != "VALIDATE" or user.isAllowed('CANCEL_VALIDATED_SUBMISSION'))
     and (submission.provider.id is same as(user.provider.id) or user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) %}
-        <a href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" title="{{ 'Cancel Submission'|trans }}"
-           onClick="return confirm('{{ 'Are you sure?'|trans }}');">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        </a>
+    <div class="integration-cancel-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
+            <a id="integration-cancel-link-{{ submission.id }}" href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" title="{{ 'Cancel Submission'|trans }}"
+               onClick="return confirm('{{ 'Are you sure?'|trans }}');" data-target="{{ submission.id }}" >
+                <div class="integration-cancel-status hidden">{{ submission.status }}</div>
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </a>
     {% endif %}
 {% endif %}

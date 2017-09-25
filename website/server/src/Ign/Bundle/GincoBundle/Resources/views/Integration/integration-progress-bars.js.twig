@@ -49,10 +49,9 @@ function updateStatusAndContent($submissionId, $status = null) {
  * Then update status and content divs.
  */
 function updateAllRunningTasks() {
-
     var $submissionIds = [];
     $('.integration-status').each(function() {
-        if ( $(this).html() == 'RUNNING' ) {
+        if ( $(this).html() == 'Status:RUNNING;Step:INSERT' ) {
             $submissionIds.push($(this).attr('data-target'));
         }
     });
@@ -79,7 +78,8 @@ function updateAllRunningTasks() {
 function updateStatusDiv( $submissionId, $status) {
     var $statusDiv = $("div.integration-status[data-target='" + $submissionId + "']");
     // Update status
-    $statusDiv.html($status);
+    newValue = "Status:" + $status + ";Step:INSERT";
+    $statusDiv.html(newValue);
 }
 
 /**
@@ -95,7 +95,6 @@ function updateStatusDiv( $submissionId, $status) {
  */
 function updateContentDiv($submissionId, $status, $progress = 0) {
     var $contentDiv = $("div.integration-content[data-target='" + $submissionId + "']");
-
     $contentDiv.html('');
 
     // Update progress bar if RUNNING

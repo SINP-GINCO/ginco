@@ -28,7 +28,7 @@
         </div>
         {# Status -- see integration-progress-bars.js.twig #}
         <div class="status" >
-            <div class="integration-status hidden" data-target="{{ submission.id }}">{{ submission.status }}</div>
+            <div class="integration-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
 
             <div class="integration-progress hidden">
                 <div>{{ 'IntegrationPage.import.running'|trans }}</div>
@@ -45,6 +45,8 @@
                     <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
                 {% elseif submission.status in ['ERROR'] %}
                     <span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                {% elseif submission.step in ['CANCEL'] and submission.status in ['RUNNING'] %}
+                    <span class="glyphicon glyphicon-remove color-warning" aria-hidden="true" title="{% trans with {'%submissionId%': submission.id}%}IntegrationPage.cancel.running{% endtrans %}"></span>&nbsp;...
                 {% endif %}
             </div>
         </div>
