@@ -1,0 +1,100 @@
+/**
+ * Script for updating jdd page
+ * when canceling (deleting) a submission.
+ * Get back status via Ajax.
+ * Status are:
+ * - OK, CHECK
+ * - WARNING
+ * - RUNNING: in progress
+ * - ERROR and others
+ */
+
+/**
+ * Update status divs for given submission.
+ * If status is not given, launch a ajax request to get it.
+ *
+ * @param $submissionId
+ * @param $status
+ */
+function updateCancelStatusAndContent($submissionId, $status = null) {
+    if ( $status ) {
+        updateCancelStatusDiv($submissionId, $status);
+        updateCancelLink($submissionId, $status);
+    }
+    else {
+        $.getJSON("{{ path('integration_status') }}", {
+            action: 'status',
+            submissionId: $submissionId
+        }, function (data) {
+            updateCancelStatusDiv($submissionId, data.status);
+            if (data.status == 'RUNNING') {
+                updateCancelLink($submissionId, data.status);
+            }
+            else {
+                location.reload();
+            }
+
+        });
+    }
+}
+
+/**
+ * Search all RUNNING jobs (by the content of the hidden status div)
+ * And launch a ajax request to retrieve their status.
+ * Then update status and content divs.
+ */
+function updateAllCancelRunningTasks() {
+    var $submissionIds = [];
+    $('a[id^=integration-cancel-link]').each(function() {
+        if (($(this).html()).indexOf("RUNNING") >= 0) {
+            $submissionIds.push($(this).attr('data-target'));
+        }
+    });
+
+    if ($submissionIds.length) {
+        $.each($submissionIds, function(index, value) {
+           updateCancelStatusAndContent(value);
+        });
+    }
+    else {
+        // If no more Running tasks, we clear interval
+        clearInterval(cancelTimerId);
+    }
+}
+
+/**
+ * Update status div alone.
+ * The status div is hidden with css, and is used by the scripts
+ * to know if there is RUNNING jobs (needing to ask periodically for their status)
+ *
+ * @param $submissionId
+ * @param $status
+ */
+function updateCancelStatusDiv( $submissionId, $status) {
+    var $statusDiv = $("div.integration-cancel-status[data-target='" + $submissionId + "']");
+    // Update status
+    newValue = "Status:" + $status + ";Step:CANCEL";
+    $statusDiv.html(newValue);
+}
+
+/**
+ * Update cancel link alone.
+ * The content div is visible and shows:
+ *  - ... with a tooltoip when RUNNING
+ *  - nothing when the status is OK.
+ *
+ * @param $submissionId
+ * @param $status
+ */
+function updateCancelLink($submissionId, $status) {
+	$selector = 'a[id=integration-cancel-link-' + $submissionId + ']';
+    var $contentDiv = $($selector);
+    $contentDiv.hide();
+}
+
+var cancelTimerId;
+
+$(function(){
+    // Periodically update progress for running and pending jobs
+    cancelTimerId = setInterval( updateAllCancelRunningTasks , 1000);
+});

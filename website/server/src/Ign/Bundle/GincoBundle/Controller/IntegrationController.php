@@ -167,7 +167,48 @@ class IntegrationController extends BaseController {
 			'filename' => implode($fileNames, ", "),
 			'file_number' => count($fileNames)
 		), $user->getEmail(), $attachements);
-		
+
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		return $this->redirect($redirectUrl);
+	}
+
+	/**
+	 * @Route("/cancel-data-submission", name="integration_cancel")
+	 */
+	public function cancelDataSubmissionAction(Request $request) {
+		$this->get('logger')->debug('cancelDataSubmissionAction');
+		// Desactivate the timeout
+		set_time_limit(0);
+
+		// Get the submission Id
+		$submissionId = $request->get("submissionId");
+		$this->get('logger')->debug('Avant le try');
+
+		// Send the cancel request to the integration server
+		try {
+			$this->get('ogam.integration_service')->cancelDataSubmission($submissionId);
+		} catch (\Exception $e) {
+			$this->get('logger')->error('Error during upload: ' . $e);
+
+			return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
+				'error' => $this->get('translator')
+				->trans("An unexpected error occurred.")
+			));
+		}
+
+		// Update "DataUpdatedAt" field for jdd
+		$em = $this->get('doctrine.orm.entity_manager');
+		$submission = $em->getRepository('OGAMBundle:RawData\Submission')->findOneById($submissionId);
+		$jdd = $submission->getJdd();
+		if ($jdd) {
+			$jdd->setDataUpdatedAt(new \DateTime());
+			$em->merge($jdd);
+			$em->flush();
+		}
+
 		// Get the referer url
 		$refererUrl = $request->headers->get('referer');
 		// returns to the page where the action comes from

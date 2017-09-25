@@ -133,6 +133,8 @@ IntegrationPage:
   NoDataset: Modèle d'import dépublié
   import:
     running: Import en cours...
+  cancel:
+    running: Suppression de la soumission %submissionId% en cours...
 
 Report:
   DownloadReports: -- Télécharger --
