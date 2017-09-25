@@ -97,9 +97,15 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
     var $contentDiv = $("div.integration-content[data-target='" + $submissionId + "']");
     $contentDiv.html('');
 
+	var $cancelDiv = $("div.integration-cancel-status[data-target='" + $submissionId + "']");
+
     // Update progress bar if RUNNING
     var $progressBar = $contentDiv.parent().find('div.progress-bar');
-    if ($status == 'RUNNING') {
+
+	// If the submission is being cancelled, hide the progressbar (in case of cancelling while uploading data)
+    if (($cancelDiv.html().indexOf("Status:RUNNING;Step:CANCEL") >= 0)) {
+          $progressBar.parent().parent().hide();
+    } else if ($status == 'RUNNING') {
         if ($progressBar.parent().parent().hasClass('hidden')) {
             $progressBar.parent().parent().removeClass('hidden');
         }

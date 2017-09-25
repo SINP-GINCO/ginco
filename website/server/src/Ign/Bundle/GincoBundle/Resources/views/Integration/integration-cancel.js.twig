@@ -17,6 +17,7 @@
  * @param $status
  */
 function updateCancelStatusAndContent($submissionId, $status = null) {
+
     if ( $status ) {
         updateCancelStatusDiv($submissionId, $status);
         updateCancelLink($submissionId, $status);
@@ -45,8 +46,8 @@ function updateCancelStatusAndContent($submissionId, $status = null) {
  */
 function updateAllCancelRunningTasks() {
     var $submissionIds = [];
-    $('a[id^=integration-cancel-link]').each(function() {
-        if (($(this).html()).indexOf("RUNNING") >= 0) {
+    $('.integration-cancel-status').each(function() {
+        if ($(this).html().indexOf("Status:RUNNING;Step:CANCEL") >= 0) {
             $submissionIds.push($(this).attr('data-target'));
         }
     });
@@ -80,7 +81,7 @@ function updateCancelStatusDiv( $submissionId, $status) {
 /**
  * Update cancel link alone.
  * The content div is visible and shows:
- *  - ... with a tooltoip when RUNNING
+ *  - ... with a tooltip when RUNNING
  *  - nothing when the status is OK.
  *
  * @param $submissionId
