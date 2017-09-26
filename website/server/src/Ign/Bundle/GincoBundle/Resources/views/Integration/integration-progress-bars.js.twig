@@ -101,10 +101,9 @@ function updateContentDiv($submissionId, $status, $progress = 0) {
 
     // Update progress bar if RUNNING
     var $progressBar = $contentDiv.parent().find('div.progress-bar');
-
 	// If the submission is being cancelled, hide the progressbar (in case of cancelling while uploading data)
     if (($cancelDiv.html().indexOf("Status:RUNNING;Step:CANCEL") >= 0)) {
-          $progressBar.parent().parent().hide();
+        $progressBar.parent().parent().hide();
     } else if ($status == 'RUNNING') {
         if ($progressBar.parent().parent().hasClass('hidden')) {
             $progressBar.parent().parent().removeClass('hidden');

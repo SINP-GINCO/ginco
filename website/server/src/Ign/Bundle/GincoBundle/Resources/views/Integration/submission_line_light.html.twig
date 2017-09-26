@@ -38,15 +38,18 @@
                     </div>
                 </div>
             </div>
-            <div class="integration-content" data-target="{{ submission.id }}">
+            <div class="integration-content" data-target="{{ submission.id }}"
                 {% if submission.status in ['OK','CHECK'] %}
-                    <span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                    ><span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;{{ submission.status }}
                 {% elseif submission.status in ['WARNING'] %}
-                    <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                    ><span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
                 {% elseif submission.status in ['ERROR'] %}
-                    <span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
+                    ><span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
                 {% elseif submission.step in ['CANCEL'] and submission.status in ['RUNNING'] %}
-                    <span class="glyphicon glyphicon-remove color-warning" aria-hidden="true" title="{% trans with {'%submissionId%': submission.id}%}IntegrationPage.cancel.running{% endtrans %}"></span>&nbsp;...
+                    title="{% trans with {'%submissionId%': submission.id}%}IntegrationPage.cancel.running.tooltip{% endtrans %}"><span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;
+                    {% trans %}IntegrationPage.cancel.running.text{% endtrans %}
+                {% else %}
+                    >
                 {% endif %}
             </div>
         </div>
