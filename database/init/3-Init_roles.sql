@@ -25,10 +25,12 @@ ALTER sequence website.provider_id_seq restart with 2;
 -- Create some users
 -- password are equals to login, they must be changed for production
 INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALUES ('developpeur', 'ccd46ad476382e50b51f52a5574c2cb511125f0e', 'developpeur', '1', 'sinp-dev@ign.fr');
+INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALUES ('assistance', 'fd8de1f390d65e7d9dc80f281b988911ddebcec6', 'Compte assistance utilisateurs', '1', 'sinp-dev@ign.fr');
 INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALUES ('visiteur', '922391a72f5d8792a0b66b6cb3674d5eae454bda', 'visiteur', '1', 'sinp-dev@ign.fr');
 
 -- Link the users to their roles
 INSERT INTO role_to_user(user_login, role_code) VALUES ('developpeur', 1);
+INSERT INTO role_to_user(user_login, role_code) VALUES ('assistance', 1);
 INSERT INTO role_to_user(user_login, role_code) VALUES ('visiteur', 4);
 
 -- Link the role to schemas
