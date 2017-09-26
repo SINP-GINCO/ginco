@@ -6,37 +6,31 @@ Le fichier d'import
 Format général du fichier
 -------------------------
 
-* Le fichier doit être un fichier csv, et posséder une extension ".csv".
+* Le fichier doit être un fichier csv, et posséder une extension ".csv ou .txt".
 
 * L’encodage doit être en UTF8 sans BOM.
 
 * Les champs du fichier doivent être séparés par des points-virgules.
 
-* Chaque fichier représente un jeu de données, et chaque ligne représente une donnée.
+* Chaque fichier représente une soumission, et chaque ligne représente une donnée.
 
-* Le fichier doit comporter le même nombre de champs que le modèle d'import, même s'ils sont vides. Pour cela, il est
-  pratique d'insérer une ligne de commentaires en début de fichier, comportant les noms des champs.
+* Le fichier doit comporter au minimum les champs obligatoires du modèle d'import. L'ordre des champs n'a pas d'importance.
 
-* Une ligne de commentaire spécifiant les différents champs peut être insérée en début de fichier,
-  elle doit alors commencer par un double slash. Exemple :
+* La première ligne du fichier doit nommer les champs du fichier de façon identique à ce qui a été défini dans le configurateur (partie configuration du modèle de fichier). Exemple :
 
-  ``// Champ 1; Champ 2; Champ 3``
+``cdNom;heureDateDebut;jourDateDebut``
 
+.. note:: le module d'import est sensible à l'utilisation de majuscules et miniscules
 
-* Les champs de cette ligne d'en-tête peuvent facultativement être entourés de guillements, **à l'exception du premier champ qui ne doit pas être entouré de guillements** :
+* Eventuellement, en deuxième ligne du fichier peuvent être indiqués le masque des dates et le caractère obligatoire des champs.
+Dans ce cas, la ligne doit être signalée comme étant un commentaire et doit débuter par un double slash. Exemple :
 
-  ``// Champ 1;"Champ 2";"Champ 3"``
+  ``// *; (HH:mm); (yyyy-MM-dd) *``
 
-* L'espacement entre le double slash et le nom du premier champ est facultatif.
+* Les champs obligatoires dans le modèle d'import doiventêtre présents et non vides.
 
-* Les champs doivent être dans l'ordre attendu par le modèle d'import.
-
-* Les champs obligatoires dans le modèle d'import doivent être non vides.
-
-Pour connaitre l'ordre des champs, les champs obligatoires, ainsi que les formats des dates, vous pouvez télécharger
-un fichier de modèle sur la page d'upload du fichier d'import :
-
-.. image:: ../images/gestion-jdd/fichier-import-modele.png
+Pour connaitre les noms des champs, les champs obligatoires, ainsi que les formats des dates, vous pouvez télécharger
+un fichier de modèle sur la page d'upload du fichier d'import.
 
 Vous pouvez télécharger un :download:`fichier d'exemple CSV</downloads/dee_test.csv>`.
 

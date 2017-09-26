@@ -11,6 +11,6 @@ login et mot de passe. Si vous disposez du rôle d'administrateur régional, vou
 
 .. image:: ../images/homepage-admin.png
 
-Cliquez sur "Configurer le méta-modèle", ce qui vous emmènera sur la page d'accueil du configurateur.
+Sous "Configuration des modèles", cliquez sur "Modèle de données", ce qui vous emmènera sur le configurateur.
 
 

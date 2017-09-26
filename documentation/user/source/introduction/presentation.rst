@@ -4,6 +4,10 @@ Présentation
 ============
 GINCO est une application ministérielle open source assurant les principales fonctions de plate-forme régionale ou thématique du SINP et sera doté d’une application de saisie naturaliste. 
 
+
+Instances de test
+*****************
+
 Elle est mise à la disposition de l'ensemble des collecteurs de données et des administrateurs de données en région à partir d’instances régionales de test :
 
 ==============================================    =====================================
@@ -31,4 +35,26 @@ Instance                                  			Url GINGO
 ==============================================    =====================================
 Thématique occurrences de taxons (MNHN) 			https://test-occtax-ginco.ign.fr
 Développement continu (Dailybuild IGN)  			https://dailybuild-ginco.ign.fr
+==============================================    =====================================
+
+Instances de production
+***********************
+Pour les régions ayant fait la demande, des instances de production sont également à leur disposition :
+
+==============================================    =====================================
+Région                                  			Url GINGO
+==============================================    =====================================
+Centre-Val de Loire                     			https://centre-valdeloire-ginco.ign.fr
+Corse                                   			https://corse-ginco.ign.fr
+Grand Est                                           https://grandest-ginco.ign.fr
+Guyane                                  			https://guyane-ginco.ign.fr
+Languedoc-Roussillon                                https://languedocroussillon-ginco.ign.fr
+Midi-Pyrénées                                       https://midipyrenees-ginco.ign.fr
+Nouvelle-Aquitaine     			                    https://nouvelleaquitaine-ginco.ign.fr
+==============================================    =====================================
+
+==============================================    =====================================
+Instance                                  			Url GINGO
+==============================================    =====================================
+Thématique occurrences de taxons (MNHN) 			https://occtax-ginco.ign.fr
 ==============================================    =====================================
