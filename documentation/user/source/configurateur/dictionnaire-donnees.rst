@@ -10,7 +10,7 @@ Le dictionnaire de données regroupe tous les champs du standard DEE, du standar
 
 C'est depuis le dictionnaire de données que sont puisés tous les champs qui sont présentés dans les pages de configuration des tables des modèles de données et des fichiers des modèles d'import.
 
-Pour accéder au dictionnaire de données, cliquez sur l'onglet "Dictionnaire de données" situé en haut de chaque page du configurateur.
+Pour accéder au dictionnaire de données, cliquez sur l'onglet "Configuration des modèles" du menu situé en haut de chaque page, puis sélectionnez "Dictionnaire de données".
 
 .. image:: ../images/configurateur/configurateur-dictionnaire-acces.png
 
@@ -41,7 +41,7 @@ Vous pouvez depuis ce tableau :
 * **2.** Editer un champ, via le formulaire d'édition d'un champ
 * **3.** Supprimer un champ (possible car il n'est rattaché à aucune table ni à aucun fichier)
 
-Le tableau **3** liste les champs rattachés à des tables et / ou à des fichiers d'import. Vous ne pouvez qu'y visualiser les détails d'un champ.
+Le tableau **3** liste les champs rattachés à des tables. Vous ne pouvez qu'y visualiser les détails d'un champ.
 Pour chaque champ, un clic sur le bouton Visualiser ouvre une fenêtre modale affichant les détails du champ de la manière suivante :
 
 .. image:: ../images/configurateur/configurateur-dictionnaire-details-champ.png

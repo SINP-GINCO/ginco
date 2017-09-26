@@ -3,7 +3,7 @@
 Accéder au module de gestion des jeux de données
 ================================================
 
-Sur la page d'accueil de la plateforme GINCO, cliquez sur "Se connecter" et entrez vos identifiants. Si vous disposez de la permission "Importer des données" , vous verrez la page d'accueil suivante :
+Sur la page d'accueil de la plateforme GINCO, cliquez sur "Se connecter" et entrez vos identifiants. Si vous disposez de la permission "Gérer les jeux de données" , vous verrez la page d'accueil suivante :
 
 .. image:: ../images/gestion-jdd/acces.png
 

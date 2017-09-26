@@ -3,21 +3,43 @@
 Gérer les de jeux de données
 ====================================
 
-Importer un nouveau jeu de données
-----------------------------------
+Dans Ginco, un import de données est nommé **soumission**. Une soumission doit être associée à un jeu de données. Un **jeu de données** se rattache à une fiche de métadonnées. Il peut contenir plusieurs soumissions.
+
+Créer un jeu de données
+-----------------------
+Pour créer un nouveau jeu de données, cliquez sur "Créer un jeu de données".
+
+.. image:: ../images/gestion-jdd/lien-jdd-creer.png
+
+L'application vous redirige alors vers un formulaire :
+
+.. image:: ../images/gestion-jdd/jdd-metadonnee.png
+
+Vous devez indiquer :
+
+1. le **modèle de données** que vous souhaitez lier à votre jeu de données. Ce qui siginife que par la suite vous ne pourrez importer dans le jeu de données que des données correspondant au modèle sélectionné.
+
+2. l'identifiant de la fiche de métadonnées correspondant au jeu de données que vous êtes en train de créer. (voir la page de documentation sur `Les métadonnées <../metadonnees/index.html>`_ ).
+
+3. Un lien vers l'application de métadonnées de l'INPN.
+
+
+Importer des données
+--------------------
+L'import de données ce fait au sein d'un jeu de données. Il faut donc en avoir créé un auparavant.
 
 .. image:: ../images/gestion-jdd/nouveau-jdd-1.png
 
-Sur la page d'accueil "Gérer les jeux de données", cliquez sur "Importer un nouveau jeu de données".
+Cliquez sur le lien "Importer des données" du jeu de données auquel vous souhaitez ajouter des données.
 
 .. image:: ../images/gestion-jdd/nouveau-jdd-2.png
 
 Choisissez ensuite :
 
-1. **le modèle d'import à utiliser :** celui-ci définit le modèle de données auquel doit être rattaché
-le jeu de données, mais aussi le format attendu du (des) fichier(s) csv; en particulier le nombre et l'ordre des
-champs, leur caractère obligatoire, le format des dates. Les modèles d'import sont créés par l'administrateur régional
-dans le configurateur Ginco.
+1. **le modèle d'import à utiliser :** parmi ceux dont le modèle de données cible est lié au jeu de données.
+Cela permet à l'application de connaître le format attendu du (des) fichier(s) csv; en particulier le nom des
+champs de l'en-tête, leur caractère obligatoire et le format des dates.
+Les modèles d'import sont créés par l'administrateur régional dans le configurateur Ginco.
 
 2. **l'organisme producteur du jeu de données :** l'administrateur régional peut livrer des jeux de données
 provenant d'autres organismes que le sien. Il faut pour cela avoir au préalable créé l'organisme dans Ginco
@@ -27,10 +49,13 @@ provenant d'autres organismes que le sien. Il faut pour cela avoir au préalable
 
 Vous devez enfin uploader votre ou vos fichiers csv (**1**). Ceux-ci doivent peser *moins de 150 Mo*.
 
-Vous pouvez télécharger un fichier d'exemple (**2**) pour chaque fichier demandé, contenant une ligne d'en-tête avec les noms
-des champs, leur caractère obligatoire (indiqué par une étoile), et le format des dates.
+Vous pouvez télécharger un fichier d'exemple (**2**) pour chaque fichier demandé, contenant :
 
-Renseignez le système de référence (SRID) de vos données (code EPSG des géométries des observations)(**3**). Un encart d'information succincte est présent plus bas pour vous aider à choisir (**4**).
+* Une ligne d'en-tête avec les noms des champs définis dans la configuration du fichier d'import,
+* Une ligne commenté indiquant leur caractère obligatoire (signalé par une étoile), et le format des dates.
+
+Renseignez le système de référence (SRID) de vos données (code EPSG des géométries des observations)(**3**).
+Un encart d'information succincte est présent plus bas pour vous aider à choisir (**4**).
 Les données seront automatiquement converties en WGS84 lors de l'import dans la plateforme.
 
 Cliquez sur le bouton Valider. Après le transfert de vos fichiers, qui peut prendre un certain temps en fonction de leur taille,
@@ -51,32 +76,56 @@ Liste des jeux de données
 -------------------------
 
 La page d'accueil de gestion des jeux de données liste l'ensemble des jeux de données importés ainsi que leurs actions associées.
-Pour chaque jeu de données, elle indique :
-
-* le numéro de la soumission (utile pour identifier la livraison plus simplement qu'avec le jddid),
-* la date de la soumission,
-* l'organisme et l'utilisateur auxquels sont attribuées les données ; attention, l'utilisateur est bien celui ayant
-  effectué la livraison, par contre l'organisme est l'organisme producteur de la donnée qui a été défini lors de l'import.
-* le nom du modèle d'import utilisé,
-* l'étape en cours du processus d'import, ainsi que le statut de cette étape (généralement OK ou ERROR),
-* le nom du fichier livré ainsi que son nombre de lignes,
-* une colonne permettant d'exporter les jeux de données en DEE au format GML (voir la partie :ref:`exporter_en_dee`),
-* une colonne listant les actions possibles.
 
 .. image:: ../images/gestion-jdd/liste-jdd.png
 
-Actions possibles sur les jeux de données :
+Elle permet de créer un nouveau jeu de données (**1**).
 
-* **Rapport de conformité et cohérence** crée un pdf listant les éventuelles erreurs rencontrées lors de l'intégration.
+Puis dans un tableau, regroupe les jeux de données existants en indiquant leur titre et leur identifiant de métadonnée.
+La colonne **Actions** permet de :
 
-* **Publier les données** rend les données de la soumission requêtables pour tous les utilisateurs (donc visibles sur la carte et dans le tableau de résultat), et permet de faire l'export GML.
+2. Visualiser un jeu de données en détail.
+3. Supprimer un jeu de données. La suppression n'est possible que si le jeu de données ne comporte aucune soumission (croix rouge). Dans le cas contraire, la croix est grisée.
+
+Au sein d'un jeu de données, ce tableau liste les fichiers de données qui ont été soumis à l'application (**4**). Pour chaque soumission, on visualise :
+
+* le nom du fichier
+* le nombre de lignes (plus exactement le nombre de données) que comporte le fichier
+* le statut de la soumission (en cours, ok, error)
+Sous "Rapport" (**5**) on peut télécharger :
+
+* le **Rapport de conformité et cohérence** qui est un pdf listant les éventuelles erreurs rencontrées lors de l'intégration.
+* le **Rapport de sensibilité** qui est un csv listant les données sensibles du jeu de données (le calcul de la sensibilité
+  fait partie des traitements réalisés par l'application lors de l'import). Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
+* le **Rapport des identifiants permanents** qui est un csv associant un identifiant permanent à chaque donnée de la soumission (le calcul de l'identifiant permanent
+  fait partie des traitements réalisés par l'application lors de l'import). Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
+
+Enfin, sous "Actions" il est possible de :
+
+* **Publier les données** pour les imports réussis. Cela rend les données de la soumission requêtables pour tous les utilisateurs (donc visibles sur la carte et dans le tableau de résultat), et permet de faire l'export GML.
   Tant que la soumission n'est pas publiée, les données sont visibles uniquement aux utilisateurs ayant la permission "Publier les données", qui sont aussi les seuls à pouvoir réaliser l'action de publication.
 
 * **Dépublier les données** rend les données de la soumission non consultables pour les utilisateurs n'ayant pas la permission "Publier les données".
   De même, l'export GML n'est plus réalisable.
   
-* **Rapport de sensibilité** crée un csv listant les données sensibles du jeu de données (le calcul de la sensibilité
-  fait partie des traitements réalisés par l'application lors de l'import).
-
-* **Supprimer le jeu de données** supprime le jeu de données et les données associées, même si elles ont été éditées
+* **Supprimer le jeu de données** (**6**) supprime le jeu de données et les données associées, même si elles ont été éditées
   entre temps.
+
+Visualiser un jeu de données
+----------------------------
+Il est possible de visualiser le détail d'un jeu de données en cliquant sur l'action représentée par un oeil sur le côté gauche du tableau.
+
+.. image:: ../images/gestion-jdd/visualiser-jdd.png
+
+La page détaillant un jeu de données est composée de deux parties.
+
+1. Des informations concernant la métadonnée associée au jeu de données. Il est notamment possible d'y télécharger la fiche de métadonnée (**3**).
+2. Des informations concernant les soumissions effectuées dans le jeu de données.
+
+Un lien (**4**) permet d'ajouter un nouveau fichier au jeu de données en cours de visualisation.
+
+Il est possible de mettre à jour la fiche de métadonnée et les informations la concernant via le bouton "Mettre à jour les métadonnées depuis l'INPN" (**5**).
+
+Enfin, si le jeu de données ne comporte pas de soumission il est possible de le supprimer (**6**).
+
+

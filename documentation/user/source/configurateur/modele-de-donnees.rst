@@ -28,17 +28,18 @@ Créer un modèle de données
 
 .. image:: ../images/configurateur/configurateur-modele-creation.png
 
-1. Cliquer sur "Modèles de données" dans le menu du haut pour accéder à la page de gestion des modèles de données (**1**).
-2. GINCO propose un modèle de données de base : **Occ_Taxon_DSR_exemple** (**2**).
+Il faut avoir cliqué sur "Modèles de données" dans le menu pour accéder à la page de gestion des modèles de données.
+
+1. GINCO propose un modèle de données de base : **Occ_Taxon_DSR_exemple** (**1**).
 
 .. note:: Le modèle Occ_Taxon_DSR_exemple est le modèle de base. Il n'est possible ni de le supprimer, ni de le modifier.
 
 Pour créer un nouveau modèle, vous devez dupliquer le modèle DSR de base ou un
-modèle qui l'a étendu (**3**).
+modèle qui l'a étendu (**2**).
 
 .. warning :: Il n'est plus possible de créer un modèle à partir de zéro. C'est en effet un processus laborieux et un peu dangereux car rien ne garantit que le modèle ainsi configuré permettra l'export correct en DEE et que tous les champs techniques nécessaires au bon fonctionnement de la plate-forme seront présents.
 
-3. Pour copier un modèle existant, cliquer sur l'icône "Dupliquer" correspondante. Un modèle contenant les mêmes tables et champs que le modèle initial sera créé. Vous ne devez pas modifier ou supprimer des champs provenant du modèle DSR de base.
+2. Pour copier un modèle existant, cliquer sur l'icône "Dupliquer" correspondante. Un modèle contenant les mêmes tables et champs que le modèle initial sera créé. Vous ne devez pas modifier ou supprimer des champs provenant du modèle DSR de base.
 
 Vous pourrez alors indiquer le nom de votre nouveau modèle ainsi qu'une description
 (facultative) :
@@ -72,7 +73,7 @@ Cliquez sur l'icône "Modifier" (**3**), sur la page de gestion des modèles de 
 
 .. image:: ../images/configurateur/configurateur-table-gestion.png
 
-On y peut :
+Il est possible d'y :
 
 * `Modifier des tables`_ (**1**)
 * `Gérer les champs des tables`_ (**2**)

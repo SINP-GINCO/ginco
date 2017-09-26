@@ -57,10 +57,9 @@ Cliquez sur l'icône "Modifier" (**3**), sur la page de gestion des modèles d'i
 On peut y:
 
 * `Créer et modifier des fichiers`_ (**1** et **2**)
-* `Supprimer des fichiers`_ (**5**)
-* `Ordonner les fichiers`_ (**6**)
+* `Supprimer des fichiers`_ (**4**)
+* `Ordonner les fichiers`_ (**5**)
 * `Gérer les champs des fichiers`_ (**3**)
-* `Configurer les mappings`_ (**4**)
 
 Créer et modifier des fichiers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -72,21 +71,20 @@ Les champs demandés sont :
 * **Nom :** Nom du fichier, utilisé en base de données : tous les caractères sont autorisés, mais le nombre de caractères est limité à 36.
 * **Description :** *(facultatif)* Texte libre décrivant le fichier.
 
-La page d'édition d'un modèle de fichier est divisée en 3 onglets :
+La page d'édition d'un modèle de fichier est divisée en 2 onglets :
 
 * Modifier
 * Gérer les champs
-* Gérer les mappings
 
 Supprimer des fichiers
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Pour supprimer un fichier, il suffit de cliquer sur le bouton "Corbeille" (**5**) du fichier que vous souhaitez supprimer. Le fichier sera directement supprimé.
+Pour supprimer un fichier, il suffit de cliquer sur le bouton "Corbeille" (**4**) du fichier que vous souhaitez supprimer. Le fichier sera directement supprimé.
 
 Ordonner les fichiers
 ^^^^^^^^^^^^^^^^^^^^^
 
-Pour ordonner les fichiers, il suffit de glisser-déposer vos fichiers les uns au-dessus ou au-dessous des autres, puis de cliquer sur le bouton "Enregistrer l'ordre d'import des fichiers" (**6**).
+Pour ordonner les fichiers, il suffit de glisser-déposer vos fichiers les uns au-dessus ou au-dessous des autres, puis de cliquer sur le bouton "Enregistrer l'ordre d'import des fichiers" (**5**).
 
 Gérer les champs des fichiers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -97,7 +95,7 @@ L'écran de gestion des champs du fichier permet de rajouter et supprimer des ch
 
 Il est divisé en 3 parties principales :
 
-* **1** : le tableau du dictionnaire de données : il liste tous les champs disponibles dans le dictionnaire de données, c'est à dire ceux du standard DEE et des champs rajoutés par l'utilisateur.
+* **1** : le tableau des champs du modèle de données cible : il liste tous les champs disponibles dans le modèle de données.
 * **2** : le tableau des champs du fichier : il liste uniquement les champs qui sont attendus dans les fichiers téléversés sur la plateforme.
 * **3** : une partie sur l'ajout de champs automatique à partir d'une table du modèle de données cible. Pratique pour faire correspondre quasi-immédiatement les champs du fichier avec ceux d'une table.
 
@@ -105,7 +103,7 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 .. image:: ../images/configurateur/configurateur-fichier-fonctions.png
 
-1. **Rechercher un champ** : il suffit de taper une chaîne de caractères courte pour filtrer le tableau du dictionnaire de données et ainsi faciliter la sélection de champs.
+1. **Rechercher un champ** : il suffit de taper une chaîne de caractères courte pour filtrer les champs du modèle de données de données et ainsi faciliter la sélection de champs.
 
 2. **Sélectionner tous les champs** en cochant la case dans la ligne de titre du tableau.
 
@@ -117,9 +115,9 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 .. note:: Un champ ne peut être présent en doublon dans un fichier.
 
-5. **Créer un nouveau champ** : l'écran permet de décrire un nouveau champ, qui sera ajouté au dictionnaire de données ET rattaché directement au fichier. 
+.. note:: Il n'est pas possible d'ajouter un champ dans le fichier sans qu'il existe dans le modèle de données.
 
-.. image:: ../images/configurateur/configurateur-fichier-ajout-nouveau-champ.png
+5. **Définir le nom du champ dans l'en-tête du fichier** d'import. Le module d'import se base sur la ligne d'en-tête du fichier d'import pour savoir quelle colonne correspond à quel champ en base. Par défaut, le configurateur considère que le nom d'un champs dans le fichier est le même que ceux du modèle d'import. Cependant, si vous souhaitez en définir un autre, vous pouvez l'indiquer dans la colonne "Nom du champ dans le fichier".
 
 6. **Rendre un champ obligatoire** ou non en cochant la case correspondant à un champ dans le fichier.
 
@@ -127,106 +125,27 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 .. note:: Certains champs sont obligatoires dans le modèle de données et pas dans le modèle d'import. lorsqu'ils sont calculés automatiquement par l'application à l'import (par exemple: l'identifiant pernanent SINP ou les champs de sensibilité).
 
-
 7. **Remplir le format de date** pour tous les champs dont l'unité est "*DATE*". Par défaut, le format de date pré-rempli est *yyyy-MM-dd*, mais vous pouvez le modifier. Vous trouverez plus de détails dans :ref:`format-des-dates`.
 
-8. **Ordonner les champs** en "attrapant" un champ via la main sur la ligne du champ, puis en le déposant à la place voulue. L'ordre sera mis à jour dans la colonne "Ordre".
-.. note:: L'ordonnancement des fichiers a son importance lors de l'import des données : il permet à l'application de déterminer dans quelle table enregistrer les données de vos fichiers selon cet ordre. De plus, dans la page d'import de données, les fichiers seront listés dans l'ordre configuré ici.
+.. warning:: Pour enregistrer le caractère obligatoire, le format de date et le nom d'un champ dans le fichier, il est nécessaire de cliquer sur l'un des deux boutons d'enregistrement (**12**).
 
-.. warning:: Pour enregistrer le caractère obligatoire, le format de date d'un champ et l'ordre des champs, il est nécessaire de cliquer sur l'un des deux boutons d'enregistrement (**12**).
-
-9. **Supprimer tous les champs du fichier** en cliquant sur la corbeille dans la ligne de titre.
+8. **Supprimer tous les champs du fichier** en cliquant sur la corbeille dans la ligne de titre.
 
 .. warning:: Attention, tous les champs du fichier seront directement supprimés. Il n'y a pas de possibilité d'annulation.
 
-10. **Supprimer un champ du fichier** en cliquant sur la corbeille correspondant à un champ dans le fichier.
+9. **Supprimer un champ du fichier** en cliquant sur la corbeille correspondant à un champ dans le fichier.
 
-.. warning :: La suppression d'un champ est immédiate et irréversible. Pour retrouver un champ supprimé, il faut recommencer la procédure de rajout depuis le dictionnaire de données.
-
-11. **Ajouter des champs automatiquement** depuis une table du modèle de données cible. Pour ce faire, il suffit de sélectionner une table, puis de cliquer sur "Ajout automatique". Tous les champs de la table seront alors rajoutés à la liste des champs du fichier, excepté les champs dont la valeur est calculée par l'application lors de l'import. Une fois effectué, un rapport sera affiché et vous offrira également la possibilité de configurer automatiquement les mappings en cliquant sur "Mapping automatique". Voir `Configurer les mappings`_.
+10. **Ajouter des champs automatiquement** depuis une table du modèle de données cible. Pour ce faire, il suffit de sélectionner une table, puis de cliquer sur "Ajout automatique". Tous les champs de la table seront alors rajoutés à la liste des champs du fichier, excepté les champs dont la valeur est calculée par l'application lors de l'import. Une fois effectué, un rapport sera affiché.
 
 .. image:: ../images/configurateur/configurateur-fichier-confirmation-ajout-auto.png
 
-12. **Ajouter seulement les champs obligatoires** permet, lors de l'ajout automatique, de n'ajouter dans le format de fichier que les champs qui sont obligatoires dans le modèle de données.
+11. **Ajouter seulement les champs obligatoires** permet, lors de l'ajout automatique, de n'ajouter dans le format de fichier que les champs qui sont obligatoires dans le modèle de données.
 
-13. **Ajouter également les champs calculés automatiquement** permet d'ajouter dans le format de fichier les champs dont les valeurs sont calculées automatiquement par GINCO lors de l'import de données. Si tous les champs du modèle DSR sont présents cette option est inutile, mais si votre modèle de données ne contient pas tous les champs du standard, il est possible que certains champs ne puissent pas être calculés automatiquement.
+12. **Ajouter également les champs calculés automatiquement** permet d'ajouter dans le format de fichier les champs dont les valeurs sont calculées automatiquement par GINCO lors de l'import de données. Si tous les champs du modèle DSR sont présents cette option est inutile, mais si votre modèle de données ne contient pas tous les champs du standard, il est possible que certains champs ne puissent pas être calculés automatiquement.
 
-14. **Ajout automatique** est le bouton permettant de lancer l'ajout de champs automatique dans le format de fichier.
+13. **Ajout automatique** est le bouton permettant de lancer l'ajout de champs automatique dans le format de fichier.
 
-15. **Enregistrer** vos modifications : seules les modifications liées au caractère obligatoire d'un champ, l'ordre, ainsi que le format de date sont enregistrées à ce moment-là. Le reste (ajout de champs, suppression) est enregistré lors de chaque action effectuée.
-
-Configurer les mappings
-^^^^^^^^^^^^^^^^^^^^^^^
-
-.. image:: ../images/configurateur/configurateur-fichier-mapping.png
-
-Les *mappings* servent à lier les champs d'un fichier avec les champs d'une ou plusieurs tables : cela permet à l'application d'insérer en base de données, dans la bonne table et la bonne colonne, chaque donnée contenue dans un fichier importé.
-
-Pour configurer les mappings, plusieurs moyens d'accès sont offerts.
-
-* cliquer sur le lien représentant une double flèche dans la liste des modèles de fichiers (**3**).
-* depuis la page d'édition d'un modèle de fichier, cliquer sur l'onglet "Gérer les mappings".
-* effectuer un ajout de champs automatique puis cliquer sur le lien lançant le mapping automatique.
-
-Une fois sur la page, deux types de mapping sont disponibles :
-
-* `Le mapping manuel`_ (**1**)
-* `Le mapping automatique`_ (**2**)
-
-Le mapping manuel
-*****************
-
-Cette fonctionnalité permet de mapper avec détail les champs spéciaux ou non-reconnus par le mapping automatique.
-**Un cas pratique est le mapping de votre propre clé utilisateur avec la clé primaire de la table.** 
-En voici le déroulement : 
-
-1. Dans la première liste déroulante, sélectionnez l'option "Copier".
-2. Dans la deuxième liste déroulante, sélectionnez le champ du fichier que vous souhaitez mapper (ici, le champ "*monIdentifiant*").
-3. Dans la troisième liste déroulante, sélectionnez la table dans laquelle se trouve le champ avec lequel vous souhaitez mapper le champ "*monIdentifiant*".
-4. Dans la quatrième liste déroulante, sélectionnez le champ avec lequel mapper "*monIdentifiant*"(ici, la clé primaire de la table, "*Clé primaire table observation*").
-5. Cliquez sur le bouton "Enregistrer".
-
-Une fois cela fait, une nouvelle règle de mapping sera créée et affichée dans le tableau des règles de mapping :
-
-.. image:: ../images/configurateur/configurateur-fichier-mapping-manuel.png
-
-.. Note:: Notez que le mapping manuel ne s'avère nécessaire que dans certains cas particuliers (mapping de clé primaires et de clés étrangères). Pour le reste, l'utilisation du mapping automatique est fortement conseillé.
-
-Le mapping automatique
-**********************
-
-Cette fonctionnalité permet de mapper automatiquement tous les champs similaires entre un modèle de fichier et un modèle de table sélectionné.
-
-Par exemple, si le champ "*geometrie*" est présent dans une table "*localisation*", et que ce même champ "*geometrie*" est présent dans un fichier "*localisation*", alors une règle de mapping sera automatiquement créée entre ces deux champs. Et cela est effectué pour tous les champs du fichier.
-
-Pour lancer le mapping automatique, il suffit de sélectionner la table avec laquelle vous souhaitez mapper votre modèle de fichier dans la liste déroulante (**2**), puis de cliquer sur "Mapping automatique".
-
-Lorsque les règles sont créées, elles s'affichent dans le tableau des règles de mapping, et un rapport apparait dans la page pour vous indiquer :
-
-.. image:: ../images/configurateur/configurateur-fichier-mapping-auto.png
-
-.. Note:: Les champs spéciaux "*clé primaire table x*" et "*clé étrangère table x*" ne peuvent pas être automatiquement mappés. Pour ceux-là, il faut utiliser le mapping manuel. 
-
-
-.. _relation-tables-fichiers:
-
-Cas particulier : le mapping des clés primaires et étrangères
-*************************************************************
-
-Si vous avez établi une relation hiérarchique entre deux tables du modèle de données cible, l'une étant la table **mère** et l'autre étant la table **fille**, le mapping automatique ne pourra pas déterminer les règles de mapping concernant les champs de clé primaire. Suivez les étapes suivantes pour contourner le problème :
-
-1. Depuis la page de modification de votre modèle d'import, créez un fichier correspondant à la table **mère**. Dans la gestion des champs du fichier, comme vu plus haut, vous pouvez faire usage des fonctionnalités d'ajout automatique de champs et de mapping automatique pour le créer et le configurer.
-
-2. Rajoutez un champ nommé **Clé primaire table mère** dans votre modèle de fichier, correspondant à votre clé primaire utilisateur.
-
-3. Depuis la page de gestion des mappings, rajoutez manuellement un mapping entre le champ **Clé primaire table mère** et le champ **Clé primaire table mère** de la table **mère**.
-
-4. Répétez les étapes **1** et **2** pour la table **fille**.
-
-5. Depuis la page de gestion des mappings, rajoutez manuellement un mapping entre le champ **Clé primaire table mère** et le champ **Clé étrangère table mère** de la table **fille**.
-
-La configuration terminée, vous pouvez publier le modèle d'import.
-
+14. **Enregistrer** vos modifications : seules les modifications liées au caractère obligatoire d'un champ, leur nom dans l'en-tête du fichier d'import, ainsi que le format de date sont enregistrées à ce moment-là. Le reste (ajout de champs, suppression) est enregistré lors de chaque action effectuée.
 
 Publier / dépublier un modèle d'import
 --------------------------------------
@@ -242,7 +161,6 @@ Le modèle d'import sera alors disponible en production.
 * son modèle de données cible doit être publié
 * il doit comporter au moins un fichier d'import
 * chacun de ses fichiers doit comporter au moins un champ
-* chacun de ses fichiers doit comporter au moins un mapping
 
 Si toutes ces conditions ne sont pas atteintes, le bouton de publication est grisé.
 
