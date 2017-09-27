@@ -6,9 +6,23 @@ Résoudre les erreurs d'import
 =============================
 
 En cas d'erreur lors de l'import, la nature et la localisation des erreurs sont indiquées dans le "Rapport de
-conformité et cohérence", disponible pour chaque jeu de données sur la page listant les jeux de données.
+conformité et cohérence", disponible pour chaque soumission sur la page listant les jeux de données.
 
-Les erreurs sont classées en deux catégories :
+Le service d'import détecte les erreurs en 3 étapes :
+
+étape 1
+-------
+Dans un premier temps, le service d'import s'assure que la ligne d'en-tête du fichier importé est correcte.
+- pas de nom de colonne en doublon ;
+- pas de nom de colonne inconnu dans le modèle d'import ;
+- pas de colonne obligatoire manquante.
+Toute la ligne est évaluée pour ces 3 contrôles. Si une erreur est relevée, l'import n'est pas poursuivi.
+
+étape 2
+-------
+Contrôles de conformité et cohérence.
+Les erreurs sont enregistrées au fur et à mesure.
+Elles ne sont pas bloquantes pour le reste de la ligne ou du fichier, dans la limite de 1000 erreurs, auquel cas les contrôles s'arrêtent.
 
 * **Conformité**: ce sont les erreurs de format, et de valeurs non conformes aux nomenclatures et aux référentiels
   (pour les valeurs de type code).
@@ -19,6 +33,11 @@ Les erreurs sont classées en deux catégories :
 Vous pouvez vous référer au
 `détail du standard "Occurence de taxon" <http://standards-sinp.mnhn.fr/wp-content/uploads/sites/16/versionhtml/OccTax_v1_2_1/>`_
 pour connaître l'ensemble des règles de cohérence.
+
+étape 3
+-------
+Cette étape concerne les contrôles sur le champ géométrique
+ainsi que les erreurs identifiées lors de l'insertion des données en base (bloquantes pour le reste de la ligne).
 
 Localisation des erreurs
 ------------------------
@@ -81,6 +100,21 @@ Erreurs de conformité
 
 * **1110 - Valeur incorrecte** ; La valeur donnée n'est pas reconnue et empêche l'exécution du code
   (remplissage automatique de champs).
+
+* **1111 - Géométrie invalide** ; La valeur de la géométrie ne correpond pas au format WKT.
+
+* **1112 - Mauvais type de géométrie** ; Le type de la géométrie ne correspond pas au type attendu.
+
+* **1113 - Mauvais SRID pour la géométrie** ; L'identifiant du système de coordonnées (srid) indiqué ne correspond pas à celui des données.
+  C'est-à-dire que l'identifiant du système de référence indiqué sur la page d'import du fichier ne peut pas correspondre aux coordonnées indiquées dans le champ géométrique du fichier importé.
+
+* **1114 - Nom du champ incorrect** ; Le nom de la colonne indiqué dans la ligne d'en-tête du fichier csv n'existe pas dans le modèle d'import.
+  Vous devez soit modifier votre fichier, soit modifier la configuration du modèle de fichier (pour cela, il vous faut contacter votre administrateur régional).
+  
+* **1115 - Des noms de colonnes sont en double** ; Des noms de colonnes sont en double dans la ligne d'en-tête du fichier importé.
+
+* **1116 - Colonne obligatoire manquante** ; Colonne obligatoire manquante dans la ligne d'en-tête du fichier d'import.
+  Vous devez soit l'ajouter à votre fichier, soit modifier la configuration du modèle de fichier (pour cela, il vous faut contacter votre administrateur régional).
 
 Erreurs de cohérence
 ^^^^^^^^^^^^^^^^^^^^
