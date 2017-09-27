@@ -22,6 +22,16 @@ Le référentiel de sensibilité fourni à GINCO est constitué des informations
 * CD_SL : identifiant de la liste de sensibilité.
 * CD_OCC_STATUT_BIOLOGIQUE : code du statut biologique pour lequel s'applique la sensibilité.
 
+Auxquelles s'ajoutent des informations sur les listes de sensibilités utilisées dans ce référentiel :
+
+* short_citation : Auteur de la liste de sensibilité régionale.
+* cd_insee_reg : le code Insee de la région sur laquelle la liste s'applique.
+* date_liste : la date de la constitution de la liste.
+* full_citation : Le référence de la liste.
+* url : le lien vers la liste au format numérique.
+* cd_doc : l'identifiant de la liste.
+* cd_sl identifiant de la liste de sensibilité.
+
 Le référentiel est fourni  à GINCO par la plateforme nationale (INPN).
 Les codes de taxons fournis à GINCO sont ceux de la version en vigueur de TAXREF lors de la fourniture du référentiel à GINCO.
 La sensibilité ne s'applique pas pour les données marines.
@@ -34,7 +44,7 @@ Calcul automatique de la sensibilité
 Lors de l'import de données, un calcul de la sensibilité des observations est effectué automatiquement par l'application.
 
 Pour chaque observation, l'application identifie les lignes du référentiel de sensibilité correspondant au taxon 
-dans le département de l'observation.
+dans le département de l'observation. Lorsqu'une liste de sensiblité régionale a été transmise au MNHN, c'est elle qui s'applique. Sinon, c'est la liste nationale.
 Si aucune règle ne correpond, l'observation n'est pas sensible.
 Sinon l'application applique la règle avec le codage le plus élevé, en prenant en priorité une règle sans commentaire.
 
@@ -44,7 +54,7 @@ Le champ sensiAlerte est alors mis à "OUI".
 Rapport de sensibilité
 ----------------------
 
-Un rapport de sensibilité est disponible pour chaque jeu de données importé à partir du tableau des soumissions.
+Un rapport de sensibilité est disponible pour chaque soumission importée à partir du tableau des jeux de données.
 
 .. image:: ../images/traitements/lien-rapport-sensibilite.png
 

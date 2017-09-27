@@ -15,11 +15,11 @@ Algorithme
 Pour chaque observation :
 
 * **Si une géométrie est présente** : selon le type de géométrie *(parmi point, multipoint, ligne, multiligne, polygone et multipolygone)*, un calcul est effectué pour rattacher aux communes, aux mailles et aux départements.
-* **Si soit typeinfogeocommune = 1 ou typeinfogeomaille = 1 ou typeinfogeodepartement = 1** : on calcule les rattachements à toutes les couches *inférieures et supérieures, incluant la géométrie précise*, à la couche qui à son typeinfogeo à 1, en prenant comme base de calcul cette couche.
+* **Si soit typeinfogeocommune = 1 ou typeinfogeomaille = 1 ou typeinfogeodepartement = 1** : on calcule les rattachements à toutes les couches *supérieures* à la couche qui a son typeinfogeo à 1, en prenant comme base de calcul cette couche.
 * **S'il n'y a ni géométrie, ni typeinfogeo à 1** :
     * si le champ "codeCommune" est renseigné, un calcul est effectué pour rattacher aux communes, aux mailles et aux départements.
     * si le champ "codeMaille" est renseigné, un calcul est effectué pour rattacher aux mailles et aux départements.
-    * si le champ "codeDepartement" est renseigné, un calcul est effectué pour rattacher aux mailles et aux départements.
+    * si le champ "codeDepartement" est renseigné, un calcul est effectué pour rattacher aux départements.
 
 .. note:: Le cas où plusieurs références d'une même couche sont livrées sont gérés (plusieurs codes communes, plusieurs codes mailles, et/ou plusieurs codes départements). Par exemple, dans le cas où une observation est livrée avec plusieurs communes mais sans géométrie, une union des géométries des communes est calculée, et nous calculons l'intersection de l'aire de cette union de géométries avec chaque commune de référence pour déterminer la ou les mailles et le ou les départements qui leurs sont rattachés.
 

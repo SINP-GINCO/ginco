@@ -6,7 +6,7 @@ Le fichier d'import
 Format général du fichier
 -------------------------
 
-* Le fichier doit être un fichier csv, et posséder une extension ".csv ou .txt".
+* Le fichier doit être un fichier csv, et posséder une extension ".csv" ou ".txt".
 
 * L’encodage doit être en UTF8 sans BOM.
 
@@ -20,7 +20,7 @@ Format général du fichier
 
 ``cdNom;heureDateDebut;jourDateDebut``
 
-.. note:: le module d'import est sensible à l'utilisation de majuscules et miniscules
+.. note:: le module d'import est sensible à l'utilisation de majuscules et miniscules dans le nommage des champs
 
 * Eventuellement, en deuxième ligne du fichier peuvent être indiqués le masque des dates et le caractère obligatoire des champs.
 Dans ce cas, la ligne doit être signalée comme étant un commentaire et doit débuter par un double slash. Exemple :
@@ -92,3 +92,22 @@ Codes et référentiels
 
 La description des champs correspondant à des référentiels est disponible dans le
 `Standard d'échanges d'occurrences de taxon v1.2.1  <https://inpn.mnhn.fr/docs/standard/Occurrences_de_taxon_v1_2_1_FINALE.pdf>`_.
+
+Les référentiels et nomenclatures peuvent être obtenues via le site http://standards-sinp.mnhn.fr/
+
+Versions des référentiels utilisées dans Ginco
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+==============================================    ======================================== 
+Référentiel                               			Version                                
+==============================================    ======================================== 
+Communes                     			           ADMIN EXPRESS-COG carto millésimé 2017  
+Mailles                                   		   L93_10X10 2011 Lambert 93               
+Départements                                       ADMIN EXPRESS-COG carto millésimé 2017  
+Régions                                  		   ADMIN EXPRESS-COG carto millésimé 2017  
+Espaces naturels                                   Flux WMS et WFS du géoportail           
+HabRef                                             v2                                      
+Taxref                                             v10.0                                   
+espèces sensibles     			                   06/06/2017                              
+==============================================    ======================================== 
+
