@@ -699,7 +699,7 @@ class QueryController extends BaseController {
 			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
 
 			// Display the default message
-			$content .= iconv("UTF-8", $charset, '// *************************************************');
+			$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n");
 			$content .= iconv("UTF-8", $charset, '// ' . $this->get('translator')->trans('Data Export') . "\n");
 			$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n\n");
 
@@ -715,8 +715,7 @@ class QueryController extends BaseController {
 				$line[] = $tableField->getLabel();
 				$content .= iconv("UTF-8", $charset, $tableField->getLabel() . ';');
 			}
-			$outputLine = $arrayToCsv($line, ';', '"');
-			$content .= iconv("UTF-8", $charset, "// " . $outputLine);
+			$content .= iconv("UTF-8", $charset, "\n");
 
 			$pagesTotal = ceil($total / $maxLines);
 
@@ -764,11 +763,13 @@ class QueryController extends BaseController {
 	protected function csvExportCriterias(Request $request) {
 		$criteriasLine = "";
 
-		$criteriasLine .= '// ' . $this->get('translator')->trans('Request Criterias') . "\n";
-
 		// Get the request from the session
 		$queryForm = $request->getSession()->get('query_QueryForm');
 
+		if ($queryForm->getCriteria()) {
+			$criteriasLine .= '// ' . $this->get('translator')->trans('Request Criterias') . "\n";
+		}
+		
 		// List all the criterias
 		foreach ($queryForm->getCriteria() as $genericFormField) {
 
