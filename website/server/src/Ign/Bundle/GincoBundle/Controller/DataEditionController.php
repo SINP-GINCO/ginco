@@ -52,15 +52,29 @@ class DataEditionController extends BaseController {
 		// The service used to manage the query module
 		$res = $this->getQueryService()->getEditForm($data);
 
+		// Now we write the original values of the object in the session
 		$bag = $request->getSession();
-		json_encode($data);
+		$objectNormalizer = new ObjectNormalizer();
+		$objectNormalizer->setCircularReferenceLimit(2);
+
+		$propertyNormalizer = new PropertyNormalizer();
+		$propertyNormalizer->setCircularReferenceHandler(function ($object) {
+			$class = get_class($object);
+			if ($class == 'Ign\Bundle\OGAMBundle\Entity\Metadata\Model') {
+				return $object->getId();
+			} else if ($class == 'Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat') {
+				return $object->getFormat();
+			}
+		});
+
 		$ser = new Serializer(array(
-			new PropertyNormalizer(),
-			new ObjectNormalizer()
+			$propertyNormalizer,
+			$objectNormalizer
 		));
-		//FIXME: Comes from OGAM and not useful?
-		//$ser->normalize($data); // FIXME : treewalker force loading proxy element ...
-		//$bag->set('data', $data);
+		$ser->normalize($data); // FIXME : treewalker force loading proxy element ...
+		$bag->set('data', $data);
+
+		// and return the values to construct the form
 		return $this->json($res);
 	}
 
