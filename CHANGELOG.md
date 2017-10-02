@@ -70,3 +70,11 @@ par rapport à la version précédente.
 * Correction de divers bugs...
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.0...v2.0.1)
+
+## V2.0.2 (02/10/2017)
+
+* Création de plusieurs versions pour la documentation, afin de suivre les versions de prod et de test de l'application.
+* La suppression de gros jeux de données est maintenant asynchrone
+* Correction de divers bugs...
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.1...v2.0.2)
