@@ -286,3 +286,11 @@ old_sound_rabbit_mq:
             exchange_options: {name: 'ginco_%instance_name%_generic', type: direct}
             queue_options: {name: 'ginco_%instance_name%_generic'}
             callback: generic_consumer_service
+
+# Ivory CKEditor
+ivory_ck_editor:
+    default_config: my_config
+    configs:
+        my_config:
+            toolbar: standard
+            removeButtons: ''

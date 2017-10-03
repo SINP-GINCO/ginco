@@ -12,6 +12,22 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends BaseController {
 
 	/**
+	 * @Route("/", name="homepage")
+	 */
+	public function indexAction() {
+
+		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
+		$content = array();
+
+		// Get content for homepage
+		$content['intro'] = $contentRepo->find('homepage.intro');
+
+		return $this->render('IgnGincoBundle:Default:index.html.twig', array(
+			'content' => $content
+		));
+	}
+
+	/**
 	 * Contact form page
 	 *
 	 * @Route("/contact", _name="contact")
