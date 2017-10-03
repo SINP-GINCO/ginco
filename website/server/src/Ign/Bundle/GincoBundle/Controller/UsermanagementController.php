@@ -22,15 +22,13 @@ class UsermanagementController extends BaseController {
 	 */
 	public function editRoleAction(Request $request, $code = null) {
 		$role = new Role();
-
 		$logger = $this->get('logger');
 		$logger->debug('editRoleAction');
-
+		
 		if ($code != null) {
 			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
 			$role = $roleRepo->find($code);
-		}
-
+		}	
 		// Get the role form
 		$form = $this->createForm(GincoRoleType::class, $role);
 
@@ -61,7 +59,8 @@ class UsermanagementController extends BaseController {
 		}
 
 		return $this->render('OGAMBundle:UsermanagementController:edit_role.html.twig', array(
-			'form' => $form->createView()
+			'form' => $form->createView(),
+			'label_role' => $role->getLabel()	
 		));
 	}
 
@@ -138,9 +137,9 @@ class UsermanagementController extends BaseController {
 
 			$isModifiable = true;
 
-			if ($role->getLabel() === 'Grand public') {
+			/*if ($role->getLabel() === 'Grand public') {
 				$isModifiable = false;
-			}
+			}*/
 
 			$isModifiableRole[$role->getCode()] = $isModifiable;
 		}
