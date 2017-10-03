@@ -1,5 +1,5 @@
 <?php
-namespace Ign\Bundle\OGAMBundle\Entity\Website;
+namespace Ign\Bundle\GincoBundle\Entity\Website;
 
 use Doctrine\ORM\Mapping as ORM;
 

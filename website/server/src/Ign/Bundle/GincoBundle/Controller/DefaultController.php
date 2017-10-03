@@ -2,6 +2,7 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Form\ConfigurationType;
+use Ign\Bundle\GincoBundle\Form\HomepageContentType;
 use Ign\Bundle\GincoBundle\Form\ContactType;
 use Ign\Bundle\OGAMBundle\Controller\DefaultController as BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -99,6 +100,50 @@ class DefaultController extends BaseController {
 		}
 
 		return $this->render('IgnGincoBundle:Default:configuration_parameters.html.twig', array(
+			'form' => $form->createView()
+		));
+	}
+
+
+	/**
+	 * Configuration Content form page
+	 * Editable parameters:
+	 *
+	 * @Route("/configuration/content", _name="configuration_content")
+	 */
+	public function configurationContentAction(Request $request) {
+		$em = $this->getDoctrine()->getManager();
+		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
+
+		// Get homepage intro html
+		$homepageIntro = $contentRepo->find('homepage.intro');
+
+		$form = $this->createForm(new HomepageContentType(), null, array(
+			'action' => $this->generateUrl('configuration_content'),
+			'method' => 'POST'
+		));
+
+		// Set default value(s)
+		$form->get('homepageIntro')->setData($homepageIntro->getValue());
+
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			$homepageIntroValue = $form->get('homepageIntro')->getData();
+
+			// Persist the value
+			$homepageIntro->setValue($homepageIntroValue);
+			$em->flush();
+
+			$request->getSession()
+				->getFlashBag()
+				->add('success', 'Configuration.edit.submit.success');
+
+			return $this->redirect($this->generateUrl('configuration_content'));
+		}
+
+		return $this->render('IgnGincoBundle:Default:configuration_content.html.twig', array(
 			'form' => $form->createView()
 		));
 	}

@@ -10,3 +10,6 @@ ALTER TABLE website.content
   OWNER TO admin;
 GRANT ALL ON TABLE website.content TO admin;
 GRANT ALL ON TABLE website.content TO ogam;
+
+INSERT INTO website.content VALUES
+  ('homepage.intro', 'Bla bla bla', 'Texte d''introduction sur la page d''accueil');
