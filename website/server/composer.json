@@ -32,7 +32,8 @@
 		"components/jquery" : "^1.12",
 		"components/jqueryui" : "^1.12",
 		"php-amqplib/rabbitmq-bundle" : "^1.12",
-		"phpunit/phpunit" : "5.1.*"
+		"phpunit/phpunit" : "5.1.*",
+		"egeloen/ckeditor-bundle": "^6.0"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~3.0",

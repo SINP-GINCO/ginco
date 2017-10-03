@@ -10,6 +10,8 @@
 {% block body %}
     <h1>{{ configurationManager.getConfig('site_name', 'Plateforme GINCO') }}</h1>
 
+    {{ content.intro.value|raw }}
+
       <h2>{{ 'Menu.RegionalData'|trans }}</h2>
       <ul>
         <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Menu.RegionalData.Access'|trans }}</a></li>

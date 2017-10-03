@@ -1,13 +1,10 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Ign\Bundle\GincoBundle\Validator\Constraints\EmailList;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -21,7 +18,7 @@ class HomepageContentType extends AbstractType
 	{
 		$builder
 			// The homepage intro text field
-			->add('homepageIntro', TextareaType::class, array(
+			->add('homepageIntro', CKEditorType::class, array(
 				'label' => 'Intro page d\'accueil',
 				'attr' => ['data-help'  => 'Bla bla bla'],
 				'constraints' => array(
