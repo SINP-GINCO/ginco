@@ -12,6 +12,10 @@
 
     {{ content.intro.value|raw }}
 
+    <h3>Liens</h3>
+    <p><a href="{{content.link.jsonDecodedValue.href}}" target="{{ content.link.jsonDecodedValue.target }}">
+            {{ content.link.jsonDecodedValue.anchor|raw }}</a></p>
+
       <h2>{{ 'Menu.RegionalData'|trans }}</h2>
       <ul>
         <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Menu.RegionalData.Access'|trans }}</a></li>
