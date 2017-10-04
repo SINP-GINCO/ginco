@@ -1,6 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
+use Ign\Bundle\GincoBundle\Form\Components\LinkType;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -23,6 +24,10 @@ class HomepageContentType extends AbstractType
 				'attr' => ['data-help'  => 'Bla bla bla'],
 				'constraints' => array(
 				),
+			))
+			// The homepage link
+			->add('homepageLink', LinkType::class, array(
+				'label' => 'Lien',
 			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'

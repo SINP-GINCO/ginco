@@ -32,3 +32,32 @@
         {{- block('form_help') -}}
     </div>
 {%- endblock form_errors %}
+
+{# Render the custom LinkType form widget #}
+{% block link_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline form-inline-compound-field')|trim}) -%}
+    <div {{ block('widget_container_attributes') }}>
+
+        {# anchor #}
+        <div class="form-group">
+            <label class="control-label required" for="{{ form.anchor.vars.id }}">{{ translation_domain is same as(false) ? form.anchor.vars.label : form.anchor.vars.label|trans({}, translation_domain) }}</label>
+            {{- form_widget(form.anchor) -}}
+            {{- form_errors(form.anchor) -}}
+
+        </div>
+
+        {# href #}
+        <div class="form-group">
+            <label class="control-label required" for="{{ form.href.vars.id }}">{{ translation_domain is same as(false) ? form.href.vars.label : form.href.vars.label|trans({}, translation_domain) }}</label>
+            {{- form_widget(form.href) -}}
+            {{- form_errors(form.href) -}}
+        </div>
+
+        {# target #}
+        <div class="form-group">
+            <label class="control-label required" for="{{ form.target.vars.id }}">{{ translation_domain is same as(false) ? form.target.vars.label : form.target.vars.label|trans({}, translation_domain) }}</label>
+            {{- form_widget(form.target) -}}
+            {{- form_errors(form.target) -}}
+        </div>
+    </div>
+{%- endblock link_widget %}

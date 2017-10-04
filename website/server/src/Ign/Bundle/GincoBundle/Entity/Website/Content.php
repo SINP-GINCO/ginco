@@ -75,6 +75,15 @@ class Content {
 	}
 
 	/**
+	 * Get value after being json_decode-d
+	 *
+	 * @return mixed
+	 */
+	public function getJsonDecodedValue() {
+		return json_decode($this->value);
+	}
+
+	/**
 	 * Set description
 	 *
 	 * @param string $description        	

@@ -44,6 +44,20 @@ form label.required:after {
   color: lighten(@text-color, 25%); // lighten the text some for contrast
 }
 
+.form-inline-compound-field {
+  .form-group {
+    margin-left: 0;
+    margin-right: @grid-gutter-width/2;
+    vertical-align: top;
+  }
+  label.control-label {
+    padding-right: @grid-gutter-width/2;
+    vertical-align: baseline  ;
+    position: relative;
+  }
+}
+
+
 // Alerts of non-conventionnal type
 // alert-notice = alert-success
 .alert-notice {
