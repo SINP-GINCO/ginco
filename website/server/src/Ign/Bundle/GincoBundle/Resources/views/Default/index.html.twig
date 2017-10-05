@@ -13,8 +13,16 @@
     {{ content.intro.value|raw }}
 
     <h3>Liens</h3>
-    <p><a href="{{content.link.jsonDecodedValue.href}}" target="{{ content.link.jsonDecodedValue.target }}">
-            {{ content.link.jsonDecodedValue.anchor|raw }}</a></p>
+    <ul>
+        <li><a href="{{content.link.jsonDecodedValue.href}}" target="{{ content.link.jsonDecodedValue.target }}">
+            {{ content.link.jsonDecodedValue.anchor|raw }}</a></li>
+
+        <li><a href="{{ asset('uploads/' ~ content.file.jsonDecodedValue.file) }}">{{ content.file.jsonDecodedValue.anchor|raw }}</a>
+            </li>
+
+    </ul>
+
+
 
       <h2>{{ 'Menu.RegionalData'|trans }}</h2>
       <ul>

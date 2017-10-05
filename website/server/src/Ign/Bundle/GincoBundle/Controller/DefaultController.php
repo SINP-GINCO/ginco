@@ -22,6 +22,7 @@ class DefaultController extends BaseController {
 		// Get content for homepage
 		$content['intro'] = $contentRepo->find('homepage.intro');
 		$content['link'] = $contentRepo->find('homepage.link');
+		$content['file'] = $contentRepo->find('homepage.file');
 
 		return $this->render('IgnGincoBundle:Default:index.html.twig', array(
 			'content' => $content
@@ -136,11 +137,14 @@ class DefaultController extends BaseController {
 		$homepageIntro = $contentRepo->find('homepage.intro');
 		// Links
 		$homepageLink = $contentRepo->find('homepage.link');
+		// File
+		$homepageFile = $contentRepo->find('homepage.file');
 
 		// Set default value(s)
 		$data = array(
 			'homepageIntro' => $homepageIntro->getValue(),
 			'homepageLink' => $homepageLink->getValue(),
+			'homepageFile' => $homepageFile->getValue(),
 		);
 
 		$form = $this->createForm(new HomepageContentType(), $data, array(
@@ -155,6 +159,7 @@ class DefaultController extends BaseController {
 			// Persist the value
 			$homepageIntro->setValue($form->get('homepageIntro')->getData());
 			$homepageLink->setValue($form->get('homepageLink')->getData());
+			$homepageFile->setValue($form->get('homepageFile')->getData());
 			$em->flush();
 
 			$request->getSession()

@@ -58,6 +58,21 @@ form label.required:after {
 }
 
 
+// Fix inline checkboxes
+@media (min-width: 768px) {
+  .form-inline .radio input[type="radio"],
+  .form-inline .checkbox input[type="checkbox"] {
+    float: left;
+    margin-right: 5px;
+  }
+}
+
+.form-horizontal {
+  .radio, .checkbox, .radio-inline, .checkbox-inline {
+    padding-top: 3px;
+  }
+}
+
 // Alerts of non-conventionnal type
 // alert-notice = alert-success
 .alert-notice {

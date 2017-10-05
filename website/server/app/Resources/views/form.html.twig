@@ -61,3 +61,35 @@
         </div>
     </div>
 {%- endblock link_widget %}
+
+{# Render the custom LinkFileType form widget #}
+{% block link_file_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline form-inline-compound-field')|trim}) -%}
+    <div {{ block('widget_container_attributes') }}>
+
+        {# anchor #}
+        <div class="form-group">
+            <label class="control-label required" for="{{ form.anchor.vars.id }}">{{ translation_domain is same as(false) ? form.anchor.vars.label : form.anchor.vars.label|trans({}, translation_domain) }}</label>
+            {{- form_widget(form.anchor) -}}
+            {{- form_errors(form.anchor) -}}
+
+        </div>
+
+        {# file #}
+        <div class="form-group">
+            <label class="control-label required" for="{{ form.file.vars.id }}">{{ translation_domain is same as(false) ? form.file.vars.label : form.file.vars.label|trans({}, translation_domain) }}</label>
+            {{- form_widget(form.file) -}}
+        </div>
+
+        {# upload file #}
+        <div class="form-group">
+            {{- form_widget(form.uploadedFile) -}}
+            {{- form_errors(form.uploadedFile) -}}
+        </div>
+        {# suppress file #}
+        <div class="form-group">
+            {{- form_widget(form.suppressFile) -}}
+        </div>
+
+    </div>
+{%- endblock link_file_widget %}

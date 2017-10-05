@@ -174,3 +174,10 @@ services:
     ginco.dee_process:
         class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess
         arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@ginco.dee_generator", "@app.mail_manager","@logger"]
+
+    # Forms
+    form.type.link_file:
+        class: Ign\Bundle\GincoBundle\Form\Components\LinkFileType
+        arguments: ['%kernel.root_dir%/../web/uploads']
+        tags:
+            - { name: form.type }

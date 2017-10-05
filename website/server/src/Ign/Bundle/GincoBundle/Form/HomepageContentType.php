@@ -1,6 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
+use Ign\Bundle\GincoBundle\Form\Components\LinkFileType;
 use Ign\Bundle\GincoBundle\Form\Components\LinkType;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
@@ -20,6 +21,7 @@ class HomepageContentType extends AbstractType
 		$builder
 			// The homepage intro text field
 			->add('homepageIntro', CKEditorType::class, array(
+				'required' => false,
 				'label' => 'Intro page d\'accueil',
 				'attr' => ['data-help'  => 'Bla bla bla'],
 				'constraints' => array(
@@ -27,7 +29,13 @@ class HomepageContentType extends AbstractType
 			))
 			// The homepage link
 			->add('homepageLink', LinkType::class, array(
+				'required' => false,
 				'label' => 'Lien',
+			))
+			// The homepage file
+			->add('homepageFile', LinkFileType::class, array(
+				'required' => false,
+				'label' => 'Fichier',
 			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'
