@@ -93,3 +93,26 @@
 
     </div>
 {%- endblock link_file_widget %}
+
+{# Render the custom ImageType form widget #}
+{% block image_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-inline form-inline-compound-field')|trim}) -%}
+    <div {{ block('widget_container_attributes') }}>
+
+        {# Show Image and keep field as hidden #}
+        <div class="col-sm-4">
+            <img src="{{ asset('uploads/' ~ form.file.vars.value) }}">
+            <p><em>{{ form.file.vars.value }}</em></p>
+            {{- form_widget(form.file) -}}
+        </div>
+
+        {# upload file #}
+        <div class="form-group">
+            <label class="control-label" for="{{ form.uploadedFile.vars.id }}">{{ translation_domain is same as(false) ? form.uploadedFile.vars.label : form.uploadedFile.vars.label|trans({}, translation_domain) }}</label>
+            {{- form_widget(form.uploadedFile) -}}
+            {{- form_errors(form.uploadedFile) -}}
+             {# suppress file #}
+            {{- form_widget(form.suppressFile) -}}
+        </div>
+  </div>
+{%- endblock image_widget %}

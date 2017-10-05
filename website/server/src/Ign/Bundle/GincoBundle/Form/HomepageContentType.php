@@ -1,6 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
+use Ign\Bundle\GincoBundle\Form\Components\ImageType;
 use Ign\Bundle\GincoBundle\Form\Components\LinkFileType;
 use Ign\Bundle\GincoBundle\Form\Components\LinkType;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
@@ -36,6 +37,11 @@ class HomepageContentType extends AbstractType
 			->add('homepageFile', LinkFileType::class, array(
 				'required' => false,
 				'label' => 'Fichier',
+			))
+			// The homepage Image
+			->add('homepageImage', ImageType::class, array(
+				'required' => false,
+				'label' => 'Image d\'illustration',
 			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'

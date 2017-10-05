@@ -4,18 +4,16 @@ namespace Ign\Bundle\GincoBundle\Form\Components;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class LinkFileType
- * A custom form type for links to uploaded files
+ * Class ImageType
+ * A custom form type for images (uploaded as files)
  * @package Ign\Bundle\GincoBundle\Form
  */
-class LinkFileType extends AbstractType
+class ImageType extends AbstractType
 {
 	private $uploadDirectory;
 
@@ -27,24 +25,14 @@ class LinkFileType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			->add('anchor', TextType::class, array(
-				'label' => 'Nom',
-				'attr' => ['data-help'  => 'Nom du fichier à afficher'],
-				'constraints' => array(
-					new NotBlank(),
-				),
-			))
-			->add('file', TextType::class, array(
-				'disabled' => true,
-				'label' => 'Fichier',
-			))
+			->add('file', HiddenType::class, array())
 			->add('uploadedFile', FileType::class, array(
-				'label' => ''
+				'label' => 'Nouvelle Image',
 			))
 			->add('suppressFile', CheckboxType::class, array(
 				'label' => 'Supprimer'
 			))
-			->addModelTransformer(new LinkFileToJsonTransformer($this->uploadDirectory))
+			->addModelTransformer(new ImageTransformer($this->uploadDirectory))
 		;
 	}
 

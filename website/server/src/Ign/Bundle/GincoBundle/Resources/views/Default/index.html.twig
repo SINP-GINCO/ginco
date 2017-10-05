@@ -10,7 +10,14 @@
 {% block body %}
     <h1>{{ configurationManager.getConfig('site_name', 'Plateforme GINCO') }}</h1>
 
-    {{ content.intro.value|raw }}
+    <div class="row">
+        <div class="col-sm-8">
+            {{ content.intro.value|raw }}
+        </div>
+        <div class="col-sm-4">
+            <img src="{{ asset('uploads/' ~ content.image.value) }}">
+        </div>
+    </div>
 
     <h3>Liens</h3>
     <ul>

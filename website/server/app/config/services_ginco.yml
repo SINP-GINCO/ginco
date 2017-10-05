@@ -181,3 +181,9 @@ services:
         arguments: ['%kernel.root_dir%/../web/uploads']
         tags:
             - { name: form.type }
+
+    form.type.image:
+        class: Ign\Bundle\GincoBundle\Form\Components\ImageType
+        arguments: ['%kernel.root_dir%/../web/uploads']
+        tags:
+            - { name: form.type }
