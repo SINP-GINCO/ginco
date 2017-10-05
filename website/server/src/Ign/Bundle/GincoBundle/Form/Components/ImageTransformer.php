@@ -2,10 +2,9 @@
 namespace Ign\Bundle\GincoBundle\Form\Components;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class LinkFileToJsonTransformer implements DataTransformerInterface
+class ImageTransformer implements DataTransformerInterface
 {
 	private $uploadDirectory;
 
@@ -15,23 +14,25 @@ class LinkFileToJsonTransformer implements DataTransformerInterface
 	}
 
 	/**
-	* Transforms a JSON string into fields: anchor and file
+	* Transforms the fileName into data for the form
 	*
 	*/
-	public function transform($data)
+	public function transform($fileName)
 	{
-		$data = json_decode($data, true);
-		$data['uploadedFile'] = null; // Must be an instance of file, but it is always overrided
+		$data = array(
+			'file' => $fileName,
+			'uploadedFile' => null,
+		);
 		return $data;
 	}
 
 	/**
-	* Transforms the two fields anchor and file into a json string
+	* Transforms the data from the form into the image path
 	 * But before, save the uploaded file
 	*/
 	public function reverseTransform($data)
 	{
-		// $file stores the uploaded PDF file
+		// $file stores the uploaded file
 		/** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 		$file = $data['uploadedFile'];
 		// Upload new file
@@ -55,7 +56,7 @@ class LinkFileToJsonTransformer implements DataTransformerInterface
 			// If there is a previous file, we remove it
 			@unlink($this->uploadDirectory . '/' . $data['file']);
 
-			// Move the file to the directory where brochures are stored
+			// Move the file to the directory where images are stored
 			$file->move(
 				$this->uploadDirectory,
 				$fileName
@@ -68,9 +69,6 @@ class LinkFileToJsonTransformer implements DataTransformerInterface
 			$data['file'] = '';
 		}
 
-		unset($data['uploadedFile']);
-		unset($data['suppressFile']);
-
-		return json_encode($data);
+		return $data['file'];
 	}
 }

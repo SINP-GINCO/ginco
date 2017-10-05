@@ -6732,6 +6732,10 @@ article,
 figure {
   display: block;
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
 h1,
 .h1 {
   margin-bottom: 20px;
