@@ -199,7 +199,7 @@ function buildWebsite($config, $buildMode)
 			'mailer_host' => $config['mailer.host'],
 			'instance_name' => $config['instance.name'],
 			'url_basepath' => $config['url.basepath'],
-			'basepath' => (empty($config['url.basepath'])) ? '/' : $config['url.basepath'],
+			'basepath' => (empty($config['url.basepath'])) ? '' : $config['url.basepath'],
 		],
 		'__'
 	);
