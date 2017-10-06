@@ -32,7 +32,7 @@ Menu:
   Users: Utilisateurs
   Providers: Organismes
   Roles: Rôles et permissions
-  PlatformParameters: Paramètres de la plateforme
+  PlatformParameters: Configuration de la plateforme
   CheckConfiguration: Vérifier la configuration technique
 
 # Breadcrumb
@@ -100,8 +100,14 @@ Contact:
 # Configuration parameters page
 # -----------------------------
 Configuration:
-  page:
+  main:
+    title: Configuration de la plateforme
+  params:
     title: Paramètres de la plateforme
+  homepage:
+    title: Page d'accueil
+  presentation:
+    title: Page de présentation régionale
   edit:
     email:
       label: Adresse email de contact

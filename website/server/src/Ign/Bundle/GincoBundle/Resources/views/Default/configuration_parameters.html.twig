@@ -3,7 +3,15 @@
 
 {% block body %}
 
-    <h1>{% trans %}Configuration.page.title{% endtrans %}</h1>
+    <h1>{% trans %}Configuration.main.title{% endtrans %}</h1>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#">{{ 'Configuration.params.title'|trans }}</a></li>
+        <li role="presentation"><a href="{{  path('configuration_homepage') }}">{{ 'Configuration.homepage.title'|trans }}</a></li>
+        <li role="presentation"><a href="{{  path('configuration_presentation') }}">{{ 'Configuration.presentation.title'|trans }}</a></li>
+    </ul>
+
+    <h2>{{ 'Configuration.params.title'|trans  }}</h2>
 
     {{ form(form) }}
 

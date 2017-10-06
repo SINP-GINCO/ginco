@@ -128,9 +128,9 @@ class DefaultController extends BaseController {
 	 * Configuration Content form page
 	 * Editable parameters:
 	 *
-	 * @Route("/configuration/content", _name="configuration_content")
+	 * @Route("/configuration/homepage", _name="configuration_homepage")
 	 */
-	public function configurationContentAction(Request $request) {
+	public function configurationHomepageAction(Request $request) {
 		$em = $this->getDoctrine()->getManager();
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 
@@ -152,7 +152,7 @@ class DefaultController extends BaseController {
 		);
 
 		$form = $this->createForm(new HomepageContentType(), $data, array(
-			'action' => $this->generateUrl('configuration_content'),
+			'action' => $this->generateUrl('configuration_homepage'),
 			'method' => 'POST'
 		));
 
@@ -171,10 +171,65 @@ class DefaultController extends BaseController {
 				->getFlashBag()
 				->add('success', 'Configuration.edit.submit.success');
 
-			return $this->redirect($this->generateUrl('configuration_content'));
+			return $this->redirect($this->generateUrl('configuration_homepage'));
 		}
 
-		return $this->render('IgnGincoBundle:Default:configuration_content.html.twig', array(
+		return $this->render('IgnGincoBundle:Default:configuration_homepage.html.twig', array(
+			'form' => $form->createView()
+		));
+	}
+
+	/**
+	 * Configuration Presentation page form page
+	 * Editable parameters:
+	 *
+	 * @Route("/configuration/presentation", _name="configuration_presentation")
+	 */
+	public function configurationPresentationAction(Request $request) {
+		$em = $this->getDoctrine()->getManager();
+		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
+
+		// Get homepage intro html
+		$homepageIntro = $contentRepo->find('homepage.intro');
+		// Links
+		$homepageLink = $contentRepo->find('homepage.link');
+		// File
+		$homepageFile = $contentRepo->find('homepage.file');
+		// File
+		$homepageImage = $contentRepo->find('homepage.image');
+
+		// Set default value(s)
+		$data = array(
+			'homepageIntro' => $homepageIntro->getValue(),
+			'homepageLink' => $homepageLink->getValue(),
+			'homepageFile' => $homepageFile->getValue(),
+			'homepageImage' => $homepageImage->getValue(),
+		);
+
+		$form = $this->createForm(new HomepageContentType(), $data, array(
+			'action' => $this->generateUrl('configuration_presentation'),
+			'method' => 'POST'
+		));
+
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			// Persist the value
+			$homepageIntro->setValue($form->get('homepageIntro')->getData());
+			$homepageLink->setValue($form->get('homepageLink')->getData());
+			$homepageFile->setValue($form->get('homepageFile')->getData());
+			$homepageImage->setValue($form->get('homepageImage')->getData());
+			$em->flush();
+
+			$request->getSession()
+				->getFlashBag()
+				->add('success', 'Configuration.edit.submit.success');
+
+			return $this->redirect($this->generateUrl('configuration_presentation'));
+		}
+
+		return $this->render('IgnGincoBundle:Default:configuration_presentation.html.twig', array(
 			'form' => $form->createView()
 		));
 	}
