@@ -6,15 +6,18 @@
 
 {% if users|length > 0 %}
 
-	<table class="table table-hover">
+	<table	id="users-table" data-toggle="table"
+			data-click-to-select="true" data-search="true" data-search-align="right"
+			data-maintain-selected = "true" data-classes="table table-hover table-condensed"
+			data-locale="fr-FR" data-pagination="true" data-advanced-search="true" data-id-table="advancedTable">
 		<thead>
 			<tr>
-				<th>{% trans %}User Login{% endtrans %}</th>
-				<th>{% trans %}User Name{% endtrans %}</th>
-				<th>{% trans %}Provider{% endtrans %}</th>
-				<th>{% trans %}Email{% endtrans %}</th>
-				<th>{% trans %}Roles{% endtrans %}</th>
-				<th>{% trans %}Actions{% endtrans %}</th>
+				<th data-field="login" data-sortable="true">{% trans %}User Login{% endtrans %}</th>
+				<th data-field="username" data-sortable="true">{% trans %}User Name{% endtrans %}</th>
+				<th data-field="label" data-sortable="true">{% trans %}Provider{% endtrans %}</th>
+				<th data-field="email" data-sortable="true">{% trans %}Email{% endtrans %}</th>
+				<th data-field="roles" data-sortable="true">{% trans %}Roles{% endtrans %}</th>
+				<th data-searchable="false">{% trans %}Actions{% endtrans %}</th>
 			</tr>
 		</thead>
 

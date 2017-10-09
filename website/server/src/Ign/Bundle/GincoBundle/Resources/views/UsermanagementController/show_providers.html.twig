@@ -5,13 +5,16 @@
 <h1>{% trans %}Providers{% endtrans %}</h1>
 
 {% if providers|length > 0 %}
-	<table class="table table-hover">
+	<table	id="providers-table" data-toggle="table" data-height="500"
+			data-click-to-select="true" data-search="true" data-search-align="right"
+			data-maintain-selected = "true" data-classes="table table-hover table-condensed"
+			data-locale="fr-FR" data-pagination="true" data-advanced-search="true" data-id-table="advancedTable"">
 		<thead>
 		<tr>
-			<th>{% trans %}id{% endtrans %}</th>
-			<th>{% trans %}Provider Id{% endtrans %}</th>
-			<th>{% trans %}Definition{% endtrans %}</th>
-			<th>{% trans %}Actions{% endtrans %}</th>
+			<th data-field="id" data-sortable="true">{% trans %}id{% endtrans %}</th>
+			<th data-field="label" data-sortable="true">{% trans %}Provider Id{% endtrans %}</th>
+			<th data-field="definition" data-sortable="true">{% trans %}Definition{% endtrans %}</th>
+			<th data-searchable="false">{% trans %}Actions{% endtrans %}</th>
 		</tr>
 		</thead>
 
