@@ -19,14 +19,18 @@
 	</div>
 	<div class="panel-body">
 		<table id="list-import-models" data-toggle="table"
-				 class="table table-hover table-condensed table-no-bordered">
+		data-click-to-select="true" data-search="true" data-search-align="right"
+		data-maintain-selected = "true" data-classes="table table-hover table-condensed"
+		data-locale="fr-FR" data-pagination="true" data-advanced-search="true" data-id-table="advancedTable">
 			 <thead>
 				<tr>
-					<th data-halign="left" >{% trans %}importmodel.name{% endtrans %}</th>
-					<th data-valign="center">{% trans %}View{% endtrans %}</th>
-					<th data-valign="center">{% trans %}Edit{% endtrans %}</th>
-					<th data-valign="center">{% trans %}Delete{% endtrans %}</th>
-					<th data-valign="center">{% trans %}Un-Publish{% endtrans %}</th>
+					<th class="col-md-2" data-field="name" data-sortable="true" data-align="center" >{% trans %}importmodel.name{% endtrans %}</th>
+					<th class="col-md-2" data-field="description" data-sortable="true" data-align="center" >{% trans %}importmodel.description{% endtrans %}</th>
+					<th class="col-md-2" data-field="modelName" data-sortable="true" data-align="center" >{% trans %}datamodel.name{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false" data-align="center">{% trans %}View{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false" data-align="center">{% trans %}Edit{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false" data-align="center">{% trans %}Delete{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false" data-align="center">{% trans %}Un-Publish{% endtrans %}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,9 +38,27 @@
 			<tr>
 				{# Name #}
 				<td>
-					<div class="col-md-10">
+					<div>
 						<h4 class="longtext" title="{{ dataset.label }}">
 							{{ dataset.label }}
+						<h4>
+					</div>
+				</td>
+
+				{# Description #}
+				<td class="text">
+					<div>
+						<h4 class="longtext" title="{{ dataset.definition }}">
+							{{ dataset.definition }}
+						<h4>
+					</div>
+				</td>
+
+				{# Model name #}
+				<td>
+					<div>
+						<h4 class="longtext" title="{{ dataset.model.name }}">
+							{{ dataset.model.name }}
 						<h4>
 					</div>
 				</td>

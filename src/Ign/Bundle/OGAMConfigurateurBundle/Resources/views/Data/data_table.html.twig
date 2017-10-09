@@ -1,13 +1,15 @@
 {# Table of entries of the data dictionnary #}
 <table id="{{ table_name }}-data-table"
-       class="table table-hover table-condensed"
-       data-toggle="table" {{ (datas|length > 8) ? 'data-height="440"' }}>
+        data-toggle="table"
+		data-click-to-select="true" data-search="true" data-search-align="right"
+		data-maintain-selected = "true" data-classes="table table-hover table-condensed"
+		data-locale="fr-FR" data-pagination="true" data-advanced-search="true" data-id-table="advancedTable">
     <thead id="dictionnary-data-table-head" data-halign="center">
     <tr>
-        <th data-field="fieldName">{% trans %}Field name{% endtrans %}</th>
-        <th data-field="label">{% trans %}Label{% endtrans %}</th>
-        <th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
-        <th data-align="left" data-field="actions">Actions</th>
+        <th data-field="fieldName" data-sortable="true" >{% trans %}Field name{% endtrans %}</th>
+        <th data-field="label" data-sortable="true" >{% trans %}Label{% endtrans %}</th>
+        <th data-field="unitType" data-sortable="true" >{% trans %}Unit{% endtrans %}</th>
+        <th data-align="left" data-field="actions" data-searchable="false">Actions</th>
     </tr>
     </thead>
     <tbody>

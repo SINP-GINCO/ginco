@@ -86,6 +86,7 @@ navbar:
 # Modèle de données
 datamodel:
   name: Modèle de données
+  description: Description
   list.title: Liste des modèles
   copy: -copie
   add:
@@ -192,6 +193,7 @@ HierarchicalRelationsTitle: Définition des relations hiérarchiques
 # Import models
 importmodel:
   name: Modèle d'import
+  description: Description
   list.title: Liste des modèles d'import
   add:
     title: Ajouter un nouveau modèle d'import

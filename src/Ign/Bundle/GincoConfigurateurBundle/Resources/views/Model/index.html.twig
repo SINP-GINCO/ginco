@@ -17,15 +17,18 @@
 	</div>
 	<div class="panel-body">
 		<table id="list-models" data-toggle="table"
-				 class="table table-hover table-condensed table-no-bordered">
+		data-click-to-select="true" data-search="true" data-search-align="right"
+		data-maintain-selected = "true" data-classes="table table-hover table-condensed"
+		data-locale="fr-FR" data-pagination="true" data-advanced-search="true" data-id-table="advancedTable">
 			 <thead>
 				<tr>
-					<th data-valign="left" >{% trans %}datamodel.name{% endtrans %}</th>
-					<th data-valign="center">{% trans %}View{% endtrans %}</th>
-					<th data-valign="center">{% trans %}Edit{% endtrans %}</th>
-					<th data-valign="center">{% trans %}Duplicate{% endtrans %}</th>
-					<th data-valign="center">{% trans %}Delete{% endtrans %}</th>
-					<th data-valign="center">{% trans %}Un-Publish{% endtrans %}</th>
+					<th class="col-md-2" data-field="name" data-sortable="true" data-valign="left" >{% trans %}datamodel.name{% endtrans %}</th>
+					<th class="col-md-2" data-field="description" data-sortable="true" data-valign="left" >{% trans %}datamodel.description{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}View{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Edit{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Duplicate{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Delete{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Un-Publish{% endtrans %}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -33,9 +36,18 @@
 			<tr>
 				{# Name of the model  #}
 				<td>
-					<div class="col-md-10">
+					<div>
 						<h4 class="longtext" title="{{ model.name }}">
 							{{ model.name }}
+						</h4>
+					</div>
+				</td>
+
+				{# Description of the model  #}
+				<td>
+					<div>
+						<h4 class="longtext" title="{{ model.description }}">
+							{{ model.description }}
 						</h4>
 					</div>
 				</td>
