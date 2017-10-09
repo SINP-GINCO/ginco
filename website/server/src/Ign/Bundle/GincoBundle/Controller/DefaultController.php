@@ -1,6 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Ign\Bundle\GincoBundle\Entity\Website\Content;
 use Ign\Bundle\GincoBundle\Form\ConfigurationType;
 use Ign\Bundle\GincoBundle\Form\HomepageContentType;
 use Ign\Bundle\GincoBundle\Form\ContactType;
@@ -134,22 +136,43 @@ class DefaultController extends BaseController {
 		$em = $this->getDoctrine()->getManager();
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 
-		// Get homepage intro html
+		// Get homepage intro html, image, links title and links
 		$homepageIntro = $contentRepo->find('homepage.intro');
-		// Links
-		$homepageLink = $contentRepo->find('homepage.link');
-		// File
-		$homepageFile = $contentRepo->find('homepage.file');
-		// File
 		$homepageImage = $contentRepo->find('homepage.image');
+		$homepagePublicLinksTitle = $contentRepo->find('homepage.links.title');
+		$homepagePrivateLinksTitle = $contentRepo->find('homepage.private.links.title');
+		$homepageLink = array();
+		$homepageDoc = array();
+		$homepagePrivateLink = array();
+		$homepagePrivateDoc = array();
+		for ($i=1; $i<=3; $i++) {
+			$homepageLink[$i] = $contentRepo->find("homepage.link.$i");
+			$homepageDoc[$i] = $contentRepo->find("homepage.doc.$i");
+			$homepagePrivateLink[$i] = $contentRepo->find("homepage.private.link.$i");
+			$homepagePrivateDoc[$i] = $contentRepo->find("homepage.private.doc.$i");
+		}
+
+		$getValue = function(Content $content) {
+			return $content->getValue();
+		};
+
+		$homepageLinks = array_map($getValue , $homepageLink);
 
 		// Set default value(s)
+
 		$data = array(
 			'homepageIntro' => $homepageIntro->getValue(),
-			'homepageLink' => $homepageLink->getValue(),
-			'homepageFile' => $homepageFile->getValue(),
 			'homepageImage' => $homepageImage->getValue(),
+			'homepagePublicLinksTitle' => $homepagePublicLinksTitle->getValue(),
+			'homepagePrivateLinksTitle' => $homepagePrivateLinksTitle->getValue(),
+			'homepageLinks' => $homepageLinks,
 		);
+		/*for ($i=1; $i<=10; $i++) {
+			$data['homepageLink'.$i] = $homepageLink[$i]->getValue();
+			$data['homepageDoc'.$i] = $homepageDoc[$i]->getValue();
+			$data['homepagePrivateLink'.$i] = $homepagePrivateLink[$i]->getValue();
+			$data['homepagePrivateDoc'.$i] = $homepagePrivateDoc[$i]->getValue();
+		}*/
 
 		$form = $this->createForm(new HomepageContentType(), $data, array(
 			'action' => $this->generateUrl('configuration_homepage'),
@@ -162,9 +185,16 @@ class DefaultController extends BaseController {
 
 			// Persist the value
 			$homepageIntro->setValue($form->get('homepageIntro')->getData());
-			$homepageLink->setValue($form->get('homepageLink')->getData());
-			$homepageFile->setValue($form->get('homepageFile')->getData());
 			$homepageImage->setValue($form->get('homepageImage')->getData());
+			$homepagePublicLinksTitle->setValue($form->get('homepagePublicLinksTitle')->getData());
+			$homepagePrivateLinksTitle->setValue($form->get('homepagePrivateLinksTitle')->getData());
+
+			for ($i=1; $i<=10; $i++) {
+				$homepageLink[$i]->setValue($form->get('homepageLink'.$i)->getData());
+				$homepageDoc[$i]->setValue($form->get('homepageDoc'.$i)->getData());
+				$homepagePrivateLink[$i]->setValue($form->get('homepagePrivateLink'.$i)->getData());
+				$homepagePrivateDoc[$i]->setValue($form->get('homepagePrivateDoc'.$i)->getData());
+			}
 			$em->flush();
 
 			$request->getSession()
