@@ -68,6 +68,7 @@ assetic:
                 - "%kernel.root_dir%/Resources/js/hover-dropdown.js"
                 - "%kernel.root_dir%/../web/bundles/fosjsrouting/js/router.js"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/data-toggle-tooltip.js"
+                - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"
         bootstrap_css:
             inputs:
                 - "%kernel.root_dir%/Resources/css/style.css"
