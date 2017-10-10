@@ -21,6 +21,10 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
+    # CAS authenticator
+    ginco.cas_authenticator:
+      class: Ign\Bundle\GincoBundle\Security\CasAuthenticator
+
 
     # Service used to encode a challenge for the user login
     ogam.challenge_response_encoder:
