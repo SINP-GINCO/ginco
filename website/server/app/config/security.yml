@@ -23,13 +23,19 @@ security:
         main:
             pattern: ^/
             anonymous: true
-            form_login:
-                login_path: user_login
-                check_path: user_validatelogin
-            logout:
-                path:   user_logout
-                target: /
-            entry_point: OGAMBundle.login_entry_point
+            #form_login:
+            #    login_path: user_login
+            #    check_path: user_validatelogin
+
+            #logout:
+            #    path:   user_logout
+            #    target: /
+            #entry_point: OGAMBundle.login_entry_point
+
+            guard:
+              authenticators:
+                - ginco.cas_authenticator
+
     access_control:
         - { path: ^/user/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/usermanagement/, allow_if: "user and is_authenticated() and user.isAllowed('MANAGE_USERS')"}
