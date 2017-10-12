@@ -29,10 +29,7 @@ class LinkFileType extends AbstractType
 		$builder
 			->add('anchor', TextType::class, array(
 				'label' => 'Nom',
-				'attr' => ['data-help'  => 'Nom du fichier à afficher'],
-				'constraints' => array(
-					new NotBlank(),
-				),
+				// 'attr' => ['data-help'  => 'Nom du fichier à afficher'],
 			))
 			->add('file', TextType::class, array(
 				'disabled' => true,
