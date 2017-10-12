@@ -43,7 +43,7 @@ COMMENT ON COLUMN USERS.ACTIVATION_CODE IS 'The activation code for password res
 /*==============================================================*/
 create table ROLE (
 role_code            SERIAL PRIMARY KEY,
-role_label           VARCHAR(100)             	null,
+ROLE_LABEL           VARCHAR(100)             	UNIQUE NOT NULL,
 role_definition      VARCHAR(255)         		null
 );
 
