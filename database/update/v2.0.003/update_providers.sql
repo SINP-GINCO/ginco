@@ -1,0 +1,1 @@
+ALTER TABLE website.providers ADD CONSTRAINT label_unique UNIQUE(label);
