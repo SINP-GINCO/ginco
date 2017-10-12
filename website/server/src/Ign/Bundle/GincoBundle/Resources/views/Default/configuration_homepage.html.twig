@@ -23,17 +23,27 @@
 
     {{ form_start(form) }}
 
+    <h3>Paragraphe et image d'introduction (premier bandeau)</h3>
+
     {{ form_row(form.homepageIntro) }}
     {{ form_row(form.homepageImage) }}
 
-    {#{{ form_row(form.homepageLinks) }}#}
+    <hr>
+    <h3>Bloc de liens publics (deuxième bandeau)</h3>
+    <p>Ce bloc de liens/documents sera affiché à tous les visiteurs de la plateforme. Les urls indiquées peuvent être externes
+    (commeçant par http(s)://), ou internes (commençant par /). Laissez vides ceux que vous ne voulez pas remplir.</p>
 
-    <ul class="links" data-prototype="{{ form_widget(form.homepageLinks.vars.prototype)|e('html_attr') }}">
+    {{ form_row(form.homepagePublicLinksTitle) }}
+
     {% for link in form.homepageLinks %}
-        <li>{{ form_row(link) }}</li>
+        {{ form_row(link) }}
     {% endfor %}
-    </ul>
 
+    {% for link in form.homepageDocs %}
+        {{ form_row(link) }}
+    {% endfor %}
+
+    <hr>
     {{ form_row(form.submit) }}
     {{ form_end(form) }}
 

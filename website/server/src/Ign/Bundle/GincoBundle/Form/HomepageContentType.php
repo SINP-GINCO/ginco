@@ -40,6 +40,16 @@ class HomepageContentType extends AbstractType
 				'required' => false,
 				'label' => 'Titre du bloc de liens publics',
 			))
+			->add('homepageLinks', CollectionType::class, array(
+				'entry_type' => LinkType::class,
+				'entry_options' => array('label' => 'Lien public', 'required' => false),
+				'allow_add' => true,
+			))
+			->add('homepageDocs', CollectionType::class, array(
+				'entry_type' => LinkFileType::class,
+				'entry_options' => array('label' => 'Document public', 'required' => false),
+				'allow_add' => true,
+			))
 			// The block of private links and documents
 			->add('homepagePrivateLinksTitle', TextType::class, array(
 				'required' => false,
@@ -47,11 +57,6 @@ class HomepageContentType extends AbstractType
 			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'
-			))
-			->add('homepageLinks', CollectionType::class, array(
-				'entry_type' => LinkType::class,
-				'entry_options' => array('label' => false, 'required' => false),
-				'allow_add' => true,
 			))
 		;
 

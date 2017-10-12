@@ -22,20 +22,17 @@ class LinkType extends AbstractType
 		$builder
 			->add('anchor', TextType::class, array(
 				'label' => 'Ancre',
-				'attr' => ['data-help'  => 'Texte du lien'],
-				'constraints' => array(
-					new NotBlank(),
-				),
+				'required' => false,
+				// 'attr' => ['data-help'  => 'Texte du lien'],
 			))
 			->add('href', TextType::class, array(
 				'label' => 'Url',
-				'attr' => ['data-help'  => 'Commence par / (interne) ou http(s)://(externe)'],
-				'constraints' => array(
-					new NotBlank(),
-				),
+				'required' => false,
+				// 'attr' => ['data-help'  => 'Commence par / (interne) ou http(s)://(externe)'],
 			))
 			->add('target', ChoiceType::class, array(
 				'label' => 'Cible',
+				'required' => false,
 				'choices' => array(
 					'Même fenêtre' => '_self',
 					'Nouvelle fenêtre' => '_blank'
