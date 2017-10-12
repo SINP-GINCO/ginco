@@ -8,7 +8,6 @@ ALTER TABLE permission_per_role RENAME TO old_permission_per_role;
 ALTER TABLE dataset_role_restriction RENAME TO old_dataset_role_restriction;
 
 
-ALTER TABLE old_role DROP CONSTRAINT PK_ROLE CASCADE;
 ALTER TABLE old_role_to_schema DROP CONSTRAINT PK_ROLE_TO_SCHEMA CASCADE;
 ALTER TABLE old_role_to_user DROP CONSTRAINT PK_ROLE_TO_USER CASCADE;
 ALTER TABLE old_permission_per_role DROP CONSTRAINT PK_PERMISSION_PER_ROLE CASCADE;
