@@ -183,12 +183,12 @@ services:
     # Forms
     form.type.link_file:
         class: Ign\Bundle\GincoBundle\Form\Components\LinkFileType
-        arguments: ['%kernel.root_dir%/../web/uploads']
+        arguments: ['%kernel.root_dir%/../web/upload']
         tags:
             - { name: form.type }
 
     form.type.image:
         class: Ign\Bundle\GincoBundle\Form\Components\ImageType
-        arguments: ['%kernel.root_dir%/../web/uploads']
+        arguments: ['%kernel.root_dir%/../web/upload']
         tags:
             - { name: form.type }
