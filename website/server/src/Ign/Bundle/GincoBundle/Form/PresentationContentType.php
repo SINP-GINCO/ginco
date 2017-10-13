@@ -18,56 +18,41 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * Configuration parameters form type
  * @package Ign\Bundle\GincoBundle\Form
  */
-class HomepageContentType extends AbstractType
+class PresentationContentType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
-			// The homepage title
-			->add('homepageTitle', TextType::class, array(
-				'label' => 'Titre page d\'accueil',
+			// The presentation title
+			->add('presentationTitle', TextType::class, array(
+				'label' => 'Titre page de présentation',
 				'constraints' => array(
 					new NotBlank(),
 				),
 			))
-			// The homepage intro text field
-			->add('homepageIntro', CKEditorType::class, array(
+			// The presentation intro text field
+			->add('presentationIntro', CKEditorType::class, array(
 				'required' => false,
-				'label' => 'Intro page d\'accueil',
+				'label' => 'Contenu page de présentation',
 				'constraints' => array(
 				),
 			))
-			// The homepage Image
-			->add('homepageImage', ImageType::class, array(
+			// The presentation Image
+			->add('presentationImage', ImageType::class, array(
 				'required' => false,
 				'label' => 'Image d\'illustration',
 			))
 			// The block of public links and documents
-			->add('homepagePublicLinksTitle', TextType::class, array(
-				'label' => 'Titre du bloc de liens publics',
+			->add('presentationPublicLinksTitle', TextType::class, array(
+				'label' => 'Titre du bloc de liens',
 			))
-			->add('homepageLinks', CollectionType::class, array(
+			->add('presentationLinks', CollectionType::class, array(
 				'entry_type' => LinkType::class,
 				'entry_options' => array('label' => 'Lien public', 'required' => false),
 			))
-			->add('homepageDocs', CollectionType::class, array(
+			->add('presentationDocs', CollectionType::class, array(
 				'entry_type' => LinkFileType::class,
 				'entry_options' => array('label' => 'Document public', 'required' => false),
-			))
-			// The block of private links and documents
-			->add('homepagePrivateLinksTitle', TextType::class, array(
-				'required' => false,
-				'label' => 'Titre du bloc de liens privés',
-			))
-			->add('homepagePrivateLinks', CollectionType::class, array(
-				'entry_type' => LinkType::class,
-				'entry_options' => array('label' => 'Lien privé', 'required' => false),
-				'allow_add' => true,
-			))
-			->add('homepagePrivateDocs', CollectionType::class, array(
-				'entry_type' => LinkFileType::class,
-				'entry_options' => array('label' => 'Document privé', 'required' => false),
-				'allow_add' => true,
 			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'
@@ -81,6 +66,6 @@ class HomepageContentType extends AbstractType
 
 	public function getName()
 	{
-		return 'homepage_content_form';
+		return 'presentation_content_form';
 	}
 }

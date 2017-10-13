@@ -6740,7 +6740,9 @@ h1,
 .h1 {
   margin-bottom: 20px;
 }
+h1,
 h1.underlined,
+h1.orange,
 h1.underlined.orange {
   border-bottom: 3px solid #f79f3f !important;
   display: inline-block;
@@ -6748,6 +6750,7 @@ h1.underlined.orange {
   padding-top: 10px;
   margin-bottom: 20px;
 }
+h1.green,
 h1.underlined.green {
   border-bottom-color: #b3c951 !important;
 }
@@ -6891,6 +6894,11 @@ form label.required:after {
   border-radius: 0;
   box-shadow: none;
 }
+.v-spacer {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+}
 #page-header {
   background-image: -webkit-linear-gradient(left, white 50%, #7E931E 50%);
   background-image: -o-linear-gradient(left, white 50%, #7E931E 50%);
@@ -6997,7 +7005,7 @@ body {
   width: auto;
 }
 .homepage .blocks-container {
-  margin: 30px -30px;
+  margin: 0 -30px;
 }
 .homepage .blocks-container .blocks {
   display: table;
