@@ -13,19 +13,39 @@ use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends BaseController {
 
+	// Max number of links of each type displayed on homepage
+	private $numLinks = 5;
+
 	/**
 	 * @Route("/", name="homepage")
 	 */
 	public function indexAction() {
 
+		// Get configurable content for homepage, from content table
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 		$content = array();
+		$content['intro'] = $contentRepo->find('homepage.intro')->getValue();
+		$content['image'] = $contentRepo->find('homepage.image')->getValue();
+		$content['publicLinksTitle'] = $contentRepo->find('homepage.links.title')->getValue();
+		$content['privateLinksTitle'] = $contentRepo->find('homepage.private.links.title')->getValue();
 
-		// Get content for homepage
-		$content['intro'] = $contentRepo->find('homepage.intro');
-		$content['link'] = $contentRepo->find('homepage.link');
-		$content['file'] = $contentRepo->find('homepage.file');
-		$content['image'] = $contentRepo->find('homepage.image');
+		$getValue = function($content) {
+			return $content->getJsonDecodedValue();
+		};
+		$homepageLink = array();
+		$homepageDoc = array();
+		$homepagePrivateLink = array();
+		$homepagePrivateDoc = array();
+		for ($i=1; $i<=$this->numLinks; $i++) {
+			$homepageLink[$i] = $contentRepo->find("homepage.link.$i");
+			$homepageDoc[$i] = $contentRepo->find("homepage.doc.$i");
+			$homepagePrivateLink[$i] = $contentRepo->find("homepage.private.link.$i");
+			$homepagePrivateDoc[$i] = $contentRepo->find("homepage.private.doc.$i");
+		}
+		$content['links'] = array_map($getValue, $homepageLink);
+		$content['docs'] = array_map($getValue, $homepageDoc);
+		$content['privateLinks'] = array_map($getValue, $homepagePrivateLink);
+		$content['homepageDocs'] = array_map($getValue, $homepagePrivateDoc);
 
 		return $this->render('IgnGincoBundle:Default:index.html.twig', array(
 			'content' => $content
@@ -150,7 +170,7 @@ class DefaultController extends BaseController {
 		$homepageDoc = array();
 		$homepagePrivateLink = array();
 		$homepagePrivateDoc = array();
-		for ($i=1; $i<=3; $i++) {
+		for ($i=1; $i<=$this->numLinks; $i++) {
 			$homepageLink[$i] = $contentRepo->find("homepage.link.$i");
 			$homepageDoc[$i] = $contentRepo->find("homepage.doc.$i");
 			$homepagePrivateLink[$i] = $contentRepo->find("homepage.private.link.$i");
@@ -158,6 +178,8 @@ class DefaultController extends BaseController {
 		}
 		$homepageLinkValue = array_map($getValue, $homepageLink);
 		$homepageDocValue = array_map($getValue, $homepageDoc);
+		$homepagePrivateLinkValue = array_map($getValue, $homepagePrivateLink);
+		$homepagePrivateDocValue = array_map($getValue, $homepagePrivateDoc);
 
 		// Set default value(s)
 
@@ -168,14 +190,9 @@ class DefaultController extends BaseController {
 			'homepagePrivateLinksTitle' => $homepagePrivateLinksTitle->getValue(),
 			'homepageLinks' => $homepageLinkValue,
 			'homepageDocs' => $homepageDocValue,
+			'homepagePrivateLinks' => $homepagePrivateLinkValue,
+			'homepagePrivateDocs' => $homepagePrivateDocValue,
 		);
-		/*for ($i=1; $i<=10; $i++) {
-			$data['homepageLink'.$i] = $homepageLink[$i]->getValue();
-			$data['homepageDoc'.$i] = $homepageDoc[$i]->getValue();
-			$data['homepagePrivateLink'.$i] = $homepagePrivateLink[$i]->getValue();
-			$data['homepagePrivateDoc'.$i] = $homepagePrivateDoc[$i]->getValue();
-		}*/
-
 		$form = $this->createForm(new HomepageContentType(), $data, array(
 			'action' => $this->generateUrl('configuration_homepage'),
 			'method' => 'POST'
@@ -192,12 +209,14 @@ class DefaultController extends BaseController {
 			$homepagePrivateLinksTitle->setValue($form->get('homepagePrivateLinksTitle')->getData());
 			$homepageLinkValue = $form->get('homepageLinks')->getData();
 			$homepageDocValue = $form->get('homepageDocs')->getData();
+			$homepagePrivateLinkValue = $form->get('homepagePrivateLinks')->getData();
+			$homepagePrivateDocValue = $form->get('homepagePrivateDocs')->getData();
 
-			for ($i=1; $i<=3; $i++) {
+			for ($i=1; $i<=$this->numLinks; $i++) {
 				$homepageLink[$i]->setValue($homepageLinkValue[$i]);
 				$homepageDoc[$i]->setValue($homepageDocValue[$i]);
-				/*$homepagePrivateLink[$i]->setValue($form->get('homepagePrivateLink'.$i)->getData());
-				$homepagePrivateDoc[$i]->setValue($form->get('homepagePrivateDoc'.$i)->getData());*/
+				$homepagePrivateLink[$i]->setValue($homepagePrivateLinkValue[$i]);
+				$homepagePrivateDoc[$i]->setValue($homepagePrivateDocValue[$i]);
 			}
 			$em->flush();
 
