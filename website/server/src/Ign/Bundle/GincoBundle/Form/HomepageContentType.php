@@ -55,33 +55,20 @@ class HomepageContentType extends AbstractType
 				'required' => false,
 				'label' => 'Titre du bloc de liens privés',
 			))
+			->add('homepagePrivateLinks', CollectionType::class, array(
+				'entry_type' => LinkType::class,
+				'entry_options' => array('label' => 'Lien privé', 'required' => false),
+				'allow_add' => true,
+			))
+			->add('homepagePrivateDocs', CollectionType::class, array(
+				'entry_type' => LinkFileType::class,
+				'entry_options' => array('label' => 'Document privé', 'required' => false),
+				'allow_add' => true,
+			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'
 			))
 		;
-
-		/*
-		// block of public and private links
-		for ($i=1; $i<=10; $i++) {
-			$builder
-				->add('homepageLink' . $i, LinkType::class, array(
-					'required' => false,
-					'label' => "Lien $i",
-				))
-				->add('homepageFile' . $i, LinkFileType::class, array(
-					'required' => false,
-					'label' => "Fichier $i",
-				))
-				->add('homepagePrivateLink' . $i, LinkType::class, array(
-					'required' => false,
-					'label' => "Lien $i",
-				))
-				->add('homepagePrivateFile' . $i, LinkFileType::class, array(
-					'required' => false,
-					'label' => "Fichier $i",
-				));
-		}
-		*/
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

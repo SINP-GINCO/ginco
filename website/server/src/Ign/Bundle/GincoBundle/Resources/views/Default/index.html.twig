@@ -11,14 +11,40 @@
     <h1>{{ configurationManager.getConfig('site_name', 'Plateforme GINCO') }}</h1>
 
     <div class="row">
-        <div class="col-sm-8">
-            {{ content.intro.value|raw }}
+        <div class="{{ content.image is empty ? 'col-sm-12' : 'col-sm-8' }}">
+            {{ content.intro|raw }}
         </div>
-        <div class="col-sm-4">
-            <img src="{{ asset('uploads/' ~ content.image.value) }}">
-        </div>
+        {% if content.image is not empty %}
+            <div class="col-sm-4">
+                <img src="{{ asset('uploads/' ~ content.image) }}">
+            </div>
+        {% endif %}
     </div>
 
+
+    <div class="row">
+
+        <div class="col-sm-4">
+            <h3>Liens</h3>
+            {% for link in content.links if ( link.href is not empty and link.anchor is not empty) %}
+                <div><a href="{{ link.href }}" target="{{ link.target }}">
+                        {{ link.anchor|raw }}</a></div>
+            {% endfor %}
+            <h3>Documents</h3>
+            {% for doc in content.docs if ( doc.file is not empty and doc.anchor is not empty) %}
+                <div><a href="{{ asset('uploads/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
+                    </a></div>
+            {% endfor %}
+
+        </div>
+
+
+
+    </div>
+
+
+
+{#
     <h3>Liens</h3>
     <ul>
         <li><a href="{{content.link.jsonDecodedValue.href}}" target="{{ content.link.jsonDecodedValue.target }}">
@@ -28,6 +54,22 @@
             </li>
 
     </ul>
+
+#}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
