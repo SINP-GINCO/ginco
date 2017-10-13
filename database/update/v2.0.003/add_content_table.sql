@@ -12,6 +12,7 @@ GRANT ALL ON TABLE website.content TO admin;
 GRANT ALL ON TABLE website.content TO ogam;
 
 INSERT INTO website.content VALUES
+  ('homepage.title', '', 'Titre de la page d''accueil'),
   ('homepage.intro', '', 'Texte d''introduction sur la page d''accueil'),
   ('homepage.image', '', 'Image d''illustration sur la page d''accueil'),
   ('homepage.links.title', '', 'Titre du bloc de liens publics sur la page d''accueil'),

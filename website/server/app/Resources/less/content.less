@@ -20,8 +20,78 @@ img {
   height: auto;
 }
 
+//
+// Underlined titles
+// ------------------------------------
 h1, .h1 {
   margin-bottom: @line-height-computed;
+}
+
+h1.underlined, h1.underlined.orange {
+  border-bottom: 3px solid @sinp-orange !important;
+  display: inline-block;
+  padding-bottom: @line-height-computed/2;
+  padding-top: @line-height-computed/2;
+  margin-bottom: @line-height-computed;
+}
+h1.underlined.green {
+  border-bottom-color: @sinp-green-light !important;
+}
+
+h2.underlined, h2.underlined.orange {
+  border-bottom: 3px solid @sinp-orange !important;
+  display: inline-block;
+  padding-bottom: @line-height-computed/2;
+  padding-top: @line-height-computed/2;
+  margin-bottom: @line-height-computed;
+  // center:
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+h2.underlined.green {
+  border-bottom-color: @sinp-green-light !important;
+}
+
+h3.underlined, h3.underlined.orange {
+  border-bottom: 3px solid @sinp-orange !important;
+  display: inline-block;
+  padding-bottom: @line-height-computed/4;
+}
+h3.underlined.green {
+  border-bottom-color: @sinp-green-light !important;
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+  &.stick-to-top {
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
+
+// List bullets are green triangle:
+ul.triangle-bullets, ul.triangle-bullets.green {
+  margin: 0.5em 0;
+  padding: 0 0 0 1em;
+  list-style: none;
+
+  & > li:before {
+    content: "";
+    border-color: transparent @sinp-green-light;
+    border-style: solid;
+    border-width: 0.35em 0 0.35em 0.45em;
+    display: block;
+    height: 0;
+    width: 0;
+    left: -1em;
+    top: 1.15em;
+    position: relative;
+  }
+}
+ul.triangle-bullets.orange {
+  & > li:before {
+    border-color: transparent @sinp-orange !important;
+  }
 }
 
 // Text Color
@@ -109,6 +179,13 @@ form label.required:after {
 // Outer container
 .progress {
   margin-bottom: @line-height-computed/2;
+}
+
+// Wells
+.well {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 //------------------------------
@@ -241,6 +318,27 @@ body {
     height: 50px;
     width: auto;
   }
+}
+
+
+//------------------------------
+// Homepage
+//------------------------------
+
+.homepage {
+  .blocks-container {
+    margin: 30px -30px;
+    .blocks {
+      display: table;
+      width: 100%;
+      table-layout: fixed; // same width for all columns
+      border-spacing: 30px;
+      & > div {
+        display: table-cell;
+      }
+    }
+  }
+
 }
 
 
