@@ -101,7 +101,7 @@
 
         {# Show Image and keep field as hidden #}
         <div class="col-sm-4">
-            <img src="{{ asset('uploads/' ~ form.file.vars.value) }}">
+            <img src="{{ asset('upload/' ~ form.file.vars.value) }}">
             <p><em>{{ form.file.vars.value }}</em></p>
             {{- form_widget(form.file) -}}
         </div>

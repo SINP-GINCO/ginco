@@ -16,7 +16,7 @@
         </div>
         {% if content.image is not empty %}
             <div class="col-sm-4">
-                <img src="{{ asset('uploads/' ~ content.image) }}">
+                <img src="{{ asset('upload/' ~ content.image) }}">
             </div>
         {% endif %}
     </div>
@@ -42,7 +42,7 @@
                 {% endfor %}
 
                 {% for doc in content.docs if ( doc.file is not empty and doc.anchor is not empty) %}
-                    <li><a href="{{ asset('uploads/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
+                    <li><a href="{{ asset('upload/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
                         </a></li>
                 {% endfor %}
                 </ul>
@@ -59,7 +59,7 @@
                     {% endfor %}
 
                     {% for doc in content.privateDocs if ( doc.file is not empty and doc.anchor is not empty) %}
-                        <li><a href="{{ asset('uploads/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
+                        <li><a href="{{ asset('upload/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
                             </a></li>
                     {% endfor %}
                     </ul>
