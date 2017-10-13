@@ -5,6 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Ign\Bundle\GincoBundle\Entity\Website\Content;
 use Ign\Bundle\GincoBundle\Form\ConfigurationType;
 use Ign\Bundle\GincoBundle\Form\HomepageContentType;
+use Ign\Bundle\GincoBundle\Form\PresentationContentType;
 use Ign\Bundle\GincoBundle\Form\ContactType;
 use Ign\Bundle\OGAMBundle\Controller\DefaultController as BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,6 +18,8 @@ class DefaultController extends BaseController {
 	private $numLinks = 5;
 
 	/**
+	 * Homepage (configurable content) 
+	 * 
 	 * @Route("/", name="homepage")
 	 */
 	public function indexAction() {
@@ -26,6 +29,7 @@ class DefaultController extends BaseController {
 		$content = array();
 		$content['title'] = $contentRepo->find('homepage.title')->getValue();
 		$content['intro'] = $contentRepo->find('homepage.intro')->getValue();
+		$content['presentation'] = $contentRepo->find('presentation.intro')->getValue();
 		$content['image'] = $contentRepo->find('homepage.image')->getValue();
 		$content['publicLinksTitle'] = $contentRepo->find('homepage.links.title')->getValue();
 		$content['privateLinksTitle'] = $contentRepo->find('homepage.private.links.title')->getValue();
@@ -49,6 +53,39 @@ class DefaultController extends BaseController {
 		$content['privateDocs'] = array_map($getValue, $homepagePrivateDoc);
 
 		return $this->render('IgnGincoBundle:Default:index.html.twig', array(
+			'content' => $content
+		));
+	}
+
+	/**
+	 * Presentation page (configurable content) 
+	 * 
+	 * @Route("/presentation", name="presentation")
+	 */
+	public function presentationAction() {
+
+		// Get configurable content for homepage, from content table
+		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
+		$content = array();
+		$content['title'] = $contentRepo->find('presentation.title')->getValue();
+		$content['intro'] = $contentRepo->find('presentation.intro')->getValue();
+		$content['image'] = $contentRepo->find('presentation.image')->getValue();
+		$content['publicLinksTitle'] = $contentRepo->find('presentation.links.title')->getValue();
+
+		$getValue = function($content) {
+			return $content->getJsonDecodedValue();
+		};
+		$presentationLink = array();
+		$presentationDoc = array();
+		for ($i=1; $i<=$this->numLinks; $i++) {
+			$presentationLink[$i] = $contentRepo->find("presentation.link.$i");
+			$presentationDoc[$i] = $contentRepo->find("presentation.doc.$i");
+			
+		}
+		$content['links'] = array_map($getValue, $presentationLink);
+		$content['docs'] = array_map($getValue, $presentationDoc);
+
+		return $this->render('IgnGincoBundle:Default:presentation.html.twig', array(
 			'content' => $content
 		));
 	}
@@ -246,24 +283,36 @@ class DefaultController extends BaseController {
 		$em = $this->getDoctrine()->getManager();
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 
-		// Get homepage intro html
-		$homepageIntro = $contentRepo->find('homepage.intro');
-		// Links
-		$homepageLink = $contentRepo->find('homepage.link');
-		// File
-		$homepageFile = $contentRepo->find('homepage.file');
-		// File
-		$homepageImage = $contentRepo->find('homepage.image');
+		// Get presentation intro html, image, links title and links
+		$presentationTitle = $contentRepo->find('presentation.title');
+		$presentationIntro = $contentRepo->find('presentation.intro');
+		$presentationImage = $contentRepo->find('presentation.image');
+		$presentationPublicLinksTitle = $contentRepo->find('presentation.links.title');
+
+		$getValue = function($content) {
+			return $content->getValue();
+		};
+
+		$presentationLink = array();
+		$presentationDoc = array();
+		for ($i=1; $i<=$this->numLinks; $i++) {
+			$presentationLink[$i] = $contentRepo->find("presentation.link.$i");
+			$presentationDoc[$i] = $contentRepo->find("presentation.doc.$i");
+		}
+		$presentationLinkValue = array_map($getValue, $presentationLink);
+		$presentationDocValue = array_map($getValue, $presentationDoc);
 
 		// Set default value(s)
-		$data = array(
-			'homepageIntro' => $homepageIntro->getValue(),
-			'homepageLink' => $homepageLink->getValue(),
-			'homepageFile' => $homepageFile->getValue(),
-			'homepageImage' => $homepageImage->getValue(),
-		);
 
-		$form = $this->createForm(new HomepageContentType(), $data, array(
+		$data = array(
+			'presentationTitle' => $presentationTitle->getValue(),
+			'presentationIntro' => $presentationIntro->getValue(),
+			'presentationImage' => $presentationImage->getValue(),
+			'presentationPublicLinksTitle' => $presentationPublicLinksTitle->getValue(),
+			'presentationLinks' => $presentationLinkValue,
+			'presentationDocs' => $presentationDocValue,
+		);
+		$form = $this->createForm(new PresentationContentType(), $data, array(
 			'action' => $this->generateUrl('configuration_presentation'),
 			'method' => 'POST'
 		));
@@ -273,10 +322,17 @@ class DefaultController extends BaseController {
 		if ($form->isValid()) {
 
 			// Persist the value
-			$homepageIntro->setValue($form->get('homepageIntro')->getData());
-			$homepageLink->setValue($form->get('homepageLink')->getData());
-			$homepageFile->setValue($form->get('homepageFile')->getData());
-			$homepageImage->setValue($form->get('homepageImage')->getData());
+			$presentationTitle->setValue($form->get('presentationTitle')->getData());
+			$presentationIntro->setValue($form->get('presentationIntro')->getData());
+			$presentationImage->setValue($form->get('presentationImage')->getData());
+			$presentationPublicLinksTitle->setValue($form->get('presentationPublicLinksTitle')->getData());
+			$presentationLinkValue = $form->get('presentationLinks')->getData();
+			$presentationDocValue = $form->get('presentationDocs')->getData();
+
+			for ($i=1; $i<=$this->numLinks; $i++) {
+				$presentationLink[$i]->setValue($presentationLinkValue[$i]);
+				$presentationDoc[$i]->setValue($presentationDocValue[$i]);
+			}
 			$em->flush();
 
 			$request->getSession()

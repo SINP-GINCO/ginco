@@ -56,4 +56,19 @@ INSERT INTO website.content VALUES
   ('homepage.private.doc.7', '{"anchor":"","file":""}', 'document privé sur page accueil'),
   ('homepage.private.doc.8', '{"anchor":"","file":""}', 'document privé sur page accueil'),
   ('homepage.private.doc.9', '{"anchor":"","file":""}', 'document privé sur page accueil'),
-  ('homepage.private.doc.10', '{"anchor":"","file":""}', 'document privé sur page accueil');
+  ('homepage.private.doc.10', '{"anchor":"","file":""}', 'document privé sur page accueil'),
+
+  ('presentation.title', '', 'Titre de la page de presentation'),
+  ('presentation.intro', '', 'Texte d''introduction sur la page de presentation'),
+  ('presentation.image', '', 'Image d''illustration sur la page de presentation'),
+  ('presentation.links.title', '', 'Titre du bloc de liens publics sur la page de presentation'),
+  ('presentation.link.1', '{"anchor":"","href":"","target":"_self"}', 'Lien public sur page de presentation'),
+  ('presentation.link.2', '{"anchor":"","href":"","target":"_self"}', 'Lien public sur page de presentation'),
+  ('presentation.link.3', '{"anchor":"","href":"","target":"_self"}', 'Lien public sur page de presentation'),
+  ('presentation.link.4', '{"anchor":"","href":"","target":"_self"}', 'Lien public sur page de presentation'),
+  ('presentation.link.5', '{"anchor":"","href":"","target":"_self"}', 'Lien public sur page de presentation'),
+  ('presentation.doc.1', '{"anchor":"","file":""}', 'Document public sur page de presentation'),
+  ('presentation.doc.2', '{"anchor":"","file":""}', 'Document public sur page de presentation'),
+  ('presentation.doc.3', '{"anchor":"","file":""}', 'Document public sur page de presentation'),
+  ('presentation.doc.4', '{"anchor":"","file":""}', 'Document public sur page de presentation'),
+  ('presentation.doc.5', '{"anchor":"","file":""}', 'Document public sur page de presentation');

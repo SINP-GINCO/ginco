@@ -21,6 +21,32 @@
 
     <h2>{{ 'Configuration.presentation.title'|trans  }}</h2>
 
-    {{ form(form) }}
+    <p>Ces éléments seront affichés sur la <a href="{{ path('presentation') }}">page de présentation du SINP régional.</a></p>
+
+    {{ form_start(form) }}
+
+    {{ form_row(form.presentationTitle) }}
+    {{ form_row(form.presentationIntro) }}
+    {{ form_row(form.presentationImage) }}
+
+    <hr>
+    <h3>Bloc de liens (colonne de droite)</h3>
+    <p>Ce bloc de liens/documents sera affiché à <em>tous les visiteurs de la plateforme</em>. Les urls indiquées peuvent être externes
+        (commençant par http(s)://), ou internes (commençant par /). Laissez vides ceux que vous ne voulez pas remplir.</p>
+
+    {{ form_row(form.presentationPublicLinksTitle) }}
+
+    {% for link in form.presentationLinks %}
+        {{ form_row(link) }}
+    {% endfor %}
+
+    {% for link in form.presentationDocs %}
+        {{ form_row(link) }}
+    {% endfor %}
+
+    <hr>
+    {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+
 
 {% endblock %}
