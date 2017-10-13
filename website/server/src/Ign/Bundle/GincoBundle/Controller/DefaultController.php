@@ -24,6 +24,7 @@ class DefaultController extends BaseController {
 		// Get configurable content for homepage, from content table
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 		$content = array();
+		$content['title'] = $contentRepo->find('homepage.title')->getValue();
 		$content['intro'] = $contentRepo->find('homepage.intro')->getValue();
 		$content['image'] = $contentRepo->find('homepage.image')->getValue();
 		$content['publicLinksTitle'] = $contentRepo->find('homepage.links.title')->getValue();
@@ -45,7 +46,7 @@ class DefaultController extends BaseController {
 		$content['links'] = array_map($getValue, $homepageLink);
 		$content['docs'] = array_map($getValue, $homepageDoc);
 		$content['privateLinks'] = array_map($getValue, $homepagePrivateLink);
-		$content['homepageDocs'] = array_map($getValue, $homepagePrivateDoc);
+		$content['privateDocs'] = array_map($getValue, $homepagePrivateDoc);
 
 		return $this->render('IgnGincoBundle:Default:index.html.twig', array(
 			'content' => $content
@@ -157,6 +158,7 @@ class DefaultController extends BaseController {
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 
 		// Get homepage intro html, image, links title and links
+		$homepageTitle = $contentRepo->find('homepage.title');
 		$homepageIntro = $contentRepo->find('homepage.intro');
 		$homepageImage = $contentRepo->find('homepage.image');
 		$homepagePublicLinksTitle = $contentRepo->find('homepage.links.title');
@@ -184,6 +186,7 @@ class DefaultController extends BaseController {
 		// Set default value(s)
 
 		$data = array(
+			'homepageTitle' => $homepageTitle->getValue(),
 			'homepageIntro' => $homepageIntro->getValue(),
 			'homepageImage' => $homepageImage->getValue(),
 			'homepagePublicLinksTitle' => $homepagePublicLinksTitle->getValue(),
@@ -203,6 +206,7 @@ class DefaultController extends BaseController {
 		if ($form->isValid()) {
 
 			// Persist the value
+			$homepageTitle->setValue($form->get('homepageTitle')->getData());
 			$homepageIntro->setValue($form->get('homepageIntro')->getData());
 			$homepageImage->setValue($form->get('homepageImage')->getData());
 			$homepagePublicLinksTitle->setValue($form->get('homepagePublicLinksTitle')->getData());

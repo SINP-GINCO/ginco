@@ -6740,6 +6740,73 @@ h1,
 .h1 {
   margin-bottom: 20px;
 }
+h1.underlined,
+h1.underlined.orange {
+  border-bottom: 3px solid #f79f3f !important;
+  display: inline-block;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+}
+h1.underlined.green {
+  border-bottom-color: #b3c951 !important;
+}
+h2.underlined,
+h2.underlined.orange {
+  border-bottom: 3px solid #f79f3f !important;
+  display: inline-block;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0%);
+}
+h2.underlined.green {
+  border-bottom-color: #b3c951 !important;
+}
+h3.underlined,
+h3.underlined.orange {
+  border-bottom: 3px solid #f79f3f !important;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+h3.underlined.green {
+  border-bottom-color: #b3c951 !important;
+}
+h1.stick-to-top,
+.h1.stick-to-top,
+h2.stick-to-top,
+.h2.stick-to-top,
+h3.stick-to-top,
+.h3.stick-to-top,
+h4.stick-to-top,
+.h4.stick-to-top {
+  margin-top: 0;
+  padding-top: 0;
+}
+ul.triangle-bullets,
+ul.triangle-bullets.green {
+  margin: 0.5em 0;
+  padding: 0 0 0 1em;
+  list-style: none;
+}
+ul.triangle-bullets > li:before,
+ul.triangle-bullets.green > li:before {
+  content: "";
+  border-color: transparent #b3c951;
+  border-style: solid;
+  border-width: 0.35em 0 0.35em 0.45em;
+  display: block;
+  height: 0;
+  width: 0;
+  left: -1em;
+  top: 1.15em;
+  position: relative;
+}
+ul.triangle-bullets.orange > li:before {
+  border-color: transparent #f79f3f !important;
+}
 .color-danger {
   color: #d9534f;
 }
@@ -6818,6 +6885,11 @@ form label.required:after {
 }
 .progress {
   margin-bottom: 10px;
+}
+.well {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 #page-header {
   background-image: -webkit-linear-gradient(left, white 50%, #7E931E 50%);
@@ -6923,6 +6995,18 @@ body {
 #copyrightsMNHNModal .logo.inpn {
   height: 50px;
   width: auto;
+}
+.homepage .blocks-container {
+  margin: 30px -30px;
+}
+.homepage .blocks-container .blocks {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 30px;
+}
+.homepage .blocks-container .blocks > div {
+  display: table-cell;
 }
 .password-change-user-name {
   margin-bottom: 20px;

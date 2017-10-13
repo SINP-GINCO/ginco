@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class ConfigurationType
@@ -22,11 +23,17 @@ class HomepageContentType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder
+			// The homepage title
+			->add('homepageTitle', TextType::class, array(
+				'label' => 'Titre page d\'accueil',
+				'constraints' => array(
+					new NotBlank(),
+				),
+			))
 			// The homepage intro text field
 			->add('homepageIntro', CKEditorType::class, array(
 				'required' => false,
 				'label' => 'Intro page d\'accueil',
-				'attr' => ['data-help'  => 'Bla bla bla'],
 				'constraints' => array(
 				),
 			))
@@ -37,7 +44,6 @@ class HomepageContentType extends AbstractType
 			))
 			// The block of public links and documents
 			->add('homepagePublicLinksTitle', TextType::class, array(
-				'required' => false,
 				'label' => 'Titre du bloc de liens publics',
 			))
 			->add('homepageLinks', CollectionType::class, array(
