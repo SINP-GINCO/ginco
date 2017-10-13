@@ -27,10 +27,10 @@ class ImageType extends AbstractType
 		$builder
 			->add('file', HiddenType::class, array())
 			->add('uploadedFile', FileType::class, array(
-				'label' => 'Nouvelle Image',
+				'label' => 'New image',
 			))
 			->add('suppressFile', CheckboxType::class, array(
-				'label' => 'Supprimer'
+				'label' => 'Suppress'
 			))
 			->addModelTransformer(new ImageTransformer($this->uploadDirectory))
 		;
