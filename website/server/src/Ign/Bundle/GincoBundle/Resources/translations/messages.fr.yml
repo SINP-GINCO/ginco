@@ -13,7 +13,17 @@ MNHN copyrights: Copyrights MNHN
 Ginco project: Projet Ginco
 Close: Close
 Actions: Actions
+Suppress: Supprimer
 Online Help: Aide en ligne
+Presentation.footer: Le SINP régional
+Upload.File: Fichier
+Anchor: Ancre
+Url: Url
+Target: Cible
+Same window: Même fenêtre
+New window: Nouvelle fenêtre
+New image: Nouvelle image
+Name: Nom
 
 # Main menu
 # ---------------------------
@@ -76,6 +86,9 @@ Help:
 # ----------------------
 Homepage:
   title: Bienvenue sur la plateforme GINCO
+Presentation:
+  title: Le réseau régional SINP
+  link: Présentation du SINP régional
 
 # Contact page
 # ----------------------
@@ -116,6 +129,28 @@ Configuration:
       button: Enregistrer
       success: Les paramètres de la plateforme ont bien été enregistrés.
     email.success: L'email de contact a été modifié.<br>Vous pouvez tester cette (ces) adresse(s) en envoyant un mail depuis la page <a href="/contact">Contact</a>.
+
+# Configuration homepage page
+# -----------------------------
+ConfHomepage:
+  title: Titre page d'accueil
+  intro: Intro page d'accueil
+  image: Image d'illustration
+  publicLinksTitle: Titre du bloc de liens publics
+  publicLink: Lien public
+  publicDoc: Document public
+  privateLinksTitle: Titre du bloc de liens privés
+  privateLink: Lien privé
+  privateDoc: Document privé
+
+# Configuration homepage page
+# -----------------------------
+ConfPresentation:
+  title: Titre page de présentation
+  intro: Contenu page de présentation
+  image: Image d'illustration
+  publicLinksTitle: Titre du bloc de liens
+
 
 # Integration, Datasets (Jdd) and DEE
 # -----------------------------------

@@ -25,7 +25,7 @@ class HomepageContentType extends AbstractType
 		$builder
 			// The homepage title
 			->add('homepageTitle', TextType::class, array(
-				'label' => 'Titre page d\'accueil',
+				'label' => 'ConfHomepage.title',
 				'constraints' => array(
 					new NotBlank(),
 				),
@@ -33,40 +33,40 @@ class HomepageContentType extends AbstractType
 			// The homepage intro text field
 			->add('homepageIntro', CKEditorType::class, array(
 				'required' => false,
-				'label' => 'Intro page d\'accueil',
+				'label' => 'ConfHomepage.intro',
 				'constraints' => array(
 				),
 			))
 			// The homepage Image
 			->add('homepageImage', ImageType::class, array(
 				'required' => false,
-				'label' => 'Image d\'illustration',
+				'label' => 'ConfHomepage.image',
 			))
 			// The block of public links and documents
 			->add('homepagePublicLinksTitle', TextType::class, array(
-				'label' => 'Titre du bloc de liens publics',
+				'label' => 'ConfHomepage.publicLinksTitle',
 			))
 			->add('homepageLinks', CollectionType::class, array(
 				'entry_type' => LinkType::class,
-				'entry_options' => array('label' => 'Lien public', 'required' => false),
+				'entry_options' => array('label' => 'ConfHomepage.publicLink', 'required' => false),
 			))
 			->add('homepageDocs', CollectionType::class, array(
 				'entry_type' => LinkFileType::class,
-				'entry_options' => array('label' => 'Document public', 'required' => false),
+				'entry_options' => array('label' => 'ConfHomepage.publicDoc', 'required' => false),
 			))
 			// The block of private links and documents
 			->add('homepagePrivateLinksTitle', TextType::class, array(
 				'required' => false,
-				'label' => 'Titre du bloc de liens privés',
+				'label' => 'ConfHomepage.privateLinksTitle',
 			))
 			->add('homepagePrivateLinks', CollectionType::class, array(
 				'entry_type' => LinkType::class,
-				'entry_options' => array('label' => 'Lien privé', 'required' => false),
+				'entry_options' => array('label' => 'ConfHomepage.privateLink', 'required' => false),
 				'allow_add' => true,
 			))
 			->add('homepagePrivateDocs', CollectionType::class, array(
 				'entry_type' => LinkFileType::class,
-				'entry_options' => array('label' => 'Document privé', 'required' => false),
+				'entry_options' => array('label' => 'ConfHomepage.privateDoc', 'required' => false),
 				'allow_add' => true,
 			))
 			->add('submit', SubmitType::class, array(

@@ -21,7 +21,7 @@ class LinkType extends AbstractType
 	{
 		$builder
 			->add('anchor', TextType::class, array(
-				'label' => 'Ancre',
+				'label' => 'Anchor',
 				'required' => false,
 				// 'attr' => ['data-help'  => 'Texte du lien'],
 			))
@@ -31,11 +31,11 @@ class LinkType extends AbstractType
 				// 'attr' => ['data-help'  => 'Commence par / (interne) ou http(s)://(externe)'],
 			))
 			->add('target', ChoiceType::class, array(
-				'label' => 'Cible',
+				'label' => 'Target',
 				'required' => false,
 				'choices' => array(
-					'Même fenêtre' => '_self',
-					'Nouvelle fenêtre' => '_blank'
+					'Same window' => '_self',
+					'New window' => '_blank'
 				),
 				'choices_as_values' => true,
 			))

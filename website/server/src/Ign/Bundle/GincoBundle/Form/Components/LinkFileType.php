@@ -28,18 +28,18 @@ class LinkFileType extends AbstractType
 	{
 		$builder
 			->add('anchor', TextType::class, array(
-				'label' => 'Nom',
+				'label' => 'Name',
 				// 'attr' => ['data-help'  => 'Nom du fichier à afficher'],
 			))
 			->add('file', TextType::class, array(
 				'disabled' => true,
-				'label' => 'Fichier',
+				'label' => 'Upload.File',
 			))
 			->add('uploadedFile', FileType::class, array(
 				'label' => ''
 			))
 			->add('suppressFile', CheckboxType::class, array(
-				'label' => 'Supprimer'
+				'label' => 'Suppress'
 			))
 			->addModelTransformer(new LinkFileToJsonTransformer($this->uploadDirectory))
 		;

@@ -25,7 +25,7 @@ class PresentationContentType extends AbstractType
 		$builder
 			// The presentation title
 			->add('presentationTitle', TextType::class, array(
-				'label' => 'Titre page de présentation',
+				'label' => 'ConfPresentation.title',
 				'constraints' => array(
 					new NotBlank(),
 				),
@@ -33,26 +33,26 @@ class PresentationContentType extends AbstractType
 			// The presentation intro text field
 			->add('presentationIntro', CKEditorType::class, array(
 				'required' => false,
-				'label' => 'Contenu page de présentation',
+				'label' => 'ConfPresentation.intro',
 				'constraints' => array(
 				),
 			))
 			// The presentation Image
 			->add('presentationImage', ImageType::class, array(
 				'required' => false,
-				'label' => 'Image d\'illustration',
+				'label' => 'ConfPresentation.image',
 			))
 			// The block of public links and documents
 			->add('presentationPublicLinksTitle', TextType::class, array(
-				'label' => 'Titre du bloc de liens',
+				'label' => 'ConfPresentation.publicLinksTitle',
 			))
 			->add('presentationLinks', CollectionType::class, array(
 				'entry_type' => LinkType::class,
-				'entry_options' => array('label' => 'Lien public', 'required' => false),
+				'entry_options' => array('label' => 'ConfHomepage.publicLink', 'required' => false),
 			))
 			->add('presentationDocs', CollectionType::class, array(
 				'entry_type' => LinkFileType::class,
-				'entry_options' => array('label' => 'Document public', 'required' => false),
+				'entry_options' => array('label' => 'ConfHomepage.publicDoc', 'required' => false),
 			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'

@@ -26,10 +26,10 @@
     <div class="row blocks-container">
         <div class="blocks">
             <div class="well">
-                <h2 class="underlined green stick-to-top">Le réseau régional SINP</h2>
+                <h2 class="underlined green stick-to-top">{{ 'Presentation.title'|trans }}</h2>
                 <div>{{ content.presentation|striptags|truncate(250,true,'...')|raw }}</div>
                 <ul class="triangle-bullets orange">
-                    <li><a href="{{ path('presentation') }}">Présentation du SINP régional</a></li>
+                    <li><a href="{{ path('presentation') }}">{{ 'Presentation.link'|trans }}</a></li>
                 </ul>
             </div>
 
