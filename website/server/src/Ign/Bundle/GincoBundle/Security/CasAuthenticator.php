@@ -75,12 +75,21 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 					$this->query_service_parameter => $this->removeCasTicket($request->getUri())
 				]
 			]);
-			$string = $response->getBody()->getContents();
+			if ($response) {
+				$string = $response->getBody()->getContents();
 
-			// TODO Ici je ne suis pas sure, il faut adapter !!!
-			$xml = new \SimpleXMLElement($string, 0, false, $this->xml_namespace, true);
-			if (isset($xml->authenticationSuccess)) {
-				return (array) $xml->authenticationSuccess;
+
+				// TODO Ici il faudrait tester la validité du ticket et lever une exception
+
+				// TODO Ici je ne suis pas sure, il faut adapter !!!
+				$xml = new \SimpleXMLElement($string, 0, false, $this->xml_namespace, true);
+				if (isset($xml->authenticationSuccess)) {
+					return (array)$xml->authenticationSuccess;
+				} else {
+					throw new \Exception("Authentification caca: $string");
+				}
+			} else {
+				throw new \Exception("Authentification caca");
 			}
 		}
 		return null;
