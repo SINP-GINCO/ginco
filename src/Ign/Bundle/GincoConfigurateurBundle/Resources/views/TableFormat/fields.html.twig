@@ -78,7 +78,8 @@
 			<h4>{{ 'Table'|trans({'%table.label%': table.label}) }}</h4>
 			<!-- Table at the right (fields of the table) -->
 			<table id="selected-data-table"
-				class="table table-hover table-condensed"
+				data-click-to-select="true" data-search="true" data-search-align="left"
+				data-maintain-selected = "true" class="table table-hover table-condensed"
 				data-toggle="table" data-height="400">
 				<thead>
 					<tr>

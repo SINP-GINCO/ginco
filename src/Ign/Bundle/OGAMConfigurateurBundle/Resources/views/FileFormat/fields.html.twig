@@ -71,7 +71,9 @@
 			<h4>{{ 'File'|trans({'%file.label%': file.label}) }}</h4>
 			<!-- file at the right (fields of the file) -->
 			<table id="selected-data-table" data-toggle="table"
-				data-height="400" class="table table-hover table-condensed table-sortable">
+				data-height="400" class="table table-hover table-condensed table-sortable"
+				data-click-to-select="true" data-search="true"
+				data-maintain-selected ="true" data-search-align="left">
 				<thead>
 					<tr>
 						<th data-field="name" class="hidden"></th>
