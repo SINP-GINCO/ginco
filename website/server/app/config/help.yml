@@ -98,3 +98,11 @@ configurator_data:
     - configurateur_data_new_addtoformat
     - configurateur_data_show
     - configurateur_data_edit
+
+platform_parameters:
+  label: Help.platform_config
+  url: /parameters/parameters.html
+  routes:
+    - configuration_parameters
+    - configuration_homepage
+    - configuration_presentation

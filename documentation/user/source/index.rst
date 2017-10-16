@@ -20,6 +20,7 @@ Contenu:
     recherche-visu/index
     export/export-DEE-des-jeux-de-donnees
     utilisateurs/index
+    parameters/index
     annexes/index
 
 Index
