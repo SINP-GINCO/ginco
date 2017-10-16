@@ -14,13 +14,13 @@ GRANT ALL ON TABLE website.content TO ogam;
 INSERT INTO website.content ("name",value,description) VALUES
   ('homepage.title','@site.name@','Titre page d''accueil'),
   ('homepage.intro','<div>
-<div>Bienvenue sur @site.name@, la plateforme r&eacute,gionale du Syst&egrave,me d&rsquo,Information Nature et Paysage (SINP).&nbsp, La plateforme est un outil de <strong>versement, traitement, et diffusion de donn&eacute,es naturalistes</strong>.</div>
+<div>Bienvenue sur @site.name@, la plateforme r&eacute;gionale du Syst&egrave;me d&rsquo;Information Nature et Paysage (SINP).&nbsp; La plateforme est un outil de versement, traitement, et diffusion de donn&eacute;es naturalistes.</div>
 
-<div>Les producteurs de donn&eacute,es de la r&eacute,gion peuvent transmettre leurs donn&eacute,es afin qu&#39,elles soient int&eacute,gr&eacute,es dans la plateforme et transmises &agrave, la plateforme nationale (INPN).</div>
+<div>Les producteurs de donn&eacute;es de la r&eacute;gion peuvent transmettre leurs donn&eacute;es afin qu&#39;elles soient int&eacute;gr&eacute;es dans la plateforme et transmises &agrave; la plateforme nationale (INPN).</div>
 
-<div>Les visiteurs non loggu&eacute,s ont acc&egrave,s &agrave, l&#39,ensemble des donn&eacute,es de la plateforme, avec une restitution g&eacute,ographique &agrave, la commune. Les utilisateurs authentifi&eacute,s ont acc&egrave,s aux donn&eacute,es pr&eacute,cises.</div>
+<div>Les visiteurs non loggu&eacute;s ont acc&egrave;s &agrave; l&#39;ensemble des donn&eacute;es de la plateforme, avec une restitution g&eacute;ographique &agrave; la commune. Les utilisateurs authentifi&eacute;s ont acc&egrave;s aux donn&eacute;es pr&eacute;cises.</div>
 
-<div>Les donn&eacute,es actuellement pr&eacute,sentes dans la plateforme sont des observations de faune, flore et fonge. &nbsp,</div>
+<div>Las donn&eacute;es actuellement pr&eacute;sentes dans la plateforme sont des observations de faune, flore et fonge. &nbsp;</div>
 </div>','Texte d''introduction sur la page d''accueil'),
   ('homepage.image','marais.jpg','Image d''illustration sur la page d''accueil'),
   ('homepage.links.title','Plus d''informations','Titre du bloc de liens publics sur la page d''accueil'),
