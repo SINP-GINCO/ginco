@@ -73,6 +73,7 @@ view.geoportail.key=7gr31kqe5xttprd2g7zbkqgo
 print.geoportail.key=7gr31kqe5xttprd2g7zbkqgo
 
 # Url of the service for getting metadata jdd
+metadata.url=https://preprod-inpn.mnhn.fr/mtd/
 metadata.jdd.url=https://preprod-inpn.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecordById?id=
 # Email to send a notification to when generating DEE
 dee.notification.mail=YOURMAIL@ign.fr
