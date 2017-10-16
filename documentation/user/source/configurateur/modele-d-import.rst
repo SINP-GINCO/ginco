@@ -123,6 +123,8 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 .. note:: Il est préférable de rendre un champ obligatoire sur le modèle d'import plutôt que sur le modèle de données.
 
+.. note:: Le caractère obligatoire d'un champ obligatoire du modèle de données cible ne peut être modifié.
+
 .. note:: Certains champs sont obligatoires dans le modèle de données et pas dans le modèle d'import. lorsqu'ils sont calculés automatiquement par l'application à l'import (par exemple: l'identifiant pernanent SINP ou les champs de sensibilité).
 
 7. **Remplir le format de date** pour tous les champs dont l'unité est "*DATE*". Par défaut, le format de date pré-rempli est *yyyy-MM-dd*, mais vous pouvez le modifier. Vous trouverez plus de détails dans :ref:`format-des-dates`.
@@ -161,6 +163,7 @@ Le modèle d'import sera alors disponible en production.
 * son modèle de données cible doit être publié
 * il doit comporter au moins un fichier d'import
 * chacun de ses fichiers doit comporter au moins un champ
+* tous les champs obligatoires du modèle de données cible doivent être présents dans le modèle d'import
 
 Si toutes ces conditions ne sont pas atteintes, le bouton de publication est grisé.
 
