@@ -27,6 +27,7 @@ try {
 	/* patch code here */
 	// execCustSQLFile("$sprintDir/xxx.sql", $config);
 	execCustSQLFile("$sprintDir/update_providers.sql", $config);
+	execCustSQLFile("$sprintDir/add_content_table.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
