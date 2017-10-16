@@ -20,7 +20,7 @@ INSERT INTO website.content ("name",value,description) VALUES
 
 <div>Les visiteurs non loggu&eacute,s ont acc&egrave,s &agrave, l&#39,ensemble des donn&eacute,es de la plateforme, avec une restitution g&eacute,ographique &agrave, la commune. Les utilisateurs authentifi&eacute,s ont acc&egrave,s aux donn&eacute,es pr&eacute,cises.</div>
 
-<div>Las donn&eacute,es actuellement pr&eacute,sentes dans la plateforme sont des observations de faune, flore et fonge. &nbsp,</div>
+<div>Les donn&eacute,es actuellement pr&eacute,sentes dans la plateforme sont des observations de faune, flore et fonge. &nbsp,</div>
 </div>','Texte d''introduction sur la page d''accueil'),
   ('homepage.image','marais.jpg','Image d''illustration sur la page d''accueil'),
   ('homepage.links.title','Plus d''informations','Titre du bloc de liens publics sur la page d''accueil'),

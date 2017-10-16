@@ -81,6 +81,7 @@ Help:
     models: Aide sur les modèles de données
     import_models: Aide sur les modèles d'import
     data: Aide dictionnaire de données
+  platform_config: Aide sur la personnalisation de la plateforme
 
 # Homepage
 # ----------------------
