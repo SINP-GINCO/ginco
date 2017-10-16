@@ -214,10 +214,11 @@ importmodel:
     fail: La publication du modèle d'import %importModelName% a échoué. Merci de contacter l'administrateur de l'infrastructure pour en savoir plus.
     impossible:
       1: >-
-        <p>Le modèle d'import '%importModelName%' ne peut pas être publié, car :</p>
-      2: <ul><li>Soit le modèle de données cible '%modelName%' n'est pas publié;</li><li>Soit il ne comporte aucun fichier d'import;</li>
-      3: <li>Certains de ses fichiers d'import ne comportent aucun champ;</li></ul>
-      4: <p>Pour publier le modèle d'import, vous devez corriger ces points.</p>
+        <p>Le modèle d'import '%importModelName%' ne peut pas être publié, car soit :</p>
+      2: <ul><li>Le modèle de données cible '%modelName%' n'est pas publié;</li><li>Il ne comporte aucun fichier d'import;</li>
+      3: <li>Certains de ses fichiers d'import ne comportent aucun champ;</li>
+      4: <li>Il y a au moins un champ obligatoire manquant dans les fichiers d'import</li></ul>
+      5: <p>Pour publier le modèle d'import, vous devez corriger ces points.</p>
     badid: Le modèle d'import '%importModelId%' n'a pas pu être publié car il n'existe pas.   
   unpublish:
     success: Le modèle d'import '%importModelName%' a été dépublié avec succès.
@@ -258,7 +259,7 @@ file:
       success: La définition du fichier %file.label% a été mise à jour avec succès.
       fail: La définition du fichier %file.label% n'a pas été mise à jour suite à une erreur.
     title: Fichier "%file.label%" du modèle d'import "%dataset.label%"
-    table.title: Champs présents dans le modèle de données cible
+    table.title: Champs du modèle de données cible
     order.help: Cette colonne permet de définir l'ordre d'import des fichiers. Le fichier d'ordre 1 doit être celui qui correspond à la table parente. L'ordre est modifiable par glisser-déposer des lignes du tableau.
   new.title: Définition du fichier du modèle d'import %dataset.label%
   dataset.notfound: Le modèle d'import spécifié avec l'identifiant "%datasetId%" n'existe pas.
@@ -350,3 +351,6 @@ data:
   foreign_key: Clé étrangère table %tableLabel%
   label.tooltip: Nom du champ tel qu'il apparaîtra dans l'interface GINCO.
   name.tooltip: Nom du champ tel qu'il apparaîtra dans la base de données. Les caractères autorisés sont les lettres minuscules, chiffres et l'underscore. Le premier caractère doit être une lettre.
+  compulsory_state_change:
+    mapping:
+      forbidden: Le caractère obligatoire du champ %dataName% ne peut être modifié car il est associé à un champ obligatoire non-calculé du modèle de données cible.

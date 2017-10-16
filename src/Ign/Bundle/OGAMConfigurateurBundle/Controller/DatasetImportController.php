@@ -33,7 +33,7 @@ class DatasetImportController extends Controller {
 		foreach ($datasets as $importModel) {
 			$importModelId = $importModel->getId();
 			$importModelsPubState[$importModelId] = $mpService->isPublished($importModelId);
-			$importModelsPublishable[$importModelId] = $mpService->isPublishable($importModelId);
+			$importModelsPublishable[$importModelId] = $mpService->isPublishable($importModel);
 			$modelsPermissions[$importModelId]['editable'] = $this->get('app.permissions')->isImportModelEditable($importModelId);
 			$modelsPermissions[$importModelId]['editableMessage'] = $this->get('app.permissions')->getMessage();
 			$modelsPermissions[$importModelId]['editableCode'] = $this->get('app.permissions')->getCode();
@@ -161,7 +161,7 @@ class DatasetImportController extends Controller {
 			'files' => $files,
 			'pubState' => $pubState,
 			'modelPubState' => $modelPubState,
-			'publishable' => $mpService->isPublishable($id),
+			'publishable' => $mpService->isPublishable($dataset),
 			'id' => $id,
 			'initialTargetDataModel' => $initialTargetDataModel
 		));
@@ -223,7 +223,7 @@ class DatasetImportController extends Controller {
 		if ($importModel) {
 			$mpService = $this->get('app.importmodelPublication');
 			$importModelName = $importModel->getLabel();
-			if ($mpService->isPublishable($importModelId) == true) {
+			if ($mpService->isPublishable($importModel) == true) {
 
 				// Reset tomcat caches
 				$cachesCleared = $this->get('app.resettomcatcaches')->performRequest();
@@ -233,7 +233,7 @@ class DatasetImportController extends Controller {
 						->trans('importmodel.resetCaches.fail'));
 				} else {
 
-					$successStatus = $this->get('app.importModelPublication')->publishImportModel($importModelId);
+					$successStatus = $this->get('app.importModelPublication')->publishImportModel($importModel);
 
 					if ($successStatus == true) {
 						$this->addFlash('notice', $this->get('translator')

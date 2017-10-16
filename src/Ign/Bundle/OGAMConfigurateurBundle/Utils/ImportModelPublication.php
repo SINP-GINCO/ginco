@@ -3,6 +3,7 @@ namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
+use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 
 /**
  * Utility class for publication of an import model into a database.
@@ -19,12 +20,12 @@ class ImportModelPublication extends DatabaseUtils {
 	/**
 	 * Publishes an import model by copying all the data related to a specific import model.
 	 *
-	 * @param $importModelId the
-	 *        	id of the importmodel
+	 * @param Dataset : the	import model object
 	 * @return true if publication succeded, false otherwise
 	 */
-	public function publishImportModel($importModelId) {
-		if ($this->isImportModelPresentInTableDataset($importModelId) && $this->isPublishable($importModelId)) {
+	public function publishImportModel(Dataset $importModel) {
+		$importModelId = $importModel->getId();
+		if ($this->isImportModelPresentInTableDataset($importModelId) && $this->isPublishable($importModel)) {
 
 			$this->conn->beginTransaction();
 			// copyData has a particular case of action regarding transaction : it uses PHP PostgreSQL
@@ -98,7 +99,6 @@ class ImportModelPublication extends DatabaseUtils {
 	 */
 	public function copyData($importModelId) {
 		$dbconn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-
 		if (!pg_query($dbconn, "BEGIN")) {
 			return false;
 		}
@@ -419,6 +419,66 @@ class ImportModelPublication extends DatabaseUtils {
 	}
 
 	/**
+	 * Checks if, for a given import model, all the non-calculated mandatory fields from the model
+	 * linked to the import model are present in the configurated files of the import model.
+	 *
+	 * @param $importModelId : the import model id
+	 * @param $tableFormat : the format of the table
+	 * @return bool
+	 */
+	public function importModelFilesContainAllMandatoryFields($importModelId, $tableFormat) {
+		// Retrieve the non-calculated mandatory fields from the table
+		$sql = "SELECT table_field.data
+				FROM table_format
+				LEFT JOIN table_field ON (table_field.format = table_format.format
+				AND table_field.is_mandatory = '1' AND table_field.is_calculated = '0')
+				WHERE table_format.format = ?";
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bindValue(1, $tableFormat);
+		$stmt->execute();
+		$MNCFieldsListArray = $stmt->fetchAll();
+
+		// Retrieve the list of fields of the files of the dataset
+		$sql = "SELECT ffi.data
+				FROM metadata_work.dataset_files df
+				LEFT JOIN metadata_work.file_field ffi ON df.format = ffi.format
+				WHERE df.dataset_id = ?";
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bindValue(1, $importModelId);
+		$stmt->execute();
+		$filesFieldsListArrays = $stmt->fetchAll();
+
+		$filesFieldsList = array();
+		foreach($filesFieldsListArrays as $fileFieldArray){
+			$filesFieldsList[] = strtolower($fileFieldArray['data']);
+		}
+
+		// Don't take account of technical fields
+		$technicalFields = array(
+			'PROVIDER_ID',
+			'SUBMISSION_ID'
+		);
+
+		$MNCFieldsList = array();
+		foreach($MNCFieldsListArray as $MNCFieldArray){
+			$data = $MNCFieldArray['data'];
+			if(!in_array($data, $technicalFields)){
+				$MNCFieldsList[] = strtolower($data);
+			}
+		}
+
+		$containAllMNCF = true;
+		foreach($MNCFieldsList as $MNC){
+			if(!in_array($MNC, $filesFieldsList)){
+				$containAllMNCF = false;
+				break;
+			}
+		}
+
+		return $containAllMNCF;
+	}
+
+	/**
 	 * Returns true if it is possible to publish the import model.
 	 * The import model :
 	 * - must NOT be published
@@ -426,18 +486,21 @@ class ImportModelPublication extends DatabaseUtils {
 	 * - must have at least one file
 	 * - must have at least one field in all its files.
 	 * - must have at least one mapped field in all its files.
+	 * - must contain all the non-calculated mandatory model fields
 	 *
-	 * @param $modelId: the	id of the model
+	 * @param Dataset : the	import model object
 	 * @return boolean
 	 */
-	public function isPublishable($modelId) {
-
+	public function isPublishable(Dataset $importModel) {
+		$importModelId = $importModel->getId();
+		$tableFormat = $importModel->getModel()->getTables()[0]->getFormat();
 		$publishable = (
-			!$this->isPublished($modelId)
-			&& $this->isImportModelDataModelPublished($modelId)
-			&& $this->importModelHasFiles($modelId)
-			&& $this->importModelFilesHaveFields($modelId)
-			&& $this->importModelFilesAreMapped($modelId)
+			!$this->isPublished($importModelId)
+			&& $this->isImportModelDataModelPublished($importModelId)
+			&& $this->importModelHasFiles($importModelId)
+			&& $this->importModelFilesHaveFields($importModelId)
+			&& $this->importModelFilesAreMapped($importModelId)
+			&& $this->importModelFilesContainAllMandatoryFields($importModelId, $tableFormat)
 		);
 
 		return $publishable;
