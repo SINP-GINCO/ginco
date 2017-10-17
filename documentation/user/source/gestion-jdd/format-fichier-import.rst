@@ -22,12 +22,11 @@ Format général du fichier
 
 .. note:: le module d'import est sensible à l'utilisation de majuscules et miniscules dans le nommage des champs
 
-* Eventuellement, en deuxième ligne du fichier peuvent être indiqués le masque des dates et le caractère obligatoire des champs.
-Dans ce cas, la ligne doit être signalée comme étant un commentaire et doit débuter par un double slash. Exemple :
+* Eventuellement, en deuxième ligne du fichier peuvent être indiqués le masque des dates et le caractère obligatoire des champs. Dans ce cas, la ligne doit être signalée comme étant un commentaire et doit débuter par un double slash. Exemple :
 
   ``// *; (HH:mm); (yyyy-MM-dd) *``
 
-* Les champs obligatoires dans le modèle d'import doiventêtre présents et non vides.
+* Les champs obligatoires dans le modèle d'import doivent être présents et non vides.
 
 Pour connaitre les noms des champs, les champs obligatoires, ainsi que les formats des dates, vous pouvez télécharger
 un fichier de modèle sur la page d'upload du fichier d'import.

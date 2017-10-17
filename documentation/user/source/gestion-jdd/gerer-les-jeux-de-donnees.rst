@@ -21,12 +21,13 @@ Vous devez indiquer :
 
 2. l'identifiant de la fiche de métadonnées correspondant au jeu de données que vous êtes en train de créer. (voir la page de documentation sur `Les métadonnées <../metadonnees/index.html>`_ ).
 
-3. Un lien vers l'application de métadonnées de l'INPN.
+Pour créer une fiche de métadonnée de jeu de données, un lien vers l’application de métadonnées de l’INPN est proposé (**3**).
 
+Valider le formulaire via le bouton "Créer le jeu de données" (**4**).
 
 Importer des données
 --------------------
-L'import de données ce fait au sein d'un jeu de données. Il faut donc en avoir créé un auparavant.
+L’import de données ce fait au sein d’un jeu de données déclaré dans le SINP. Il faut donc en avoir créé un dans l'application nationale de Métadonnées SINP auparavant.
 
 .. image:: ../images/gestion-jdd/nouveau-jdd-1.png
 
@@ -74,14 +75,13 @@ rencontrées lors de l'import, pour vous aider à corriger le problème. Vous po
 
 Liste des jeux de données
 -------------------------
-
-La page d'accueil de gestion des jeux de données liste l'ensemble des jeux de données importés ainsi que leurs actions associées.
+La page d'accueil de gestion des jeux de données liste l'ensemble des jeux de données ainsi que leurs actions associées.
 
 .. image:: ../images/gestion-jdd/liste-jdd.png
 
 Elle permet de créer un nouveau jeu de données (**1**).
 
-Puis dans un tableau, regroupe les jeux de données existants en indiquant leur titre et leur identifiant de métadonnée.
+Un tableau regroupe les jeux de données existants en indiquant leur titre et leur identifiant de métadonnée.
 La colonne **Actions** permet de :
 
 2. Visualiser un jeu de données en détail.
@@ -92,27 +92,26 @@ Au sein d'un jeu de données, ce tableau liste les fichiers de données qui ont 
 * le nom du fichier
 * le nombre de lignes (plus exactement le nombre de données) que comporte le fichier
 * le statut de la soumission (en cours, ok, error)
+
 Sous "Rapport" (**5**) on peut télécharger :
 
 * le **Rapport de conformité et cohérence** qui est un pdf listant les éventuelles erreurs rencontrées lors de l'intégration.
 * le **Rapport de sensibilité** qui est un csv listant les données sensibles du jeu de données (le calcul de la sensibilité
   fait partie des traitements réalisés par l'application lors de l'import). Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
-* le **Rapport des identifiants permanents** qui est un csv associant un identifiant permanent à chaque donnée de la soumission (le calcul de l'identifiant permanent
-  fait partie des traitements réalisés par l'application lors de l'import). Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
+* le **Rapport des identifiants permanents** qui est un csv associant un identifiant permanent à chaque donnée de la soumission (plus précisément le champ identifiantOrigine). Le calcul de l’identifiant permanent est réalisé par l’application lorsque le champ du fichier est vide à l’import.. Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
 
 Enfin, sous "Actions" il est possible de :
 
-* **Publier les données** pour les imports réussis. Cela rend les données de la soumission requêtables pour tous les utilisateurs (donc visibles sur la carte et dans le tableau de résultat), et permet de faire l'export GML.
+* **Publier les données** pour les imports réussis. Cela rend les données de la soumission requêtables pour tous les utilisateurs (donc visibles sur la carte et dans le tableau de résultats), et permet de faire l'export GML.
   Tant que la soumission n'est pas publiée, les données sont visibles uniquement aux utilisateurs ayant la permission "Publier les données", qui sont aussi les seuls à pouvoir réaliser l'action de publication.
 
 * **Dépublier les données** rend les données de la soumission non consultables pour les utilisateurs n'ayant pas la permission "Publier les données".
   De même, l'export GML n'est plus réalisable.
   
-* **Supprimer le jeu de données** (**6**) supprime le jeu de données et les données associées, même si elles ont été éditées
-  entre temps.
+* **Supprimer le jeu de données** (**6**) supprime le jeu de données et les données associées, même si elles ont été publiées entre temps et ont fait l'objet d'un export vers la plateforme nationale.
 
-Visualiser un jeu de données
-----------------------------
+Visualiser la page de détail d'un jeu de données
+------------------------------------------------
 Il est possible de visualiser le détail d'un jeu de données en cliquant sur l'action représentée par un oeil sur le côté gauche du tableau.
 
 .. image:: ../images/gestion-jdd/visualiser-jdd.png

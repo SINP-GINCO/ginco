@@ -5,17 +5,19 @@
 Résoudre les erreurs d'import
 =============================
 
-En cas d'erreur lors de l'import, la nature et la localisation des erreurs sont indiquées dans le "Rapport de
-conformité et cohérence", disponible pour chaque soumission sur la page listant les jeux de données.
+En cas d'erreur lors de l'import, la nature et la localisation des erreurs sont indiquées dans le "Rapport d'erreur" (Rapport de
+conformité et cohérence), disponible pour chaque soumission sur la page listant les jeux de données.
 
 Le service d'import détecte les erreurs en 3 étapes :
 
 étape 1
 -------
-Dans un premier temps, le service d'import s'assure que la ligne d'en-tête du fichier importé est correcte.
-- pas de nom de colonne en doublon ;
-- pas de nom de colonne inconnu dans le modèle d'import ;
-- pas de colonne obligatoire manquante.
+Dans un premier temps, le service d'import s'assure que la ligne d'en-tête du fichier importé est correcte :
+
+* pas de nom de colonne en doublon ;
+* pas de nom de colonne inconnu dans le modèle d'import ;
+* pas de colonne obligatoire manquante.
+
 Toute la ligne est évaluée pour ces 3 contrôles. Si une erreur est relevée, l'import n'est pas poursuivi.
 
 étape 2
@@ -30,7 +32,7 @@ Elles ne sont pas bloquantes pour le reste de la ligne ou du fichier, dans la li
 * **Cohérence** : ce sont des erreurs spécifiques au standard SINP, qui concernent souvent la cohérence entre plusieurs champs;
   par exemple, certains champs doivent être remplis (ou non) en fonction de la valeur prise par d'autres champs.
 
-Vous pouvez vous référer au
+Le service d’import lance les contrôles de conformité et de cohérence vis à vis du standard "Occurrence de taxons" du SINP. Vous pouvez vous référer au
 `détail du standard "Occurence de taxon" <http://standards-sinp.mnhn.fr/wp-content/uploads/sites/16/versionhtml/OccTax_v1_2_1/>`_
 pour connaître l'ensemble des règles de cohérence.
 

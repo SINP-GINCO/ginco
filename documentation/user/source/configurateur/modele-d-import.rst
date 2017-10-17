@@ -84,6 +84,7 @@ Pour supprimer un fichier, il suffit de cliquer sur le bouton "Corbeille" (**4**
 Ordonner les fichiers
 ^^^^^^^^^^^^^^^^^^^^^
 
+L'ordre des fichiers détermine l'ordre de soumission des fichiers à l'import.
 Pour ordonner les fichiers, il suffit de glisser-déposer vos fichiers les uns au-dessus ou au-dessous des autres, puis de cliquer sur le bouton "Enregistrer l'ordre d'import des fichiers" (**5**).
 
 Gérer les champs des fichiers
@@ -111,9 +112,9 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 4. **Ajouter un ou plusieurs champ(s)** en cliquant sur la flèche : les champs sélectionnés seront alors ajoutés au tableau de droite.
 
-.. note:: Une fois que vous avez ajouté un ou plusieurs champ(s), il n'est pas nécessaire d'appuyer sur l'un des deux boutons d'enregistrement (**12**).
+.. note:: Une fois que vous avez ajouté un ou plusieurs champ(s), il n'est pas nécessaire d'appuyer sur le bouton d'enregistrement (**13**).
 
-.. note:: Un champ ne peut être présent en doublon dans un fichier.
+.. note:: Un champ ne peut être présent en doublon dans un fichier d'import (voir **5**). L'enregistrement d'un modèle de fichier sera refusé si le nom d'un champ dans le fichier est utilisé plusieurs fois
 
 .. note:: Il n'est pas possible d'ajouter un champ dans le fichier sans qu'il existe dans le modèle de données.
 
@@ -137,6 +138,8 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 9. **Supprimer un champ du fichier** en cliquant sur la corbeille correspondant à un champ dans le fichier.
 
+.. warning:: : Attention, il n'existe pas, à l'heure actuelle, de contrôle de vérification de présence des champs obligatoires du standard dans le modèle de fichier. L'absence d'un champ obligatoire du standard provoquera une erreur lors des imports de données.
+
 10. **Ajouter des champs automatiquement** depuis une table du modèle de données cible. Pour ce faire, il suffit de sélectionner une table, puis de cliquer sur "Ajout automatique". Tous les champs de la table seront alors rajoutés à la liste des champs du fichier, excepté les champs dont la valeur est calculée par l'application lors de l'import. Une fois effectué, un rapport sera affiché.
 
 .. image:: ../images/configurateur/configurateur-fichier-confirmation-ajout-auto.png
@@ -145,14 +148,16 @@ Les différentes fonctionnalités de cet écran sont décrites ci-dessous.
 
 12. **Ajouter également les champs calculés automatiquement** permet d'ajouter dans le format de fichier les champs dont les valeurs sont calculées automatiquement par GINCO lors de l'import de données. Si tous les champs du modèle DSR sont présents cette option est inutile, mais si votre modèle de données ne contient pas tous les champs du standard, il est possible que certains champs ne puissent pas être calculés automatiquement.
 
-13. **Ajout automatique** est le bouton permettant de lancer l'ajout de champs automatique dans le format de fichier.
+.. warning:: Attention, certains attributs obligatoires conditionnels du standard sont utilisés par la plateforme pour certains traitements et calculs automatiques, notamment pour l'attribution d'un niveau de sensibilité des données. Nous vous invitons donc à retirer avec précaution les champs du standard de votre modèle de fichier.
+
+13. **Ajout automatique** est le bouton permettant de lancer l'ajout automatique de champs automatique dans le format de fichier.
 
 14. **Enregistrer** vos modifications : seules les modifications liées au caractère obligatoire d'un champ, leur nom dans l'en-tête du fichier d'import, ainsi que le format de date sont enregistrées à ce moment-là. Le reste (ajout de champs, suppression) est enregistré lors de chaque action effectuée.
 
 Publier / dépublier un modèle d'import
 --------------------------------------
 
-Lorsque vous avez terminé de configurer votre modèle d'import, et que vous souhaitez le rendre disponible pour publication, il suffit de cliquer sur le bouton de lecture dans le tableau des modèles d'import :
+Lorsque vous avez terminé de configurer votre modèle d'import, et que vous souhaitez le rendre disponible pour utilisation, il suffit de cliquer sur le bouton de lecture dans le tableau des modèles d'import :
 
 .. image:: ../images/configurateur/configurateur-modele-import-publication.png
 
