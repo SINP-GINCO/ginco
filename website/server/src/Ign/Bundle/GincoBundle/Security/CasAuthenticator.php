@@ -1,7 +1,11 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Security;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
+use Ign\Bundle\OGAMBundle\Entity\Website\User;
+use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,19 +22,24 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class CasAuthenticator extends AbstractGuardAuthenticator
 {
+	protected $doctrine;
+	protected $logger;
+
 	protected $server_login_url;
 	protected $server_validation_url;
 	protected $xml_namespace;
 	protected $username_attribute;
 	protected $query_ticket_parameter;
 	protected $query_service_parameter;
+	protected $webservice_authentication;
+	protected $authentication_options;
 	protected $options;
 
 	/**
 	 * Process configuration
 	 * @param array $config
 	 */
-	public function __construct()
+	public function __construct(Registry $doctrine, Logger $logger)
 	{
 		/*
 		$this->server_login_url = $config['server_login_url'];
@@ -41,13 +50,17 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 		$this->query_ticket_parameter = $config['query_ticket_parameter'];
 		$this->options = $config['options'];
 		*/
+		$this->doctrine = $doctrine;
+		$this->logger = $logger;
 
 		$this->server_login_url = 'https://inpn2.mnhn.fr/auth/login';
 		// $this->server_validation_url = 'https://inpn2.mnhn.fr/j_spring_cas_security_check';
 		$this->server_validation_url = 'https://inpn2.mnhn.fr/auth/serviceValidate';
-		//$this->xml_namespace = $config['xml_namespace'];
-		$this->username_attribute = 'login';
+		$this->xml_namespace = 'cas';
+		$this->username_attribute = 'user';
 		$this->query_service_parameter = 'service';
+		$this->webservice_authentication = 'https://inpn2.mnhn.fr/authentication/information';
+		$this->authentication_options = ['user1', 'password1'];
 		$this->query_ticket_parameter = 'ticket';
 		$this->options = array();
 		// Add proxy if needed
@@ -97,21 +110,70 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 
 	/**
 	 * Calls the UserProvider providing a valid User
-	 * @param array $credentials
+	 *
+	 * @param mixed $credentials
 	 * @param UserProviderInterface $userProvider
-	 * @return bool
+	 * @return null|UserInterface
+	 * @throws \Exception
 	 */
 	public function getUser($credentials, UserProviderInterface $userProvider)
 	{
-		if (isset($credentials[$this->username_attribute])) {
-			// Todo teste si le user existe dans la base, sinon le créer
-
-			// Puis le charger
-			return $userProvider->loadUserByUsername($credentials[$this->username_attribute]);
-		} else {
-			return null;
+		if (!isset($credentials[$this->username_attribute])) {
+			return;
 		}
+
+		$username = $credentials[$this->username_attribute];
+
+		// Get all known infos of User from INPN
+		$client = new Client($this->options);
+
+		$url = $this->webservice_authentication . "/$username/?verify=false";
+
+		$response = $client->request('GET', $this->webservice_authentication . "/$username/", [
+			'verify' => false,
+			'auth' => $this->authentication_options,
+		]);
+
+		// Todo gérer les codes d'erreur, voir code Stéphane
+		if (!$response) {
+			throw new \Exception("Le webservice d'authentification INPN ne répond pas.");
+		}
+		$string = $response->getBody()->getContents();
+		$distantUser = json_decode($string);
+		// todo: vérifier que $distantUser->id !== null (ça arrive si on envoie le mauvais user
+
+		$em = $this->doctrine->getManager();
+		$userRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+		$providerRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Provider', 'website');
+		$roleRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+
+		// Todo: organisme du user: le récupérer et/oucréer ?
+		// todo à changer quand on aura le code organisme dans le webservice
+		$provider = $providerRepo->find(1);
+
+		// Todo teste si le user existe dans la base, sinon le créer, puis synchroniser
+		$user = $userRepo->find($username);
+		if (!$user) {
+			$user = new User();
+		}
+		// Create or synchronize local User with distant User from webservice
+		$user
+			->setLogin($username)
+			->setUsername($distantUser->prenom . " " . $distantUser->nom)
+			->setEmail("X." . uniqid() . "@nullepart.fr") // todo à changer quand on aura récpéré l'email via le webservice
+			->setProvider($provider);
+
+		// todo: attribuer le rôle par défaut (seulement pour les NOUVEAUX user)
+		$role = $roleRepo->find(1);
+		$user->addRole($role);
+
+		$em->persist($user);
+		$em->flush();
+
+		// Puis le charger
+		return $userProvider->loadUserByUsername($username);
 	}
+
 	/**
 	 * Mandatory but not in use in a remote authentication
 	 * @param $credentials
@@ -147,6 +209,8 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 	 */
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
+		// todo gérer ça mieux : exception + logger ???
+
 		$data = array(
 			'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
 		);

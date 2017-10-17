@@ -24,7 +24,7 @@ services:
     # CAS authenticator
     ginco.cas_authenticator:
       class: Ign\Bundle\GincoBundle\Security\CasAuthenticator
-
+      arguments: ["@doctrine", "@logger"]
 
     # Service used to encode a challenge for the user login
     ogam.challenge_response_encoder:
