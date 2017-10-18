@@ -23,18 +23,12 @@ security:
         main:
             pattern: ^/
             anonymous: true
-            #form_login:
-            #    login_path: user_login
-            #    check_path: user_validatelogin
-
-            #logout:
-            #    path:   user_logout
-            #    target: /
-            #entry_point: OGAMBundle.login_entry_point
-
             guard:
               authenticators:
                 - ginco.cas_authenticator
+            logout:
+              path:   app_logout
+              target: /
 
     access_control:
         - { path: ^/user/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
