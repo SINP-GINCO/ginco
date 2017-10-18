@@ -24,6 +24,10 @@ services:
     # CAS authenticator
     ginco.cas_authenticator:
       class: Ign\Bundle\GincoBundle\Security\CasAuthenticator
+      arguments: ["@doctrine", "@ogam.configuration_manager", "@ginco.inpn_user_updater", "@logger"]
+
+    ginco.inpn_user_updater:
+      class: Ign\Bundle\GincoBundle\Services\INPNUserUpdater
       arguments: ["@doctrine", "@ogam.configuration_manager", "@logger"]
 
     # Service used to encode a challenge for the user login
