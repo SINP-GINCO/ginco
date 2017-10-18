@@ -5,6 +5,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use Ign\Bundle\OGAMBundle\Entity\Website\User;
+use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,14 +24,15 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class CasAuthenticator extends AbstractGuardAuthenticator
 {
 	protected $doctrine;
+	protected $configManager;
 	protected $logger;
 
 	protected $server_login_url;
 	protected $server_validation_url;
-	protected $xml_namespace;
-	protected $username_attribute;
 	protected $query_ticket_parameter;
 	protected $query_service_parameter;
+	protected $xml_namespace;
+	protected $username_attribute;
 	protected $webservice_authentication;
 	protected $authentication_options;
 	protected $options;
@@ -39,37 +41,31 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 	 * Process configuration
 	 * @param array $config
 	 */
-	public function __construct(Registry $doctrine, Logger $logger)
+	public function __construct(Registry $doctrine, ConfigurationManager $configManager, Logger $logger)
 	{
-		/*
-		$this->server_login_url = $config['server_login_url'];
-		$this->server_validation_url = $config['server_validation_url'];
-		$this->xml_namespace = $config['xml_namespace'];
-		$this->username_attribute = $config['username_attribute'];
-		$this->query_service_parameter = $config['query_service_parameter'];
-		$this->query_ticket_parameter = $config['query_ticket_parameter'];
-		$this->options = $config['options'];
-		*/
 		$this->doctrine = $doctrine;
+		$this->configManager = $configManager;
 		$this->logger = $logger;
 
-		$this->server_login_url = 'https://inpn2.mnhn.fr/auth/login';
-		// $this->server_validation_url = 'https://inpn2.mnhn.fr/j_spring_cas_security_check';
-		$this->server_validation_url = 'https://inpn2.mnhn.fr/auth/serviceValidate';
-		$this->xml_namespace = 'cas';
-		$this->username_attribute = 'user';
-		$this->query_service_parameter = 'service';
-		$this->webservice_authentication = 'https://inpn2.mnhn.fr/authentication/information';
-		$this->authentication_options = ['user1', 'password1'];
-		$this->query_ticket_parameter = 'ticket';
+		$this->server_login_url = $this->configManager->getConfig('CAS_login_url');
+		$this->server_validation_url = $this->configManager->getConfig('CAS_validation_url');
+		$this->query_service_parameter = $this->configManager->getConfig('CAS_service_parameter');
+		$this->query_ticket_parameter = $this->configManager->getConfig('CAS_ticket_parameter');
+		$this->xml_namespace = $this->configManager->getConfig('CAS_xml_namespace');
+		$this->username_attribute = $this->configManager->getConfig('CAS_username_attribute');;
+
+		$this->webservice_authentication = $this->configManager->getConfig('INPN_authentication_webservice');;
+		$this->authentication_options = [
+			$this->configManager->getConfig('INPN_authentication_login'),
+			$this->configManager->getConfig('INPN_authentication_password')
+		];
+
 		$this->options = array();
 		// Add proxy if needed
-		// $httpsProxy = $this->configurationManager->getConfig('https_proxy', '');
-		$httpsProxy = 'https://proxy.ign.fr:3128';
-		if ($httpsProxy) {
+		$httpsProxy = $this->configManager->getConfig('https_proxy', '');
+		if (!empty($httpsProxy)) {
 			$this->options['proxy'] = $httpsProxy;
 		}
-
 
 	}
 
