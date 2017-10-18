@@ -153,8 +153,10 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 
 		// Todo teste si le user existe dans la base, sinon le créer, puis synchroniser
 		$user = $userRepo->find($username);
+		$newUser = false;
 		if (!$user) {
 			$user = new User();
+			$newUser = true;
 		}
 		// Create or synchronize local User with distant User from webservice
 		$user
@@ -164,8 +166,10 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 			->setProvider($provider);
 
 		// todo: attribuer le rôle par défaut (seulement pour les NOUVEAUX user)
-		$role = $roleRepo->find(1);
-		$user->addRole($role);
+		if ($newUser) {
+			$role = $roleRepo->find(1);
+			$user->addRole($role);
+		}
 
 		$em->persist($user);
 		$em->flush();
