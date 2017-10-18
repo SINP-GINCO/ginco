@@ -157,8 +157,7 @@ class DEEProcess {
 	 * @param $DEEId
 	 * @param null $messageId
 	 */
-	public function generateAndSendDEE($DEEId, $messageId = null) {
-
+	public function generateAndSendDEE($DEEId, $messageId = null, $notifyUser = true) {
 		$this->logger->info("GenerateAndSendDEE: " . implode(',', func_get_args()));
 
 		// Get all objects and variables
@@ -196,7 +195,7 @@ class DEEProcess {
 
 			if (!$this->messageToCancel($message)) {
 				// Send mail notifications to MNHN and user
-				$this->sendDEENotificationMail($DEE);
+				$this->sendDEENotificationMail($DEE, $notifyUser);
 			}
 
 			// Cancel message and delete DEE if needed
@@ -298,7 +297,7 @@ class DEEProcess {
 	 *
 	 * @param DEE $DEE the DEE object
 	 */
-	public function sendDEENotificationMail(DEE $DEE) {
+	public function sendDEENotificationMail(DEE $DEE, $notifyUser) {
 
 		$jdd = $DEE->getJdd();
 		$user = $DEE->getUser();
@@ -366,7 +365,7 @@ class DEEProcess {
 		);
 
 		// Send mail notification to user
-		if ($action != 'DEE.suppression') {
+		if ($action != 'DEE.suppression' && $notifyUser) {
 			$this->mailManager->sendEmail(
 				'IgnGincoBundle:Emails:DEE-notification-to-user.html.twig',
 				$parameters,
