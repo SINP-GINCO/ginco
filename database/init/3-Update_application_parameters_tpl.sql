@@ -72,14 +72,14 @@ INSERT INTO application_parameters (name, value, description) VALUES ( 'results_
 INSERT INTO application_parameters (name, value, description) VALUES ('jddMetadataFileDownloadServiceURL', '@metadata.jdd.url@', 'The URL for retrieving the metadata XML file for a jdd');
 INSERT INTO application_parameters (name, value, description) VALUES ('limit_import_error', '1000', 'The max number of errors searched in a submission (and writed in check_error table)');
 INSERT INTO application_parameters (name, value, description) VALUES ('https_proxy', '@https.proxy@', 'The URL of the proxy if necessary');
-INSERT INTO application_parameters (name, value, description) VALUES ('CAS_login_url', 'https://inpn2.mnhn.fr/auth/login', 'CAS login URL');
-INSERT INTO application_parameters (name, value, description) VALUES ('CAS_validation_url', 'https://inpn2.mnhn.fr/auth/serviceValidate', 'CAS validation URL');
-INSERT INTO application_parameters (name, value, description) VALUES ('CAS_logout_url', 'https://inpn2.mnhn.fr/auth/logout', 'CAS logout URL');
+INSERT INTO application_parameters (name, value, description) VALUES ('CAS_login_url', 'https://preprod-inpn.mnhn.fr/auth/login', 'CAS login URL');
+INSERT INTO application_parameters (name, value, description) VALUES ('CAS_validation_url', 'https://preprod-inpn.mnhn.fr/auth/serviceValidate', 'CAS validation URL');
+INSERT INTO application_parameters (name, value, description) VALUES ('CAS_logout_url', 'https://preprod-inpn.mnhn.fr/auth/logout', 'CAS logout URL');
 INSERT INTO application_parameters (name, value, description) VALUES ('CAS_service_parameter', 'service', 'CAS service parameter');
 INSERT INTO application_parameters (name, value, description) VALUES ('CAS_ticket_parameter', 'ticket', 'CAS ticket parameter');
 INSERT INTO application_parameters (name, value, description) VALUES ('CAS_xml_namespace', 'cas', 'CAS XML namespace');
 INSERT INTO application_parameters (name, value, description) VALUES ('CAS_username_attribute', 'user', 'CAS username attribute');
-INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_webservice', 'https://inpn2.mnhn.fr/authentication/information', 'Webservice to get the user informations');
+INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_webservice', 'https://preprod-inpn.mnhn.fr/authentication/information', 'Webservice to get the user informations');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_login', 'user1', 'Authentication for the webservice');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_password', 'password1', 'Authentication for the webservice');
 
