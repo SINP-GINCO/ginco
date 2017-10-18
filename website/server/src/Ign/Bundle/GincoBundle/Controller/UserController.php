@@ -39,7 +39,11 @@ class UserController extends BaseController {
 	public function showLoginFormAction(Request $request) {
 		$CASloginUrl = $this->get('ogam.configuration_manager')->getConfig('CAS_login_url');
 		$CASservice = $this->get('ogam.configuration_manager')->getConfig('CAS_service_parameter');
-		$CASloginUrl .= '?' . $CASservice . '=' . urlencode($this->generateUrl('homepage',array(),UrlGeneratorInterface::ABSOLUTE_URL));
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ?: $this->generateUrl('homepage',array(),UrlGeneratorInterface::ABSOLUTE_URL);
+		$CASloginUrl .= '?' . $CASservice . '=' . urlencode($redirectUrl);
 		return new RedirectResponse($CASloginUrl);
 	}
 
