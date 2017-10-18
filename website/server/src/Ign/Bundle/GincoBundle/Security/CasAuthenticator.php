@@ -4,8 +4,8 @@ namespace Ign\Bundle\GincoBundle\Security;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
+use Ign\Bundle\GincoBundle\Exception\CASException;
 use Ign\Bundle\GincoBundle\Services\INPNUserUpdater;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
 use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -81,21 +81,24 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 					$this->query_service_parameter => $this->removeCasTicket($request->getUri())
 				]
 			]);
-			if ($response) {
-				$string = $response->getBody()->getContents();
 
+			if (!$response) {
+				$this->logger->addError("INPN CAS validation service is not accessible, URL : " . $this->server_validation_url);
+				throw new CASException("INPN CAS validation service is not accessible.");
+			}
+			$code = $response->getStatusCode();
+			if ($code !== 200) {
+				$this->logger->addError("INPN CAS validation service returned a HTTP code: $code, URL : " . $this->server_validation_url);
+				throw new CASException("INPN CAS validation service returned a HTTP code: $code");
+			}
 
-				// TODO Ici il faudrait tester la validité du ticket et lever une exception
-
-				// TODO Ici je ne suis pas sure, il faut adapter !!!
-				$xml = new \SimpleXMLElement($string, 0, false, $this->xml_namespace, true);
-				if (isset($xml->authenticationSuccess)) {
-					return (array)$xml->authenticationSuccess;
-				} else {
-					throw new \Exception("Authentification caca: $string");
-				}
+			$string = $response->getBody()->getContents();
+			$xml = new \SimpleXMLElement($string, 0, false, $this->xml_namespace, true);
+			if (isset($xml->authenticationSuccess)) {
+				return (array)$xml->authenticationSuccess;
 			} else {
-				throw new \Exception("Authentification caca");
+				$this->logger->addError("INPN CAS denied authentication: $string");
+				throw new CASException("INPN CAS denied authentication: $string");
 			}
 		}
 		return null;
@@ -156,8 +159,6 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 	 */
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
-		// todo gérer ça mieux : exception + logger ???
-
 		$data = array(
 			'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
 		);
