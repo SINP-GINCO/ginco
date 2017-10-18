@@ -125,6 +125,7 @@ class MetadataReader
 
 			$fields['metadataId'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantJeuDeDonnees')->item(0)->nodeValue;
 			$fields['title'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:nomComplet')->item(0)->nodeValue;
+			$fields['metadataCAId'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantCadreAcquisition')->item(0)->nodeValue;
 
 		} catch (\Exception $e) {
 			$this->logger->error("The jdd metadata XML file contains errors could not be parsed for $metadataId :" . $e->getMessage());
