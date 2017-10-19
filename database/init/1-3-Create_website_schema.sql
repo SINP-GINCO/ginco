@@ -44,13 +44,15 @@ COMMENT ON COLUMN USERS.ACTIVATION_CODE IS 'The activation code for password res
 create table ROLE (
 role_code            SERIAL PRIMARY KEY,
 ROLE_LABEL           VARCHAR(100)             	UNIQUE NOT NULL,
-role_definition      VARCHAR(255)         		null
+role_definition      VARCHAR(255)         		NULL,
+is_default           BOOLEAN DEFAULT FALSE      NOT NULL
 );
 
 COMMENT ON TABLE ROLE IS 'A role in the application';
 COMMENT ON COLUMN ROLE.ROLE_CODE IS 'Code of the role';
 COMMENT ON COLUMN ROLE.ROLE_LABEL IS 'Label';
 COMMENT ON COLUMN ROLE.ROLE_DEFINITION IS 'Definition of the role';
+COMMENT ON COLUMN ROLE.IS_DEFAULT IS 'If the role is the default role or not';
 
 /*==============================================================*/
 /* Table : ROLE_TO_SCHEMA                                       */

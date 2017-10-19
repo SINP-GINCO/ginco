@@ -17,7 +17,9 @@ Administration > Configuration de la plateforme.
 Configurer les paramètres de la plateforme
 ------------------------------------------
 
-Il est possible de modifier l'email de contact de la plateforme, c'est à dire la ou les adresses email
+**Adresse email de contact de la plateforme**
+
+Il est possible de modifier l'email de contact de la plateforme, c'est-à-dire la ou les adresses email
 qui recevront les demandes envoyées via le formulaire de contact.
 
 Vous pouvez saisir une ou plusieurs adresses email ; pour celà entrez une liste d'adresses
@@ -25,6 +27,14 @@ séparées par des virgules.
 
 Par défaut, pour les instances de test, c'est l'adresse email de l'équipe de développement qui est indiquée.
 Les instance de production sont toutes livrées avec le mail de leur administrateur régional principal.
+
+**Rôle par défaut**
+
+Vous pouvez choisir le rôle attribué par défaut à chaque nouvel utilisateur de la plateforme.
+
+Ce rôle ne pourra pas être supprimé tant qu'il restera le rôle par défaut.
+
+Par défaut, toutes les instances sont livrées avec le rôle *Producteur* comme rôle par défaut.
 
 .. Configurer la page d'accueil de la plateforme
 

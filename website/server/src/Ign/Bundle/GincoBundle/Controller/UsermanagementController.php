@@ -117,14 +117,20 @@ class UsermanagementController extends BaseController {
 
 			$isDeletable = true;
 
-			// If a user is using this role then we cannot delete
+			// If a user is using this role then we cannot delete it
 			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
 			$nbUsers = $roleRepo->userCount($role->getCode());
 			if ($nbUsers > 0) {
 				$isDeletable = false;
 			}
 
-			if ($role->getLabel() === 'Grand public') {
+			// If the role is Grand public then we cannot delete it
+			if ($role->getLabel() === 'Grand public' ) {
+				$isDeletable = false;
+			}
+
+			// If the role is the default one then we cannot delete it
+			if ($role->getIsDefault()) {
 				$isDeletable = false;
 			}
 

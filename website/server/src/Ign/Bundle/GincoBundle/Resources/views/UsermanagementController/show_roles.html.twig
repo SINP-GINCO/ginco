@@ -11,6 +11,7 @@
 		<tr>
 			<th data-field="label" data-sortable="true">{% trans %}Label{% endtrans %}</th>
 			<th data-field="definition" data-sortable="true">{% trans %}Definition{% endtrans %}</th>
+			<th data-field="isDefault" data-sortable="true">{% trans %}Rôle par défaut{% endtrans %}</th>
 			<th data-searchable="false">{% trans %}Actions{% endtrans %}</th>
 		</tr>
 	</thead>
@@ -19,6 +20,12 @@
 			<tr>
 				<td>{{ role.label }}</td>
 				<td>{{ role.definition }}</td>
+				<td>{% if role.isDefault %}
+						{% trans %}Yes{% endtrans %}
+					{% else %}
+						{% trans %}No{% endtrans %}
+					{% endif %}
+				</td>
 				<td>
 					{% if isModifiableRole[role.code] %}
 						<a role="button" class="btn btn-sm btn-success" title="{{ 'Edit'|trans }}" href="{{ path('usermanagement_editRole', {'code' : role.code}) }}">
@@ -84,6 +91,8 @@
 									<div class="modal-body">
 									{% if role.label == 'Grand public' %}
 										{% trans with {'%roleLabel%': role.label} %} Role.delete.grand_public {% endtrans %}
+									{% elseif role.isDefault == true %}
+										{% trans with {'%roleLabel%': role.label} %} Role.delete.isDefault {% endtrans %}
 									{% else %}
 										{% trans with {'%roleLabel%': role.label} %} Role.delete.impossible {% endtrans %}
 									{% endif %}

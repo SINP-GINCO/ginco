@@ -13,10 +13,10 @@ DELETE FROM role_to_schema;
 DELETE FROM permission;
 
 -- Create some roles
-INSERT INTO role(role_label, role_definition) VALUES ('Développeur', 'developpeur');
-INSERT INTO role(role_label, role_definition) VALUES ('Administrateur', 'Administrateur de plateforme régionale ou thématique');
-INSERT INTO role(role_label, role_definition) VALUES ('Producteur', 'producteur');
-INSERT INTO role(role_label, role_definition) VALUES ('Grand public', 'Rôle par défaut non-modifiable pour un utilisateur non identifié');
+INSERT INTO role(role_label, role_definition, is_default) VALUES ('Développeur', 'developpeur', false);
+INSERT INTO role(role_label, role_definition, is_default) VALUES ('Administrateur', 'Administrateur de plateforme régionale ou thématique', false);
+INSERT INTO role(role_label, role_definition, is_default) VALUES ('Producteur', 'producteur', true);
+INSERT INTO role(role_label, role_definition, is_default) VALUES ('Grand public', 'Rôle par défaut non-modifiable pour un utilisateur non identifié', false);
 
 -- Create a provider
 INSERT INTO website.providers(id,label,definition) VALUES ('1', 'Defaut', 'Organisme par défaut');

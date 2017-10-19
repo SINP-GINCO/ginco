@@ -145,9 +145,14 @@ class DefaultController extends BaseController {
 		// Get contact Email
 		$emailConf = $confRepo->find('contactEmail');
 
+		// Get default role
+		$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+		$defaultRole = $roleRepo->findOneByIsDefault(true);
+
 		$form = $this->createForm(new ConfigurationType(), null, array(
 			'action' => $this->generateUrl('configuration_parameters'),
-			'method' => 'POST'
+			'method' => 'POST',
+			'defaultRole' => $defaultRole
 		));
 
 		// Set default value(s)
@@ -164,6 +169,14 @@ class DefaultController extends BaseController {
 
 			// Persist the value
 			$emailConf->setValue($contactEmail);
+
+			// Persist the default role chosen if it has been changed
+			$newDefaultRole = $form->get('defaultRole')->getData();
+			if ($newDefaultRole->getCode() != $defaultRole->getCode()) {
+				// Remove the default value of the former default role
+				$roleRepo->removeDefaultValue();
+				$newDefaultRole->setIsDefault(true);
+			}
 			$em->flush();
 
 			$request->getSession()
