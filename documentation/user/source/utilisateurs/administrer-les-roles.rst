@@ -26,8 +26,11 @@ Pour ajouter un rôle, cliquez sur le lien "Créer un rôle"
 
 .. image:: ../images/administration-role-visu-creer.png
  
-Après avoir indiqué le code, le libellé et la définition du rôle, il faut sélectionner les droits (permissions) à attacher à ce rôle. 
-Et enfin cliquez sur "Valider".
+Après avoir indiqué le code, le libellé et la définition du rôle, il faut sélectionner les droits (permissions) à attacher à ce rôle.
+Une case indique si le rôle est le rôle par défaut.
+Enfin, cliquez sur "Valider".
+
+.. note:: Le rôle par défaut ne peut pas être supprimé. Par ailleurs, il ne peut y avoir qu'un seul rôle par défaut sur la plateforme. Vous pouvez choisir le rôle par défaut sur la page de configuration de la plateforme.
  
 .. image:: ../images/administration-role-ajouter.png
 
@@ -68,7 +71,7 @@ Pour modifier un rôle, à partir de la page de visualisation des rôles, clique
 
 .. image:: ../images/administration-role-visu-modifier.png
 
-Vous pouvez alors modifier les code, libellé définition et permissions du rôle.
+Vous pouvez alors modifier les code, libellé, définition et permissions du rôle.
 
 Supprimer un rôle
 -----------------

@@ -8,6 +8,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Ign\Bundle\GincoBundle\Validator\Constraints\EmailList;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ConfigurationType
@@ -18,6 +21,7 @@ class ConfigurationType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$defaultRole = $options['defaultRole'];
 		$builder
 			// The contact email field; can be a list of emails separated by commas
 			// It must be a TextType (and not EmailType), to accept list of emails on the client side validation
@@ -29,14 +33,30 @@ class ConfigurationType extends AbstractType
 					new EmailList(),
 				),
 			))
+			->add('defaultRole', EntityType::class, array(
+				'class' => 'Ign\Bundle\OGAMBundle\Entity\Website\Role',
+				'choice_label' => 'label',
+				'query_builder' => function(EntityRepository $er) use($defaultRole){
+					return $er->createQueryBuilder('r')
+						->orderBy('r.isDefault', 'DESC');
+				},
+				'label' => 'Configuration.edit.defaultRole.label',
+				'attr' => ['data-help'  => 'Configuration.edit.defaultRole.help']
+			))
 			->add('submit', SubmitType::class, array(
 				'label' => 'Configuration.edit.submit.button'
 			))
 		;
 	}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
+	/**
+	 *
+	 * @param OptionsResolverInterface $resolver
+	 */
+	public function configureOptions(OptionsResolver $resolver) {
+		$resolver->setDefaults(array(
+			'defaultRole' => null
+		));
 	}
 
 	public function getName()

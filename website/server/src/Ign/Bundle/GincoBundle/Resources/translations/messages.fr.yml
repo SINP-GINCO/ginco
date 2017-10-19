@@ -24,6 +24,8 @@ Same window: Même fenêtre
 New window: Nouvelle fenêtre
 New image: Nouvelle image
 Name: Nom
+Yes: Oui
+No: Non
 
 # Main menu
 # ---------------------------
@@ -130,7 +132,9 @@ Configuration:
       button: Enregistrer
       success: Les paramètres de la plateforme ont bien été enregistrés.
     email.success: L'email de contact a été modifié.<br>Vous pouvez tester cette (ces) adresse(s) en envoyant un mail depuis la page <a href="/contact">Contact</a>.
-
+    defaultRole:
+      label: Rôle par défaut
+      help: Indiquez le rôle qui sera attribué par défaut à tous les nouveaux utilisateurs.
 # Configuration homepage page
 # -----------------------------
 ConfHomepage:
@@ -315,8 +319,10 @@ Role:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
     impossible: "Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés."
     grand_public: "Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle technique par défaut"
+    isDefault: "Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle utilisateur par défaut"
   edit:
     impossible: "Impossible d'éditer le rôle '%roleLabel%' car c'est le rôle technique par défaut."
+    default: "Vous pouvez choisir le rôle par défaut sur la page de configuration de la plateforme"
 
 User:
   delete:
