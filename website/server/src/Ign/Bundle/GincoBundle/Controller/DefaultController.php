@@ -99,6 +99,12 @@ class DefaultController extends BaseController {
 			'method' => 'POST'
 		));
 
+		// If user is authenticated, get his email and set as default value
+		if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			$email = $this->getUser()->getEmail();
+			$form->get('email')->setData($email);
+		}
+
 		if ($request->isMethod('POST')) {
 			// Refill the fields in case the form is not valid.
 			$form->handleRequest($request);

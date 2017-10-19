@@ -22,13 +22,38 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class UserController extends BaseController {
 
 	/**
-	 * Default action. todo: redirect to INPN user ou 404
+	 * Default action: a "my account" page
+	 * Todo, maybe in the future: show personal Jdd.
 	 *
 	 * @Route("/", name = "user_home")
 	 */
 	public function indexAction(Request $request) {
-		// Display the login form by default
-		return $this->showLoginFormAction($request);
+		// Check if user is logged in; if not redirect to login
+		// It is because this route is not protected in security.yml)
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+		// No need to pass the user, it is already in app.user
+		return $this->render('IgnGincoBundle:User:index.html.twig', array(
+		));
+	}
+
+	/**
+	 * Refresh user infos from INPN webservice
+	 * @Route("/refresh", name = "user_refresh")
+	 */
+	public function refreshAction(Request $request) {
+		// Get username
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+		$username = $this->getUser()->getLogin();
+
+		// Update via the INPN webservice
+		$this->get('ginco.inpn_user_updater')->updateOrCreateLocalUser($username);
+
+		// Redirect to user home
+		return $this->redirectToRoute('user_home');
 	}
 
 	/**

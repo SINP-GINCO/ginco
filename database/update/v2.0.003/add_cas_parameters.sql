@@ -8,4 +8,5 @@ INSERT INTO application_parameters (name, value, description) VALUES
   ('CAS_username_attribute', 'user', 'CAS username attribute'),
   ('INPN_authentication_webservice', 'https://preprod-inpn.mnhn.fr/authentication/information', 'Webservice to get the user informations'),
   ('INPN_authentication_login', 'user1', 'Authentication for the webservice'),
-  ('INPN_authentication_password', 'password1', 'Authentication for the webservice');
+  ('INPN_authentication_password', 'password1', 'Authentication for the webservice'),
+  ('INPN_account_url', 'https://inpn.mnhn.fr/accueil/compte/Compte', 'INPN "My Account" url');
