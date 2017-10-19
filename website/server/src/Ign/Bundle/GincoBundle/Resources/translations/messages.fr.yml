@@ -23,7 +23,10 @@ Target: Cible
 Same window: Même fenêtre
 New window: Nouvelle fenêtre
 New image: Nouvelle image
+Login: Login
+Email: Email
 Name: Nom
+My account: Mon compte
 Yes: Oui
 No: Non
 
@@ -357,6 +360,19 @@ Role:
     default: "Vous pouvez choisir le rôle par défaut sur la page de configuration de la plateforme"
 
 User:
+  account:
+    title: Votre compte
+    infos:
+      title: Informations personnelles
+      provider: Votre organisme
+      description: Vous êtes connecté au site "%sitename%" grâce à votre compte utilisateur sur le compte de l'INPN.
+      updateLink: Mettre à jour vos informations sur la page de votre compte INPN
+      refreshLink: Actualiser vos données depuis l'INPN
+    permissions:
+      title: Rôles et permissions
+      role: Vous avez le(s) rôle(s) suivant(s) :
+      permissions: Cela correspond aux permissions :
+      more: Pour obtenir plus de permissions, contactez <a href="%href%">les administrateurs de la plateforme</a>.
   delete:
     impossible: "Impossible de supprimer l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
   change_password:

@@ -82,6 +82,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ('CAS_usern
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_webservice', 'https://preprod-inpn.mnhn.fr/authentication/information', 'Webservice to get the user informations');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_login', 'user1', 'Authentication for the webservice');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_password', 'password1', 'Authentication for the webservice');
+INSERT INTO application_parameters (name, value, description) VALUES ('INPN_account_url', 'https://inpn.mnhn.fr/accueil/compte/Compte', 'INPN "My Account" url');
 
 
 -- Pour utiliser le tilecache

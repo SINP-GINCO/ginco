@@ -1,0 +1,54 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+    <h1>{{ 'User.account.title'|trans }}</h1>
+
+    {% set user = app.user %}
+
+    <div class="row">
+        <div class="col-sm-6">
+        <h2>{{ 'User.account.infos.title'|trans }}</h2>
+
+            <table class="table table-nonfluid table-bordered">
+            <tr>
+                <td><strong>{{ 'Login'|trans }}</strong></td>
+                <td>{{ user.login }}</td>
+            </tr>
+            <tr>
+                <td><strong>{{ 'Name'|trans }}</strong></td>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <td><strong>{{ 'Email'|trans }}</strong> </td>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <td><strong>{{ 'User.account.infos.provider'|trans }}</strong></td>
+                <td>{{ user.provider.label }} ({{ user.provider.definition }})</td>
+            </tr>
+            </table>
+
+            <p>{{ 'User.account.infos.description'|trans({'%sitename%': configurationManager.getConfig('site_name', 'GINCO')}) }}</p>
+
+            <p><a href="{{ configurationManager.getConfig('INPN_account_url','') }}" target="_blank">
+                    <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                    {{ 'User.account.infos.updateLink'|trans }}</a></p>
+            <p><a href="{{ path('user_refresh') }}">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    {{ 'User.account.infos.refreshLink'|trans }}</a></p>
+        </div>
+
+        <div class="col-sm-6">
+            <h2>{{ 'User.account.permissions.title'|trans }}</h2>
+
+            <p>{{ 'User.account.permissions.role'|trans }} <strong>{{ user.roles|join(', ') }}</strong>.</p>
+            <p>{{ 'User.account.permissions.permissions'|trans }}</p>
+            <ul class="triangle-bullets">
+            {% for permission in user.permissions %}
+                <li>{{ permission.label }}</li>
+            {% endfor %}
+            </ul>
+            <p>{{ 'User.account.permissions.more'|trans({'%href%': path('contact')})|raw }}</p>
+        </div>
+    </div>
+{% endblock %}
