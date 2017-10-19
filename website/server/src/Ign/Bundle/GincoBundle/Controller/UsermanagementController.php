@@ -24,11 +24,11 @@ class UsermanagementController extends BaseController {
 		$role = new Role();
 		$logger = $this->get('logger');
 		$logger->debug('editRoleAction');
-		
+
 		if ($code != null) {
 			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
 			$role = $roleRepo->find($code);
-		}	
+		}
 		// Get the role form
 		$form = $this->createForm(GincoRoleType::class, $role);
 
@@ -46,7 +46,6 @@ class UsermanagementController extends BaseController {
 				$schemaRawData = $schemaRepo->find('RAW_DATA');
 				$role->addSchema($schemaRawData);
 			}
-
 			// Save the role
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($role);
@@ -60,7 +59,7 @@ class UsermanagementController extends BaseController {
 
 		return $this->render('OGAMBundle:UsermanagementController:edit_role.html.twig', array(
 			'form' => $form->createView(),
-			'label_role' => $role->getLabel()	
+			'label_role' => $role->getLabel()
 		));
 	}
 
@@ -99,7 +98,7 @@ class UsermanagementController extends BaseController {
 
 	/**
 	 * Show the list of roles.
-	 * Ginco:  The default role (Grand public) cannot be edited.
+	 * Ginco: The default role (Grand public) cannot be edited.
 	 *
 	 * @Route("/showRoles", name="usermanagement_showRoles")
 	 */
@@ -125,7 +124,7 @@ class UsermanagementController extends BaseController {
 			}
 
 			// If the role is Grand public then we cannot delete it
-			if ($role->getLabel() === 'Grand public' ) {
+			if ($role->getLabel() === 'Grand public') {
 				$isDeletable = false;
 			}
 
@@ -143,9 +142,11 @@ class UsermanagementController extends BaseController {
 
 			$isModifiable = true;
 
-			/*if ($role->getLabel() === 'Grand public') {
-				$isModifiable = false;
-			}*/
+			/*
+			 * if ($role->getLabel() === 'Grand public') {
+			 * $isModifiable = false;
+			 * }
+			 */
 
 			$isModifiableRole[$role->getCode()] = $isModifiable;
 		}

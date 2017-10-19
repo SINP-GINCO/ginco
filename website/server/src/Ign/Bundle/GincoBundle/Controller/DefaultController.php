@@ -1,12 +1,11 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Ign\Bundle\GincoBundle\Entity\Website\Content;
 use Ign\Bundle\GincoBundle\Form\ConfigurationType;
+use Ign\Bundle\GincoBundle\Form\ContactType;
 use Ign\Bundle\GincoBundle\Form\HomepageContentType;
 use Ign\Bundle\GincoBundle\Form\PresentationContentType;
-use Ign\Bundle\GincoBundle\Form\ContactType;
 use Ign\Bundle\OGAMBundle\Controller\DefaultController as BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,8 +17,8 @@ class DefaultController extends BaseController {
 	private $numLinks = 5;
 
 	/**
-	 * Homepage (configurable content) 
-	 * 
+	 * Homepage (configurable content)
+	 *
 	 * @Route("/", name="homepage")
 	 */
 	public function indexAction() {
@@ -34,14 +33,14 @@ class DefaultController extends BaseController {
 		$content['publicLinksTitle'] = $contentRepo->find('homepage.links.title')->getValue();
 		$content['privateLinksTitle'] = $contentRepo->find('homepage.private.links.title')->getValue();
 
-		$getValue = function($content) {
+		$getValue = function ($content) {
 			return $content->getJsonDecodedValue();
 		};
 		$homepageLink = array();
 		$homepageDoc = array();
 		$homepagePrivateLink = array();
 		$homepagePrivateDoc = array();
-		for ($i=1; $i<=$this->numLinks; $i++) {
+		for ($i = 1; $i <= $this->numLinks; $i ++) {
 			$homepageLink[$i] = $contentRepo->find("homepage.link.$i");
 			$homepageDoc[$i] = $contentRepo->find("homepage.doc.$i");
 			$homepagePrivateLink[$i] = $contentRepo->find("homepage.private.link.$i");
@@ -58,8 +57,8 @@ class DefaultController extends BaseController {
 	}
 
 	/**
-	 * Presentation page (configurable content) 
-	 * 
+	 * Presentation page (configurable content)
+	 *
 	 * @Route("/presentation", name="presentation")
 	 */
 	public function presentationAction() {
@@ -72,15 +71,14 @@ class DefaultController extends BaseController {
 		$content['image'] = $contentRepo->find('presentation.image')->getValue();
 		$content['publicLinksTitle'] = $contentRepo->find('presentation.links.title')->getValue();
 
-		$getValue = function($content) {
+		$getValue = function ($content) {
 			return $content->getJsonDecodedValue();
 		};
 		$presentationLink = array();
 		$presentationDoc = array();
-		for ($i=1; $i<=$this->numLinks; $i++) {
+		for ($i = 1; $i <= $this->numLinks; $i ++) {
 			$presentationLink[$i] = $contentRepo->find("presentation.link.$i");
 			$presentationDoc[$i] = $contentRepo->find("presentation.doc.$i");
-			
 		}
 		$content['links'] = array_map($getValue, $presentationLink);
 		$content['docs'] = array_map($getValue, $presentationDoc);
@@ -196,7 +194,6 @@ class DefaultController extends BaseController {
 		));
 	}
 
-
 	/**
 	 * Configuration Content form page
 	 * Editable parameters:
@@ -214,7 +211,7 @@ class DefaultController extends BaseController {
 		$homepagePublicLinksTitle = $contentRepo->find('homepage.links.title');
 		$homepagePrivateLinksTitle = $contentRepo->find('homepage.private.links.title');
 
-		$getValue = function($content) {
+		$getValue = function ($content) {
 			return $content->getValue();
 		};
 
@@ -222,7 +219,7 @@ class DefaultController extends BaseController {
 		$homepageDoc = array();
 		$homepagePrivateLink = array();
 		$homepagePrivateDoc = array();
-		for ($i=1; $i<=$this->numLinks; $i++) {
+		for ($i = 1; $i <= $this->numLinks; $i ++) {
 			$homepageLink[$i] = $contentRepo->find("homepage.link.$i");
 			$homepageDoc[$i] = $contentRepo->find("homepage.doc.$i");
 			$homepagePrivateLink[$i] = $contentRepo->find("homepage.private.link.$i");
@@ -244,7 +241,7 @@ class DefaultController extends BaseController {
 			'homepageLinks' => $homepageLinkValue,
 			'homepageDocs' => $homepageDocValue,
 			'homepagePrivateLinks' => $homepagePrivateLinkValue,
-			'homepagePrivateDocs' => $homepagePrivateDocValue,
+			'homepagePrivateDocs' => $homepagePrivateDocValue
 		);
 		$form = $this->createForm(new HomepageContentType(), $data, array(
 			'action' => $this->generateUrl('configuration_homepage'),
@@ -256,17 +253,22 @@ class DefaultController extends BaseController {
 		if ($form->isValid()) {
 
 			// Persist the value
-			$homepageTitle->setValue($form->get('homepageTitle')->getData());
-			$homepageIntro->setValue($form->get('homepageIntro')->getData());
-			$homepageImage->setValue($form->get('homepageImage')->getData());
-			$homepagePublicLinksTitle->setValue($form->get('homepagePublicLinksTitle')->getData());
-			$homepagePrivateLinksTitle->setValue($form->get('homepagePrivateLinksTitle')->getData());
+			$homepageTitle->setValue($form->get('homepageTitle')
+				->getData());
+			$homepageIntro->setValue($form->get('homepageIntro')
+				->getData());
+			$homepageImage->setValue($form->get('homepageImage')
+				->getData());
+			$homepagePublicLinksTitle->setValue($form->get('homepagePublicLinksTitle')
+				->getData());
+			$homepagePrivateLinksTitle->setValue($form->get('homepagePrivateLinksTitle')
+				->getData());
 			$homepageLinkValue = $form->get('homepageLinks')->getData();
 			$homepageDocValue = $form->get('homepageDocs')->getData();
 			$homepagePrivateLinkValue = $form->get('homepagePrivateLinks')->getData();
 			$homepagePrivateDocValue = $form->get('homepagePrivateDocs')->getData();
 
-			for ($i=1; $i<=$this->numLinks; $i++) {
+			for ($i = 1; $i <= $this->numLinks; $i ++) {
 				$homepageLink[$i]->setValue($homepageLinkValue[$i]);
 				$homepageDoc[$i]->setValue($homepageDocValue[$i]);
 				$homepagePrivateLink[$i]->setValue($homepagePrivateLinkValue[$i]);
@@ -302,13 +304,13 @@ class DefaultController extends BaseController {
 		$presentationImage = $contentRepo->find('presentation.image');
 		$presentationPublicLinksTitle = $contentRepo->find('presentation.links.title');
 
-		$getValue = function($content) {
+		$getValue = function ($content) {
 			return $content->getValue();
 		};
 
 		$presentationLink = array();
 		$presentationDoc = array();
-		for ($i=1; $i<=$this->numLinks; $i++) {
+		for ($i = 1; $i <= $this->numLinks; $i ++) {
 			$presentationLink[$i] = $contentRepo->find("presentation.link.$i");
 			$presentationDoc[$i] = $contentRepo->find("presentation.doc.$i");
 		}
@@ -323,7 +325,7 @@ class DefaultController extends BaseController {
 			'presentationImage' => $presentationImage->getValue(),
 			'presentationPublicLinksTitle' => $presentationPublicLinksTitle->getValue(),
 			'presentationLinks' => $presentationLinkValue,
-			'presentationDocs' => $presentationDocValue,
+			'presentationDocs' => $presentationDocValue
 		);
 		$form = $this->createForm(new PresentationContentType(), $data, array(
 			'action' => $this->generateUrl('configuration_presentation'),
@@ -335,14 +337,18 @@ class DefaultController extends BaseController {
 		if ($form->isValid()) {
 
 			// Persist the value
-			$presentationTitle->setValue($form->get('presentationTitle')->getData());
-			$presentationIntro->setValue($form->get('presentationIntro')->getData());
-			$presentationImage->setValue($form->get('presentationImage')->getData());
-			$presentationPublicLinksTitle->setValue($form->get('presentationPublicLinksTitle')->getData());
+			$presentationTitle->setValue($form->get('presentationTitle')
+				->getData());
+			$presentationIntro->setValue($form->get('presentationIntro')
+				->getData());
+			$presentationImage->setValue($form->get('presentationImage')
+				->getData());
+			$presentationPublicLinksTitle->setValue($form->get('presentationPublicLinksTitle')
+				->getData());
 			$presentationLinkValue = $form->get('presentationLinks')->getData();
 			$presentationDocValue = $form->get('presentationDocs')->getData();
 
-			for ($i=1; $i<=$this->numLinks; $i++) {
+			for ($i = 1; $i <= $this->numLinks; $i ++) {
 				$presentationLink[$i]->setValue($presentationLinkValue[$i]);
 				$presentationDoc[$i]->setValue($presentationDocValue[$i]);
 			}
