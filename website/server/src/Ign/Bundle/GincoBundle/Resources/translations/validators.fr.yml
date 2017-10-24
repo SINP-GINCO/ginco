@@ -1,16 +1,16 @@
 EmailList.invalid: "Cette adresse ou liste d'adresses email n'est pas valide : {{ string }}."
 
 MetadataException:
-  FailedDownload: Impossible de télécharger la fiche de métadonnnées ; merci de vérifier que l'identifiant correspond à une fiche présente dans l'application de métadonnées de l'INPN.
+  FailedDownload: Impossible de télécharger la fiche de métadonnées ; merci de vérifier que l'identifiant correspond à une fiche présente dans l'application de métadonnées de l'INPN.
   ParsingError: Erreur de lecture de la fiche de métadonnées ; merci de contacter l'administrateur régional.
 Metadata.Unique: Un jeu de données avec cet identifiant de métadonnées existe déjà dans la plateforme régionale.
 
 administration:
   user:
     email: Cet email est déjà utilisé
-    login: ce login est déjà pris
+    login: Ce login est déjà utilisé
   provider:
-    label: Ce label d'organisme exite déjà
+    label: Ce label d'organisme est déjà utilisé
   role:
-    label: Ce label pour un rôle est déjà utilisé.
+    label: Ce label pour un rôle est déjà utilisé
 
