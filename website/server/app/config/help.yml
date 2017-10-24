@@ -44,7 +44,8 @@ datasets:
   label: Help.datasets
   url: /gestion-jdd/index.html
   routes:
-    - jdd_list
+    - all_jdd_list
+    - user_jdd_list
     - jdd_show
     - jdd_new
     - integration_creation

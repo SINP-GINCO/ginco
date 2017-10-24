@@ -34,7 +34,8 @@ Menu:
   RegionalData: Données régionales
   RegionalData.Access: Visualiser les données régionales
   Datasets: Jeux de données
-  ManageDatasets: Gérer les jeux de données
+  ManageAllDatasets: Gérer tous les jeux de données
+  ManageMyDatasets: Gérer mes jeux de données
   ImportDataset: Créer un jeu de données
   Configurator: Configuration des modèles
   DataModels: Modèles de données
@@ -221,12 +222,17 @@ Jdd:
     success: Le jeu de données a bien été supprimé.
   submission:
     add: Importer des données
-
+  none: Aucun jeu de données trouvé.
   list:
+    user:
+      title: Gérer mes jeux de données
+    all:
+      title: Gérer tous les jeux de données
     jdd: Jeux de données
     view: Détails du jeu de données
     submissions: Imports de Données Sources Régionales
     nameAndId: Titre / Identifiant
+    providerAndUser: Organisme / Utilisateur
 
   page:
     title: Jeu de données

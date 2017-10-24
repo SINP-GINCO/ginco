@@ -9,7 +9,10 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Menu.Datasets'|trans }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="{{ path('jdd_list') }}">{{ 'Menu.ManageDatasets'|trans }}</a></li>
+                {% if (app.user.isAllowed('MANAGE_DATASETS_OTHER_PROVIDER')) %}
+                    <li><a href="{{ path('all_jdd_list') }}">{{ 'Menu.ManageAllDatasets'|trans }}</a></li>
+                {% endif %}
+                <li><a href="{{ path('user_jdd_list') }}">{{ 'Menu.ManageMyDatasets'|trans }}</a></li>
                 <li><a href="{{ path('jdd_new') }}">{{ 'Menu.ImportDataset'|trans }}</a></li>
             </ul>
         </li>

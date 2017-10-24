@@ -1,9 +1,20 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<h1>{{ 'Data integration module'|trans }}</h1>
 
 {% set user = app.user %}
+
+{% if user is not null and user.isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') %}
+    {% set isAllowedMDOP = true %}
+{% else %}
+    {% set isAllowedMDOP = false %}
+{% endif %}
+
+{% if allJdds %}
+	<h1>{{ 'Jdd.list.all.title'|trans }}</h1>
+{% else %}
+	<h1>{{ 'Jdd.list.user.title'|trans }}</h1>
+{% endif %}
 
 <!-- Show the currently active jdd -->
 {% if jddList is not empty %}
@@ -17,13 +28,20 @@
     <table class="table table-hover table-bordered jdd-table">
         <col style="width: 7%;"/>
         <col style="width: 20%;"/>
+        {% if isAllowedMDOP and allJdds %}
+            <col style="width: 16%;"/>
+        {% endif %}
         <col />
         {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
             <col style="width: 22%;"/>
         {% endif %}
         <thead>
             <tr>
-                <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                {% if isAllowedMDOP and allJdds %}
+                    <th colspan="3" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                {% else %}
+                    <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                {% endif %}
                 <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
                 {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
                     <th class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
@@ -32,6 +50,9 @@
             <tr>
                 <th class="color1">{{ 'Actions'|trans }}</th>
                 <th class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
+                {% if isAllowedMDOP and allJdds %}
+                    <th class="color1">{{ 'Jdd.list.providerAndUser'|trans }}</th>
+                {% endif %}
                 <th class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
                 {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
                     <th class="color1">
@@ -106,6 +127,14 @@
                     <p>{{ jdd.field('title') }}</p>
                     <span class="text-muted longtext">{{ jdd.field('metadataId') }}</span>
                 </td>
+
+                {# Provider label and username of the jdd #}
+                {% if isAllowedMDOP and allJdds %}
+                    <td>
+                       <p>{{ jdd.provider.label }}</p>
+                       <p>{{ jdd.user.username }}</p>
+                    </td>
+                {% endif %}
 
                 {# Submissions #}
                 <td class="submissions">
@@ -191,7 +220,7 @@
     {% endif %}
 
 {% else %}
-    <p>{% trans %}No submission found{% endtrans %}</p>
+    <p>{% trans %}Jdd.none{% endtrans %}</p>
 {% endif %}
 <p><a href="{{ path("jdd_new") }}">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Create data submission{% endtrans %}
