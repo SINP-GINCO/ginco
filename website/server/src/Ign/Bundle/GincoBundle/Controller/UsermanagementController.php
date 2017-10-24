@@ -39,13 +39,18 @@ class UsermanagementController extends BaseController {
 			// but, the original `$provider` variable has also been updated
 			// $role = $form->getData();
 			$logger->debug('provider : ' . \Doctrine\Common\Util\Debug::dump($role, 3, true, false));
-
 			// Always give the permission to RAW_DATA schema (and only RAW_DATA)
 			if (!$role->isSchemaAllowed('RAW_DATA')) {
 				$schemaRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Metadata\TableSchema');
 				$schemaRawData = $schemaRepo->find('RAW_DATA');
 				$role->addSchema($schemaRawData);
 			}
+
+			// Check if default value is not null (not possible to do in form validation nor in entity)
+			if ($role->getIsDefault() == null) {
+				$role->setIsDefault(false);
+			}
+
 			// Save the role
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($role);
