@@ -177,11 +177,15 @@ dumpSql($sqlDumpFilePath, $conStr);
           parce que le script de sprint n'est pas dans le même répertoire.*/
 $CLIParams = implode(' ',array_slice($argv,1));
 foreach ($applicablePatches as $patchDir) {
-	system("php $updateDir/$patchDir/update_db_sprint.php $CLIParams", $returnCode);
-	if ($returnCode != 0){
-		echo "ERROR : Problem occured on patch $patchDir: DB is going to be restored...";
-		restoreSql($sqlDumpFilePath, $config);
-		exit(1);
+	// Update php scripts are appliad in alphabetic order.
+	$updateScripts = glob("$updateDir/$patchDir/update_*.php");
+	foreach ($updateScripts as $script) {
+		system("php $script $CLIParams", $returnCode);
+		if ($returnCode != 0) {
+			echo "ERROR : Problem occured on patch $patchDir: DB is going to be restored...";
+			restoreSql($sqlDumpFilePath, $config);
+			exit(1);
+		}
 	}
 }
 echo "DB patches applied. \n";
