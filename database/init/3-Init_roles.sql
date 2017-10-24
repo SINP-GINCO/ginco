@@ -53,13 +53,14 @@ INSERT INTO permission(permission_code, permission_label) VALUES ('CHECK_CONF', 
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_METAMODEL', 'Configurer le méta-modèle');
 INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_SENSITIVE', 'Visualiser les données sensibles');
 INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_PRIVATE', 'Visualiser les données privées');
-INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS', 'Gérer les jeux de données (export GML, ,..)');
+INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS', 'Exporter les jeux de données au format DEE');
+INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer tous les jeux de données (dont ceux des autres utilisateurs)');
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIRM_SUBMISSION', 'Publier les données');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_PUBLIC_REQUEST', 'Gérer les requêtes publiques');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_OWNED_PRIVATE_REQUEST', 'Gérer ses requêtes privées');
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_WEBSITE_PARAMETERS', 'Configurer les paramètres de la plateforme');
 
--- Add the permissions per role
+-- Add the permissions for role Développeur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_INTEGRATION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY');
@@ -74,11 +75,13 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGUR
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_SENSITIVE');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_PRIVATE');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIRM_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_PUBLIC_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_PRIVATE_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_WEBSITE_PARAMETERS');
 
+-- Add the permissions for role Administrateur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_USERS');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_INTEGRATION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY');
@@ -89,6 +92,8 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CANCEL_O
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGURE_METAMODEL');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VIEW_SENSITIVE');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VIEW_PRIVATE');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_DATASETS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_DATASETS_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIRM_SUBMISSION');
@@ -96,8 +101,10 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_P
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_PRIVATE_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGURE_WEBSITE_PARAMETERS');
 
+-- Add the permissions for role Producteur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'EXPORT_RAW_DATA');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'MANAGE_PRIVATE_REQUEST');
 
+-- Add the permissions for role Grand public
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (4, 'DATA_QUERY');
