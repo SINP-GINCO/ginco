@@ -52,7 +52,8 @@ Vérifier la configuration technique (PHP, mémoire,...)         Non            
 Configurer le méta-modèle                                    **Oui**          Non        Non
 Visualiser les données sensibles                             **Oui**          Non        Non
 Consulter les métadonnées                                    **Oui**        **Oui**      Non
-Gérer les jeux de données (export GML...)                    **Oui**          Non        Non
+Exporter les jeux de données au format DEE                   **Oui**          Non        Non
+Gérer les jeux de données de tous les utilisateurs           **Oui**          Non        Non
 Visualiser les données privées                               **Oui**          Non        Non
 Publier les données                                          **Oui**          Non        Non
 Gérer les requêtes publiques                                 **Oui**          Non        Non

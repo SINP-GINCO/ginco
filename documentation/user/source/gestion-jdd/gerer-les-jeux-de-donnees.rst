@@ -75,6 +75,12 @@ rencontrées lors de l'import, pour vous aider à corriger le problème. Vous po
 
 Liste des jeux de données
 -------------------------
+
+Pour accéder à la liste de vos jeux de données, accédez à la page en cliquant dans le menu sur "*Jeux de données / Gérer mes jeux de données*".
+Cette page d'accueil de gestion des jeux de données liste l'ensemble de **vos** jeux de données ainsi que leurs actions associées.
+
+Par ailleurs, les utilisateurs ayant les permissions "*Gérer tous les jeux de données*" et "*Importer des données*" ont accès en plus à la page de gestion de **tous** les jeux de données de la plateforme.
+Sur cette page, une colonne "*Organisme / Utilisateur*" a été rajoutée pour déterminer rapidement l'origine de chaque jeu de données.
 La page d'accueil de gestion des jeux de données liste l'ensemble des jeux de données ainsi que leurs actions associées.
 
 .. image:: ../images/gestion-jdd/liste-jdd.png
