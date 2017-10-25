@@ -54,7 +54,7 @@ INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_MET
 INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_SENSITIVE', 'Visualiser les données sensibles');
 INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_PRIVATE', 'Visualiser les données privées');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS', 'Exporter les jeux de données au format DEE');
-INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer tous les jeux de données (dont ceux des autres utilisateurs)');
+INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer les jeux de données de tous les utilisateurs');
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIRM_SUBMISSION', 'Publier les données');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_PUBLIC_REQUEST', 'Gérer les requêtes publiques');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_OWNED_PRIVATE_REQUEST', 'Gérer ses requêtes privées');
