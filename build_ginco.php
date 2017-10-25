@@ -12,7 +12,7 @@ function usage($mess=NULL){
 	echo "> php build_ginco.php -f configFile [{-D<propertiesName>=<Value>}] [--mode=<dev|prod>] [--task1 --task2...]\n\n";
 	echo "o configFile: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
-	echo "o --mode : accepted values are prod and dev. 'prod' will create a build/ directory and put all builded services in it. 
+	echo "o --mode : accepted values are prod and dev. 'prod' will create a build/ directory and put all builded services in it.
 	   'dev' will put builded services in the project, and output post-installation instructions.\n";
 	echo "o --builddir : directory where builded output will be put (only in prod mode).\n";
 	echo "o The available tasks are:\n";
