@@ -1,6 +1,8 @@
 {% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 
-{% block title %}{% trans %}Model viewing {%endtrans%}{% endblock %}
+{% block title %}
+	{% trans with {'%modelName%': modelName}%}breadcrumb.datamodel.view{% endtrans %}
+{% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb">

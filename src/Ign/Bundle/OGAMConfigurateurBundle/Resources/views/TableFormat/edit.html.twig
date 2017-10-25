@@ -2,7 +2,7 @@
 {% form_theme tableForm 'bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block title %}
-	{% trans %}Edition d'une table {% endtrans %}
+	{%trans with {'%tableName%': table.label} %}breadcrumb.table.edit{% endtrans %}
 {% endblock %}
 
 {% block breadcrumb %}

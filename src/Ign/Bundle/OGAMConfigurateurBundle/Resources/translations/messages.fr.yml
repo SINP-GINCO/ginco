@@ -236,8 +236,6 @@ importmodel:
     success: L'ordre d'import des fichiers a été sauvegardé avec succès.
     fail: Une erreur est apparue lors de l'enregistrement de l'ordre d'import des fichiers du modèle d'import.
   resetCaches.fail: Le cache tomcat n'a pas pu être effacé, veuillez contacter votre administrateur.
-  
-Edition of an import model: Edition d'un modèle d'import
 
 File list: Liste des modèles de fichiers
 Create a new file: Créer un nouveau fichier d'import
@@ -248,7 +246,6 @@ importFile: Fichier d'import
 
 # /datasetsimport{id}/files
 
-File Format Creation: Création d'un fichier d'import
 file:
   edit:
     fields:
@@ -275,7 +272,6 @@ file:
   order: 
     title: Ordre
     tooltip: L'ordre d'import des fichiers peut être modifié via un glisser-déposer de ceux-ci.
-File Format Visualisation: Visualisation des fichiers
 
 # datasetsimport/{datasetId}/files/{format}/edit/
 File: Description du format de fichier %file.label%

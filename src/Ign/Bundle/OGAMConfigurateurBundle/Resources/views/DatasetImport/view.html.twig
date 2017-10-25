@@ -1,6 +1,8 @@
-{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %} {% block title
-%}{% trans %}Visualisation of an import model{%endtrans%}{% endblock %}
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 
+{% block title %}
+	{% trans with {'%modelName%': dataset.label}%}breadcrumb.importmodel.view{% endtrans %}
+{% endblock %}
 
 {% block breadcrumb %}
 	<ol class="breadcrumb">

@@ -1,7 +1,7 @@
 {% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 
 {% block title %}
-	{% trans %}File Format Edition{% endtrans %}
+	{% trans with {'%fileName%': file.label}%}breadcrumb.file.edit{% endtrans %}
 {% endblock %}
 
 {% block breadcrumb %}

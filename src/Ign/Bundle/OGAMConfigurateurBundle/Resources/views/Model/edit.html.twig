@@ -1,7 +1,9 @@
 {% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 {% form_theme modelForm 'bootstrap_3_horizontal_layout.html.twig' %}
 
-{% block title %}{% trans %}Model Edition {%endtrans%}{% endblock %}
+{% block title %}
+	{% trans with {'%name%': modelName}%}datamodel.edit.title{% endtrans %}
+{% endblock %}
 
 {% block breadcrumb %}
 	<ol class="breadcrumb">

@@ -1,5 +1,8 @@
-{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}{% block title %}
-{% trans %}File Format Visualisation {% endtrans %} {% endblock %}
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% block title %}
+	{% trans with {'%fileName%': file.label}%}breadcrumb.file.view{% endtrans %}
+{% endblock %}
 
 {% block extracss %}
 	{{ parent() }}

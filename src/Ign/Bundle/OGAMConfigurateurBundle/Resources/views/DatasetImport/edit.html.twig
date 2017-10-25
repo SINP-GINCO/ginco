@@ -1,6 +1,9 @@
-{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %} {% form_theme
-datasetForm 'bootstrap_3_horizontal_layout.html.twig' %} {% block title
-%}{% trans %}Edition of an import model{%endtrans%}{% endblock %}
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+{% form_theme datasetForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title%}
+	{% trans with {'%modelName%': datasetLabel}%}breadcrumb.importmodel.edit{% endtrans %}
+{% endblock %}
 
 {% block breadcrumb %}
 	<ol class="breadcrumb">

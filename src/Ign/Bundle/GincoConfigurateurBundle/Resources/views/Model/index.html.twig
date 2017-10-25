@@ -1,5 +1,9 @@
 {% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 
+{% block title %}
+	{% trans %}breadcrumb.datamodel.index{% endtrans %}
+{% endblock %}
+
 {% block breadcrumb %}
 	<ol class="breadcrumb">
 		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}

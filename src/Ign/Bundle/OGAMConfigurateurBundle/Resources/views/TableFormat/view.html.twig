@@ -1,7 +1,7 @@
 {% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
 
 {% block title %}
-	{% trans %}Table viewing{% endtrans %}
+	{%trans with {'%tableName%': table.label} %}breadcrumb.table.view{% endtrans %}
 {% endblock %}
 
 {% block breadcrumb %}
