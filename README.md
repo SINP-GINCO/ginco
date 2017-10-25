@@ -1,7 +1,7 @@
 # GINCO
 
 ## A propos
-GINCO est le projet d'implémentation de référence des plates-formes régionles et
+GINCO est le projet d'implémentation de référence des plates-formes régionales et
 thématique du SINP ([Système d'Information Nature et Paysage](http://www.naturefrance.fr/sinp/presentation-du-sinp))
 
 Les objectifs de la plate-forme sont:
