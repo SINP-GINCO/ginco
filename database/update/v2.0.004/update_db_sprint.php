@@ -28,6 +28,7 @@ try {
 	// execCustSQLFile("$sprintDir/xxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_manage_dataset_other_provider_permission.sql", $config);
 	execCustSQLFile("$sprintDir/add_manage_dataset_permission_to_admin_role.sql", $config);
+	execCustSQLFile("$sprintDir/update_url_related_parameters.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
