@@ -1,17 +1,9 @@
-CREATE TABLE website.content (
-  name VARCHAR(50) NOT NULL,
-  value TEXT DEFAULT NULL,
-  description VARCHAR(500) DEFAULT NULL,
-  PRIMARY KEY(name)
-);
-CREATE UNIQUE INDEX UNIQ_3211DD035E237E06 ON website.content (name);
+SET SEARCH_PATH = website;
 
-ALTER TABLE website.content
-  OWNER TO admin;
-GRANT ALL ON TABLE website.content TO admin;
-GRANT ALL ON TABLE website.content TO ogam;
+DELETE FROM content;
 
-INSERT INTO website.content ("name",value,description) VALUES
+
+INSERT INTO content ("name",value,description) VALUES
   ('homepage.title','@site.name@','Titre page d''accueil'),
   ('homepage.intro','<div>
 <p>Bienvenue sur la @site.name@, plateforme r&eacute;gionale du Syst&egrave;me d&rsquo;Information Nature et Paysage (SINP) permettant l&rsquo;agr&eacute;gation, la standardisation et l&rsquo;&eacute;change des donn&eacute;es d&#39;observations de biodiversit&eacute;.<br />
