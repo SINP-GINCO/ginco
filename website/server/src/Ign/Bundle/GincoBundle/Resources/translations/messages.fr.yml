@@ -100,9 +100,9 @@ Contact:
   link: Contact
   page:
     title: Contact
-  name: Votre nom :
-  email: Votre email :
-  message: Votre message :
+  name: "Votre nom :"
+  email: "Votre email :"
+  message: "Votre message :"
   send:
     button: Envoyer
     success: Votre message a bien été envoyé à l'administrateur de la plateforme. Il y répondra au plus vite.
@@ -162,6 +162,7 @@ ConfPresentation:
 # -----------------------------------
 
 Data integration module: Gérer les jeux de données
+
 Datamodel: Modèle de données
 Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
@@ -217,8 +218,8 @@ Jdd:
     metadataIdLabel: Identifiant de métadonnées
     metadataIdDescription: L'identifiant de métadonnées renseigné doit être présent dans <a href="%metadataUrl%" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="https://ginco.ign.fr/doc/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
   delete:
-    prompt: Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?
-    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données et/ou DEE liés).
+    prompt: "Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?"
+    impossible: "Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données et/ou DEE liés)."
     success: Le jeu de données a bien été supprimé.
   submission:
     add: Importer des données

@@ -156,28 +156,35 @@ Dans le formulaire "localisation", le critère "géométrie" permet de définir 
 Pour définir un polygone, après avoir sélectionné le critère "géométrie", il faut cliquer sur l'icone représentant un crayon à côté du champ texte.
 Cela active le traçage d'une géométrie via la souris sur la carte et fait apparaître une barre d'icones en haut de la carte, dont le fonctionnement est le suivant :
 
- * Zoomer sur la sélection : 
+ * Zoomer sur la sélection :
+
 Lorsque l'on clique sur cette icone, l'emprise de la carte est redéfinie à celle de la géométrie de recherche si elle existe.
 
- * Snapping : 
+ * Snapping :
+
 Ce bouton active la saisie le long d'une autre géométrie. La liste déroulante à côté de l'icone permet de choisir la couche sur laquelle accrocher la géométrie.
 Les coutours des entités de la couche séléctionnée apparaissent en bleu sur la carte, et lorsqu'on approche la souris de l'un d'eux, le point bleu correspondant à la géométrie que l'on va tracer se positionne dessus.
 
  * Modifier la géométrie :
+
 Lorsque cette icone est active, la souris permet de modifier le coutour de la géométrie de recherche. Pour cela, il faut cliquer sur le contour avec la souris, puis la déplacer sans relacher le clic.
 
  * Sélectionner une géométrie :
+
 Une géométrie non sélectionnée a un contour jaune. Une géométrie se sélectionne en cliquant dessus avec la souris. Une fois sélectionnée, le contour apparaît en bleu.
 
- * Dessiner un polygone : 
+ * Dessiner un polygone :
+
 Un clic simple sur la carte ajoute un sommet au polygone, un double clic ferme le polygone en ajoutant un sommet.
 Il est possible de dessiner plusieurs polygones pour un même critère de recherche.
 
  * Sélectionner un contour sur la couche sélectionnée :
+
 Au lieu de dessiner un polygone à la main sur la carte, cet outil permet de sélectionner une couche dans la liste déroulante (espace naturel ou limite administrative), puis de sélectionner une entité sur la couche choisie en cliquant avec la souris sur la carte.
 Pour visualiser les entités, il est préférable d'afficher également la couche sur la carte via l'arbre des couches du panneau "Couches & légendes", à gauche.
 
  * Effacer la géométrie :
+
 Lorsqu'une géométrie de recherche est sélectionnée, il est possible de la supprimer en cliquant sur cette icone.
 
 Opérations logiques entre critères

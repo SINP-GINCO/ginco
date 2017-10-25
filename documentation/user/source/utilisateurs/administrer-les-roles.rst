@@ -3,14 +3,15 @@
 Administrer les rôles
 =====================
 
-Deux rôles GINCO par défaut ont été définis : 
- * administrateur
- * producteur
- * visiteur
+Plusieurs rôles GINCO par défaut ont été définis :
 
-Auxquels s'ajoute le rôle développeur, réservé à l'équipe de maintenance, et qu'il ne faut pas modifier ou supprimer.
+ * Administrateur
+ * Producteur
+ * Grand Public
 
-Le rôle visiteur correspond aux utilisateurs non authentifiés.
+Auxquels s'ajoute le rôle *Développeur*, réservé à l'équipe de maintenance, et qu'il ne faut pas modifier ou supprimer.
+
+.. note:: Le rôle *Grand Public* est un rôle technique non-modifiable, attribué par défaut aux utilisateurs non authentifiés, qui ont par défaut accès au module de visualisation de la plateforme régionale.
 
 Visualiser les rôles
 --------------------
@@ -60,10 +61,8 @@ Gérer les requêtes publiques                                 **Oui**          
 Gérer ses requêtes privées                                   **Oui**        **Oui**      Non
 ========================================================  ==============  ==========  ========
 
-.. note:: La permission Consulter les métadonnées ne permet pas d'en saisir ou d'en importer.
+.. note:: La permission *Consulter les métadonnées* ne permet pas d'en saisir ou d'en importer.
 	Il s'agit juste de visualiser les métadonnées publiées.
-	
-	Le module Géosource possède sa propre gestion des permissions, des rôles et des utilisateurs.
 
 Modifier un rôle
 ----------------
@@ -77,6 +76,6 @@ Vous pouvez alors modifier les code, libellé, définition et permissions du rô
 Supprimer un rôle
 -----------------
 
-Pour supprmier un rôle, à partir de la page de visualisation des rôles, cliquez sur l'icône à droite du rôle à supprimer.
+Pour supprimer un rôle, à partir de la page de visualisation des rôles, cliquez sur l'icône à droite du rôle à supprimer.
 
 .. image:: ../images/administration-role-visu-supprimer.png
