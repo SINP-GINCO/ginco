@@ -120,6 +120,7 @@ execSQLFile("$initDir/1-4-Create_raw_data_schema.sql",$config);
 execSQLFile("$initDir/2-Ogam_permissions.sql",$config);
 execSQLFile("$initDir/2-Set_search_path.sql",$config);
 execCustSQLFile("$initDir/3-Update_application_parameters_tpl.sql",$config);
+execCustSQLFile("$initDir/3-Update_content_tpl.sql",$config);
 execCustSQLFile("$initDir/3-Update_mapping_schema_tpl.sql",$config);
 execSQLFile("$initDir/3-Init_roles.sql",$config);
 execCustSQLFile("$initDir/3-Update_predefined_requests.sql",$config);
