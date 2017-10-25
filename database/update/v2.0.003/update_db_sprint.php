@@ -29,6 +29,7 @@ try {
 	execCustSQLFile("$sprintDir/update_providers.sql", $config);
 	execCustSQLFile("$sprintDir/add_content_table.sql", $config);
 	execCustSQLFile("$sprintDir/add_is_default_column_for_role.sql", $config);
+	execCustSQLFile("$sprintDir/update_url_related_parameters.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
