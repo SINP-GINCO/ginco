@@ -13,19 +13,19 @@ Elle est mise à la disposition de l'ensemble des collecteurs de données et des
 ==============================================    =====================================
 Région                                  			Url GINGO
 ==============================================    =====================================
-Auvergne Rhône-Alpes                    			https://test-ara-ginco.ign.fr
-Bretagne                                			https://test-bretagne-ginco.ign.fr
-Centre-Val de Loire                     			https://test-cvdl-ginco.ign.fr
-Corse                                   			https://test-corse-ginco.ign.fr
-Grand Est                                           https://test-grandest-ginco.ign.fr
-Guadeloupe                              			https://test-guadeloupe-ginco.ign.fr
-Guyane                                  			https://test-guyane-ginco.ign.fr
-Hauts-de-France                                     https://test-hautsdefrance-ginco.ign.fr
-Ile de France                           			https://test-idf-ginco.ign.fr
-Mayotte                                 			https://test-mayotte-ginco.ign.fr
-Normandie                               			https://test-normandie-ginco.ign.fr
-Nouvelle-Aquitaine     			                    https://test-nouvelleaquitaine-ginco.ign.fr
-Occitanie                                 			https://test-occitanie-ginco.ign.fr
+Auvergne Rhône-Alpes                    			https://ginco.naturefrance.fr/test-ara
+Bretagne                                			https://ginco.naturefrance.fr/test-bretagne
+Centre-Val de Loire                     			https://ginco.naturefrance.fr/test-cvdl
+Corse                                   			https://ginco.naturefrance.fr/test-corse
+Grand Est                                           https://ginco.naturefrance.fr/test-grandest
+Guadeloupe                              			https://ginco.naturefrance.fr/test-guadeloupe
+Guyane                                  			https://ginco.naturefrance.fr/test-guyane
+Hauts-de-France                                     https://ginco.naturefrance.fr/test-hautsdefrance
+Ile de France                           			https://ginco.naturefrance.fr/test-idf
+Mayotte                                 			https://ginco.naturefrance.fr/test-mayotte
+Normandie                               			https://ginco.naturefrance.fr/test-normandie
+Nouvelle-Aquitaine     			                    https://ginco.naturefrance.fr/test-nouvelleaquitaine
+Occitanie                                 			https://ginco.naturefrance.fr/test-occitanie
 ==============================================    =====================================
 
 Deux instances supra-régionales de test ont aussi été créées :
@@ -33,8 +33,8 @@ Deux instances supra-régionales de test ont aussi été créées :
 ==============================================    =====================================
 Instance                                  			Url GINGO
 ==============================================    =====================================
-Thématique occurrences de taxons (MNHN) 			https://test-occtax-ginco.ign.fr
-Développement continu (Dailybuild IGN)  			https://dailybuild-ginco.ign.fr
+Thématique occurrences de taxons (MNHN) 			https://ginco.naturefrance.fr/test-occtax
+Développement continu (Dailybuild IGN)  			https://ginco.naturefrance.fr/dailybuild
 ==============================================    =====================================
 
 Instances de production
