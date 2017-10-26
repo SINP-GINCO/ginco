@@ -78,3 +78,12 @@ par rapport à la version précédente.
 * Correction de divers bugs...
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.1...v2.0.2)
+
+## V2.0.3 (26/10/2017)
+
+* Mise en place d'une pagination avec tri et filtre de recherche, sur toutes les pages de listes de l'application (sauf les jeux de données)
+* Création d'une page d'accueil et d'une page de présentation dont le contenu est entièrement personnalisable par l'administrateur  
+* Les instances de test ont été basculées sur des sous-domaines de naturefrance.fr: https://ginco.naturefrance.fr/test-region
+* Correction de divers bugs...
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.2...v2.0.3)
