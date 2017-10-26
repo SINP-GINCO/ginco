@@ -42,7 +42,7 @@ INSERT INTO role_to_schema(role_code, schema_code) VALUES (4, 'RAW_DATA');
 -- List the permissions of the web site
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_USERS', 'Administrer les utilisateurs');
 INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_INTEGRATION', 'Importer des données');
-INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_QUERY', 'Visualiser les données régionales');
+INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_QUERY', 'Visualiser les données régionales publiées');
 INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_QUERY_OTHER_PROVIDER', 'Visualiser les données d''un autre fournisseur');
 INSERT INTO permission(permission_code, permission_label) VALUES ('EXPORT_RAW_DATA', 'Exporter les données (au format CSV, GeoJson, kml...)');
 INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_EDITION', 'Editer les données');
