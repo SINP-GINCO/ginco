@@ -55,7 +55,7 @@ class QueryController extends BaseController {
 
 		// Forward the user to the next step
 		$visuUrl = ($this->container->getParameter('kernel.environment') == 'dev') ? '/odd' : '/odp';
-		$visuUrl = $request->getBasePath() . $visuUrl ;
+		$visuUrl = $request->getBasePath() . $visuUrl;
 		if (isset($defaultTab) && $defaultTab === "edition-add") {
 			$providerId = $this->getUser() ? $this->getUser()
 				->getProvider()
@@ -165,6 +165,10 @@ class QueryController extends BaseController {
 		$configuration = $this->get('ogam.configuration_manager');
 		ini_set("max_execution_time", $configuration->getConfig('max_execution_time', 480));
 		try {
+			$grandPublicRole = $this->getDoctrine()
+				->getManager('website')
+				->getRepository('OGAMBundle:Website\Role')
+				->find(4);
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
@@ -175,6 +179,8 @@ class QueryController extends BaseController {
 				"providerId" => $this->getUser() ? $this->getUser()
 					->getProvider()
 					->getId() : NULL,
+				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
+				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
 			];
 			$where = $request->getSession()->get('query_SQLWhere');
@@ -236,6 +242,10 @@ class QueryController extends BaseController {
 		$logger->debug('ajaxgetresultcolumns');
 
 		try {
+			$grandPublicRole = $this->getDoctrine()
+				->getManager('website')
+				->getRepository('OGAMBundle:Website\Role')
+				->find(4);
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
@@ -247,12 +257,13 @@ class QueryController extends BaseController {
 				->getLastRequestIdFromSession(session_id());
 			// Get the maximum precision level
 			$maxPrecisionLevel = $this->get('ogam.query_service')->getMaxPrecisionLevel($queryForm->getCriteria());
-
 			// Call the service to get the definition of the columns
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()
 					->getProvider()
 					->getId() : NULL,
+				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
+				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
 				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 			];
@@ -769,7 +780,7 @@ class QueryController extends BaseController {
 		if ($queryForm->getCriteria()) {
 			$criteriasLine .= '// ' . $this->get('translator')->trans('Request Criterias') . "\n";
 		}
-		
+
 		// List all the criterias
 		foreach ($queryForm->getCriteria() as $genericFormField) {
 

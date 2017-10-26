@@ -229,6 +229,7 @@ class GenericService extends BaseGenericService {
 
 		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
 		$hasConfirmSubmission = array_key_exists('CONFIRM_SUBMISSION', $rootTableFields);
+		$hasRoleInfo = array_key_exists('hasGrandPublicRole', $userInfos);
 
 		//
 		// Prepare the WHERE clause
@@ -249,7 +250,8 @@ class GenericService extends BaseGenericService {
 
 		// Right management
 		// Check the provider id of the logged user
-		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider) {
+		$this->logger->debug('hasGrandPublicRole ? ' . $userInfos['hasGrandPublicRole']? "Yes":"No");
+		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider && $hasRoleInfo && !$userInfos['hasGrandPublicRole']) {
 			$where .= " AND " . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId'] . "'";
 		}
 
