@@ -79,7 +79,7 @@ metadata.jdd.url=https://preprod-inpn.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecord
 dee.notification.mail=YOURMAIL@ign.fr
 
 # Url of the documentation website
-documentation.url=http://ginco.ign.fr/doc
+documentation.url=http://ginco.naturefrance.fr/doc-ginco-prod
 
 # Bounding box pour l'initialisation de la visualisation en WebMercator
 bb.xmin=-899390
@@ -99,4 +99,4 @@ hidden.value=Masqué
 piwik.id=0
 
 #Â Url of the documentation website
-documentation.url=http://ginco.ign.fr/doc
+documentation.url=http://ginco.naturefrance.fr/doc

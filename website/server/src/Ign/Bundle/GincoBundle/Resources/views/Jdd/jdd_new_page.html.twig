@@ -16,7 +16,10 @@
             {{ form_widget(form.metadata_id) }}
             {{ form_errors(form.metadata_id) }}
             <div class="no-error">
-                <span class="help-block">{{ 'Jdd.new.metadataIdDescription'|trans({'%metadataUrl%': metadataUrl})|raw }}</span>
+                <span class="help-block">{{ 'Jdd.new.metadataIdDescription'|trans({
+                        '%metadataUrl%': metadataUrl,
+                        '%documentationUrl%': configurationManager.getConfig('documentationUrl', 'documentation_url_missing')
+                    })|raw }}</span>
             </div>
         </div>
     </div>
