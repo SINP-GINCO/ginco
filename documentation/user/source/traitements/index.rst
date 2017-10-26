@@ -1,4 +1,5 @@
 .. Traitements
+.. _traitements
 
 Traitements de standardisation des données
 ==========================================

@@ -1,4 +1,5 @@
 .. Le configurateur GINCO
+.. _configurateur:
 
 Le configurateur GINCO
 ======================

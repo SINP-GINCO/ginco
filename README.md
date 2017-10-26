@@ -20,7 +20,7 @@ parce qu'il largement configurable et qu'il doit permettre de s'adapter aux diff
 thématiques du SINP.
 
 ## Documentation utilisateur
-La documentation utilisateur est consultable en ligne [ici](https://ginco.ign.fr/doc).
+La documentation utilisateur est consultable en ligne [ici](https://ginco.naturefrance.fr/doc).
 
 ## Installation
 Le code actuellement en ligne n'est pas suffisant pour installer GINCO. Il manque

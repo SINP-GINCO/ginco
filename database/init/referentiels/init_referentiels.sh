@@ -24,6 +24,7 @@ connectionStr=$@
 rootDir=$(dirname $(readlink -f $0))
 dataDir=$rootDir/data
 
+refurl=https://ginco.naturefrance.fr/ref
 taxref=$dataDir/download/taxrefv10.txt
 communes=$dataDir/download/commune_carto_2017.sql
 departements=$dataDir/download/departement_carto_2017.sql
@@ -38,7 +39,7 @@ then
 	echo "$taxref a été trouvé localement..."
 else
 	echo "téléchargement de taxref v10..."
-	wget "https://ginco.ign.fr/ref/TAXREFv10.0/TAXREFv10.0.txt" -O $taxref --no-verbose
+	wget "$refurl/TAXREFv10.0/TAXREFv10.0.txt" -O $taxref --no-verbose
 fi
 echo "Intégration des données taxref dans la base..."
 psql "$connectionStr" -f $rootDir/create_taxref10_tables.sql
@@ -56,7 +57,7 @@ then
 	echo "$communes a été trouvé localement..."
 else
 	echo "téléchargement de la dernière version des limites administratives (admin express-cog communes carto 2017)..."
-	wget "https://ginco.ign.fr/ref/commune_carto_2017.sql" -O $communes --no-verbose
+	wget "$refurl/commune_carto_2017.sql" -O $communes --no-verbose
 
 fi
 
@@ -65,7 +66,7 @@ then
 	echo "$departements a été trouvé localement..."
 else
 	echo "téléchargement de la dernière version des limites administratives (admin express-cog départements carto 2017)..."
-	wget "https://ginco.ign.fr/ref/departement_carto_2017.sql" -O $departements --no-verbose
+	wget "$refurl/departement_carto_2017.sql" -O $departements --no-verbose
 fi
 
 if [ -f "$regions" ]
@@ -73,7 +74,7 @@ then
 	echo "$regions a été trouvé localement..."
 else
 	echo "téléchargement de la dernière version des limites administratives (admin express-cog régions carto 2017)..."
-	wget "https://ginco.ign.fr/ref/region_carto_2017.sql"      -O $regions --no-verbose
+	wget "$refurl/region_carto_2017.sql"      -O $regions --no-verbose
 fi
 
 echo "Intégration des limites administratives pour la visu..."
@@ -88,7 +89,7 @@ then
 	echo "$espacesnaturels a été trouvé localement..."
 else
 	echo "téléchargement de la dernière version des espaces naturels (export INPN)..."
-	wget "https://ginco.ign.fr/ref/espaces_naturels_last.csv" -O $espacesnaturels --no-verbose
+	wget "$refurl/espaces_naturels_last.csv" -O $espacesnaturels --no-verbose
 fi
 
 echo "Integration du référentiel des espaces naturels..."
