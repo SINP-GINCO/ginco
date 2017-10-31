@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Ign\Bundle\GincoBundle\Form\UploadDataShapeType;
 use Symfony\Component\Form\FormError;
+use Ign\Bundle\OGAMBundle\Form\UploadDataType;
 use Ign\Bundle\OGAMBundle\Controller\IntegrationController as BaseController;
 
 /**
@@ -95,6 +96,120 @@ class IntegrationController extends BaseController {
 		));
 	}
 
+	/**
+	 * Show the upload data page.
+	 *
+	 * @Route("/show-upload-data/{id}", name="integration_upload_data")
+	 */
+	public function showUploadDataAction(Request $request, Submission $submission) {
+		$configuration = $this->get('ogam.configuration_manager');
+		$fileMaxSize = intval($this->get('ogam.configuration_manager')->getConfig('fileMaxSize', '40'));
+		$showDetail = $configuration->getConfig('showUploadFileDetail', true) == 1;
+		$showModel = $configuration->getConfig('showUploadFileModel', true) == 1;
+		$dataset = $submission->getDataset();
+		$this->get('logger')->debug('$showDetail : ' . $showDetail);
+		$this->get('logger')->debug('$showModel : ' . $showModel);
+	
+		$geomFieldInFile = false;
+	
+		$requestedFiles = $submission->getDataset()->getFiles();
+		foreach ($requestedFiles as $requestedFile) {
+			// Checks if geom unit field is present in the file
+			if (!$geomFieldInFile) {
+				$fields = $this->getDoctrine()
+				->getRepository('OGAMBundle:Metadata\FileField')
+				->getFileFields($requestedFile->getFormat());
+				foreach ($fields as $field) {
+					$unit = $this->getDoctrine()
+					->getRepository('OGAMBundle:Metadata\Unit')
+					->getUnitFromFileField($field);
+					$geomFieldInFile = $geomFieldInFile || $unit[0]['type'] == 'GEOM';
+				}
+			}
+		}
+		$locale = $this->get('ogam.locale_listener')->getLocale();
+		$submissionFiles = $this->getDoctrine()
+		->getRepository(FileFormat::class)
+		->getFileFormats($dataset->getId(), $locale);
+	
+		$files = [];
+	
+		foreach ($submissionFiles as $file) {
+			$files[$file->getFormat()] = $file;
+		}
+		$optionsForm['submission'] = $submission;
+		$optionsForm['geomFieldInFile'] = $geomFieldInFile;
+		$optionsForm['fileMaxSize'] = $fileMaxSize;
+		$form = $this->createForm(UploadDataType::class, $optionsForm);
+		$form->handleRequest($request);
+	
+		if ($form->isValid() && $form->isSubmitted()) {
+			// Get the configuration info
+			$uploadDir = $configuration->getConfig('uploadDir', '/var/www/html/upload');
+			$srid = '';
+			if($form->has('SRID')){
+				$srid = $form->get('SRID')->getData();
+			}
+	
+			// For each requested file
+	
+			$requestedFiles = $submission->getDataset()->getFiles();
+			foreach ($requestedFiles as $key => $requestedFile) {
+				$file = $form[$requestedFile->getFormat()]->getData();
+				// Get the uploaded filename
+	
+				$filename = $file->getClientOriginalName();
+	
+				// Print it only if it is not an array (ie: nothing has been selected by the user)
+				if (!is_array($filename)) {
+					$this->getLogger()->debug('uploaded filename ' . $filename);
+				}
+	
+				// Check that the file is present
+				if (empty($file) || !$file->isValid()) {
+					$this->getLogger()->debug('File ' . $requestedFile->format . ' is missing, skipping');
+					unset($requestedFiles[$key]);
+				} else {
+					// Move the file to the upload directory on the php server
+					$targetPath = $uploadDir . DIRECTORY_SEPARATOR . $submission->getId() . DIRECTORY_SEPARATOR . $requestedFile->getFileType();
+					$targetName = $targetPath . DIRECTORY_SEPARATOR . $filename;
+					@mkdir($uploadDir . DIRECTORY_SEPARATOR . $submission->getId()); // create the submission dir
+					@mkdir($targetPath);
+					$file->move($targetPath, $filename);
+					$this->getLogger()->debug('renamed to ' . $targetName);
+					$requestedFile->filePath = $targetName; // TODO : clean this fake filePath property
+				}
+			}
+			try {
+				$providerId = $submission->getProvider()->getId();
+				$this->get('ogam.integration_service')->uploadData($submission->getId(), $providerId, $requestedFiles, $srid);
+			} catch (\Exception $e) {
+				$this->get('logger')->error('Error during upload:' . $e, array(
+					'exception' => $e
+				));
+				return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
+					'error' => $e->getMessage()
+				));
+			}
+	
+			// Returns to the page where the action comes from in the first place
+			// (get it from session)
+			$session = $request->getSession();
+			$redirectUrl = $session->get('redirectToUrl', $this->generateUrl('integration_home'));
+			$session->remove('redirectToUrl');
+			return $this->redirect($redirectUrl);
+		}
+		return $this->render('OGAMBundle:Integration:show_upload_data.html.twig', array(
+			'id' => $submission->getId(),
+			'dataset' => $dataset,
+			'form' => $form->createView(),
+			'files' => $files,
+			'showModel' => $showModel,
+			'showDetail' => $showDetail,
+			'geomFieldInFile' => $geomFieldInFile
+		));
+	}
+	
 	/**
 	 * Validate the data.
 	 * Custom: send a notification mail to the connected user
