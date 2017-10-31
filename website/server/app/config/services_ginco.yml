@@ -105,6 +105,10 @@ services:
       class: Ign\Bundle\GincoBundle\Services\SubmissionService
       arguments: ["@logger", "@ogam.configuration_manager", "@ogam.generic_service","@ogam.query_service", "@doctrine.orm.raw_data_entity_manager", "@doctrine.orm.metadata_entity_manager", "@translator"]
 
+    ginco.ogr2ogr:
+      class: Ign\Bundle\GincoBundle\Services\Ogr2ogr
+      arguments: ["@logger", "@ogam.configuration_manager"]
+
     # RabbitMQ Decorated Producer
     ginco.decorating_ginco_generic_producer:
       class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericProducer

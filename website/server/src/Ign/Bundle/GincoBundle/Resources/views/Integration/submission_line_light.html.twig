@@ -18,7 +18,7 @@
         {# File and lines #}
         <div class="file">
             {% for file in submission.files %}
-                <div class="longtext">{{ file.fileName|replace({'\\':'/'})|split('/')|last }}</div>
+                <div class="longtext">{{ file.fileName|replace({'\\':'/'})|split('/')|last|split('.')|first }}</div>
             {% endfor %}
         </div>
         <div class="lines">
