@@ -66,7 +66,7 @@
         {# Files #}
         <td>
             {% for file in submission.files %}
-                <div>{{ file.fileName|replace({'\\':'/'})|split('/')|last }}</div>
+                <div>{{ file.fileName|replace({'\\':'/'})|split('/')|last|split('.')|first }}</div>
             {% endfor %}
         </td>
 

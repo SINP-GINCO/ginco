@@ -30,6 +30,7 @@ try {
 	execCustSQLFile("$sprintDir/add_manage_dataset_permission_to_admin_role.sql", $config);
 	execCustSQLFile("$sprintDir/update_url_related_parameters.sql", $config);
 	execCustSQLFile("$sprintDir/update_data_query_permission.sql", $config);
+	execCustSQLFile("$sprintDir/create_import_model_for_shapefile.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
