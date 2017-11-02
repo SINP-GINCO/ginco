@@ -34,7 +34,7 @@ class Permissions extends PermissionsBase {
 
 	public function isImportModelEditable($importModelId) {
 
-		if ($importModelId == 'dataset_1') {
+		if ($importModelId == 'dataset_1' || $importModelId == 'dataset_100') {
 			$this->message = $this->translator->trans('dee.readOnly');
 			$this->code = "dee";
 			return false;
@@ -44,7 +44,7 @@ class Permissions extends PermissionsBase {
 
 	public function isImportModelDeletable($importModelId) {
 
-		if ($importModelId == 'dataset_1') {
+		if ($importModelId == 'dataset_1' || $importModelId == 'dataset_100') {
 			$this->message = $this->translator->trans('dee.readOnly');
 			$this->code = "dee";
 			return false;
