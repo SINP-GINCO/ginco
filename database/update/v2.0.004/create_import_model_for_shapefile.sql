@@ -4,12 +4,11 @@ SET search_path = metadata_work, pg_catalog;
 
 INSERT INTO dataset VALUES ('dataset_100', 'occ_taxon_dsr_exemple_import_shapefile', '0', NULL, 'IMPORT');
 
-INSERT INTO dataset_files VALUES ('dataset_100', 'file_shapefile');
-
 INSERT INTO format VALUES ('file_shapefile', 'FILE');
 
 INSERT INTO file_format VALUES ('file_shapefile', 'CSV', 'fichier_shapefile', 1, 'fichier_shapefile', NULL);
 
+INSERT INTO dataset_files VALUES ('dataset_100', 'file_shapefile');
 
 INSERT INTO field VALUES ('altitudemax', 'file_shapefile', 'FILE');
 INSERT INTO field VALUES ('altitudemin', 'file_shapefile', 'FILE');
