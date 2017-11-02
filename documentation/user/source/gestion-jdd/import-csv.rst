@@ -1,7 +1,7 @@
 .. Format du fichier d'import et des champs
 
-Le fichier d'import
-===================
+Fichier d'import CSV
+====================
 
 Format général du fichier
 -------------------------
