@@ -10,7 +10,7 @@ INSERT INTO file_format VALUES ('file_shapefile', 'CSV', 'fichier_shapefile', 1,
 
 INSERT INTO dataset_files VALUES ('dataset_100', 'file_shapefile');
 
-INSERT INTO model_dataset VALUES ('model_1', 'dataset_100');
+INSERT INTO model_datasets VALUES ('model_1', 'dataset_100');
 
 INSERT INTO field VALUES ('altitudemax', 'file_shapefile', 'FILE');
 INSERT INTO field VALUES ('altitudemin', 'file_shapefile', 'FILE');
