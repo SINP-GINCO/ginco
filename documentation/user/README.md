@@ -91,3 +91,16 @@ make htmlandpdf
 
 Pour créer des captures d'écran annotées, utiliser le plugin Chrome 
 [Awesome Screenshot](https://chrome.google.com/webstore/detail/awesome-screenshot-screen/nlipoenfbbikpbjkfpfillcgkoblgpmj?hl=fr&gl=FR). 
+
+## Déployer la doc
+
+Les commandes pour déployer les versions de test et de prod de la documentation sont commentées dans jenkins.
+Pour mettre à jour une version (déployer), il faut donc les décommenter, et préciser dans la commande getPackage la version (branche) que l'on souhaite déployer.
+
+Par exemple, pour déployer la documentation de test en version 2.0.3, les commandes que doit réaliser jenkins sont :
+```bash
+./getPackage.sh -p ginco -v v2.0.3 -d ./build
+./deploy_doc.sh -i doc-ginco-test
+```
+
+remarque : Pour effectuer cette opération sans passer par jenkins, il faut avoir builder l'application auparavant (pour récupérer les paquets).
