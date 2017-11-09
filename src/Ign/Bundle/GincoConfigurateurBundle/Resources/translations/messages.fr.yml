@@ -1,5 +1,5 @@
 dee:
-  readOnly: Le modèle DEE est en lecture seule.
+  readOnly: Le modèle d'exemple est en lecture seule.
 datamodel:
   new:
     forbidden: Vous ne pouvez créer un modèle qu'à partir de la duplication d'un autre modèle.
