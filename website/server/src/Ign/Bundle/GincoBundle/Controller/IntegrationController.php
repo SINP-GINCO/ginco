@@ -442,7 +442,8 @@ class IntegrationController extends BaseController {
 			try {
 				$providerId = $submission->getProvider()->getId();
 				$srid = '4326';
-				$this->get('ogam.integration_service')->uploadData($submission->getId(), $providerId, $requestedFiles, $srid);
+				$extension = ".zip";
+				$this->get('ogam.integration_service')->uploadData($submission->getId(), $providerId, $requestedFiles, $srid, $extension);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload:' . $e, array(
 					'exception' => $e
