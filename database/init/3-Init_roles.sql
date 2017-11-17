@@ -18,19 +18,31 @@ INSERT INTO role(role_label, role_definition, is_default) VALUES ('Administrateu
 INSERT INTO role(role_label, role_definition, is_default) VALUES ('Producteur', 'producteur', true);
 INSERT INTO role(role_label, role_definition, is_default) VALUES ('Grand public', 'Rôle par défaut non-modifiable pour un utilisateur non identifié', false);
 
--- Create a provider
+-- Create default provider
 INSERT INTO website.providers(id,label,definition) VALUES ('1', 'Defaut', 'Organisme par défaut');
 ALTER sequence website.provider_id_seq restart with 2;
 
--- Create some users
--- password are equals to login, they must be changed for production
-INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALUES ('developpeur', 'ccd46ad476382e50b51f52a5574c2cb511125f0e', 'developpeur', '1', 'sinp-dev@ign.fr');
-INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALUES ('assistance', 'fd8de1f390d65e7d9dc80f281b988911ddebcec6', 'Compte assistance utilisateurs', '1', 'sinp-dev@ign.fr');
-INSERT INTO users(user_login, user_password, user_name, provider_id, email) VALUES ('visiteur', '922391a72f5d8792a0b66b6cb3674d5eae454bda', 'visiteur', '1', 'sinp-dev@ign.fr');
+-- Create users with rights on every platforms
+INSERT INTO website.users(user_login, provider_id, email) VALUES
+  ('gautam.pastakia',82,'gautam.pastakia@ign.fr'),
+  ('anna.mouget@ign.fr',82,'anna.mouget@ign.fr'),
+  ('scandel',82,'severine.candelier@ign.fr'),
+  ('vsagniez',82,'vincent.sagniez@ign.fr'),
+  ('jpanijel',1,'jpanijel@mnhn.fr'),
+  ('nbotte',1,'noemie.botte@mnhn.fr')
+;
+-- Create visiteur special user
+INSERT INTO users(user_login, user_name, provider_id, email) VALUES ('visiteur', 'visiteur', '1', 'sinp-dev@ign.fr');
 
 -- Link the users to their roles
-INSERT INTO role_to_user(user_login, role_code) VALUES ('developpeur', 1);
-INSERT INTO role_to_user(user_login, role_code) VALUES ('assistance', 1);
+INSERT INTO website.role_to_user(user_login, role_code) VALUES
+  ('gautam.pastakia', 1),
+  ('anna.mouget@ign.fr', 1),
+  ('scandel', 1),
+  ('vsagniez', 1),
+  ('jpanijel', 2),
+  ('nbotte', 2)
+;
 INSERT INTO role_to_user(user_login, role_code) VALUES ('visiteur', 4);
 
 -- Link the role to schemas
