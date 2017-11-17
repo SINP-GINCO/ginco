@@ -1,0 +1,49 @@
+{% extends "::base.html.twig" %}
+{% form_theme form 'form.html.twig' %}
+
+{% block body %}
+
+    <h1>{% trans %}Edit User{% endtrans %}</h1>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>{{ 'User.account.infos.title'|trans }}</h2>
+
+            <table class="table table-nonfluid table-bordered">
+                <tr>
+                    <td><strong>{{ 'Login'|trans }}</strong></td>
+                    <td>{{ user.login }}</td>
+                </tr>
+                <tr>
+                    <td><strong>{{ 'Name'|trans }}</strong></td>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <td><strong>{{ 'Email'|trans }}</strong> </td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td><strong>{{ 'User.account.infos.provider'|trans }}</strong></td>
+                    <td>{{ user.provider.label }} ({{ user.provider.definition }})</td>
+                </tr>
+            </table>
+
+            <p><a href="{{ path('user_refresh', {'username': user.login}) }}">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    {{ 'User.edit.refreshLink'|trans }}</a></p>
+        </div>
+
+        <div class="col-sm-6">
+            <h2>{{ 'User.edit.roles'|trans }}</h2>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.roles) }}
+            {{ form_row(form.submit) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+
+{% endblock %}

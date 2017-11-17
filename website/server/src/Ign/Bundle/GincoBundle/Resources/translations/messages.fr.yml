@@ -379,6 +379,10 @@ User:
     impossible: "Impossible de changer le mot de passe de l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
   edit:
     impossible: "Impossible de modifier l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
+    refreshLink: Actualiser depuis l'INPN
+    roles: Modifier les rôles
+  refresh:
+    notfound: L'utilisateur n'existe pas dans l'annuaire INPN. Vous pouvez le supprimer de la plateforme.
 
 # Changing or Re-initialising user password
 #------------------------------

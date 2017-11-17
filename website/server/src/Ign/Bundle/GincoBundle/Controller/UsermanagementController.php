@@ -2,8 +2,10 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Form\GincoRoleType;
+use Ign\Bundle\GincoBundle\Form\UserRoleType;
 use Ign\Bundle\OGAMBundle\Controller\UsermanagementController as BaseController;
 use Ign\Bundle\OGAMBundle\Entity\Website\Role;
+use Ign\Bundle\OGAMBundle\Entity\Website\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -11,6 +13,47 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("/usermanagement")
  */
 class UsermanagementController extends BaseController {
+
+	/**
+	 * Edit a user.
+	 *
+	 * @Route("/editUser/{login}", name="usermanagement_editUser")
+	 */
+	public function editUserAction(Request $request, $login = null) {
+		$user = new User();
+
+		$logger = $this->get('logger');
+		$logger->debug('editUserAction');
+
+		if ($login != null) {
+			$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+			$user = $userRepo->find($login);
+		}
+
+		// Get the user form
+		$form = $this->createForm(UserRoleType::class, $user);
+
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+			$user = $form->getData();
+			// Save the user
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($user);
+			$em->flush();
+
+			$this->addFlash('success', $this->get('translator')
+				->trans('The user information has been saved.'));
+
+			return $this->redirectToRoute('usermanagement_showUsers');
+		}
+
+		return $this->render('IgnGincoBundle:UsermanagementController:edit_user.html.twig', array(
+			'user' => $user,
+			'form' => $form->createView()
+		));
+	}
+
 
 	/**
 	 * Edit a role.
