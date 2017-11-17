@@ -33,6 +33,7 @@ try {
 	execCustSQLFile("$sprintDir/create_import_model_for_shapefile.sql", $config);
 	execCustSQLFile("$sprintDir/add_cas_parameters.sql", $config);
 	execCustSQLFile("$sprintDir/update_users_table.sql", $config);
+	execCustSQLFile("$sprintDir/add_developers.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
