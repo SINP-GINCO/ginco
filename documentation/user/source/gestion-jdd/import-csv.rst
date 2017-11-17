@@ -1,7 +1,7 @@
 .. Format du fichier d'import et des champs
 
-Le fichier d'import
-===================
+Fichier d'import CSV
+====================
 
 Format général du fichier
 -------------------------
@@ -74,13 +74,13 @@ Types généraux
   Les valeurs dans le tableau ne doivent pas comporter de virgules (rappel: le séparateur décimal est un point).
 
 * **Géométries :**
-  les géométries doivent être au format WKT et en WGS 84 (ESPG 4326). Les types de géométries acceptées sont:
+  les géométries doivent être au format WKT. Les types de géométries acceptées sont:
 
   * les points et multipoints ; exemple : ``POINT(5.35 48.41)``
   * les lignes et multilignes ; exemple : ``LINESTRING(0.80 48.50,0.88 48.54,0.86 48.49,0.80 48.50)``
   * les polygones et multipolygones ; exemple : ``MULTIPOLYGON (((0.80 48.50,0.88 48.54,0.86 48.49,0.80 48.50)))``
 
-  Elles doivent être en 2 dimensions et ne peuvent pas comporter de coordonnée Z.
+  Elles doivent être en 2 dimensions dans l'ordre X puis Y (longitude puis latitude), et ne peuvent pas comporter de coordonnée Z (altitude).
 
 * **Codes :**
   La valeur doit être choisie dans une liste de codes. Voir paragraphe suivant.

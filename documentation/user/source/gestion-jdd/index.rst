@@ -5,8 +5,7 @@ Gestion des jeux de données
 ===========================
 
 Le module de gestion des jeux de données permet de réaliser plusieurs actions sur les jeux de données dont l'import dans l'application de jeux de données
-fournis sous forme de fichiers CSV. Le contenu et le format des fichiers CSV attendus sont
-définis par le modèle d'import choisi.
+fournis sous forme de fichiers CSV ou shapefile.
 
 
 .. warning::
@@ -18,5 +17,6 @@ définis par le modèle d'import choisi.
 
     acces
     gerer-les-jeux-de-donnees
-    format-fichier-import
+    import-csv
+    import-shapefile
     rapport-erreur
