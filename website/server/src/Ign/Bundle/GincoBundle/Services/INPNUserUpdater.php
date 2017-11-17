@@ -126,8 +126,7 @@ class INPNUserUpdater
 
 		// Set default role, only for NEW users (don't override changes)
 		if ($newUser) {
-			// todo find default role !!!!
-			$role = $roleRepo->find(1);
+			$role = $roleRepo->findOneByIsDefault(true);
 			$user->addRole($role);
 		}
 
