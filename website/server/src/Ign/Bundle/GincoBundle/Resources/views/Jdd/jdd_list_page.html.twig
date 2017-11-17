@@ -13,7 +13,7 @@
 
 {% if allJdds %}
     {% set jddTitleIdColSize = 26 %}
-    {% set submissionsActionsColSize = 20 %}
+    {% set submissionsActionsColSize = 24 %}
     {% set filesLinesColSize = 36 %}
     {% set submissionStatusColSize = 5 %}
 {% else %}
@@ -77,17 +77,10 @@
 
         <thead>
             <tr>
-                {% if isAllowedMDOP %}
-                    <th colspan="{{ allJdds ? 4:3 }}" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
-                    <th colspan="3" class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
-                    {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
-                        <th colspan="2" class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
-                    {% endif %}
-                {% else %}
-                    <th colspan="3" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
-                    {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
-                        <th colspan="2" class="text-center color2">{{ 'DEE.table.title'|trans }}</th>
-                    {% endif %}
+                <th colspan="{{ allJdds ? 4:3 }}" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                <th colspan="3" class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
+                {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
+                    <th colspan="2" class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
                 {% endif %}
             </tr>
             <tr>
@@ -181,7 +174,7 @@
                 {% endif %}
 
                 {# Submissions #}
-                
+
                 {# Actions (including reports) #}
                 <td>
                     {% if jdd.activeSubmissions|length > 0 %}
@@ -189,7 +182,6 @@
                             {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
                         </div>
                         {% endfor %}
-                       
                     {% else %}
                     <p>-</p>
                     {% endif %}
