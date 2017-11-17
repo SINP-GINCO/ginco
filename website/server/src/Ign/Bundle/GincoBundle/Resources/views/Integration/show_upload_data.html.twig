@@ -5,8 +5,12 @@
 <h1>{{ 'Data integration module'|trans }} - {{ 'Upload Data'|trans }}<br>
 <small>{{ 'Dataset'|trans }} : {{ dataset.label }}</small></h1>
 
+    <ul class="nav nav-tabs">
+        <li role="import_format" class="active"><a href="#">{{ 'import.format.csv'|trans }}</a></li>
+        <li role="import_format"><a href="{{  path('import_shapefile',{'id': id}) }}">{{ 'import.format.shp.label'|trans }}</a></li>
+    </ul>
+
 {% set showModel = configurationManager.getConfig('showUploadFileModel', 0) != 0  %}
-{% set showDetail = configurationManager.getConfig('showUploadFileDetail', 0) != 0 %}
 
 <div class="{{ form.vars.name }}">
     {{ form_start(form) }}
@@ -23,7 +27,6 @@
     {% set file = files[name] %}
     {{ form_widget(form) }}
     {{ showModel ? block('filemodel') }}
-    {{ showDetail ? block('showdetail') }}
 {% endblock %}
 
 {% block filemodel %}
@@ -34,42 +37,6 @@
         </a>
     </p>
 {% endblock %}
-
-{%- block showdetail -%}
-
-    <a role="button" data-toggle="collapse" href="#collapseDetails" aria-expanded="false" aria-controls="collapseDetails">
-        {{ 'The expected fields are:'|trans }} <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-    </a>
-
-    <div class="collapse" id="collapseDetails">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <td>{{ 'Integration.Field.label'|trans }}</td>
-                <td>{{ 'Integration.Field.definition'|trans }}</td>
-                <td>{{ 'Integration.Field.format'|trans }}</td>
-            </tr>
-            </thead>
-            <tbody>
-            {%- for field in file.fields -%}
-                <tr>
-                    <td>{{ field.data.label }}
-                        {% if field.isMandatory %}
-                            <span class="color-danger">*</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ field.data.definition }}</td>
-                    <td>
-                    {%- if field.mask -%}
-                        {{ field.mask }}
-                    {%- endif -%}
-                    </td>
-                </tr>
-            {%- endfor -%}
-            </tbody>
-        </table>
-    </div>
-{%- endblock -%}
 
 {% block _upload_data_SRID_widget %}
     {{ form_widget(form) }}
