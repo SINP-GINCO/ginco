@@ -4,6 +4,7 @@
 
 {% set user = app.user %}
 
+{# Set variables #}
 {% if user is not null and user.isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') %}
     {% set isAllowedMDOP = true %}
 {% else %}
@@ -11,9 +12,22 @@
 {% endif %}
 
 {% if allJdds %}
-	<h1>{{ 'Jdd.list.all.title'|trans }}</h1>
+    {% set jddTitleIdColSize = 26 %}
+    {% set submissionsActionsColSize = 20 %}
+    {% set filesLinesColSize = 36 %}
+    {% set submissionStatusColSize = 5 %}
 {% else %}
-	<h1>{{ 'Jdd.list.user.title'|trans }}</h1>
+    {% set jddTitleIdColSize = 24 %}
+    {% set submissionsActionsColSize = 14 %}
+    {% set filesLinesColSize = 32 %}
+    {% set submissionStatusColSize = 3 %}
+{% endif %}
+
+{# Title of the page #}
+{% if allJdds %}
+	<h1>{{ 'Jdd.list.title.all'|trans }}</h1>
+{% else %}
+	<h1>{{ 'Jdd.list.title.user'|trans }}</h1>
 {% endif %}
 
 <!-- Show the currently active jdd -->
@@ -25,54 +39,78 @@
     </p>
 
     <!-- Show the currently active location submissions -->
-    <table class="table table-hover table-bordered jdd-table">
-        <col style="width: 7%;"/>
-        <col style="width: 20%;"/>
-        {% if isAllowedMDOP and allJdds %}
-            <col style="width: 16%;"/>
-        {% endif %}
-        <col />
+    <table  id="jddTable" data-toggle="table"
+            data-click-to-select="true" data-search="true" data-search-align="right"
+            data-classes="table table-hover table-bordered jdd-table"
+            data-locale="fr-FR" data-pagination="true" data-page-size="10" data-page-list="[10, 20, 50, 100]" data-advanced-search="true" data-id-table="advancedTable"/>
+        {# Jdd group #}
+        <colgroup>
+            {# Actions column #}
+            <col/>
+            {# Title/Id column #}
+            <col style="width: {{ jddTitleIdColSize }}%;"/>
+            {# Creation date column #}
+            <col/>
+            {% if isAllowedMDOP and allJdds %}
+                 {# Provider / User column #}
+                 <col/>
+            {% endif %}
+        </colgroup>
+        {# Submissions group #}
+        <colgroup>
+            {# Actions column #}
+            <col style="width: {{ submissionsActionsColSize }}%"/>
+            {# Files(lines) column #}
+            <col style="width: {{ filesLinesColSize }}%;"/>
+            {# Status column #}
+            <col style="width: {{ submissionStatusColSize }}%;"/>
+        </colgroup>
         {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
-            <col style="width: 22%;"/>
+            {# DEE group #}
+            <colgroup>
+                {# Date column #}
+                <col style="width: 22%;"/>
+                {# Actions column #}
+                <col/>
+            </colgroup>
         {% endif %}
+
         <thead>
             <tr>
-                {% if isAllowedMDOP and allJdds %}
-                    <th colspan="3" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                {% if isAllowedMDOP %}
+                    <th colspan="{{ allJdds ? 4:3 }}" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                    <th colspan="3" class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
+                    {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
+                        <th colspan="2" class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
+                    {% endif %}
                 {% else %}
-                    <th colspan="2" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
-                {% endif %}
-                <th class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
-                {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
-                    <th class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
+                    <th colspan="3" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+                    {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
+                        <th colspan="2" class="text-center color2">{{ 'DEE.table.title'|trans }}</th>
+                    {% endif %}
                 {% endif %}
             </tr>
             <tr>
-                <th class="color1">{{ 'Actions'|trans }}</th>
-                <th class="color1">{{ 'Jdd.list.nameAndId'|trans }}</th>
+                <th data-searchable="false" class="color1"/>
+                <th data-field="nameAndId" data-sortable="true" class="color1">{{ 'Jdd.list.name'|trans }} / {{ 'Jdd.list.metadataId'|trans }}</th>
+                <th data-field="createdOn" data-sortable="true" data-sorter="createdOnSorter" class="color1">{{ 'Jdd.list.createdOn'|trans }}</th>
                 {% if isAllowedMDOP and allJdds %}
-                    <th class="color1">{{ 'Jdd.list.providerAndUser'|trans }}</th>
+                    <th data-field="providerAndUser" data-sortable="true" class="color1">{{ 'Jdd.list.provider'|trans }} / {{ 'Jdd.list.user'|trans }}</th>
                 {% endif %}
-                <th class="color2">{%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}</th>
+                <th data-field="actions" data-searchable="false" class="color2" data-align="center">{{ 'Actions'|trans }}</th>
+                <th data-field="filesAndLines" class="color2" style="width: 44%;">{{ 'IntegrationPage.FilesAndLines'|trans }}</th>
+                <th data-field="status" data-searchable="false" class="text-center color2">{{ 'IntegrationPage.Status'|trans }}</th>
                 {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
-                    <th class="color1">
-                        <div class="dee-state">{{ 'DEE.table.state'|trans }}</div>
-                        <div class="dee-actions">{{ 'DEE.table.actions'|trans }}</div>
-                    </th>
+                    <th data-field="deeCreationDate" data-sortable="true" data-sorter="sentOnSorter" class="color1">{{ 'DEE.table.statusAndDate'|trans }}</th>
+                    <th data-searchable="false" class="color1"></th>
                 {% endif %}
             </tr>
         </thead>
         <tbody>
         {% for jdd in jddList %}
             <tr>
-
                 {# Actions JDD #}
                 <td>
-                    {# View #}
-                    <a class="btn btn-xs btn-primary" title="{{ 'Jdd.list.view'|trans }}" href="{{ path('jdd_show', { 'id': jdd.id }) }}">
-                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                    </a>
-
                     {# Delete #}
                     {% if jdd.trueDeletable %}
                         <button class="btn btn-xs btn-danger" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
@@ -124,8 +162,14 @@
 
                 {# Title and metadata id of the jdd #}
                 <td>
-                    <p>{{ jdd.field('title') }}</p>
+                    <a class="" title="{{ 'Jdd.list.view'|trans }}" href="{{ path('jdd_show', { 'id': jdd.id }) }}">{{ jdd.field('title') }}</a>
+                    <br/>
                     <span class="text-muted longtext">{{ jdd.field('metadataId') }}</span>
+                </td>
+
+                {# Creation date of the jdd #}
+                <td>
+                    <p data-full-date={{ jdd.createdAt|date('c') }}>{{ jdd.createdAt|date('d/m/Y') }}<br/>{{ jdd.createdAt|date('H\\hi') }}</p>
                 </td>
 
                 {# Provider label and username of the jdd #}
@@ -137,10 +181,40 @@
                 {% endif %}
 
                 {# Submissions #}
-                <td class="submissions">
-                    {# List of submissions #}
+                
+                {# Actions (including reports) #}
+                <td>
+                    {% if jdd.activeSubmissions|length > 0 %}
+                        {% for submission in jdd.activeSubmissions %}<div class="submission-line-actions">
+                            {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
+                        </div>
+                        {% endfor %}
+                       
+                    {% else %}
+                    <p>-</p>
+                    {% endif %}
+                </td>
+                {# File and lines #}
+                <td>
                     {% for submission in jdd.activeSubmissions %}
-                        {%  include "IgnGincoBundle:Integration:submission_line_light.html.twig" %}
+                        <div class="submission-line-file">
+                            {% for file in submission.files %}
+                                {% set filename = file.fileName|trim|replace({'\\':'/'})|split('/')|last %}
+                                {% if filename|length > 22 %}
+                                    {% if file.filenameWithoutExtension is defined %}
+                                        <span title="{{ filename }}">- {{ file.filenameWithoutExtension|slice(0,22)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                                    {% else %}
+                                        <span title="{{ filename }}">- {{ filename|slice(0,22)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                                    {% endif %}
+                                {% else %}
+                                    {% if file.filenameWithoutExtension is defined %}
+                                        <span title="{{ filename }}">- {{ file.filenameWithoutExtension }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                                    {% else %}
+                                        <span title="{{ filename }}">- {{ filename }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     {% endfor %}
                     {# Add a new submission to dataset #}
                     <div class="submission-line">
@@ -148,6 +222,35 @@
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  {{ 'Jdd.submission.add'|trans }}
                         </a>
                     </div>
+                </td>
+                {# Status -- see integration-progress-bars.js.twig #}
+                <td>
+                    {% for submission in jdd.activeSubmissions %}
+                        <div class="submission-line-status" >
+                            <div class="integration-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
+                            <div class="integration-progress hidden">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success" role="progressbar" title="{{ 'IntegrationPage.import.running'|trans }}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                        0%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="integration-content" data-target="{{ submission.id }}"
+                                {% if submission.status in ['OK','CHECK'] %}
+                                    ><span class="glyphicon glyphicon-ok color-success" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
+                                {% elseif submission.status in ['WARNING'] %}
+                                    ><span class="glyphicon glyphicon-alert color-warning" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
+                                {% elseif submission.status in ['ERROR'] %}
+                                    ><span class="glyphicon glyphicon-remove color-danger" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
+                                {% elseif submission.step in ['CANCEL'] and submission.status in ['RUNNING'] %}
+                                    title="{% trans with {'%submissionId%': submission.id}%}IntegrationPage.cancel.running.tooltip{% endtrans %}">
+                                    <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;
+                                {% else %}
+                                    >
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
                 </td>
 
                 {# DEE Column - Empty / filled by Ajax #}
@@ -166,8 +269,12 @@
                                 <div class="progress-cancel"></div>
                                 <div class="dee-content"></div>
                             </div>
-                            <div class="dee-actions text-center"></div>
                         </div>
+                    </td>
+                    <td>
+                    <div class="dee" data-jdd-id="{{ jdd.id }}">
+                    <div class="dee-actions"></div>
+                    </div>
                     </td>
                 {% endif %}
 
@@ -228,10 +335,15 @@
 {% endblock %}
 
 {% block javascripts %}
+    {% set user = app.user %}
     {{ parent() }}
     <script>
         {% include '@IgnGinco/Integration/integration-progress-bars.js.twig' %}
         {% include '@IgnGinco/Integration/integration-cancel.js.twig' %}
         {% include '@IgnGinco/Jdd/dee-generation.js.twig' %}
+        {% include '@IgnGinco/Integration/integration-createdOn-sorter.js.twig' %}
+        {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
+            {% include '@IgnGinco/Jdd/dee-sentOn-sorter.js.twig' %}
+        {% endif %}
     </script>
 {% endblock %}

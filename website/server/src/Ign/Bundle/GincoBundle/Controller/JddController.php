@@ -33,8 +33,17 @@ class JddController extends BaseController {
 
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
 		$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds();
+		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		foreach ($jddList as $jdd) {
 			$jdd->trueDeletable = $this->isJddDeletable($jdd);
+			foreach($jdd->getSubmissions() as $submission){
+				foreach($submission->getFiles() as $file){
+					$file->filenameWithoutExtension = pathinfo($file->getFileName(), PATHINFO_FILENAME);
+					$file->filenameExtension = pathinfo($file->getFileName(), PATHINFO_EXTENSION);
+				}
+			}
+			// Add DEE information
+			$jdd->dee = $deeRepo->findLastVersionByJdd($jdd);
 		}
 
 		return $this->render('OGAMBundle:Jdd:jdd_list_page.html.twig', array(

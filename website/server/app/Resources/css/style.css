@@ -7119,6 +7119,7 @@ body {
   margin-bottom: 20px;
   margin-top: 20px;
 }
+
 .jdd-table thead,
 .submissions-table thead {
   background-color: #7E931E;
@@ -7128,14 +7129,11 @@ body {
 .submissions-table th.color2 {
   background-color: #50600a;
 }
-.jdd-table {
-  table-layout: fixed;
-}
 .submissions {
   width: 100%;
 }
 .submission-line {
-  padding: 3px 0;
+  padding: 0px 0;
   width: 100%;
 }
 .submission-line:before,
@@ -7154,45 +7152,55 @@ body {
 .submission-line:after {
   clear: both;
 }
-.submission-line .file,
-.submission-line .lines,
-.submission-line .status,
-.submission-line .reports,
-.submission-line .actions {
-  display: block;
-  float: left;
-  padding-bottom: 1px;
+
+.submission-line-file {
+  text-align:left;
+  width: 100%;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
-.submission-line .file {
-  width: 35%;
-}
-.submission-line .lines {
+.submission-line-lines {
   width: 10%;
+  font-style:italic;
+  font-size:75%;
 }
-.submission-line .status {
-  width: 20%;
+.submission-line-status {
+  text-align:center;
+  width: 100%;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
-.submission-line .reports {
-  width: 25%;
-  padding-right: 5px;
+.submission-line-reports {
+  width: 100%;
+  text-align:right;
+  float:right;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  margin-right:0px;
+  margin-left:0px;
 }
-.submission-line .actions {
-  width: 10%;
-  text-align: center;
+.submission-line-actions {
+  width: 100%;
+  margin-top: 1px;
+  margin-bottom: 1px;
 }
+
 .dee-state,
 .dee-actions {
   display: block;
   float: left;
 }
 .dee-state {
-  width: 60%;
+  width: 100%;
 }
 .dee-actions {
-  width: 40%;
+  width: 100%;
+  display: block;
+  margin: auto;
 }
 .dee-actions a {
-  margin-left: 4px;
+  margin-bottom: 4px;
+  text-align:center;
 }
 /* fileFormat or tableFormat edit.html.twig */
 #data-transfer-button {

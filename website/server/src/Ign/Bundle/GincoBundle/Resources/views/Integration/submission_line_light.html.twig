@@ -1,16 +1,6 @@
 {# One line for displaying submissions inside a cell of table  #}
 {# Variables : submission #}
-
 {% if submission is not defined %}
-    {# Headline #}
-    <div class="submission-line">
-        {# File and lines #}
-        <div class="file">{{ 'IntegrationPage.File'|trans }}</div>
-        <div class="lines">{{ 'Lines'|trans }}</div>
-        <div class="status" >{{ 'Status'|trans }}</div>
-        <div class="reports">{{ 'Report.Reports'|trans }}</div>
-        <div class="actions">{{ 'Actions'|trans }}</div>
-    </div>
 
 {% else %}
     {# Real submission line #}
@@ -18,12 +8,7 @@
         {# File and lines #}
         <div class="file">
             {% for file in submission.files %}
-                <div class="longtext">{{ file.fileName|replace({'\\':'/'})|split('/')|last }}</div>
-            {% endfor %}
-        </div>
-        <div class="lines">
-            {% for file in submission.files %}
-                <div>{{ file.nbLines }}</div>
+                <div class="longtext">{{ file.fileName|replace({'\\':'/'})|split('/')|last }} ({{ file.nbLines }})</div>
             {% endfor %}
         </div>
         {# Status -- see integration-progress-bars.js.twig #}
@@ -31,9 +16,8 @@
             <div class="integration-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
 
             <div class="integration-progress hidden">
-                <div>{{ 'IntegrationPage.import.running'|trans }}</div>
                 <div class="progress">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                    <div class="progress-bar progress-bar-success" role="progressbar" title="{{ 'IntegrationPage.import.running'|trans }}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                         0%
                     </div>
                 </div>
