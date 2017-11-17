@@ -282,7 +282,8 @@ class DEEController extends Controller
 
 			if (!$DEE) {
 				$json['dee'] = array(
-					'status' => DEE::STATUS_NO_DEE
+					'status' => DEE::STATUS_NO_DEE,
+					'fullCreated' => new \DateTime("1970-01-01T00:00:00+01:00")
 				);
 			}
 			else {
@@ -290,6 +291,7 @@ class DEEController extends Controller
 					'id' => $DEE->getId(),
 					'status' => $DEE->getStatus(),
 					'created' => $DEE->getCreatedAt()->format('d/m/Y H:i'),
+					'fullCreated' => $DEE->getCreatedAt(),
 					'comment' => $DEE->getComment(),
 				);
 				// DEE action : creation or update

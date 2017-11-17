@@ -1,32 +1,127 @@
-{# Block for displaying available actions for a submissions #}
+{# Block for displaying available actions and reports for a submissions #}
 {# Variables : submission #}
 
 {% if submission is defined %}
 
     {# Publish (Validate) or Unpublish (invalidate) submission #}
-
-    {% if ((submission.step is constant('STEP_INSERTED', submission)  and submission.status is constant('STATUS_OK', submission))
+    {% set publish = false %}
+    {% set unpublish = false %}
+    {% set remove = false %}
+    {% if ((submission.step is constant('STEP_INSERTED', submission) and submission.status is constant('STATUS_OK', submission))
     or (submission.step is same as('CHECK') and (submission.status is same as("OK") or submission.status is same as('WARNING')))) %}
-        <a href="{{ path('integration_validate',{'submissionId': submission.id}) }}" title="{{ 'Confirm submission'|trans }}"
-           onClick="return confirm('{{ 'Confirm_submission_warning'|trans }}');">
-            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-        </a>
+        {% set publish = true %}
     {% endif %}
     {% if (submission.step is same as('VALIDATE') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
-        <a href="{{ path('integration_invalidate',{'submissionId': submission.id}) }}" title=" {{ 'Invalidate submission'|trans }}"
-           onClick="return confirm('{{ 'Confirm_invalidation_warning'|trans }}');">
-            <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-        </a>
+        {% set unpublish = true %}
     {% endif %}
 
     {# Cancel submission#}
-
     {% if (submission.step != "VALIDATE" or user.isAllowed('CANCEL_VALIDATED_SUBMISSION'))
     and (submission.provider.id is same as(user.provider.id) or user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) %}
-    <div class="integration-cancel-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
-            <a id="integration-cancel-link-{{ submission.id }}" href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" title="{{ 'Cancel Submission'|trans }}"
-               onClick="return confirm('{{ 'Are you sure?'|trans }}');" data-target="{{ submission.id }}" >
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </a>
+        {% set remove = true %}
     {% endif %}
+    <div class = "btn-group">
+        {% if publish %}
+            <a class="btn btn-xs btn-success" href="{{ path('integration_validate',{'submissionId': submission.id}) }}" title="{{ 'Confirm submission'|trans }}"
+               onClick="return confirm('{{ 'Confirm_submission_warning'|trans }}');">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+             </a>
+        {% elseif unpublish %}
+             <a class="btn btn-xs btn-warning" href="{{ path('integration_invalidate',{'submissionId': submission.id}) }}" title=" {{ 'Invalidate submission'|trans }}"
+                onClick="return confirm('{{ 'Confirm_invalidation_warning'|trans }}');">
+                 <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+             </a>
+        {% else %}
+             <a class="btn btn-xs btn-default" title="{{ 'Submission.publish.impossible'|trans }}">
+                <span class="glyphicon glyphicon-play" data-toggle="modal" data-target="#modal-impossible-publish-submission-{{ submission.id }}" aria-hidden="true"></span>
+             </a>
+        {% endif %}
+        <div class="integration-cancel-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
+        <a id="integration-cancel-link-{{ submission.id }}"  href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" title="{{ 'Cancel Submission'|trans }}"
+            {% if remove %}
+                class="btn btn-xs btn-danger" onClick="return confirm('{{'Are you sure?'|trans }}')"
+            {% else %}
+                class="btn btn-xs btn-default" data-toggle="modal" data-target="#modal-impossible-delete-submission-{{ submission.id }}"
+            {% endif %}
+            >
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </a>
+
+        <!-- Modal - Publish file impossible -->
+        <div class="modal fade" id="modal-impossible-publish-submission-{{ submission.id }}"
+             tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {{ 'Submission.publish.impossible'|trans }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal - Publish file impossible -->
+        <div class="modal fade" id="modal-impossible-publish-submission-{{ submission.id }}"
+             tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {{ 'Submission.delete.impossible'|trans }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# Reports #}
+        {% if submission.step is not constant('STEP_CANCELLED', submission) %}
+            {% set integrationDisabled = true %}
+            {% set sensitiveDisabled = true %}
+            {% set permanentDisabled = true %}
+        {% endif %}
+        {% if submission.step is not constant('STEP_INIT', submission) and submission.status is not constant('STATUS_RUNNING', submission) %}
+            {% set integrationDisabled = false %}
+        {% endif %}
+        {% if submission.status is constant('STATUS_OK', submission) %}
+            {% if user.isAllowed('VIEW_SENSITIVE') %}
+                {% set sensitiveDisabled = false %}
+                {% set permanentDisabled = false %}
+            {% endif %}
+        {% endif %}
+        <div class = "btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+            Rapports<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropup" role ="menu">
+            <li>
+                <a class="btn btn-xs" {{ integrationDisabled ? 'disabled' : ''}}
+                   title="{{ integrationDisabled ? 'Report.Integration.DisabledTitle'|trans : 'Report.Integration.Title'|trans }}"
+                   href="{{ path('download-report', {'submissionId': submission.id , 'report': 'integrationReport'}) }}">
+                    {{ 'Report.Integration.Title'|trans }}
+                </a>
+            </li>
+            <li>
+                <a class="btn btn-xs" {{ sensitiveDisabled ? 'disabled' : ''}}
+                   title="{{ sensitiveDisabled ? 'Report.Sensitivity.DisabledTitle'|trans : 'Report.Sensitivity.Title'|trans }}"
+                   href="{{ path('download-report', {'submissionId': submission.id, 'report': 'sensibilityReport'}) }}">
+                    {{ 'Report.Sensitivity.Title'|trans }}
+                </a>
+            </li>
+            <li>
+                <a  class="btn btn-xs" {{ permanentDisabled ? 'disabled' : ''}}
+                    title="{{ permanentDisabled ? 'Report.PermanentIds.DisabledTitle'|trans : 'Report.PermanentIds.Title'|trans }}"
+                    href="{{ path('download-report', {'submissionId': submission.id, 'report': 'permanentIdsReport'}) }}">
+                    {{ 'Report.PermanentIds.Title'|trans }}
+                </a>
+            </li>
+        </ul>
+        </div>
+    </div>
 {% endif %}

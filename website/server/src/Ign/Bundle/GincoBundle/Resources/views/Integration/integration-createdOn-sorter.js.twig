@@ -1,0 +1,11 @@
+/******************************************
+* Custom sorters for created on date column
+*******************************************/
+
+function createdOnSorter(a, b) {
+    
+    fda = $(a).attr('data-full-date');
+    fdb = $(b).attr('data-full-date');
+    console.log(fda);
+    return new Date(fdb) - new Date(fda);
+}

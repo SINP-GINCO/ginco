@@ -175,9 +175,16 @@ Submission:
     insert: Import
     validate: Publié
     cancel: Supprimé
+  publish:
+    impossible: La publication de ce fichier est impossible.
+  delete:
+    impossible: La suppression de ce fichier est impossible.
 
 IntegrationPage:
   File: Fichier
+  Files: Fichiers
+  FilesAndLines: Fichiers (lignes)
+  Status: Etat
   NoDataset: Modèle d'import dépublié
   import:
     running: Import en cours...
@@ -190,12 +197,18 @@ Report:
   DownloadReports: -- Télécharger --
   Reports: Rapports
   Sensitivity:
+    Title: Rapport de sensibilité
+    DisabledTitle: Rapport de sensibilité - Indisponible
     SensibilityReport: Sensibilité
     SubmissionId: Identifiant de la soumission
     SensitiveDataNumber: Nombre de données sensibles
     TotalDataNumber: Nombre de données total dans la soumission
-  Integration: Conformité et cohérence
-  PermanentIds: Identifiants permanents
+  Integration:
+    Title: Rapport de conformité et cohérence
+    DisabledTitle: Rapport de conformité et cohérence - Indisponible
+  PermanentIds:
+    Title: Rapport des identifiants permanents
+    DisabledTitle: Rapport des identifiants permanents - Indisponible
 
 Confirm submission: Publier la soumission
 Invalidate submission: Dépublier la soumission
@@ -222,17 +235,21 @@ Jdd:
     impossible: "Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données et/ou DEE liés)."
     success: Le jeu de données a bien été supprimé.
   submission:
-    add: Importer des données
+    add: Ajouter un fichier
   none: Aucun jeu de données trouvé.
   list:
-    user:
-      title: Gérer mes jeux de données
-    all:
-      title: Gérer tous les jeux de données
+    title:
+      user: Gérer mes jeux de données
+      all: Gérer tous les jeux de données
     jdd: Jeux de données
     view: Détails du jeu de données
     submissions: Imports de Données Sources Régionales
+    name: Titre
+    metadataId: Identifiant
     nameAndId: Titre / Identifiant
+    createdOn: Crée le
+    provider: Organisme
+    user: Utilisateur
     providerAndUser: Organisme / Utilisateur
 
   page:
@@ -255,6 +272,7 @@ DEE:
   table:
     title: Transmission INPN
     state: Etat DEE
+    statusAndDate: Etat / Date
     actions: Actions
 
   status:

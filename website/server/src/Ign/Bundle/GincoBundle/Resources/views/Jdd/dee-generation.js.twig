@@ -350,7 +350,10 @@ function deleteDEE(jddId, comment) {
 
 var DEEtimerId;
 
-$(function(){
+/**
+ * Main function to update table
+ */
+function update() {
     $('.dee').each(function() {
         // var $exportFileId = $(this).attr('data-export-file-id');
         var $jddId = $(this).attr('data-jdd-id');
@@ -359,5 +362,16 @@ $(function(){
     });
 
     // Periodically update progress for running and pending jobs
+    if(DEEtimerId != null){
+        clearInterval(DEEtimerId);
+    }
     DEEtimerId = setInterval(updateAllDEEGeneratingTasks , 1000);
+}
+
+$(function() {
+    // Added to avoid disappearing of DEE transmission status and action buttons
+    $('#jddTable').on('reset-view.bs.table', function () {
+        update();
+    });
+    update();
 });
