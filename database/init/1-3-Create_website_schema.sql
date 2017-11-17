@@ -27,6 +27,8 @@ USER_NAME            VARCHAR(50)          null,
 PROVIDER_ID          VARCHAR(36)          null,
 EMAIL                VARCHAR(250)         not null,
 ACTIVATION_CODE		 VARCHAR(50)          null,
+created_at timestamp(0) without time zone NOT NULL default NOW(),
+last_login timestamp(0) without time zone NULL,
 constraint PK_USERS primary key (USER_LOGIN)
 );
 

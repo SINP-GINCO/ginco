@@ -141,4 +141,28 @@ class INPNUserUpdater
 		}
 		return $user;
 	}
+
+	/**
+	 * Update Last Login field of a user
+	 *
+	 * @param User $user
+	 * @return User
+	 * @throws ORMException
+	 */
+	public function updateLastLogin(User $user) {
+		$user->setLastLoginNow();
+
+		$em = $this->doctrine->getManager();
+		try {
+			$em->persist($user);
+			$em->flush();
+		}
+		catch (ORMException $e) {
+			$this->logger->addError("Impossible to persist user in database: " . $user->getLogin() . "\n
+				Doctrine Exception: " . $e->getMessage());
+			throw $e;
+		}
+		return $user;
+	}
+
 }
