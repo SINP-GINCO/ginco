@@ -40,20 +40,33 @@ class UserController extends BaseController {
 
 	/**
 	 * Refresh user infos from INPN webservice
-	 * @Route("/refresh", name = "user_refresh")
+	 * If login is not given, refresh infos of current user
+	 * @Route("/refresh/{username}", name = "user_refresh")
 	 */
-	public function refreshAction(Request $request) {
-		// Get username
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
+	public function refreshAction(Request $request, $username = null) {
+
+		if (!$username) {
+			// Get username
+			if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+				throw $this->createAccessDeniedException();
+			}
+			$username = $this->getUser()->getLogin();
 		}
-		$username = $this->getUser()->getLogin();
 
 		// Update via the INPN webservice
-		$this->get('ginco.inpn_user_updater')->updateOrCreateLocalUser($username);
+		$user = $this->get('ginco.inpn_user_updater')->updateOrCreateLocalUser($username);
 
-		// Redirect to user home
-		return $this->redirectToRoute('user_home');
+		// If user not found, flash message
+		if (!$user) {
+			$this->addFlash('warning', $this->get('translator')
+				->trans('User.refresh.notfound'));
+		}
+
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_home');
+		return $this->redirect($redirectUrl);
 	}
 
 	/**
