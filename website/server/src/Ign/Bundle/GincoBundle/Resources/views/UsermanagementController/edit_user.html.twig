@@ -26,6 +26,14 @@
                     <td><strong>{{ 'User.account.infos.provider'|trans }}</strong></td>
                     <td>{{ user.provider.label }} ({{ user.provider.definition }})</td>
                 </tr>
+                <tr>
+                    <td><strong>{{ 'User.edit.created'|trans }}</strong></td>
+                    <td>{{ user.createdAt|date("d/m/Y - H:i:s") }}</td>
+                </tr>
+                <tr>
+                    <td><strong>{{ 'User.edit.lastLogin'|trans }}</strong></td>
+                    <td>{{ user.lastLogin ? user.lastLogin|date("d/m/Y - H:i:s") : 'Never'|trans }}</td>
+                </tr>
             </table>
 
             <p><a href="{{ path('user_refresh', {'username': user.login}) }}">

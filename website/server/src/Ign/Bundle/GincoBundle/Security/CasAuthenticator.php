@@ -120,8 +120,12 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 		$username = $credentials[$this->username_attribute];
 		// Create or update local User with INPN authentication webservice
 		$this->userUpdater->updateOrCreateLocalUser($username);
-		// Then load and return it
-		return $userProvider->loadUserByUsername($username);
+		// Load User
+		$user = $userProvider->loadUserByUsername($username);
+		// Update last login time
+		$this->userUpdater->updateLastLogin($user);
+		// Finally return user
+		return $user;
 	}
 
 	/**

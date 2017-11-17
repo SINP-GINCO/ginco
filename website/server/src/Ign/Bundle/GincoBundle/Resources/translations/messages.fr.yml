@@ -29,6 +29,7 @@ Name: Nom
 My account: Mon compte
 Yes: Oui
 No: Non
+Never: Jamais
 
 # Main menu
 # ---------------------------
@@ -381,6 +382,8 @@ User:
     impossible: "Impossible de modifier l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
     refreshLink: Actualiser depuis l'INPN
     roles: Modifier les rôles
+    created: Création
+    lastLogin: Dernière connexion
   refresh:
     notfound: L'utilisateur n'existe pas dans l'annuaire INPN. Vous pouvez le supprimer de la plateforme.
 
