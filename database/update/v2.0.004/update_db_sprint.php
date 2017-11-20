@@ -34,6 +34,7 @@ try {
 	execCustSQLFile("$sprintDir/add_cas_parameters.sql", $config);
 	execCustSQLFile("$sprintDir/update_users_table.sql", $config);
 	execCustSQLFile("$sprintDir/add_developers.sql", $config);
+	execCustSQLFile("$sprintDir/update_mnhn_layer_names.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
