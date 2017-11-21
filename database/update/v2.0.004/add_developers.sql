@@ -4,7 +4,8 @@ INSERT INTO website.users(user_login, provider_id, email) VALUES
 ('scandel',82,'severine.candelier@ign.fr'),
 ('vsagniez',82,'vincent.sagniez@ign.fr'),
 ('jpanijel',1,'jpanijel@mnhn.fr'),
-('nbotte',1,'noemie.botte@mnhn.fr')
+('nbotte',1,'noemie.botte@mnhn.fr'),
+('tgerbeau',82,'thierry.gerbeau@ign.fr')
 ;
 
 INSERT INTO website.role_to_user(user_login, role_code) VALUES
@@ -13,7 +14,8 @@ INSERT INTO website.role_to_user(user_login, role_code) VALUES
 ('scandel', 1),
 ('vsagniez', 1),
 ('jpanijel', 2),
-('nbotte', 2)
+('nbotte', 2),
+('tgerbeau', 1)
 ;
 
 DELETE FROM website.users WHERE user_login IN ('assistance','developpeur') ;
