@@ -14,7 +14,7 @@
 {% if allJdds %}
     {% set jddTitleIdColSize = 26 %}
     {% set submissionsActionsColSize = 24 %}
-    {% set filesLinesColSize = 36 %}
+    {% set filesLinesColSize = 26 %}
     {% set submissionStatusColSize = 5 %}
 {% else %}
     {% set jddTitleIdColSize = 24 %}
@@ -85,7 +85,7 @@
             </tr>
             <tr>
                 <th data-searchable="false" class="color1"/>
-                <th data-field="nameAndId" data-sortable="true" class="color1">{{ 'Jdd.list.name'|trans }} / {{ 'Jdd.list.metadataId'|trans }}</th>
+                <th data-field="nameAndId" data-sortable="true" data-sorter="jddTitleIdSorter" class="color1">{{ 'Jdd.list.name'|trans }} / {{ 'Jdd.list.metadataId'|trans }}</th>
                 <th data-field="createdOn" data-sortable="true" data-sorter="createdOnSorter" class="color1">{{ 'Jdd.list.createdOn'|trans }}</th>
                 {% if isAllowedMDOP and allJdds %}
                     <th data-field="providerAndUser" data-sortable="true" class="color1">{{ 'Jdd.list.provider'|trans }} / {{ 'Jdd.list.user'|trans }}</th>
@@ -333,9 +333,6 @@
         {% include '@IgnGinco/Integration/integration-progress-bars.js.twig' %}
         {% include '@IgnGinco/Integration/integration-cancel.js.twig' %}
         {% include '@IgnGinco/Jdd/dee-generation.js.twig' %}
-        {% include '@IgnGinco/Integration/integration-createdOn-sorter.js.twig' %}
-        {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
-            {% include '@IgnGinco/Jdd/dee-sentOn-sorter.js.twig' %}
-        {% endif %}
+        {% include '@IgnGinco/Jdd/dee-column-sorters.js.twig' %}
     </script>
 {% endblock %}
