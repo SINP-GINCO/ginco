@@ -1,6 +1,5 @@
 {# Block for displaying available actions and reports for a submissions #}
 {# Variables : submission #}
-
 {% if submission is defined %}
 
     {# Publish (Validate) or Unpublish (invalidate) submission #}
@@ -15,7 +14,7 @@
         {% set unpublish = true %}
     {% endif %}
 
-    {# Cancel submission#}
+    {# Cancel submission #}
     {% if (submission.step != "VALIDATE" or user.isAllowed('CANCEL_VALIDATED_SUBMISSION'))
     and (submission.provider.id is same as(user.provider.id) or user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) %}
         {% set remove = true %}
@@ -64,8 +63,8 @@
             </div>
         </div>
 
-        <!-- Modal - Publish file impossible -->
-        <div class="modal fade" id="modal-impossible-publish-submission-{{ submission.id }}"
+        <!-- Modal - Delete file impossible -->
+        <div class="modal fade" id="modal-impossible-delete-submission-{{ submission.id }}"
              tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
