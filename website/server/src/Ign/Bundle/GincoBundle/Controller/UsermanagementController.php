@@ -1,18 +1,84 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
+use Ign\Bundle\GincoBundle\Exception\UserUpdaterException;
 use Ign\Bundle\GincoBundle\Form\GincoRoleType;
+use Ign\Bundle\GincoBundle\Form\UserAddFromINPNType;
 use Ign\Bundle\GincoBundle\Form\UserRoleType;
 use Ign\Bundle\OGAMBundle\Controller\UsermanagementController as BaseController;
 use Ign\Bundle\OGAMBundle\Entity\Website\Role;
 use Ign\Bundle\OGAMBundle\Entity\Website\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/usermanagement")
  */
 class UsermanagementController extends BaseController {
+
+	/**
+	 * Add a User:
+	 * Search him in the INPN directory, given his login.
+	 * On success, add him in DB and redirect to editUser to change his roles.
+	 *
+	 * @param Request $request
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+	 *
+	 * @Route("/addUser", name="usermanagement_addUser")
+	 */
+	public function addUserAction(Request $request) {
+		$logger = $this->get('logger');
+		$logger->debug('addUserAction');
+
+		// Get the "Add User from INPN" form
+		$form = $this->createForm(UserAddFromINPNType::class);
+
+		$form->handleRequest($request);
+
+		$formIsValid = $form->isValid();
+		if ($formIsValid) {
+			$userLogin = $form->get('login')->getData();
+
+			// If already existing in db, display error
+			$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+			if ($userRepo->find($userLogin)) {
+				$error = new FormError($this->get('translator')->trans('administration.user.add.alreadyExists', array(), 'validators'));
+				$form->get('login')->addError($error);
+				$formIsValid = false;
+			}
+
+			// Checks if user exists in INPN directory, and try to create him in database
+			try {
+				$newUser = $this->get('ginco.inpn_user_updater')->updateOrCreateLocalUser($userLogin);
+
+				// If not in INPN directory (and not exception), display an error
+				if (!$newUser) {
+					$error = new FormError($this->get('translator')->trans('administration.user.add.notFound', array(), 'validators'));
+					$form->get('login')->addError($error);
+					$formIsValid = false;
+				}
+			}
+			catch (UserUpdaterException $e) {
+				$error = new FormError($this->get('translator')->trans($e->getMessage(), array(), 'validators'));
+				$form->get('login')->addError($error);
+				$formIsValid = false;
+			}
+		}
+
+		if ($formIsValid) {
+			// User has already be created, just notice the adminisitrator and
+			// redirect to edit Roles pages
+			$this->addFlash('success', $this->get('translator')
+				->trans('User.add.success', array('%login%' => $userLogin)));
+
+			return $this->redirectToRoute('usermanagement_editUser', array('login' => $userLogin));
+		}
+
+		return $this->render('IgnGincoBundle:UsermanagementController:add_user.html.twig', array(
+			'form' => $form->createView()
+		));
+	}
 
 	/**
 	 * Edit a user.
