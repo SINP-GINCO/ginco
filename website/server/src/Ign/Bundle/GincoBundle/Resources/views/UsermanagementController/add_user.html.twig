@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+{% form_theme form 'form.html.twig' %}
+
+{% block body %}
+
+    <h1>{% trans %}User.add.title{% endtrans %}</h1>
+
+    <p>{% trans %}User.add.help{% endtrans %}</p>
+
+    {{ form(form) }}
+
+{% endblock %}

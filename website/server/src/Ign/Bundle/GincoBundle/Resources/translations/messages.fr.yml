@@ -30,6 +30,7 @@ My account: Mon compte
 Yes: Oui
 No: Non
 Never: Jamais
+Search: Rechercher
 
 # Main menu
 # ---------------------------
@@ -360,6 +361,7 @@ Role:
     impossible: "Impossible d'éditer le rôle '%roleLabel%' car c'est le rôle technique par défaut."
     default: "Vous pouvez choisir le rôle par défaut sur la page de configuration de la plateforme"
 
+Create User: Ajouter un utilisateur
 User:
   account:
     title: Votre compte
@@ -374,6 +376,17 @@ User:
       role: Vous avez le(s) rôle(s) suivant(s) :
       permissions: Cela correspond aux permissions :
       more: Pour obtenir plus de permissions, contactez <a href="%href%">les administrateurs de la plateforme</a>.
+  add:
+    title: Ajouter un utilisateur depuis l'annuaire INPN
+    help: >-
+      Vous pouvez rechercher un utilisateur présent dans l'annuaire INPN, et l'ajouter à la liste des utilisateurs de
+      la plateforme régionale. Vous pourrez ensuite lui attribuer directement le rôle que vous souhaitez.
+      Attention : la recherche se fait par l'identifiant exact dans l'annuaire INPN. Si vous ne le connaissez pas, merci de
+      vous rapprocher de la personne que vous souhaitez ajouter.
+    login: Identifiant dans l'annuaire INPN
+    success: >-
+      L'utilisateur '%login%' a été ajouté avec succès.
+      Merci de lui attribuer un ou plusieurs rôles et de valider.
   delete:
     impossible: "Impossible de supprimer l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
   change_password:
@@ -385,7 +398,7 @@ User:
     created: Création
     lastLogin: Dernière connexion
   refresh:
-    notfound: L'utilisateur n'existe pas dans l'annuaire INPN. Vous pouvez le supprimer de la plateforme.
+    notfound: L'utilisateur n'existe pas (plus) dans l'annuaire INPN.
 
 # Changing or Re-initialising user password
 #------------------------------

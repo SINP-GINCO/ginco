@@ -9,6 +9,11 @@ administration:
   user:
     email: Cet email est déjà utilisé
     login: Ce login est déjà utilisé
+    add:
+      notFound: >-
+        Aucun utilisateur avec cet identifiant n'a été trouvé dans l'annuaire INPN.
+        Attention de bien entrer l'identifiant (le login) exact de la personne (la recherche est sensible à la casse).
+      alreadyExists: Cet utilisateur existe déjà dans la plateforme. Vous pouvez éditer ses rôles mais pas l'ajouter à nouveau.
   provider:
     label: Ce label d'organisme est déjà utilisé
   role:
