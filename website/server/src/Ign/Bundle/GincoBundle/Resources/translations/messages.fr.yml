@@ -141,6 +141,8 @@ Configuration:
     defaultRole:
       label: Rôle par défaut
       help: Indiquez le rôle qui sera attribué par défaut à tous les nouveaux utilisateurs.
+    epsg: Système de référence du champ géométrique, utilisé pour la visualisation et l'export (code EPSG).
+
 # Configuration homepage page
 # -----------------------------
 ConfHomepage:

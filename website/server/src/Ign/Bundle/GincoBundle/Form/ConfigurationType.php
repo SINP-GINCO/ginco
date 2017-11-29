@@ -3,9 +3,13 @@ namespace Ign\Bundle\GincoBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\FormBuilderInterface;
 use Ign\Bundle\GincoBundle\Validator\Constraints\EmailList;
+use Ign\Bundle\OGAMBundle\Validator\Constraints\EPSGCode;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -32,6 +36,21 @@ class ConfigurationType extends AbstractType
 					new NotBlank(),
 					new EmailList(),
 				),
+			))
+			->add('srs_results', IntegerType::class, array(
+				'label' => 'Configuration.edit.epsg',
+				'mapped' => false,
+				'required' => true,
+				'constraints' => array(
+					new Type(array(
+						'type' => 'int'
+					)),
+					new Length(array(
+						'min' => 4,
+						'max' => 8
+					)),
+					new EPSGCode()
+				)
 			))
 			->add('defaultRole', EntityType::class, array(
 				'class' => 'Ign\Bundle\OGAMBundle\Entity\Website\Role',

@@ -32,6 +32,7 @@ insert into application_parameters (name, value, description) values ( 'tilesize
 --insert into application_parameters (name, value, description) values ( 'query_details_layers1' , 'ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO,communes,mailles,result_maille,result_commune,result_geometrie' , 'WEB MAPPING '); --,nuts_0
 insert into application_parameters (name, value, description) values ( 'srs_visualisation' , 3857 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'srs_raw_data' , 4326 , 'WEB MAPPING ');
+insert into application_parameters (name, value, description) values ( 'srs_results', 3857, 'Code EPSG du système de référence utilisé pour le tableau de résultats et l''export');
 insert into application_parameters (name, value, description) values ( 'srs_harmonized_data' , 4326 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'usePerProviderCenter' , 1 , 'if true the system will look in the "bounding_box" table for centering info for each provider');
 insert into application_parameters (name, value, description) values ( 'bbox_x_min' , '-20037508.342789244' , 'WEB MAPPING ');

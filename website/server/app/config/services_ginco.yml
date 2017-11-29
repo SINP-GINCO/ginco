@@ -204,3 +204,9 @@ services:
         arguments: ['%kernel.root_dir%/../web/upload']
         tags:
             - { name: form.type }
+            
+    validator.unique.epsg_code:
+      class: Ign\Bundle\OGAMBundle\Validator\Constraints\EPSGCodeValidator
+      tags:
+        - {  name: validator.constraint_validator }
+      arguments: ["@doctrine.orm.entity_manager"]

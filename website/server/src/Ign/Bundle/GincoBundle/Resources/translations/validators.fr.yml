@@ -1,4 +1,5 @@
 EmailList.invalid: "Cette adresse ou liste d'adresses email n'est pas valide : {{ string }}."
+EPSGCode.invalid: Code EPSG invalide.
 
 MetadataException:
   FailedDownload: Impossible de télécharger la fiche de métadonnées ; merci de vérifier que l'identifiant correspond à une fiche présente dans l'application de métadonnées de l'INPN.
