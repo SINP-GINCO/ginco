@@ -35,6 +35,7 @@ try {
 	execCustSQLFile("$sprintDir/update_users_table.sql", $config);
 	execCustSQLFile("$sprintDir/add_developers.sql", $config);
 	execCustSQLFile("$sprintDir/update_mnhn_layer_names.sql", $config);
+	execCustSQLFile("$sprintDir/add_results_and_export_epsg.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

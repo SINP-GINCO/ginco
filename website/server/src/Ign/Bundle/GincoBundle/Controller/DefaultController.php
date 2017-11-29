@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends BaseController {
-
+	
 	// Max number of links of each type displayed on homepage
 	private $numLinks = 5;
 
@@ -22,7 +22,7 @@ class DefaultController extends BaseController {
 	 * @Route("/", name="homepage")
 	 */
 	public function indexAction() {
-
+		
 		// Get configurable content for homepage, from content table
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 		$content = array();
@@ -32,7 +32,7 @@ class DefaultController extends BaseController {
 		$content['image'] = $contentRepo->find('homepage.image')->getValue();
 		$content['publicLinksTitle'] = $contentRepo->find('homepage.links.title')->getValue();
 		$content['privateLinksTitle'] = $contentRepo->find('homepage.private.links.title')->getValue();
-
+		
 		$getValue = function ($content) {
 			return $content->getJsonDecodedValue();
 		};
@@ -50,7 +50,7 @@ class DefaultController extends BaseController {
 		$content['docs'] = array_map($getValue, $homepageDoc);
 		$content['privateLinks'] = array_map($getValue, $homepagePrivateLink);
 		$content['privateDocs'] = array_map($getValue, $homepagePrivateDoc);
-
+		
 		return $this->render('IgnGincoBundle:Default:index.html.twig', array(
 			'content' => $content
 		));
@@ -62,7 +62,7 @@ class DefaultController extends BaseController {
 	 * @Route("/presentation", name="presentation")
 	 */
 	public function presentationAction() {
-
+		
 		// Get configurable content for homepage, from content table
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
 		$content = array();
@@ -70,7 +70,7 @@ class DefaultController extends BaseController {
 		$content['intro'] = $contentRepo->find('presentation.intro')->getValue();
 		$content['image'] = $contentRepo->find('presentation.image')->getValue();
 		$content['publicLinksTitle'] = $contentRepo->find('presentation.links.title')->getValue();
-
+		
 		$getValue = function ($content) {
 			return $content->getJsonDecodedValue();
 		};
@@ -82,7 +82,7 @@ class DefaultController extends BaseController {
 		}
 		$content['links'] = array_map($getValue, $presentationLink);
 		$content['docs'] = array_map($getValue, $presentationDoc);
-
+		
 		return $this->render('IgnGincoBundle:Default:presentation.html.twig', array(
 			'content' => $content
 		));
@@ -98,22 +98,22 @@ class DefaultController extends BaseController {
 			'action' => $this->generateUrl('contact'),
 			'method' => 'POST'
 		));
-
+		
 		// If user is authenticated, get his email and set as default value
 		if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 			$email = $this->getUser()->getEmail();
 			$form->get('email')->setData($email);
 		}
-
+		
 		if ($request->isMethod('POST')) {
 			// Refill the fields in case the form is not valid.
 			$form->handleRequest($request);
-
+			
 			if ($form->isValid()) {
 				// Contact recipients
 				$contactRecipients = $this->get('ogam.configuration_manager')->getConfig('contactEmail', 'sinp-dev@ign.fr');
 				$contactRecipients = explode(',', $contactRecipients);
-
+				
 				// Send the email
 				$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:contact.html.twig', array(
 					'email' => $form->get('email')
@@ -121,15 +121,15 @@ class DefaultController extends BaseController {
 					'message' => $form->get('message')
 						->getData()
 				), $contactRecipients);
-
+				
 				$request->getSession()
 					->getFlashBag()
 					->add('success', 'Contact.send.success');
-
+				
 				return $this->redirect($this->generateUrl('contact'));
 			}
 		}
-
+		
 		return $this->render('IgnGincoBundle:Default:contact.html.twig', array(
 			'form' => $form->createView()
 		));
@@ -145,35 +145,43 @@ class DefaultController extends BaseController {
 	public function configurationParametersAction(Request $request) {
 		$em = $this->getDoctrine()->getManager();
 		$confRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\ApplicationParameter', 'website');
-
+		
 		// Get contact Email
 		$emailConf = $confRepo->find('contactEmail');
-
+		$resultsEPSGConf = $confRepo->find('srs_results');
+		
 		// Get default role
 		$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
 		$defaultRole = $roleRepo->findOneByIsDefault(true);
-
+		
 		$form = $this->createForm(new ConfigurationType(), null, array(
 			'action' => $this->generateUrl('configuration_parameters'),
 			'method' => 'POST',
 			'defaultRole' => $defaultRole
 		));
-
-		// Set default value(s)
+		
+		// Set default values
 		$form->get('contactEmail')->setData($emailConf->getValue());
-
+		$form->get('srs_results')->setData($resultsEPSGConf->getValue());
+		
 		$form->handleRequest($request);
-
+		
 		if ($form->isValid()) {
-
+			
 			$contactEmail = $form->get('contactEmail')->getData();
 			// Remove all spaces around email adresses (separetd by commas)
 			$contactEmail = implode(',', array_map('trim', explode(',', $contactEmail)));
 			$emailModified = $emailConf->getValue() != $contactEmail;
-
+			
 			// Persist the value
 			$emailConf->setValue($contactEmail);
-
+			
+			$resultsEPSG = $form->get('srs_results')->getData();
+			$resultsEPSGModified = $resultsEPSGConf->getValue() != $resultsEPSG;
+			
+			// Persist the value
+			$resultsEPSGConf->setValue($resultsEPSG);
+			
 			// Persist the default role chosen if it has been changed
 			$newDefaultRole = $form->get('defaultRole')->getData();
 			if ($newDefaultRole->getCode() != $defaultRole->getCode()) {
@@ -182,7 +190,7 @@ class DefaultController extends BaseController {
 				$newDefaultRole->setIsDefault(true);
 			}
 			$em->flush();
-
+			
 			$request->getSession()
 				->getFlashBag()
 				->add('success', 'Configuration.edit.submit.success');
@@ -191,10 +199,10 @@ class DefaultController extends BaseController {
 					->getFlashBag()
 					->add('success', 'Configuration.edit.email.success');
 			}
-
+			
 			return $this->redirect($this->generateUrl('configuration_parameters'));
 		}
-
+		
 		return $this->render('IgnGincoBundle:Default:configuration_parameters.html.twig', array(
 			'form' => $form->createView()
 		));
@@ -209,18 +217,18 @@ class DefaultController extends BaseController {
 	public function configurationHomepageAction(Request $request) {
 		$em = $this->getDoctrine()->getManager();
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
-
+		
 		// Get homepage intro html, image, links title and links
 		$homepageTitle = $contentRepo->find('homepage.title');
 		$homepageIntro = $contentRepo->find('homepage.intro');
 		$homepageImage = $contentRepo->find('homepage.image');
 		$homepagePublicLinksTitle = $contentRepo->find('homepage.links.title');
 		$homepagePrivateLinksTitle = $contentRepo->find('homepage.private.links.title');
-
+		
 		$getValue = function ($content) {
 			return $content->getValue();
 		};
-
+		
 		$homepageLink = array();
 		$homepageDoc = array();
 		$homepagePrivateLink = array();
@@ -235,9 +243,9 @@ class DefaultController extends BaseController {
 		$homepageDocValue = array_map($getValue, $homepageDoc);
 		$homepagePrivateLinkValue = array_map($getValue, $homepagePrivateLink);
 		$homepagePrivateDocValue = array_map($getValue, $homepagePrivateDoc);
-
+		
 		// Set default value(s)
-
+		
 		$data = array(
 			'homepageTitle' => $homepageTitle->getValue(),
 			'homepageIntro' => $homepageIntro->getValue(),
@@ -253,11 +261,11 @@ class DefaultController extends BaseController {
 			'action' => $this->generateUrl('configuration_homepage'),
 			'method' => 'POST'
 		));
-
+		
 		$form->handleRequest($request);
-
+		
 		if ($form->isValid()) {
-
+			
 			// Persist the value
 			$homepageTitle->setValue($form->get('homepageTitle')
 				->getData());
@@ -273,7 +281,7 @@ class DefaultController extends BaseController {
 			$homepageDocValue = $form->get('homepageDocs')->getData();
 			$homepagePrivateLinkValue = $form->get('homepagePrivateLinks')->getData();
 			$homepagePrivateDocValue = $form->get('homepagePrivateDocs')->getData();
-
+			
 			for ($i = 1; $i <= $this->numLinks; $i ++) {
 				$homepageLink[$i]->setValue($homepageLinkValue[$i]);
 				$homepageDoc[$i]->setValue($homepageDocValue[$i]);
@@ -281,14 +289,14 @@ class DefaultController extends BaseController {
 				$homepagePrivateDoc[$i]->setValue($homepagePrivateDocValue[$i]);
 			}
 			$em->flush();
-
+			
 			$request->getSession()
 				->getFlashBag()
 				->add('success', 'Configuration.edit.submit.success');
-
+			
 			return $this->redirect($this->generateUrl('configuration_homepage'));
 		}
-
+		
 		return $this->render('IgnGincoBundle:Default:configuration_homepage.html.twig', array(
 			'form' => $form->createView()
 		));
@@ -303,17 +311,17 @@ class DefaultController extends BaseController {
 	public function configurationPresentationAction(Request $request) {
 		$em = $this->getDoctrine()->getManager();
 		$contentRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Content', 'website');
-
+		
 		// Get presentation intro html, image, links title and links
 		$presentationTitle = $contentRepo->find('presentation.title');
 		$presentationIntro = $contentRepo->find('presentation.intro');
 		$presentationImage = $contentRepo->find('presentation.image');
 		$presentationPublicLinksTitle = $contentRepo->find('presentation.links.title');
-
+		
 		$getValue = function ($content) {
 			return $content->getValue();
 		};
-
+		
 		$presentationLink = array();
 		$presentationDoc = array();
 		for ($i = 1; $i <= $this->numLinks; $i ++) {
@@ -322,9 +330,9 @@ class DefaultController extends BaseController {
 		}
 		$presentationLinkValue = array_map($getValue, $presentationLink);
 		$presentationDocValue = array_map($getValue, $presentationDoc);
-
+		
 		// Set default value(s)
-
+		
 		$data = array(
 			'presentationTitle' => $presentationTitle->getValue(),
 			'presentationIntro' => $presentationIntro->getValue(),
@@ -337,11 +345,11 @@ class DefaultController extends BaseController {
 			'action' => $this->generateUrl('configuration_presentation'),
 			'method' => 'POST'
 		));
-
+		
 		$form->handleRequest($request);
-
+		
 		if ($form->isValid()) {
-
+			
 			// Persist the value
 			$presentationTitle->setValue($form->get('presentationTitle')
 				->getData());
@@ -353,20 +361,20 @@ class DefaultController extends BaseController {
 				->getData());
 			$presentationLinkValue = $form->get('presentationLinks')->getData();
 			$presentationDocValue = $form->get('presentationDocs')->getData();
-
+			
 			for ($i = 1; $i <= $this->numLinks; $i ++) {
 				$presentationLink[$i]->setValue($presentationLinkValue[$i]);
 				$presentationDoc[$i]->setValue($presentationDocValue[$i]);
 			}
 			$em->flush();
-
+			
 			$request->getSession()
 				->getFlashBag()
 				->add('success', 'Configuration.edit.submit.success');
-
+			
 			return $this->redirect($this->generateUrl('configuration_presentation'));
 		}
-
+		
 		return $this->render('IgnGincoBundle:Default:configuration_presentation.html.twig', array(
 			'form' => $form->createView()
 		));
