@@ -39,7 +39,7 @@ class ProviderInpn {
 	 *
 	 * @var string @ORM\Column(name="uuid", type="string", unique=true, nullable=true)
 	 */
-	private $UUID;
+	private $uuid;
 
 	/**
 	 * Get id
@@ -113,8 +113,8 @@ class ProviderInpn {
 	 *
 	 * @return Provider
 	 */
-	public function setUUID($UUID) {
-		$this->uuid = $UUID;
+	public function setUUID($uuid) {
+		$this->uuid = $uuid;
 		
 		return $this;
 	}
@@ -124,7 +124,7 @@ class ProviderInpn {
 	 *
 	 * @return string
 	 */
-	public function getUUID($UUID) {
+	public function getUUID($uuid) {
 		return $uuid->uuid;
 	}
 	
