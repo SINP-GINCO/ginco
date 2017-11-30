@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/")
+ * @Route("/jdd")
  */
 class JddController extends BaseController {
 
@@ -19,10 +19,9 @@ class JddController extends BaseController {
 	 * Default action: Show the jdd list page
 	 * Ginco customisation: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
 	 *
-	 * @Route("/jdd/all/", name = "all_jdd_list")
+	 * @Route("/all/", name = "all_jdd_list")
 	 */
 	public function listAllAction() {
-
 		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 			throw $this->createAccessDeniedException();
 		}
@@ -55,7 +54,7 @@ class JddController extends BaseController {
 	/**
 	 * #1223 : Shows the user jdd list page.
 	 *
-	 * @Route("/jdd/", name = "user_jdd_list")
+	 * @Route("/", name = "user_jdd_list")
 	 */
 	public function listUserAction() {
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
@@ -75,7 +74,7 @@ class JddController extends BaseController {
 	 * Ginco customisation: add a field for metadata identifier
 	 * Checks, via a service, the xml file on metadata platform, and fills jdd fields with metadata fields
 	 *
-	 * @Route("/jdd/new", name = "jdd_new")
+	 * @Route("/new", name = "jdd_new")
 	 */
 	public function newAction(Request $request) {
 
@@ -160,7 +159,7 @@ class JddController extends BaseController {
 	 * Jdd delete action
 	 * Ginco customisation:: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
 	 *
-	 * @Route("/jdd/{id}/delete", name = "jdd_delete", requirements={"id": "\d+"})
+	 * @Route("/{id}/delete", name = "jdd_delete", requirements={"id": "\d+"})
 	 */
 	public function deleteAction(Jdd $jdd) {
 
@@ -184,7 +183,7 @@ class JddController extends BaseController {
 	 * returns JsonResponse true or false
 	 * Checks, via a service, the xml file on metadata platform, and fills jdd fields with metadata fields
 	 *
-	 * @Route("/jdd/{id}/update-metadatas", name = "jdd_update_metadatas", requirements={"id": "\d+"})
+	 * @Route("/{id}/update-metadatas", name = "jdd_update_metadatas", requirements={"id": "\d+"})
 	 */
 	public function updateMetadatas(Request $request, Jdd $jdd) {
 		$metadataId = $jdd->getField('metadataId');
