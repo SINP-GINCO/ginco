@@ -35,8 +35,8 @@ class JddController extends BaseController {
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		foreach ($jddList as $jdd) {
 			$jdd->trueDeletable = $this->isJddDeletable($jdd);
-			foreach($jdd->getSubmissions() as $submission){
-				foreach($submission->getFiles() as $file){
+			foreach ($jdd->getSubmissions() as $submission) {
+				foreach ($submission->getFiles() as $file) {
 					$file->filenameWithoutExtension = pathinfo($file->getFileName(), PATHINFO_FILENAME);
 					$file->filenameExtension = pathinfo($file->getFileName(), PATHINFO_EXTENSION);
 				}
