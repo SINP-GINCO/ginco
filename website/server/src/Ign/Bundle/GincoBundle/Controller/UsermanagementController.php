@@ -258,11 +258,14 @@ class UsermanagementController extends BaseController {
 			if(($searchInfosId->response->numFound) > 0) {
 				//Get Value from JSON
 				$label = $searchInfosId->response->docs[0]->libelleLong ." - ". $searchInfosId->response->docs[0]->libelleCourt;
-				$definition = 0;
-				//$description= $searchInfosId->response->docs[0]->descriptionOrganisme
+				if(isset($searchInfosId->response->docs[0]->descriptionOrganisme)) {
+					$definition= $searchInfosId->response->docs[0]->descriptionOrganisme;
+				} else {
+					$definition = 0;
+				}
+				
 				$idOrganisme = $searchInfosId->response->docs[0]->id;
 				$codeOrganisme = $searchInfosId->response->docs[0]->codeOrganisme;
-			
 				$logger->debug('provider : ' . \Doctrine\Common\Util\Debug::dump($providerInpn, 3, true, false));
 				$insertResult = new ProviderInpn;
 				$insertResult ->setId($idOrganisme);
