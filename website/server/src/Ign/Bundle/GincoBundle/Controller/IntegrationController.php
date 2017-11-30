@@ -26,6 +26,16 @@ use Ign\Bundle\OGAMBundle\Controller\IntegrationController as BaseController;
 class IntegrationController extends BaseController {
 
 	/**
+	 * Default action.
+	 *
+	 * @Route("/", name = "integration_home")
+	 */
+	public function indexAction() {
+		// Redirects to the jdd list page
+		return $this->redirect($this->generateUrl('user_jdd_list'));
+	}
+
+	/**
 	 * Show the create data submission page.
 	 * GINCO: Add a choice for the provider in the form
 	 *
