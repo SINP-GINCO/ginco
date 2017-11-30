@@ -142,6 +142,7 @@ CREATE TABLE providers (
 id          character varying NOT NULL DEFAULT nextval('website.provider_id_seq'::text),
 label       character varying,
 definition  character varying,
+UUID		character varying,
 CONSTRAINT pk_provider PRIMARY KEY (id),
 CONSTRAINT label_unique UNIQUE(label)
 );

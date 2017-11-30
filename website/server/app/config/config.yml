@@ -74,6 +74,7 @@ assetic:
                 - "%kernel.root_dir%/Resources/css/style.css"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.css"
                 - "%kernel.root_dir%/Resources/css/roboto-condensed.css"
+                - "%kernel.root_dir%/../vendor/components/jqueryui/themes/base/jquery-ui.css"
 # - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/css/style.css"
             filters: [cssrewrite]
             output: "css/bootstrap.css"

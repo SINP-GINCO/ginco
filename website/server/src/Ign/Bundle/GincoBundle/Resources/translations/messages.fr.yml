@@ -340,16 +340,25 @@ Data dictionary: Dictionnaire de données
 # Administration
 # --------------
 
+
 Users:
   delete.prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
   no_users: Pas encore d'utilisateurs.
 
 Providers:
+  infos:
+    link_add: Ajouter un organisme
   delete:
     prompt: Voulez-vous vraiment supprimer l'organisme '%providerLabel%' ?
     impossible: "Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés."
   no_providers: Pas encore d'organismes.
-
+  add:
+    provider_inpn: Ajout d'un organisme
+    accroche: Après avoir rempli 3 caractères minimum, vous pourrez choisir dans le menu déroulant un organisme existant
+  flash:
+    error_label: Le label est incorrect, il ne faut pas modifier le champ après la sélection.
+    exist_provider : L'organisme est déja présent dans la liste ci-dessous. 
+    success: L'organisme a bien été enregistré
 Role:
   delete:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
@@ -359,7 +368,7 @@ Role:
   edit:
     impossible: "Impossible d'éditer le rôle '%roleLabel%' car c'est le rôle technique par défaut."
     default: "Vous pouvez choisir le rôle par défaut sur la page de configuration de la plateforme"
-
+  
 User:
   account:
     title: Votre compte

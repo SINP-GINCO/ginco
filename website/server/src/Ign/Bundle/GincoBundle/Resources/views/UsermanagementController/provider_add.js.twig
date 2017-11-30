@@ -1,0 +1,31 @@
+/**============================================
+ * Scripts for SearchOrganisme form handling with Ajax.
+   @author Vincent Sagniez
+ ==============================================*/
+
+
+var $providerInputField = $('#provider_inpn_label');
+
+var path = "{{ path('search_providers') }}";
+
+$("#provider_inpn_label").autocomplete({
+	source: function(request,response){
+		$.ajax({
+			type: "GET",
+			url : path,
+			dataType : 'json',
+			minlength : 3,
+			data: {inputProvider : $('#provider_inpn_label').val()},
+			success: function (donnee) {
+				response($.map(donnee, function(objet) {
+					var resultat = objet.label + '('+ objet.id +')';
+					return resultat;
+					
+				}))
+			}
+		});
+	}
+});
+
+
+
