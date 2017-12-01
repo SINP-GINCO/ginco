@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %} {% block body %}
+<h1>{{ 'pageNotFound' | trans }}</h1>
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %} {% endif %}
+
+	<p>{{ 'error404' | trans({'%link_start%' : '<a href="'~
+		path('homepage') ~'">', '%link_end%' : '</a>'}) | raw
+		}}
+	</p>
+
+{% endblock %}
