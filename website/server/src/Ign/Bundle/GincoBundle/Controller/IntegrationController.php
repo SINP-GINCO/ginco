@@ -439,7 +439,7 @@ class IntegrationController extends BaseController {
 					// Transform the upload file in CSV with GDAL (ogr2ogr)
 					$inputPath = preg_replace('"\.zip$"', '.shp', $targetPath . '/' . $filename);
 					$outputPath = preg_replace('"\.zip$"', '.csv', $targetPath . '/' . $filename);
-					$this->get('ginco.ogr2ogr')->shp2csv($inputPath, $outputPath);
+					$this->get('ginco.ogr2ogr')->shp2csv('"' . $inputPath . '"', '"' . $outputPath . '"');
 
 					$requestedFile->filePath = $outputPath; // TODO : clean this fake filePath property
 				}
