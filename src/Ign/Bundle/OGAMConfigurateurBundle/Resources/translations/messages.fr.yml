@@ -33,7 +33,7 @@ login:
 pageNotFound: Ressource introuvable
 error404: La page demandée n'existe pas. Veuillez vérifier que l'URL est correcte ou %link_start%retournez à la page d'accueil%link_end%.
 forbidden: Accès refusé
-error403: Vous n'avez les droits suffisants pour accéder à cette ressource.
+error403: Vous n'avez pas les droits suffisants pour accéder à cette ressource.
 error: Un problème a été rencontré. Merci de signaler cet incident ainsi que les actions qui y ont mené afin qu'il puisse être corrigé. Veuillez excuser le désagrément causé.
 anErrorOccurred: Une erreur est survenue
 
