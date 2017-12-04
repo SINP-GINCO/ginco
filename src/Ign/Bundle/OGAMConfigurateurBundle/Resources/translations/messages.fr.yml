@@ -284,6 +284,9 @@ fileField:
     date: Pour les champs de type DATE, il est possible de préciser le format que les valeurs du champ doivent prendre. Par défaut, le format yyyy-MM-dd est utilisé.
     example1: "yyyy-MM-dd : une date comme 2015-10-22"
     example2: "yyyy-MM-dd'T'HH:mmZ : une date comme 2016-12-12T04:12+0100 (format ISO 8601)"
+    example3: "HH:mm : une heure comme 06:33"
+    moreInfo: Vous trouverez plus d'informations sur les formats de date dans GINCO
+    here: ici
     doc.date : Une documentation est disponible <a href="/pdf/doc_format_de_date.pdf" target="_blank" > ici</a>.
   order.tooltip: L'ordre des champs peut être modifié via un glisser-déposer de ceux-ci.
   selectTable: Sélectionner une table...
