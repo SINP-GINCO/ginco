@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.sql.Time;
 
 import org.apache.log4j.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -70,6 +71,9 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		// jourDateDebut < jourDateFin < today
 		observationDatesAreCoherent(values);
+
+		// If heureDateDebut or heureDateFin is not given, fill with default values
+		fillHeureDateIfEmpty(values);
 
 		// Fills nomValide" if empty
 		calculateValuesSujetObservation(values);
@@ -787,6 +791,28 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 				// Add the exception in the array list and continue doing the checks
 				alce.add(ce);
 			}
+		}
+	}
+
+	/**
+	 * Checks that heureDateDebut and heureDateFin are not empty.
+	 * If so, fill with default values:
+	 * heureDateDebut: 00:00
+	 * heureDateFin: 23:59
+	 *
+	 * @param values
+	 */
+	private void fillHeureDateIfEmpty(Map<String, GenericData> values) throws CheckException {
+		GenericData heureDateDebutGD = values.get(DSRConstants.HEURE_DATE_DEBUT);
+		if (empty(heureDateDebutGD)) {
+			Time heureDateDebut = new Time(0,0,0);
+			heureDateDebutGD.setValue(heureDateDebut);
+		}
+
+		GenericData heureDateFinGD = values.get(DSRConstants.HEURE_DATE_FIN);
+		if (empty(heureDateFinGD)) {
+			Time heureDateFin = new Time(23,59,59);
+			heureDateFinGD.setValue(heureDateFin);
 		}
 
 	}
