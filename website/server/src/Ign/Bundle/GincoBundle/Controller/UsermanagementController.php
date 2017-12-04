@@ -4,9 +4,9 @@ namespace Ign\Bundle\GincoBundle\Controller;
 use Ign\Bundle\GincoBundle\Form\GincoRoleType;
 use Ign\Bundle\GincoBundle\Form\UserRoleType;
 use Ign\Bundle\OGAMBundle\Controller\UsermanagementController as BaseController;
+use Ign\Bundle\OGAMBundle\Entity\Website\Provider;
 use Ign\Bundle\OGAMBundle\Entity\Website\Role;
 use Ign\Bundle\OGAMBundle\Entity\Website\User;
-use Ign\Bundle\GincoBundle\Entity\Website\ProviderInpn;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Ign\Bundle\GincoBundle\Form\ProviderInpnType;
 use Symfony\Component\HttpFoundation\Request;
@@ -217,7 +217,7 @@ class UsermanagementController extends BaseController {
 	 */
 	public function addProviderAction(Request $request,$id = null) {
 
-		$providerInpn = new ProviderInpn();
+		$Provider = new Provider();
 
 		$logger = $this->get('logger');
 		$logger->debug('addProviderAction');
@@ -225,13 +225,13 @@ class UsermanagementController extends BaseController {
 		$searchOrga = $this->get('ginco.provider_service');
 
 		// Get the provider form
-		$form = $this->createForm(ProviderInpnType::class, $providerInpn);
+		$form = $this->createForm(ProviderInpnType::class, $Provider);
 		$form->handleRequest($request);
 		
 		if ($form->isSubmitted() && $form->isValid()) {
 
-			$providerInpn = $form->getData();
-			$resultChoice = explode("(",$providerInpn->getLabel());
+			$Provider = $form->getData();
+			$resultChoice = explode("(",$Provider->getLabel());
 			
 			//Test if the selection if you have the id in ()
 			if (sizeOf($resultChoice) <= 1) {
@@ -245,7 +245,7 @@ class UsermanagementController extends BaseController {
 			//Check if organism exist in database
 			$idChoice = str_replace(")","",$resultChoice[1]);
 			
-			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\ProviderInpn', 'website')->find($idChoice);
+			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\OgamBundle\Entity\Website\Provider', 'website')->find($idChoice);
 			if ($findID) {
 				$this->addFlash('error', $this->get('translator')
 					->trans('Providers.flash.exist_provider'));
@@ -266,8 +266,8 @@ class UsermanagementController extends BaseController {
 				
 				$idOrganisme = $searchInfosId->response->docs[0]->id;
 				$codeOrganisme = $searchInfosId->response->docs[0]->codeOrganisme;
-				$logger->debug('provider : ' . \Doctrine\Common\Util\Debug::dump($providerInpn, 3, true, false));
-				$insertResult = new ProviderInpn;
+				$logger->debug('provider : ' . \Doctrine\Common\Util\Debug::dump($Provider, 3, true, false));
+				$insertResult = new Provider;
 				$insertResult ->setId($idOrganisme);
 				$insertResult->setLabel($label);
 				$insertResult->setDefinition($definition);

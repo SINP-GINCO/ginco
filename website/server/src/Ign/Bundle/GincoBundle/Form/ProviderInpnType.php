@@ -1,6 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
+use Ign\Bundle\OGAMBundle\Entity\Website\Provider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -10,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
-use Ign\Bundle\GincoBundle\Entity\Website\ProviderInpn;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
@@ -40,7 +40,7 @@ class ProviderInpnType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => ProviderInpn::class,
+			'data_class' => Provider::class,
 		));
 	}
 }
