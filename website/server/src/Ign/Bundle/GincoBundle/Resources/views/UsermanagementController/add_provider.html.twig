@@ -4,17 +4,18 @@
 
 {% block body %}
 
-<h1>{% trans %}Providers.add.provider_inpn{% endtrans %}</h1>
-<h4>{%trans %}Providers.add.accroche{% endtrans%}</h4>
+    <h1>{% trans %}Providers.add.provider_inpn{% endtrans %}</h1>
+    <h4>{%trans %}Providers.add.accroche{% endtrans%}</h4>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script>
         {% include '@IgnGinco/UsermanagementController/provider_add.js.twig' %}
     </script>
-    
-{% endblock %}
-{{ form_start(form) }}
-	{{ form_widget(form) }}
 
 {% endblock %}
-
