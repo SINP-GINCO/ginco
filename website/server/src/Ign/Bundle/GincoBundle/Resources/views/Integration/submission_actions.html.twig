@@ -80,6 +80,9 @@
             </div>
         </div>
         {# Reports #}
+        {% set integrationDisabled = false %}
+        {% set sensitiveDisabled = false %}
+        {% set permanentDisabled = false %}
         {% if submission.step is not constant('STEP_CANCELLED', submission) %}
             {% set integrationDisabled = true %}
             {% set sensitiveDisabled = true %}
