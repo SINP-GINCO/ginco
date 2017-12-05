@@ -3,29 +3,46 @@
    @author Vincent Sagniez
  ==============================================*/
 
-
-var $providerInputField = $('#provider_inpn_label');
-
-var path = "{{ path('search_providers') }}";
-
-$("#provider_inpn_label").autocomplete({
+$("#provider_search_label").autocomplete({
+    minLength : 1,
+    delay:200,
 	source: function(request,response){
 		$.ajax({
 			type: "GET",
-			url : path,
+			url : "{{ path('search_providers') }}",
 			dataType : 'json',
-			minlength : 3,
-			data: {inputProvider : $('#provider_inpn_label').val()},
-			success: function (donnee) {
-				response($.map(donnee, function(objet) {
-					var resultat = objet.label + '('+ objet.id +')';
-					return resultat;
-					
+			data: {term : request.term},
+			success: function (data) {
+				response($.map(data, function(object) {
+					return object.label + ' ('+ object.id +')';
 				}))
 			}
-		});
+		})
+	},
+	// Don't trigger the Ajax request if not 3 characters, except if it is a number
+	search: function( event, ui ) {
+		var term = $("#provider_search_label").val();
+		// If not a number and less than three chars, cancel search.
+		if (term.length < 3 && isNaN(term)) {
+			event.preventDefault();
+		}
 	}
-});
+})
+// Make the searched terms bold in item list
+.data("ui-autocomplete")._renderItem = function( ul, item ) {
+	var terms = this.term.trim().split(/\s+/);
+	console.log('Termes cherchés:' , terms);
+	var label = item.label;
+	$.each( terms, function( index, term ){
+		if (term.length >= 3 || parseInt(term)>0 ) {
+			var regex = new RegExp('(' + term + ')', 'gi');
+			label = label.replace(regex, "<b>$1</b>");
+		}
+	});
 
+    return $( "<li class='ui-menu-item'>" ).append(
+                $("<div tabindex='-1' class='ui-menu-item-wrapper'>").append(label))
+            .appendTo( ul );
+};
 
 

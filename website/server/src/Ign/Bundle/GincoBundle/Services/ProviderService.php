@@ -1,23 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services;
 
-use Ign\Bundle\GincoBundle\Entity\Mapping\Request;
-use Ign\Bundle\GincoBundle\Entity\Mapping\Result;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFormField;
-use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Dataset;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Format;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\FormField;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
-use Ign\Bundle\OGAMBundle\OGAMBundle;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
-use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * Class OrganismeService
@@ -54,6 +38,14 @@ class ProviderService {
 		$this->configurationManager = $configurationManager;
 		$this->logger = $logger;
 	}
+
+	/**
+	 * Returns the result of the call to the INPN webservice
+	 * and transform the json to get only the fields used in Ginco
+	 *
+	 * @param $urlSearch: the url with query parameters
+	 * @return mixed
+	 */
 	private function callINPN($urlSearch) {
 		$ch = curl_init();
 		$curlOptions = array(
@@ -79,27 +71,84 @@ class ProviderService {
 		
 		// Close the cURL channel and file
 		curl_close($ch);
-		return $result;
-	}
-	
-	public function urlParameterSearch($field_label = null, $columns = null,$start = null) {
-		
-		$urlSearch = self::urlINPN;
-		//Result in JSON 
-		$urlSearch .="wt=json";
-		if ($field_label !=null){
-			$urlSearch .="&q=libelleLong:*".$field_label."*&q=libelleCourt:*".$field_label."";
+
+		// Transform the response to keep only the fields used in Ginco
+		$results = json_decode($result, true);
+		$providersList = $results['response']['docs'];
+
+		if ($providersList) {
+			foreach ($providersList as $index => $provider) {
+				$providersList[$index]['label'] = $provider['libelleLong'] . ' - ' . $provider['libelleCourt'];
+				$providersList[$index]['uuid'] = $provider['codeOrganisme'];
+				$providersList[$index]['description'] = (isset($provider['descriptionOrganisme'])) ? $provider['descriptionOrganisme'] : "";
+				// Unset unused fields
+				foreach ($provider as $key => $value) {
+					if (!in_array($key, ['id', 'label', 'uuid', 'description'])) {
+						unset($providersList[$index][$key]);
+					}
+				}
+			}
 		}
+		return $providersList;
+	}
+
+	/**
+	 * Constructs the url to query the INPN providers webservices
+	 * with query parameters
+	 *
+	 * @param null $search: the search string (search in libelleCourt and libelleLong)
+	 * @param null $columns: max number of results returned
+	 * @param null $start: start position
+	 * @return string
+	 */
+	public function urlParameterSearch($search = "", $columns = null,$start = null) {
 		
+		// Query parameters
+		$query = array(
+			"wt" => "json",
+		);
+
+		// First sanitize string: trim and replace accents
+		$search = trim($search);
+		$normalizeChars = array(
+			'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A',
+			'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I',
+			'Ï'=>'I', 'Ñ'=>'N', 'Ń'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U',
+			'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a',
+			'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i',
+			'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ń'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u',
+			'ú'=>'u', 'û'=>'u', 'ü'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f',
+			'ă'=>'a', 'î'=>'i', 'â'=>'a', 'ș'=>'s', 'ț'=>'t', 'Ă'=>'A', 'Î'=>'I', 'Â'=>'A', 'Ș'=>'S', 'Ț'=>'T',
+		);
+		$search = strtr($search, $normalizeChars);
+
+		// Building a query to search all terms in search (AND),
+		// with and without * to match exact words and "words beginning with"
+		$terms = preg_split('/\s+/', $search);
+		$termsWithWilcard =array_map(function($x) {return "($x OR $x*)";}, $terms);
+		if (count($termsWithWilcard) > 1) {
+			$searchAllTerms = "(" . implode(" AND ", $termsWithWilcard) . ")";
+		}
+		else {
+			$searchAllTerms = $termsWithWilcard[0];
+		}
+		$q = 'libelleLong:' . $searchAllTerms . ' OR libelleCourt:' . $searchAllTerms;  // can't use Solr DISMAX because of the *
+
+		// Adding an exact search over id, if only one word given and if it is an integer
+		if (count($terms) == 1 && intval($search) > 0) {
+			$q .= ' OR id:' . $search;
+		}
+		$query['q'] = $q;
+
 		/* url with parameters optionnels*/
 		if ($columns != null) {
-			$urlSearch .="&rows=".$columns;
+			$query['rows'] = $columns;
 		}
-		if ($start !=null) {
-			$url .="&start=".$start;
+		if ($start != null) {
+			$query['start'] = $start;
 		}
 		
-		return $urlSearch;
+		return self::urlINPN . http_build_query($query);
 	}
 	
 	
@@ -117,7 +166,8 @@ class ProviderService {
 		
 		
 	}
-	/* Get Information on a organism by UUID
+	/**
+	 * Get Information on a organism by UUID
 	 * Strict Information
 	 */
 	public function getInfosByUUID($uuid){
@@ -126,13 +176,19 @@ class ProviderService {
 		$resultJson = $this->callINPN($urlUUID);
 		return $resultJson;
 	}
-	
-	public function searchOrganism($field_label,$columns = null,$start=null) {
-		$urlSearch = $this->urlParameterSearch($field_label,$columns,$start);
+
+	/**
+	 * Performs a search in INPN directory, based on search terms entered by the user
+	 *
+	 * @param $terms : search terms entered by user
+	 * @param null $columns
+	 * @param null $start
+	 * @return mixed
+	 */
+	public function searchOrganism($terms,$columns = null,$start=null) {
+		$urlSearch = $this->urlParameterSearch($terms,$columns,$start);
 		$this->logger->debug($urlSearch);
 		$resultJson = $this->callINPN($urlSearch);
-		
-		
 		return $resultJson;
 		
 	}

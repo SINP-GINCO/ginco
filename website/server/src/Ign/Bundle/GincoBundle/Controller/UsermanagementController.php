@@ -8,7 +8,7 @@ use Ign\Bundle\OGAMBundle\Entity\Website\Provider;
 use Ign\Bundle\OGAMBundle\Entity\Website\Role;
 use Ign\Bundle\OGAMBundle\Entity\Website\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Ign\Bundle\GincoBundle\Form\ProviderInpnType;
+use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -217,70 +217,61 @@ class UsermanagementController extends BaseController {
 	 */
 	public function addProviderAction(Request $request,$id = null) {
 
-		$Provider = new Provider();
-
 		$logger = $this->get('logger');
 		$logger->debug('addProviderAction');
-		$em = $this->getDoctrine()->getManager();
-		$searchOrga = $this->get('ginco.provider_service');
+		$providerService = $this->get('ginco.provider_service');
 
 		// Get the provider form
-		$form = $this->createForm(ProviderInpnType::class, $Provider);
+		$form = $this->createForm(ProviderSearchType::class);
 		$form->handleRequest($request);
 		
-		if ($form->isSubmitted() && $form->isValid()) {
+		if ($form->isValid()) {
 
-			$Provider = $form->getData();
-			$resultChoice = explode("(",$Provider->getLabel());
-			
+			// Get search request
+			$search = $form->get('label')->getData();
+
+			// Test and extract the id of INPN provider
+			$re = '/\((\d+)\)/';
+			preg_match($re, $search, $matches);
+
 			//Test if the selection if you have the id in ()
-			if (sizeOf($resultChoice) <= 1) {
+			if (count($matches) == 0) {
 				$this->addFlash('error', $this->get('translator')
 					->trans('Providers.flash.error_label'));
 				return $this->render('OGAMBundle:UsermanagementController:add_provider.html.twig', array(
 					'form' => $form->createView()
 				));
 			}
-			
+
 			//Check if organism exist in database
-			$idChoice = str_replace(")","",$resultChoice[1]);
+			$idProvider = intval($matches[1]);
 			
-			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\OgamBundle\Entity\Website\Provider', 'website')->find($idChoice);
+			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\OgamBundle\Entity\Website\Provider', 'website')->find($idProvider);
 			if ($findID) {
-				$this->addFlash('error', $this->get('translator')
+				$this->addFlash('warning', $this->get('translator')
 					->trans('Providers.flash.exist_provider'));
 				return $this->redirectToRoute('usermanagement_showProviders');
 			}
 			
-			$searchInfosId = json_decode($searchOrga->getInfosById($idChoice));
+			$providerINPN = $providerService ->getInfosById($idProvider);
 			
 			//Verify if we have a result and if the selection haven't been modified
-			if(($searchInfosId->response->numFound) > 0) {
+			if( count($providerINPN) == 1 ) {
+				$providerINPN = $providerINPN[0];
 				//Get Value from JSON
-				$label = $searchInfosId->response->docs[0]->libelleLong ." - ". $searchInfosId->response->docs[0]->libelleCourt;
-				if(isset($searchInfosId->response->docs[0]->descriptionOrganisme)) {
-					$definition= $searchInfosId->response->docs[0]->descriptionOrganisme;
-				} else {
-					$definition = 0;
-				}
-				
-				$idOrganisme = $searchInfosId->response->docs[0]->id;
-				$codeOrganisme = $searchInfosId->response->docs[0]->codeOrganisme;
-				$logger->debug('provider : ' . \Doctrine\Common\Util\Debug::dump($Provider, 3, true, false));
 				$insertResult = new Provider;
-				$insertResult ->setId($idOrganisme);
-				$insertResult->setLabel($label);
-				$insertResult->setDefinition($definition);
-				$insertResult->setUUID($codeOrganisme);
-				
-				
+				$insertResult ->setId($providerINPN['id']);
+				$insertResult->setLabel($providerINPN['label']);
+				$insertResult->setDefinition($providerINPN['description']);
+				$insertResult->setUUID($providerINPN['uuid']);
+
 				// Save the provider
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($insertResult);
 				// Save the provider map params
 				if($id == null) {
 					$bbox = $this->createDefaultBoundingBox();
-					$bbox->setProviderId($idOrganisme);
+					$bbox->setProviderId($providerINPN['id']);
 					$em->persist($bbox);
 				}
 				$em->flush();
@@ -306,37 +297,15 @@ class UsermanagementController extends BaseController {
 
 	/**
 	 * Search a provider
+	 * This url is a proxy to make ajax calls to the INPN webservice
 	 *
 	 * @Route("/search-providers", name="search_providers")
 	 */
-	public function searchProviders(Request $request) {
-	
-		$logger = $this->get('logger');
-		$logger->debug('addProviderAction');
-		
-		$inputProvider = $request->query->get('inputProvider');
-		$logger->debug($inputProvider);
-		$logger->debug('addProviderAction');
-		$em = $this->getDoctrine()->getManager();
-		$searchOrga = $this->get('ginco.provider_service');
-		$searchOrganism = $searchOrga->searchOrganism($inputProvider);
-		$resultOrganism = json_decode($searchOrganism);
-		$i = 0;
-		$result = array();
-		$logger->debug($inputProvider);
-		while ($i < ($resultOrganism->response->numFound)) {
-			$libelleCourt = $resultOrganism->response->docs[$i]->libelleCourt;
-			$libelleLong = $resultOrganism->response->docs[$i]->libelleLong;
-			$result[$i]['label'] = $libelleLong."-".$libelleCourt;
-			$result[$i]['description'] = 0;
-			//$result[$i]['description'] = $resultJson->row[0]->docs[$i]->descriptionOrganisme;
-			$result[$i]['id'] = $resultOrganism->response->docs[$i]->id;
-			$result[$i]['codeOrganisme'] = $resultOrganism->response->docs[$i]->codeOrganisme;
-			$i++;
-			
-			
-		}
-		return new JsonResponse($result);
+	public function searchProvidersProxyAction(Request $request) {
+
+		$term = $request->query->get('term');
+		$results = $this->get('ginco.provider_service')->searchOrganism($term);
+		return new JsonResponse($results);
 	}
 	
 }
