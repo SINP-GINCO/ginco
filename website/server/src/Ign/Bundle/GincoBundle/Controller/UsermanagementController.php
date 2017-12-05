@@ -210,8 +210,10 @@ class UsermanagementController extends BaseController {
 			'isModifiableRole' => $isModifiableRole
 		));
 	}
+
 	/**
 	 * Add a provider
+	 * Search it in the INPN directory, then add it as a local provider
 	 *
 	 * @Route("/addProvider", name="usermanagement_addProvider")
 	 */
@@ -219,7 +221,7 @@ class UsermanagementController extends BaseController {
 
 		$logger = $this->get('logger');
 		$logger->debug('addProviderAction');
-		$providerService = $this->get('ginco.provider_service');
+		$providerService = $this->get('ginco.inpn_provider_service');
 
 		// Get the provider form
 		$form = $this->createForm(ProviderSearchType::class);
@@ -230,7 +232,7 @@ class UsermanagementController extends BaseController {
 			// Get search request
 			$search = $form->get('label')->getData();
 
-			// Test and extract the id of INPN provider
+			// Test and extract the id of INPN provider - in parenthesis
 			$re = '/\((\d+)\)/';
 			preg_match($re, $search, $matches);
 
@@ -253,42 +255,18 @@ class UsermanagementController extends BaseController {
 				return $this->redirectToRoute('usermanagement_showProviders');
 			}
 			
-			$providerINPN = $providerService ->getInfosById($idProvider);
-			
-			//Verify if we have a result and if the selection haven't been modified
-			if( count($providerINPN) == 1 ) {
-				$providerINPN = $providerINPN[0];
-				//Get Value from JSON
-				$insertResult = new Provider;
-				$insertResult ->setId($providerINPN['id']);
-				$insertResult->setLabel($providerINPN['label']);
-				$insertResult->setDefinition($providerINPN['description']);
-				$insertResult->setUUID($providerINPN['uuid']);
+			$provider = $providerService->updateOrCreateLocalProvider($idProvider);
 
-				// Save the provider
-				$em = $this->getDoctrine()->getManager();
-				$em->persist($insertResult);
-				// Save the provider map params
-				if($id == null) {
-					$bbox = $this->createDefaultBoundingBox();
-					$bbox->setProviderId($providerINPN['id']);
-					$em->persist($bbox);
-				}
-				$em->flush();
-
+			if ($provider) {
 				$this->addFlash('success', $this->get('translator')
 					->trans('Providers.flash.success'));
 				return $this->redirectToRoute('usermanagement_showProviders');
 			} else {
 				$this->addFlash('error', $this->get('translator')
 					->trans('Providers.flash.error_label'));
-				return $this->render('OGAMBundle:UsermanagementController:add_provider.html.twig', array(
-					'form' => $form->createView()
-				));
 			}
 		}
 
-		
 		return $this->render('OGAMBundle:UsermanagementController:add_provider.html.twig', array(
 			'form' => $form->createView()
 		));
@@ -304,7 +282,7 @@ class UsermanagementController extends BaseController {
 	public function searchProvidersProxyAction(Request $request) {
 
 		$term = $request->query->get('term');
-		$results = $this->get('ginco.provider_service')->searchOrganism($term);
+		$results = $this->get('ginco.inpn_provider_service')->searchOrganism($term);
 		return new JsonResponse($results);
 	}
 	
