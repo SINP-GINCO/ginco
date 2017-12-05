@@ -285,5 +285,37 @@ class UsermanagementController extends BaseController {
 		$results = $this->get('ginco.inpn_provider_service')->searchOrganism($term);
 		return new JsonResponse($results);
 	}
-	
+
+	/**
+	 * Edit a provider : disable route (we can't anymore edit providers as they come from INPN)
+	 *
+	 * @Route("/editProvider/{id}", name="usermanagement_editProvider")
+	 */
+	public function editProviderAction(Request $request, $id = null) {
+		throw $this->createNotFoundException();
+	}
+
+
+	/**
+	 * Refresh provider infos from INPN webservice
+	 * @Route("/refreshProvider/{id}", name = "provider_refresh")
+	 */
+	public function refreshProviderAction(Request $request, $id) {
+
+		// Update via the INPN webservice
+		$provider = $this->get('ginco.inpn_provider_service')->updateOrCreateLocalProvider($id);
+
+		// If user not found, flash message
+		if (!$provider) {
+			$this->addFlash('warning', $this->get('translator')
+				->trans('Providers.refresh.notfound'));
+		}
+
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('usermanagement_showProviders');
+		return $this->redirect($redirectUrl);
+	}
+
 }

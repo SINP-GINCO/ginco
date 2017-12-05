@@ -2,7 +2,31 @@
 
 {% block body %}
 
-<h1>{{ 'Users and content for provider:'|trans }} {{ provider.label }}</h1>
+<h1><small>{{ 'Users and content for provider:'|trans }}</small><br> {{ provider.label }}</h1>
+
+<table class="table table-nonfluid table-bordered">
+    <tr>
+        <td><strong>{{ 'Providers.id'|trans }}</strong></td>
+        <td>{{ provider.id }}</td>
+    </tr>
+    <tr>
+        <td><strong>{{ 'Providers.name'|trans }}</strong></td>
+        <td>{{ provider.label }}</td>
+    </tr>
+    <tr>
+        <td><strong>{{ 'Providers.uuid'|trans }}</strong></td>
+        <td>{{ provider.uuid }}</td>
+    </tr>
+    <tr>
+        <td><strong>{{ 'Providers.description'|trans }}</strong></td>
+        <td>{{ provider.definition }}</td>
+    </tr>
+</table>
+
+<p><a href="{{ path('provider_refresh', {'id': provider.id})  }}">
+        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+        {{ 'Providers.refresh_link'|trans }}</a></p>
+
 
 <h2>{{ 'Users'|trans }}</h2>
 
