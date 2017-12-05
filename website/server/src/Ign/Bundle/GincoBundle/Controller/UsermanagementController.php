@@ -6,11 +6,17 @@ use Ign\Bundle\GincoBundle\Form\GincoRoleType;
 use Ign\Bundle\GincoBundle\Form\UserAddFromINPNType;
 use Ign\Bundle\GincoBundle\Form\UserRoleType;
 use Ign\Bundle\OGAMBundle\Controller\UsermanagementController as BaseController;
+use Ign\Bundle\OGAMBundle\Entity\Website\Provider;
+use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
 use Ign\Bundle\OGAMBundle\Entity\Website\Role;
 use Ign\Bundle\OGAMBundle\Entity\Website\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Ign\Bundle\GincoBundle\Services\ProviderService;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * @Route("/usermanagement")
@@ -246,7 +252,6 @@ class UsermanagementController extends BaseController {
 			if ($role->getIsDefault()) {
 				$isDeletable = false;
 			}
-
 			$isDeletableRole[$role->getCode()] = $isDeletable;
 		}
 
@@ -271,4 +276,112 @@ class UsermanagementController extends BaseController {
 			'isModifiableRole' => $isModifiableRole
 		));
 	}
+
+	/**
+	 * Add a provider
+	 * Search it in the INPN directory, then add it as a local provider
+	 *
+	 * @Route("/addProvider", name="usermanagement_addProvider")
+	 */
+	public function addProviderAction(Request $request,$id = null) {
+
+		$logger = $this->get('logger');
+		$logger->debug('addProviderAction');
+		$providerService = $this->get('ginco.inpn_provider_service');
+
+		// Get the provider form
+		$form = $this->createForm(ProviderSearchType::class);
+		$form->handleRequest($request);
+
+		if ($form->isValid()) {
+
+			// Get search request
+			$search = $form->get('label')->getData();
+
+			// Test and extract the id of INPN provider - in parenthesis
+			$re = '/\((\d+)\)/';
+			preg_match($re, $search, $matches);
+
+			//Test if the selection if you have the id in ()
+			if (count($matches) == 0) {
+				$this->addFlash('error', $this->get('translator')
+					->trans('Providers.flash.error_label'));
+				return $this->render('OGAMBundle:UsermanagementController:add_provider.html.twig', array(
+					'form' => $form->createView()
+				));
+			}
+
+			//Check if organism exist in database
+			$idProvider = intval($matches[1]);
+
+			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\OgamBundle\Entity\Website\Provider', 'website')->find($idProvider);
+			if ($findID) {
+				$this->addFlash('warning', $this->get('translator')
+					->trans('Providers.flash.exist_provider'));
+				return $this->redirectToRoute('usermanagement_showProviders');
+			}
+
+			$provider = $providerService->updateOrCreateLocalProvider($idProvider);
+
+			if ($provider) {
+				$this->addFlash('success', $this->get('translator')
+					->trans('Providers.flash.success'));
+				return $this->redirectToRoute('usermanagement_showProviders');
+			} else {
+				$this->addFlash('error', $this->get('translator')
+					->trans('Providers.flash.error_label'));
+			}
+		}
+
+		return $this->render('OGAMBundle:UsermanagementController:add_provider.html.twig', array(
+			'form' => $form->createView()
+		));
+
+	}
+
+	/**
+	 * Search a provider
+	 * This url is a proxy to make ajax calls to the INPN webservice
+	 *
+	 * @Route("/search-providers", name="search_providers")
+	 */
+	public function searchProvidersProxyAction(Request $request) {
+
+		$term = $request->query->get('term');
+		$results = $this->get('ginco.inpn_provider_service')->searchOrganism($term);
+		return new JsonResponse($results);
+	}
+
+	/**
+	 * Edit a provider : disable route (we can't anymore edit providers as they come from INPN)
+	 *
+	 * @Route("/editProvider/{id}", name="usermanagement_editProvider")
+	 */
+	public function editProviderAction(Request $request, $id = null) {
+		throw $this->createNotFoundException();
+	}
+
+
+	/**
+	 * Refresh provider infos from INPN webservice
+	 * @Route("/refreshProvider/{id}", name = "provider_refresh")
+	 */
+	public function refreshProviderAction(Request $request, $id) {
+
+		// Update via the INPN webservice
+		$provider = $this->get('ginco.inpn_provider_service')->updateOrCreateLocalProvider($id);
+
+		// If user not found, flash message
+		if (!$provider) {
+			$this->addFlash('warning', $this->get('translator')
+				->trans('Providers.refresh.notfound'));
+		}
+
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('usermanagement_showProviders');
+		return $this->redirect($redirectUrl);
+	}
+
 }

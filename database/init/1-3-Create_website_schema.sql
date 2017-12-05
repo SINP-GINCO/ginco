@@ -139,9 +139,10 @@ ON UPDATE NO ACTION ON DELETE NO ACTION;
 /*==============================================================*/
 CREATE SEQUENCE provider_id_seq;
 CREATE TABLE providers (
-id          character varying NOT NULL DEFAULT nextval('website.provider_id_seq'::text),
+id          character varying NOT NULL DEFAULT,
 label       character varying,
 definition  character varying,
+UUID		character varying,
 CONSTRAINT pk_provider PRIMARY KEY (id),
 CONSTRAINT label_unique UNIQUE(label)
 );

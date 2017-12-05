@@ -261,7 +261,7 @@ Jdd:
     name: Titre
     metadataId: Identifiant
     nameAndId: Titre / Identifiant
-    createdOn: Créé le
+    createdOn: Crée le
     provider: Organisme
     user: Utilisateur
     providerAndUser: Organisme / Utilisateur
@@ -348,10 +348,33 @@ Users:
   no_users: Pas encore d'utilisateurs.
 
 Providers:
+  id: Id INPN
+  name: Nom
+  uuid: UUID INPN
+  description: Description
+  refresh_link: Actualiser ces données depuis l'INPN
+  refresh:
+    notfound: L'organisme n'existe pas dans l'annuaire INPN.
+  infos:
+    link_add: Ajouter un organisme
   delete:
     prompt: Voulez-vous vraiment supprimer l'organisme '%providerLabel%' ?
     impossible: "Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés."
   no_providers: Pas encore d'organismes.
+  add:
+    provider_inpn: Ajout d'un organisme
+    accroche: >-
+      <p>Vous pouvez rajouter dans la plateforme des organismes issus de l'annuaire SINP. Pour celà, recherchez
+      l'organisme voulu par la barre de recherche ci-dessous (par son nom ou son identifiant dans l'annuaire SINP).</p>
+      <p>Si vous souhaitez ajouter un organisme qui n'est pas présent dans l'annuaire SINP, vous devez d'abord le
+      créer via la page d'ajout d'un organisme dans l'annuaire SINP.</p>
+    label: Recherche (nom ou identifiant)
+  flash:
+    error_label: >-
+      Nous n'avons pas trouvé cet organisme dans l'annuaire SINP.
+      Merci de choisir un résultat avec l'autocomplétion, et de ne pas modifier le champ après la sélection.
+    exist_provider : L'organisme est déja présent dans la plateforme, il n'a pas été rajouté.
+    success: L'organisme a bien été enregistré
 
 Role:
   delete:
@@ -400,7 +423,7 @@ User:
     created: Création
     lastLogin: Dernière connexion
   refresh:
-    notfound: L'utilisateur n'existe pas (plus) dans l'annuaire INPN.
+    notfound: L'utilisateur n'existe pas dans l'annuaire INPN.
 
 # Changing or Re-initialising user password
 #------------------------------

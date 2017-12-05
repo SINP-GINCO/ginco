@@ -117,13 +117,16 @@ services:
       class: Ign\Bundle\GincoBundle\Services\Ogr2ogr
       arguments: ["@logger", "@ogam.configuration_manager"]
 
+    ginco.inpn_provider_service:
+      class: Ign\Bundle\GincoBundle\Services\INPNProviderService
+      arguments: ["@doctrine", "@ogam.configuration_manager", "@logger"]
+
     # RabbitMQ Decorated Producer
     ginco.decorating_ginco_generic_producer:
       class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericProducer
       decorates: old_sound_rabbit_mq.ginco_generic_producer
       arguments: ['@ginco.decorating_ginco_generic_producer.inner', '@doctrine.orm.entity_manager']
       public: false
-
 
     # RabbitMQ Consumers
     generic_consumer_service:
@@ -204,7 +207,7 @@ services:
         arguments: ['%kernel.root_dir%/../web/upload']
         tags:
             - { name: form.type }
-            
+
     validator.unique.epsg_code:
       class: Ign\Bundle\OGAMBundle\Validator\Constraints\EPSGCodeValidator
       tags:
