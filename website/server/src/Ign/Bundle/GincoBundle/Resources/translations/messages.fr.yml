@@ -346,6 +346,13 @@ Users:
   no_users: Pas encore d'utilisateurs.
 
 Providers:
+  id: Id INPN
+  name: Nom
+  uuid: UUID INPN
+  description: Description
+  refresh_link: Actualiser ces données depuis l'INPN
+  refresh:
+    notfound: L'organisme n'existe pas dans l'annuaire INPN.
   infos:
     link_add: Ajouter un organisme
   delete:
@@ -402,7 +409,7 @@ User:
     created: Création
     lastLogin: Dernière connexion
   refresh:
-    notfound: L'utilisateur n'existe pas dans l'annuaire INPN. Vous pouvez le supprimer de la plateforme.
+    notfound: L'utilisateur n'existe pas dans l'annuaire INPN.
 
 # Changing or Re-initialising user password
 #------------------------------
