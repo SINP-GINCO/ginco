@@ -37,6 +37,7 @@ try {
 	execCustSQLFile("$sprintDir/update_mnhn_layer_names.sql", $config);
 	execCustSQLFile("$sprintDir/add_results_and_export_epsg.sql", $config);
 	execCustSQLFile("$sprintDir/update_heuredate_parameters.sql", $config);
+	execCustSQLFile("$sprintDir/update_providers.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

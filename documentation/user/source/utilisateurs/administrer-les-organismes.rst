@@ -3,10 +3,23 @@
 Administrer les organismes
 ==========================
 
+Un organisme, dans les plateformes Ginco, désigne une personne morale auquelle peuvent être rattachés les
+utilisateurs. Il peut s'agir d'associations, d'entreprises, de services de l'Etat...
+
+Les plateformes Ginco utilisent l'annuaire d'organismes du SINP ; ainsi les organismes présents dans chaque plateforme Ginco
+sont un sous-ensemble de cet annuaire. Ils correspondent à l'ensemble des organismes des utilisateurs enregistrés sur la plateforme, ainsi que
+ceux que l'administrateur a choisi de rajouter manuellement.
+
+Chaque utilisateur peut appartenir à un organisme au maximum. Les organismes jouent un rôle dans la gestion des
+permissions ; en effet certaines permissions d'accès se situent au niveau de l'organisme des utilisateurs, par exemple :
+"Voir/Modifier" les "données/jeux de données" de mon organisme.
+
+
 Visualiser les organismes
 -------------------------
 
-Pour visualiser les organismes, cliquer sur le lien "Afficher les organismes".
+Pour visualiser les organismes, cliquer sur le lien de menu "Administration > Organismes". Vous accédez à l'ensemble des organismes
+SINP présents dans la plateforme.
 
  .. image:: ../images/administration-organisme.png
 
@@ -14,46 +27,44 @@ Consulter les utilisateurs, soumissions et données d'un organisme
 -----------------------------------------------------------------
 
 Pour consulter les éléments liés à un organisme, 
-cliquez sur la première icône à droite de l'organisme.
+cliquez sur l'icône "Oeil" à droite du tableau.
 
-.. image:: ../images/administration-organisme-visu-consulter.png
+Vous accédez aux informations issues de l'annuaire INPN, que vous pouvez actualiser grâce au lien "Actualiser ces données depuis l'INPN".
 
-Le premier tableau liste les utilisateurs associés à cet organisme.
-Le deuxième tableau liste les soumissions de données effectuées avec cet organisme.
-Le troisième tableau liste le nombre de données importées ou saisies par cet organisme et les tables de base de données associées.
+Vous accédez ensuite à :
 
-.. image:: ../images/administration-organisme-consulter.png
+* la liste des utilisateurs associés à cet organisme ;
+* la liste des jeux de données associés à cet organisme ;
+* la liste des soumissions (fichiers de données) associées à cet organisme.
+
+Vous ne pouvez supprimer un organisme de la plateforme que si ces trois listes sont vides.
+
 
 .. _creer_un_organisme:
 
 Ajouter un organisme
 --------------------
 
-Pour ajouter un organisme, à partir de la page de visualisation des organismes, 
-cliquez sur le lien "Créer un organisme".
+.. note:: Lorsqu'un nouvel utilisateur se connecte à la plateforme,
+	l'organisme auquel est rattaché son compte INPN est automatiquement ajouté à la liste des organismes de la plateforme.
+
+Vous pouvez ajouter manuellement un organisme, à partir de la page de visualisation des organismes,
+en cliquant sur le lien "Ajouter un organisme".
+
+Recherchez l'organisme à ajouter par son nom ou son identifiant INPN si vous le connaissez ; puis sélectionnez-le et
+cliquez sur "Ajouter".
 
 .. image:: ../images/administration-organisme-visu-creer.png
 
-Renseignez son libellé et sa définition, puis cliquez sur "Valider".
+Si l'organisme que vous souhaitez ajouter n'est pas présent dans l'annuaire INPN, vous devez d'abord l'y ajouter. (Lien ??)
 
-Modifier un organisme
----------------------
-
-Pour modifier un organisme, à partir de la page de visualisation des organismes, 
-cliquez sur la deuxième icône à droite de l'organisme à modifier.
-
-.. image:: ../images/administration-organisme-visu-modifier.png
-
-Vous pouvez alors modifier le libellé et la définition de l'organisme.
 
 Supprimer un organisme
 ----------------------
 
 Pour supprimer un organisme, à partir de la page de visualisation des organismes, 
-cliquez sur la troisième icône à droite de l'organisme à supprimer.
-
-.. image:: ../images/administration-organisme-visu-supprimer.png
+cliquez sur l'icône de suppression à droite de l'organisme à supprimer.
 
 .. note:: Lorsque l'icône de suppression est grisée,
 	l'organisme ne peut pas être supprimé car des utilisateurs ou des données y sont rattachés.
-	Il faut supprimer les données et utilisateurs afin de supprimer l'organisme.
+	Il faut supprimer les données (soumissions et/ou jeux de données) et utilisateurs afin de supprimer l'organisme.

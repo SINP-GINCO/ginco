@@ -1,0 +1,36 @@
+{% extends "::base.html.twig" %}
+
+
+{% form_theme form with ['form.html.twig', _self] %}
+{% block form_label_class -%}
+    col-sm-12
+{%- endblock form_label_class %}
+
+{% block form_group_class -%}
+    col-sm-12
+{%- endblock form_group_class %}
+
+{% block body %}
+
+    <h1>{% trans %}Providers.add.provider_inpn{% endtrans %}</h1>
+
+    <p>{%trans %}Providers.add.accroche{% endtrans%}</p>
+    <p class="v-spacer"></p>
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-sm-3">{{ form_label(form.label) }}</div>
+        <div class="col-sm-6">{{ form_widget(form.label) }}
+            {{ form_errors(form.label) }}</div>
+        <div class="col-sm-3">{{ form_widget(form.submit) }}</div>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        {% include '@IgnGinco/UsermanagementController/provider_add.js.twig' %}
+    </script>
+{% endblock %}
