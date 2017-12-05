@@ -83,6 +83,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ('INPN_auth
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_login', 'user1', 'Authentication for the webservice');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_password', 'password1', 'Authentication for the webservice');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_account_url', 'https://inpn.mnhn.fr/accueil/compte/Compte', 'INPN "My Account" url');
+INSERT INTO application_parameters (name, value, description) VALUES ('INPN_providers_webservice', 'https://odata-inpn.mnhn.fr/solr-ws/organismes/records?', 'INPN Solr webservice to query the providers directory');
 
 
 -- Pour utiliser le tilecache
