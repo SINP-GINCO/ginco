@@ -3,54 +3,51 @@
 Administrer les utilisateurs
 ============================
 
+Les plateformes Ginco utilisent l'annuaire du SINP ; ainsi les utilisateurs présents dans chaque plateforme Ginco
+sont un sous-ensemble de cet annuaire. Ils correspondent à l'ensemble des utilisateurs s'étant connecté au moins une fois
+sur la plateforme, ainsi que ceux que l'administrateur a rajoutés manuellement.
+
+
 Visualiser les utilisateurs
 ---------------------------
 
-Pour visualiser les utilisateurs, cliquer sur le lien "Afficher les utilisateurs".
+Pour visualiser les utilisateurs, cliquer sur le lien "Administration > Utilisateurs" du menu.
+Vous avez accès à la liste des utilisateurs s'étant connecté au moins une fois à la plateforme, ou bien ayant été
+rajoutés manuellement.
 
- .. image:: ../images/administration-utilisateur.png
- 
+.. image:: ../images/administration-utilisateurs.png
+
+Modifier les rôles (permissions) d'un utilisateur
+-------------------------------------------------
+
+Pour changer le ou les rôles attribués à un utilisateur, à partir de la page de visualisation des utilisateurs,
+cliquez sur la première icône à droite (1) de l'utilisateur à modifier.
+
+Vous pouvez alors modifier le ou les rôles de l'utilisateur.
+
+Vous pouvez également actualiser ses informations personnelles à partir de son compte INPN.
+
+
 Ajouter un utilisateur
 ----------------------
 
-Pour ajouter un utilisateur, cliquez sur le lien "Créer un utilisateur"
+Pour ajouter un utilisateur, cliquez sur le lien "Ajouter un utilisateur" (2).
 
-.. image:: ../images/administration-utilisateur-visu-creer.png
- 
-La page suivante permet alors d'indiquer l'identifiant, le mot de passe (à saisir deux fois), le nom et l'e-mail de l'utilisateur.
-L'organisme et le rôle sont à sélectionner dans les listes déroulantes.
-Enfin cliquez sur "Valider".
- 
-.. image:: ../images/administration-utilisateur-ajouter.png
+Vous pouvez rechercher un utilisateur présent dans l'annuaire INPN, et l'ajouter manuellement à la liste des utilisateurs de
+la plateforme régionale. L'intérêt de l'opération est que vous pourrez ensuite lui attribuer directement le rôle
+que vous souhaitez, sans avoir à attendre que cette personne se connecte une première fois à la plateforme.
 
-.. note:: Il faut créer l'organisme et le rôle avant l'utilisateur.
+Attention : la recherche se fait par **l'identifiant exact** dans l'annuaire INPN. Si vous ne le connaissez pas,
+merci de vous rapprocher de la personne concernée.
 
-Modifier un utilisateur
------------------------
+.. note:: L'organisme de l'utilisateur sera automatiquement rajouté à la plateforme, si il n'y était pas déjà présent.
 
-Pour modifier un utilisateur, à partir de la page de visualisation des utilisateurs, 
-cliquez sur la première icône à gauche de l'utilisateur à modifier.
-
-.. image:: ../images/administration-utilisateur-visu-modifier.png
-
-Vous pouvez alors modifier les code, libellé définition et permissions du rôle.
-
-Changer le mot de passe d'un utilisateur
-----------------------------------------
-
-Pour changer le mot de passe d'un utilisateur, à partir de la page de visualisation des utilisateurs, cliquez sur l'icône à gauche de l'utilisateur.
-
-.. image:: ../images/administration-utilisateur-visu-changer-mdp.png
-
-Vous pouvez alors saisir un nouveau mot de passe (deux fois). Pour l'enregistrer, cliquez sur "Valider".
-
-.. image:: ../images/administration-utilisateur-enregistrer-mdp.png
-
-.. note:: Il est fortement conseillé d'utiliser un mot de passe robuste.
 
 Supprimer un utilisateur
 ------------------------
 
-Pour supprimer un utilisateur, à partir de la page de visualisation des utilisateurs, cliquez sur l'icône à droite de l'utilisateur à supprimer.
+Pour supprimer un utilisateur de la plateforme, à partir de la page de visualisation des utilisateurs,
+cliquez sur l'icône "Supprimer" (3) à droite de l'utilisateur à supprimer.
 
-.. image:: ../images/administration-role-visu-supprimer.png
+Cette opération ne supprimera pas son compte INPN, mais enlèvera l'utilisateur de la liste des utilisateurs
+de la plateforme.
