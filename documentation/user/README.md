@@ -94,12 +94,13 @@ Pour créer des captures d'écran annotées, utiliser le plugin Chrome
 
 ## Déployer la doc
 
-Afin de builder les documentations indépendamment des instances, des nouveaux doc-<*>.properties ont été ajoutés: doc-ginco-dailybuild.properties, doc-ginco-test.properties, doc-ginco-prod.properties
+Afin de builder les documentations indépendamment des instances, des nouveaux doc-<*>.properties ont été ajoutés: doc-ginco-dailybuild.properties, doc-ginco-test.properties, doc-ginco-prod.properties, doc-dlb-dailybuild.properties...
 
-Il contiennent la version de la documentation à déployer (qui correspond à une version Ginco).
+Il contiennent la version de la documentation à déployer (qui correspond à une version Ginco/DLB).
 
 Doc dailybuild :
 Elle est déployée automatiquement par jenkins après le déploiement du dailybuild.
+Le projet jenkins ginco-dailybuild déploie la doc ginco, le projet jenkins Ginco-DLB déploie la doc DLB. Par contre, les deux builds sont déployés sur la VM du dailybuild ginco. Dans /var/www/ginco/doc pour ginco et /var/www/dlb/doc pour DLB.
 
 Doc test et prod :
 Les commandes pour déployer les versions de test et de prod de la documentation sont commentées dans jenkins.
@@ -108,7 +109,7 @@ Pour mettre à jour une version (déployer), il faut :
  - mettre à jour le fichier de config de documentation correspondant et le pusher sur le serveur.
  - décommenter les commandes correspondantes dans Jenkins, et préciser dans la commande getPackage la version (branche) que l'on souhaite déployer. 
 
-Par exemple, pour déployer la documentation de test en version 2.0.3, les commandes que doit réaliser jenkins sont :
+Par exemple, pour déployer la documentation ginco de test en version 2.0.3, les commandes que doit réaliser jenkins sont :
 ```bash
 ./getPackage.sh -p ginco -v v2.0.3 -d ./build
 ./deploy_doc.sh -i doc-ginco-test
@@ -119,5 +120,8 @@ doc.version=ginco-test
 doc.basepath=v2.0.3
 doc.branch=v2.0.3
 ```
-
 remarque : Pour effectuer cette opération sans passer par Jenkins, il faut avoir builder l'application auparavant (pour récupérer le code source de la doc dans la bonne version via le git clone Ginco).
+
+ - changer l'alias dans la conf apache ginco.naturefrance.fr.conf
+
+
