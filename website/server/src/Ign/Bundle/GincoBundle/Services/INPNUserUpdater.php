@@ -21,6 +21,7 @@ class INPNUserUpdater
 {
 	protected $doctrine;
 	protected $configManager;
+	protected $providerService;
 	protected $logger;
 
 	protected $webservice_authentication;
@@ -33,10 +34,11 @@ class INPNUserUpdater
 	 * @param ConfigurationManager $configManager
 	 * @param Logger $logger
 	 */
-	public function __construct(Registry $doctrine, ConfigurationManager $configManager, Logger $logger)
+	public function __construct(Registry $doctrine, ConfigurationManager $configManager, INPNProviderService $providerService, Logger $logger)
 	{
 		$this->doctrine = $doctrine;
 		$this->configManager = $configManager;
+		$this->providerService = $providerService;
 		$this->logger = $logger;
 
 		$this->webservice_authentication = $this->configManager->getConfig('INPN_authentication_webservice');
@@ -96,13 +98,13 @@ class INPNUserUpdater
 		$providerRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Provider', 'website');
 		$roleRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
 
-		// Todo: organisme du user: le récupérer et/ou créer - à faire après le ticket sur l'annuaire organismes
+		// Provider of the user: create it if not present in db
 		$providerId = $distantUser->codeOrganisme;
-		if (intval($providerId) > 0) {
+		if (intval($providerId) > 1) { // Don't override default provider (1)
 			$provider = $providerRepo->find($providerId);
 			if (!$provider) {
-				// todo: Create it
-				$provider = $providerRepo->find(1);
+				// Add the provider in application DB
+				$provider = $this->providerService->updateOrCreateLocalProvider($providerId);
 			}
 		} else {
 			// Default provider
