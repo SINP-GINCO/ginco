@@ -235,7 +235,7 @@ class IntegrationController extends BaseController {
 		// Check if submission exists
 		if ($submission == null) {
 			$this->addFlash('error', [
-				'id' => 'Integration.Submission.doesNotExist.publish',
+				'id' => 'Integration.Submission.doesNotExist.publish'
 			]);
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
@@ -316,7 +316,7 @@ class IntegrationController extends BaseController {
 			return $this->redirect($redirectUrl);
 		} else {
 			$this->addFlash('error', [
-				'id' => 'Integration.Submission.incorrectStatusAndStep.publish',
+				'id' => 'Integration.Submission.incorrectStatusAndStep.publish'
 			]);
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
@@ -341,7 +341,7 @@ class IntegrationController extends BaseController {
 		// Check if submission exists
 		if ($submission == null) {
 			$this->addFlash('error', [
-				'id' => 'Integration.Submission.doesNotExist.unpublish',
+				'id' => 'Integration.Submission.doesNotExist.unpublish'
 			]);
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
@@ -370,7 +370,7 @@ class IntegrationController extends BaseController {
 			return $this->redirect($redirectUrl);
 		} else {
 			$this->addFlash('error', [
-				'id' => 'Integration.Submission.incorrectStatusAndStep.unpublish',
+				'id' => 'Integration.Submission.incorrectStatusAndStep.unpublish'
 			]);
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
@@ -394,7 +394,7 @@ class IntegrationController extends BaseController {
 		// Check if submission exists
 		if ($submission == null) {
 			$this->addFlash('error', [
-				'id' => 'Integration.Submission.doesNotExist.delete',
+				'id' => 'Integration.Submission.doesNotExist.delete'
 			]);
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
@@ -437,7 +437,7 @@ class IntegrationController extends BaseController {
 			return $this->redirect($redirectUrl);
 		} else {
 			$this->addFlash('error', [
-				'id' => 'Integration.Submission.incorrectStatusAndStep.delete',
+				'id' => 'Integration.Submission.incorrectStatusAndStep.delete'
 			]);
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
