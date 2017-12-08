@@ -1,5 +1,8 @@
+DROP TABLE layer_role_restriction;
 DELETE FROM layer_tree_node;
 DELETE FROM layer;
+ALTER TABLE layer_tree_node ALTER COLUMN label TYPE character varying(150);
+ALTER TABLE layer_tree_node ALTER COLUMN definition TYPE character varying(255);
 
 INSERT INTO layer (name, label, service_layer_name, is_transparent, default_opacity, is_base_layer, is_untiled, max_zoom_level, min_zoom_level, has_legend, provider_id, activate_type, view_service_name, legend_service_name, detail_service_name, feature_service_name) VALUES
 ('Fonds', 'Fonds', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
