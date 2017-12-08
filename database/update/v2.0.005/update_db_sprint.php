@@ -27,6 +27,7 @@ try {
 	/* patch code here */
 	// execCustSQLFile("$sprintDir/xxx.sql", $config);
 	execCustSQLFile("$sprintDir/update_predefined_request_group.sql", $config);
+	execCustSQLFile("$sprintDir/fix_roles.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

@@ -1,0 +1,1 @@
+UPDATE website.role_to_user SET role_code=1 WHERE user_login IN ('jpanijel','nbotte');
