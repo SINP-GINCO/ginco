@@ -172,7 +172,7 @@ class JddController extends BaseController {
 				]
 			]);
 			// Redirects to the jdd list page
-			return $this->redirect($this->generateUrl('jdd_list'));
+			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
 
 		return parent::deleteAction($jdd);
