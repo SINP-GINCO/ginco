@@ -227,6 +227,16 @@ Integration:
     format: Format
   Submission:
     noDatasetsForModel: Attention ! Il n'y a pas de modèles d'import publiés pour le modèle de données choisi. Merci de contacter l'administrateur régional.
+    doesNotExist:
+      publish: La soumission que vous souhaitez publier n'existe pas.
+      unpublish: La soumission que vous souhaitez dépublier n'existe pas.
+      delete: La soumission que vous souhaitez supprimer n'existe pas.
+      report: La soumission pour laquelle vous souhaitez télécharger un rapport n'existe pas.
+    incorrectStatusAndStep:
+      publish: Cette soumission ne peut pas être publiée.
+      unpublish: Cette soumission ne peut pas être dépubliée.
+      delete: Cette soumission ne peut pas être supprimée.
+      report: Le rapport de cette soumission n'est pas accessible.
 
 'The expected fields are:': Liste des champs attendus
 

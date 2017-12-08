@@ -229,72 +229,152 @@ class IntegrationController extends BaseController {
 		// Get the submission Id
 		$submissionId = $request->get("submissionId");
 
-		// Send the validation request to the integration server
-		try {
-			$this->get('ogam.integration_service')->validateDataSubmission($submissionId);
-		} catch (\Exception $e) {
-			$this->getLogger()->error('Error during upload: ' . $e);
+		$em = $this->get('doctrine.orm.entity_manager');
+		$submission = $em->getRepository('OGAMBundle:RawData\Submission')->findOneById($submissionId);
 
-			return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
-				'error' => $this->get('translator')
-					->trans("An unexpected error occurred.")
-			));
-		}
-		// Get the JDD Metadata Id
-		$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
-		$submission = $submissionRepo->find($submissionId);
-		$jddMetadataId = $submission->getJdd()->getField('metadataId');
-
-		// -- Send the email
-		$siteName = $this->get('ogam.configuration_manager')->getConfig('site_name');
-
-		// Files of the submission
-		$submissionFiles = $submission->getFiles();
-		$fileNames = array();
-		foreach ($submissionFiles as $submissionFile) {
-			$fileName = basename($submissionFile->getFileName());
-			$fileNames[] = $fileName;
+		// Check if submission exists
+		if ($submission == null) {
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.doesNotExist.publish',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
 
-		// Get recipient, the connected user.
-		$user = $this->getUser();
+		// Check if submission is validable
+		$insertedOk = $submission->getStep() == Submission::STEP_INSERTED && $submission->getStatus() == Submission::STATUS_OK;
+		$checkedOk = $submission->getStep() == Submission::STEP_CHECKED && $submission->getStatus() == Submission::STATUS_OK;
+		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
 
-		// Title and body:
-		$title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
-		$title .= implode($fileNames, ", ");
+		if ($insertedOk || $checkedOk || $warning) {
 
-		// -- Attachments
-		$reports = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
-		$attachements = array();
+			// Send the validation request to the integration server
+			try {
+				$this->get('ogam.integration_service')->validateDataSubmission($submissionId);
+			} catch (\Exception $e) {
+				$this->getLogger()->error('Error during upload: ' . $e);
 
-		// Regenerate sensibility report each time (see #815)
-		$this->get('ginco.submission_service')->generateReport($submissionId, "sensibilityReport");
-
-		foreach ($reports as $report => $reportPath) {
-			// Regenerate report if does not exist
-			if (!is_file($reportPath)) {
-				$this->getLogger()->error("Report file '$report' does not exist for submission $submissionId");
 				return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
 					'error' => $this->get('translator')
 						->trans("An unexpected error occurred.")
 				));
 			}
-			$attachements[] = $reportPath;
+			// Get the JDD Metadata Id
+			$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
+			$submission = $submissionRepo->find($submissionId);
+			$jddMetadataId = $submission->getJdd()->getField('metadataId');
+
+			// -- Send the email
+			$siteName = $this->get('ogam.configuration_manager')->getConfig('site_name');
+
+			// Files of the submission
+			$submissionFiles = $submission->getFiles();
+			$fileNames = array();
+			foreach ($submissionFiles as $submissionFile) {
+				$fileName = basename($submissionFile->getFileName());
+				$fileNames[] = $fileName;
+			}
+
+			// Get recipient, the connected user.
+			$user = $this->getUser();
+
+			// Title and body:
+			$title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
+			$title .= implode($fileNames, ", ");
+
+			// -- Attachments
+			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
+			$attachements = array();
+
+			// Regenerate sensibility report each time (see #815)
+			$this->get('ginco.submission_service')->generateReport($submissionId, "sensibilityReport");
+
+			foreach ($reports as $report => $reportPath) {
+				// Regenerate report if does not exist
+				if (!is_file($reportPath)) {
+					$this->getLogger()->error("Report file '$report' does not exist for submission $submissionId");
+					return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
+						'error' => $this->get('translator')
+							->trans("An unexpected error occurred.")
+					));
+				}
+				$attachements[] = $reportPath;
+			}
+
+			$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:publication-notification-to-user.html.twig', array(
+				'metadata_uuid' => $jddMetadataId,
+				'user' => $user,
+				'region' => $siteName,
+				'filename' => implode($fileNames, ", "),
+				'file_number' => count($fileNames)
+			), $user->getEmail(), $attachements);
+
+			// Get the referer url
+			$refererUrl = $request->headers->get('referer');
+			// returns to the page where the action comes from
+			$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+			return $this->redirect($redirectUrl);
+		} else {
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.incorrectStatusAndStep.publish',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
+		}
+	}
+
+	/**
+	 * Invalidate the data.
+	 * @Route("/invalidate-data",name="integration_invalidate")
+	 *
+	 * @return Response
+	 */
+	public function invalidateDataAction(Request $request) {
+		$this->getLogger()->debug('invalidateDataAction');
+
+		// Get the submission Id
+		$submissionId = $request->get("submissionId");
+
+		$em = $this->get('doctrine.orm.entity_manager');
+		$submission = $em->getRepository('OGAMBundle:RawData\Submission')->findOneById($submissionId);
+
+		// Check if submission exists
+		if ($submission == null) {
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.doesNotExist.unpublish',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
 
-		$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:publication-notification-to-user.html.twig', array(
-			'metadata_uuid' => $jddMetadataId,
-			'user' => $user,
-			'region' => $siteName,
-			'filename' => implode($fileNames, ", "),
-			'file_number' => count($fileNames)
-		), $user->getEmail(), $attachements);
+		// Check if submission is validable
+		$validateOk = $submission->getStep() == Submission::STEP_VALIDATED && $submission->getStatus() == Submission::STATUS_OK;
+		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
 
-		// Get the referer url
-		$refererUrl = $request->headers->get('referer');
-		// returns to the page where the action comes from
-		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
-		return $this->redirect($redirectUrl);
+		if ($validateOk || $warning) {
+			// Send the cancel request to the integration server
+			try {
+				$this->get('ogam.integration_service')->invalidateDataSubmission($submissionId);
+			} catch (Exception $e) {
+				$this->getLogger()->error('Error during unvalidation: ' . $e);
+
+				return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
+					'error' => $e->getMessage()
+				));
+			}
+
+			// Get the referer url
+			$refererUrl = $request->headers->get('referer');
+			// returns to the page where the action comes from
+			$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+			return $this->redirect($redirectUrl);
+		} else {
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.incorrectStatusAndStep.unpublish',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
+		}
 	}
 
 	/**
@@ -307,35 +387,61 @@ class IntegrationController extends BaseController {
 
 		// Get the submission Id
 		$submissionId = $request->get("submissionId");
-		$this->get('logger')->debug('Avant le try');
 
-		// Send the cancel request to the integration server
-		try {
-			$this->get('ogam.integration_service')->cancelDataSubmission($submissionId);
-		} catch (\Exception $e) {
-			$this->get('logger')->error('Error during upload: ' . $e);
-
-			return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
-				'error' => $this->get('translator')
-					->trans("An unexpected error occurred.")
-			));
-		}
-
-		// Update "DataUpdatedAt" field for jdd
 		$em = $this->get('doctrine.orm.entity_manager');
 		$submission = $em->getRepository('OGAMBundle:RawData\Submission')->findOneById($submissionId);
-		$jdd = $submission->getJdd();
-		if ($jdd) {
-			$jdd->setDataUpdatedAt(new \DateTime());
-			$em->merge($jdd);
-			$em->flush();
+
+		// Check if submission exists
+		if ($submission == null) {
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.doesNotExist.delete',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
 
-		// Get the referer url
-		$refererUrl = $request->headers->get('referer');
-		// returns to the page where the action comes from
-		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
-		return $this->redirect($redirectUrl);
+		// Check if submission is validable
+		$user = $this->getUser();
+		$notValidateCancel = $submission->getStep() != Submission::STEP_VALIDATED && $submission->getStep() != Submission::STEP_CANCELLED;
+		$allowedOwnCancel = $user->isAllowed('CANCEL_VALIDATED_SUBMISSION') && $submission->getProvider()->getId() == $user->getProvider()->getId();
+		$allowedOtherCancel = $user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION');
+
+		if ($notValidateCancel && ($allowedOwnCancel || $allowedOtherCancel)) {
+
+			// Send the cancel request to the integration server
+			try {
+				$this->get('ogam.integration_service')->cancelDataSubmission($submissionId);
+			} catch (\Exception $e) {
+				$this->get('logger')->error('Error during upload: ' . $e);
+
+				return $this->render('OGAMBundle:Integration:data_error.html.twig', array(
+					'error' => $this->get('translator')
+						->trans("An unexpected error occurred.")
+				));
+			}
+
+			// Update "DataUpdatedAt" field for jdd
+			$em = $this->get('doctrine.orm.entity_manager');
+			$submission = $em->getRepository('OGAMBundle:RawData\Submission')->findOneById($submissionId);
+			$jdd = $submission->getJdd();
+			if ($jdd) {
+				$jdd->setDataUpdatedAt(new \DateTime());
+				$em->merge($jdd);
+				$em->flush();
+			}
+
+			// Get the referer url
+			$refererUrl = $request->headers->get('referer');
+			// returns to the page where the action comes from
+			$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+			return $this->redirect($redirectUrl);
+		} else {
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.incorrectStatusAndStep.delete',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
+		}
 	}
 
 	/**

@@ -15,8 +15,10 @@
     {% endif %}
 
     {# Cancel submission #}
-    {% if (submission.step != "VALIDATE" or user.isAllowed('CANCEL_VALIDATED_SUBMISSION'))
-    and (submission.provider.id is same as(user.provider.id) or user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) %}
+    {% set notValidateCancel = (submission.step != "VALIDATE" and submission.step != "CANCEL") %}
+    {% set allowedOwnCancel = user.isAllowed('CANCEL_VALIDATED_SUBMISSION') and submission.provider.id is same as (user.provider.id) %}
+    {% set allowedOtherCancel = user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION') %}
+    {% if notValidateCancel and (allowedOwnCancel or allowedOtherCancel) %}
         {% set remove = true %}
     {% endif %}
     <div class = "btn-group">
@@ -36,9 +38,9 @@
              </a>
         {% endif %}
         <div class="integration-cancel-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
-        <a id="integration-cancel-link-{{ submission.id }}"  href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" title="{{ 'Cancel Submission'|trans }}"
+        <a id="integration-cancel-link-{{ submission.id }}" title="{{ 'Cancel Submission'|trans }}"
             {% if remove %}
-                class="btn btn-xs btn-danger" onClick="return confirm('{{'Are you sure?'|trans }}')"
+                class="btn btn-xs btn-danger" href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" onClick="return confirm('{{'Are you sure?'|trans }}')"
             {% else %}
                 class="btn btn-xs btn-default" data-toggle="modal" data-target="#modal-impossible-delete-submission-{{ submission.id }}"
             {% endif %}
@@ -80,23 +82,25 @@
             </div>
         </div>
         {# Reports #}
-        {% set integrationDisabled = false %}
-        {% set sensitiveDisabled = false %}
-        {% set permanentDisabled = false %}
-        {% if submission.step is not constant('STEP_CANCELLED', submission) %}
-            {% set integrationDisabled = true %}
-            {% set sensitiveDisabled = true %}
-            {% set permanentDisabled = true %}
-        {% endif %}
-        {% if submission.step is not constant('STEP_INIT', submission) and submission.status is not constant('STATUS_RUNNING', submission) %}
+        {% set filenameMaxLength = 18 %}
+        {% set integrationDisabled = true %}
+        {% set sensitiveDisabled = true %}
+        {% set permanentDisabled = true %}
+        {% set unstableSteps = [
+            constant('STEP_CANCELLED', submission),
+            constant('STATUS_RUNNING', submission),
+            constant('STEP_INIT', submission)
+        ] %}
+        {% if submission.step not in unstableSteps %}
             {% set integrationDisabled = false %}
-        {% endif %}
-        {% if submission.status is constant('STATUS_OK', submission) %}
-            {% if user.isAllowed('VIEW_SENSITIVE') %}
-                {% set sensitiveDisabled = false %}
+            {% if submission.status is constant('STATUS_OK', submission) %}
                 {% set permanentDisabled = false %}
+                    {% if user.isAllowed('VIEW_SENSITIVE') %}
+                        {% set sensitiveDisabled = false %}
+                    {% endif %}
             {% endif %}
         {% endif %}
+
         <div class = "btn-group">
         <button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
             Rapports<span class="caret"></span>

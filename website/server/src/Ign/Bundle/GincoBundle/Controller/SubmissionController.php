@@ -87,14 +87,59 @@ class SubmissionController extends Controller {
 		// Configure memory and time limit because the program asks a lot of resources
 		ini_set("memory_limit", $this->get('ogam.configuration_manager')->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
-				
+
+		// Get the user
+		$user = $this->getUser();
+
 		// Get the submission Id
 		$submissionId = $request->query->getInt("submissionId");
-		
+
+		// Get the submission
+		$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
+		$submission = $submissionRepo->find($submissionId);
+
+		// Check if submission exists
+		if ($submission == null) {
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.doesNotExist.report',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
+		}
+
 		// Get the report name
 		$report = $request->query->get("report");
 		$this->get('logger')->debug("downloadReportAction: submission: $submissionId, report: $report");
-		
+
+		// Check if report is accessible
+		$unstableSteps = array(
+			Submission::STEP_CANCELLED,
+			Submission::STATUS_RUNNING,
+			Submission::STEP_INIT);
+
+		$reportsDenied = array(
+			'integration'=> true,
+			'sensibility'=> true,
+			'permanent' => true
+		);
+		if(!in_array($submission->getStep(), $unstableSteps) && $user->isAllowed('DATA_INTEGRATION')){
+			$reportsDenied['integration'] = false;
+			if($submission->getStatus() == Submission::STATUS_OK) {
+				$reportsDenied['permanent'] = false;
+				if($this->getUser()->isAllowed('VIEW_SENSITIVE')){
+					$reportsDenied['sensibility'] = false;
+				}
+			}
+		}
+
+		if(in_array(true, $reportsDenied)){
+			$this->addFlash('error', [
+				'id' => 'Integration.Submission.incorrectStatusAndStep.report',
+			]);
+			// Redirects to the jdd list page
+			return $this->redirect($this->generateUrl('user_jdd_list'));
+		}
+
 		// Get File Name
 		$filenames = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
 		$filePath = $filenames[$report];
