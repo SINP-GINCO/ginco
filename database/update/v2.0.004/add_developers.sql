@@ -19,5 +19,3 @@ INSERT INTO website.role_to_user(user_login, role_code) VALUES
 ('nbotte', 2),
 ('tgerbeau', 1)
 ;
-
-DELETE FROM website.users WHERE user_login IN ('assistance','developpeur') ;
