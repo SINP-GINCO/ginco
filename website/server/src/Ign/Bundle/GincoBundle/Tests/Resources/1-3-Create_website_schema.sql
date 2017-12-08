@@ -224,8 +224,8 @@ COMMENT ON COLUMN website.predefined_request_column.data IS 'The form field of t
 CREATE TABLE website.predefined_request_group
 (
   group_id serial NOT NULL, -- The group identifier
-  label character varying(50) NOT NULL, -- The label of the group
-  definition character varying(250), -- The definition of the group
+  label character varying(128) NOT NULL, -- The label of the group
+  definition character varying(1024), -- The definition of the group
   "position" smallint, -- The position of the group
   CONSTRAINT pk_predefined_request_group PRIMARY KEY (group_id)
 );
