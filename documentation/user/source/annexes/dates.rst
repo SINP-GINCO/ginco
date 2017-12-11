@@ -63,4 +63,5 @@ HH:mm                           21:37
 EEEE, d MMMM yyyy               mardi, 27 juin 2006
 'le' dd/MM/yyyy 'à' hh:mm:ss    le 27/06/2006 à 09:37:10
 'le' dd MMMM yyyy 'à' hh:mm:ss  le 27 juin 2006 à 09:37:10
+yyyy-MM-dd'T'HH:mmZ             2016-12-21T04:12+0100
 ==============================  ==========================================
