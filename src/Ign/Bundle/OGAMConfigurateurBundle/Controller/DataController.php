@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Monolog\Logger;
 
 /**
  * Data controller.
@@ -83,12 +84,12 @@ class DataController extends Controller {
 					'%dataName%' => $entity->getName()
 				)));
 
-				return $this->redirect($this->generateUrl('configurateur_table_add_fields', array(
+				return $this->redirectToRoute('configurateur_table_add_field', array(
 					'modelId' => $tableFormat->getModel()
 						->getId(),
 					'format' => $formatSubmitted,
-					'request' => $request
-				)));
+					'data'=> $entity->getName()
+				));
 			} else			// Redirects to the Data Dictionnary index
 			{
 				$this->addFlash('notice', $this->get('translator')
@@ -96,7 +97,7 @@ class DataController extends Controller {
 					'%dataName%' => $entity->getName()
 				)));
 
-				return $this->redirect($this->generateUrl('configurateur_data_index'));
+				return $this->redirectToRoute('configurateur_data_index');
 			}
 		}
 

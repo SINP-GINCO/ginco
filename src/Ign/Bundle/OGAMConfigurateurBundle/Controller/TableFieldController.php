@@ -16,6 +16,47 @@ use Symfony\Component\HttpFoundation\Request;
 class TableFieldController extends Controller {
 
 	/**
+	 * Add one field to the table.
+	 * Redirects to table edition page.
+	 * @Route("models/{modelId}/tables/{format}/fields/add/{data}", name="configurateur_table_add_field")
+	 * @Template()
+	 */
+	public function addFieldAction($modelId, $format, $data) {
+		$em = $this->getDoctrine()->getManager('metadata_work');
+
+		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+
+		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
+		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+
+		$tableField = new TableField();
+		$field = new Field();
+		$dataField = $dataRepository->find($data);
+		if ($dataField !== null) {
+			$field->setData($dataField);
+			$field->setFormat($format);
+			$field->setType('TABLE');
+			$em->merge($field);
+		}
+		$em->flush();
+
+		if ($dataField !== null) {
+			$tableField->setData($dataField->getName());
+			$tableField->setTableFormat($table->getFormat());
+			$tableField->setColumnName($dataField->getName());
+
+			$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findAll();
+			$em->merge($tableField);
+		}
+		$em->flush();
+
+		return $this->redirectToRoute('configurateur_table_fields', array(
+			'modelId' => $modelId,
+			'format' => $format->getFormat()
+		));
+	}
+
+	/**
 	 * Adds the fields given as argument to the table.
 	 * Redirects to table edition page.
 	 * @Route("models/{modelId}/tables/{format}/fields/add/", name="configurateur_table_add_fields", options={"expose"=true})
