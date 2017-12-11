@@ -355,9 +355,9 @@ class DatasetImportController extends Controller {
 
 	/**
 	 * Updates the position attribute of each file from a dataset.
-	 * @Route("/datasetsimport/{id}/edit/fields/update/{formats}/{orders}/", name="configurateur_dataset_import_update_file_order", options={"expose"=true})
+	 * @Route("/datasetsimport/{id}/edit/fields/update/{formats}", name="configurateur_dataset_import_update_file_order", options={"expose"=true})
 	 */
-	public function updateFileOrderAction($id, $formats, $orders = null) {
+	public function updateFileOrderAction($id, $formats) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
@@ -368,10 +368,9 @@ class DatasetImportController extends Controller {
 
 		// Handle the formats
 		$data = explode(",", $formats);
-		$orders = explode(",", $orders);
 		for ($i = 0; $i < count($data); $i ++) {
 			$format = $data[$i];
-			$order = $orders[$i];
+			$order = $i + 1;
 
 			$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 
