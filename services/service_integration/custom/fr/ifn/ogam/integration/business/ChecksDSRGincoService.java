@@ -797,8 +797,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	/**
 	 * Checks that heureDateDebut and heureDateFin are not empty.
 	 * If so, fill with default values:
-	 * heureDateDebut: 00:00
-	 * heureDateFin: 23:59
+	 * heureDateDebut: 00:00:00
+	 * heureDateFin: 23:59:59
 	 *
 	 * @param values
 	 */
