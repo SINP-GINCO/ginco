@@ -117,21 +117,22 @@ class SubmissionController extends Controller {
 		);
 
 		$reportsDenied = array(
-			'integration' => true,
-			'sensibility' => true,
-			'permanent' => true
+			'integrationReport' => true,
+			'permanentIdsReport' => true,
+			'sensibilityReport' => true
 		);
+
 		if (!in_array($submission->getStep(), $unstableSteps) && $user->isAllowed('DATA_INTEGRATION')) {
-			$reportsDenied['integration'] = false;
+			$reportsDenied['integrationReport'] = false;
 			if ($submission->getStatus() == Submission::STATUS_OK) {
-				$reportsDenied['permanent'] = false;
+				$reportsDenied['permanentIdsReport'] = false;
 				if ($this->getUser()->isAllowed('VIEW_SENSITIVE')) {
-					$reportsDenied['sensibility'] = false;
+					$reportsDenied['sensibilityReport'] = false;
 				}
 			}
 		}
 
-		if (in_array(true, $reportsDenied)) {
+		if ($reportsDenied[$report] == true) {
 			$this->addFlash('error', [
 				'id' => 'Integration.Submission.incorrectStatusAndStep.report'
 			]);
