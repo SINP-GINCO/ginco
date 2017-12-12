@@ -91,11 +91,11 @@ class SubmissionController extends Controller {
 
 		// Get the submission Id
 		$submissionId = $request->query->getInt("submissionId");
-
+		$this->get('logger')->debug('DownloadReport, submission: ' . $submissionId);
 		// Get the submission
 		$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
 		$submission = $submissionRepo->find($submissionId);
-
+		
 		// Check if submission exists
 		if ($submission == null) {
 			$this->addFlash('error', [
