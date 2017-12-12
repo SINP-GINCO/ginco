@@ -211,8 +211,8 @@ Report:
     SensitiveDataNumber: Nombre de données sensibles
     TotalDataNumber: Nombre de données total dans la soumission
   Integration:
-    Title: Rapport de conformité et cohérence
-    DisabledTitle: Rapport de conformité et cohérence - Indisponible
+    Title: Rapport d'erreur(s)
+    DisabledTitle: Rapport d'erreur(s) - Indisponible
   PermanentIds:
     Title: Rapport des identifiants permanents
     DisabledTitle: Rapport des identifiants permanents - Indisponible
