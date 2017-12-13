@@ -17,6 +17,17 @@ class JddController extends BaseController {
 
 	/**
 	 * Default action: Show the jdd list page
+	 * #1365: Redirect to my jdds for the moment.
+	 * TODO: #1364.
+	 *
+	 * @Route("/jdd/", name = "jdd_list")
+	 */
+	public function listAction() {
+		return $this->redirectToRoute('user_jdd_list');
+	}
+
+	/**
+	 * Default action: Show the jdd list page
 	 * Ginco customisation: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
 	 *
 	 * @Route("/all/", name = "all_jdd_list")

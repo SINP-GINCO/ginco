@@ -11,12 +11,13 @@
     {% set isAllowedMDOP = false %}
 {% endif %}
 
-{% if allJdds %}
+{% if allJdds is defined and allJdds == true %}
     {% set jddTitleIdColSize = 26 %}
     {% set submissionsActionsColSize = 24 %}
     {% set filesLinesColSize = 30 %}
     {% set submissionStatusColSize = 5 %}
 {% else %}
+    {% set allJdds = false %}
     {% set jddTitleIdColSize = 24 %}
     {% set submissionsActionsColSize = 14 %}
     {% set filesLinesColSize = 32 %}
@@ -24,7 +25,7 @@
 {% endif %}
 
 {# Title of the page #}
-{% if allJdds %}
+{% if allJdds is defined and allJdds == true %}
 	<h1>{{ 'Jdd.list.title.all'|trans }}</h1>
 {% else %}
 	<h1>{{ 'Jdd.list.title.user'|trans }}</h1>
