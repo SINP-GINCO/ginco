@@ -7,13 +7,11 @@
     <tr>
         <th>{{ 'Submission ID'|trans }}</th>
         <th>{{ 'Date'|trans }}</th>
-        <th>{{ 'Provider'|trans }}</th>
-        <th>{{ 'User'|trans }}</th>
+        <th style="width: 18%";>{{ 'Jdd.list.provider'|trans }} / {{ 'Jdd.list.user'|trans }}</th>
         <th>{{ 'Dataset'|trans }}</th>
         <th>{{ 'Step'|trans }}</th>
         <th>{{ 'Status'|trans }}</th>
-        <th>{{ 'IntegrationPage.File'|trans }}</th>
-        <th>{{ 'Lines'|trans }}</th>
+        <th>{{ 'IntegrationPage.FilesAndLines'|trans }}</th>
         <th style="width: 12%";>{{ 'Actions'|trans }}</th>
     </tr>
 
@@ -22,8 +20,10 @@
     <tr>
         <td>{{ submission.id }}</td>
         <td>{{ submission.creationDate|date("Y-m-d") }}</td>
-        <td>{{ submission.provider.label }}</td>
-        <td>{{ submission.user.login }}</td>
+        <td>
+            <p>{{ submission.provider.label }}</p>
+            <p>{{ submission.user.login }}</p>
+        </td>
         <td>{{ submission.dataset is not null ? submission.dataset.label : 'IntegrationPage.NoDataset'|trans }}</td>
         {# Step: we group steps INSERT and CHECK because we don't use CHECK IN Ginco #}
         <td>
@@ -41,8 +41,7 @@
         </td>
         {# Status -- see integration-progress-bars.js.twig #}
         <td>
-            <div class="integration-status hidden" data-target="{{ submission.id }}">{{ submission.status }}</div>
-
+            <div class="integration-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
             <div class="integration-progress hidden">
                 <div>{{ 'IntegrationPage.import.running'|trans }}</div>
                 <div class="progress">
@@ -65,14 +64,20 @@
         {# Files #}
         <td>
             {% for file in submission.files %}
-                <div>{{ file.fileName|replace({'\\':'/'})|split('/')|last|split('.')|first }}</div>
-            {% endfor %}
-        </td>
-
-        {# Lines #}
-        <td>
-            {% for file in submission.files %}
-                <div>{{ file.nbLines }}</div>
+                {% set filename = file.fileName|trim|replace({'\\':'/'})|split('/')|last %}
+                    {% if filename|length > 23 %}
+                        {% if file.filenameWithoutExtension is defined %}
+                            <span title="{{ filename }}">- {{ file.filenameWithoutExtension|slice(0,23)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                        {% else %}
+                            <span title="{{ filename }}">- {{ filename|slice(0,23)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                        {% endif %}
+                    {% else %}
+                        {% if file.filenameWithoutExtension is defined %}
+                            <span title="{{ filename }}">- {{ file.filenameWithoutExtension }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                        {% else %}
+                            <span title="{{ filename }}">- {{ filename }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
+                        {% endif %}
+                    {% endif %}
             {% endfor %}
         </td>
 
