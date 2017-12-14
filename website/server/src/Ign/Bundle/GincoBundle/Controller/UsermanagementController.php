@@ -383,5 +383,42 @@ class UsermanagementController extends BaseController {
 		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('usermanagement_showProviders');
 		return $this->redirect($redirectUrl);
 	}
-
+	/**
+	 * Show the detail of a provider.
+	 *
+	 * @Route("/showProviderContent/{id}", name="usermanagement_showProviderContent")
+	 *
+	 * @param Integer $id
+	 *        	the id of a provider
+	 */
+	public function showProviderContentAction($id) {
+		$logger = $this->get('logger');
+		$logger->info('showProviderContentAction');
+		
+		$logger->info('id : ' . $id);
+		
+		// Get the provider detail
+		$providersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Provider', 'website');
+		$provider = $providersRepo->find($id);
+		
+		$logger->info('provider : ' . \Doctrine\Common\Util\Debug::dump($provider, 3, true, false));
+		
+		// Get the users linked to this provider
+		$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+		$users = $usersRepo->findByProvider($provider->getId());
+		
+		// Get the submissions linked to this provider
+		$submissionsRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
+		$submissions = $submissionsRepo->getActiveSubmissions($provider->getId());
+		
+		$logger->info('submissions : ' . \Doctrine\Common\Util\Debug::dump($submissions, 3, true, false));
+		
+		// Get the raw data linked to this provider
+		
+		return $this->render('OGAMBundle:UsermanagementController:show_provider_content.html.twig', array(
+			'provider' => $provider,
+			'users' => $users,
+			'submissions' => $submissions
+		));
+	}
 }
