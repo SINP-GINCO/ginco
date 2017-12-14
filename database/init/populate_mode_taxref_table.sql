@@ -1,6 +1,8 @@
 -- ---------------------------------------------
--- 1/ import dans taxref
--- 2/ mise à jour de la table metadata.mode_taxref
+-- 1/ add indexes on referentiels.taxref (species are already in the table)
+-- 2/ Delete from mode_taxref (in reset or update case), 
+-- 3/ populate metadata.mode_taxref
+-- 2/ add indexes on metadata.mode_taxref
 --
 -- REMARQUES:
 -- Le fichier en entrée est supposé être en utf-8 => corriger le client-encoding si ce n'est pas le cas
@@ -8,8 +10,30 @@
 SET search_path = public, metadata, referentiels;
 SET client_encoding = 'UTF-8';
 
+
+CREATE INDEX taxref_cd_taxsup_idx
+  ON referentiels.taxref
+  USING btree
+  (cd_taxsup COLLATE pg_catalog."default");
+
+CREATE INDEX taxref_cd_nom_idx
+  ON referentiels.taxref
+  USING btree
+  (cd_nom COLLATE pg_catalog."default");
+  
+CREATE INDEX taxref_cd_ref_idx
+  ON referentiels.taxref
+  USING btree
+  (cd_ref COLLATE pg_catalog."default");
+
+
 -- Clean table mode_taxref
 DELETE FROM mode_taxref;
+
+DROP INDEX IF EXISTS metadata.mode_taxref_complete_name_idx;
+DROP INDEX IF EXISTS metadata.mode_taxref_label_idx;
+DROP INDEX IF EXISTS metadata.mode_taxref_parent_code_idx;
+DROP INDEX IF EXISTS metadata.mode_taxref_vernacular_name_idx;
 
 --We insert cd_nom and not lb_name in name to see code in TAXREF subtype fields (cdNom and cdRef).
 
@@ -39,3 +63,31 @@ WHERE parent_code IS NOT NULL);
 UPDATE mode_taxref
 SET parent_code='*'
 WHERE parent_code='349525';
+
+
+-- Index: metadata.mode_taxref_complete_name_idx
+
+CREATE INDEX mode_taxref_complete_name_idx
+  ON metadata.mode_taxref
+  USING btree
+  (unaccent_immutable(complete_name) COLLATE pg_catalog."default");
+
+-- Index: metadata.mode_taxref_label_idx
+
+CREATE INDEX mode_taxref_label_idx
+  ON metadata.mode_taxref
+  USING btree
+  (unaccent_immutable(label) COLLATE pg_catalog."default");
+
+-- Index: metadata.mode_taxref_parent_code_idx
+
+CREATE INDEX mode_taxref_parent_code_idx
+  ON metadata.mode_taxref
+  USING btree
+  (parent_code COLLATE pg_catalog."default");
+
+-- Index: metadata.mode_taxref_vernacular_name_idx
+CREATE INDEX mode_taxref_vernacular_name_idx
+  ON metadata.mode_taxref
+  USING btree
+  (unaccent_immutable(vernacular_name) COLLATE pg_catalog."default");

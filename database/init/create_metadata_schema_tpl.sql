@@ -152,19 +152,6 @@ COMMENT ON COLUMN MODE_TAXREF.IS_LEAF IS 'Indicate if the node is a taxon (1 for
 COMMENT ON COLUMN MODE_TAXREF.IS_REFERENCE IS 'Indicate if the taxon is a reference (1) or a synonym (0)';
 COMMENT ON COLUMN MODE_TAXREF.POSITION IS 'The position of the mode';
 
-CREATE INDEX mode_taxref_parent_code_idx
-  ON mode_taxref USING btree (parent_code);
-  
-CREATE INDEX mode_taxref_label_idx
-  ON mode_taxref USING gist (unaccent_immutable(label) gist_trgm_ops);
-  
-CREATE INDEX mode_taxref_complete_name_idx
-  ON mode_taxref USING gist (unaccent_immutable(complete_name) gist_trgm_ops);
-  
-CREATE INDEX mode_taxref_vernacular_name_idx
-  ON mode_taxref USING gist (unaccent_immutable(vernacular_name) gist_trgm_ops);
-
-
 /*==============================================================*/
 /* Table : DYNAMODE                                            */
 /*==============================================================*/
