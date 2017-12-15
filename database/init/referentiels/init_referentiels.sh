@@ -22,7 +22,8 @@ fi
 #connectionStr="host=localhost port=$PORT_DB user=${db_adminuser} password=${db_adminuser_pw} dbname=${db_name}"
 connectionStr=$@
 rootDir=$(dirname $(readlink -f $0))
-dataDir=$rootDir/data
+dataDir=/var/data
+mkdir -p /var/data/download
 
 refurl=https://ginco.naturefrance.fr/ref
 taxref=$dataDir/download/taxrefv10.txt
