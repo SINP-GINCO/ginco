@@ -19,7 +19,7 @@ class TableFieldRepository extends EntityRepository {
 		$em = $this->getEntityManager();
 		$query = $em->createQuery('SELECT DISTINCT tfi.data as fieldName,
 					dt.label as label,
-					u.type as unitType, tfi.isMandatory
+					u.type as unitType, tfi.isMandatory, tfi.isCalculated
 					FROM IgnOGAMConfigurateurBundle:TableField tfi
 					LEFT JOIN IgnOGAMConfigurateurBundle:TableFormat tfo
 					WITH tfo.format = tfi.tableFormat

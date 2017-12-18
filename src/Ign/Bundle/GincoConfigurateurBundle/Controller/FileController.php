@@ -37,42 +37,40 @@ class FileController extends FileControllerBase {
 			'modelId' => $dataset->getModel()->getId(),
 			'action' => $this->generateUrl('configurateur_file_fields', array(
 				'datasetId' => $datasetId,
-				'format' => $fileFormat
-			))
+						'format' => $fileFormat,
+				)),
 		);
 		$autoAddFieldsForm = $this->createForm(FileFieldAutoType::class, null, $formOptions);
 		$autoAddFieldsForm->handleRequest($request);
 
 		if ($autoAddFieldsForm->isValid()) {
-			$tableFormat = $autoAddFieldsForm->get('table_format')
-				->getData()
-				->getFormat();
+			$tableFormat = $autoAddFieldsForm->get('table_format')->getData()->getFormat();
 			$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat);
 			$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
-			// var_dump( $tableFields);
 
-			// Get mandatory fields in table fields
-			$isMandatory = function ($field) {
-				return ($field['isMandatory'] == 1);
+			// Get mandatory AND not calculated fields in table fields
+			$isMandatoryOnImport = function ($field) {
+				return ($field['isMandatory'] == 1 && $field['isCalculated'] != '1');
 			};
-			$mandatoryFields = array_filter($tableFields, $isMandatory);
+			$mandatoryOnImportFields = array_filter($tableFields, $isMandatoryOnImport);
 
+			
 			$fileFields = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
-			// var_dump($fileFields);
 
 			// Add only mandatory fields ?
 			$mandatoryOnly = $autoAddFieldsForm->get('only_mandatory')->getData();
 			if ($mandatoryOnly) {
-				$tableFields = $mandatoryFields;
+				$tableFields = $mandatoryOnImportFields;
 			}
 
 			$tableDatas = array_column($tableFields, 'fieldName');
 
-			// Add calculated fields ?
-			$calculatedIncluded = $autoAddFieldsForm->get('with_calculated')->getData();
-			$calculatedFields = array();
-			if (!$calculatedIncluded) {
-				$possibleCalculatedFields = array(
+			// Add overwrited fields ?
+			$overwritedIncluded = $autoAddFieldsForm->get('with_calculated')->getData();
+			$overwritedFields = array();
+			if (!$overwritedIncluded) {
+
+				$possibleOverwritedFields = array(
 					'sensible',
 					'sensiniveau',
 					'sensidateattribution',
@@ -86,10 +84,9 @@ class FileController extends FileControllerBase {
 					'codemaillecalcule',
 					'nomcommunecalcule',
 					'nomvalide',
-					'jddmetadonneedeeid',
 				);
-				$calculatedFields = array_intersect($possibleCalculatedFields, $tableDatas);
-				$tableDatas = array_diff($tableDatas, $calculatedFields);
+				$overwritedFields = array_intersect($possibleOverwritedFields, $tableDatas);
+				$tableDatas = array_diff($tableDatas, $overwritedFields);
 				// var_dump($tableDatas);
 			}
 
@@ -102,9 +99,9 @@ class FileController extends FileControllerBase {
 
 			$tableDatas = array_diff($tableDatas, $technicalFields);
 
-			$calculatedFieldsLabels = array();
-			foreach ($calculatedFields as $data) {
-				$calculatedFieldsLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
+			$overwritedFieldsLabels = array();
+			foreach ($overwritedFields as $data) {
+				$overwritedFieldsLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
 					->find($data)
 					->getLabel();
 			}
@@ -118,7 +115,7 @@ class FileController extends FileControllerBase {
 					->find($tableFormat)
 					->getLabel(),
 				'mandatoryOnly' => $mandatoryOnly,
-				'calculatedFields' => $calculatedFieldsLabels
+				'overwritedFields' => $overwritedFieldsLabels
 			);
 
 			// Find table fields not already added as file fields
@@ -142,11 +139,11 @@ class FileController extends FileControllerBase {
 			$redirectResponse = $this->forward('IgnOGAMConfigurateurBundle:FileField:addFields', array(
 				'datasetId' => $datasetId,
 				'format' => $fileFormat,
-				'addedFields' => implode(',', $fieldsToAdd)
+				 'addedFields' => implode(',', $fieldsToAdd),
 			));
 
-			// Update as mandatory in file the fields which are mandatory in table
-			$mFields = array_column($mandatoryFields, 'fieldName');
+			// Update as mandatory in file the fields which are mandatory in table, but not calculated
+			$mFields = array_column($mandatoryOnImportFields, 'fieldName');
 			$mFields = array_intersect($fieldsToAdd, $mFields);
 
 			foreach ($mFields as $mfield) {
@@ -160,15 +157,15 @@ class FileController extends FileControllerBase {
 
 			$notice = $this->generateReportAutoAddFields($report);
 
-			$this->addFlash('notice-autoaddfields', $notice);
+			$this->addFlash('info', $notice);
 		} else {
-			$this->addFlash('error-autoaddfields', $this->get('translator')
+			$this->addFlash('danger', $this->get('translator')
 				->trans('fileField.auto.chooseatable'));
 		}
 
 		return $this->redirectToRoute('configurateur_file_fields', array(
 			'datasetId' => $datasetId,
-			'format' => $fileFormat
+			'format' => $fileFormat,
 		));
 	}
 
@@ -190,7 +187,7 @@ class FileController extends FileControllerBase {
 			));
 			$reportMessage .= $translator->trans('fileField.auto.report.4', array(
 				'%fileFields%' => count($report['fileFields']),
-				'%tableFields%' => count($report['tableFields']) + count($report['calculatedFields'])
+				'%tableFields%' => count($report['tableFields']) + count($report['overwritedFields'])
 			));
 		} else {
 			$reportMessage = $translator->trans('fileField.auto.report.1', array(
@@ -199,7 +196,7 @@ class FileController extends FileControllerBase {
 			));
 			$reportMessage .= $translator->trans('fileField.auto.report.3', array(
 				'%fileFields%' => count($report['fileFields']),
-				'%tableFields%' => count($report['tableFields']) + count($report['calculatedFields'])
+				'%tableFields%' => count($report['tableFields']) + count($report['overwritedFields'])
 			));
 		}
 		if (count($report['fieldsToAdd']) == 0) {
@@ -210,10 +207,10 @@ class FileController extends FileControllerBase {
 				'%fieldsAdded%' => implode(', ', $report['fieldsToAdd'])
 			));
 		}
-		if ($report['calculatedFields'] != null && count($report['fieldsToAdd']) != 0) {
+		if ($report['overwritedFields'] != null && count($report['fieldsToAdd']) != 0) {
 			$reportMessage .= $translator->trans('fileField.auto.report.8', array(
-				'%calculatedFields%' => implode(', ', $report['calculatedFields']),
-				'%calculatedFieldsCount%' => count($report['calculatedFields'])
+				'%overwritedFields%' => implode(', ', $report['overwritedFields']),
+				'%overwritedFieldsCount%' => count($report['overwritedFields'])
 			));
 		}
 

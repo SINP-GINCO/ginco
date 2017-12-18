@@ -297,16 +297,16 @@ fileField:
     chooseatable: Veuillez choisir la table dont vous souhaitez ajouter les champs
     report:
        1: <p>Les champs de la table "%tableName%" ont été ajoutés automatiquement au fichier "%fileLabel%".</p>
-       2: <p>Les champs obligatoires de la table "%tableName%" ont été ajoutés automatiquement au fichier "%fileLabel%".</p>
+       2: <p>Les champs obligatoires et non calculés de la table "%tableName%" ont été ajoutés automatiquement au fichier "%fileLabel%".</p>
        3: >-
          <p>Initialement, il y avait : </p><ul><li>%fileFields% champs dans le fichier ;</li><li>%tableFields% champs dans la table.</li></ul>
        4: >-
-         <p>Initialement, il y avait : </p><ul><li>%fileFields% champs dans le fichier ;</li><li>%tableFields% champs obligatoires dans la table.</li></ul>
+         <p>Initialement, il y avait : </p><ul><li>%fileFields% champs dans le fichier ;</li><li>%tableFields% champs obligatoires non calculés dans la table.</li></ul>
        5: <p>Aucun champ n'a été rajouté dans le fichier.</p>
        6: >-
          <p>%fieldsAddedCount% champs ont été ajoutés au fichier : <strong>%fieldsAdded%</strong></p>
        8: >-
-          <p>Les %calculatedFieldsCount% champs suivants n'ont pas été ajoutés : %calculatedFields%. Ils seront calculés automatiquement lors de l'import de données.</p>
+          <p>Les %overwritedFieldsCount% champs suivants n'ont pas été ajoutés : %overwritedFields%. Ils seront calculés automatiquement lors de l'import de données.</p>
  
 # Dictionnaire de données
 data:

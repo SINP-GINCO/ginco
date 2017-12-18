@@ -56,7 +56,7 @@ class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 			'required' => false
 		))
 			->add('with_calculated', CheckboxType::class, array(
-			'label' => 'Ajouter également les champs calculés automatiquement',
+			'label' => 'Ajouter également les champs calculés/écrasés à l\'import',
 			'required' => false
 		))
 			->add('submit', SubmitType::class, array(

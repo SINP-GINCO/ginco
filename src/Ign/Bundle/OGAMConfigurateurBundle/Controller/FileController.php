@@ -306,7 +306,6 @@ class FileController extends Controller {
 
 		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
 
-
 		// Create Auto-Add-Fieldform
 		$formOptions = array(
 				'modelId' => $dataset->getModel()->getId(),
@@ -323,11 +322,11 @@ class FileController extends Controller {
 			$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat);
 			$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
 
-			// Get mandatory fields in table fields
-			$isMandatory = function($field) {
-				return ($field['isMandatory']==1);
+			// Get mandatory AND not calculated fields in table fields
+			$isMandatoryOnImport = function ($field) {
+				return ($field['isMandatory'] == 1 && $field['isCalculated'] != '1');
 			};
-			$mandatoryFields = array_filter($tableFields, $isMandatory);
+			$mandatoryOnImportFields = array_filter($tableFields, $isMandatoryOnImport);
 
 
 			$fileFields = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
@@ -335,7 +334,7 @@ class FileController extends Controller {
 			// Add only mandatory fields ?
 			$mandatoryOnly = $autoAddFieldsForm->get('only_mandatory')->getData();
 			if ($mandatoryOnly) {
-				$tableFields = $mandatoryFields;
+				$tableFields = $mandatoryOnImportFields;
 			}
 
 			// Generate a report
@@ -376,24 +375,25 @@ class FileController extends Controller {
 					'addedFields' => implode(',', $fieldsToAdd),
 			));
 
-			// Update as mandatory in file the fields which are mandatory in table
-			$mFields = array_column($mandatoryFields, 'fieldName');
+			// Update as mandatory in file the fields which are mandatory in table, but not calculated
+			$mFields = array_column($mandatoryOnImportFields, 'fieldName');
 			$mFields = array_intersect($fieldsToAdd, $mFields);
+
 			foreach ($mFields as $mfield) {
-				$fileField = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(
-						array('data' => $mfield, 'fileFormat' => $fileFormat)
-				);
+				$fileField = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
+					'data' => $mfield,
+					'fileFormat' => $fileFormat
+				));
 				$fileField->setIsMandatory('1');
 			}
 			$em->flush();
 
 			$notice = $this->generateReportAutoAddFields($report);
 
-			$this->addFlash('notice-autoaddfields', $notice );
-
-		}
-		else {
-			$this->addFlash('error-autoaddfields', $this->get('translator')->trans('fileField.auto.chooseatable'));
+			$this->addFlash('info', $notice );
+		} else {
+			$this->addFlash('danger', $this->get('translator')
+				->trans('fileField.auto.chooseatable'));
 		}
 
 		return $this->redirectToRoute('configurateur_file_fields', array(
