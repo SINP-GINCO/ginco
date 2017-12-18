@@ -25,8 +25,8 @@ determinateurnomorganisme;file_observation;0;;determinateurNomOrganisme
 diffusionniveauprecision;file_observation;0;;diffusionNiveauPrecision
 dspublique;file_observation;1;;dSPublique
 geometrie;file_observation;0;;geometrie
-heuredatedebut;file_observation;1;HH:mm;heureDateDebut
-heuredatefin;file_observation;1;HH:mm;heureDateFin
+heuredatedebut;file_observation;0;HH:mm;heureDateDebut
+heuredatefin;file_observation;0;HH:mm;heureDateFin
 identifiantorigine;file_observation;0;;identifiantOrigine
 identifiantpermanent;file_observation;0;;identifiantPermanent
 identifiantregroupementpermanent;file_observation;0;;identifiantRegroupementPermanent
@@ -115,7 +115,7 @@ geometrie;file_shapefile;0;;WKT
 heuredatedebut;file_shapefile;0;HH:mm;heureDebut                  
 heuredatefin;file_shapefile;0;HH:mm;heureFin                      
 identifiantorigine;file_shapefile;0;;idOrigine                  
-identifiantpermanent;file_shapefile;0;;permId                   
+identifiantpermanent;file_shapefile;0;;permId
 identifiantregroupementpermanent;file_shapefile;0;;permIdGrp    
 jddcode;file_shapefile;0;;jddCode                               
 jddid;file_shapefile;0;;jddId                                   
