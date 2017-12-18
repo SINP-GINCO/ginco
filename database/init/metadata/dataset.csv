@@ -1,1 +1,3 @@
-dataset_1;occ_taxon_dsr_exemple_import;1;Dataset d import pour le modèle 'occ_taxon_dsr_exemple ';IMPORTdataset_2;occ_taxon_dsr_exemple_visu;0;Dataset de visualisation pour le modèle 'occ_taxon_dsr_exemple';QUERYdataset_100;Occ_Taxon_DSR_import_shapefile;0;;IMORT
+dataset_1;Occ_Taxon_DSR_import_CSV;1;Modèle d’import CSV par défaut pour le modèle Occ. Taxon.;IMPORT
+dataset_2;Occ_Taxon_DSR_1.2.1;0;Dataset de visualisation pour le modèle 'occ_taxon_dsr_exemple';QUERY
+dataset_100;Occ_Taxon_DSR_import_shapefile;0;Modèle d’import shapefile par défaut pour le modèle Occ. Taxon.;IMPORT
