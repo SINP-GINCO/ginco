@@ -67,7 +67,6 @@ $config = loadPropertiesFromArgs();
 $paramStr = implode(' ', array_slice($argv, 1));
 
 $initDir     = dirname(__FILE__);
-$metadataDir = "$initDir/../metadata"; # FIXME: ce répertoire doit bouger!
 $refDir      = "$initDir/referentiels";
 
 $connectStr ="host="     .$config['db.host'];
@@ -104,8 +103,8 @@ system("$refDir/init_referentiels.sh $connectStr");
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata']);
 # note: populate_mode_taxref_table need an initialized referentiel schema.
 execSQLFile("$initDir/populate_mode_taxref_table.sql",$config);
-# FIXME: serait-il possible de laisser le méta-modèle de prod vide lors de la livraison?
-system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata");
+# Metadata models are empty, they must be published from metadata_work before use (-Dempty_models)
+system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata -Dempty_models=true");
 
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata_work']);
 # mode_taxref is not useful in metadata_work.
