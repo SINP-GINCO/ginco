@@ -115,7 +115,7 @@ class TablesGeneration extends TablesGenerationBase {
 				AS $$
 				BEGIN
 				IF (NEW.identifiantpermanent IS NULL OR NEW.identifiantpermanent = '') THEN
-				 NEW.identifiantpermanent  := concat('" . $siteUrl . "occtax/',uuid_generate_v1());
+				 NEW.identifiantpermanent  := uuid_generate_v1();
 				END IF;
 				RETURN NEW;
 				END;
