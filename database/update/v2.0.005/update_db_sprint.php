@@ -29,7 +29,6 @@ try {
 	execCustSQLFile("$sprintDir/update_predefined_request_group.sql", $config);
 	execCustSQLFile("$sprintDir/fix_roles.sql", $config);
 	execCustSQLFile("$sprintDir/update_providers.sql", $config);
-	execCustSQLFile("$sprintDir/identifiantPermanent_not_mandatory_on_import.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
@@ -40,9 +39,11 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
 // system("php $sprintDir/script1.php $CLIParams", $returnCode1);
 // system("php $sprintDir/script2.php $CLIParams", $returnCode2);
+system("php $sprintDir/change_identifiantpermanent.php $CLIParams", $returnCode1);
 
-/* if ($returnCode1 != 0 || $returnCode2 != 0) {
+if ($returnCode1 != 0 ) {
  	echo "$sprintDir/update_db_sprint.php\n";
  	echo "exception: error code returned from php sql script \n";
+	echo $e->getMessage() . "\n";
  	exit(1);
- }*/
+}
