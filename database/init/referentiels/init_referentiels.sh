@@ -21,11 +21,15 @@ fi
 
 #connectionStr="host=localhost port=$PORT_DB user=${db_adminuser} password=${db_adminuser_pw} dbname=${db_name}"
 connectionStr=$@
-rootDir=$(dirname $(readlink -f $0))
+
 dataDir=/var/data
 mkdir -p /var/data/download
 
+rootDir=$(dirname $(readlink -f $0))
+dataLocalDir=$rootDir/data
+
 refurl=https://ginco.naturefrance.fr/ref
+
 taxref=$dataDir/download/taxrefv10.txt
 communes=$dataDir/download/commune_carto_2017.sql
 departements=$dataDir/download/departement_carto_2017.sql
@@ -50,8 +54,8 @@ echo "Intégration de TAXREF terminée."
 
 echo "Intégration du référentiel de sensiblité et de sa table de métadonnées"
 #FIXME: ajouter le téléchargement du référentiel de sensibilité compatible avec le taxref 10!
-psql "$connectionStr" -f $dataDir/especesensible.sql
-psql "$connectionStr" -f $dataDir/especesensiblelistes.sql
+psql "$connectionStr" -f $dataLocalDir/especesensible.sql
+psql "$connectionStr" -f $dataLocalDir/especesensiblelistes.sql
 
 if [ -f "$communes" ]
 then
@@ -100,11 +104,11 @@ psql "$connectionStr" -c "\COPY referentiels.codeentampon  ( codeen, libelleen, 
 psql "$connectionStr" -f $rootDir/espaces_naturels_2.sql
 
 echo "Création des autres référentiels métier"
-psql "$connectionStr" -f $dataDir/codemaillevalue.sql
-psql "$connectionStr" -f $dataDir/habref_20.sql
+psql "$connectionStr" -f $dataLocalDir/codemaillevalue.sql
+psql "$connectionStr" -f $dataLocalDir/habref_20.sql
 
 echo "Création des listes de valeurs du standard DEE"
-psql "$connectionStr" -f $dataDir/nomenclatures.sql
+psql "$connectionStr" -f $dataLocalDir/nomenclatures.sql
 
 echo "Indexation du tout"
-psql "$connectionStr" -f $dataDir/index.sql
+psql "$connectionStr" -f $dataLocalDir/index.sql
