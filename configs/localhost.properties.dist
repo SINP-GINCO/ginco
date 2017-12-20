@@ -23,6 +23,12 @@ db.version=9.6.0
 #==================================
 # La machine sur laquelle déployer cette instance
 deploy.host=localhost
+# L'utilisateur sur la machine cible exécutant les commandes de déploiement local
+deploy.user=scandelier
+# Le mot de passe de l'utilisateur de déploiement
+deploy.user.pw=#####
+# Inutilisé en local
+# deploy.port=22
 
 # Chemins des répertoires contenant les projets ogam et configurateur pendant la phase de build
 # absolu ou relatif au répertoire courant (répertoire où est installé le projet ginco)
@@ -98,5 +104,3 @@ hidden.value=Masqué
 # 0 to disable piwik tracking for this site
 piwik.id=0
 
-#Â Url of the documentation website
-documentation.url=http://ginco.naturefrance.fr/doc
