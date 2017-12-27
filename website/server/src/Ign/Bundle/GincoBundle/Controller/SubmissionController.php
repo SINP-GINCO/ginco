@@ -167,32 +167,17 @@ class SubmissionController extends Controller {
 		// Get File type from its name
 		$fileType = pathinfo($filePath, PATHINFO_EXTENSION); // csv or pdf
 		$contentType = (strtolower($fileType) == 'csv') ? 'text/csv;charset=utf-8' : 'application/pdf';
+		$prependBOM = (strtolower($fileType) == 'csv' && $this->get('ogam.configuration_manager')->getConfig('csvExportCharset', 'UTF-8') == 'UTF-8') ?
+				chr(0xEF) . chr(0xBB) . chr(0xBF) : '';
 
 		// -- Download the file
 
-		// Define the header of the response
 		$response = new Response();
 		$response->headers->set('Cache-control', 'private');
 		$response->headers->set('Content-transfer-encoding', 'binary');
 		$response->headers->set('Content-Type', $contentType . ';application/force-download;', true);
 		$response->headers->set('Content-disposition', 'attachment; filename=' . pathinfo($filePath, PATHINFO_BASENAME), true);
-
-		if (strtolower($fileType) == 'csv') {
-			// Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
-			if ($this->get('ogam.configuration_manager')->getConfig('csvExportCharset', 'UTF-8') == 'UTF-8') {
-				echo (chr(0xEF));
-				echo (chr(0xBB));
-				echo (chr(0xBF));
-			}
-
-			$file = fopen($filePath, "rb");
-			while (!feof($file)) {
-				print(@fread($file, 1024 * 8));
-			}
-			fclose($file);
-		} else {
-			$response->setContent(file_get_contents($filePath));
-		}
+		$response->setContent( $prependBOM . file_get_contents($filePath) );
 
 		return $response;
 	}
