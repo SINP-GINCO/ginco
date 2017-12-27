@@ -40,7 +40,7 @@ class IntegrationController extends BaseController {
 
 		// Get the referer url, and put it in session to redirect to it at the end of the process
 		$refererUrl = $request->headers->get('referer');
-		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_jdd_list');
 		$session = $request->getSession();
 		if (!$session->has('redirectToUrl'))
 			$session->set('redirectToUrl', $redirectUrl);

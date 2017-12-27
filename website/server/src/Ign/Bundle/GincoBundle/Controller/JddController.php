@@ -79,7 +79,9 @@ class JddController extends BaseController {
 	public function newAction(Request $request) {
 
 		// Redirect url is integration_home when creating a new jdd, put it in session to redirect to it at the end of the process
-		$redirectUrl = $this->generateUrl('integration_home');
+		// Get the referer url, to redirect to it at the end of the action
+		$refererUrl = $request->headers->get('referer');
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_jdd_list');
 		$session = $request->getSession();
 		if (!$session->has('redirectToUrl'))
 			$session->set('redirectToUrl', $redirectUrl);
@@ -161,7 +163,7 @@ class JddController extends BaseController {
 	 *
 	 * @Route("/jdd/{id}/delete", name = "jdd_delete", requirements={"id": "\d+"})
 	 */
-	public function deleteAction(Jdd $jdd) {
+	public function deleteAction(Jdd $jdd, Request $request) {
 
 		// Test if deletable
 		if (!$this->isJddDeletable($jdd)) {
@@ -171,11 +173,13 @@ class JddController extends BaseController {
 					'%jddId%' => $jdd->getField('title')
 				]
 			]);
-			// Redirects to the jdd list page
-			return $this->redirect($this->generateUrl('user_jdd_list'));
+			// Get the referer url, to redirect to it at the end of the action
+			$refererUrl = $request->headers->get('referer');
+			$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_jdd_list');
+			return $this->redirect($redirectUrl);
 		}
 
-		return parent::deleteAction($jdd);
+		return parent::deleteAction($jdd, $request);
 	}
 
 	/**
