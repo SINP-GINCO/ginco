@@ -87,3 +87,13 @@ par rapport à la version précédente.
 * Correction de divers bugs...
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.2...v2.0.3)
+
+## V2.0.4 (08/12/2017)
+
+* Ginco utilise maintenant les annuaires SINP : celui des organismes, et celui des personnes
+* Par conséquent, la connexion à l'application se fait maintenant via le site de l'INPN.
+* Import de fichiers Shapefile
+* L'administrateur peut choisir la projection d'export des données
+* Et toujours la correction de divers bugs...
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.3...v2.0.4)
