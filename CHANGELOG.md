@@ -97,3 +97,9 @@ par rapport à la version précédente.
 * Et toujours la correction de divers bugs...
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.3...v2.0.4)
+
+## V2.0.5 (29/12/2017)
+
+Stabilisation de la version précédente et correction de bugs. 
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.4...v2.0.5)
