@@ -16,6 +16,18 @@
     {{- parent() -}}
 {%- endblock %}
 
+{# Report attributes and class at <div class="radio"> level, and add a disabled class when disabled attribute #}
+{% block radio_widget -%}
+    {% set parent = parent() %}
+    {% for name, value in attr %}
+        {% set parent = parent|replace({'class="radio"': 'class="radio"'~' '~name~'="'~value~'"' })|raw %}
+    {% endfor %}
+    {% if (attr.disabled is defined and attr.disabled is not same as(false)) %}
+        {% set parent = parent|replace({'class="radio"': 'class="radio disabled"'})|raw %}
+    {% endif %}
+    {{- parent|raw -}}
+{%- endblock radio_widget %}
+
 {# Add a help block if present in data-help attributes #}
 {% block form_help -%}
     {% for attrname, attrvalue in attr %}
