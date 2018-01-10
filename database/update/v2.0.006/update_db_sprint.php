@@ -32,15 +32,12 @@ try {
 	exit(1);
 }
 
-
 $CLIParams = implode(' ', array_slice($argv, 1));
-/* patch user raw_data here */
-//  system("php $sprintDir/script1.php $CLIParams", $returnCode1);
-// system("php $sprintDir/script2.php $CLIParams", $returnCode2);
-/*
-if ($returnCode1 != 0 || $returnCode2 != 0) {
+/* patch php here */
+  system("php $sprintDir/add_insee_dep_to_commune_carto_2017.php $CLIParams", $returnCode1);
+
+if ($returnCode1 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
 }
-*/
