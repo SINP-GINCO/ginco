@@ -97,9 +97,9 @@
             {% if submission.status is constant('STATUS_OK', submission) %}
                 {% set statusSubmissionOk = false %}
                 {% set permanentDisabled = false %}
-                    {% if user.isAllowed('VIEW_SENSITIVE') %}
-                        {% set sensitiveDisabled = false %}
-                    {% endif %}
+                {% if user.isAllowed('VIEW_SENSITIVE') %}
+                    {% set sensitiveDisabled = false %}
+                {% endif %}
             {% endif %}
         {% endif %}
 
