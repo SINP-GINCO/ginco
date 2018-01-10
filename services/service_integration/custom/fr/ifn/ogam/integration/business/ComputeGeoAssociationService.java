@@ -238,13 +238,18 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 				mailleDAO.createMaillesLinksFromPolygon(format, tableName, parameters, conn);
 			}
 		} else if (hasCodesCommunes) {
+			geometryDAO.createGeometryLinksFromCommunes(format, tableName, parameters, conn);
 			communeDAO.createCommunesLinksFromCommunes(format, parameters, conn);
 			mailleDAO.createMaillesLinksFromCommunes(format, parameters, conn);
 			departementDAO.createDepartmentsLinksFromCommunes(format, parameters, conn);
 		} else if (hasCodesMailles) {
+			geometryDAO.createGeometryLinksFromMailles(format, tableName, parameters, conn);
+			communeDAO.createCommunesLinksFromMailles(format, parameters, conn);
 			mailleDAO.createMaillesLinksFromMailles(format, parameters, conn);
 			departementDAO.createDepartmentsLinksFromMailles(format, parameters, conn);
 		} else if (hasCodesDepartements) {
+			geometryDAO.createGeometryLinksFromDepartements(format, tableName, parameters, conn);
+			communeDAO.createCommunesLinksFromDepartements(format, parameters, conn);
 			mailleDAO.createMaillesLinksFromDepartements(format, parameters, conn);
 			departementDAO.createDepartmentsLinksFromDepartements(format, parameters, conn);
 		}
