@@ -119,31 +119,28 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 		
 		// REQUEST 6 : sensibilité
-		// If dataset_02 wee are on DLB platform, do not create this predefined request
-		if ($datasetId == 'dataset_02') {
-			$criteria = array(
-				'sensialerte',
-				'jddid'
-			);
-			$results = array(
-				'cdnom',
-				'cdref',
-				'codedepartementcalcule',
-				'jourdatefin',
-				'identifiantpermanent',
-				'occstatutbiologique',
-				'PROVIDER_ID',
-				'sensialerte',
-				'sensible',
-				'sensidateattribution',
-				'sensimanuelle',
-				'sensiniveau',
-				'sensireferentiel',
-				'sensiversionreferentiel'
-			);
-			$label = 'données à sensibiliser';
-			$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
-		}
+		$criteria = array(
+			'sensialerte',
+			'jddid'
+		);
+		$results = array(
+			'cdnom',
+			'cdref',
+			'codedepartementcalcule',
+			'jourdatefin',
+			'identifiantpermanent',
+			'occstatutbiologique',
+			'PROVIDER_ID',
+			'sensialerte',
+			'sensible',
+			'sensidateattribution',
+			'sensimanuelle',
+			'sensiniveau',
+			'sensireferentiel',
+			'sensiversionreferentiel'
+		);
+		$label = 'données à sensibiliser';
+		$this->createPredefinedRequest($groupId, $datasetId, $tableSchema, $criteria, $results, $label, $dbconn);
 	}
 
 	/**
