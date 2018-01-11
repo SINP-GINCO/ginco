@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here*/
 	// execCustSQLFile("$sprintDir/xxxx.sql", $config);
+	execCustSQLFile("$sprintDir/../../init/referentiels/data/liste_referentiels.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
@@ -34,7 +35,7 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch php here */
-  system("php $sprintDir/add_insee_dep_to_commune_carto_2017.php $CLIParams", $returnCode1);
+system("php $sprintDir/add_insee_dep_to_commune_carto_2017.php $CLIParams", $returnCode1);
 
 if ($returnCode1 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
