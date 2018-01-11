@@ -110,5 +110,8 @@ psql "$connectionStr" -f $dataLocalDir/habref_20.sql
 echo "Création des listes de valeurs du standard DEE"
 psql "$connectionStr" -f $dataLocalDir/nomenclatures.sql
 
+echo "Création des la liste des référentiels et nomenclatures avec leurs versions"
+psql "$connectionStr" -f $dataLocalDir/liste_referentiels.sql
+
 echo "Indexation du tout"
 psql "$connectionStr" -f $dataLocalDir/index.sql
