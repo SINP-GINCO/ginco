@@ -26,7 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here*/
 	// execCustSQLFile("$sprintDir/xxxx.sql", $config);
-	execCustSQLFile("$sprintDir/../../../../ginco/database/init/referentiels/data/liste_referentiels.sql", $config);
+	execCustSQLFile("$sprintDir/liste_referentiels.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
