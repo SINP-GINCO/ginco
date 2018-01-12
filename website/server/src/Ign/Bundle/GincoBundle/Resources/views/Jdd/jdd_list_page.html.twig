@@ -24,6 +24,34 @@
     {% set submissionStatusColSize = 3 %}
 {% endif %}
 
+
+{# Size of columns array and filename max size #}
+{% if allJdds is defined and allJdds == true %}
+    {% set colSizes = {
+    jddActions: 12,
+    jddTitleId: 56,
+    creationDate: 25,
+    providerUser: 56,
+    submissionsActions: 50,
+    filesLines: 55,
+    submissionStatus: 12,
+    deeDepositDate: 30,
+    deeActions: 12} %}
+    {% set filenameMaxLength = 18 %}
+{% else %}
+    {% set allJdds = false %}
+    {% set colSizes = {
+    jddActions: 10,
+    jddTitleId: 56,
+    creationDate: 20,
+    submissionsActions: 30,
+    filesLines: 55,
+    submissionStatus: 10,
+    deeDepositDate: 30,
+    deeActions: 10} %}
+    {% set filenameMaxLength = 32 %}
+{% endif %}
+
 {# Title of the page #}
 {% if allJdds is defined and allJdds == true %}
 	<h1>{{ 'Jdd.list.title.all'|trans }}</h1>
@@ -47,32 +75,32 @@
         {# Jdd group #}
         <colgroup>
             {# Actions column #}
-            <col/>
+            <col style="width: {{ colSizes.jddActions }}%;"/>
             {# Title/Id column #}
-            <col style="width: {{ jddTitleIdColSize }}%;"/>
+            <col style="width: {{ colSizes.jddTitleId }}%;"/>
             {# Creation date column #}
-            <col/>
+            <col style="width: {{ colSizes.creationDate }}%;"/>
             {% if isAllowedMDOP and allJdds %}
                  {# Provider / User column #}
-                 <col/>
+                <col style="width: {{ colSizes.providerUser }}%;"/>
             {% endif %}
         </colgroup>
         {# Submissions group #}
         <colgroup>
             {# Actions column #}
-            <col style="width: {{ submissionsActionsColSize }}%"/>
+            <col style="width: {{ colSizes.submissionsActions }}%;"/>
             {# Files(lines) column #}
-            <col style="width: {{ filesLinesColSize }}%;"/>
+            <col style="width: {{ colSizes.filesLines }}%;"/>
             {# Status column #}
-            <col style="width: {{ submissionStatusColSize }}%;"/>
+            <col style="width: {{ colSizes.submissionStatus }}%;"/>
         </colgroup>
         {% if user is not null and user.isAllowed('MANAGE_DATASETS') %}
             {# DEE group #}
             <colgroup>
                 {# Date column #}
-                <col style="width: 22%;"/>
+                <col style="width: {{ colSizes.deeDepositDate }}%;"/>
                 {# Actions column #}
-                <col/>
+                <col style="width: {{ colSizes.deeActions }}%;"/>
             </colgroup>
         {% endif %}
 
