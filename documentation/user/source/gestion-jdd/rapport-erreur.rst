@@ -128,9 +128,6 @@ Erreurs de cohérence
 * **1201 - Tableaux n'ayant pas le même nombre d'éléments** ; certains champs de type tableaux doivent avoir le même nombre
   d'éléments, par exemple codeCommune et nomCommune (et les éléments doivent se correspondre).
 
-* **1202 - Version Taxref manquante** ; si un code de taxon est fourni (dans cdNom ou cdRef), alors la version du
-  référentiel taxonomique utilisé doit être indiquée.
-
 * **1203 - Référence bibliographique manquante** ; si le champ "statutSource" a la valeur "Li" (Littérature), alors une
   référence bibliographique doit être indiquée.
 
