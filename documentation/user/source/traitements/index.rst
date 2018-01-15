@@ -11,6 +11,7 @@ Lors de l'import ou de l'édition, les données sont soumises à des contrôles 
 
     conformite
     coherence
+    default
     idperm
     sensibilite
     rattachement
