@@ -776,6 +776,16 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 */
 	private void calculateValuesSujetObservation(Map<String, GenericData> values) throws Exception {
 
+		// -- Calculate nomValide
+
+		// First Create the GD for nomValide if not exists (non existing column in CSV)
+		if (!values.containsKey(DSRConstants.NOM_VALIDE)) {
+			GenericData data = new GenericData();
+			data.setFormat(destFormat);
+			data.setColumnName(DSRConstants.NOM_VALIDE);
+			data.setType(STRING);
+			values.put(DSRConstants.NOM_VALIDE, data);
+		}
 		GenericData nomValideGD = values.get(DSRConstants.NOM_VALIDE);
 		if (nomValideGD != null) {
 			if (empty(nomValideGD)) {
