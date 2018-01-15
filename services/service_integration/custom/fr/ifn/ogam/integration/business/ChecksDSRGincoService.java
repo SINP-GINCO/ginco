@@ -901,17 +901,35 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 * @param values
 	 */
 	private void fillHeureDateIfEmpty(Map<String, GenericData> values) throws CheckException {
+
+		// First Create the GD for heureDateDebut if not exists (non existing column in CSV)
+		if (!values.containsKey(DSRConstants.HEURE_DATE_DEBUT)) {
+			GenericData data = new GenericData();
+			data.setFormat(destFormat);
+			data.setColumnName(DSRConstants.HEURE_DATE_DEBUT);
+			data.setType(TIME);
+			values.put(DSRConstants.HEURE_DATE_DEBUT, data);
+		}
+		// Then fill it if empty
 		GenericData heureDateDebutGD = values.get(DSRConstants.HEURE_DATE_DEBUT);
 		if (empty(heureDateDebutGD)) {
 			Time heureDateDebut = new Time(0,0,0);
 			heureDateDebutGD.setValue(heureDateDebut);
 		}
 
+		// First Create the GD for heureDateFin if not exists (non existing column in CSV)
+		if (!values.containsKey(DSRConstants.HEURE_DATE_FIN)) {
+			GenericData data = new GenericData();
+			data.setFormat(destFormat);
+			data.setColumnName(DSRConstants.HEURE_DATE_FIN);
+			data.setType(TIME);
+			values.put(DSRConstants.HEURE_DATE_FIN, data);
+		}
+		// Then fill it if empty
 		GenericData heureDateFinGD = values.get(DSRConstants.HEURE_DATE_FIN);
 		if (empty(heureDateFinGD)) {
 			Time heureDateFin = new Time(23,59,59);
 			heureDateFinGD.setValue(heureDateFin);
 		}
-
 	}
 }
