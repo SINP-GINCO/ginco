@@ -13,11 +13,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import fr.ifn.ogam.common.database.GenericData;
 import fr.ifn.ogam.common.database.metadata.MetadataDAO;
+import fr.ifn.ogam.common.database.referentiels.ListReferentielsDAO;
 import fr.ifn.ogam.common.util.DSRConstants;
 import fr.ifn.ogam.common.business.checks.CheckException;
 import fr.ifn.ogam.common.business.checks.CheckExceptionArrayList;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.*;
 import static fr.ifn.ogam.common.business.UnitTypes.*;
+import static fr.ifn.ogam.common.business.Data.*;
 
 /**
  * 
@@ -36,7 +38,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	private final transient Logger logger = Logger.getLogger(this.getClass());
 
 	/**
-	 * The DAO
+	 * The Metadata DAO
 	 */
 	private MetadataDAO metadataDAO = new MetadataDAO();
 
@@ -44,7 +46,17 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 * The exception array to store errors
 	 */
 	private ArrayList<CheckException> alce;
-	
+
+    /**
+     * The destination format (table), assuming there is only one
+     */
+    private String destFormat;
+
+	/**
+	 * The list of default values to fill when a value is not given
+	 */
+	private Map<String, String> defaultValues = new HashMap<String, String>();;
+
 	/**
 	 * Perfoms all coherence checks for GINCO DSR
 	 * 
@@ -63,10 +75,21 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		}
 
 		alce = new ArrayList<CheckException>();
-		
-		// ----- SUJET OBSERVATION ------
 
-		// If cdNom or cdRef Given, versionTaxref must be present
+        // We need to know the destination format (table) of all fields,
+        // so We assume the destination fomat is the same for all fields, so we
+        // put the same as the one of SUBMISSION_ID (always existing field, whatever the model definition)
+        // GenericData submissionIdGD = values.get(SUBMISSION_ID);
+        // destFormat = submissionIdGD.getFormat();
+        // --
+        // This first idea didn't work because the format is no a real one for technical fields;
+        // So we take jour_date_debut which is mandatory in Occtax models
+        GenericData jourDateDebutGD = values.get(DSRConstants.JOUR_DATE_DEBUT);
+        destFormat = jourDateDebutGD.getFormat();
+
+        // ----- SUJET OBSERVATION ------
+
+		// If cdNom or cdRef Given, versionTaxref must be present. If not, fill it with default value
 		taxrefVersion(values);
 
 		// jourDateDebut < jourDateFin < today
@@ -187,11 +210,18 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		// ----- MAILLE ------
 
-		// Maille is 0..*
-		String[] mailleAll = { DSRConstants.CODE_MAILLE, DSRConstants.VERSION_REF_MAILLE, DSRConstants.NOM_REF_MAILLE, DSRConstants.TYPE_INFO_GEO_MAILLE };
-		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(mailleAll, mailleAll, values, "Mailles");
+        // Maille is 0..*
+        String[] mailleAll = { DSRConstants.CODE_MAILLE, DSRConstants.TYPE_INFO_GEO_MAILLE };
+        ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(mailleAll, mailleAll, values, "Mailles");
 
-		// ----- MASSE D'EAU ------
+        // If nomRefMaille or versionRefMaille is not empty, the other must be filled.
+		// If not, but codeMaille is filled, we fill them with defaut values taken from list_referentiels table
+		String[] mailleRef = { DSRConstants.VERSION_REF_MAILLE, DSRConstants.NOM_REF_MAILLE };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(mailleRef, mailleRef, values, "Référentiel Mailles");
+
+        maillesVersion(values);
+
+        // ----- MASSE D'EAU ------
 
 		// Masse d'eau is 0..*
 		String[] massedeauAll = { DSRConstants.CODE_ME, DSRConstants.VERSION_ME, DSRConstants.DATE_ME, DSRConstants.TYPE_INFO_GEO_ME };
@@ -223,7 +253,15 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 *             in case of database error
 	 */
 	public void beforeIntegration(Integer submissionId) throws Exception {
-		// DO NOTHING
+
+        ListReferentielsDAO refDAO = new ListReferentielsDAO();
+
+        //-- Fill default values
+
+		// Versions taken from referentiels list table
+		defaultValues.put(DSRConstants.VERSION_TAXREF, refDAO.getReferentielVersion("taxref"));
+		defaultValues.put(DSRConstants.VERSION_REF_MAILLE, refDAO.getReferentielVersion("codemaillevalue"));
+		defaultValues.put(DSRConstants.NOM_REF_MAILLE, refDAO.getReferentielLabel("codemaillevalue"));
 	}
 
 	/**
@@ -295,7 +333,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		ArrayList<String> notEmptyFields = new ArrayList<String>();
 		for (String name : set) {
 			GenericData dataGD = values.get(name);
-			// todo: ca veut dire quoi que dataGD est null ?
+			// dataGD is null if the values for name is not defined ==> must be considered as an empty value
 			if (dataGD != null) {
 				if (!empty(dataGD)) {
 					notEmptyFields.add(name);
@@ -320,8 +358,11 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		ArrayList<String> emptyFields = new ArrayList<String>();
 		for (String name : set) {
 			GenericData dataGD = values.get(name);
-			// todo: ca veut dire quoi que dataGD est null ?
-			if (dataGD != null) {
+			// if dataGD is null (not defined in values taken from CSV), it must be considered as empty
+			if (dataGD == null) {
+				emptyFields.add(name);
+			}
+			else {
 				if (empty(dataGD)) {
 					emptyFields.add(name);
 				}
@@ -454,7 +495,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	}
 
 	/**
-	 * Tests if taxrefVersion is not empty if cdNom or cdRef are present.
+	 * If taxrefVersion is empty and if cdNom or cdRef are present,
+	 * fill it with default version
 	 *
 	 * @param values
 	 * @throws Exception
@@ -465,14 +507,70 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		ArrayList<String> notEmpty = notEmptyInList(cdNomRef, values);
 
 		if (notEmpty.size() > 0) {
-			String[] vTaxref = { DSRConstants.VERSION_TAXREF };
-			ArrayList<String> emptyVersion = emptyInList(vTaxref, values);
+			// First Create the GD for versionTaxref if not exists (non existing column in CSV)
+            if (!values.containsKey(DSRConstants.VERSION_TAXREF)) {
+                GenericData data = new GenericData();
+                data.setFormat(destFormat);
+                data.setColumnName(DSRConstants.VERSION_TAXREF);
+                data.setType(STRING);
+                values.put(DSRConstants.VERSION_TAXREF, data);
+            }
+
+            // Then checks if versionTaxref is empty
+            String[] vTaxref = { DSRConstants.VERSION_TAXREF };
+            ArrayList<String> emptyVersion = emptyInList(vTaxref, values);
 			if (emptyVersion.size() > 0) {
-				String errorMessage = DSRConstants.VERSION_TAXREF + " est obligatoire car cdNom et/ou cdRef est rempli : " + StringUtils.join(notEmpty, ", ")
-						+ ".";
-				CheckException ce = new CheckException(TAXREF_VERSION, errorMessage);
-				// Add the exception in the array list and continue doing the checks
-				alce.add(ce);
+
+                // Fills with the default value of versionTaxref (taken from table liste_referentiels)
+                GenericData versionTaxrefGD = values.get(DSRConstants.VERSION_TAXREF);
+                versionTaxrefGD.setValue(defaultValues.get(DSRConstants.VERSION_TAXREF));
+			}
+		}
+	}
+
+	/**
+	 * If mailleReferentielName and version are empty but a code maille is given,
+	 * fill it with default version
+	 *
+	 * @param values
+	 * @throws Exception
+	 */
+	private void maillesVersion(Map<String, GenericData> values) throws CheckException {
+
+        // First Create the GD for versionRefMaille and nomRefMaille if not exists (non existing column in CSV)
+        if (!values.containsKey(DSRConstants.VERSION_REF_MAILLE)) {
+            GenericData data = new GenericData();
+            data.setFormat(destFormat);
+            data.setColumnName(DSRConstants.VERSION_REF_MAILLE);
+            data.setType(STRING);
+            data.setValue(null);
+            values.put(DSRConstants.VERSION_REF_MAILLE, data);
+        }
+        if (!values.containsKey(DSRConstants.NOM_REF_MAILLE)) {
+            GenericData data = new GenericData();
+            data.setFormat(destFormat);
+            data.setColumnName(DSRConstants.NOM_REF_MAILLE);
+            data.setType(STRING);
+            data.setValue(null);
+            values.put(DSRConstants.NOM_REF_MAILLE, data);
+        }
+
+        // If typeInfoGeoMaille Given, infos about the referentiel must be present
+		String[] codeMaille = { DSRConstants.TYPE_INFO_GEO_MAILLE };
+		ArrayList<String> notEmpty = notEmptyInList(codeMaille, values);
+
+		if (notEmpty.size() > 0) {
+
+            // Then checks if they are empty
+            String[] refMaille = { DSRConstants.VERSION_REF_MAILLE, DSRConstants.NOM_REF_MAILLE };
+            ArrayList<String> emptyVersion = emptyInList(refMaille, values);
+			if (emptyVersion.size() > 0) {
+                // Fills with the default values (taken from table liste_referentiels)
+                GenericData versionRefMailleGD = values.get(DSRConstants.VERSION_REF_MAILLE);
+                versionRefMailleGD.setValue(defaultValues.get(DSRConstants.VERSION_REF_MAILLE));
+
+                GenericData nomRefMailleGD = values.get(DSRConstants.NOM_REF_MAILLE);
+                nomRefMailleGD.setValue(defaultValues.get(DSRConstants.NOM_REF_MAILLE));
 			}
 		}
 	}
