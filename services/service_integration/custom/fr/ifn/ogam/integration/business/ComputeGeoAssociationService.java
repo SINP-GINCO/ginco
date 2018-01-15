@@ -219,9 +219,8 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 		logger.debug("Computing administrative associations for observation with id : " + parameters.get(DSRConstants.OGAM_ID) + " and provider id : "
 				+ parameters.get(DSRConstants.PROVIDER_ID) + " in table : " + tableName);
 
+		// Si le fichier contient une géométrie, onpart d'elle pour calculer les autres rattachements
 		if (geometry != null && !geometry.isEmpty()) {
-
-			logger.debug(geometry);
 			String geometryType = geometryDAO.getGeometryType(geometry);
 			geometryDAO.createGeometryLinksFromGeometry(format, tableName, parameters, conn);
 			if ("POINT".equals(geometryType) || "MULTIPOINT".equals(geometryType)) {
@@ -237,17 +236,20 @@ public class ComputeGeoAssociationService implements IntegrationEventListener {
 				departementDAO.createDepartmentsLinksFromPolygon(format, tableName, parameters, conn);
 				mailleDAO.createMaillesLinksFromPolygon(format, tableName, parameters, conn);
 			}
-		} else if (hasCodesCommunes) {
+		// Sinon, si tigCom vaut 1 OU qu'aucun tig vaut 1 et que le fichier contient un code commune, on rattache à partir de la commmune
+		} else if (typeInfoGeoCommune.equals("1") || (hasCodesCommunes && !typeInfoGeoMaille.equals("1") && !typeInfoGeoDepartement.equals("1"))) {
 			geometryDAO.createGeometryLinksFromCommunes(format, tableName, parameters, conn);
 			communeDAO.createCommunesLinksFromCommunes(format, parameters, conn);
 			mailleDAO.createMaillesLinksFromCommunes(format, parameters, conn);
 			departementDAO.createDepartmentsLinksFromCommunes(format, parameters, conn);
-		} else if (hasCodesMailles) {
+		// Sinon, si tigmaille vaut 1 OU qu'aucun tig ne vaut 1 et que le fichier contient un code maille, on rattache à partir de la maille
+		} else if (typeInfoGeoMaille.equals("1") || (hasCodesMailles && !typeInfoGeoCommune.equals("1") && !typeInfoGeoDepartement.equals("1"))) {
 			geometryDAO.createGeometryLinksFromMailles(format, tableName, parameters, conn);
 			communeDAO.createCommunesLinksFromMailles(format, parameters, conn);
 			mailleDAO.createMaillesLinksFromMailles(format, parameters, conn);
 			departementDAO.createDepartmentsLinksFromMailles(format, parameters, conn);
-		} else if (hasCodesDepartements) {
+		// Sinon, si tigdept vaut 1 OU qu'aucun tig ne vaut 1 et que le fichier contient un code dept, on rattache à partir du departement
+		} else if (typeInfoGeoDepartement.equals("1") || (hasCodesDepartements && !typeInfoGeoCommune.equals("1") && !typeInfoGeoMaille.equals("1"))) {
 			geometryDAO.createGeometryLinksFromDepartements(format, tableName, parameters, conn);
 			communeDAO.createCommunesLinksFromDepartements(format, parameters, conn);
 			mailleDAO.createMaillesLinksFromDepartements(format, parameters, conn);
