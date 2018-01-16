@@ -27,6 +27,7 @@ try {
 	/* patch code here*/
 	// execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/liste_referentiels.sql", $config);
+	execCustSQLFile("$sprintDir/update_sensitivity_automatic_algorithm.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

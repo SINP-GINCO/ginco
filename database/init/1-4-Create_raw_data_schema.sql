@@ -229,6 +229,7 @@ $BODY$
 	DECLARE
 		rule_codage integer;
 		rule_autre character varying(500);
+		rule_cd_occ integer;
 		rule_full_citation character varying(500);
 		rule_cd_doc integer;
 	BEGIN
@@ -263,7 +264,7 @@ $BODY$
 	NEW.sensialerte = '0';
 		
 	-- Does the data deals with sensitive taxon for the departement and is under the sensitive duration ?
-	SELECT especesensible.codage, especesensible.autre INTO rule_codage, rule_autre
+	SELECT especesensible.codage, especesensible.autre, especesensible.cd_occ_statut_biologique INTO rule_codage, rule_autre, rule_cd_occ
 	FROM referentiels.especesensible
 	LEFT JOIN referentiels.especesensiblelistes ON especesensiblelistes.cd_sl = especesensible.cd_sl
 	WHERE 
@@ -289,11 +290,11 @@ $BODY$
 		)
 		AND CD_DEPT = ANY (NEW.codedepartementcalcule)
 		AND (DUREE IS NULL OR (NEW.jourdatefin::date + DUREE * '1 year'::INTERVAL > now()))
-		AND (NEW.occstatutbiologique IN (NULL, '0', '1', '2') OR cd_occ_statut_biologique IS NULL OR NEW.occstatutbiologique = CAST(cd_occ_statut_biologique AS text))
+		AND (NEW.occstatutbiologique IS NULL OR NEW.occstatutbiologique IN ( '0', '1', '2') OR cd_occ_statut_biologique IS NULL OR NEW.occstatutbiologique = CAST(cd_occ_statut_biologique AS text))
 	
 	--  Quand on a plusieurs règles applicables il faut choisir en priorité
 	--  Les règles avec le codage le plus fort
-	--  Parmis elles, la règle sans commentaire (rule_autre is null)
+	--  Parmi elles, la règle sans commentaire (rule_autre is null)
 	--  Voir #579
 	ORDER BY codage DESC, autre DESC
 	--  on prend la première règle, maintenant qu'elles ont été ordonnées
@@ -310,7 +311,8 @@ $BODY$
 	NEW.sensiniveau = rule_codage;
 		
 	-- If there is a comment, sensitivity must be defined manually
-	If (rule_autre IS NOT NULL) Then
+	-- If the rule has a cd_occ_statut_biologique and not the data, sensitivity must be defined manually
+	If (rule_autre IS NOT NULL OR (NEW.occstatutbiologique IS NULL AND rule_cd_occ IS NOT NULL)) Then
 		NEW.sensialerte = '1';
 	End if ;
 			
