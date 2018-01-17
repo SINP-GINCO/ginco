@@ -385,7 +385,11 @@ Providers:
       Merci de choisir un résultat avec l'autocomplétion, et de ne pas modifier le champ après la sélection.
     exist_provider : L'organisme est déja présent dans la plateforme, il n'a pas été rajouté.
     success: L'organisme a bien été enregistré
-
+  detail:
+    Jdd: Jeux de données
+    JddIdentifiant: Identifiant
+    JddTitle: Titre
+    noJddFound: Aucun jeux de données trouvés.
 Role:
   delete:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?

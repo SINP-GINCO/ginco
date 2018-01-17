@@ -7,6 +7,7 @@ use Ign\Bundle\GincoBundle\Form\UserAddFromINPNType;
 use Ign\Bundle\GincoBundle\Form\UserRoleType;
 use Ign\Bundle\OGAMBundle\Controller\UsermanagementController as BaseController;
 use Ign\Bundle\OGAMBundle\Entity\Website\Provider;
+use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
 use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
 use Ign\Bundle\OGAMBundle\Entity\Website\Role;
 use Ign\Bundle\OGAMBundle\Entity\Website\User;
@@ -413,12 +414,23 @@ class UsermanagementController extends BaseController {
 		
 		$logger->info('submissions : ' . \Doctrine\Common\Util\Debug::dump($submissions, 3, true, false));
 		
+		//Get the JDD linked to JDDId
+		$submRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Jdd', 'raw_data');
+		$jddInfos = array();
+		$previousJddId = 0;
+		foreach ($submissions as $key=>$valuesField) {
+			$jddResult = $submRepo->getActiveJddsFields($valuesField->getJdd()->getId());
+			if($previousJddId != $valuesField->getJdd()->getId()) {
+				$jddInfos = array_merge($jddInfos,$jddResult);
+				$previousJddId = $valuesField->getJdd()->getId();
+			}
+		}
 		// Get the raw data linked to this provider
-		
 		return $this->render('OGAMBundle:UsermanagementController:show_provider_content.html.twig', array(
 			'provider' => $provider,
 			'users' => $users,
-			'submissions' => $submissions
+			'submissions' => $submissions,
+			'jddInfos' => $jddInfos
 		));
 	}
 }

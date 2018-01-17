@@ -108,4 +108,32 @@
 {% else %}
 	<div class="no-submission">{% trans %}No submission found{% endtrans %}</div>
 {% endif %}
+
+<h2>{% trans %}Providers.detail.Jdd{% endtrans %}</h2>
+
+{% if jddInfos|length > 0 %}
+    <!-- Show all the submissions -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{% trans %}Providers.detail.JddIdentifiant{% endtrans %}</th>
+            <th>{% trans %}Providers.detail.JddTitle{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for jddInfo in jddInfos %}
+       		{% if jddInfo.key == 'metadataId' %}
+       		    <tr>
+       		        <td>{{ jddInfo.value }}</td>
+       		{% endif %} 
+            {% if jddInfo.key == 'title' %}
+                    <td>{{ jddInfo.value }}</td>
+       		    </tr>
+       		{% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+	<div class="no-submission">{% trans %}Providers.detail.noJddFound{% endtrans %}</div>
+{% endif %}
 {% endblock %}
