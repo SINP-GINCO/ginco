@@ -77,7 +77,7 @@ class SubmissionController extends Controller {
 	 * - submissionId: the id of the submission
 	 * - report: type of report, ie: sensibilityReport | permanentIdsReport | integrationReport
 	 *
-	 * Authorized for logged users with both view_sensitive and data_integration rights
+	 * Authorized for logged users with data_integration right (see security.yml)
 	 *
 	 * @Route("/download-report", name = "download-report")
 	 */
