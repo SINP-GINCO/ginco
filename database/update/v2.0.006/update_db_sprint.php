@@ -25,9 +25,10 @@ $config = loadPropertiesFromArgs();
 
 try {
 	/* patch code here*/
-	// execCustSQLFile("$sprintDir/xxxx.sql", $config);
+	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/liste_referentiels.sql", $config);
 	execCustSQLFile("$sprintDir/update_sensitivity_automatic_algorithm.sql", $config);
+	execCustSQLFile("$sprintDir/drop_old_sequences.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
@@ -37,8 +38,9 @@ try {
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch php here */
 system("php $sprintDir/add_insee_dep_to_commune_carto_2017.php $CLIParams", $returnCode1);
+system("php $sprintDir/update_sequences_currentval.php $CLIParams", $returnCode2);
 
-if ($returnCode1 != 0) {
+if ($returnCode1 != 0 || $returnCode2 != 0 ) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
