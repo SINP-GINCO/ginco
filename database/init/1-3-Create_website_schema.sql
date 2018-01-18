@@ -137,7 +137,6 @@ ON UPDATE NO ACTION ON DELETE NO ACTION;
 /*==============================================================*/
 /* Table : PROVIDERS                                            */
 /*==============================================================*/
-CREATE SEQUENCE provider_id_seq;
 CREATE TABLE providers (
 id          character varying NOT NULL,
 label       character varying,
