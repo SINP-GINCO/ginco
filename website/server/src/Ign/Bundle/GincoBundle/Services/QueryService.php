@@ -104,7 +104,6 @@ class QueryService extends BaseService {
 
 		// Generate and save the table formats in session
 		$tables = $this->genericService->getAllFormats($this->schema, $mappingSet->getFieldMappingArray());
-		$session->set('all_tables_formats', $tables);
 
 		// Generate the SQL Request
 		$from = $this->genericService->generateGincoSQLFromRequest($this->schema, $mappingSet, self::$submissionJoin);
@@ -345,8 +344,7 @@ class QueryService extends BaseService {
 		$mappingSet = $queryForm->getFieldMappingSet();
 
 		// Identify the field carrying the location information
-		$tables = $this->genericService->getAllFormats($this->schema, $mappingSet);
-		$tables = $session->get('all_tables_formats');
+		$tables = $this->genericService->getAllFormats($this->schema, $mappingSet->getFieldMappingArray());
 		$tableFieldRepository = $this->metadataModel->getRepository('OGAMBundle:Metadata\TableField');
 		$tableFormatRepository = $this->metadataModel->getRepository('OGAMBundle:Metadata\TableFormat');
 		$locationField = $tableFieldRepository->getGeometryField($this->schema, array_keys($tables), $this->locale);

@@ -223,14 +223,12 @@ class GenericService extends BaseGenericService {
 		$rootTable = array_shift($tables);
 
 		// Get the root table fields
-
 		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schemaCode, $rootTable->getTableFormat()
 			->getFormat(), null, $this->locale);
 
 		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
-		$hasConfirmSubmission = array_key_exists('CONFIRM_SUBMISSION', $rootTableFields);
-		$hasRoleInfo = array_key_exists('hasGrandPublicRole', $userInfos);
-
+		$hasConfirmSubmission = array_key_exists('CONFIRM_SUBMISSION', $userInfos) && $userInfos['CONFIRM_SUBMISSION'];
+		$hasGrandPublicRole = array_key_exists('hasGrandPublicRole', $userInfos) && $userInfos['hasGrandPublicRole'];
 		//
 		// Prepare the WHERE clause
 		//
@@ -250,13 +248,13 @@ class GenericService extends BaseGenericService {
 
 		// Right management
 		// Check the provider id of the logged user
-		$this->logger->debug('hasGrandPublicRole ? ' . $userInfos['hasGrandPublicRole']? "Yes":"No");
-		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider && $hasRoleInfo && !$userInfos['hasGrandPublicRole']) {
-			$where .= " AND " . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId'] . "'";
+		// If the user role has not the permission to see unpublished data of other provider (ie has not DATA_QUERY_OTHER_PROVIDER), he can see his own datas or other providers published datas
+		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider && !$hasGrandPublicRole) {
+			$where .= " AND (" . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId'] . "' OR submission.step='VALIDATE')";
 		}
 
-		// User with "publish data" permission can see submissions all the time
-		if ($hasConfirmSubmission) {
+		// User with "publish data" permission can see submissions all the time, so we dont filter on validate submission
+		if (!$hasConfirmSubmission) {
 			$where .= " AND submission.step = 'VALIDATE' ";
 		}
 

@@ -168,7 +168,7 @@ class QueryController extends BaseController {
 			$grandPublicRole = $this->getDoctrine()
 				->getManager('website')
 				->getRepository('OGAMBundle:Website\Role')
-				->find(4);
+				->findByLabel('Grand public');
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
@@ -181,8 +181,10 @@ class QueryController extends BaseController {
 					->getId() : NULL,
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
-				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
+				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
+				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
 			];
+
 			$where = $request->getSession()->get('query_SQLWhere');
 			$from = $request->getSession()->get('query_SQLFrom');
 			$nbResults = $request->getSession()->get('query_Count');
@@ -265,7 +267,8 @@ class QueryController extends BaseController {
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
+				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
+				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
 			];
 
 			$this->get('ogam.query_service')->buildRequestGinco($queryForm, $userInfos, $maxPrecisionLevel, $requestId, $request->getSession());
