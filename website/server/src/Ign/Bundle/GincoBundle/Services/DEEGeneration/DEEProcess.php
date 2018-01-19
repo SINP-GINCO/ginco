@@ -358,10 +358,12 @@ class DEEProcess {
 		
 		// Send mail notification to MNHN
 		$this->mailManager->sendEmail('IgnGincoBundle:Emails:DEE-notification-to-MNHN.html.twig', $parameters, $this->configuration->getConfig('deeNotificationMail', 'sinp-dev@ign.fr'));
-		
+		echo "Email notification sent to MNHN...\n";
+
 		// Send mail notification to user
-		if ($action != 'DEE.suppression' && $notifyUser) {
+		if ($action != 'DEE.suppression' && $notifyUser && !empty($user->getEmail())) {
 			$this->mailManager->sendEmail('IgnGincoBundle:Emails:DEE-notification-to-user.html.twig', $parameters, $user->getEmail());
+			echo "User notification sent to " . $user->getEmail() . "...\n";
 		}
 	}
 }
