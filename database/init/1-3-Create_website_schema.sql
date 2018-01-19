@@ -292,6 +292,7 @@ CREATE TABLE website.messages
   status character varying(20) NOT NULL,
   length integer,
   progress integer,
+  tries integer NOT NULL DEFAULT 1,
   created_at timestamp without time zone NOT NULL ,
   updated_at timestamp without time zone NOT NULL ,
   CONSTRAINT pk_messages PRIMARY KEY (id)
