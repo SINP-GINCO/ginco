@@ -1,0 +1,1 @@
+ALTER TABLE website.messages ADD tries INT NOT NULL DEFAULT 1;

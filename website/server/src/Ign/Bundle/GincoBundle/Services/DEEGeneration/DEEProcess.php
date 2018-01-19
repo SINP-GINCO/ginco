@@ -193,25 +193,16 @@ class DEEProcess {
 				$archiveDownloadPath = '/dee/' . pathinfo($archiveFileSystemPath, PATHINFO_BASENAME);
 				$DEE->setFilePath($archiveDownloadPath);
 			}
-			
+
 			if (!$this->messageToCancel($message)) {
-				// Report message status if not null
-				if ($message) {
-					$message->setStatus(Message::STATUS_COMPLETED);
-				}
-				
-				// Set final statuses on DEE
+				// Send mail notifications to MNHN and user
+				$this->sendDEENotificationMail($DEE, $notifyUser);
+				// Set final statuses on DEE (only after mail notification cause this is part of the process:
+				// if MNHN is not notified, it is like the DEE is not generated)
 				$DEE->setStatus(DEE::STATUS_OK);
 				$this->em->flush();
 			}
-			
-			if ($notifyUser) {
-				if (!$this->messageToCancel($message)) {
-					// Send mail notifications to MNHN and user
-					$this->sendDEENotificationMail($DEE, $notifyUser);
-				}
-			}
-			
+
 			// Cancel message and delete DEE if needed
 			if ($this->messageToCancel($message)) {
 				$this->deleteDEELineAndFiles($DEE->getId(), $DEEfilePath);
@@ -308,7 +299,7 @@ class DEEProcess {
 	 * @param DEE $DEE
 	 *        	the DEE object
 	 */
-	public function sendDEENotificationMail(DEE $DEE, $notifyUser) {
+	public function sendDEENotificationMail(DEE $DEE, $notifyUser = true) {
 		$jdd = $DEE->getJdd();
 		$user = $DEE->getUser();
 		

@@ -19,6 +19,9 @@ class Message
 	const STATUS_COMPLETED = 'COMPLETED'; // Has been consumed and terminated normally
 	const STATUS_TOCANCEL  = 'TO CANCEL'; // A 'cancel' signal has been sent, the consumer must handle it
 	const STATUS_CANCELLED = 'CANCELLED'; // Has been cancelled, the consumer terminated and cancelled the task
+	const STATUS_ERROR     = 'ERROR'; // task returned with an error
+
+	const MAX_RETRY = 5; // Max number of times we allow the task to be retried
 
     /**
      * @var integer
@@ -65,6 +68,15 @@ class Message
      * @ORM\Column(name="progress", type="integer", nullable=true)
      */
     private $progress = 0;
+
+	/**
+	 *
+	 * @var int
+	 *   The number of times the message have been sent (can be requeued after temporary error)
+	 *
+	 * @ORM\Column(name="tries", type="integer")
+	 */
+	private $tries = 1;
 
     /**
      * @var \DateTime
@@ -220,6 +232,32 @@ class Message
 	{
 		return intval($this->length) > 0 ? $this->progress*100.0/$this->length : 0;
 	}
+
+	/**
+	 * If MAX_RETRY is not readched,
+	 * Increment tries and set status to PENDING in order to retry to send message.
+	 * Else return false.
+	 *
+	 * @return bool
+	 */
+	public function retry() {
+		if ($this->tries < Self::MAX_RETRY ) {
+			$this->tries++;
+			$this->status = Self::STATUS_PENDING;
+			$this->progress = 0;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @return int The number of tries already done
+	 */
+	public function getTries()
+	{
+		return $this->tries;
+	}
+
 
 	/**
 	 * @ORM\PrePersist()
