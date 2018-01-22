@@ -177,8 +177,7 @@ class QueryController extends BaseController {
 			// Call the service to get the definition of the columns
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()
-					->getProvider()
-					->getId() : NULL,
+					->getProvider() : NULL,
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
@@ -262,8 +261,7 @@ class QueryController extends BaseController {
 			// Call the service to get the definition of the columns
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()
-					->getProvider()
-					->getId() : NULL,
+					->getProvider() : NULL,
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
@@ -587,8 +585,7 @@ class QueryController extends BaseController {
 
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()
-					->getProvider()
-					->getId() : NULL,
+					->getProvider() : NULL,
 				"DATA_EDITION" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION')
 			];
 

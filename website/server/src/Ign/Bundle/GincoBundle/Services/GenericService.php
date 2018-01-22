@@ -249,13 +249,9 @@ class GenericService extends BaseGenericService {
 		// Right management
 		// Check the provider id of the logged user
 		// If the user role has not the permission to see unpublished data of other provider (ie has not DATA_QUERY_OTHER_PROVIDER), he can see his own datas or other providers published datas
+		// Users under Defaut organism are considered under different organisms
 		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider && !$hasGrandPublicRole) {
-			$where .= " AND (" . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId'] . "' OR submission.step='VALIDATE')";
-		}
-
-		// User with "publish data" permission can see submissions all the time, so we dont filter on validate submission
-		if (!$hasConfirmSubmission) {
-			$where .= " AND submission.step = 'VALIDATE' ";
+			$where .= " AND ((" . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId']->getId() . "' AND '" . $userInfos['providerId']->getLabel() . "' != 'Defaut') OR submission.step='VALIDATE')";
 		}
 
 		// Return the completed SQL request

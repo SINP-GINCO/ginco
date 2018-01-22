@@ -41,12 +41,12 @@ Affichage des résultats d'une recherche sur la carte
 
 Lorsqu'une recherche est effectuée, les couches Géométries précises, Communes, Mailles et Départements sont activées. Ce sont les bacs de visualisation des résultats de recherche.
 
-Les résultats de la recherche sont affichés sur la carte en fonction de leurs géométrie précise et de leurs rattachements géo-administratifs, 
+Les résultats de la recherche sont affichés selon l'entité géographique sélectionnée dans le groupe de couches "Résultats de la recherche",
 Les départements sont affichés en bleu, les mailles en vert, les communes en jaune, et les géométries précises en rouge.
 
 .. image:: ../images/visu/visu-carto-recherche.png
 
-Selon le niveau de zoom, du plus haut au plus bas, le résultat sera placé soit dans son ou ses département(s), puis dans sa ou ses maille(s), puis dans sa ou ses commune(s), et enfin sa géométrie précise sera affichée.
+Selon le niveau de zoom, certains niveau géographiques ne sont pas disponibles. Par exemple, il faut zoomer sufisamment pour pouvoir sélectionner la visualisation selon les communes ou la visualisation des géométries précises.
 
 Voici une idée de la visualisation des résultats de recherche à la maille :
 
@@ -56,7 +56,7 @@ Un zoom supplémentaire permet de visualiser la ou les communes du résultat :
 
 .. image:: ../images/visu/visu-carto-recherche-commune.png
 
-Enfin un zoom maximal affiche la géométrie précise de l'observation (ici, un polygone situé sur plusieurs communes) :
+Enfin un zoom maximal affiche la géométrie précise de l'observation :
 
 .. image:: ../images/visu/visu-carto-recherche-geometrie.png
 
