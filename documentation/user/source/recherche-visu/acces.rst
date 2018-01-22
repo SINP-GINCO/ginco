@@ -4,8 +4,7 @@ Accéder au module de visualisation et de recherche de données
 =============================================================
 
 Pour accéder au module de visualisation et de recherche, sur la page d’accueil de la plateforme GINCO, 
-cliquez sur “Se connecter” et entrez vos identifiants de connexion. 
-Si vous disposez du rôle d’administrateur, vous verrez la page d’accueil suivante :
+cliquez sur “Se connecter” et entrez vos identifiants de connexion.
  
  .. image:: ../images/visu/homepage-visu.png
 

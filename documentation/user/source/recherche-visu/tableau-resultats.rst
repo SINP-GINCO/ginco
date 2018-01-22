@@ -41,4 +41,4 @@ En haut à droite du tableau, un menu déroulant permet d'exporter les résultat
  * KML : Format utilisant des balises, basé sur le XML pour les données géospatiales;
  * GeoJSON : Format utilisant la norme JSON, pour les données géospatiales.
  
- .. note:: Les géométries seront exportées en Web Mercator (EPSG 3857).
+ .. note:: Les géométries seront exportées dans la projection définies dans la configuration de la plateforme.

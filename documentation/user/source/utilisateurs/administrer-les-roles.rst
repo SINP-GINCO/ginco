@@ -39,28 +39,28 @@ Enfin, cliquez sur "Valider".
 
 Les rôles livrés avec les plateformes ont les permissions suivantes :
 
-========================================================  ==============  ==========  ============
-Permissions                                               administrateur  producteur  grand_public
-========================================================  ==============  ==========  ============
+==========================================================  ==============  ==========  ============
+Permissions                                                 administrateur  producteur  grand_public
+==========================================================  ==============  ==========  ============
 Administrer les utilisateurs                                 **Oui**          Non         Non
-Importer des données                                         **Oui**          Non         Non
-Visualiser les données régionales publiées                   **Oui**        **Oui**     **Oui**
-Visualiser les données d'un autre fournisseur                **Oui**          Non         Non
-Exporter les données (au format CSV, GeoJson, kml...)        **Oui**        **Oui**       Non
-Editer les données                                           **Oui**          Non         Non
-Editer les données d'un autre fournisseur                    **Oui**          Non         Non
+Annuler une soumission de données d'un autre organisme       **Oui**          Non         Non
 Annuler une soumission de données validées                   **Oui**          Non         Non
-Annuler une soumission de données d'un autre fournisseur     **Oui**          Non         Non
-Vérifier la configuration technique (PHP, mémoire,...)         Non            Non         Non
 Configurer le méta-modèle                                    **Oui**          Non         Non
-Visualiser les données sensibles                             **Oui**          Non         Non
-Visualiser les données privées                               **Oui**          Non         Non
+Editer les données                                           **Oui**          Non         Non
+Editer les données d'un autre organisme                      **Oui**          Non         Non
+Exporter les données (au format CSV, GeoJson, kml...)        **Oui**        **Oui**       Non
 Exporter les jeux de données au format DEE                   **Oui**          Non         Non
 Gérer les jeux de données de tous les utilisateurs           **Oui**          Non         Non
-Publier les données                                          **Oui**          Non         Non
 Gérer les requêtes publiques                                 **Oui**          Non         Non
 Gérer ses requêtes privées                                   **Oui**        **Oui**       Non
-========================================================  ==============  ==========  ============
+Importer des données                                         **Oui**          Non         Non
+Publier les données                                          **Oui**          Non         Non
+Vérifier la configuration technique (PHP, mémoire,...)         Non            Non         Non
+Visualiser les données non publiées d'un autre organisme     **Oui**          Non         Non
+Visualiser les données privées                               **Oui**          Non         Non
+Visualiser les données régionales publiées                   **Oui**        **Oui**     **Oui**
+Visualiser les données sensibles                             **Oui**          Non         Non
+==========================================================  ==============  ==========  ============
 
 Modifier un rôle
 ----------------

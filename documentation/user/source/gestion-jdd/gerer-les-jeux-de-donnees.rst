@@ -109,10 +109,14 @@ Sous "Rapport" (**5**) on peut télécharger :
 Enfin, sous "Actions" il est possible de :
 
 * **Publier les données** pour les imports réussis. Cela rend les données de la soumission requêtables pour tous les utilisateurs (donc visibles sur la carte et dans le tableau de résultats), et permet de faire l'export GML.
-  Tant que la soumission n'est pas publiée, les données sont visibles uniquement aux utilisateurs ayant la permission "Publier les données", qui sont aussi les seuls à pouvoir réaliser l'action de publication.
+  Tant que la soumission n'est pas publiée, les données sont visibles uniquement aux utilisateurs du même organisme que celui ayant effectué l'import, ou aux utilisateurs ayant la permission "Visualiser les données non publiées d'un autre organisme".
+  Pour réaliser l'action de publication, il faut avoir la permission "Publier les données".
 
-* **Dépublier les données** rend les données de la soumission non consultables pour les utilisateurs n'ayant pas la permission "Publier les données".
+* **Dépublier les données** rend les données de la soumission non consultables pour les utilisateurs d'un organisme différent de celui ayant importé les données, ou ne possédant pas la permission "Visualiser les données non publiées d'un autre organisme".
+  Pour réaliser l'action de dépublication, il faut avoir la permission "Publier les données".
   De même, l'export GML n'est plus réalisable.
+  
+.. note:: Les utilisateurs qui ne sont pas rattachés à un véritable organisme (et donc rattachés à l'organisme d'attente noté Défaut), ne peuvent pas voir les données importées non publiées avec l'organisme Défaut.
   
 * **Supprimer le jeu de données** (**6**) supprime le jeu de données et les données associées, même si elles ont été publiées entre temps et ont fait l'objet d'un export vers la plateforme nationale.
 

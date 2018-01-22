@@ -31,6 +31,7 @@ Les formulaires regroupent les champs de façon logique.
 |Formulaire     |    Champs                              |
 +===============+========================================+
 |Observation    | -  nomcite                             |
+|               | -  nomvalide                           |
 |               | -  typedenombrement                    |
 |               | -  objetdenombrement                   |
 |               | -  denombrementmax                     |
