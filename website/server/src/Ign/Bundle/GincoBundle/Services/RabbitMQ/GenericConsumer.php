@@ -1,12 +1,10 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services\RabbitMQ;
 
-use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess;
 use OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
-// use Ign\Bundle\GincoBundle\GMLExport\GMLExport;
 
 class GenericConsumer implements ConsumerInterface {
 
@@ -58,7 +56,7 @@ class GenericConsumer implements ConsumerInterface {
 	/**
 	 * Date string to prepend outputs (sent to log file)
 	 */
-	private function datelog() {
+	protected function datelog() {
 		return date("Y-m-d H:i:s"). ": ";
 	}
 
@@ -84,91 +82,36 @@ class GenericConsumer implements ConsumerInterface {
 			$message = $this->em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
 			echo $this->datelog() . "Received message $messageId with action '$action' and status ".$message->getStatus(). ".\n";
 
-			// if PENDING mark it as runnning
-			if ($message->getStatus() == Message::STATUS_PENDING) {
-				$message->setStatus(Message::STATUS_RUNNING);
-				$this->em->flush();
-			}
+			switch ($message->getStatus()) {
 
-			// if TO CANCEL, mark it CANCELLED, terminate tasks properly, and discard the message
-			else if ($message->getStatus() == Message::STATUS_TOCANCEL) {
-				$message->setStatus(Message::STATUS_CANCELLED);
-				$this->em->flush();
-
-				switch ($action) {
-					// -- DEE generation: delete DEE line
-					case 'deeProcess':
-						// Nothing to do, we deleted the DEE line in the controller
-						echo $this->datelog() . "Message cancelled... DEE deleted.\n";
-						break;
-					default:
-						echo $this->datelog() . "Message cancelled... discard it.\n";
-				}
-				return true;
-			}
-
-			// if ERROR (the previous try exited with an ERROR status),
-			// terminate tasks properly, and discard the message
-			if ($message->getStatus() == Message::STATUS_ERROR) {
-				switch ($action) {
-					// -- DEE generation: delete DEE line
-					case 'deeProcess':
-						$this->DEEProcess->deleteDEELineAndFiles($parameters['DEEId']);
-						echo $this->datelog() . "Message in ERROR... DEE deleted.\n";
-						break;
-					default:
-						echo $this->datelog() . "Message in ERROR... discard it.\n";
-				}
-				return true;
-			}
-
-			// if COMPLETED (can happen if message is stuck...)
-			// return true to acknowledge it and release the message from the queue
-			if ($message->getStatus() == Message::STATUS_COMPLETED) {
-				return true;
-			}
-
-			// Perform task
-			switch ($action) {
-
-				// -- Dummy action just to illustrate the process
-				//
-				case 'wait':
-					$message->setLength($parameters['time']);
-					$message->setProgress(0);
+				// if TO CANCEL, mark it CANCELLED, terminate tasks properly, and discard the message
+				case Message::STATUS_TOCANCEL:
+					$message->setStatus(Message::STATUS_CANCELLED);
 					$this->em->flush();
-
-					for ($i=0; $i<$parameters['time']; $i++) {
-
-						// Check if message has been cancelled externally
-						$this->em->refresh($message);
-						if ($message->getStatus() == Message::STATUS_TOCANCEL) {
-							$message->setStatus(Message::STATUS_CANCELLED);
-							$this->em->flush();
-							echo $this->datelog() . "Message cancelled... stop waiting.\n";
-							return true;
-						}
-
-						sleep(1);
-						echo '.';
-						$message->setProgress($i+1);
-						$this->em->flush();
-					}
-					$message->setStatus(Message::STATUS_COMPLETED);
-					$this->em->flush();
-					echo $this->datelog() . "finished\n";
+					$this->onCancel($action, $parameters, $message);
 					break;
 
-				// -- DEE generation, archive creation and notifications
-				//
-				case 'deeProcess':
-
-					sleep(1); // let the time to the application to update message before starting
-					$this->DEEProcess->generateAndSendDEE($parameters['DEEId'], $messageId);
-					$message->setStatus(Message::STATUS_COMPLETED);
-					$this->em->flush();
-					echo $this->datelog() . "DEE Process finished\n";
+				// if ERROR (the previous try exited with an ERROR status),
+				// terminate tasks properly, and discard the message
+				case Message::STATUS_ERROR:
+					$this->onError($action, $parameters, $message);
 					break;
+
+				// if PENDING mark it as runnning...
+				case Message::STATUS_PENDING:
+					$message->setStatus(Message::STATUS_RUNNING);
+					$this->em->flush();
+					// ... and continue to RUNNING case
+
+				// Perform task
+				case Message::STATUS_RUNNING:
+					$this->onRunning($action, $parameters, $message);
+					break;
+
+				default:
+					// Any other status will lead to the further "return true;" and the message will be discarded
+					// (for example, if message is resend with "COMPLETED" status, this way it is not stuck.
+					echo $this->datelog() . " !!! Message status not catched : " . $message->getStatus() ."\n";
 			}
 		} catch (\Exception $e) {
 			// If any of the above fails due to temporary failure, or uncaught exception,
@@ -187,7 +130,8 @@ class GenericConsumer implements ConsumerInterface {
 				}
 				$this->em->flush();
 
-				// Requeue the message in both cases (the ERROR case is handled before)
+				// Requeue the message in both cases
+				// (the ERROR case will be handled by the switch next time the message is received)
 				return false;
 			}
 		}
@@ -195,4 +139,96 @@ class GenericConsumer implements ConsumerInterface {
 		// message can safely be removed from the queue.
 		return true;
 	}
+
+	/**
+	 * Specific code to execute when receiving a message with CANCEL or TO_CANCEL status
+	 *
+	 * @param $action
+	 * @param null $parameters
+	 * @param null $message
+	 */
+	protected function onCancel($action, $parameters = null, $message = null) {
+		switch ($action) {
+			// -- DEE generation: delete DEE line
+			case 'deeProcess':
+				// Nothing to do, we deleted the DEE line in the controller
+				echo $this->datelog() . "Message cancelled... DEE already deleted.\n";
+				break;
+			default:
+				echo $this->datelog() . "Message cancelled... discard it.\n";
+		}
+	}
+
+	/**
+	 * Specific code to execute when receiving a message with ERROR status
+	 *
+	 * @param $action
+	 * @param null $parameters
+	 * @param null $message
+	 */
+	protected function onError($action, $parameters = null, $message = null) {
+		switch ($action) {
+			// -- DEE generation: delete DEE line
+			case 'deeProcess':
+				$this->DEEProcess->deleteDEELineAndFiles($parameters['DEEId']);
+				echo $this->datelog() . "Message in ERROR... DEE deleted.\n";
+				break;
+			default:
+				echo $this->datelog() . "Message in ERROR... discard it.\n";
+		}
+	}
+
+	/**
+	 * Specific code to execute  when receiving a message with RUNNING or PENDING status
+	 *
+	 * @param $action
+	 * @param null $parameters
+	 * @param null $message
+	 */
+	protected function onRunning($action, $parameters = null, $message = null) {
+		switch ($action) {
+
+			// -- Dummy action just to illustrate the process
+			//
+			case 'wait':
+				$message->setLength($parameters['time']);
+				$message->setProgress(0);
+				$this->em->flush();
+
+				for ($i=0; $i<$parameters['time']; $i++) {
+
+					// Check if message has been cancelled externally
+					$this->em->refresh($message);
+					if ($message->getStatus() == Message::STATUS_TOCANCEL) {
+						$message->setStatus(Message::STATUS_CANCELLED);
+						$this->em->flush();
+						echo $this->datelog() . "Message cancelled... stop waiting.\n";
+						return true;
+					}
+
+					sleep(1);
+					echo '.';
+					$message->setProgress($i+1);
+					$this->em->flush();
+				}
+				$message->setStatus(Message::STATUS_COMPLETED);
+				$this->em->flush();
+				echo $this->datelog() . "finished\n";
+				break;
+
+			// -- DEE generation, archive creation and notifications
+			//
+			case 'deeProcess':
+
+				sleep(1); // let the time to the application to update message before starting
+				$this->DEEProcess->generateAndSendDEE($parameters['DEEId'], $message->getId());
+				if ($message->getStatus() == Message::STATUS_RUNNING) {
+					$message->setStatus(Message::STATUS_COMPLETED);
+				}
+				$this->em->flush();
+				echo $this->datelog() . "DEE Process finished\n";
+				break;
+		}
+	}
+
 }

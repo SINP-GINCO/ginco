@@ -195,8 +195,10 @@ class DEEProcess {
 			}
 
 			if (!$this->messageToCancel($message)) {
+
 				// Send mail notifications to MNHN and user
 				$this->sendDEENotificationMail($DEE, $notifyUser);
+				echo "MNHN and User notification (sent to " . $DEE->getUser()->getEmail() . ")...\n";
 				// Set final statuses on DEE (only after mail notification cause this is part of the process:
 				// if MNHN is not notified, it is like the DEE is not generated)
 				$DEE->setStatus(DEE::STATUS_OK);
@@ -358,12 +360,10 @@ class DEEProcess {
 		
 		// Send mail notification to MNHN
 		$this->mailManager->sendEmail('IgnGincoBundle:Emails:DEE-notification-to-MNHN.html.twig', $parameters, $this->configuration->getConfig('deeNotificationMail', 'sinp-dev@ign.fr'));
-		echo "Email notification sent to MNHN...\n";
 
 		// Send mail notification to user
 		if ($action != 'DEE.suppression' && $notifyUser && !empty($user->getEmail())) {
 			$this->mailManager->sendEmail('IgnGincoBundle:Emails:DEE-notification-to-user.html.twig', $parameters, $user->getEmail());
-			echo "User notification sent to " . $user->getEmail() . "...\n";
 		}
 	}
 }
