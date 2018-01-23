@@ -30,6 +30,7 @@ try {
 	execCustSQLFile("$sprintDir/update_sensitivity_automatic_algorithm.sql", $config);
 	execCustSQLFile("$sprintDir/drop_old_sequences.sql", $config);
 	execCustSQLFile("$sprintDir/update_permissions.sql", $config);
+	execCustSQLFile("$sprintDir/update_messages.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
