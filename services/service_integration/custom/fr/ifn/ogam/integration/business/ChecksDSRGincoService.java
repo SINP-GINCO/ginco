@@ -87,6 +87,36 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
         GenericData jourDateDebutGD = values.get(DSRConstants.JOUR_DATE_DEBUT);
         destFormat = jourDateDebutGD.getFormat();
 
+		// Then we check if every value we deal with (possible insertion of values) created as a Generic Data
+        Map<String, String> fields = new HashMap<String, String>();
+        fields.put(DSRConstants.OBS_METHODE, CODE);
+        fields.put(DSRConstants.OCC_ETAT_BIOLOGIQUE, CODE);
+        fields.put(DSRConstants.OCC_SEXE, CODE);
+        fields.put(DSRConstants.OCC_NATURALITE, CODE);
+        fields.put(DSRConstants.OCC_STADE_DE_VIE, CODE);
+        fields.put(DSRConstants.OCC_STATUT_BIOGEOGRAPHIQUE, CODE);
+        fields.put(DSRConstants.OCC_STATUT_BIOLOGIQUE, CODE);
+        fields.put(DSRConstants.PREUVE_EXISTANTE, CODE);
+        fields.put(DSRConstants.PREUVE_NUMERIQUE, CODE);
+        fields.put(DSRConstants.PREUVE_NON_NUMERIQUE, CODE);
+        fields.put(DSRConstants.DETERMINATEUR_NOM_ORGANISME, STRING);
+        fields.put(DSRConstants.NOM_VALIDE, STRING);
+        fields.put(DSRConstants.HEURE_DATE_DEBUT, TIME);
+        fields.put(DSRConstants.HEURE_DATE_FIN, TIME);
+        fields.put(DSRConstants.VERSION_REF_MAILLE, STRING);
+        fields.put(DSRConstants.NOM_REF_MAILLE, STRING);
+        fields.put(DSRConstants.VERSION_TAXREF, STRING);
+
+        for (Map.Entry<String, String> field : fields.entrySet()) {
+            if (!values.containsKey(field.getKey())) {
+                GenericData data = new GenericData();
+                data.setFormat(destFormat);
+                data.setColumnName(field.getKey());
+                data.setType(field.getValue());
+                values.put(field.getKey(), data);
+            }
+        }
+
         // ----- SUJET OBSERVATION ------
 
 		// If cdNom or cdRef Given, versionTaxref must be present. If not, fill it with default value
@@ -507,16 +537,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		ArrayList<String> notEmpty = notEmptyInList(cdNomRef, values);
 
 		if (notEmpty.size() > 0) {
-			// First Create the GD for versionTaxref if not exists (non existing column in CSV)
-            if (!values.containsKey(DSRConstants.VERSION_TAXREF)) {
-                GenericData data = new GenericData();
-                data.setFormat(destFormat);
-                data.setColumnName(DSRConstants.VERSION_TAXREF);
-                data.setType(STRING);
-                values.put(DSRConstants.VERSION_TAXREF, data);
-            }
-
-            // Then checks if versionTaxref is empty
+			// checks if versionTaxref is empty
             String[] vTaxref = { DSRConstants.VERSION_TAXREF };
             ArrayList<String> emptyVersion = emptyInList(vTaxref, values);
 			if (emptyVersion.size() > 0) {
@@ -536,24 +557,6 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 * @throws Exception
 	 */
 	private void maillesVersion(Map<String, GenericData> values) throws CheckException {
-
-        // First Create the GD for versionRefMaille and nomRefMaille if not exists (non existing column in CSV)
-        if (!values.containsKey(DSRConstants.VERSION_REF_MAILLE)) {
-            GenericData data = new GenericData();
-            data.setFormat(destFormat);
-            data.setColumnName(DSRConstants.VERSION_REF_MAILLE);
-            data.setType(STRING);
-            data.setValue(null);
-            values.put(DSRConstants.VERSION_REF_MAILLE, data);
-        }
-        if (!values.containsKey(DSRConstants.NOM_REF_MAILLE)) {
-            GenericData data = new GenericData();
-            data.setFormat(destFormat);
-            data.setColumnName(DSRConstants.NOM_REF_MAILLE);
-            data.setType(STRING);
-            data.setValue(null);
-            values.put(DSRConstants.NOM_REF_MAILLE, data);
-        }
 
         // If typeInfoGeoMaille Given, infos about the referentiel must be present
 		String[] codeMaille = { DSRConstants.TYPE_INFO_GEO_MAILLE };
@@ -777,15 +780,6 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	private void calculateValuesSujetObservation(Map<String, GenericData> values) throws Exception {
 
 		// -- Calculate nomValide
-
-		// First Create the GD for nomValide if not exists (non existing column in CSV)
-		if (!values.containsKey(DSRConstants.NOM_VALIDE)) {
-			GenericData data = new GenericData();
-			data.setFormat(destFormat);
-			data.setColumnName(DSRConstants.NOM_VALIDE);
-			data.setType(STRING);
-			values.put(DSRConstants.NOM_VALIDE, data);
-		}
 		GenericData nomValideGD = values.get(DSRConstants.NOM_VALIDE);
 		if (nomValideGD != null) {
 			if (empty(nomValideGD)) {
@@ -912,30 +906,11 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 */
 	private void fillHeureDateIfEmpty(Map<String, GenericData> values) throws CheckException {
 
-		// First Create the GD for heureDateDebut if not exists (non existing column in CSV)
-		if (!values.containsKey(DSRConstants.HEURE_DATE_DEBUT)) {
-			GenericData data = new GenericData();
-			data.setFormat(destFormat);
-			data.setColumnName(DSRConstants.HEURE_DATE_DEBUT);
-			data.setType(TIME);
-			values.put(DSRConstants.HEURE_DATE_DEBUT, data);
-		}
-		// Then fill it if empty
 		GenericData heureDateDebutGD = values.get(DSRConstants.HEURE_DATE_DEBUT);
 		if (empty(heureDateDebutGD)) {
 			Time heureDateDebut = new Time(0,0,0);
 			heureDateDebutGD.setValue(heureDateDebut);
 		}
-
-		// First Create the GD for heureDateFin if not exists (non existing column in CSV)
-		if (!values.containsKey(DSRConstants.HEURE_DATE_FIN)) {
-			GenericData data = new GenericData();
-			data.setFormat(destFormat);
-			data.setColumnName(DSRConstants.HEURE_DATE_FIN);
-			data.setType(TIME);
-			values.put(DSRConstants.HEURE_DATE_FIN, data);
-		}
-		// Then fill it if empty
 		GenericData heureDateFinGD = values.get(DSRConstants.HEURE_DATE_FIN);
 		if (empty(heureDateFinGD)) {
 			Time heureDateFin = new Time(23,59,59);
