@@ -249,9 +249,9 @@ class GenericService extends BaseGenericService {
 		// Right management
 		// Check the provider id of the logged user
 		// If the user role has not the permission to see unpublished data of other provider (ie has not DATA_QUERY_OTHER_PROVIDER), he can see his own datas or other providers published datas
-		// Users under Defaut organism are considered under different organisms
+		// Users under Defaut organism are considered under different organisms (warning: provider.id for Defaut organism must be 1 in database
 		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider && !$hasGrandPublicRole) {
-			$where .= " AND ((" . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId']->getId() . "' AND '" . $userInfos['providerId']->getLabel() . "' != 'Defaut') OR submission.step='VALIDATE')";
+			$where .= " AND ((" . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId']->getId() . "' AND '" . $userInfos['providerId']->getId() . "' != '1') OR submission.step='VALIDATE')";
 		}
 
 		// Return the completed SQL request

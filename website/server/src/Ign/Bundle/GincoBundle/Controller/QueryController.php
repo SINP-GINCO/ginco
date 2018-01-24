@@ -181,6 +181,7 @@ class QueryController extends BaseController {
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
+				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
 				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
 			];
 
@@ -302,7 +303,8 @@ class QueryController extends BaseController {
 
 		// Call the service to get the definition of the columns
 		$userInfos = [
-			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER')
+			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
+			"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 		];
 
 		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
@@ -733,7 +735,8 @@ class QueryController extends BaseController {
 			for ($page = 0; $page < $pagesTotal; $page ++) {
 
 				$userInfos = [
-					"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER')
+					"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
+					"DATA_EDITION_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 				];
 
 				// Get requested data

@@ -26,7 +26,7 @@
         "definition":"The plot identifier",
         "hidden":true
     },
-    {% if userInfos['DATA_EDITION_OTHER_PROVIDER'] or userInfos['DATA_QUERY_OTHER_PROVIDER'] %}
+    {% if not userInfos['DATA_EDITION_OTHER_PROVIDER'] %}
      {# Right management : add the provider id of the data #}
     {
         "name":"_provider_id",

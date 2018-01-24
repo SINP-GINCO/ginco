@@ -546,8 +546,8 @@ class QueryService extends BaseService {
 			// Add the line id
 			$resultRow[] = $line['id'];
 
-			// Right management : add the provider id of the data
-			if (!$userInfos['DATA_QUERY_OTHER_PROVIDER']) {
+			// Right management : add the provider id of the data if the user cannot edit all
+			if (!$userInfos['DATA_EDITION_OTHER_PROVIDER']) {
 				$resultRow[] = $line['_provider_id'];
 			}
 			$resultRows[] = $resultRow;
