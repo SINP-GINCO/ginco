@@ -1,0 +1,3 @@
+DROP SCHEMA IF EXISTS geosource CASCADE;
+
+DROP ROLE IF EXISTS geosource;
