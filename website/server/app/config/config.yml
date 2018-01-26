@@ -41,6 +41,7 @@ twig:
     exception_controller: app.exception_controller:showAction
     globals: 
       configurationManager : '@ogam.configuration_manager'
+      anonymous: '@app.anonymous_user'
 
     # Use Boostrap forms - horizontal and overriden 4 + 4 columns
     form_themes:
