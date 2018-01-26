@@ -30,6 +30,11 @@ services:
       class: Ign\Bundle\GincoBundle\Services\INPNUserUpdater
       arguments: ["@doctrine", "@ogam.configuration_manager", "@ginco.inpn_provider_service", "@logger"]
 
+    # Get anonymous user
+    app.anonymous_user:
+      class: Ign\Bundle\OGAMBundle\Services\AnonymousUser
+      arguments: ["@doctrine", "visiteur"]
+
     # Service used to encode a challenge for the user login
     ogam.challenge_response_encoder:
         class: Ign\Bundle\OGAMBundle\Services\ChallengeResponseEncoder
