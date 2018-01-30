@@ -90,7 +90,7 @@ Elle permet de créer un nouveau jeu de données (**1**).
 Un tableau regroupe les jeux de données existants en indiquant leur titre et leur identifiant de métadonnée.
 La colonne **Actions** permet de :
 
-2. Visualiser un jeu de données en détail.
+2. Visualiser un jeu de données en détail en cliquant sur le titre du jeu de données
 3. Supprimer un jeu de données. La suppression n'est possible que si le jeu de données ne comporte aucune soumission (croix rouge). Dans le cas contraire, la croix est grisée.
 
 Au sein d'un jeu de données, ce tableau liste les fichiers de données qui ont été soumis à l'application (**4**). Pour chaque soumission, on visualise :
@@ -99,9 +99,14 @@ Au sein d'un jeu de données, ce tableau liste les fichiers de données qui ont 
 * le nombre de lignes (plus exactement le nombre de données) que comporte le fichier
 * le statut de la soumission (en cours, ok, error)
 
-Sous "Rapport" (**5**) on peut télécharger :
+Sous "Rapport" (**5**): 
+
+On peut télécharger en cas d'erreur lors de l'import de données:
 
 * le **Rapport de conformité et cohérence** qui est un pdf listant les éventuelles erreurs rencontrées lors de l'intégration.
+
+On peut télécharger en cas de succès d'import de données:
+ 
 * le **Rapport de sensibilité** qui est un csv listant les données sensibles du jeu de données (le calcul de la sensibilité
   fait partie des traitements réalisés par l'application lors de l'import). Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
 * le **Rapport des identifiants permanents** qui est un csv associant un identifiant permanent à chaque donnée de la soumission (plus précisément le champ identifiantOrigine). Le calcul de l’identifiant permanent est réalisé par l’application lorsque le champ du fichier est vide à l’import.. Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
