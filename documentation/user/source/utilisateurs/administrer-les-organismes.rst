@@ -36,6 +36,7 @@ Vous accédez ensuite à :
 * la liste des utilisateurs associés à cet organisme ;
 * la liste des jeux de données associés à cet organisme ;
 * la liste des soumissions (fichiers de données) associées à cet organisme.
+* la liste des jeux de données utilisés par cet organisme
 
 Vous ne pouvez supprimer un organisme de la plateforme que si ces trois listes sont vides.
 
