@@ -32,7 +32,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 	/***
 	 * The logger used to log the errors or several information.**
-	 * 
+	 *
 	 * @see org.apache.log4j.Logger
 	 */
 	private final transient Logger logger = Logger.getLogger(this.getClass());
@@ -147,7 +147,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		// Commune is 0..*
 		String[] communeAll = { DSRConstants.CODE_COMMUNE, DSRConstants.NOM_COMMUNE, DSRConstants.ANNEE_REF_COMMUNE, DSRConstants.TYPE_INFO_GEO_COMMUNE };
-		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(communeAll, communeAll, values, "Communes");
+		String[] communeMandatory = { DSRConstants.CODE_COMMUNE, DSRConstants.NOM_COMMUNE, DSRConstants.TYPE_INFO_GEO_COMMUNE };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(communeAll, communeMandatory, values, "Communes");
 
 		// same number of elements in codeCommune and nomCommune
 		String[] codeNomCommune = { DSRConstants.CODE_COMMUNE, DSRConstants.NOM_COMMUNE };
@@ -160,7 +161,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		// Departement is 0..*
 		String[] departementAll = { DSRConstants.CODE_DEPARTEMENT, DSRConstants.ANNEE_REF_DEPARTEMENT, DSRConstants.TYPE_INFO_GEO_DEPARTEMENT };
-		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(departementAll, departementAll, values, "Départements");
+		String[] departementMandatory = { DSRConstants.CODE_DEPARTEMENT, DSRConstants.TYPE_INFO_GEO_DEPARTEMENT };
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(departementAll, departementMandatory, values, "Départements");
 
 		// ----- MAILLE ------
 
@@ -193,7 +195,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 	/**
 	 * Fills default and calculated values
-	 * 
+	 *
 	 * @param submissionId
 	 *            the submission identifier
 	 * @param values
@@ -235,6 +237,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
         fields.put(DSRConstants.NOM_VALIDE, STRING);
         fields.put(DSRConstants.HEURE_DATE_DEBUT, TIME);
         fields.put(DSRConstants.HEURE_DATE_FIN, TIME);
+        fields.put(DSRConstants.ANNEE_REF_COMMUNE, INTEGER);
+        fields.put(DSRConstants.ANNEE_REF_DEPARTEMENT, INTEGER);
         fields.put(DSRConstants.VERSION_REF_MAILLE, STRING);
         fields.put(DSRConstants.NOM_REF_MAILLE, STRING);
         fields.put(DSRConstants.VERSION_TAXREF, STRING);
@@ -285,11 +289,11 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			calculateValuesDeterminateur(values);
 		}
 
-		// ----- MAILLE -----
+		// ----- MAILLE, COMMUNE, DEPARTEMENT (VERSIONS) -----
 
-        maillesVersion(values);
+		refsGeoVersion(values);
 	}
-	
+
 	/**
 	 * Event called before the integration of a submission of data.
 	 *
@@ -308,11 +312,13 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		defaultValues.put(DSRConstants.VERSION_TAXREF, refDAO.getReferentielVersion("taxref"));
 		defaultValues.put(DSRConstants.VERSION_REF_MAILLE, refDAO.getReferentielVersion("codemaillevalue"));
 		defaultValues.put(DSRConstants.NOM_REF_MAILLE, refDAO.getReferentielLabel("codemaillevalue"));
+		defaultValues.put(DSRConstants.ANNEE_REF_COMMUNE, refDAO.getReferentielVersion("commune_carto_2017"));
+		defaultValues.put(DSRConstants.ANNEE_REF_DEPARTEMENT, refDAO.getReferentielVersion("departement_carto_2017"));
 	}
 
 	/**
 	 * Event called after the integration of a submission of data.
-	 * 
+	 *
 	 * @param submissionId
 	 *            the submission identifier
 	 * @throws Exception
@@ -327,7 +333,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 	/**
 	 * Perfoms all coherence checks for GINCO DSR
-	 * 
+	 *
 	 * @param submissionId
 	 *            the submission identifier
 	 * @param format
@@ -342,7 +348,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 *             in case of database error
 	 */
 	public void afterLineInsertion(Integer submissionId, String format, String tableName, Map<String, GenericData> values, String id) throws Exception {
-		
+
 		// DO NOTHING
 	}
 
@@ -568,13 +574,14 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	/**
 	 * If mailleReferentielName and version are empty but a code maille is given,
 	 * fill it with default version
+	 * And also anneeRefCommune and anneeRefDepartement
 	 *
 	 * @param values
 	 * @throws Exception
 	 */
-	private void maillesVersion(Map<String, GenericData> values) throws CheckException {
+	private void refsGeoVersion(Map<String, GenericData> values) throws CheckException {
 
-        // If typeInfoGeoMaille Given, infos about the referentiel must be present
+        // If typeInfoGeoMaille Given, infos about the maille referentiel must be present
 		String[] codeMaille = { DSRConstants.TYPE_INFO_GEO_MAILLE };
 		ArrayList<String> notEmpty = notEmptyInList(codeMaille, values);
 
@@ -591,6 +598,20 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
                 GenericData nomRefMailleGD = values.get(DSRConstants.NOM_REF_MAILLE);
                 nomRefMailleGD.setValue(defaultValues.get(DSRConstants.NOM_REF_MAILLE));
 			}
+		}
+
+		// If typeInfoGeoCommune Given, infos about the commune referentiel must be present
+		if (!empty(values.get(DSRConstants.TYPE_INFO_GEO_COMMUNE)) && empty(values.get(DSRConstants.ANNEE_REF_COMMUNE))) {
+			// Fills with the default values (taken from table liste_referentiels)
+			GenericData versionRefCommuneGD = values.get(DSRConstants.ANNEE_REF_COMMUNE);
+			versionRefCommuneGD.setValue(Integer.parseInt(defaultValues.get(DSRConstants.ANNEE_REF_COMMUNE)));
+		}
+
+		// If typeInfoGeoDepartement Given, infos about the departement referentiel must be present
+		if (!empty(values.get(DSRConstants.TYPE_INFO_GEO_DEPARTEMENT)) && empty(values.get(DSRConstants.ANNEE_REF_DEPARTEMENT))) {
+			// Fills with the default values (taken from table liste_referentiels)
+			GenericData versionRefDepartementGD = values.get(DSRConstants.ANNEE_REF_DEPARTEMENT);
+			versionRefDepartementGD.setValue(Integer.parseInt(defaultValues.get(DSRConstants.ANNEE_REF_DEPARTEMENT)));
 		}
 	}
 
