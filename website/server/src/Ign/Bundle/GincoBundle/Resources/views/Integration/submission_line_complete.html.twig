@@ -22,7 +22,7 @@
         <td>{{ submission.creationDate|date("Y-m-d") }}</td>
         <td>
             <p>{{ submission.provider.label }}</p>
-            <p>{{ submission.user.login }}</p>
+            <p>{{ submission.user.username }}</p>
         </td>
         <td>{{ submission.dataset is not null ? submission.dataset.label : 'IntegrationPage.NoDataset'|trans }}</td>
         {# Step: we group steps INSERT and CHECK because we don't use CHECK IN Ginco #}
