@@ -72,6 +72,20 @@ public class JddService implements IntegrationEventListener {
 	}
 
 	/**
+	 * Event called when checking  a line of data.
+	 *
+	 * @param submissionId
+	 *            the submission identifier
+	 * @param values
+	 *            Entry values
+	 * @throws Exception,
+	 *             CheckException CheckException in case of database error
+	 */
+	public void checkLine(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException {
+		// DO NOTHING
+	}
+
+	/**
 	 * Event called before each insertion of a line of data.
 	 * Add or Update the field 'jddmetadonneedeeid' for the data in the Java map given.
 	 * 
