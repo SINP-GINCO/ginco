@@ -32,6 +32,7 @@ try {
 	execCustSQLFile("$sprintDir/update_permissions.sql", $config);
 	execCustSQLFile("$sprintDir/update_messages.sql", $config);
 	execCustSQLFile("$sprintDir/delete_geosource_schema.sql", $config);
+	execCustSQLFile("$sprintDir/index_mode_taxref_code.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
