@@ -7156,7 +7156,6 @@ body {
 .submission-line {
   height: 30px;
   line-height: 30px;
-  overflow: hidden;
 }
 .submission-line:before,
 .submission-line:after {
