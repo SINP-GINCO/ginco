@@ -601,14 +601,20 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		}
 
 		// If typeInfoGeoCommune Given, infos about the commune referentiel must be present
-		if (!empty(values.get(DSRConstants.TYPE_INFO_GEO_COMMUNE)) && empty(values.get(DSRConstants.ANNEE_REF_COMMUNE))) {
+		String[] tigCommune = { DSRConstants.TYPE_INFO_GEO_COMMUNE };
+		ArrayList<String> notEmptyCommune = notEmptyInList(tigCommune, values);
+
+		if ((notEmptyCommune.size() > 0) && empty(values.get(DSRConstants.ANNEE_REF_COMMUNE))) {
 			// Fills with the default values (taken from table liste_referentiels)
 			GenericData versionRefCommuneGD = values.get(DSRConstants.ANNEE_REF_COMMUNE);
 			versionRefCommuneGD.setValue(Integer.parseInt(defaultValues.get(DSRConstants.ANNEE_REF_COMMUNE)));
 		}
 
 		// If typeInfoGeoDepartement Given, infos about the departement referentiel must be present
-		if (!empty(values.get(DSRConstants.TYPE_INFO_GEO_DEPARTEMENT)) && empty(values.get(DSRConstants.ANNEE_REF_DEPARTEMENT))) {
+		String[] tigDepartement = { DSRConstants.TYPE_INFO_GEO_DEPARTEMENT };
+		ArrayList<String> notEmptyDepartement = notEmptyInList(tigDepartement, values);
+
+		if ((notEmptyDepartement.size() > 0) && empty(values.get(DSRConstants.ANNEE_REF_DEPARTEMENT))) {
 			// Fills with the default values (taken from table liste_referentiels)
 			GenericData versionRefDepartementGD = values.get(DSRConstants.ANNEE_REF_DEPARTEMENT);
 			versionRefDepartementGD.setValue(Integer.parseInt(defaultValues.get(DSRConstants.ANNEE_REF_DEPARTEMENT)));
