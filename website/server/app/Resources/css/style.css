@@ -6897,6 +6897,8 @@ form .checkboxes.disabled {
 }
 .progress .progress-bar {
   font-size: 11px;
+  background-color: #b3c951;
+  color: #5a6915;
 }
 .progress .progress-bar.color-1 {
   background-color: #f79f3f;
