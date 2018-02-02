@@ -34,6 +34,7 @@ DROP INDEX IF EXISTS metadata.mode_taxref_complete_name_idx;
 DROP INDEX IF EXISTS metadata.mode_taxref_label_idx;
 DROP INDEX IF EXISTS metadata.mode_taxref_parent_code_idx;
 DROP INDEX IF EXISTS metadata.mode_taxref_vernacular_name_idx;
+DROP INDEX IF EXISTS metadata.mode_taxref_code;
 
 --We insert cd_nom and not lb_name in name to see code in TAXREF subtype fields (cdNom and cdRef).
 
