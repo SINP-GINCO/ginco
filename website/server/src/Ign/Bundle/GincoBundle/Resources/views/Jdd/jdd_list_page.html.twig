@@ -28,12 +28,12 @@
 {# Size of columns array and filename max size #}
 {% if allJdds is defined and allJdds == true %}
     {% set colSizes = {
-    jddActions: 12,
-    jddTitleId: 56,
+    jddActions: 10,
+    jddTitleId: 50,
     creationDate: 25,
-    providerUser: 56,
-    submissionsActions: 50,
-    filesLines: 55,
+    providerUser: 50,
+    submissionsActions: 40,
+    filesLines: 60,
     submissionStatus: 12,
     deeDepositDate: 30,
     deeActions: 12} %}
@@ -45,8 +45,8 @@
     jddTitleId: 56,
     creationDate: 20,
     submissionsActions: 30,
-    filesLines: 55,
-    submissionStatus: 10,
+    filesLines: 50,
+    submissionStatus: 15,
     deeDepositDate: 30,
     deeActions: 10} %}
     {% set filenameMaxLength = 32 %}
@@ -207,7 +207,7 @@
                 {# Actions (including reports) #}
                 <td>
                     {% if jdd.activeSubmissions|length > 0 %}
-                        {% for submission in jdd.activeSubmissions %}<div class="submission-line-actions">
+                        {% for submission in jdd.activeSubmissions %}<div class="submission-line submission-line-actions">
                             {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
                         </div>
                         {% endfor %}
@@ -218,7 +218,7 @@
                 {# File and lines #}
                 <td>
                     {% for submission in jdd.activeSubmissions %}
-                        <div class="submission-line-file">
+                        <div class="submission-line submission-line-file">
                             {% for file in submission.files %}
                                 {% set filename = file.fileName|trim|replace({'\\':'/'})|split('/')|last %}
                                 {% if filename|length > 22 %}
@@ -247,7 +247,7 @@
                 {# Status -- see integration-progress-bars.js.twig #}
                 <td>
                     {% for submission in jdd.activeSubmissions %}
-                        <div class="submission-line-status" >
+                        <div class="submission-line submission-line-status" >
                             <div class="integration-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
                             <div class="integration-progress hidden">
                                 <div class="progress">
