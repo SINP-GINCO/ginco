@@ -6893,6 +6893,18 @@ form .checkboxes.disabled {
 }
 .progress {
   margin-bottom: 10px;
+  margin-top: 5px;
+}
+.progress .progress-bar {
+  font-size: 11px;
+}
+.progress .progress-bar.color-1 {
+  background-color: #f79f3f;
+  color: #c86c08;
+}
+.progress .progress-bar.color-2 {
+  background-color: #b3c951;
+  color: #5a6915;
 }
 .well {
   border: none;
@@ -7140,8 +7152,9 @@ body {
   width: 100%;
 }
 .submission-line {
-  padding: 3px 0;
-  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  overflow: hidden;
 }
 .submission-line:before,
 .submission-line:after {
@@ -7158,32 +7171,6 @@ body {
 }
 .submission-line:after {
   clear: both;
-}
-.submission-line .file,
-.submission-line .lines,
-.submission-line .status,
-.submission-line .reports,
-.submission-line .actions {
-  display: block;
-  float: left;
-  padding-bottom: 1px;
-}
-.submission-line .file {
-  width: 35%;
-}
-.submission-line .lines {
-  width: 10%;
-}
-.submission-line .status {
-  width: 20%;
-}
-.submission-line .reports {
-  width: 25%;
-  padding-right: 5px;
-}
-.submission-line .actions {
-  width: 10%;
-  text-align: center;
 }
 .dee-state,
 .dee-actions {
