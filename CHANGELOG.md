@@ -103,3 +103,13 @@ par rapport à la version précédente.
 Stabilisation de la version précédente et correction de bugs. 
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.4...v2.0.5)
+
+## V2.0.6 (05/02/2017)
+
+* Correction d'un cas manquant dans le calcul des rattachements administratifs (#1377)
+* Remplissage automatique à l'import des versions des référentiels si ceux-ci ne sont pas précisés dans le fichier d'import
+* Implémentation d'un cas manquant dans le calcul de la sensibilité 
+* Corrections de bugs dans l'accès aux données selon les permissions
+* Améliorations de stabilité et de performances de l'import et l'export DEE  
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.0.5...v2.0.6)
