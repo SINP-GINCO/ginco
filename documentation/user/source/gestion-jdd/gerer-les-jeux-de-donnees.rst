@@ -31,7 +31,7 @@ L’import de données ce fait au sein d’un jeu de données déclaré dans le 
 
 .. image:: ../images/gestion-jdd/nouveau-jdd-1.png
 
-Cliquez sur le lien "Importer des données" du jeu de données auquel vous souhaitez ajouter des données.
+Cliquez sur le lien "Ajouter un fichier" du jeu de données auquel vous souhaitez ajouter des données.
 
 .. image:: ../images/gestion-jdd/nouveau-jdd-2.png
 
@@ -49,6 +49,7 @@ provenant d'autres organismes que le sien. Il faut pour cela avoir au préalable
 .. image:: ../images/gestion-jdd/nouveau-jdd-3.png
 
 Vous devez enfin uploader votre ou vos fichiers csv (**1**). Ceux-ci doivent peser *moins de 150 Mo*.
+Vous pouvez également uploader votre ou vos fichiers au format shapefile (voir :ref:`fichier_import_shapefile`).
 
 Vous pouvez télécharger un fichier d'exemple (**2**) pour chaque fichier demandé, contenant :
 
