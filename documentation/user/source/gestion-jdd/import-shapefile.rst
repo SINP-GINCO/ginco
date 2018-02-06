@@ -1,5 +1,7 @@
 .. Format du fichier d'import et des champs
 
+.. _fichier_import_shapefile:
+
 Fichier d'import shapefile
 ==========================
 
