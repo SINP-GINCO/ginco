@@ -1,0 +1,33 @@
+{% extends "IgnGincoBundle:Emails:base-email.html.twig" %}
+
+{%- block subject %}
+    [GINCO {{ region }}] Export disponible
+{% endblock -%}
+
+{%- block email_body_text %}
+    {% autoescape true %}
+        Bonjour,
+
+        L'export que vous avez demandé le {{ created|date("d/m/Y H:i:s") }} sur la plateforme {{ region }} a été réalisé.
+        Le fichier est disponible à l'adresse suivante : {{ download_url }}
+        
+        Vous pouvez le télécharger pendant 10 jours avant effacement.
+
+        Bien cordialement.
+
+    {% endautoescape %}
+{% endblock -%}
+
+{%- block email_body_html %}
+    {% autoescape false %}
+        <p>Bonjour,</p>
+
+        <p> L'export que vous avez demandé le {{ created|date("d/m/Y H:i:s") }} sur la plateforme <em>{{ region }}</em>, a été réalisé.
+          Le fichier est disponible à l'adresse suivante : <em>{{ download_url }}</em>
+
+        <p>Vous pouvez le télécharger pendant 10 jours avant effacement.</p>
+
+        <p>Bien cordialement.</p>
+
+    {% endautoescape %}
+{% endblock -%}

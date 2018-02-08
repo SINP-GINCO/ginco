@@ -6,6 +6,8 @@
 /web/js/
 !web/dee/.gitkeep
 /web/dee/
+/web/export/
+!web/export/.gitkeep
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml
