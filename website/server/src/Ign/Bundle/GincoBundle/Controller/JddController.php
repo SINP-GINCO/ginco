@@ -78,10 +78,13 @@ class JddController extends BaseController {
 	 */
 	public function newAction(Request $request) {
 
-		// Redirect url is integration_home when creating a new jdd, put it in session to redirect to it at the end of the process
 		// Get the referer url, to redirect to it at the end of the action
 		$refererUrl = $request->headers->get('referer');
-		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_jdd_list');
+		if ($refererUrl && in_array($refererUrl, [$this->generateUrl('user_jdd_list', [], true), $this->generateUrl('all_jdd_list', [], true)])) {
+			$redirectUrl = $refererUrl;
+		} else {
+			$redirectUrl = $this->generateUrl('user_jdd_list');
+		}
 		$session = $request->getSession();
 		if (!$session->has('redirectToUrl'))
 			$session->set('redirectToUrl', $redirectUrl);
