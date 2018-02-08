@@ -31,13 +31,13 @@ class QueryController extends BaseController {
 	public function showQueryFormAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('showQueryFormAction');
-
+		
 		// Clean previous results
 		$repo = $this->getDoctrine()
 			->getManager('mapping')
 			->getRepository(Result::class);
 		$repo->cleanPreviousResults(session_id());
-
+		
 		// Check if the parameter of the default page is set
 		if ($request->query->get('tab') === "predefined") {
 			$logger->debug('defaultTab predefined');
@@ -46,13 +46,13 @@ class QueryController extends BaseController {
 			$logger->debug('defaultTab edition');
 			$defaultTab = 'edition-add';
 		}
-
+		
 		// Add the configuration parameters to the session for the map proxies (mapserverProxy and tilecacheProxy)
 		if (!$request->getSession()->has('proxy_ConfigurationParameters')) {
 			$configuration = $this->get('ogam.configuration_manager');
 			$request->getSession()->set('proxy_ConfigurationParameters', $configuration->getParameters());
 		}
-
+		
 		// Forward the user to the next step
 		$visuUrl = ($this->container->getParameter('kernel.environment') == 'dev') ? '/odd' : '/odp';
 		$visuUrl = $request->getBasePath() . $visuUrl;
@@ -71,14 +71,14 @@ class QueryController extends BaseController {
 	 */
 	public function ajaxresetresultAction() {
 		$this->get('logger')->debug('ajaxresetresultAction');
-
+		
 		$sessionId = session_id();
-
+		
 		$repo = $this->getDoctrine()
 			->getManager('mapping')
 			->getRepository(Result::class);
 		$repo->cleanPreviousResults($sessionId);
-
+		
 		return new JsonResponse([
 			'success' => true
 		]);
@@ -93,17 +93,17 @@ class QueryController extends BaseController {
 	public function ajaxbuildrequestAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('ajaxbuildrequestAction');
-
+		
 		// Check the validity of the POST
 		if (!$request->isMethod('POST')) {
 			$logger->debug('form is not a POST');
 			return $this->redirectToRoute('homepage');
 		}
-
+		
 		$datasetId = $request->request->getAlnum('datasetId');
-
+		
 		try {
-
+			
 			// Parse the input parameters and create a request object
 			$queryForm = new QueryForm();
 			$queryForm->setDatasetId($datasetId);
@@ -111,7 +111,7 @@ class QueryController extends BaseController {
 				if (strpos($inputName, "criteria__") === 0 && !$this->get('ogam.query_service')->isEmptyCriteria($inputValue)) {
 					$criteriaName = substr($inputName, strlen("criteria__"));
 					$split = explode("__", $criteriaName);
-
+					
 					// the user can request on sensiNiveau or diffusionniveauprecision only if he has the permission
 					if (($split[1] != 'sensiniveau' || $this->getUser()->isAllowed('VIEW_SENSITIVE')) && ($split[1] != 'diffusionniveauprecision' || $this->getUser()->isAllowed('VIEW_PRIVATE'))) {
 						$queryForm->addCriterion($split[0], $split[1], $inputValue);
@@ -120,22 +120,22 @@ class QueryController extends BaseController {
 						throw new \Exception($this->get('translator')->trans('Forbidden search'));
 					}
 				}
-
+				
 				if (strpos($inputName, "column__") === 0) {
 					$columnName = substr($inputName, strlen("column__"));
 					$split = explode("__", $columnName);
 					$queryForm->addColumn($split[0], $split[1]);
 				}
 			}
-
+			
 			if ($queryForm->isValid()) {
 				// Store the request parameters in session
 				$request->getSession()->set('query_QueryForm', $queryForm);
-
+				
 				// Activate the result layer
 				// TODO: Check if still mandatory
 				// $this->mappingSession->activatedLayers[] = 'result_locations';
-
+				
 				return new JsonResponse([
 					'success' => true
 				]);
@@ -161,7 +161,7 @@ class QueryController extends BaseController {
 	public function ajaxgetresultsbboxAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('ajaxgetresultsbboxAction');
-
+		
 		$configuration = $this->get('ogam.configuration_manager');
 		ini_set("max_execution_time", $configuration->getConfig('max_execution_time', 480));
 		try {
@@ -173,22 +173,21 @@ class QueryController extends BaseController {
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
 			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
-
+			
 			// Call the service to get the definition of the columns
 			$userInfos = [
-				"providerId" => $this->getUser() ? $this->getUser()
-					->getProvider() : NULL,
+				"providerId" => $this->getUser() ? $this->getUser()->getProvider() : NULL,
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
 				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
 				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
 			];
-
+			
 			$where = $request->getSession()->get('query_SQLWhere');
 			$from = $request->getSession()->get('query_SQLFrom');
 			$nbResults = $request->getSession()->get('query_Count');
-
+			
 			$this->get('ogam.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
 			// Execute the request
 			$resultsbbox = $this->get('ogam.query_service')->getResultsBBox($request->getSession()
@@ -218,7 +217,7 @@ class QueryController extends BaseController {
 		$observationId = $request->request->get('observationId');
 		$logger->debug('ajaxgetobservationbboxAction : ' . $observationId);
 		$locale = $this->get('ogam.locale_listener')->getLocale();
-
+		
 		try {
 			$bbox = $this->get('ogam.query_service')->getObservationBoundingBox($observationId, $request->getSession(), $this->getUser(), $locale);
 			// Send the result as a JSON String
@@ -242,7 +241,7 @@ class QueryController extends BaseController {
 	public function ajaxgetresultcolumnsAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('ajaxgetresultcolumns');
-
+		
 		try {
 			$grandPublicRole = $this->getDoctrine()
 				->getManager('website')
@@ -261,17 +260,16 @@ class QueryController extends BaseController {
 			$maxPrecisionLevel = $this->get('ogam.query_service')->getMaxPrecisionLevel($queryForm->getCriteria());
 			// Call the service to get the definition of the columns
 			$userInfos = [
-				"providerId" => $this->getUser() ? $this->getUser()
-					->getProvider() : NULL,
+				"providerId" => $this->getUser() ? $this->getUser()->getProvider() : NULL,
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
 				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
 				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
 			];
-
+			
 			$this->get('ogam.query_service')->buildRequestGinco($queryForm, $userInfos, $maxPrecisionLevel, $requestId, $request->getSession());
-
+			
 			$response = new Response();
 			$response->headers->set('Content-Type', 'application/json');
 			return $this->render('OGAMBundle:Query:ajaxgetresultcolumns.json.twig', array(
@@ -294,22 +292,22 @@ class QueryController extends BaseController {
 	public function ajaxgetresultrowsAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('ajaxgetresultrows');
-
+		
 		// Get the datatable parameters
 		$start = $request->request->getInt('start');
 		$length = $request->request->getInt('limit');
 		$sort = $request->request->get('sort');
 		$sortObj = json_decode($sort, true)[0];
-
+		
 		// Call the service to get the definition of the columns
 		$userInfos = [
 			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
 			"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 		];
-
+		
 		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
 			->getLocale());
-
+		
 		// Send the result as a JSON String
 		return new JsonResponse([
 			'success' => true,
@@ -335,7 +333,7 @@ class QueryController extends BaseController {
 				throw new \InvalidArgumentException("The 'LON', 'LAT' and 'layers' parameters are required.");
 			}
 			$sessionId = session_id();
-
+			
 			$defaultResponseArray = [
 				'success' => true,
 				"layerLabel" => '',
@@ -346,7 +344,7 @@ class QueryController extends BaseController {
 				"fields" => [],
 				"data" => []
 			];
-
+			
 			if ($request->getSession()->get('query_Count', 0) == 0) {
 				return new JsonResponse($defaultResponseArray);
 			} else {
@@ -355,7 +353,7 @@ class QueryController extends BaseController {
 				$queryForm = $request->getSession()->get('query_QueryForm');
 				// Get the mappings for the query form fields
 				$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
-
+				
 				// Get the location table information
 				$tables = $this->get('ogam.generic_service')->getAllFormats($schema, $queryForm->getFieldMappingSet()
 					->getFieldMappingArray()); // Extract the location table from the last query
@@ -366,7 +364,7 @@ class QueryController extends BaseController {
 					->getRepository(TableFormat::class)
 					->getTableFormat($schema, $locationField->getFormat()
 					->getFormat(), $locale); // Get info about the location table
-
+					                         
 				// Get the intersected locations
 				$locations = $this->get('ogam.query_service')->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale, $activeLayers, $resultsLayer);
 				// $resultsLayers is the most precise layer where we have found results
@@ -377,10 +375,10 @@ class QueryController extends BaseController {
 						'name' => $resultsLayer
 					));
 				}
-
+				
 				if (!empty($locations)) {
 					// we have at least one plot found
-
+					
 					// The id is used to avoid to display two time the same result (it's a id for the result dataset)
 					$id = array(
 						'Results'
@@ -395,19 +393,19 @@ class QueryController extends BaseController {
 					); // The id must stay the first field
 					   // The data to full the store
 					$locationsData = array();
-
+					
 					foreach ($locations as $locationsIndex => $location) {
 						$locationData = array();
-
+						
 						// Get the locations identifiers
 						$key = 'SCHEMA/' . $schema . '/FORMAT/' . $locationTableInfo->getFormat();
 						$key .= '/' . $location['pk'];
 						$id[] = $key;
 						$locationData[] = $key;
-
+						
 						// Remove the pk of the available columns
 						unset($location['pk']);
-
+						
 						// Get the other fields
 						// Setup the location data and the column max length
 						foreach ($location as $columnName => $value) {
@@ -419,7 +417,7 @@ class QueryController extends BaseController {
 						}
 						// Setup the fields and columns config
 						if ($locationsIndex === (count($locations) - 1)) {
-
+							
 							// Get the table fields
 							$tableFields = $this->getDoctrine()
 								->getRepository(TableField::class)
@@ -451,11 +449,11 @@ class QueryController extends BaseController {
 						}
 						$locationsData[] = $locationData;
 					}
-
+					
 					// We must sort the array here because it can't be done
 					// into the mapfile sql request to avoid a lower performance
 					sort($id);
-
+					
 					// Check if the location table has a child table
 					$hasChild = false;
 					$children = $this->getDoctrine()
@@ -493,16 +491,16 @@ class QueryController extends BaseController {
 	public function ajaxgetpredefinedrequestlistAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('ajaxgetpredefinedrequestlist');
-
+		
 		$sort = $request->query->get('sort');
 		$dir = $request->query->getAlpha('dir');
-
+		
 		// Get the predefined values for the forms
 		$schema = $this->get('ogam.schema_listener')->getSchema();
 		$locale = $this->get('ogam.locale_listener')->getLocale();
 		$predefinedRequestRepository = $this->get('doctrine')->getRepository(PredefinedRequest::class);
 		$predefinedRequestList = $predefinedRequestRepository->getPredefinedRequestList($schema, $dir, $sort, $locale, $this->getUser());
-
+		
 		$response = new Response();
 		$response->headers->set('Content-Type', 'application/json');
 		return $this->render('OGAMBundle:Query:ajaxgetpredefinedrequestlist.json.twig', array(
@@ -517,11 +515,11 @@ class QueryController extends BaseController {
 	public function ajaxgetpredefinedrequestcriteriaAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('ajaxgetpredefinedrequestcriteria');
-
+		
 		$requestName = $request->query->get('request_name');
 		$predefinedRequestCriterionRepository = $this->get('doctrine')->getRepository(PredefinedRequestCriterion::class);
 		$locale = $this->get('ogam.locale_listener')->getLocale();
-
+		
 		$response = new Response();
 		$response->headers->set('Content-Type', 'application/json');
 		return $this->render('OGAMBundle:Query:ajaxgetpredefinedrequestcriteria.html.twig', array(
@@ -538,10 +536,10 @@ class QueryController extends BaseController {
 		$viewParam['hideGridCsvExportMenuItem'] = true; // By default the export is hidden
 		$viewParam['hideGridDataEditButton'] = true;
 		$viewParam['checkEditionRights'] = true; // By default, we don't check for rights on the data
-
+		
 		$user = $this->getUser();
 		$schema = $this->get('ogam.schema_listener')->getSchema();
-
+		
 		if ($schema == 'RAW_DATA' && $user->isAllowed('EXPORT_RAW_DATA')) {
 			$viewParam['hideGridCsvExportMenuItem'] = false;
 		}
@@ -554,7 +552,7 @@ class QueryController extends BaseController {
 		if ($user->isAllowed('DATA_EDITION_OTHER_PROVIDER')) {
 			$viewParam['checkEditionRights'] = false;
 		}
-
+		
 		$response = new Response();
 		$response->headers->set('Content-type', 'application/javascript');
 		return $this->render('OGAMBundle:Query:getgridparameters.html.twig', $viewParam, $response);
@@ -568,32 +566,31 @@ class QueryController extends BaseController {
 	public function ajaxgetdetailsAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('getDetailsAction');
-
+		
 		try {
 			// Get the names of the layers to display in the details panel
 			// GINCO-802 : disable card details map
 			$detailsLayers = null;
-
+			
 			// Get the current dataset to filter the results
 			$datasetId = $request->getSession()
 				->get('query_QueryForm')
 				->getDatasetId();
-
+			
 			// Get the id and the bbox from the request
 			$id = $request->request->get('id');
 			if (empty($id)) {
 				throw new \InvalidArgumentException('The id parameter is required.');
 			}
-
+			
 			$userInfos = [
-				"providerId" => $this->getUser() ? $this->getUser()
-					->getProvider() : NULL,
+				"providerId" => $this->getUser() ? $this->getUser()->getProvider() : NULL,
 				"DATA_EDITION" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION')
 			];
-
+			
 			// Bbox key is retrieved from POST
 			$bbox = $request->get('bbox');
-
+			
 			$response = new Response();
 			$response->headers->set('Content-Type', 'application/json');
 			return $this->render('IgnGincoBundle:Query:ajaxgetdetails.json.twig', array(
@@ -620,21 +617,21 @@ class QueryController extends BaseController {
 	protected function getLabelCache($tableField, $value) {
 		$label = '';
 		$key = strtolower($tableField->getName());
-
+		
 		// Check in local cache
 		if (isset($this->traductions[$key][$value])) {
 			$label = $this->traductions[$key][$value];
 		} else {
 			// Check in database
 			$trad = $this->get('ogam.generic_service')->getValueLabel($tableField, $value);
-
+			
 			// Put in cache
 			if (!empty($trad)) {
 				$label = $trad;
 				$this->traductions[$key][$value] = $trad;
 			}
 		}
-
+		
 		return $label;
 	}
 
@@ -648,43 +645,29 @@ class QueryController extends BaseController {
 	public function csvExportAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('csvExportAction');
-
+		
 		$user = $this->getUser();
 		$schema = $this->get('ogam.schema_listener')->getSchema();
-		$websiteSession = $request->getSession();
-
-		$requestId = $this->getDoctrine()
-			->getManager('mapping')
-			->getRepository('IgnGincoBundle:Mapping\Request')
-			->getLastRequestIdFromSession(session_id());
-
-		// Configure memory and time limit because the program ask a lot of resources
+		
 		$configuration = $this->get('ogam.configuration_manager');
-		ini_set("memory_limit", $configuration->getConfig('memory_limit', '1024M'));
-		ini_set("max_execution_time", $configuration->getConfig('max_execution_time', '480'));
-
+		
 		// Number of results to export
-		$total = $websiteSession->get('query_Count');
+		$total = $request->getSession()->get('query_Count');
 		$logger->debug('Expected lines : ' . $total);
-
-		// Query by $maxLines batches
-		$maxLines = 5000;
-
+		
 		// Start writing output (CSV file)
 		$content = "";
-
+		
 		// Define the header of the response
 		$charset = $configuration->getConfig('csvExportCharset', 'UTF-8');
-
+		
 		// Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
 		if ($charset === 'UTF-8') {
 			$content = chr(0xEF) . chr(0xBB) . chr(0xBF);
 		}
-
+		
 		if (($schema == 'RAW_DATA' && !$user->isAllowed('EXPORT_RAW_DATA'))) {
 			$content .= iconv("UTF-8", $charset, ('// No Permissions'));
-		} else if ($total > 65535) {
-			$content .= iconv("UTF-8", $charset, ('// Too many result lines (>65535)'));
 		} else {
 			// Use fputcsv to return a string
 			$arrayToCsv = function ($fields, $delimiter = ",", $enclosure = '"', $noLineReturn = false) {
@@ -692,7 +675,7 @@ class QueryController extends BaseController {
 				$fields = array_map(function ($field) {
 					return trim($field, '"');
 				}, $fields);
-
+				
 				$temp = fopen('php://memory', 'r+');
 				// use the default csv handler
 				fputcsv($temp, $fields, $delimiter, $enclosure);
@@ -704,22 +687,22 @@ class QueryController extends BaseController {
 				}
 				return $csv;
 			};
-
+			
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
-
+			
 			// Get the mappings for the query form fields
 			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
-
+			
 			// Display the default message
 			$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n");
 			$content .= iconv("UTF-8", $charset, '// ' . $this->get('translator')->trans('Data Export') . "\n");
 			$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n\n");
-
+			
 			// Request criterias
 			$content .= iconv("UTF-8", $charset, $this->csvExportCriterias($request));
 			$content .= iconv("UTF-8", $charset, "\n");
-
+			
 			// Export the column names
 			$line = array();
 			foreach ($queryForm->getColumns() as $genericFormField) {
@@ -729,44 +712,89 @@ class QueryController extends BaseController {
 				$content .= iconv("UTF-8", $charset, $tableField->getLabel() . ';');
 			}
 			$content .= iconv("UTF-8", $charset, "\n");
-
-			$pagesTotal = ceil($total / $maxLines);
-
-			for ($page = 0; $page < $pagesTotal; $page ++) {
-
-				$userInfos = [
-					"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-					"DATA_EDITION_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_EDITION_OTHER_PROVIDER')
-				];
-
-				// Get requested data
-				// they come in the form of a json; convert them associative array and then to csv
-				$data = $this->get('ogam.query_service')->getResultRowsGinco($page * $maxLines, $maxLines, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
-					->getLocale());
-
-				if ($data != null) {
-					// Write each line in the csv
-					foreach ($data as $line) {
-						// keep only the first count($resultColumns), because there is 2 or 3 technical fields sent back (after the result columns).
-						$line = array_slice($line, 0, count($queryForm->getColumns()));
-						// implode all arrays
-						foreach ($line as $index => $value) {
-							if (is_array($value)) {
-								$line[$index] = join(",", $value); // just use join because we don't want double enclosure...
-							}
+			
+			$userInfos = [
+				"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
+				"DATA_EDITION_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_EDITION_OTHER_PROVIDER')
+			];
+			
+			// Get requested data
+			// they come in the form of a json; convert them associative array and then to csv
+			// C'est ça qui prend du temps (notamment récupérer le label de chaque code...)
+			$data = $this->get('ogam.query_service')->getResultRowsGinco(0, 500, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
+				->getLocale());
+			
+			if ($data != null) {
+				// Write each line in the csv
+				foreach ($data as $line) {
+					// keep only the first count($resultColumns), because there is 2 or 3 technical fields sent back (after the result columns).
+					$line = array_slice($line, 0, count($queryForm->getColumns()));
+					// implode all arrays
+					foreach ($line as $index => $value) {
+						if (is_array($value)) {
+							$line[$index] = join(",", $value); // just use join because we don't want double enclosure...
 						}
-						// Write csv line to output
-						$outputLine = $arrayToCsv($line, ';', '"');
-						$content .= iconv("UTF-8", $charset, $outputLine);
 					}
+					// Write csv line to output
+					$outputLine = $arrayToCsv($line, ';', '"');
+					$content .= iconv("UTF-8", $charset, $outputLine);
 				}
 			}
 		}
 		$response = new Response($content, 200);
 		$response->headers->set('Content-Type', 'text/csv;charset=' . $charset . ';application/force-download;');
 		$response->headers->set('Content-disposition', 'attachment; filename=DataExport_' . date('Ymd_Hi') . '.csv');
-
+		
 		return $response;
+	}
+
+	/**
+	 * Returns a csv file corresponding to the requested data.
+	 * Fields are empty when the user doesn't have the right to view them.
+	 * (same as "hidden" in the result array).
+	 *
+	 * @Route("/csv-asyn-export", name="query_csv_asyn_export")
+	 */
+	public function csvAsynchronousExportAction(Request $request) {
+		$logger = $this->get('logger');
+		$logger->debug('csvAsynchronousExportAction');
+		
+		try {
+			$user = $this->getUser();
+			$schema = $this->get('ogam.schema_listener')->getSchema();
+			
+			if (($schema == 'RAW_DATA' && !$user->isAllowed('EXPORT_RAW_DATA'))) {
+				return new JsonResponse([
+					'success' => false,
+					'errorMessage' => "No permissions"
+				]);
+			} else {
+				// Publish the message to RabbitMQ
+				$messageId = $this->get('old_sound_rabbit_mq.ginco_generic_producer')->publish('exportCSV', [
+					'request' => $request,
+					'userInfos' => [
+						"providerId" => $this->getUser() ? $this->getUser()
+							->getProvider() : NULL,
+						"email" => $this->getUser() ? $this->getUser()
+							->getEmail() : NULL,
+						"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
+						"DATA_EDITION_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
+						"EXPORT_RAW_DATA" => $user && $user->isAllowed('EXPORT_RAW_DATA')
+					]
+				]);
+				
+				return new JsonResponse([
+					'success' => true,
+					'messageId' => $messageId
+				]);
+			}
+		} catch (\Exception $e) {
+			$logger->error('Error while getting result : ' . $e);
+			return new JsonResponse([
+				'success' => false,
+				'errorMessage' => $e->getMessage()
+			]);
+		}
 	}
 
 	/**
@@ -776,32 +804,32 @@ class QueryController extends BaseController {
 	 */
 	protected function csvExportCriterias(Request $request) {
 		$criteriasLine = "";
-
+		
 		// Get the request from the session
 		$queryForm = $request->getSession()->get('query_QueryForm');
-
+		
 		if ($queryForm->getCriteria()) {
 			$criteriasLine .= '// ' . $this->get('translator')->trans('Request Criterias') . "\n";
 		}
-
+		
 		// List all the criterias
 		foreach ($queryForm->getCriteria() as $genericFormField) {
-
+			
 			$genericTableField = $queryForm->getFieldMappingSet()->getDstField($genericFormField);
 			$tableField = $genericTableField->getMetadata();
-
+			
 			// Get the descriptor of the form field
 			$criteriasLine .= '// ' . $tableField->getLabel() . ';';
-
+			
 			if (is_array($genericFormField->getValueLabel())) {
 				$criteriasLine .= implode(', ', $genericFormField->getValueLabel());
 			} else {
 				$criteriasLine .= $genericFormField->getValueLabel();
 			}
-
+			
 			$criteriasLine .= "\n";
 		}
-
+		
 		return $criteriasLine;
 	}
 
@@ -812,15 +840,15 @@ class QueryController extends BaseController {
 	public function kmlExportAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('kmlExportAction');
-
+		
 		$charset = $this->get('ogam.configuration_manager')->getConfig('csvExportCharset', 'UTF-8');
-
+		
 		$content = iconv("UTF-8", $charset, "// L'export KML n'est pas prévu dans GINCO, merci de contacter l'administrateur.");
-
+		
 		$response = new Response($content, 200);
 		$response->headers->set('Content-Type', 'application/vnd.google-earth.kml+xml;charset=' . $charset . ';application/force-download;');
 		$response->headers->set('Content-disposition', 'attachment; filename=DataExport_' . date('Ymd_Hi') . '.kml');
-
+		
 		return $response;
 	}
 
@@ -831,16 +859,16 @@ class QueryController extends BaseController {
 	public function geojsonExportAction(Request $request) {
 		$logger = $this->get('logger');
 		$logger->debug('geojsonExportAction');
-
+		
 		// Define the header of the response
 		$charset = $this->get('ogam.configuration_manager')->getConfig('csvExportCharset', 'UTF-8');
-
+		
 		$content = iconv("UTF-8", $charset, "// L'export GeoJson n'est pas prévu dans GINCO, merci de contacter l'administrateur.");
-
+		
 		$response = new Response($content, 200);
 		$response->headers->set('Content-Type', 'application/json;charset=' . $charset . ';application/force-download;');
 		$response->headers->set('Content-disposition', 'attachment; filename=DataExport_' . date('Ymd_Hi') . '.geojson');
-
+		
 		return $response;
 	}
 
@@ -926,14 +954,14 @@ class QueryController extends BaseController {
 			if (empty($unitCode)) {
 				throw new \InvalidArgumentException("The 'unit' parameters is required.");
 			}
-
+			
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
 			$locale = $this->get('ogam.locale_listener')->getLocale();
 			$modes = $em->getRepository(Dynamode::class)->getModesFilteredByLabel($unit, $query, $locale);
-
+			
 			$response = new JsonResponse();
-
+			
 			return $this->render('OGAMBundle:Query:ajaxgetcodes.json.twig', array(
 				'total' => count($modes),
 				'data' => array_slice($modes, $start, $limit)
@@ -960,20 +988,20 @@ class QueryController extends BaseController {
 			if (empty($unitCode)) {
 				throw new \InvalidArgumentException("The 'unit' parameter is required.");
 			}
-
+			
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
-
+			
 			$locale = $this->get('ogam.locale_listener')->getLocale();
-
+			
 			if ($query === null) {
 				$modes = $em->getRepository(Unit::class)->getModes($unit, $locale);
 			} else {
 				$modes = $em->getRepository('OGAMBundle:Metadata\Mode')->getModesFilteredByLabel($unit, $query, $locale);
 			}
-
+			
 			$response = new JsonResponse();
-
+			
 			return $this->render('OGAMBundle:Query:ajaxgetcodes.json.twig', array(
 				'data' => $modes
 			), $response);
@@ -1001,12 +1029,12 @@ class QueryController extends BaseController {
 			if (empty($unitCode)) {
 				throw new \InvalidArgumentException("The 'unit' parameter is required.");
 			}
-
+			
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
-
+			
 			$locale = $this->get('ogam.locale_listener')->getLocale();
-
+			
 			// $em->getRepository(Unit::class)->getModesFilteredByLabel($unit, $query, $locale);
 			$rows = $em->getRepository('OGAMBundle:Metadata\ModeTree')->getTreeModesSimilareTo($unit, $query, $locale, $start, $limit);
 			if (count($rows) < $limit) {
@@ -1046,9 +1074,9 @@ class QueryController extends BaseController {
 			}
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
-
+			
 			$locale = $this->get('ogam.locale_listener')->getLocale();
-
+			
 			$rows = $em->getRepository('OGAMBundle:Metadata\ModeTaxref')->getTaxrefModesSimilarTo($unit, $query, $locale, $start, $limit);
 			if (count($rows) < $limit) {
 				// optimisation

@@ -168,7 +168,7 @@ Ext.define('Ginco.controller.result.Grid', {
                 // Load the grid results store
                 resultStore.loadPage(1, {
                     callback: function(records) {
-                        gridTab.fireEvent('resultsload', Ext.isEmpty(records));
+    					gridTab.fireEvent('resultsload', Ext.isEmpty(records), resultStore.getTotalCount());
                     }
                 });
 

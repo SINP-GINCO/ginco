@@ -139,6 +139,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
         calls:
           - [setDEEProcess, ['@ginco.dee_process']]
+          - [setExportCSV, ['@ginco.export_csv']]
 
     #templatehelper
     ogam.helper.AddLink:
@@ -205,6 +206,11 @@ services:
     ginco.dee_process:
         class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess
         arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@ginco.dee_generator", "@app.mail_manager","@logger"]
+        
+    # Service doing the whole process of generating and sending the export file
+    ginco.export_csv:
+        class: Ign\Bundle\GincoBundle\Services\ExportCSV
+        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@app.mail_manager", "@ogam.query_service", "@logger", "@=service('ogam.locale_listener').getLocale()", "@translator"]
 
     # Forms
     form.type.link_file:

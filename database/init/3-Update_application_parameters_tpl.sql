@@ -64,6 +64,7 @@ insert into application_parameters (name, value, description) values ( 'hiding_v
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_name', '@site.name@', 'Name of the website');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePrivateDirectory','/var/data/ginco/@instance.name@/dee/private','Directory where DEE GML files are generated and stored');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deePublicDirectory','/var/data/ginco/@instance.name@/dee/public','Directory where DEE archive are stored and can be downloaded');
+INSERT INTO application_parameters (name, value, description) VALUES ( 'exportPublicDirectory','/var/data/ginco/@instance.name@/export','Directory where asynchronous export are stored and can be downloaded');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'regionCode','@region.code@','INSEE Code for region, or ISO code for country');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'site_url','@url.protocol@://@url.domain@@url.basepath@','URL of the site');
 INSERT INTO application_parameters (name, value, description) VALUES ( 'deeNotificationMail', '@dee.notification.mail@', 'Contact mail to send notifications when the DEE is created/updated');
