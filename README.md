@@ -24,9 +24,8 @@ La documentation utilisateur est consultable en ligne [ici](https://ginco.nature
 
 ## Installation
 Le code actuellement en ligne n'est pas suffisant pour installer GINCO. Il manque
-la brique de base OGAM. OGAM est un logiciel open souce sous licence EUPL, mais
-il est en cours de migration de framework php vers symfony.
-Il sera publié sur GitHub lorsque cette migration sera terminée.
+la brique de base OGAM. OGAM est un logiciel open souce sous licence GPL v3, mais
+il est en cours de publication sur Github.
 En attendant, le code d'OGAM actuellement utilisé par le projet peut être demandé
 à l'équipe de développement GINCO: sinp-dev@ign.fr
 
