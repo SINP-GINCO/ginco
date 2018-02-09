@@ -247,7 +247,7 @@ class QueryController extends BaseController {
 			$grandPublicRole = $this->getDoctrine()
 				->getManager('website')
 				->getRepository('OGAMBundle:Website\Role')
-				->find(4);
+				->findByLabel('Grand public');
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
