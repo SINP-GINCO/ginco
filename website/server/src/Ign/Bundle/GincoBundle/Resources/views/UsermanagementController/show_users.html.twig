@@ -63,72 +63,22 @@
 					<a role="button" class="btn btn-sm btn-success" title="{{ 'User.edit.roles'|trans }}" href="{{ path('usermanagement_editUser', {'login' : user.login}) }}">
 						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					</a>
-					<button class="btn btn-sm btn-danger" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-delete-user-{{ user.login }}">
+					<button class="btn btn-sm btn-danger" title="{{ 'Delete'|trans }}"
+							data-toggle="modal" data-target="#modal-delete-user" data-user-login="{{ user.login }}">
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 					</button>
 
-					<!-- Modal - Delete user -->
-					<div class="modal fade" id="modal-delete-user-{{ user.login }}"
-						 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-						 aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-body">
-									{% trans with {'%userLogin%': user.login} %} Users.delete.prompt {% endtrans %}
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-											data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-									<a type="button" class="btn btn-primary"
-									   href="{{ path('usermanagement_deleteUser', {'login' : user.login}) }}">
-										{% trans %}Continue{% endtrans %} </a>
-								</div>
-							</div>
-						</div>
-					</div>
 				{% else %}
-						<button class="btn btn-sm btn-default btn-disabled" title="{{ 'User.edit.roles'|trans }}" data-toggle="modal" data-target="#modal-impossible-edit-user-{{ user.login }}">
-							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-						</button>
+					<button class="btn btn-sm btn-default btn-disabled" title="{{ 'User.edit.roles'|trans }}"
+							data-toggle="modal" data-target="#modal-impossible-edit-user" data-user-login="{{ user.login }}">
+						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					</button>
 
-						<!-- Modal - Edit user Impossible -->
-						<div class="modal fade" id="modal-impossible-edit-user-{{ user.login }}"
-							 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-							 aria-hidden="true">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-body">
-										{% trans with {'%username%': user.username} %} User.edit.impossible {% endtrans %}
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<button class="btn btn-sm btn-default btn-disabled" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-impossible-delete-user-{{ user.login }}">
-							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-						</button>
-
-						<!-- Modal - Delete user Impossible -->
-						<div class="modal fade" id="modal-impossible-delete-user-{{ user.login }}"
-							 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-							 aria-hidden="true">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-body">
-										{% trans with {'%username%': user.username} %} User.delete.impossible {% endtrans %}
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					{% endif %}
+					<button class="btn btn-sm btn-default btn-disabled" title="{{ 'Delete'|trans }}"
+							data-toggle="modal" data-target="#modal-impossible-delete-user" data-user-login="{{ user.login }}">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+				{% endif %}
 				</td>
 			</tr>
 			{% endfor %}
@@ -138,7 +88,83 @@
 	<p>{% trans %}Users.no_users{% endtrans %}</p>
 {% endif %}
 
+
+<!-- Modal - Delete user -->
+<div class="modal fade" id="modal-delete-user"
+	 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				{% trans with {'%userLogin%': '<span class="user-login-placeholder"></span>'} %} Users.delete.prompt {% endtrans %}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+						data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+				<a type="button" class="btn btn-primary user-delete-link" href="">
+					{% trans %}Continue{% endtrans %} </a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal - Edit user Impossible -->
+<div class="modal fade" id="modal-impossible-edit-user"
+	 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				{% trans with {'%username%': '<span class="user-login-placeholder"></span>'} %} User.edit.impossible {% endtrans %}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+						data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal - Delete user Impossible -->
+<div class="modal fade" id="modal-impossible-delete-user"
+	 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				{% trans with {'%username%': '<span class="user-login-placeholder"></span>'} %} User.delete.impossible {% endtrans %}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+						data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <p>
     <a href="{{ path('usermanagement_addUser') }}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Create User{% endtrans %}</a>
 <p/>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+
+	<script>
+
+$(function() {
+
+	// Pass data to bootstrap modals
+	$("#modal-delete-user, #modal-impossible-delete-user, #modal-impossible-edit-user").on('show.bs.modal', function(e) {
+		//get data-id attribute of the clicked element
+		var userLogin = $(e.relatedTarget).data('user-login');
+        var deleteLink = '{{ path('usermanagement_deleteUser', {'login' : '@userLogin@'}) }}'.replace('@userLogin@', userLogin);
+        // Replace by actual userLogin value
+		$(e.currentTarget).find('.user-login-placeholder').html(userLogin);
+		$(e.currentTarget).find('a.user-delete-link').attr("href", deleteLink);
+	});
+});
+
+	</script>
 {% endblock %}
