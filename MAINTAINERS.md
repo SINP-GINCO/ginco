@@ -14,6 +14,11 @@ Les contributeurs actuels au projet Ginco :
 * Séverine Candelier ([scandel](https://github.com/scandel))
 * Vincent Sagniez ([vinsag](https://github.com/vinsag))
 
+Et ceux y ayant contribué par le passé : 
+
+* Gautam Pastakia ([gpastakia](https://github.com/gpastakia))
+* Nicolas Viel ([nviel](https://github.com/nviel)
+
 
 OGAM 
 ----
