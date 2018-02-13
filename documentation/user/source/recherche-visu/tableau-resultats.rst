@@ -33,12 +33,26 @@ Selon les droits de l'utilisateur, elles ne sont pas toujours toutes disponibles
 Export des résultats
 --------------------
 
-En haut à droite du tableau, un menu déroulant permet d'exporter les résultats aux formats
+En haut à droite du tableau, un menu déroulant permet d'exporter les résultats aux format CSV.
 
  .. image:: ../images/visu/export-tableau-resultats.png
 
- * CSV : Les données sont sous forme tabulaire, les valeurs sont séparées par des ";";
- * KML : Format utilisant des balises, basé sur le XML pour les données géospatiales;
- * GeoJSON : Format utilisant la norme JSON, pour les données géospatiales.
+Lorsque le nombre d'observations à exporter est inférieur à 500, leur export est fait directement et au bout de quelques secondes l'application propose à l'utilisateur d'ouvrir ou d'enregistrer le fichier généré.
+
+ .. image:: ../images/visu/export-direct.png
  
+Lorsque l'export fait plus de 500 lignes, le temps de calcul est jugé trop important pour que le fichier soit renvoyé directement.
+Il est donc généré en arrière plan, et l'utilisateur reçoit un mail une fois le fichier disponible. L'URL permettant d'obtenir le fichier est indiquée dans le mail.
+Ce processus est signalé à l'utilisateur avant son lancement par un message d'avertissement lorsque l'export est trop volumineux.
+
+ .. image:: ../images/visu/export-popup.png
+ 
+ .. warning:: Lorsque l'export est généré en arrière plan (après apparition de la popup), il faut patienter plusieurs minutes pour recevoir le mail.
+ 
+ .. note:: Si le mail ne parvient pas, il est conseillé de vérifier qu'il n'a pas été considéré comme un spam par sa messagerie.
+
+Les données sont exportées sous forme tabulaire, avec des valeurs séparées par des ";".
+En début de fichier sont rappelés les critères utilisés pour la requête.
+
+
  .. note:: Les géométries seront exportées dans la projection définies dans la configuration de la plateforme.
