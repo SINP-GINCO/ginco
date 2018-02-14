@@ -700,7 +700,7 @@ class QueryController extends BaseController {
 			$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n\n");
 			
 			// Request criterias
-			$content .= iconv("UTF-8", $charset, $this->csvExportCriterias($request));
+			$content .= iconv("UTF-8", $charset, $this->get('ginco.export_csv')->csvExportCriterias($request));
 			$content .= iconv("UTF-8", $charset, "\n");
 			
 			// Export the column names
@@ -721,7 +721,7 @@ class QueryController extends BaseController {
 			// Get requested data
 			// they come in the form of a json; convert them associative array and then to csv
 			// C'est ça qui prend du temps (notamment récupérer le label de chaque code...)
-			$data = $this->get('ogam.query_service')->getResultRowsGinco(0, 500, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
+			$data = $this->get('ogam.query_service')->getResultRowsGinco(0, 150, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
 				->getLocale());
 			
 			if ($data != null) {
@@ -741,9 +741,12 @@ class QueryController extends BaseController {
 				}
 			}
 		}
+		
+		$filename = pathinfo($this->get('ginco.export_csv')->generateFilePath(), PATHINFO_BASENAME);
+		
 		$response = new Response($content, 200);
 		$response->headers->set('Content-Type', 'text/csv;charset=' . $charset . ';application/force-download;');
-		$response->headers->set('Content-disposition', 'attachment; filename=DataExport_' . date('Ymd_Hi') . '.csv');
+		$response->headers->set('Content-disposition', 'attachment; filename=' . $filename);
 		
 		return $response;
 	}
@@ -795,42 +798,6 @@ class QueryController extends BaseController {
 				'errorMessage' => $e->getMessage()
 			]);
 		}
-	}
-
-	/**
-	 * Export the request criterias in the CSV file.
-	 *
-	 * @return String the criterias
-	 */
-	protected function csvExportCriterias(Request $request) {
-		$criteriasLine = "";
-		
-		// Get the request from the session
-		$queryForm = $request->getSession()->get('query_QueryForm');
-		
-		if ($queryForm->getCriteria()) {
-			$criteriasLine .= '// ' . $this->get('translator')->trans('Request Criterias') . "\n";
-		}
-		
-		// List all the criterias
-		foreach ($queryForm->getCriteria() as $genericFormField) {
-			
-			$genericTableField = $queryForm->getFieldMappingSet()->getDstField($genericFormField);
-			$tableField = $genericTableField->getMetadata();
-			
-			// Get the descriptor of the form field
-			$criteriasLine .= '// ' . $tableField->getLabel() . ';';
-			
-			if (is_array($genericFormField->getValueLabel())) {
-				$criteriasLine .= implode(', ', $genericFormField->getValueLabel());
-			} else {
-				$criteriasLine .= $genericFormField->getValueLabel();
-			}
-			
-			$criteriasLine .= "\n";
-		}
-		
-		return $criteriasLine;
 	}
 
 	/**
