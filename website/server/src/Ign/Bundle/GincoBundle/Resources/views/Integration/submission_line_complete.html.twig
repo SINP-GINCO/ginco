@@ -64,20 +64,9 @@
         {# Files #}
         <td>
             {% for file in submission.files %}
-                {% set filename = file.fileName|trim|replace({'\\':'/'})|split('/')|last %}
-                    {% if filename|length > 23 %}
-                        {% if file.filenameWithoutExtension is defined %}
-                            <span title="{{ filename }}">- {{ file.filenameWithoutExtension|slice(0,23)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                        {% else %}
-                            <span title="{{ filename }}">- {{ filename|slice(0,23)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                        {% endif %}
-                    {% else %}
-                        {% if file.filenameWithoutExtension is defined %}
-                            <span title="{{ filename }}">- {{ file.filenameWithoutExtension }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                        {% else %}
-                            <span title="{{ filename }}">- {{ filename }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                        {% endif %}
-                    {% endif %}
+                {% set filename = file.fileName|trim|pathinfo_filename %}
+                <div class="submission-line-lines">({{file.nbLines}})</div>
+                <div title="{{ filename }}" class="submission-line-file-name longtext oneline">{{ filename }}</div>
             {% endfor %}
         </td>
 

@@ -207,9 +207,10 @@
                 {# Actions (including reports) #}
                 <td>
                     {% if jdd.activeSubmissions|length > 0 %}
-                        {% for submission in jdd.activeSubmissions %}<div class="submission-line submission-line-actions">
-                            {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
-                        </div>
+                        {% for submission in jdd.activeSubmissions %}
+                            <div class="submission-line submission-line-actions">
+                                {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
+                            </div>
                         {% endfor %}
                     {% else %}
                     <p>-</p>
@@ -220,20 +221,9 @@
                     {% for submission in jdd.activeSubmissions %}
                         <div class="submission-line submission-line-file">
                             {% for file in submission.files %}
-                                {% set filename = file.fileName|trim|replace({'\\':'/'})|split('/')|last %}
-                                {% if filename|length > 22 %}
-                                    {% if file.filenameWithoutExtension is defined %}
-                                        <span title="{{ filename }}">- {{ file.filenameWithoutExtension|slice(0,22)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                                    {% else %}
-                                        <span title="{{ filename }}">- {{ filename|slice(0,22)|trim }}... </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                                    {% endif %}
-                                {% else %}
-                                    {% if file.filenameWithoutExtension is defined %}
-                                        <span title="{{ filename }}">- {{ file.filenameWithoutExtension }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                                    {% else %}
-                                        <span title="{{ filename }}">- {{ filename }} </span><span class="submission-line-lines">({{file.nbLines}})</span>
-                                    {% endif %}
-                                {% endif %}
+                                {% set filename = file.fileName|trim|pathinfo_filename %}
+                                <div class="submission-line-lines">({{file.nbLines}})</div>
+                                <div title="{{ filename }}" class="submission-line-file-name longtext oneline">{{ filename }}</div>
                             {% endfor %}
                         </div>
                     {% endfor %}
