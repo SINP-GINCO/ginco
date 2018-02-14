@@ -186,6 +186,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    ginco.pathinfo_extension:
+        class: Ign\Bundle\GincoBundle\Twig\PathInfoExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
     # Mail Manager
     app.mail_manager:
         class: Ign\Bundle\OGAMBundle\Services\MailManager

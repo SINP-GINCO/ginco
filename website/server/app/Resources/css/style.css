@@ -6887,9 +6887,14 @@ form .checkboxes.disabled {
 /* Cut too-long texts and add ellipsis (...) */
 .longtext {
   overflow: hidden;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
   hyphens: none;
   word-break: keep-all;
   text-overflow: ellipsis;
+}
+.longtext.oneline {
+  white-space: nowrap;
 }
 .progress {
   margin-bottom: 10px;
@@ -7172,6 +7177,10 @@ body {
 }
 .submission-line:after {
   clear: both;
+}
+.submission-line-lines {
+  float: right;
+  padding-left: 5px;
 }
 .dee-state,
 .dee-actions {
