@@ -95,39 +95,17 @@ class ExportCSV {
 	}
 
 	/**
-	 * Refresh message from db and test if status is TO_CANCEL
-	 *
-	 * @param
-	 *        	$message
-	 * @return bool
-	 */
-	protected function messageToCancel($message) {
-		if ($message) {
-			$this->em->refresh($message);
-			if ($message->getStatus() == Message::STATUS_TOCANCEL) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Whole process for generating the export and sending notification to the user
 	 *
 	 * @param Request $request        	
 	 * @param unknown $userInfos        	
-	 * @param unknown $message        	
-	 * @param string $notifyUser        	
+	 * @param unknown $message     	
 	 */
-	public function generateCSV(Request $request, $userInfos, $message, $notifyUser = true) {
+	public function generateCSV(Request $request, $userInfos, $message) {
 		$this->logger->info("asynchronousExportCSV");
 		
 		// We clone the request object to keep the values even if another research is launched
 		$exportRequest = clone $request;
-		
-		// Configure memory and time limit because the program ask a lot of resources
-		ini_set("memory_limit", $this->configuration->getConfig('memory_limit', '1024M'));
-		ini_set("max_execution_time", $this->configuration->getConfig('max_execution_time', '480'));
 		
 		// Number of results to export
 		$total = $exportRequest->getSession()->get('query_Count');
@@ -135,7 +113,13 @@ class ExportCSV {
 		
 		// Start writing output (CSV file)
 		$exportFilePath = $this->generateFilePath($message->getId());
+		
 		$exportFile = fopen($exportFilePath, 'w');
+		
+		// Set encoding to UTF-8 BOM
+		$BOM = $this->configuration->getConfig('csvExportCharset', 'UTF-8') == 'UTF-8' ?
+		chr(0xEF) . chr(0xBB) . chr(0xBF) : '';
+		fwrite($exportFile, $BOM);
 		
 		if (!$userInfos['EXPORT_RAW_DATA']) {
 			fputcsv($exportFile, '// No permissions', ";", '"');
@@ -224,7 +208,7 @@ class ExportCSV {
 		$this->sendExportNotificationMail($archiveFileSystemPath, $userInfos, $message);
 		echo "User notification (sent to " . $userInfos['email'] . ")...\n";
 		
-		$this->em->flush();
+		return true;
 	}
 
 	/**
@@ -270,7 +254,7 @@ class ExportCSV {
 	 * @param $messageId       	
 	 * @return string
 	 */
-	public function generateFilePath($messageId) {
+	public function generateFilePath($messageId = '0') {
 		$this->logger->debug('generateFilePath');
 		
 		$regionCode = $this->configuration->getConfig('regionCode', 'REGION');
