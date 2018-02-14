@@ -37,11 +37,11 @@ En haut à droite du tableau, un menu déroulant permet d'exporter les résultat
 
  .. image:: ../images/visu/export-tableau-resultats.png
 
-Lorsque le nombre d'observations à exporter est inférieur à 500, leur export est fait directement et au bout de quelques secondes l'application propose à l'utilisateur d'ouvrir ou d'enregistrer le fichier généré.
+Lorsque le nombre d'observations à exporter est inférieur à 150, leur export est fait directement et au bout de quelques secondes l'application propose à l'utilisateur d'ouvrir ou d'enregistrer le fichier généré.
 
  .. image:: ../images/visu/export-direct.png
  
-Lorsque l'export fait plus de 500 lignes, le temps de calcul est jugé trop important pour que le fichier soit renvoyé directement.
+Lorsque l'export fait plus de 150 lignes, le temps de calcul est jugé trop important pour que le fichier soit renvoyé directement.
 Il est donc généré en arrière plan, et l'utilisateur reçoit un mail une fois le fichier disponible. L'URL permettant d'obtenir le fichier est indiquée dans le mail.
 Ce processus est signalé à l'utilisateur avant son lancement par un message d'avertissement lorsque l'export est trop volumineux.
 
