@@ -14,6 +14,8 @@
         Vous pouvez le télécharger pendant 10 jours avant effacement.
 
         Bien cordialement.
+        
+        CHECKSUM MD5 : {{ checksum }}
 
     {% endautoescape %}
 {% endblock -%}
@@ -22,12 +24,14 @@
     {% autoescape false %}
         <p>Bonjour,</p>
 
-        <p> L'export que vous avez demandé le {{ created|date("d/m/Y H:i:s") }} sur la plateforme <em>{{ region }}</em>, a été réalisé.
-          Le fichier est disponible à l'adresse suivante : <em>{{ download_url }}</em>
+        <p>L'export que vous avez demandé le {{ created|date("d/m/Y H:i:s") }} sur la plateforme <em>{{ region }}</em>, a été réalisé.
+          Le fichier est disponible à l'adresse suivante : <em><a href="{{ download_url }}">{{ download_url }}</a></em>
 
         <p>Vous pouvez le télécharger pendant 10 jours avant effacement.</p>
 
         <p>Bien cordialement.</p>
+        
+        <p>Checksum MD5 : {{ checksum }}</p>
 
     {% endautoescape %}
 {% endblock -%}
