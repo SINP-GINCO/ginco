@@ -4,5 +4,5 @@
   ALTER TABLE website.providers ALTER COLUMN id SET DEFAULT NULL;
 
   INSERT INTO application_parameters (name, value, description) VALUES
-    ('INPN_providers_webservice', 'https://odata-inpn.mnhn.fr/solr-ws/organismes/records?', 'INPN Solr webservice to query the providers directory');
+    ('INPN_providers_webservice', '@inpn.providers.webservice@', 'INPN Solr webservice to query the providers directory');
   
