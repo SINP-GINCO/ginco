@@ -159,7 +159,7 @@ $(function() {
 	$("#modal-delete-user, #modal-impossible-delete-user, #modal-impossible-edit-user").on('show.bs.modal', function(e) {
 		//get data-id attribute of the clicked element
 		var userLogin = $(e.relatedTarget).data('user-login');
-        var deleteLink = '{{ path('usermanagement_deleteUser', {'login' : '@userLogin@'}) }}'.replace('@userLogin@', userLogin);
+        var deleteLink = '{{ path('usermanagement_deleteUser', {'login' : '@userLogin@'}) }}'.replace('@userLogin@', encodeURIComponent(userLogin));
         // Replace by actual userLogin value
 		$(e.currentTarget).find('.user-login-placeholder').html(userLogin);
 		$(e.currentTarget).find('a.user-delete-link').attr("href", deleteLink);
