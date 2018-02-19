@@ -1,6 +1,6 @@
-# Configurateur du métamodèle pour OGAM 
+# Configurateur du métamodèle pour Ginco 
 
-Ce logiciel est un module de configuration du métamodèle du logiciel OGAM.
-Il contient des extensions spécifiques au projet GINCO.
+Ce dépôt est un module de configuration du métamodèle de la plateforme [Ginco](https://github.com/SINP-GINCO/ginco).
 
 La documentation utilisateur se trouve ici: https://ginco.ign.fr/doc/configurateur/index.html
+
