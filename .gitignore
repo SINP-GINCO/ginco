@@ -43,3 +43,7 @@ localhost*.properties
 # Logs Apache
 /website/logs/*
 !website/logs/.gitkeep
+
+#gradle
+/.gradle
+.gradle
