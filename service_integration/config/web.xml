@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<display-name>Integration Service</display-name>
+	<description>Integration Service</description>
+
+	<servlet>
+		<servlet-name>MetadataServlet</servlet-name>
+		<servlet-class>fr.ifn.ogam.integration.servlet.MetadataServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>DataServlet</servlet-name>
+		<servlet-class>fr.ifn.ogam.integration.servlet.DataServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>CheckServlet</servlet-name>
+		<servlet-class>fr.ifn.ogam.integration.servlet.CheckServlet</servlet-class>
+	</servlet>
+	
+	
+
+	<servlet-mapping>
+		<servlet-name>MetadataServlet</servlet-name>
+		<url-pattern>/MetadataServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>DataServlet</servlet-name>
+		<url-pattern>/DataServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>CheckServlet</servlet-name>
+		<url-pattern>/CheckServlet</url-pattern>
+	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+
+</web-app>

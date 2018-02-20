@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+
+<project name="OGAMCommon" default="compile" basedir=".">
+
+	<!-- Définition des properties -->
+	<property name="application.name" value="Eforest" />
+	<property name="workspace.dir" value="${basedir}/../.." />
+	<property name="libraries.dir" value="../../libs_java" />
+
+	<property name="test_result.dir" value="./test_result" />
+	<property name="src.dir" value="./src" />
+	<property name="classes.dir" value="./classes" />
+	<property name="lib.dir" value="./lib" />
+
+	<property name="classpath" value="${lib.dir}/commons-fileupload-1.2.1.jar;${libraries.dir}/import/org/apache/log4j/log4j-1.2.14.jar;${libraries.dir}/lib/servlet-api.jar;${libraries.dir}/import/com/sun/mail/mail.jar;" />
+
+	<!-- Définition de tâches externes  -->
+	<property name="findbugs.home" value="${libraries.dir}/lib/findbugs" />
+	<taskdef name="javancss" classname="javancss.JavancssAntTask" classpath="${libraries.dir}/lib/javancss.jar;${libraries.dir}/lib/ccl.jar;${libraries.dir}/libs java/lib/jhbasic.jar" />
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${findbugs.home}/lib/findbugs.jar" />
+	<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpath="${libraries.dir}/lib/pmd/pmd-4.2.5.jar;${libraries.dir}/lib/pmd/jaxen-1.1.1.jar" />
+	<taskdef resource="checkstyletask.properties" classpath="${libraries.dir}/lib/checkstyle/checkstyle-all-5.0.jar;${libraries.dir}/import/org/apache/log4j/log4j-1.2.14.jar" />
+
+
+	<!-- Suppression des répertoires de déploiement -->
+	<target name="cleanest" description="Removes all the generated files or directories">
+		<delete failonerror="false">
+	         <fileset dir="${classes.dir}">
+	            <include name="**/*.*" />
+	            <exclude name=".svn" />
+	         </fileset>
+		</delete>
+		<mkdir dir="${classes.dir}"/>
+	</target>
+
+	<!-- Compile les sources -->
+	<target name="compile" description="Compile the sources" depends="cleanest">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" source="1.7"  target="1.7" includeantruntime="false" encoding="UTF-8" classpath="${classpath}">
+			<compilerarg value="-Xlint" />
+		</javac>
+
+	</target>
+
+	<!-- JavaNCSS -->
+	<target name="javancss" description="Count the number of lines" depends="">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<javancss srcdir="${src.dir}" abortOnFail="false" includes="fr/**/*.java" generateReport="true" outputfile="${test_result.dir}\javancss_metrics.xml" functionMetrics="false" format="xml" />
+
+	</target>
+
+	<!-- FindBugs -->
+	<target name="findbugs" description="Static analysis with FindBugs" depends="">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<delete file="${test_result.dir}/findbugs_result.xml" />
+
+		<findbugs home="${findbugs.home}" output="xml" outputFile="${test_result.dir}/findbugs_result.xml" jvmArgs="-Xms256m -Xmx800m">
+			<auxClasspath path="${classpath};" />
+			<sourcePath path="${src.dir}" />
+			<class location="${classes.dir}" />
+		</findbugs>
+
+	</target>
+
+	<!-- PMD -->
+	<target name="pmd" description="Static analysis with PMD">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<delete file="${test_result.dir}/pmd_result.xml" />
+		<delete file="${test_result.dir}/pmd_result.html" />
+
+		<pmd rulesetfiles="${libraries.dir}/lib/pmd/ifndesign.xml,${libraries.dir}/lib/pmd/ifnexception.xml,${libraries.dir}/lib/pmd/ifnmigrating.xml,${libraries.dir}/lib/pmd/ifnnaming.xml,unusedcode,basic,braces,imports,coupling">
+			<formatter type="xml" toFile="${test_result.dir}/pmd_result.xml" />
+			<formatter type="html" toFile="${test_result.dir}/pmd_result.html" />
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+
+	</target>
+
+	<!-- CheckStyle -->
+	<target name="checkstyle" description="Static analysis with Checkstyle">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<delete file="${test_result.dir}/checkstyle_result.xml" />
+
+		<checkstyle config="${libraries.dir}/lib/checkstyle/ifn_checks.xml" maxErrors="2147483647" classpath="${classpath}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+				<exclude name="**/SqlStateSQL99.java" />
+			</fileset>
+			<formatter type="plain" />
+			<formatter type="xml" toFile="${test_result.dir}/checkstyle_result.xml" />
+		</checkstyle>
+
+		<style in="${test_result.dir}/checkstyle_result.xml" out="${test_result.dir}/checkstyle_result.html" style="${libraries.dir}/lib/checkstyle/contrib/checkstyle-simple.xsl" />
+
+	</target>
+
+	<!--Javadoc -->
+	<target name="javadoc" description="Javadoc" depends="">
+		<javadoc packagenames="fr.ifn.ogam.*" sourcepath="${src.dir}" classpath="${classpath}" defaultexcludes="yes" destdir="${test_result.dir}/api" author="true" version="true" use="true" encoding="UTF-8" windowtitle="${application.name}">
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+			<link href="http://commons.apache.org/fileupload/apidocs" />
+		</javadoc>
+	</target>
+
+
+</project>

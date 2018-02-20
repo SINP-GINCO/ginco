@@ -1,0 +1,8 @@
+
+/* = disabled nodes
+----------------------------------------------- */
+.dvp-tree-node-disabled .x-tree-checkbox, .dvp-tree-node-disabled .x-tree-icon-leaf, .dvp-tree-node-disabled .x-tree-node-text {
+    -moz-opacity: 0.5;
+   opacity:.5;
+   filter: alpha(opacity=50);
+}

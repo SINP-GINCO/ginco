@@ -55,29 +55,29 @@ function buildJavaServices($config, $buildMode)
 	$ISFilename = "SINP" . $config['instance.name'] . "IntegrationService";
 	$RGFilename = "SINP" . $config['instance.name'] . "RGService" ;
 	$gincoCustomPath = "$projectDir/services/service_integration/custom/fr/ifn/ogam/integration";
-	$ogamCustomPath = "$ogamDir/service_integration/custom/fr/ifn/ogam/integration";
+	$ogamCustomPath = "$projectDir/service_integration/custom/fr/ifn/ogam/integration";
 	$customServicesNames = array('ComputeGeoAssociationService', 'ChecksDSRGincoService', 'JddService', 'GenerateReportsService');
 
 	// build du service d'intégration
 	echo("Building integration service...\n");
-	system("mv -f $ogamDir/service_integration/config/log4j.properties $ogamDir/service_integration/config/log4j.properties.save");
+	system("mv -f $projectDir/service_integration/config/log4j.properties $projectDir/service_integration/config/log4j.properties.save");
 	substituteInFile("$projectDir/services_configs/service_integration/log4j_tpl.properties",
-		"$ogamDir/service_integration/config/log4j.properties", $config);
+		"$projectDir/service_integration/config/log4j.properties", $config);
 	// copie des services Java custom
 	foreach($customServicesNames as $serviceName) {
 		copy("$gincoCustomPath/business/$serviceName.java", "$ogamCustomPath/business/$serviceName.java");
 	}
 	chdir("$ogamDir");
 	system("./gradlew service_integration:war");
-	# le war se trouve dans ${ogamDir}/service_integration/build/libs/service_integration-4.0.0.war
+	# le war se trouve dans ${projectDir}/service_integration/build/libs/service_integration-4.0.0.war
 
 	// Cleaning Ogam dir
-	system("mv -f $ogamDir/service_integration/config/log4j.properties.save $ogamDir/service_integration/config/log4j.properties ");
+	system("mv -f $projectDir/service_integration/config/log4j.properties.save $projectDir/service_integration/config/log4j.properties ");
 	foreach($customServicesNames as $serviceName) {
 		system("rm -f $ogamCustomPath/business/$serviceName.java");
 	}
 
-	copy("$ogamDir/service_integration/build/libs/service_integration-4.0.0.war",
+	copy("$projectDir/service_integration/build/libs/service_integration-4.0.0.war",
 		"$servicesBuildDir/webapps/$ISFilename.war");
 	substituteInFile("$projectDir/services_configs/service_integration/IntegrationService_tpl.xml",
 		"$servicesBuildDir/conf/$ISFilename.xml", $config);
@@ -136,7 +136,7 @@ function buildWebsite($config, $buildMode)
     echo("building server: Ogam, Ginco, Configurator (symfony parts)...\n");
     echo("-------------------------------------------------------------\n");
 
-    $serverDirOgam = realpath($config['ogam.path'] . "/website/htdocs/server/ogamServer");
+    //$serverDirOgam = realpath($projectDir . "/website/htdocs/server/ogamServer");
     $buildServerDir = $buildDir . "/website/server" ;
     is_dir($buildServerDir) || mkdir($buildServerDir, 0755, true);
 
@@ -147,15 +147,15 @@ function buildWebsite($config, $buildMode)
     }
 
     // Copy or symlink OgamBundle
-    if ($buildMode == 'prod') {
-        echo("Copying OGAMBundle to $buildServerDir/src/Ign/Bundle/...\n");
-		system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
-        system("cp -r $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/");
-    } else {
-        echo("Creating a symlink to OGAMBundle in $buildServerDir/src/Ign/Bundle/...\n");
-        system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
-        system("ln -s $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/OGAMBundle");
-    }
+//     if ($buildMode == 'prod') {
+//         echo("Copying OGAMBundle to $buildServerDir/src/Ign/Bundle/...\n");
+// 		system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
+//         system("cp -r $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/");
+//     } else {
+//         echo("Creating a symlink to OGAMBundle in $buildServerDir/src/Ign/Bundle/...\n");
+//         system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
+//         system("ln -s $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/OGAMBundle");
+//     }
 
 	// Copy or symlink configurator bundles
 	$configuratorDir = realpath($config['configurator.path']);
@@ -258,8 +258,9 @@ function buildWebsite($config, $buildMode)
 		$postBuildInstructions[] = "* tmp: directory where data will be uploaded\n";
 		$postBuildInstructions[] = "* upload: directory where data will be uploaded\n";
 		$postBuildInstructions[] = "* dee: directory where dee files and archives will be stored\n";
+		$postBuildInstructions[] = "* export: directory where export files will be stored\n";
 		$postBuildInstructions[] = "Then complete with the absolute paths the values of the following parameters in table website.application_parameters:\n";
-		$postBuildInstructions[] = "uploadDir (tmp), UploadDirectory (upload), deePublicDirectory and deePrivateDirectory (???)\n\n";
+		$postBuildInstructions[] = "uploadDir (tmp), UploadDirectory (upload), deePublicDirectory and deePrivateDirectory (???), exportPuplicDirectory (export)\n\n";
 
 		$postBuildInstructions[] = "Set permissions on application directories, execute:\n";
 		$postBuildInstructions[] = " cd $buildServerDir\n";
@@ -280,17 +281,17 @@ function buildExtJS($config, $buildMode)
 	echo("--------------------------\n");
 
 	$clientDir = "$projectDir/website/client";
-	$clientDirOgam = realpath($config['ogam.path'] . "/website/htdocs/client");
+	//$clientDirOgam = realpath($config['ogam.path'] . "/website/htdocs/client");
 	$buildClientDir = $buildDir . "/website/client" ;
 	is_dir($buildClientDir) || mkdir($buildClientDir, 0755, true);
 
 	// Copy ext and ogam code to project
-	echo("Copying ext and ogam code from ogam project...\n");
-	system("cp -r $clientDirOgam/ext $clientDir");
-	system("cp -r $clientDirOgam/packages $clientDir");
-	system("cp -r $clientDirOgam/ogamDesktop $clientDir");
-	system("cp -r $clientDirOgam/.sencha $clientDir");
-	system("cp $clientDirOgam/workspace.json $clientDir");
+// 	echo("Copying ext and ogam code from ogam project...\n");
+// 	system("cp -r $clientDirOgam/ext $clientDir");
+// 	system("cp -r $clientDirOgam/packages $clientDir");
+// 	system("cp -r $clientDirOgam/ogamDesktop $clientDir");
+// 	system("cp -r $clientDirOgam/.sencha $clientDir");
+// 	system("cp $clientDirOgam/workspace.json $clientDir");
 
 	// Customize app.json and index.html
 	echo("Customize app.json...\n");
@@ -319,7 +320,7 @@ function buildExtJS($config, $buildMode)
 		echo("Cleaning up...\n");
 		// Delete code : all but gincoDesktop
 		chdir($clientDir);
-		system("rm -rf .sencha ext ogamDesktop packages workspace.json");
+		//system("rm -rf .sencha ext ogamDesktop packages workspace.json");
 		// Restore index.html in dev mode
 		system("mv $clientDir/gincoDesktop/index.html.keep $clientDir/gincoDesktop/index.html");
 	}
