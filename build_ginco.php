@@ -67,7 +67,7 @@ function buildJavaServices($config, $buildMode)
 	foreach($customServicesNames as $serviceName) {
 		copy("$gincoCustomPath/business/$serviceName.java", "$ogamCustomPath/business/$serviceName.java");
 	}
-	chdir("$ogamDir");
+	chdir($projectDir);
 	system("./gradlew service_integration:war");
 	# le war se trouve dans ${projectDir}/service_integration/build/libs/service_integration-4.0.0.war
 
@@ -85,12 +85,12 @@ function buildJavaServices($config, $buildMode)
 	//build du service de rapport
 	echo("Building report service...\n");
 	// remplacement des rapports par défaut d'ogam par le rapport d'erreur GINCO
-	system("mv -f $ogamDir/service_generation_rapport/report $ogamDir/service_generation_rapport/report.save");
-	mkdir("$ogamDir/service_generation_rapport/report", 0755, true);
+	system("mv -f $projectDir/service_generation_rapport/report $projectDir/service_generation_rapport/report.save");
+	mkdir("$projectDir/service_generation_rapport/report", 0755, true);
 	copy("$projectDir/services_configs/service_generation_rapport/ErrorReport.rptdesign",
-		"$ogamDir/service_generation_rapport/report/ErrorReport.rptdesign");
+		"$projectDir/service_generation_rapport/report/ErrorReport.rptdesign");
 	// build
-	chdir($ogamDir);
+	chdir($projectDir);
 	#system("./gradlew service_generation_rapport:war");
 	# le war contenant les rapports se trouve dans
 	# ${ogamDir}/service_generation_rapport/build/libs/service_generation_rapport-3.0.0.war
@@ -100,10 +100,10 @@ function buildJavaServices($config, $buildMode)
 	system("./gradlew service_generation_rapport:addReports");
 	# Le war se retrouve dans build/tmp/webapps/OGAMRG.war
 	system("rm -rf report/*;
-	 mv -f $ogamDir/service_generation_rapport/report.save/* $ogamDir/service_generation_rapport/report/;
-	 rm -rf $ogamDir/service_generation_rapport/report.save");
+	 mv -f $projectDir/service_generation_rapport/report.save/* $ogamDir/service_generation_rapport/report/;
+	 rm -rf $projectDir/service_generation_rapport/report.save");
 
-	copy("$ogamDir/service_generation_rapport/build/libs/OGAMRG.war",
+	copy("$projectDir/service_generation_rapport/build/libs/OGAMRG.war",
 		"$servicesBuildDir/webapps/$RGFilename.war");
 	substituteInFile("$projectDir/services_configs/service_generation_rapport/ReportService_tpl.xml",
 		"$servicesBuildDir/conf/$RGFilename.xml", $config);
