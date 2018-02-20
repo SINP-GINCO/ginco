@@ -1,0 +1,21 @@
+<Context>
+
+	<Resource name="jdbc/metadata" auth="Container" type="javax.sql.DataSource"
+		maxActive="20" maxIdle="10" maxWait="10000" validationQuery="SELECT 1"
+		username="ogam" password="ogam" driverClassName="org.postgresql.Driver"
+		url="jdbc:postgresql://localhost:5432/ogam" />
+
+	<Resource name="jdbc/rawdata" auth="Container" type="javax.sql.DataSource"
+		maxActive="20" maxIdle="10" maxWait="10000" validationQuery="SELECT 1"
+		username="ogam" password="ogam" driverClassName="org.postgresql.Driver"
+		url="jdbc:postgresql://localhost:5432/ogam" />
+
+	<Resource name="jdbc/website" auth="Container" type="javax.sql.DataSource"
+		maxActive="20" maxIdle="10" maxWait="10000" validationQuery="SELECT 1"
+		username="ogam" password="ogam" driverClassName="org.postgresql.Driver"
+		url="jdbc:postgresql://localhost:5432/ogam" />
+
+	<Resource name="mail/Session" auth="Container" type="javax.mail.Session"
+		mail.smtp.host="smtp1.ign.fr" />
+
+</Context>

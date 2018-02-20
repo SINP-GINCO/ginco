@@ -1,0 +1,16 @@
+.ol-control:hover {
+    background-color: rgba(0,0,0,.1);
+}
+.ol-control, .o-map-tools-map-scale, .o-map-tools-map-scale:hover, .ol-scale-line {
+    background-color: transparent;
+}
+.ol-scale-line-inner {
+    border-color: black;
+    color: black;
+}
+.ol-control button {
+    background-color: rgba(120,120,120,.5);
+}
+.ol-control button:hover {
+    background-color: rgba(120,120,120,.7);
+}

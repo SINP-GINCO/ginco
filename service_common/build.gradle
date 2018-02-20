@@ -1,0 +1,13 @@
+
+
+// Config for Checkstyle
+checkstyle {
+	ignoreFailures = true
+	showViolations = false
+	checkstyleMain.exclude '**/SqlStateSQL99.java'
+}
+
+// Import the ANT tasks and rename them
+// ant.importBuild('build.xml') { antTargetName ->
+//     'ant_' + antTargetName
+// }

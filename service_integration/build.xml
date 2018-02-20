@@ -1,0 +1,267 @@
+<?xml version="1.0"?>
+
+<project name="OGAMIntegrationService" default="deploy" basedir=".">
+
+	<!-- Définition des properties -->
+	<property name="application.name" value="OGAM" />
+	<property name="workspace.dir" value="${basedir}/../.." />
+	<property name="libraries.dir" value="../../libs_java" />
+	<property name="common.dir" value="../service_common" />
+
+	<property name="test_result.dir" value="./test_result" />
+	<property name="findbugs.home" value="${libraries.dir}/lib/findbugs" />
+	<property name="emma.dir" value="${libraries.dir}/lib/emma" />
+
+	<property name="src.dir" value="./src" />
+	<property name="custom.dir" value="./custom" />
+	<property name="classes.dir" value="./classes" />
+	<property name="lib.dir" value="${common.dir}/lib" />
+	<property name="dist.dir" value="${java.io.tmpdir}/dist/${application.name}IntegrationService" />
+	<property name="dist.webapps.dir" value="${java.io.tmpdir}/webapp/${application.name}IntegrationService/" />
+	<property name="deploy.name" value="${application.name}IntegrationService" />
+
+	<!-- *** A modifier en fonction du répertoire d'installation de Tomcat *** -->
+	<property name="deploy.dir" value="C:/Apache/tomcat-7/webapps" />
+
+	<property name="classpath" value="${common.dir}/classes;${lib.dir}/commons-fileupload-1.2.1.jar;${libraries.dir}/import/org/apache/log4j/log4j-1.2.14.jar;${libraries.dir}/lib/servlet-api.jar;${libraries.dir}/lib/junit.jar;${libraries.dir}/import/org/postgresql/postgresql-8.3-603.jdbc4.jar;${libraries.dir}/lib/dbunit/dbunit.jar;${libraries.dir}/import/com/sun/mail/mail.jar" />
+
+	<!-- Définition de tâches externes  -->
+	<taskdef name="javancss" classname="javancss.JavancssAntTask" classpath="${libraries.dir}/lib/javancss.jar;${libraries.dir}/lib/ccl.jar;${libraries.dir}/libs java/lib/jhbasic.jar" />
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${findbugs.home}/lib/findbugs.jar" />
+	<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpath="${libraries.dir}/lib/pmd/pmd-4.2.5.jar;${libraries.dir}/lib/pmd/jaxen-1.1.1.jar" />
+	<taskdef resource="checkstyletask.properties" classpath="${libraries.dir}/lib/checkstyle/checkstyle-all-5.0.jar;${libraries.dir}/import/org/apache/log4j/log4j-1.2.14.jar" />
+	<path id="emma.lib">
+		<pathelement location="${emma.dir}/emma.jar" />
+		<pathelement location="${emma.dir}/emma_ant.jar" />
+	</path>
+	<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+
+
+	<!-- Création des répertoires de travail -->
+	<target name="init">
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${dist.webapps.dir}" />
+	</target>
+
+
+	<!-- Suppression des répertoires temporaires -->
+	<target name="clean" description="Removes build files and directories">
+		<delete dir="${dist.webapps.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<!-- Suppression des répertoires de déploiement -->
+	<target name="cleanest" depends="clean" description="Removes all the generated files or directories">
+		<delete dir="${deploy.dir}/${deploy.name}/" />
+		<delete file="${deploy.dir}/${deploy.name}.war" />
+		<delete failonerror="false">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.*" />
+				<exclude name=".svn" />
+			</fileset>
+		</delete>
+		<mkdir dir="${classes.dir}"/>
+	</target>
+
+	<!-- Compile les sources -->
+	<target name="compile" description="Compile the sources" depends="cleanest, init">
+		<javac srcdir="${src.dir};${custom.dir}" destdir="${classes.dir}" debug="on" source="1.7" target="1.7" encoding="UTF-8" classpath="${classpath}" includeantruntime="false">
+			<compilerarg value="-Xlint" />
+		</javac>
+
+		<!-- Compile aussi les classes de test au passage -->
+		<javac srcdir="${basedir}/test" destdir="${classes.dir}" debug="on" source="1.7" target="1.7" classpath="${classpath}" includeantruntime="false">
+			<compilerarg value="-Xlint" />
+		</javac>
+	</target>
+
+	<!-- Préparation de l'archive -->
+	<target name="build" description="Build the web archive" depends="compile">
+
+		<!-- Copie des classes -->
+		<copy todir="${dist.dir}/WEB-INF/classes">
+			<fileset dir="${classes.dir}">
+			</fileset>
+		</copy>
+
+		<!-- Copie des classes communes au projet -->
+		<copy todir="${dist.dir}/WEB-INF/classes">
+			<fileset dir="${common.dir}/classes">
+			</fileset>
+		</copy>
+
+		<!-- Copie des librairies externes -->
+		<copy file="${libraries.dir}/import/org/apache/log4j/log4j-1.2.14.jar" todir="${dist.dir}/WEB-INF/lib" />
+		<copy file="${lib.dir}/commons-fileupload-1.2.1.jar" todir="${dist.dir}/WEB-INF/lib" />
+		<copy file="${lib.dir}/commons-io-1.4.jar" todir="${dist.dir}/WEB-INF/lib" />
+
+		<!-- Copie des fichiers de config -->
+		<copy file="./config/log4j.properties" todir="${dist.dir}/WEB-INF/classes" />
+		<copy file="./config/web.xml" todir="${dist.dir}/WEB-INF" />
+
+	</target>
+
+	<!-- Création du .war -->
+	<target name="war" description="Build the war file" depends="build">
+		<jar destfile="${dist.webapps.dir}/${deploy.name}.war">
+			<fileset dir="${dist.dir}">
+			</fileset>
+		</jar>
+	</target>
+
+	<!-- Déplacement du fichier war -->
+	<target name="deploy" description="Install the webapps" depends="war">
+		<copy todir="${deploy.dir}">
+			<fileset dir="${dist.webapps.dir}">
+				<include name="${deploy.name}.war" />
+			</fileset>
+		</copy>
+
+		<copy file="./config/${deploy.name}.xml" todir="${deploy.dir}/../conf/Catalina/localhost" failonerror="false" />
+		<copy file="../services_configs/service_integration/${deploy.name}.xml" todir="${deploy.dir}/../conf/Catalina/localhost" failonerror="false" />
+	</target>
+
+
+	<!-- Enable Emma -->
+	<target name="emma" description="turns on EMMA's instrumentation/reporting">
+
+		<property name="emma.enabled" value="true" />
+
+		<!-- EMMA instr class output directory (it is important to create this property only when EMMA is enabled) -->
+		<!-- <mkdir dir="${instr.dir}" /> -->
+
+		<!-- this property, if overriden via -Demma.filter=<list of filter specs>
+		     on ANT's command line, will set the coverage filter; by default,
+		     all classes found in 'emma.coverage.classes' pathref will be instrumented:
+		    -->
+		<property name="emma.filter" value="" />
+
+	</target>
+
+	<!-- Tests unitaires -->
+	<target name="junit" description="Run the JUnit tests" depends="build">
+
+		<mkdir dir="${test_result.dir}" />
+		<delete file="${test_result.dir}/metadata.emma" />
+
+
+		<!-- ======================================================================= -->
+		<!-- EMMA INSTRUMENTATION -->
+		<!-- ======================================================================= -->
+		<!-- Instrument the classes, this takes the normal classes, and makes instrumented classes instead -->
+		<!-- Note that EMMA takes regular ANT path elements as instrumentation input, which is exceedingly convenient -->
+		<emma enabled="${emma.enabled}">
+			<instr instrpath="${classes.dir}" destdir="${classes.dir}" mode="overwrite" metadatafile="${test_result.dir}/metadata.emma">
+				<filter value="${emma.filter}" />
+			</instr>
+		</emma>
+
+		<junit printsummary="yes" fork="true">
+
+			<classpath>
+				<pathelement path="${classes.dir}" />
+				<pathelement path="${classpath}" />
+				<path refid="emma.lib" />
+			</classpath>
+
+			<test name="fr.ifn.eforest.integration.AllTests" outfile="${test_result.dir}/TestsServiceCalcul">
+				<formatter type="xml" />
+			</test>
+
+			<jvmarg value="-Demma.coverage.out.file=${test_result.dir}/coverage.emma" />
+			<jvmarg value="-Demma.coverage.out.merge=false" />
+
+		</junit>
+
+		<!-- if enabled, generate coverage report(s): -->
+		<emma enabled="${emma.enabled}">
+			<report sourcepath="src" sort="+block,+name,+method,+class" metrics="method:70,block:80,line:80,class:100">
+				<!-- collect all EMMA data dumps (metadata and runtime)
+				         [this can be done via nested <fileset> fileset elements
+				         or <file> elements pointing to a single file]:
+				    -->
+				<fileset dir="${test_result.dir}">
+					<include name="*.emma" />
+				</fileset>
+
+				<!-- for every type of report desired, configure a nested
+				         element; various report parameters
+				         can be inherited from the parent <report>
+				         and individually overridden for each report type:
+				    -->
+
+				<xml outfile="${test_result.dir}/coverage.xml" depth="package" columns="class,method,block,line,name" />
+			</report>
+		</emma>
+	</target>
+
+	<!-- JavaNCSS -->
+	<target name="javancss" description="Count the number of lines" depends="">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<javancss srcdir="${src.dir}" abortOnFail="false" includes="fr/**/*.java" generateReport="true" outputfile="${test_result.dir}\javancss_metrics.xml" functionMetrics="false" format="xml" />
+
+	</target>
+
+	<!-- FindBugs -->
+	<target name="findbugs" description="Static analysis with FindBugs" depends="">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<delete file="${test_result.dir}/findbugs_result.xml" />
+
+		<findbugs home="${findbugs.home}" output="xml" outputFile="${test_result.dir}/findbugs_result.xml" jvmArgs="-Xms256m -Xmx800m">
+			<auxClasspath path="${classpath};" />
+			<sourcePath path="${src.dir}" />
+			<class location="${classes.dir}" />
+		</findbugs>
+
+	</target>
+
+	<!-- PMD -->
+	<target name="pmd" description="Static analysis with PMD">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<delete file="${test_result.dir}/pmd_result.xml" />
+		<delete file="${test_result.dir}/pmd_result.html" />
+
+		<pmd rulesetfiles="${libraries.dir}/lib/pmd/ifndesign.xml,${libraries.dir}/lib/pmd/ifnexception.xml,${libraries.dir}/lib/pmd/ifnmigrating.xml,${libraries.dir}/lib/pmd/ifnnaming.xml,unusedcode,basic,braces,imports,coupling">
+			<formatter type="xml" toFile="${test_result.dir}/pmd_result.xml" />
+			<formatter type="html" toFile="${test_result.dir}/pmd_result.html" />
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</pmd>
+
+	</target>
+
+	<!-- CheckStyle -->
+	<target name="checkstyle" description="Static analysis with Checkstyle">
+
+		<mkdir dir="${test_result.dir}" />
+
+		<delete file="${test_result.dir}/checkstyle_result.xml" />
+
+		<checkstyle config="${libraries.dir}/lib/checkstyle/ifn_checks.xml" maxErrors="2147483647" classpath="${classpath}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<formatter type="plain" />
+			<formatter type="xml" toFile="${test_result.dir}/checkstyle_result.xml" />
+		</checkstyle>
+
+		<style in="${test_result.dir}/checkstyle_result.xml" out="${test_result.dir}/checkstyle_result.html" style="${libraries.dir}/lib/checkstyle/contrib/checkstyle-simple.xsl" />
+
+	</target>
+
+	<!--Javadoc -->
+	<target name="javadoc" description="Javadoc" depends="">
+		<javadoc packagenames="fr.ifn.ogam.*" sourcepath="${src.dir}" classpath="${classpath}" defaultexcludes="yes" destdir="${test_result.dir}/api" author="true" version="true" use="true" encoding="UTF-8" windowtitle="${application.name}">
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+			<link href="http://commons.apache.org/fileupload/apidocs" />
+		</javadoc>
+	</target>
+
+</project>
