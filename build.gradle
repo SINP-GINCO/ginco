@@ -1,0 +1,139 @@
+
+
+
+subprojects {
+
+	apply plugin: "java"  // compilation + tests unitaires
+	apply plugin: "war"  // war construction
+	apply plugin: 'pmd'  // checks
+	apply plugin: 'checkstyle' // checks
+	apply plugin: 'findbugs'  // checks
+	apply plugin: "jacoco"  // coverage
+	  
+	version = '4.0.0'
+	  
+	targetCompatibility  = 1.7
+	sourceCompatibility  = 1.7
+
+ 
+	// We use Maven repository
+	repositories {
+		mavenCentral()
+	}
+
+	// Define the dependencies
+	dependencies {
+		// For the tests only
+		testCompile 'junit:junit:4.5'
+		testCompile 'org.dbunit:dbunit:2.5.0'
+
+		// For compilation only (not deployed to Tomcat)
+		providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+		providedCompile 'com.sun.mail:javax.mail:1.5.4'
+		providedCompile 'postgresql:postgresql:9.1-901-1.jdbc4'
+
+		// For compilation and deployement
+		compile 'log4j:log4j:1.2.14'
+		compile 'commons-fileupload:commons-fileupload:1.2.1'
+		compile 'commons-io:commons-io:1.4'
+		compile 'com.vividsolutions:jts:1.13'
+		compile 'org.apache.commons:commons-lang3:3.1'
+		compile 'org.postgis:postgis-jdbc:1.3.3'
+	}
+
+	// Set the source directories for each subproject
+	sourceSets {
+		main {
+			java {
+				srcDirs 'src'
+				srcDirs 'custom'
+			}
+		}
+		test {
+			java {
+				srcDir 'test'
+			}
+		}
+	}
+	
+
+	
+	
+	// Build the war file
+	// Configuration for the war task
+	war {
+		// adds a file-set to the WEB-INF dir.
+		webInf { 
+			from ('config') {
+				include 'log4j.properties'
+				into ('classes/')
+			} 
+		} 
+		
+		// copies a file to WEB-INF/web.xml
+		webXml = file('config/web.xml') 
+	}
+	
+	
+	// Config for PMD
+	pmd {
+		ignoreFailures = true
+	}
+	
+	// Config for Checkstyle
+	checkstyle {
+		ignoreFailures = true
+		showViolations = false
+	}
+	
+	// Config for findbugs
+	findbugs {
+		ignoreFailures = true
+	}
+	
+	// Config for the javadoc
+	javadoc {
+		failOnError = false
+	}
+	
+	jacocoTestReport {
+		reports {
+			xml.enabled = true
+			html.enabled = true
+		}
+	}
+	
+	
+//    TODO : Créer un plugin pour JavaNCSS	
+//	  
+//   configurations {
+//    	javancss
+//    }
+    
+//    dependencies {
+//    	compile 'javancss:javancss:30.51'  
+//    }
+	
+//	// Java NCSS
+//	task javancss << {
+//	    mkdir reportsDir
+	
+//	    ant {
+//	        taskdef name:'javancss', classname:'javancss.JavancssAntTask', classpath:configurations.javancss.asPath
+//	        javancss srcdir:'src', abortOnFail:false, generateReport:true, outputfile:"$reportsDir/javancss_metrics.txt", format:'plain'
+//	    }
+//	}
+	
+	
+}
+
+
+
+  
+
+// Import the legacy ANT tasks and rename them
+// ant.importBuild('build.xml') { antTargetName ->
+//     'ant_' + antTargetName
+// }
+
+

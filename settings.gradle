@@ -1,0 +1,1 @@
+include ":service_common", ":service_integration", ":service_generation_rapport", ":website/client/ogamDesktop", ":website/server"
