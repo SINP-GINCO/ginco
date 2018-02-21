@@ -281,18 +281,9 @@ function buildExtJS($config, $buildMode)
 	echo("--------------------------\n");
 
 	$clientDir = "$projectDir/website/client";
-	//$clientDirOgam = realpath($config['ogam.path'] . "/website/htdocs/client");
-	$clientDirGinco = realpath($config['ogam.ginco'] . "/website/client");
+	$clientDirGinco = realpath($config['ginco.path'] . "/website/client");
 	$buildClientDir = $buildDir . "/website/client" ;
 	is_dir($buildClientDir) || mkdir($buildClientDir, 0755, true);
-
-	// Copy ext and ogam code to project
- 	echo("Copying ext and ogam code from ogam project...\n");
- 	system("cp -r $clientDirGinco/ext $clientDir");
- 	system("cp -r $clientDirGinco/packages $clientDir");
- 	system("cp -r $clientDirGinco/ogamDesktop $clientDir");
-// 	system("cp -r $clientDirOgam/.sencha $clientDir");
- 	system("cp $clientDirGinco/workspace.json $clientDir");
 
 	// Customize app.json and index.html
 	echo("Customize app.json...\n");
