@@ -1,0 +1,110 @@
+{% extends 'base.json.twig' %}
+
+{%- block response_data -%}
+{% autoescape false %}
+{
+    "title": "{{ data.title}}",
+    "maps1": {
+        "title": "{{ data.maps1.title }}",
+        "urls": [
+        {% for url in data.maps1.urls %}
+            {"url": "{{ url.url }}"}
+        {%- if not loop.last -%}
+            ,
+        {%- endif -%}
+        {% endfor %}
+        ]
+    },
+    "maps2": {
+        "title": "{{ data.maps2.title }}",
+        "urls": [
+        {% for url in data.maps2.urls %}
+            {"url": "{{ url.url }}"}
+        {%- if not loop.last -%}
+            ,
+        {%- endif -%}
+        {% endfor %}
+        ]
+    },
+    "formats": [
+    {% for format in data.formats %}
+    {
+        "id": "{{ format.id }}",
+        "title": "{{ format.title }}",
+        "editURL": {{ format.editURL|json_encode }},
+        "fields": [
+        {% for field in format.fields %}
+        {
+            "label": "{{ field.metadata.data.label }}",
+            "inputType": "{{ field.metadata.inputType }}",
+            "type": "{{ field.metadata.data.unit.type }}",
+            "subtype": "{{ field.metadata.data.unit.subtype }}",
+            "value": {{ field.value|json_encode }},
+            "valueLabel": {{ field.valueLabel|json_encode }}
+        }
+        {%- if not loop.last -%}
+            ,
+        {%- endif -%}
+        {% endfor %}
+        ]
+    }
+    {%- if not loop.last -%}
+        ,
+    {%- endif -%}
+    {% endfor %}
+    ],
+    "children":[
+    {% if data.children is defined %}
+    {% for child in data.children %}
+    {
+        "id": "{{ child.id }}",
+        "title": "{{ child.title }}",
+        "hasChild": {{ child.hasChild|json_encode }},
+        "fields": [
+        {% for field in child.fields %}
+           {{ field|json_encode }}
+           {%- if not loop.last -%}
+            ,
+           {%- endif -%}
+        {% endfor %}
+        ],
+        "data": [
+        {% for datum in child.data %}
+        [
+            {% for value in datum %}
+                {{ value|json_encode }}
+                {%- if not loop.last -%}
+                ,
+                {%- endif -%}
+            {% endfor %}
+        ]
+        {%- if not loop.last -%}
+            ,
+        {%- endif -%}
+        {% endfor %}
+        ],
+        "columns": [
+        {% for column in child.columns %}
+        {
+            "dataIndex": {{ column.dataIndex|json_encode }},
+            "editable": {{ column.editable|json_encode }},
+            "header": "{{ column.header }}",
+            "tooltip": "{{ column.tooltip }}",
+            "type": "{{ column.type }}",
+            "width": {{ column.width|json_encode }}
+        }
+        {%- if not loop.last -%}
+            ,
+        {%- endif -%}
+        {% endfor %}
+        ]
+    }
+    {%- if not loop.last -%}
+        ,
+    {%- endif -%}
+    {% endfor %}
+    {% endif %}
+    ]
+}
+{% endautoescape %}
+{%- endblock -%}

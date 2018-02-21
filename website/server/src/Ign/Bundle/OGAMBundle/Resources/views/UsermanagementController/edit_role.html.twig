@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+{% form_theme form 'form.html.twig' %}
+
+{% block body %}
+{% if label_role == "Grand public" %}
+	<h1>{% trans %}Edit Role forbidden{% endtrans %}</h1>
+{% else %}
+	<h1>{% trans %}Edit Role{% endtrans %}</h1>
+{% endif %}
+
+{{ form(form) }}
+
+
+{% endblock %}

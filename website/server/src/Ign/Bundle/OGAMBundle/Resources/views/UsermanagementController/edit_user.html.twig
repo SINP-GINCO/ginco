@@ -1,0 +1,22 @@
+{% extends "::base.html.twig" %}
+{% form_theme form 'form.html.twig' %}
+
+{% block body %}
+
+<h1>{% trans %}Edit User{% endtrans %}</h1>
+
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.login) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {% if form.plainPassword is defined %}
+            {{ form_row(form.plainPassword) }}
+        {% endif %}
+        {{ form_row(form.provider) }}
+        {{ form_row(form.roles) }}
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+
+{% endblock %}

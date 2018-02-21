@@ -1,0 +1,36 @@
+{% extends 'base_with_total.json.twig' %}
+{% use 'metadata_entity.json.twig' %}
+
+{% block data_unit %}
+    {% if criteriafield %}
+        {{ parent() }}
+    {% else %}
+        "{{ unit.unit }}"
+    {% endif %}
+{% endblock %}
+
+{% block response_data %}
+[
+        {%- if fieldsType is same as('criteria')-%}
+            {% set criteriafield = true %}
+            {% for field in list %}
+                {{ block('form_field') }}
+                {%- if not loop.last -%}
+                    ,
+                {% endif %}
+            {% endfor %}
+        {% else %}
+        {% set criteriafield = false %}
+        {% for field in list %}
+            {{ block('form_field') }}
+            {%- if not loop.last -%}
+                ,
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+]
+{% endblock %}
+
+{% block response_total %}
+    {{ count }}
+{% endblock %}

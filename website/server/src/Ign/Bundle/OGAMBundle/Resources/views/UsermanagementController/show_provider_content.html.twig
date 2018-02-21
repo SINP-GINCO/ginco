@@ -1,0 +1,97 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+<h1>{% trans %}Users and content for provider:{% endtrans %} {{ provider.label }}</h1>
+
+<h2>
+	{% trans %}Users{% endtrans %}
+</h2>
+
+
+{% if users %}
+	<table class="sectiontable">
+	<tr>
+		<th>{% trans %}User Login{% endtrans %}</th>
+		<th>{% trans %}User Name{% endtrans %}</th>
+		<th>{% trans %}Email{% endtrans %}</th>
+	</tr>
+	{% for user in users %}
+	<tr class="sectiontableentry{{ cycle(['0', '1'], loop.index0) }}">
+		<td>{{ user.login }}</td>
+		<td>{{ user.username }}</td>
+		<td>{{ user.email }}</td>
+	</tr>
+	{% endfor %}
+	</table>
+{% else %}
+	<p class="subTableLink">{% trans %}This provider doesn't have any users.{% endtrans %}</p>
+{% endif %}
+
+
+
+
+<h2>
+	{% trans %}Submissions{% endtrans %}
+</h2>
+
+{% if submissions %}
+	<table class="sectiontable">
+		<tr>
+			<th style="text-align:center">{% trans %}Submission ID{% endtrans %}</th>
+			<th style="text-align:center">{% trans %}Date{% endtrans %}</th>
+			<th style="text-align:center">{% trans %}Dataset{% endtrans %}</th>
+			<th style="text-align:center">{% trans %}Step{% endtrans %}</th>
+			<th style="text-align:center">{% trans %}Status{% endtrans %}</th>
+			<th style="text-align:center">{% trans %}File{% endtrans %}</th>
+			<th style="text-align:right">{% trans %}Lines{% endtrans %}&nbsp;</th>
+			<th></th>
+		</tr>
+		{% for submission in submissions %}
+			<tr class="sectiontableentry{{ cycle(['0', '1'], loop.index0) }}">
+				<td>{{ submission.id }}</td>
+				<td>{{ submission.creationDate|date("Y/m/d") }}</td>
+				<td>{{ submission.dataset.id }}</td>
+				<td>{{ submission.step }}</td>
+				<td>
+					{{ submission.status }}
+					{% if submission.status == "OK" or submission.status == "CHECK" %}
+						{% image '@OGAMBundle/Resources/public/img/Green_tick.png' %}
+							<img src="{{ asset_url }}"/>
+						{% endimage %}
+					{% elseif  submission.status == "WARNING" %}
+						{% image '@OGAMBundle/Resources/public/img/warning_orange.png' %}
+							<img src="{{ asset_url }}"/>
+						{% endimage %}
+					{% elseif  submission.status == "RUNNING" %}
+						
+					{% else %}
+						<!-- "ERROR" or "CRASH" -->
+						{% image '@OGAMBundle/Resources/public/img/Red_x.png' %}
+							<img src="{{ asset_url }}"/>
+						{% endimage %}
+					{% endif %}
+				</td>
+				<td colspan=2>
+					{% if submission.status != "DATARUNNING" %}
+						<table width="100%">
+							{% for file in submission.files %}
+								<tr>
+									<td class="file-name">
+										<span title="{{ file.fileType }}">{{ file.fileName|split('/')|last }}</span>
+									</td>
+									<td class="line-number">{{ file.nbLines }}</td>
+								</tr>
+							{% endfor %}
+						</table>
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% else %}
+	<div class="no-submission">{% trans %}No submission found{% endtrans %}</div>
+{% endif %}
+
+
+{% endblock %}

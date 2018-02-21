@@ -1,0 +1,18 @@
+{% autoescape false %}
+{
+    "success": true,
+    "{{ total_key|default('results') }}": {% block response_total %}{{ total|default(data|length) }}{% endblock %},
+    "{{ data_key|default('rows') }}": {% block response_data %}    [
+    {%- for mode in data -%}
+    {
+    {%- block mode -%}
+    "code":{{ mode.code|json_encode}},
+    "label":{{ mode.label|json_encode}}
+    {%- endblock -%}
+    }
+    {%- if not loop.last -%},{%- endif -%}
+    {%- endfor -%}
+    ]
+{% endblock %}
+}
+{% endautoescape %}

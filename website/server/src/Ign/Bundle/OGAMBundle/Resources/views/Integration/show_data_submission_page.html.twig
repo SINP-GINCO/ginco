@@ -1,0 +1,116 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<h1>{% trans %}Data integration module{% endtrans %}</h1>
+<p class="onTableLink">
+    <a href="{{ path("integration_creation") }}">{% trans %}Create data submission{% endtrans %}</a>
+</p>
+
+<!-- Show the currently active location submissions -->
+{% if submissions is not empty %}
+    <table class="sectiontable">
+        <tr>
+            <th style="text-align:center">{% trans %}Submission ID{% endtrans %}</th>
+            <th style="text-align:center">{{ 'Date'|trans }}</th>
+            <th style="text-align:center">{{ 'Provider'|trans }}</th>
+            <th style="text-align:center">{{ 'User'|trans }}</th>
+            <th style="text-align:center">{{ 'Dataset'|trans }}</th>
+            <th style="text-align:center">{{ 'Step'|trans }}</th>
+            <th style="text-align:center">{{ 'Status'|trans }}</th>
+            <th>{{ 'File'|trans }}</th>
+            <th style="text-align:right">{{ 'Lines'|trans }}&nbsp;</th>
+            <th style="text-align:center">{{ 'Actions'|trans }}</th>
+            <th></th>
+        </tr>
+        {% set user = app.user %}
+        {% for submission in submissions %}
+            <tr class="sectiontableentry{{ loop.index0 % 2 }}">
+                <td>{{ submission.id|e }}</td>
+                <td>{{ submission.creationDate|date("Y-m-d") }}</td>
+                <td>{{ submission.provider.label|e }}</td>
+                <td>{{ submission.user.login|e }}</td>
+                <td>{{ submission.dataset.label|e }}</td>
+                <td>{{ submission.step|e }}</td>
+                <td>
+                    {% if submission.status in ['OK','CHECK'] %}
+                        {{ submission.status }}
+                        {% image '@OGAMBundle/Resources/public/img/Green_tick.png' %}
+                            <img src="{{ asset_url }}" />
+                        {% endimage %}
+                    {% elseif submission.status is same as('WARNING') %}
+                        {{ submission.status }}
+                        {% image '@OGAMBundle/Resources/public/img/warning_orange.png' %}
+                            <img src="{{ asset_url }}" />
+                        {% endimage %}
+                    {% elseif submission.status is same as('RUNNING') %}
+                        <div class="tempStatusDiv" id="tempStatusDiv_{{ submission.id }}">
+                            {{ include('OGAMBundle::integration_script.html.twig') }}
+                        </div>
+                    {% else %}
+                        {{ submission.status|e }}
+                        {% image '@OGAMBundle/Resources/public/img/Red_x.png' %}
+                            <img src="{{ asset_url }}" />
+                        {% endimage %}
+                    {% endif %}
+                </td>
+                <td colspan=2>
+                    {% if submission.status is not same as('RUNNING') %}
+                        <table width="100%">
+                            {% for file in submission.files %}
+                                <tr>
+                                    <td class="file-name">
+                                        <span title="{{ file.fileType|e('html_attr') }}">
+                                            {{ file.fileName|replace({'\\':'/'})|split('/')|last }}
+                                        </span>
+                                    </td>
+                                    <td class="line-number">{{ file.nbLines }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if submission.step is constant('STEP_INSERTED', submission)  and submission.status is constant('STATUS_OK', submission) %}
+                        <p>
+                            <a href="{{ path('integration_check', {'submissionId': submission.id}) }}" >{{ 'Check data'|trans }}</a>
+                        </p>
+                    {% endif %}
+                    {% if submission.step is not constant('STEP_INIT', submission) and submission.status is not constant('STATUS_RUNNING', submission) %}
+                         <p>
+                            <a href="{{ absolute_url("../proxy/show-report?submissionId=#{submission.id}") }}" >{{ 'Show report'|trans }}</a>
+                         </p>
+                    {% endif %}
+                    {% if (submission.step is same as('CHECK') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
+                        <p>
+                            <a href="{{ path('integration_validate',{'submissionId': submission.id}) }}" onClick="return confirm('{{ 'Confirm_submission_warning'|trans }}');">{{ 'Confirm submission'|trans }}</a>
+                        </p>
+                    {% endif %}
+                    {% if (submission.step is same as('VALIDATE') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
+                        <p>
+                            <a href="{{ path('integration_invalidate',{'submissionId': submission.id}) }}" onClick="return confirm('{{ 'Confirm_invalidation_warning'|trans }}');">{{ 'Invalidate submission'|trans }}</a>
+                        </p>
+                    {% endif %}
+                    {% if (submission.step != "VALIDATE" or user.isAllowed('CANCEL_VALIDATED_SUBMISSION'))
+                       and (submission.provider.id is same as(user.provider.id) or user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION')) %}
+                        <p>
+                            <a href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" onClick="return confirm('{{ 'Are you sure?'|trans }}');">{{ 'Cancel Submission'|trans }}</a>
+                        </p>
+                    {% endif %} 
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <div class="no-submission">{% trans %}No submission found{% endtrans %}</div>
+{% endif %}
+<p class="subTableLink">
+    <a href="{{ path("integration_creation") }}">{% trans %}Create data submission{% endtrans %}</a>
+</p>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@OGAMBundle/Resources/public/js/integration/*' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

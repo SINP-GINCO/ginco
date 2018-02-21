@@ -1,0 +1,22 @@
+{% extends "base_with_total.json.twig" %}
+
+{%- block predefined_request_group -%}{% autoescape false %}
+[
+    {{ datum.groupId|json_encode }},
+    {{ datum.label|json_encode }},
+    {{ datum.definition|json_encode }},
+    {{ datum.position|json_encode }}
+]
+{% endautoescape %}{%- endblock -%}
+
+
+{%- block response_data -%}
+[
+    {% for datum in data %}
+        {{ block('predefined_request_group') }}
+        {%- if not loop.last -%}
+            ,
+        {%- endif -%}
+    {% endfor %}
+]
+{%- endblock -%}

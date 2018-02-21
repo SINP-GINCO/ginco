@@ -1,0 +1,15 @@
+{% autoescape 'js' %}
+OgamDesktop.view.result.GridTab.override({
+        hideGridDataEditButton : {{ hideGridDataEditButton|json_encode}},
+        checkEditionRights : {{ checkEditionRights|json_encode}}
+    });    
+OgamDesktop.view.result.MainWin.override({
+		hideGridCsvExportMenuItem : {{ hideGridCsvExportMenuItem|json_encode}}
+});
+// User info
+{% if app.user.provider is defined %}
+	OgamDesktop.userProviderId = '{{ app.user.provider.id }}';
+{% else %}
+	OgamDesktop.userProviderId = '1';
+{% endif %}
+{% endautoescape %}

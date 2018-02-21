@@ -1,0 +1,26 @@
+{% block subject %}
+    Default subject
+{% endblock %}
+
+{% block body_text %}
+    {% block email_body_text %}
+        Default text
+    {% endblock %}
+    {% block signature_text %}
+        ---
+        Ceci est un mail automatique envoyé par {{ site_name }}. Merci de ne pas y répondre directement.
+    {% endblock %}
+{% endblock %}
+
+{% block body_html %}
+    {% block email_body_html %}
+        <p>Default body</p>
+    {% endblock %}
+    {% block signature_html %}
+        <div style="color:#555;">
+            <p>---</p>
+
+            <p style="font-size:12px">Ceci est un mail automatique envoyé par {{ site_name }}. Merci de ne pas y répondre directement.</p>
+        </div>
+    {% endblock %}
+{% endblock %}

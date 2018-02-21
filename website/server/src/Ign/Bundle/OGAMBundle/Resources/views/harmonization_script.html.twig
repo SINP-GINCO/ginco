@@ -1,0 +1,61 @@
+<script type="text/javascript"
+	src="{{ asset('bundles/ogam/js/integration/progressbar.js') }}"></script>
+<script type="text/javascript"
+	src="{{ asset('bundles/ogam/js/integration/later.min.js') }}"></script>
+<script type="text/javascript">
+(function() {
+    var OgamDesktopIntegration = {};
+
+    // Display the progress bar
+    display('{{"progressBar#{harmonizationProcess.harmonizationId}"}}', '', 0, '{{ asset('bundles/ogam/img/') }}');
+
+    // Refresh The status of the submission
+    OgamDesktopIntegration.getStatus_{{- harmonizationProcess.harmonizationId -}} =  function () {
+
+        var url = '{{ url('harmonization_getstatus') }}';
+        if (OgamDesktopIntegration.request !== undefined ){//request in progress
+            return;
+        }
+        OgamDesktopIntegration.request = new XMLHttpRequest();
+        OgamDesktopIntegration.request.onreadystatechange = function() {
+
+            if (OgamDesktopIntegration.request.readyState == 4) { // 4: request finished and response is ready
+                if (OgamDesktopIntegration.request.status == 200) { // Success
+
+                    var rp = JSON.parse(OgamDesktopIntegration.request.responseText);
+                    switch(rp.status){
+                        case 'OK':
+                        case 'WARNING':
+                        case 'ERROR':
+                        case 'CRASH':
+                            OgamDesktopIntegration.getStatusTask_{{- harmonizationProcess.harmonizationId -}}.clear();
+                            location.reload();
+                            break;
+                        case 'RUNNING':
+                            total = rp.totalCount;
+                            if (total == 0) {
+                                percentage = 1;
+                            } else {
+                                percentage = rp.currentCount / total;
+                            }
+                            percentage = (percentage * 100);
+                            setLabel('{{ "progressBar#{harmonizationProcess.harmonizationId}"}}', rp.taskName);
+                            setProgress('{{- 'progressBar' ~ (harmonizationProcess.harmonizationId) -}}', percentage);
+                            break;
+                        default:
+                            return;
+                    }
+                } else { // Failure
+
+                }
+                OgamDesktopIntegration.request = undefined;
+            }
+        };
+
+        OgamDesktopIntegration.request.open("POST", url, true);
+        OgamDesktopIntegration.request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        OgamDesktopIntegration.request.send("DATASET_ID={{- harmonizationProcess.dataset.id -}}&PROVIDER_ID={{- harmonizationProcess.providerId -}}&action=status");
+
+    }
+    OgamDesktopIntegration.getStatusTask_{{- harmonizationProcess.harmonizationId -}} = later.setInterval(OgamDesktopIntegration.getStatus_{{- harmonizationProcess.harmonizationId -}}, later.parse.text('every 2 sec'));
+})(); </script>

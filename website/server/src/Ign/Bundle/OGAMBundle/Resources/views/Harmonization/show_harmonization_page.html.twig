@@ -1,0 +1,76 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}OGAMBundle:Harmonization:showHarmonizationPage{% endblock %}
+
+{% block body %}
+
+<script type="text/javascript">
+    function confirmLauch() {
+        return confirm("{{ 'Confirm harmonization'|trans }}");
+    }
+    function confirmDeletion() {
+        return confirm("{{ 'Confirm harmonization data deletion'|trans }}");
+    }
+</script>
+
+
+<h1>
+  {{ 'Data harmonization module'|trans }}
+</h1>
+
+{% if harmonizations is not empty %}
+<table class="sectiontable">
+<tr>
+    <th>{{ 'Provider Id'|trans }}</th>
+    <th>{{ 'Dataset'|trans }}</th>
+    <th>{{ 'Harmonization Date'|trans }}</th>
+    <th>{{ 'Status'|trans }}</th>
+    <th>{{ 'Actions'|trans }}</th>
+</tr>
+
+{% for harmonizationProcess in harmonizations %}
+<tr class="sectiontableentry{{ loop.index0 % 2 }}">
+    <td>{{ harmonizationProcess.providerId }}</td>
+    <td>{{ harmonizationProcess.dataset.label }}</td>
+    <td>{{ harmonizationProcess.date|date("Y-m-d") }}</td>
+    <td>
+        {% if harmonizationProcess.submissionStatus == 'NOT_VALIDATE' %}
+            {{ harmonizationProcess.status|trans }}
+            {% image '@OGAMBundle/Resources/public/img/warning_orange.png' %}
+                <img src="{{ asset_url }}" title="{{ 'The submission has not been validated'|trans }}" />
+            {% endimage %}
+        {% elseif harmonizationProcess.status == "OK" %} 
+            {{ harmonizationProcess.status|trans }}
+            {% image '@OGAMBundle/Resources/public/img/Green_tick.png' %}
+                <img src="{{ asset_url }}" />
+            {% endimage %}
+        {% elseif harmonizationProcess.status == "RUNNING" %}
+            <div class="tempStatusDiv" id="tempStatusDiv_{{ harmonizationProcess.harmonizationId }}">
+                {{ include('OGAMBundle::harmonization_script.html.twig') }}
+            </div>
+        {% elseif harmonizationProcess.status == '' %}
+        {% else %}{# "ERROR" or "CRASH") #}
+            {{ harmonizationProcess.status|trans }}
+            <img src="{{ asset('img/Red_x.png') }}" />
+        {% endif %}</td>
+    <td>
+    {% if harmonizationProcess.submissionStatus == 'VALIDATE' and harmonizationProcess.status != 'RUNNING' %}
+        <a onclick="return confirmLauch();" href="{{ path('harmonization_launch',{'DATASET_ID':harmonizationProcess.dataset.id, 'PROVIDER_ID':harmonizationProcess.providerId}) }}" >{{ 'Launch Harmonization'|trans }}</a>
+        <br/>
+        {% if harmonizationProcess.status != 'REMOVED' and harmonizationProcess.status != '' %}
+        <a onclick="return confirmDeletion();" href="{{ path('harmonization_removeharmonizationdata',{'DATASET_ID':harmonizationProcess.dataset.id, 'PROVIDER_ID':harmonizationProcess.providerId}) }}" >{{ 'Remove Harmonization Data'|trans }}</a>
+        {% endif %}
+    {% elseif harmonizationProcess.submissionStatus == 'NOT_VALIDATE' %}
+        <a href="{{ path('integration_home') }}">{{ 'Validate the submission'|trans }}</a>
+    {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<div class="no-submission">{{ 'No submission found'|trans }}</div>
+{% endif %}
+<p class="subTableLink">
+    <a href="{{ path("homepage") }}">{{ 'Back'|trans }}</a>
+</p>
+{% endblock %}
