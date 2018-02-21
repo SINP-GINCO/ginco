@@ -1,0 +1,33 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+
+<h1>{% trans %}User Management Module{% endtrans %}</h1>
+
+<div class="left-column">
+<div class="moduletable_menu">
+
+<h3>{% trans %}Select a menu{% endtrans %}</h3>
+
+<ul id="appmenu" class="menu">
+
+<li>
+<a href="{{ path('usermanagement_showUsers') }}"> {% trans %}Show the users{% endtrans %}</a>
+</li>
+
+<li>
+<a href="{{ path('usermanagement_showRoles') }}"> {% trans %}Show the roles{% endtrans %}</a>
+</li>
+
+<li>
+<a href="{{ path('usermanagement_showProviders') }}"> {% trans %}Show the providers{% endtrans %}</a>
+</li>
+
+</ul>
+
+</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<h1>
+    {{ 'Data integration module'|trans }} - {{ 'Error'|trans }}
+</h1>
+<div class="status-img"></div>
+<span class="error-msg">{{ error }}</span>
+<div class="bottom-menu">
+    <a href="{{ path('jdd_list') }}"><b>{{ 'Submit Data'|trans }}</b></a>
+</div>
+{% endblock %}

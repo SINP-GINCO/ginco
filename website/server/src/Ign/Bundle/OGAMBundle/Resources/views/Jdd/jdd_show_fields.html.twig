@@ -1,0 +1,45 @@
+{# Page displaying the Fields for one jdd #}
+{# Variables : jdd #}
+
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>{{ 'Jdd.page.title'|trans({'%jddId%':jdd.id}) }}</h1>
+
+    <h2>Champs (clé/valeur)</h2>
+    <table class="table table-nonfluid table-bordered">
+    {% for field in jdd.fields %}
+        <tr>
+            <th>{{ field.key }}</th>
+            <td>{{ field.value }}</td>
+            <td><a href="{{ path('jdd_remove_field', {'id':jdd.id, 'key':field.key}) }}">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </a></td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <h2>Ajouter un champ</h2>
+    <form id="myForm" action="" method="get">
+        <input type="text" name="key" placeholder="Clé">
+        <input type="text" name="value"  placeholder="valeur">
+        <input type="submit">
+    </form>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        $(function(){
+
+            $('#myForm').submit(function (event)
+            {
+                var action = {{ path('homepage') }} + 'jdd/' + {{ jdd.id }}
+                        + '/add-field/' + $( "input[name='key']" ).val() + '/' + $( "input[name='value']" ).val();
+                $(this).attr('action', action);
+            });
+        });
+    </script>
+{% endblock %}

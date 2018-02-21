@@ -1,0 +1,92 @@
+{% extends "base.json.twig" %}
+
+{%- block zoomLevel -%}{% autoescape false %}
+{%- if not zoomLevel -%}
+    null
+{%- else -%}
+{
+    "id": {{ zoomLevel.id|json_encode }},
+    "zoomLevel": {{ zoomLevel.zoomLevel|json_encode }},
+    "resolution": {{ zoomLevel.resolution|json_encode }},
+    "approximateScaleDenominator": {{ zoomLevel.approximateScaleDenominator|json_encode }},
+    "scaleLabel": {{ zoomLevel.scaleLabel|json_encode }},
+    "isMapZoomLevel": {{ zoomLevel.isMapZoomLevel|json_encode }}
+}
+{%- endif -%}
+{% endautoescape %}{%- endblock -%}
+
+{%- block service -%}{% autoescape false %}
+{%- if not service -%}
+    null
+{%- else -%}
+{
+    "id": {{ service.id|json_encode }},
+    "name": {{ service.name|json_encode }},
+    "config": {{ service.config }}
+}
+{%- endif -%}
+{% endautoescape %}{%- endblock -%}
+
+{%- block layer -%}{% autoescape false %}
+{%- if not layer -%}
+    null
+{%- else -%}
+{
+    "id": {{ layer.id|json_encode }},
+    "name": {{ layer.name|json_encode }},
+    "label": {{ layer.label|json_encode }},
+    "serviceLayerName": {{ layer.serviceLayerName|json_encode }},
+    "isTransparent": {{ layer.isTransparent|json_encode }},
+    "defaultOpacity": {{ layer.defaultOpacity|json_encode }},
+    "isBaseLayer": {{ layer.isBaseLayer|json_encode }},
+    "isUntiled": {{ layer.isUntiled|json_encode }},
+    "maxZoomLevel": {% set zoomLevel = layer.maxZoomLevel %}{{ block('zoomLevel') }},
+    "minZoomLevel": {% set zoomLevel = layer.minZoomLevel %}{{ block('zoomLevel') }},
+    "hasLegend": {{ layer.hasLegend|json_encode }},
+    "providerId": {{ layer.providerId|json_encode }},
+    "activateType": {{ layer.activateType|json_encode }},
+    "viewService": {% set service = layer.viewService %}{{ block('service') }},
+    "legendService": {% set service = layer.legendService %}{{ block('service') }},
+    "detailService": {% set service = layer.detailService %}{{ block('service') }},
+    "featureService": {% set service = layer.featureService %}{{ block('service') }}
+}
+{%- endif -%}
+{% endautoescape %}{%- endblock -%}
+
+{%- block layerTreeNode -%}{% autoescape false %}
+{
+    "id": {{ node.id|json_encode }},
+    "nodeId": {{ node.nodeId|json_encode }},
+    "parentNodeId": {{ node.parentNodeId|json_encode }},
+    "label": {{ node.label|json_encode }},
+    "definition": {{ node.definition|json_encode }},
+    "isLayer": {{ node.isLayer|json_encode }},
+    "isChecked": {{ node.isChecked|json_encode }},
+    "isHidden": {{ node.isHidden|json_encode }},
+    "isDisabled": {{ node.isDisabled|json_encode }},
+    "isExpanded": {{ node.isExpanded|json_encode }},
+    "layer": {% set layer = node.layer %}{{ block('layer') }},
+    "position": {{ node.position|json_encode }},
+    "checkedGroup": {{ node.checkedGroup|json_encode }},
+    "children": [
+    {% set parent = node %}
+    {% for node in layerTreeNodes if node.parentNodeId == parent.nodeId %}
+        {%- if not loop.first -%}
+            ,
+        {%- endif -%}
+        {{ block('layerTreeNode') }}
+    {% endfor %}
+    ]
+}
+{% endautoescape %}{%- endblock -%}
+
+{%- block response_data -%}
+[
+    {% for node in layerTreeNodes if node.parentNodeId == "-1" %}
+        {%- if not loop.first -%}
+            ,
+        {%- endif -%}
+        {{ block('layerTreeNode') }}
+    {% endfor %}
+]
+{%- endblock -%}

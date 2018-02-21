@@ -1,0 +1,122 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    ogam.integration_service:
+        class: Ign\Bundle\OGAMBundle\Services\Integration
+        arguments: ["@=service('ogam.configuration_manager').getConfig('integrationService_url', 'http://localhost:8080/OGAMIntegrationService/')"]
+        calls:
+          - [setLogger, ['@logger']]
+    ogam.harmonization_service:
+        class: Ign\Bundle\OGAMBundle\Services\Harmonization
+        arguments: ["@=service('ogam.configuration_manager').getConfig('harmonizationService_url', 'http://localhost:8080/OGAMHarmonizationService/')"]
+        calls:
+          - [setLogger, ['@logger']]
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+
+    # Service used to encode a challenge for the user login
+    ogam.challenge_response_encoder:
+        class: Ign\Bundle\OGAMBundle\Services\ChallengeResponseEncoder
+        arguments: 
+            session: "@session"
+            logger: "@logger"
+
+    # Service used to read the application parameters from the database
+    ogam.configuration_manager:
+        class: Ign\Bundle\OGAMBundle\Services\ConfigurationManager
+        arguments:
+            em: "@doctrine.orm.entity_manager"
+            logger: "@logger"
+
+    # Service used to read the breadcrumbs config
+    ogam.breadcrumb_config_service:
+        class: Ign\Bundle\OGAMBundle\Services\BreadcrumbsConfigService
+        arguments: ["@router", "%kernel.root_dir%/config/navigation.yml"]
+
+    # Listener for the user locale
+    ogam.locale_listener:
+        class: Ign\Bundle\OGAMBundle\EventListener\LocaleListener
+        arguments: ['%kernel.default_locale%']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Listener for the breadcrumb
+    ogam.breadcumb_listener:
+        class: Ign\Bundle\OGAMBundle\EventListener\BreadcrumbListener
+        arguments: ["@white_october_breadcrumbs", "@ogam.breadcrumb_config_service"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Listener for the schema
+    ogam.schema_listener:
+        class: Ign\Bundle\OGAMBundle\EventListener\SchemaListener
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Repositories not linked to a specific entity
+    ogam.generic_repository:
+        abstract: true
+        class: Ign\Bundle\OGAMBundle\Repository\GenericRepository
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    ogam.repository.database.metadata:
+        parent: ogam.generic_repository
+        class: Ign\Bundle\OGAMBundle\Repository\Database\MetadataRepository
+
+    ogam.repository.database.postgresql:
+        parent: ogam.generic_repository
+        class: Ign\Bundle\OGAMBundle\Repository\Database\PostgresqlRepository
+
+    # Managers
+    ogam.manager.generic:
+        class: Ign\Bundle\OGAMBundle\Manager\GenericManager
+        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ogam.generic_service","@ogam.configuration_manager"]
+        calls:
+          - [setLogger, ['@logger']]
+    
+    ogam.manager.query:
+        class: Ign\Bundle\OGAMBundle\Manager\QueryManager
+        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ogam.query_service","@ogam.configuration_manager"]
+        calls:
+          - [setLogger, ['@logger']]
+
+    # Services
+    ogam.generic_service:
+        class: Ign\Bundle\OGAMBundle\Services\GenericService
+        arguments: ["@doctrine.orm.metadata_entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
+
+    ogam.query_service:
+        class: Ign\Bundle\OGAMBundle\Services\QueryService
+        arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()", "@=service('security.token_storage').getToken().getUser()", "@=service('ogam.schema_listener').getSchema()", "@ogam.manager.generic"]
+        
+        
+    #templatehelper
+    ogam.helper.AddLink:
+        class: Ign\Bundle\OGAMBundle\Helper\GenerateAddLink
+        # the tag alias is later used in the view to access your service
+        tags:
+            - { name: templating.helper, alias: dataEditionAdd }
+    
+    ogam.helper.EditLink:
+        class: Ign\Bundle\OGAMBundle\Helper\GenerateEditLink
+        # the tag alias is later used in the view to access your service
+        tags:
+            - { name: templating.helper, alias: dataEditionEdit }
+    
+    OGAMBundle.login_entry_point:
+        class: Ign\Bundle\OGAMBundle\EventListener\LoginEntryPoint
+        arguments: [ "@router" ]
+   
+    app.exception_controller:
+        class: Ign\Bundle\OGAMBundle\Controller\ExceptionController
+        arguments: ['@twig', '%kernel.debug%']
+    
+#    ogam.ajaxError:
+#        class: Ign\Bundle\OGAMBundle\EventListener\AjaxErrorListener
+#        tags:
+#            - { name: kernel.event_listener, event: kernel.exception, priority: 1000 }

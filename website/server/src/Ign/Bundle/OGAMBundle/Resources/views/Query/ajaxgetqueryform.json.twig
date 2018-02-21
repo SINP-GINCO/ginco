@@ -1,0 +1,42 @@
+{% extends 'base.json.twig' %}
+{% use  "metadata_entity.json.twig" %}
+
+{% block data_unit %}
+    {% if criteriafield %}
+        {{ parent() }}
+    {% else %}
+        "{{ unit.unit }}"
+    {% endif %}
+{% endblock %}
+
+{% block form_format_fields %}
+,"criteria": [
+{% set criteriafield = true %}
+{% for field in form.criteria %}
+    {{ block('form_field') }}
+    {%- if not loop.last -%}
+        ,
+    {% endif %}
+{% endfor %}
+],
+"columns" : [
+{% set criteriafield = false %}
+{% for field in form.columns %}
+    {{ block('form_field') }}
+    {%- if not loop.last -%}
+        ,
+    {% endif %}
+{% endfor %}
+]
+{% endblock %}
+
+{% block response_data %}
+[
+    {% for form in forms %}
+        {{ block('form_format') }}
+        {%- if not loop.last -%}
+            ,
+        {% endif %}
+    {% endfor %}
+]
+{% endblock %}

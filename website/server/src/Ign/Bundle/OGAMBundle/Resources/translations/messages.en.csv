@@ -1,0 +1,392 @@
+##########################
+#   Consultation         #
+##########################
+child(ren);linked child(ren)
+No;No
+Yes;Yes
+An error occured during the pdf creation.;An error occured during the pdf creation.
+
+##########################
+#   Validation           #
+##########################
+'%hostname%' does not appear to have a valid MX record for the email address '%value%';'%hostname%' does not appear to have a valid MX record for the email address '%value%'
+'%hostname%' is no valid hostname for email address '%value%';'%hostname%' is no valid hostname for email address '%value%'
+'%hostname%' is not in a routable network segment. The email address '%value%' should not be resolved from public network;'%hostname%' is not in a routable network segment. The email address '%value%' should not be resolved from public network
+'%localPart%' can not be matched against dot-atom format;'%localPart%' can not be matched against dot-atom format
+'%localPart%' can not be matched against quoted-string format;'%localPart%' can not be matched against quoted-string format
+'%localPart%' is no valid local part for email address '%value%';'%localPart%' is no valid local part for email address '%value%'
+'%value%' appears to be a DNS hostname but cannot extract TLD part;'%value%' appears to be a DNS hostname but cannot extract TLD part
+'%value%' appears to be a DNS hostname but cannot match TLD against known list;'%value%' appears to be a DNS hostname but cannot match TLD against known list
+'%value%' appears to be a DNS hostname but cannot match against hostname schema for TLD '%tld%';'%value%' appears to be a DNS hostname but cannot match against hostname schema for TLD '%tld%'
+'%value%' appears to be a DNS hostname but contains a dash in an invalid position;'%value%' appears to be a DNS hostname but contains a dash in an invalid position
+'%value%' appears to be a DNS hostname but the given punycode notation cannot be decoded;'%value%' appears to be a DNS hostname but the given punycode notation cannot be decoded
+'%value%' appears to be a local network name but local network names are not allowed;'%value%' appears to be a local network name but local network names are not allowed
+'%value%' appears to be an IP address, but IP addresses are not allowed;'%value%' appears to be an IP address, but IP addresses are not allowed
+'%value%' contains an invalid amount of digits;'%value%' contains an invalid amount of digits
+'%value%' contains characters which are non alphabetic and no digits;'%value%' contains characters which are non alphabetic and no digits
+'%value%' contains invalid characters;'%value%' contains invalid characters
+'%value%' contains non alphabetic characters;'%value%' contains non alphabetic characters
+'%value%' does not appear to be a float;'%value%' does not appear to be a float
+'%value%' does not appear to be a postal code;'%value%' does not appear to be a postal code
+'%value%' does not appear to be a valid IP address;'%value%' does not appear to be a valid IP address
+'%value%' does not appear to be a valid date;'%value%' does not appear to be a valid date
+'%value%' does not appear to be a valid local network name;'%value%' does not appear to be a valid local network name
+'%value%' does not appear to be an integer;'%value%' does not appear to be an integer
+'%value%' does not fit the date format '%format%';'%value%' does not fit the date format '%format%'
+'%value%' does not match against pattern '%pattern%';'%value%' does not match against pattern '%pattern%'
+'%value%' does not match the expected structure for a DNS hostname;'%value%' does not match the expected structure for a DNS hostname
+'%value%' exceeds the allowed length;'%value%' exceeds the allowed length
+'%value%' failed checksum validation;'%value%' failed checksum validation
+'%value%' has a false IBAN format;'%value%' has a false IBAN format
+'%value%' has failed the IBAN check;'%value%' has failed the IBAN check
+'%value%' has not only hexadecimal digit characters;'%value%' has not only hexadecimal digit characters
+'%value%' is an empty string;'%value%' is an empty string
+'%value%' is less than %min% characters long;'%value%' is less than %min% characters long
+'%value%' is more than %max% characters long;'%value%' is more than %max% characters long
+'%value%' is no valid ISBN number;'%value%' is no valid ISBN number
+'%value%' is no valid email address in the basic format local-part@hostname;'%value%' is no valid email address in the basic format local-part@hostname
+'%value%' is no valid sitemap changefreq;'%value%' is no valid sitemap changefreq
+'%value%' is no valid sitemap lastmod;'%value%' is no valid sitemap lastmod
+'%value%' is no valid sitemap location;'%value%' is no valid sitemap location
+'%value%' is no valid sitemap priority;'%value%' is no valid sitemap priority
+'%value%' is not between '%min%' and '%max%', inclusively;'%value%' is not between '%min%' and '%max%', inclusively
+'%value%' is not from an allowed institute;'%value%' is not from an allowed institute
+'%value%' is not greater than '%min%';'%value%' is not greater than '%min%'
+'%value%' is not less than '%max%';'%value%' is not less than '%max%'
+'%value%' is not strictly between '%min%' and '%max%';'%value%' is not strictly between '%min%' and '%max%'
+'%value%' is not valid;'%value%' is not valid
+'%value%' must contain between 13 and 19 digits;'%value%' must contain between 13 and 19 digits
+'%value%' must contain only digits;'%value%' must contain only digits
+'%value%' seems to be an invalid creditcard number;'%value%' seems to be an invalid creditcard number
+'%value%' seems to contain an invalid checksum;'%value%' seems to contain an invalid checksum
+'%value%' should have a length of %length% characters;'%value%' should have a length of %length% characters
+'%value%' was not found in the haystack;'%value%' was not found in the haystack
+A PHP extension returned an error while uploading the file '%value%';A PHP extension returned an error while uploading the file '%value%'
+A crc32 hash could not be evaluated for the given file;A crc32 hash could not be evaluated for the given file
+A hash could not be evaluated for the given file;A hash could not be evaluated for the given file
+A md5 hash could not be evaluated for the given file;A md5 hash could not be evaluated for the given file
+A record matching '%value%' was found;A record matching '%value%' was found
+A sha1 hash could not be evaluated for the given file;A sha1 hash could not be evaluated for the given file
+An exception has been raised within the callback;An exception has been raised within the callback
+An exception has been raised while validating '%value%';An exception has been raised while validating '%value%'
+All files in sum should have a maximum size of '%max%' but '%size%' were detected;All files in sum should have a maximum size of '%max%' but '%size%' were detected
+All files in sum should have a minimum size of '%min%' but '%size%' were detected;All files in sum should have a minimum size of '%min%' but '%size%' were detected
+File '%value%' can't be written;File '%value%' can't be written
+File '%value%' does not exist;File '%value%' does not exist
+File '%value%' does not match the given crc32 hashes;File '%value%' does not match the given crc32 hashes
+File '%value%' does not match the given hashes;File '%value%' does not match the given hashes
+File '%value%' does not match the given md5 hashes;File '%value%' does not match the given md5 hashes
+File '%value%' does not match the given sha1 hashes;File '%value%' does not match the given sha1 hashes
+File '%value%' exceeds the defined form size;File '%value%' exceeds the defined form size
+File '%value%' exceeds the defined ini size;File '%value%' exceeds the defined ini size
+File '%value%' exists;File '%value%' exists
+File '%value%' has a false extension;File '%value%' has a false extension
+File '%value%' has a false mimetype of '%type%';File '%value%' has a false mimetype of '%type%'
+File '%value%' is no image, '%type%' detected;File '%value%' is no image, '%type%' detected
+File '%value%' is not compressed, '%type%' detected;File '%value%' is not compressed, '%type%' detected
+File '%value%' is not readable or does not exist;File '%value%' is not readable or does not exist
+File '%value%' was illegally uploaded. This could be a possible attack;File '%value%' was illegally uploaded. This could be a possible attack
+File '%value%' was not found;File '%value%' was not found
+File '%value%' was not uploaded;File '%value%' was not uploaded
+File '%value%' was only partially uploaded;File '%value%' was only partially uploaded
+Invalid type given. Numeric string, integer or float expected;Invalid type given. Numeric string, integer or float expected
+Invalid type given. String expected;Invalid type given. String expected
+Invalid type given. String or integer expected;Invalid type given. String or integer expected
+Invalid type given. String, integer, array or Zend_Date expected;Invalid type given. String, integer, array or Zend_Date expected
+Invalid type given. String, integer, float, boolean or array expected;Invalid type given. String, integer, float, boolean or array expected
+Invalid type given. String, integer or float expected;Invalid type given. String, integer or float expected
+Luhn algorithm (mod-10 checksum) failed on '%value%';Luhn algorithm (mod-10 checksum) failed on '%value%'
+Maximum allowed height for image '%value%' should be '%maxheight%' but '%height%' detected;Maximum allowed height for image '%value%' should be '%maxheight%' but '%height%' detected
+Maximum allowed size for file '%value%' is '%max%' but '%size%' detected;Maximum allowed size for file '%value%' is '%max%' but '%size%' detected
+Maximum allowed width for image '%value%' should be '%maxwidth%' but '%width%' detected;Maximum allowed width for image '%value%' should be '%maxwidth%' but '%width%' detected
+Minimum expected height for image '%value%' should be '%minheight%' but '%height%' detected;Minimum expected height for image '%value%' should be '%minheight%' but '%height%' detected
+Minimum expected size for file '%value%' is '%min%' but '%size%' detected;Minimum expected size for file '%value%' is '%min%' but '%size%' detected
+Minimum expected width for image '%value%' should be '%minwidth%' but '%width%' detected;Minimum expected width for image '%value%' should be '%minwidth%' but '%width%' detected
+No record matching '%value%' was found;No record matching '%value%' was found
+No temporary directory was found for file '%value%';No temporary directory was found for file '%value%'
+No token was provided to match against;No token was provided to match against
+One or more files can not be read;One or more files can not be read
+The mimetype of file '%value%' could not be detected;The mimetype of file '%value%' could not be detected
+The size of image '%value%' could not be detected;The size of image '%value%' could not be detected
+The two given tokens do not match;The two given tokens do not match
+There was an internal error while using the pattern '%pattern%';There was an internal error while using the pattern '%pattern%'
+Too few files, minimum '%min%' are expected but '%count%' are given;Too few files, minimum '%min%' are expected but '%count%' are given
+Too less words, minimum '%min%' are expected but '%count%' were counted;Too less words, minimum '%min%' are expected but '%count%' were counted
+Too many files, maximum '%max%' are allowed but '%count%' are given;Too many files, maximum '%max%' are allowed but '%count%' are given
+Too much words, maximum '%max%' are allowed but '%count%' were counted;Too much words, maximum '%max%' are allowed but '%count%' were counted
+Unknown country within the IBAN '%value%';Unknown country within the IBAN '%value%'
+Unknown error while uploading file '%value%';Unknown error while uploading file '%value%'
+Value is required and can't be empty;Value is required and can't be empty
+notMatch;Password confirmation does not match
+userExist;This login already exist
+### User friendly ###
+# userNotExist;This login doesn't exist
+# Incorrect password;Incorrect password
+### Security ###
+userNotExist;Incorrect user or password
+Incorrect password;Incorrect user or password
+
+##########################
+#   Layout               #
+##########################
+Log out;Log out
+Log in;Log in
+Change login;Change login
+Contact Us;Contact Us
+Layout Head Title;OGAM Application
+Layout Head Meta Keywords;eforest, efdac, jrc, forest
+Layout Head Meta Description;European Forest Data Center
+Layout Copyright;Copyright © IGN 2015. Reproduction authorized provided the source is acknowledged.
+Layout Pathway Home;Home
+Translate this site fr;Translate this site in french
+Translate this site en;Translate this site in english
+
+##########################
+#	Error				 #
+##########################
+Please login;Please login
+An error occurred;An error occurred
+Page not found;Page not found
+Database Error;Database Error
+Application error;Application error
+
+﻿##########################
+#   Index                #
+##########################
+Select a menu;Select a menu
+Welcome;Welcome to the OGAM web site !
+Data Integration;Data Integration
+Data Edition;Data Edition
+Visualize Raw Data;Visualize Raw Data
+Query Data (RAW_DATA);Visualize Raw Data
+Query Data (HARMONIZED_DATA);Visualize Validated Data
+Add a new localisation;Add a new localisation
+Data Harmonization;Data Copy
+Visualize Harmonized Data;Visualize Validated Data
+Query Harmonized Data;Visualize Validated Data
+User Administration;User Administration
+Check Configuration;Check the configuration
+Manage Users;User Administration
+
+﻿##########################
+#   User login           #
+##########################
+User Module;User Module
+Authentication;Authentication
+Username;Username
+Password;Password
+Password_forgotten;Password Forgotten ?
+Password_change_request;Password change request
+Password_change_request_msg;You have requested to reset the password associated with the email address: <b>%email% </b>.<br/>If this address is associated with a user account, you will receive an email giving you the path to follow. Please check your inbox.<br/><b>Note:</b> The email is sent automatically, so check your spam if you do not receive it quickly.
+
+﻿##########################
+#  Data integration      #
+##########################
+Submissions;Submissions
+Add data;Add data
+Choose a table:;Choose a table:
+Data integration module;Data integration module
+Submit Data;Submit Data
+Submission ID;Submission ID
+Date;Date
+Provider Id;Provider Id
+Dataset;Dataset
+Step;Step
+Status;Status
+File;File
+Lines;Lines
+Actions;Actions
+Create data submission;Create data submission
+Upload Data;Upload Data
+Check data;Check data
+Show report;Show report
+Validate data;Validate submission
+Cancel Submission;Cancel submission
+Confirm submission;Confirm submission
+Invalidate submission;Invalidate submission
+Confirm_submission_warning;Once validated the data will be available for further processing. Do you confirm?
+Confirm_invalidation_warning;Once invalidated the data will no longer be available for further processing. Do you confirm?
+Submit;Submit
+Error;Error
+The expected fields are:;The expected fields are:
+Are you sure?;Are you sure?
+No submission found;No submission found
+Download a file model for;Download a file model for
+File format description;File format description
+Spatial reference system (SRID);Spatial reference system (SRID)
+sridDescription;In the form of EPSG code. For example: <ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li></ul>See <a href='http://www.epsg-registry.org/' target='_blank'>EPSG Geodetic Parameter Registry</a>.
+
+﻿##########################
+#  Jeu de données        #
+##########################
+
+Jdd.delete.impossible;The jdd can't be deleted.
+Jdd.delete.success:The jdd has been deleted.
+
+﻿##########################
+#  Data Copy             #
+##########################
+Data harmonization module;Data copy
+Harmonize Data;Copy Data
+Back;Back
+Launch Harmonization;Launch Copy
+Remove Harmonization Data;Remove Harmonization Data
+Validate the submission;Validate the submission
+The submission has not been validated;The submission has not been validated
+Harmonization Date;Copy Date
+Confirm harmonization;Warning, this will delete and recreate all data for this data provider in the harmonized database.
+Confirm harmonization data deletion;Warning, this will delete all data for this data provider in the harmonized database.
+
+##########################
+#  Check configuration   #
+##########################
+Check result;Check result
+PHP Parameters;PHP Parameters
+Error: %value% minimum;Error: %value% minimum
+Expected value;Expected value
+Database;Database
+Checking for missing schemas:;Checking for missing schemas:
+The schema '%s' described in the metadata doesn't exist in the system.;The schema '%s' described in the metadata doesn't exist in the system.
+Checking for missing tables:;Checking for missing tables:
+The expected table '%s' of the schema '%s' is not found.;The expected table '%s' of the schema '%s' is not found.
+The PK (%s) of the table '%s' is not compatible with the metadata PK (%s).;The PK (%s) of the table '%s' is not compatible with the metadata PK (%s).
+Checking for primary keys:;Checking for primary keys:
+Checking for missing fields:;Checking for missing fields:
+Checking field types:;Checking field types:
+The Expected data '%s' of the table '%s' of the schema '%s' is not found.;The Expected data '%s' of the table '%s' of the schema '%s' is not found.
+The field '%s' of the table '%s' of the schema '%s' is of type '%s' which is incompatible with the metadata definition: '%s'.;The field '%s' of the table '%s' of the schema '%s' is of type '%s' which is incompatible with the metadata definition: '%s'.
+Unknow field type for the data '%s' of the table '%s' of the schema '%s'.;Unknow field type for the data '%s' of the table '%s' of the schema '%s'.
+Checking foreign keys:;Checking foreign keys:
+The foreign key between the table '%s' and the table '%s' described in the metadata doesn't exist in the system.;The foreign key between the table '%s' and the table '%s' described in the metadata doesn't exist in the system.
+The foreign key '%s' between the table '%s' and the table '%s' does not match the metadata definition: '%s'.;The foreign key '%s' between the table '%s' and the table '%s' does not match the metadata definition: '%s'.
+Note: The database user must have administration rights to perform these tests.;Note: The database user must have administration rights to perform these tests.
+
+##########################
+# Mapping                #
+##########################
+empty_layer;No layer
+
+##########################
+#  User Management       #
+##########################
+User Management Module;User Management Module
+Show the users;Show the users
+Show the roles;Show the roles
+Show the providers;Show the providers
+Change Password;Change Password
+Password Change;Password Change
+Password Change for user:;Password Change for user:
+Create Role;Create Role
+Changing your password;Changing your password
+Create User;Create User
+Create Provider;Create Provider
+Add Provider;Add Provider
+Edit Role;Role edition
+Edit Role forbidden;Role edition (Changes are not allowed) 
+Edit User;User edition
+Edit Provider;Edit Provider
+View related users and content;View related users and content
+Users and content for provider:;Users and content for provider:
+This provider doesn't have any users.;This provider doesn't have any users.
+Datas;Datas
+Nb of datas;Nb of datas
+This provider doesn't have any raw datas.;This provider doesn't have any raw datas.
+Impossible to delete this provider.;Impossible to delete this provider.
+Impossible to delete this role.;Impossible to delete this role.
+Roles;Roles
+Users;Users
+User Login;User Login
+User Name;User Name
+Provider;Provider
+Providers;Providers
+Email;Email
+Role;Role
+Delete;Delete
+Edit;Edit
+Code;Code
+Label;Label
+Definition;Definition
+Old Password;Old Password
+New Password;New Password
+Confirm Password;Confirm New Password
+Password does not match confirmation;Password does not match confirmation
+Old password is not correct;Old password is not correct
+Role Code;Role Code
+Role Label;Role Label
+Role Definition;Role Definition
+Permissions;Permissions
+Schemas Permissions;Schemas Permissions
+Datasets Restrictions;Dataset Restrictions
+The provider does not exist.;The provider does not exist.
+The provider map parameters do not exist.;The provider map parameters do not exist.
+The provider has been deleted.;The provider has been deleted.
+The role does not exist.;The role does not exist.
+The role has been deleted.;The role has been deleted.
+The user does not exist.;The user does not exist.
+The user has been deleted.;The user has been deleted.
+The user password information has been saved.;The user password information has been saved.
+The provider information has been saved.;The provider information has been saved.
+The role information has been saved.;The role information has been saved.
+The user information has been saved.;The user information has been saved.
+
+# User Rights
+Manage users;Manage users
+Provide data;Provide data
+Visualise data;Visualise data
+Visualise data from other provider;Visualise data from other provider
+Launch the harmonization process;Launch the harmonization process
+Export the raw data as a CSV file;Export the raw data as a CSV file
+Add / Update / Delete data;Add / Update / Delete data
+Add / Update / Delete data from another provider;Add / Update / Delete data from another provider
+Check the configuration;Check the configuration
+Cancel validated submission;Cancel validated submission
+Cancel other provider submission;Cancel other provider submission
+
+# Schemas
+Harmonized Data;Harmonized Data
+Raw Data;Raw Data
+
+##########################
+#  Data Edition          #
+##########################
+No %value% found.;No %value% found.
+Form not submitted;Form not submitted
+Invalid form;Invalid form
+Data saved;Data saved - Reloading
+Item cannot be deleted because it has children;Item cannot be deleted because it has children
+Error while deleting data;Error while deleting data
+Error inserting data duplicate key;Error while inserting data - The data already exists
+Data deleted;Data deleted
+
+
+##########################
+#  Data Query            #
+##########################
+Data Export;Data Export
+Request Criterias;Request Criterias
+Invalid request.;Invalid request.
+That request's label already exists. Please indicate another one.;That request's label already exists. Please indicate another one.
+An unexpected error occurred.;An unexpected error occurred.
+
+################################
+#  Fil d'ariane (Breadcrumb)   #
+################################
+Breadcrumb_Home;Home
+Breadcrumb_Integration;Data integration
+Breadcrumb_Integration_New;Create data submission
+Breadcrumb_Visualization;Visualize data
+Breadcrumb_Harmonization;Harmonize data
+Breadcrumb_Edition;Data edition
+Breadcrumb_Edit_Data;Edit observation
+Breadcrumb_Add_Data;Add observation
+Breadcrumb_User;My account
+Breadcrumb_Check_Configuration;Check the configuration
+Breadcrumb_Users_Administration;Users Administration
+Breadcrumb_Users;Users
+Breadcrumb_Edit_User;Edit user
+Breadcrumb_Change_Password;Change password
+Breadcrumb_Roles;Roles
+Breadcrumb_Edit_Role;Edit role
+Breadcrumb_Providers;Providers
+Breadcrumb_Providers_Details;Details and data
+Breadcrumb_Edit_Provider;Edit provider

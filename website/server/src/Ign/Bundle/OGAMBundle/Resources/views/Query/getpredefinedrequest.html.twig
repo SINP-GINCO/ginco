@@ -1,0 +1,112 @@
+{% extends 'base.json.twig' %}
+{% use  "metadata_entity.json.twig" %}
+
+{%- block form_field_default_value -%}
+{% autoescape false %}
+    {% if (criterion is defined) %}
+        {{ criterion.value|json_encode }}
+    {% else %}
+        {{ field.defaultValue|json_encode }}
+    {%  endif %}
+{% endautoescape %}
+{%- endblock -%}
+
+{%- block form_field_additional_fields -%}
+{% autoescape false %}
+    {% if (criterion is defined) %}
+        ,"requestId": {{ criterion.requestId.requestId|json_encode }}
+    {%  endif %}
+{% endautoescape %}
+{%- endblock -%}
+
+{%- block dataset -%}
+{% autoescape false %}
+{
+	"id": "{{ dataset.id }}",
+	"label": "{{ dataset.label }}",
+	"isDefault": {{ dataset.isDefault|json_encode }},
+	"definition": "{{ dataset.definition }}"
+}
+{% endautoescape %}
+{%- endblock -%}
+
+{%- block predefined_group -%}
+{% autoescape false %}
+{
+	"groupId": {{ group.groupId|json_encode }},
+	"label": "{{ group.label }}",
+	"definition": "{{ group.definition }}",
+	"position": {{ group.position|json_encode }}
+}
+{% endautoescape %}
+{%- endblock -%}
+
+{%- block predefined_group_asso -%}
+{% autoescape false %}
+{
+	"group": {% set group = group_asso.groupId %}{{ block('predefined_group') }},
+	"requestId": {{ group_asso.requestId.requestId|json_encode }},
+	"position": {{ group_asso.position|json_encode }}
+}
+{% endautoescape %}
+{%- endblock -%}
+
+{%- block predefined_request -%}
+{% autoescape false %}
+{
+    "requestId": {{ request.requestId|json_encode }},
+    "schemaCode": "{{ request.schemaCode }}",
+    {% set dataset = request.datasetId %}
+    "datasetId": {{ block('dataset') }},
+    "definition": "{{ request.definition }}",
+    "label": "{{ request.label }}",
+    "date": "{{ request.date|date("Y-m-d")}}",
+    "isPublic": {{ request.isPublic|json_encode }},
+    "userLogin": {% if (request.userLogin) %}
+        "{{ request.userLogin.login }}",
+    {% else %}
+        null,
+    {%  endif %}
+    "groups":
+    {% if (request.groups) %}
+        [
+        {% for group_asso in request.groups %}
+            {{ block('predefined_group_asso') }}
+            {%- if not loop.last -%}
+                ,
+            {% endif %}
+        {% endfor %}
+        ],
+    {%  else %}
+        null,
+    {% endif %}
+    "criteria":
+    {% if (criteria) %}
+        [
+        {% for criterion in criteria %}
+            {% set field = criterion.formField %}
+            {{ block('form_field') }}
+            {%- if not loop.last -%}
+                ,
+            {% endif %}
+        {% endfor %}
+        ],
+    {%  else %}
+        null,
+    {% endif %}
+    "columns":[
+    {% for column in columns %}
+        {% set field = column.formField %}
+        {{ block('form_field') }}
+        {%- if not loop.last -%}
+            ,
+        {% endif %}
+    {% endfor %}
+    ]
+}
+{% endautoescape %}
+{%- endblock -%}
+
+{% block response_data %}
+    {{ block('predefined_request') }}
+{% endblock %}

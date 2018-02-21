@@ -1,0 +1,71 @@
+{% extends "base_with_total.json.twig" %}
+
+{%- block permission -%}{% autoescape false %}
+{%- if not permission -%}
+    null
+{%- else -%}
+{
+    "code": {{ permission.code|json_encode }},
+    "label": {{ permission.label|json_encode }}
+}
+{%- endif -%}
+{% endautoescape %}{%- endblock -%}
+
+{%- block role -%}{% autoescape false %}
+{%- if not role -%}
+    null
+{%- else -%}
+{
+    "code": {{ role.code|json_encode }},
+    "label": {{ role.label|json_encode }},
+    "definition": {{ role.definition|json_encode }},
+    "permissions": [
+        {% for permission in role.permissions %}
+            {%- if not loop.first -%}
+                ,
+            {%- endif -%}
+            {{ block('permission') }}
+        {% endfor %}
+    ]
+}
+{%- endif -%}
+{% endautoescape %}{%- endblock -%}
+
+{%- block provider -%}{% autoescape false %}
+{%- if not provider -%}
+    null
+{%- else -%}
+{
+    "id": {{ provider.id|json_encode }},
+    "label": {{ provider.label|json_encode }},
+    "definition": {{ provider.definition|json_encode }}
+}
+{%- endif -%}
+{% endautoescape %}{%- endblock -%}
+
+{%- block user -%}{% autoescape false %}
+{%- if not data -%}
+    null
+{%- else -%}
+{
+    "login": {{ data.login|json_encode }},
+    "name": {{ data.username|json_encode }},
+    "provider": {% set provider = data.provider %}{{ block('provider') }},
+    "email": {{ data.email|json_encode }},
+    "roles": [
+        {% for role in data.roles %}
+            {%- if not loop.first -%}
+                ,
+            {%- endif -%}
+            {{ block('role') }}
+        {% endfor %}
+    ]
+}
+{%- endif -%}
+{% endautoescape %}{%- endblock -%}
+
+{%- block response_data -%}
+[
+        {{ block('user') }}
+]
+{%- endblock -%}

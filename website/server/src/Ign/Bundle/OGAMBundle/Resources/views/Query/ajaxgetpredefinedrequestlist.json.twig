@@ -1,0 +1,39 @@
+{% extends "base_with_total.json.twig" %}
+
+{%- block predefined_request -%}{% autoescape false %}
+[
+    {{ datum.requestId|json_encode }},
+    {{ datum.label|json_encode }},
+    {{ datum.definition|json_encode }},
+    {{ datum.date.format('Y-m-d')|json_encode }},
+    {{ datum.isPublic|json_encode }},
+    {# We assume that there is only one group per request #}
+    {%- if datum.groups.containsKey(0) -%}
+       {{ datum.groups.first().position|json_encode }},
+       {{ datum.groups.first().groupId.groupId|json_encode }},
+       {{ datum.groups.first().groupId.label|json_encode }},
+       {{ datum.groups.first().groupId.position|json_encode }},
+    {%- else -%}
+        null, null, null, null,
+    {%- endif -%}
+    {{ datum.datasetId.id|json_encode }},
+    {{ datum.datasetId.label|json_encode }},
+    {%- if (datum.isPublic and user.isAllowed('MANAGE_PUBLIC_REQUEST')) or not datum.isPublic -%}
+        false
+    {%- else -%}
+        true
+    {%- endif -%}
+]
+{% endautoescape %}{%- endblock -%}
+
+
+{%- block response_data -%}
+[
+    {% for datum in data %}
+        {{ block('predefined_request') }}
+        {%- if not loop.last -%}
+            ,
+        {%- endif -%}
+    {% endfor %}
+]
+{%- endblock -%}

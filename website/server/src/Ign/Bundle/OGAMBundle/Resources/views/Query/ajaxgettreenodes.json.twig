@@ -1,0 +1,42 @@
+{% extends 'base.json.twig' %}
+
+{%- block response_data -%}
+{% autoescape false %}
+[
+    {%- for mode in data -%}
+        {%- block TreeNode -%}
+        {% if mode.code is not empty or mode.label is not empty %}{# Case when the root is just a placeholder, we return only the children #}
+            {
+            {% block node %}
+            "id":{{ mode.code|json_encode}},
+            "parentId":{{ mode.parentCode|json_encode }},{# flattern mode, else use children  #}
+            "text":{{ mode.label|json_encode}}
+            {% if mode.isLeaf %}
+            	, "leaf":true
+            {% endif %}
+{#            {% if mode.children is not empty %}
+            ,"children":
+                {{ block('children') }}
+            {% endif %}#}
+            {% endblock %}
+            }
+        {% else %}
+        	{% block children %}
+        	[
+{#         		{% for mode in mode.children %}
+        		    {{ block('TreeNode') }}
+                	 {%- if not loop.last -%}
+                    ,
+                    {%- endif -%}
+        		{% endfor %}#}
+        	]
+        	{% endblock %}
+        {% endif %}
+        {% endblock %}
+        {%- if not loop.last -%}
+                    ,
+         {%- endif -%}
+    {% endfor %}
+]
+{% endautoescape %}
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "::base.html.twig" %}
+{% form_theme form with ['form.html.twig', _self] %}
+
+{% block body %}
+<h1>
+   {{ 'Data integration module'|trans }} - {{ 'Upload Data'|trans }}
+</h1>
+
+<h2>
+  {{ 'Dataset'|trans }} : {{ dataset.label }}
+</h2>
+
+<div class="fileformatdescription">
+<a class="external" href="{{ asset('bundles/ogam/pdf/CSVFileDescription.pdf') }}" target="_blank">
+    {{ 'File format description'|trans }}
+</a>
+</div>
+<div class="{{ form.vars.name }}">
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {% for child in form.children %}
+            {{ form_row(child, {'showModel': showModel, 'showDetail': showDetail, 'files': files}) }}
+        {% endfor %}
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}
+
+{% block _datauploadform_fileformat_widget %}
+    {% set file = files[name] %}
+    {{ form_widget(form) }}
+    {{ showModel ? block('filemodel') }}
+    {{ showDetail ? block('showdetail') }}
+{% endblock %}
+
+{% block _datauploadform_SRID_widget %}
+    {{ form_widget(form) }}
+     <div class='model'>
+        <span>{{ 'sridDescription'|trans }}</span>
+    </div>
+{% endblock %}
+
+{% block filemodel %}
+    <div class='model'>
+        <span class="show-model-text">{{ 'Download a file model for'|trans ~ ' "' ~ file.label ~ '":'}}</span>
+        <div class="show-model-tool" onclick="window.location='{{ path('integration_exportfilemodel') ~ '?fileFormat=' ~ file.format }}';"></div>
+    </div>
+{% endblock %}
+
+{%- block showdetail -%}
+    <div id="{{ name }}_FIELDS">
+        <div class="hint-title">
+            <span>{{ 'The expected fields are:'|trans }}</span>
+            <div onclick="document.getElementById('{{ name }}_FIELDS').className='expanded';" class="expand_tool"></div>
+            <div onclick="document.getElementById('{{ name }}_FIELDS').className='';" class="collapse_tool"></div>
+        </div>
+        <div class="fields">
+        {%- for field in file.fields -%}
+            <div class="field-row">
+                <div class="field-label {{ field.isMandatory ? 'mandatory_field' }}" title="{{ field.data.label }}">
+                    {{ field.data.label ~ ( field.isMandatory ? '*') }}:
+                </div>
+                <div class="field-definition" title="{{ field.data.definition }}">{{ field.data.definition }}
+                    {%- if field.mask -%}
+                        <br/><b>Format:</b> {{ field.mask }}
+                    {%- endif -%}
+                </div>
+            </div>
+        {%- endfor -%}
+        </div>
+    </div>
+ 
+{%- endblock -%}

@@ -1,0 +1,44 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+<h1>{% trans %}Users{% endtrans %}</h1>
+
+
+<table class="sectiontable">
+<tr>
+	<th></th>
+	<th></th>
+	<th>{% trans %}User Login{% endtrans %}</th>
+	<th>{% trans %}User Name{% endtrans %}</th>
+	<th>{% trans %}Provider{% endtrans %}</th>
+	<th>{% trans %}Email{% endtrans %}</th>
+	<th>{% trans %}Roles{% endtrans %}</th>
+	<th></th>
+</tr>
+
+{% for user in users %}
+<tr class="sectiontableentry{{ loop.index0 % 2 }}">
+	<td class="edit-cell"><a title="{% trans %}Edit{% endtrans %}" href="{{ path('usermanagement_editUser', {'login' : user.login}) }}">&nbsp;</a></td>
+	<td class="change-password-cell"><a title="{% trans %}Change Password{% endtrans %}" href="{{ path('usermanagement_changePassword', {'login' : user.login}) }}">&nbsp;</a></td>
+	<td>{{ user.login }}</td>
+	<td>{{ user.username }}</td>
+	<td>{{ user.provider.label }}</td>
+	<td>{{ user.email }}</td>
+	<td>
+		{% for role in user.roles %}
+		    {{ role.label }}<br/>
+        {% endfor %}	
+	</td>
+	<td class="delete-cell"><a title="{% trans %}Delete{% endtrans %}" href="{{ path('usermanagement_deleteUser', {'login' : user.login}) }}" onClick="return confirm('{% trans %}Are you sure?{% endtrans %}');">&nbsp;</a></td>
+</tr>
+{% endfor %}
+</table>
+
+<p class="subTableLink">
+    <a href="{{ path('usermanagement_editUser') }}">{% trans %}Create User{% endtrans %}</a>
+<p/>
+
+
+
+{% endblock %}

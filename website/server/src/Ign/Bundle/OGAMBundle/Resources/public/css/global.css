@@ -1,0 +1,888 @@
+/**************************************/
+/**      Global CSS               **/
+/**************************************/
+
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	height: 100%;
+}
+
+h1, h2, h3 {
+	color: #777777;
+}
+
+h3 {
+	border-bottom: 1px dotted #CCCCCC;
+	display: block;
+	font-size: 1.7em;
+	font-weight: normal;
+	line-height: 1.7em;
+	margin-left: 20px;
+	padding: 0;
+	text-transform: uppercase;
+}
+
+.errors {
+	color: #FF0000;
+	text-align:center;
+	font-size: 1.7em;
+}
+
+img {
+	border: 0 none;
+}
+
+ul, ol {
+	margin-left: 2em;
+}
+
+fieldset {
+	padding: .5em;
+}
+
+body {
+	background-color: #CCCCCC;
+	background-image: url("../img/CCCCCC.png");
+	background-repeat: repeat-x;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 76.8%;
+	line-height: 1.8em;
+	margin: 0 0;
+	height: 100%;
+}
+
+.wrapper {
+	color: #333333;
+	width: 100%;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin-top: 0;
+	margin-bottom: -40px;
+	/* the bottom margin is the negative value of the footer's height */
+}
+
+.main-body {
+	background-color: #FFFFFF;
+	color: #606060;
+	margin: 0 auto;
+	text-align: left;
+	margin-left: 40px;
+	margin-right: 40px;
+	height: 100%;
+}
+
+.main-body-bg {
+	background-color: #FFFFFF;
+	position: absolute;
+	top: 0;
+	left: 40px;
+	right: 40px;
+	z-index: -1;
+	bottom: 40px;
+}
+
+.header {
+	height: 120px; /* size of banner + top menu */
+}
+
+.header-beadcrumb {
+	width: 420px;
+}
+
+.header-login {
+	text-align: right;
+	font-weight: bold;
+}
+
+.fr-flag {
+	background-image: url(../img/fr_flag.png) !important;
+	width: 30px;
+	height: 16px;
+	margin-top: 3px;
+	float: left;
+}
+
+.en-flag {
+	background-image: url(../img/en_flag.png) !important;
+	width: 30px;
+	height: 16px;
+	margin-top: 3px;
+	float: left;
+}
+
+.banner {
+	color: #CCCCCC;
+	height: 80px;
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+}
+
+.top {
+	border-bottom: 1px dotted #CCCCCC;
+	border-top: 1px dotted #CCCCCC;
+	padding: 2px 5px;
+	background-color: #EEEEEE;
+	height: 21px;
+}
+
+.content {
+	background-color: #FFFFFF;
+}
+
+.content h1, .content h2 {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.footer, .push {
+	height: 40px; /* .push must be the same height as .footer */
+}
+
+.footer {
+	position: relative;
+	text-align: center;
+	vertical-align: middle;
+	background-color: #CCCCCC;
+	color: #FFFFFF;
+}
+
+.footer-ct {
+	position: relative;
+	top: 10px;
+}
+
+a {
+	text-decoration: none;
+	color: #606060;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #333333;
+}
+
+a:visited {
+	text-decoration: none;
+	color: #777777;
+}
+
+a.external{
+	padding-top: 2px;
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(transparent,transparent),url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%2306c%22%20d%3D%22M1.5%204.518h5.982V10.5H1.5z%22%2F%3E%3Cpath%20d%3D%22M5.765%201H11v5.39L9.427%207.937l-1.31-1.31L5.393%209.35l-2.69-2.688%202.81-2.808L4.2%202.544z%22%20fill%3D%22%2306f%22%2F%3E%3Cpath%20d%3D%22M9.995%202.004l.022%204.885L8.2%205.07%205.32%207.95%204.09%206.723l2.882-2.88-1.85-1.852z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E);
+    padding-right: 15px;
+}
+
+.left-column {
+	width: 300px;
+}
+
+#contextual {
+	padding-left: 30px;
+}
+
+#contextual p {
+	margin: 0;
+}
+
+#contextual li {
+	margin-left: 15px;
+}
+
+#divJRCRequestForm {
+	position: absolute;
+	left: 5px;
+	width: 250px;
+}
+
+#queryForm {
+	position: absolute;
+	top: 180px;
+	left: 5px;
+	width: 250px;
+}
+
+#divQueryResult {
+	position: absolute;
+	top: 180px;
+	left: 260px;
+	right: 250px;
+}
+/** Menu **/
+div.moduletable_menu {
+	margin: 30px 0;
+}
+
+div.moduletable_menu li {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+div.moduletable_menu a:hover {
+	background-color: #EEEEEE;
+	color: #666666;
+	text-decoration: none;
+}
+
+div.moduletable_menu a:link, div.moduletable_menu a:active, div.moduletable_menu a:visited
+	{
+	background-image: url(../img/greybullet2.png);
+	background-position: 5px 50%;
+	background-repeat: no-repeat;
+	border-bottom: 1px dotted #CCCCCC;
+	color: #606060;
+	display: block;
+	padding: 3px 5px 3px 25px;
+}
+
+.field_label {
+	color: #003300;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	text-decoration: none;
+}
+
+.criteria_label {
+	color: #003300;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+.result_label {
+	color: #003300;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-decoration: none;
+}
+
+tr.sectiontableentry0 td {
+	background-color: #EDEDED;
+	padding: 3px;
+	text-align: left;
+}
+
+tr td.file-name {
+	font-style: italic;
+}
+
+tr.sectiontableentry1 td {
+	padding: 3px;
+	text-align: left;
+}
+
+tr td.line-number {
+	text-align: right;
+}
+
+.csv-export {
+	background-image: url(../img/table_save.png) !important;
+}
+
+.sectiontableentry0 img, .sectiontableentry1 img {
+	height: 16px;
+	border: 0 none;
+	margin: 0 0 0 10px;
+}
+
+.error-msg {
+	display: block;
+	width: 500px;
+	margin: 0px auto 100px;
+	text-align: center;
+}
+
+.status-img {
+	display: block;
+	margin: 100px auto 30px;
+	height: 94px;
+	width: 94px;
+	border: 0 none;
+	background-image: url(../img/system_failure.png) !important;
+}
+
+.bottom-menu {
+	text-align: center;
+	margin: 40px 0 0;
+}
+
+.sectiontable {
+	margin: 30px auto;
+}
+
+.subTableLink {
+	text-align: center;
+}
+
+.onTableLink {
+	margin: 20px auto;
+	text-align: center;
+}
+
+.tempStatusDiv {
+	display: inline;
+}
+
+img.percentImage {
+	background: white url(../img/percentImage_back.png) top left no-repeat;
+	padding: 0;
+	margin: 5px 0 0 0;
+	background-position: 1px 0;
+}
+
+.no-submission, .password-change-user-name {
+	margin: 50px 0;
+	text-align: center;
+}
+
+td.view-cell {
+	background: url(../img/magnifier.png) 5px 5px no-repeat;
+	width: 21px;
+}
+
+.view-cell a {
+	padding: 1px 8px;
+}
+
+td.pdf-cell {
+	background: url(../img/icon_pdf.gif) 5px 5px no-repeat;
+	width: 21px;
+}
+
+.pdf-cell a {
+	padding: 1px 8px;
+}
+
+td.view-content-cell {
+	background: url(../img/page_white_magnify.png) 5px 5px no-repeat;
+	width: 21px;
+}
+
+.view-content-cell a {
+	padding: 1px 8px;
+}
+
+td.view-meta-cell {
+	background: url(../img/page_white_database.png) 5px 5px no-repeat;
+	width: 21px;
+}
+
+.view-meta-cell a {
+	padding: 1px 8px;
+}
+
+td.edit-cell { 
+    background: rgba(0, 0, 0, 0) url("../img/page_white_edit.png") no-repeat scroll 5px center; 
+    width: 21px; 
+} 
+
+.edit-cell a {
+	padding: 1px 8px;
+}
+
+td.change-password-cell {
+	background: url(../img/key.png) 5px center no-repeat;
+	width: 21px;
+}
+
+.change-password-cell a {
+	padding: 1px 8px;
+}
+
+td.delete-cell {
+	background: url(../img/delete.png) 5px center no-repeat;
+	width: 21px;
+}
+
+.delete-cell a {
+	padding: 1px 8px;
+}
+
+.index-cell .index-cell-create {
+	background: url(../img/folder_link.png) top left no-repeat;
+	padding: 1px 8px;
+}
+
+.index-cell .index-cell-update {
+	background: url(../img/folder_add.png) top left no-repeat;
+	padding: 1px 8px;
+}
+
+.index-label-cell {
+	width: 200px;
+}
+
+.optimize-cell a {
+	background: url(../img/compress.png) top left no-repeat;
+	padding: 1px 8px;
+}
+
+.files-list-cell a {
+	background: url(../img/folder_explore.png) top left no-repeat;
+	padding: 1px 8px;
+}
+
+.file_contents {
+	padding: 0 40px 40px 40px;
+}
+
+/**************************************/
+/**      Flash messages              **/
+/**                                  **/	
+/** Inspired from Bootstrap: http://getbootstrap.com/components/#alerts */
+/**************************************/
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.alert h4 {
+  margin-top: 0;
+  color: inherit;
+}
+.alert .alert-link {
+  font-weight: bold;
+}
+.alert > p,
+.alert > ul {
+  margin-bottom: 0;
+}
+.alert > p + p {
+  margin-top: 5px;
+}
+
+.alert-success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+.alert-success hr {
+  border-top-color: #c9e2b3;
+}
+.alert-success .alert-link {
+  color: #2b542c;
+}
+.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+.alert-info hr {
+  border-top-color: #a6e1ec;
+}
+.alert-info .alert-link {
+  color: #245269;
+}
+.alert-warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+.alert-warning hr {
+  border-top-color: #f7e1b5;
+}
+.alert-warning .alert-link {
+  color: #66512c;
+}
+.alert-error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.alert-error hr {
+  border-top-color: #e4b9c0;
+}
+.alert-error .alert-link {
+  color: #843534;
+}
+
+/**************************************/
+/**      breadcrumbs                 **/
+/**************************************/
+
+.header-beadcrumb ol {
+	list-style-type: none;
+	margin-left: 0;
+}
+
+.header-beadcrumb li {
+	display: inline;
+}
+
+.header-beadcrumb .separator {
+	background-image: url("../img/arrow.png");
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+}
+
+/**************************************/
+/**      Zend Form CSS               **/
+/**************************************/
+.form-super-ct {
+	background-color: #F7F7F7;
+	border-bottom: 2px dotted #CCCCCC;
+	border-top: 2px dotted #CCCCCC;
+	margin: 20px auto;
+	padding: 22px 40px;
+}
+.form-ct {
+	margin: 0 auto;
+	width: 350px;
+}
+
+.zend_form li.error{
+	color: red;
+	font-weight: bold;
+	list-style-type: none;
+}
+
+.zend_form .element, .zend_form .button {
+	position: relative;
+}
+.zend_form .multiCheckbox label {
+	margin-left: 30px;
+}
+.zend_form .multiCheckbox label.title {
+	display: block;
+	font-weight: bold;
+	margin: 10px 0;
+}
+.zend_form .multiCheckbox input {
+	width: auto;
+	margin-top: 6px;
+}
+.zend_form textarea{
+	height:100px;
+    width:350px;
+}
+.zend_form input{
+	width: 200px;
+	position: absolute;
+	right: 0;
+}
+
+.zend_form input:-moz-read-only { /* For Firefox */
+    background-color: lightgray;
+}
+
+.zend_form input:read-only { 
+    background-color: lightgray;
+}
+.zend_form select {
+	width: 204px;
+	position: absolute;
+	right: 0;
+}
+.zend_form .button {
+	margin-top: 20px;
+	height: 25px;
+}
+
+button#form_submit, .zend_form .button button{
+	width: 100px;
+    position: absolute;
+    right: 0;
+}
+.zend_form .hint-title {
+	font-weight: bold;
+}
+.zend_form .file {
+	padding: 10px;
+	background-color: #fff;
+	border: 1px solid transparent;
+    border-radius: 4px;
+    border-color: #ccc;  
+}
+.zend_form .file input {
+	width: 100%;
+	position: static;
+	background-color: #f5f5f5;
+}
+.zend_form .model {
+    line-height: 1em;
+    margin-top: 5px;
+}
+.zend_form .show-model-text {
+	font-weight: bold;
+}
+.zend_form .show-model-tool {
+    position: relative;
+    display: inline-block;
+    width: 22px;
+    height: 20px;
+    bottom: -1px;
+    left: 3px;
+    cursor: pointer;
+    background-image: url(../img/icon-csv.png);
+}
+.zend_form .expand_tool, .zend_form .collapse_tool {
+	position: relative;
+	top: 3px;
+	left: 3px;
+	cursor: pointer;
+	width: 16px;
+	height: 16px;
+}
+.zend_form .expand_tool {
+	display: inline-block;
+	background-image: url(../img/application_put.png);
+}
+.zend_form .expanded .expand_tool {
+	display: none;
+}
+.zend_form .collapse_tool {
+	display: none;
+	background-image: url(../img/application_get.png);
+}
+.zend_form .expanded .collapse_tool {
+	display: inline-block;
+}
+.zend_form .fields {
+	display: none;
+	padding: 10px;
+}
+.zend_form .expanded .fields {
+	display: block;
+}
+.zend_form .field-row {
+	line-height: 1.3em;
+}
+.zend_form .field-label {
+	display: inline-block;
+	vertical-align:top;
+	width:150px;
+	font-weight:bold;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.zend_form .field-definition {
+	display: inline-block;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 10px;
+    width: 595px;
+}
+
+.help-block {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	color: #a0a0a0;
+	width: 200px;
+	margin-left: 140px;
+	line-height: 14px;
+}
+
+/**************************************/
+/**      Zend Form CSS               **/
+/**           Special cases          **/
+/**************************************/
+
+/** Integration Part
+/**************************************/
+
+/** data-submission-form **/
+.data-submission-form .form-ct {
+	width: 500px;
+}
+
+.data-submission-form .zend_form select {
+	width: 400px;
+}
+
+/** datauploadform **/
+.datauploadform .form-ct {
+	width: 800px;
+}
+
+.datauploadform .zend_form .file .hint {
+	width: 100%;
+}
+
+.datauploadform .zend_form label {
+	font-weight: bold;
+}
+
+.file.element {
+	margin-bottom: 20px;
+}
+
+.mandatory_field {
+	color: red;
+}
+
+.fileformatdescription {
+	text-align: center;
+    margin-top: 25px;
+    margin-bottom: -15px;
+}
+
+/**************************************/
+/** User Part
+/**************************************/
+
+/** change-current-user-password-form **/
+.change-current-user-password-form .form-ct {
+	width: 370px;
+}
+
+/** login-form **/
+.login-form .form-ct {
+	width: 300px;
+}
+.forgotten_password_link {
+    display: block;
+    margin: 10px 0 0 0;
+    text-align: right;
+}
+
+/**************************************/
+/** User Management Part
+/**************************************/
+
+/** user-form **/
+.user-form .form-ct {
+	width: 370px;
+}
+
+/** change-user-password-form **/
+.change-user-password-form .form-ct {
+	width: 370px;
+}
+
+/** role-form **/
+.role-form .form-ct {
+	width: 370px;
+}
+
+/************************************************************/
+/*      Checkconf Page                                      */
+/************************************************************/
+.checkconf-page {
+	background-color: #F7F7F7;
+	border-bottom: 2px dotted #CCCCCC;
+	border-top: 2px dotted #CCCCCC;
+	margin: 50px auto;
+	padding: 22px 40px;
+}
+
+.checkconf-page h2 {
+	margin: 20px 0;
+}
+
+.checkconf-page h4 {
+	margin: 10px 0;
+}
+
+.checkconf-page .green {
+	color: green;
+}
+
+.checkconf-page .red {
+	color: red;
+}
+
+/************************************************************/
+/*      Tooltips CSS                                        */
+/* TODO : Replace with something more consistent with ExtJS */
+/************************************************************/
+a.tooltip {
+	
+}
+
+a.tooltip em {
+	display: none;
+}
+
+a.tooltip:hover {
+	border: 0;
+	position: relative;
+	z-index: 500;
+	text-decoration: none;
+}
+
+a.tooltip:hover em {
+	font-style: normal;
+	display: block;
+	position: absolute;
+	top: 20px;
+	left: -10px;
+	padding: 5px;
+	color: #000;
+	border: 1px solid #bbb;
+	background: #ffc;
+	width: 300px;
+}
+
+a.tooltip:hover em span {
+	position: absolute;
+	top: -7px;
+	left: 15px;
+	height: 7px;
+	width: 11px;
+	background: transparent url("../img/infobulletop00.gif");
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+dt {
+	font-weight: bold;
+}
+
+/************************************************************/
+/*                         Data Edition                     */
+/************************************************************/
+.actionLinks {
+	padding: 5px;
+}
+
+/*************************************************************/
+/*     Desaturate Images (black and white )                  */
+/*************************************************************/
+.desaturate {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+/*************************************************************/
+/*     Align vertically images and text                      */
+/*************************************************************/
+p.align_images,
+a.align_images,
+div.align_images,
+h4.align_images,
+h3.align_images,
+button.align_images,
+ul.align_images li,
+td.align_images,
+span.align_images {
+	line-height: 1em;
+}
+p.align_images img,
+a.align_images img,
+div.align_images img,
+h4.align_images img,
+h3.align_images img,
+button.align_images img,
+ul.align_images li img,
+td.align_images img,
+span.align_images img {
+	vertical-align: middle;
+}
