@@ -2,3 +2,14 @@ vendor
 *gradle
 build/
 ogamDesktop/sencha-error-*.log
+ogamDesktop/bootstrap.json
+ogamDesktop/bootstrap.css
+ogamDesktop/bootstrap.js
+ogamDesktop/sass/example/example.css
+ogamDesktop/sass/example/bootstrap.js
+ogamDesktop/sass/example/bootstrap.json
+ogamDesktop/classic.json
+ogamDesktop/docs
+packages/ogamDesktop-locale-fr/build
+ext/packages/legacy/sass/example/bootstrap.json
+ext/build
