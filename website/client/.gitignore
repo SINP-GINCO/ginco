@@ -1,8 +1,5 @@
 .sencha
-workspace.json
 vendor
 *gradle
-packages/
-ext/
 build/
 ogamDesktop/sencha-error-*.log
