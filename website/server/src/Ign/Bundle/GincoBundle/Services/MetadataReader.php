@@ -1,14 +1,13 @@
 <?php
 
 namespace Ign\Bundle\GincoBundle\Services;
+use GuzzleHttp\Client;
 use Ign\Bundle\GincoBundle\Exception\MetadataException;
 
 /**
  * Class MetadataReader
  *
- * Sends email from twig templates.
- * The "from" email adress and names are parameters of the service.
- * Can send email with attachments passed as an arry of filepaths.
+ * Loads and reads a Metadata Jdd file, from the INPN metadata service.
  *
  * @author SCandelier
  */
@@ -26,21 +25,40 @@ class MetadataReader
 	 */
 	protected $logger;
 
-    /**
-     * MailManager constructor.
-     * @param \Swift_Mailer $mailer
-     * @param \Twig_Environment $twig
-     * @param  $logger
-     * @param $fromEmail
-     * @param $fromName
-     */
+	/**
+	 * Guzzle connection options (same as curl options)
+	 * @var
+	 */
+	protected $options;
+
+	/**
+	 * MetadataReader constructor.
+	 * @param $configurationManager
+	 * @param $logger
+	 */
     public function __construct($configurationManager, $logger)
     {
         $this->configurationManager = $configurationManager;
 		$this->logger = $logger;
+
+		$this->options = array(
+			'http_errors' => false // Disable Guzzle exceptions
+		);
+		// Add proxy if needed
+		$httpsProxy = $this->configurationManager->getConfig('https_proxy', '');
+		if (!empty($httpsProxy)) {
+			$this->options['proxy'] = $httpsProxy;
+		}
     }
 
-
+	/**
+	 * Get the content of the XML file from the API
+	 *
+	 * @param $metadataId
+	 * @return string
+	 * @throws MetadataException
+	 * @throws \Exception
+	 */
     public function getXmlFile($metadataId)
 	{
 		$this->logger->info('Getting XML metadata file for id: ' . $metadataId);
@@ -54,61 +72,23 @@ class MetadataReader
 			throw $e;
 		}
 
-		// The XML metadata file url:
-		$url = $metadataServiceUrl . $metadataId;
+		// Call the MTD webservice to get the XML metadata file
+		$client = new Client($this->options);
+		$response = $client->request( 'GET', $metadataServiceUrl . $metadataId );
 
-		// Try to download the XML file
-		$ch = curl_init($url);
-
-		// CURL options
-		$verbose = fopen('php://temp', 'w+');
-		$fileUrl = '/tmp/tempMetadata.xml';
-		$file = fopen($fileUrl, 'w+');
-
-		$curlOptions = array(
-			CURLOPT_URL => $url,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_CONNECTTIMEOUT => 2,
-			CURLOPT_TIMEOUT => 4,
-			CURLOPT_FILE => $file,
-			CURLOPT_VERBOSE => true,
-			CURLOPT_STDERR => $verbose
-		);
-
-		// Add proxy if needed
-		$httpsProxy = $this->configurationManager->getConfig('https_proxy', '');
-		if ($httpsProxy) {
-			$curlOptions[CURLOPT_PROXY] = $httpsProxy;
-		}
-
-		curl_setopt_array($ch, $curlOptions);
-
-		// Execute request
-		curl_exec($ch);
-		$httpCode = "" . curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		$this->logger->info("The HTTP code returned is " . $httpCode);
-
-		// Close the cURL channel and file
-		curl_close($ch);
-		fclose($file);
-
-		// HTTP code different from 200 means something is wrong
-		if ($httpCode !== '200') {
-			$this->logger->error("The download failed for metadata $metadataId");
-			rewind($verbose);
-			$verboseLog = stream_get_contents($verbose);
-			$this->logger->error(print_r($verboseLog, true));
+		if (!$response) {
+			$this->logger->addError("INPN metadata service is not accessible, URL : ".$metadataServiceUrl . $metadataId );
 			throw new MetadataException('MetadataException.FailedDownload');
 		}
-
-		// Read the file, close it return its content
-		$xml = file_get_contents($fileUrl);
-		unlink($fileUrl);
-		return $xml;
+		$code = $response->getStatusCode();
+		if ($code !== 200) {
+			$this->logger->addError("INPN metadata service returned a HTTP code: $code, URL : ".$metadataServiceUrl . $metadataId );
+			$this->logger->addError($response->getBody()->getContents());
+			throw new MetadataException("MetadataException.FailedDownload");
+		}
+		return $response->getBody()->getContents();
 	}
+
 
 	public function getMetadata($metadataId)
 	{
@@ -123,9 +103,21 @@ class MetadataReader
 			$doc->loadXML($xmlStr);
 			$xpath = new \DOMXpath($doc);
 
-			$fields['metadataId'] = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantJdd')->item(0)->nodeValue;
-			$fields['title'] = $xpath->query('//jdd:JeuDeDonnees/jdd:libelle')->item(0)->nodeValue;
-			$fields['metadataCAId'] = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantCadre')->item(0)->nodeValue;
+			// Get schema version, as field names depend on it
+			$xsdVersion = $xpath->query('@xsi:schemaLocation')->item(0)->nodeValue;
+
+			// 1.3.1, used in production
+			if ($xsdVersion == "http://inpn.mnhn.fr mtd_jdd_1_3_1.xsd") {
+				$fields['metadataId'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantJeuDeDonnees')->item(0)->nodeValue;
+				$fields['title'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:nomComplet')->item(0)->nodeValue;
+				$fields['metadataCAId'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantCadreAcquisition')->item(0)->nodeValue;
+			}
+			// > 1.3.1, new field definition
+			else {
+				$fields['metadataId'] = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantJdd')->item(0)->nodeValue;
+				$fields['title'] = $xpath->query('//jdd:JeuDeDonnees/jdd:libelle')->item(0)->nodeValue;
+				$fields['metadataCAId'] = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantCadre')->item(0)->nodeValue;
+			}
 
 		} catch (\Exception $e) {
 			$this->logger->error("The jdd metadata XML file contains errors could not be parsed for $metadataId :" . $e->getMessage());
