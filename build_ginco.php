@@ -404,6 +404,10 @@ function buildApacheConf($config, $buildMode)
 		substituteInFile("$projectDir/confapache/include_ginco_tpl.conf", $buildConfFileGinco, $config);
 		echo("* $buildConfFileGinco\n");
 
+		$buildConfFileMaintenance = "$confapacheBuildDir/include_maintenance_{$config['instance.name']}.conf";
+		substituteInFile("$projectDir/confapache/include_maintenance_tpl.conf", $buildConfFileMaintenance, $config);
+		echo("* $buildConfFileMaintenance\n");
+
 		if ($buildMode == 'dev') {
 			$postBuildInstructions[] = "Apache configuration files has been built: $buildConfFileVHost, $buildConfFileGinco, $buildConfFileLogs, $buildConfFileMapserver\n";
 			$postBuildInstructions[] = "To install, do:\n\n";
@@ -411,6 +415,7 @@ function buildApacheConf($config, $buildMode)
 			$postBuildInstructions[] = "sudo ln -fs $buildConfFileGinco /etc/apache2/sites-available/\n";
 			$postBuildInstructions[] = "sudo ln -fs $buildConfFileLogs /etc/apache2/sites-available/\n";
 			$postBuildInstructions[] = "sudo ln -fs $buildConfFileMapserver /etc/apache2/sites-available/\n";
+			$postBuildInstructions[] = "sudo ln -fs $buildConfFileMaintenance /etc/apache2/sites-available/\n";
 			$postBuildInstructions[] = "sudo a2ensite " . pathinfo($buildConfFileVHost, PATHINFO_BASENAME) . "\n";
 			$postBuildInstructions[] = "sudo service apache2 reload\n\n";
 		}
