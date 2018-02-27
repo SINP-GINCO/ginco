@@ -69,7 +69,7 @@ class INPNUserUpdater
 		// Call the INPN authentication webservice to
 		// get all attributes of the user ($distantUser)
 		$client = new Client($this->options);
-		$response = $client->request('GET', $this->webservice_authentication . "/" . urlencode($username) . "/", [
+		$response = $client->request('GET', $this->webservice_authentication . "/" . rawurlencode($username) . "/", [
 			'verify' => false,
 			'auth' => $this->authentication_options,
 		]);
