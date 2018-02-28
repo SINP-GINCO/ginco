@@ -52,12 +52,15 @@ public class GenerateReportsService implements IntegrationEventListener {
 	 *             in case of database error
 	 */
 	public void afterIntegration(Integer submissionId) throws Exception {
+	    logger.debug("GenerateReportsService, afterIntegration");
 		try {
 			String baseUrl = parameterDAO.getApplicationParameter("site_url");
 			// TODO: the URL is false in dev env (/app_dev.php is missing). Thus reports are not generated here in dev, but when downloaded.
 			URL myURL = new URL(baseUrl + "/submission/generate-reports?submissionId=" + submissionId);
+			logger.debug("Calling url: ", myURL);
 			HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
 			int responseCode = conn.getResponseCode();
+			logger.debug("Response code: ", responseCode);
 		} catch (MalformedURLException e) {
 			// new URL() failed
 			logger.debug("Malformed URL exception", e);
