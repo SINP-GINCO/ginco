@@ -65,10 +65,11 @@ assetic:
                 - "%kernel.root_dir%/../vendor/components/jqueryui/jquery-ui.min.js"
                 - "%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/bootstrap-table.min.js"
-                - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/bootstrap-table-fr-FR.min.js"
+                - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/locale/bootstrap-table-fr-FR.min.js"
                 - "%kernel.root_dir%/Resources/js/hover-dropdown.js"
                 - "%kernel.root_dir%/../web/bundles/fosjsrouting/js/router.js"
                 - "%kernel.root_dir%/../web/bundles/ignogamconfigurateur/js/data-toggle-tooltip.js"
+                - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/src/extensions/export/bootstrap-table-export.js"
                 - "%kernel.root_dir%/../vendor/wenzhixin/bootstrap-table/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"
         bootstrap_css:
             inputs:

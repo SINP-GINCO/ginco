@@ -10,7 +10,9 @@
 			data-sort-name="created" data-sort-order="desc"
 			data-click-to-select="true" data-search="true" data-search-align="right"
 			data-maintain-selected = "true" data-classes="table table-hover table-condensed"
-			data-locale="fr-FR" data-pagination="true" data-advanced-search="true" data-id-table="advancedTable">
+			data-locale="fr-FR" data-pagination="true" data-page-list="[10, 25, 50, 100, 500, 1000]" 
+			data-advanced-search="true" data-id-table="advancedTable" 
+			data-show-export="true" data-export-types="['csv']">
 		<thead>
 			<tr>
 				<th data-field="login" data-sortable="true">{% trans %}User Login{% endtrans %}</th>
@@ -167,4 +169,8 @@ $(function() {
 });
 
 	</script>
+{% endblock %}
+
+{% block specificjavascripts %}
+	<script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
 {% endblock %}
