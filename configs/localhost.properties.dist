@@ -84,6 +84,17 @@ metadata.jdd.url=https://preprod-inpn.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecord
 # Email to send a notification to when generating DEE
 dee.notification.mail=YOURMAIL@ign.fr
 
+
+# CAS and INPN auth parameters
+cas.url=XXX
+inpn.auth.webservice.url=XXX
+inpn.auth.webservice.login=XXX
+inpn.auth.webservice.password=XXX
+inpn.account.url=https://inpn.mnhn.fr/accueil/compte/Compte
+
+# INPN providers webservics
+inpn.providers.webservice=https://odata-inpn.mnhn.fr/solr-ws/organismes/records?
+
 # Url of the documentation website
 documentation.url=http://ginco.naturefrance.fr/doc-ginco-prod
 
