@@ -260,8 +260,8 @@ class IntegrationController extends BaseController {
 				));
 			}
 			// Get the JDD Metadata Id
-			$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
-			$submission = $submissionRepo->find($submissionId);
+			// $submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
+			// $submission = $submissionRepo->find($submissionId);
 			$jddMetadataId = $submission->getJdd()->getField('metadataId');
 
 			// -- Send the email
@@ -279,8 +279,8 @@ class IntegrationController extends BaseController {
 			$user = $this->getUser();
 
 			// Title and body:
-			$title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
-			$title .= implode($fileNames, ", ");
+			// $title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
+			// $title .= implode($fileNames, ", ");
 
 			// -- Attachments
 			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
