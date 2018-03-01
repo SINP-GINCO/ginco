@@ -66,8 +66,8 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch user raw_data here */
-system("php $sprintDir/update_orgtransformation_sensible_not_editable_not_mandatory.php $CLIParams", $returnCode1);
-system("php $sprintDir/update_commune_referentiel_in_data.php $CLIParams", $returnCode2);
+system("php $sprintDir/orgtransformation_sensible_not_editable_not_mandatory.php $CLIParams", $returnCode1);
+system("php $sprintDir/commune_referentiel_in_data.php $CLIParams", $returnCode2);
 
 if ($returnCode1 != 0 || $returnCode2 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
