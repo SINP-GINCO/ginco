@@ -22,6 +22,8 @@ UPDATE submission SET provider_id = tp.new_id FROM website.temp_providers tp WHE
 UPDATE model_1_observation SET provider_id = tp.new_id FROM website.temp_providers tp WHERE provider_id = tp.old_id;
 UPDATE model_5943a4de78942_observation SET provider_id = tp.new_id FROM website.temp_providers tp WHERE provider_id = tp.old_id;
 
+-- !!!!!! todo !!!!!
+-- Update providers in mapping.observation_xxx tables
 
 DROP TABLE website.temp_providers;
 
