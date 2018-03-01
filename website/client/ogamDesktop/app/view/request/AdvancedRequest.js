@@ -113,6 +113,7 @@ Ext.define('OgamDesktop.view.request.AdvancedRequest', {
 		}],
 		items: [{ // The process combobox
 			xtype: 'combobox',
+			reference: 'processComboBox',
 			itemId: 'processComboBox',
 			name : 'datasetId',
 			hiddenName : 'datasetId',

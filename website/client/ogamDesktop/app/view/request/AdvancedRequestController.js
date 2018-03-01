@@ -156,9 +156,11 @@ Ext.define('OgamDesktop.view.request.AdvancedRequestController', {
     },
 
     /**
-     * Resets the current request form.
+     * Resets the current request form to the selected dataset.
      */
     onReset : function(button) {
+        var combo = this.lookupReference('processComboBox');
+        this.onUpdateDataset(combo, null, null);
         this.lookupReference('advancedRequestSelector').reloadForm();
     },
 
