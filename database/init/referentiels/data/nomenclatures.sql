@@ -527,20 +527,6 @@ INSERT INTO DEEFloutageValue VALUES ('NON','NON','Indique qu''aucun floutage a e
 
 
 
-CREATE TABLE diffusionfloutagevalue (
-    code character varying(32),
-    label character varying(128),
-    definition character varying(510)
-);
-
-ALTER TABLE referentiels.DiffusionFloutageValue OWNER TO postgres;
-
-ALTER TABLE ONLY DiffusionFloutageValue ADD CONSTRAINT DiffusionFloutageValue_pkey PRIMARY KEY (code);
-
-INSERT INTO DiffusionFloutageValue VALUES ('OUI','OUI','Indique qu''un floutage a eu lieu.');
-INSERT INTO DiffusionFloutageValue VALUES ('NON','NON','Indique qu''aucun floutage a eu lieu.');
-
-
 CREATE TABLE idcnpvalue (
     code character varying(32),
     label character varying(128),
