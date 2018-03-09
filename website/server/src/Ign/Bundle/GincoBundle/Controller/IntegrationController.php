@@ -298,7 +298,7 @@ class IntegrationController extends BaseController {
 							->trans("An unexpected error occurred.")
 					));
 				}
-				$attachements[] = $reportPath;
+				if($report != 'integrationReport') {$attachements[] = $reportPath;}
 			}
 
 			$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:publication-notification-to-user.html.twig', array(
