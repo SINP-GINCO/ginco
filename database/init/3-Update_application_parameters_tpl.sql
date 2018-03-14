@@ -33,7 +33,6 @@ insert into application_parameters (name, value, description) values ( 'tilesize
 insert into application_parameters (name, value, description) values ( 'srs_visualisation' , 3857 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'srs_raw_data' , 4326 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'srs_results', 3857, 'Code EPSG du système de référence utilisé pour le tableau de résultats et l''export');
-insert into application_parameters (name, value, description) values ( 'srs_harmonized_data' , 4326 , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'usePerProviderCenter' , 1 , 'if true the system will look in the "bounding_box" table for centering info for each provider');
 insert into application_parameters (name, value, description) values ( 'bbox_x_min' , '-20037508.342789244' , 'WEB MAPPING ');
 insert into application_parameters (name, value, description) values ( 'bbox_y_min' , '-20037508.342789244' , 'WEB MAPPING ');
@@ -48,7 +47,6 @@ insert into application_parameters (name, value, description) values ( 'default_
 insert into application_parameters (name, value, description) values ( 'mapserver_dpi' , 72 , 'Default number of dots per inch in mapserv');
 insert into application_parameters (name, value, description) values ( 'mapserver_inch_per_kilometer' , 39370.1 , 'Inch to meter conversion factor');
 insert into application_parameters (name, value, description) values ( 'featureinfo_margin' , 1000 , 'bounding box margin around the user click (in the unit of the map)');
-insert into application_parameters (name, value, description) values ( 'featureinfo_typename' , 'result_locations' , 'Layer that is queried');
 insert into application_parameters (name, value, description) values ( 'featureinfo_maxfeatures' , 20 , 'Max number of features returned by a click on the map. If 0 then there is no limit; If 1 the direct access to the detail');
 insert into application_parameters (name, value, description) values ( 'contactEmailPrefix' , 'sinp' , 'Email');
 insert into application_parameters (name, value, description) values ( 'contactEmailSufix' , 'ign.fr' , 'Email');

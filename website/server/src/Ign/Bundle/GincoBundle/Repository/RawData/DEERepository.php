@@ -2,7 +2,7 @@
 
 namespace Ign\Bundle\GincoBundle\Repository\RawData;
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
 
 /**
  * DEERepository

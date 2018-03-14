@@ -505,7 +505,7 @@ COMMENT ON COLUMN CHECKS_PER_PROVIDER.PROVIDER_ID IS 'The identifier of the prov
 CREATE TABLE process
 (
   process_id character varying(50) NOT NULL, -- The name/identifier of the post-processing treatment
-  step character varying(50), -- The step of the process (INTEGRATION or HARMONIZATION)
+  step character varying(50), -- The step of the process (INTEGRATION)
   label character varying(60), -- The label of the process
   description character varying(500), -- The description the process
   "statement" character varying(4000), -- The SQL statement corresponding to the process
@@ -518,7 +518,7 @@ WITH (
 
 
 COMMENT ON COLUMN process.process_id IS 'The name/identifier of the post-processing treatment';
-COMMENT ON COLUMN process.step IS 'The step of the process (INTEGRATION or HARMONIZATION)';
+COMMENT ON COLUMN process.step IS 'The step of the process (INTEGRATION)';
 COMMENT ON COLUMN process.label IS 'The label of the process';
 COMMENT ON COLUMN process.description IS 'The description the process';
 COMMENT ON COLUMN process."statement" IS 'The SQL statement corresponding to the process';

@@ -146,17 +146,6 @@ function buildWebsite($config, $buildMode)
         system("cp -r $projectDir/website/server/* $buildServerDir/");
     }
 
-    // Copy or symlink OgamBundle
-//     if ($buildMode == 'prod') {
-//         echo("Copying OGAMBundle to $buildServerDir/src/Ign/Bundle/...\n");
-// 		system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
-//         system("cp -r $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/");
-//     } else {
-//         echo("Creating a symlink to OGAMBundle in $buildServerDir/src/Ign/Bundle/...\n");
-//         system("rm -rf $buildServerDir/src/Ign/Bundle/OGAMBundle");
-//         system("ln -s $serverDirOgam/src/Ign/Bundle/OGAMBundle $buildServerDir/src/Ign/Bundle/OGAMBundle");
-//     }
-
 	// Copy or symlink configurator bundles
 	$configuratorDir = realpath($config['configurator.path']);
 	if ($buildMode == 'prod') {

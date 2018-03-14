@@ -4,9 +4,9 @@ namespace Ign\Bundle\GincoBundle\Services;
 use Doctrine\ORM\ORMException;
 use GuzzleHttp\Client;
 use Ign\Bundle\GincoBundle\Exception\ProviderWebserviceException;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\ProviderMapParameters;
-use Ign\Bundle\OGAMBundle\Entity\Website\Provider;
-use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Entity\Mapping\ProviderMapParameters;
+use Ign\Bundle\GincoBundle\Entity\Website\Provider;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 
 /**
  * Class INPNProviderService
@@ -225,7 +225,7 @@ class INPNProviderService {
 		// OK, now we got a real distant provider, let's go !
 		// ----------------------------------------------
 		$em = $this->doctrine->getManager();
-		$providerRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Provider', 'website');
+		$providerRepo = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website');
 
 		// Tests if user exists in database; if not create it
 		$provider = $providerRepo->find($id);
@@ -265,7 +265,7 @@ class INPNProviderService {
 	/**
 	 * Create a new BoundingBox object with default values from database.
 	 *
-	 * @return \Ign\Bundle\OGAMBundle\Entity\Generic\BoundingBox
+	 * @return \Ign\Bundle\GincoBundle\Entity\Generic\BoundingBox
 	 */
 	public function createDefaultBoundingBox() {
 
@@ -277,7 +277,7 @@ class INPNProviderService {
 		$zoomLevel = $this->configManager->getConfig('default_provider_zoom_level');
 
 		$em = $this->doctrine->getManager();
-		$zoomLevel = $em->find('Ign\Bundle\OGAMBundle\Entity\Mapping\ZoomLevel', $zoomLevel);
+		$zoomLevel = $em->find('Ign\Bundle\GincoBundle\Entity\Mapping\ZoomLevel', $zoomLevel);
 
 		$bb = new ProviderMapParameters();
 		return $bb->createBoundingBox($xMin, $xMax, $yMin, $yMax, $zoomLevel);

@@ -5,8 +5,8 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\ORMException;
 use GuzzleHttp\Client;
 use Ign\Bundle\GincoBundle\Exception\UserUpdaterException;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
-use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
 
 /**
@@ -94,9 +94,9 @@ class INPNUserUpdater
 		// OK, now we got a real distant user, let's go !
 		// ----------------------------------------------
 		$em = $this->doctrine->getManager();
-		$userRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
-		$providerRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Provider', 'website');
-		$roleRepo = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+		$userRepo = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
+		$providerRepo = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website');
+		$roleRepo = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Role', 'website');
 
 		// Provider of the user: create it if not present in db
 		$providerId = $distantUser->codeOrganisme;

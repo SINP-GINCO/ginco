@@ -1,4 +1,4 @@
-# Services config for the OGAM/Ginco part of the application
+# Services config for the Ginco part of the application
 
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
@@ -7,124 +7,116 @@ parameters:
 #    parameter_name: value
 
 services:
-    ogam.integration_service:
-        class: Ign\Bundle\OGAMBundle\Services\Integration
-        arguments: ["@=service('ogam.configuration_manager').getConfig('integrationService_url', 'http://localhost:8080/OGAMIntegrationService/')"]
+    ginco.integration_service:
+        class: Ign\Bundle\GincoBundle\Services\Integration
+        arguments: ["@=service('ginco.configuration_manager').getConfig('integrationService_url', 'http://localhost:8080/GincoIntegrationService/')"]
         calls:
           - [setLogger, ['@logger']]
-    ogam.harmonization_service:
-        class: Ign\Bundle\OGAMBundle\Services\Harmonization
-        arguments: ["@=service('ogam.configuration_manager').getConfig('harmonizationService_url', 'http://localhost:8080/OGAMHarmonizationService/')"]
-        calls:
-          - [setLogger, ['@logger']]
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
 
     # CAS authenticator
     ginco.cas_authenticator:
       class: Ign\Bundle\GincoBundle\Security\CasAuthenticator
-      arguments: ["@doctrine", "@ogam.configuration_manager", "@ginco.inpn_user_updater", "@logger"]
+      arguments: ["@doctrine", "@ginco.configuration_manager", "@ginco.inpn_user_updater", "@logger"]
 
     ginco.inpn_user_updater:
       class: Ign\Bundle\GincoBundle\Services\INPNUserUpdater
-      arguments: ["@doctrine", "@ogam.configuration_manager", "@ginco.inpn_provider_service", "@logger"]
+      arguments: ["@doctrine", "@ginco.configuration_manager", "@ginco.inpn_provider_service", "@logger"]
 
     # Get anonymous user
     app.anonymous_user:
-      class: Ign\Bundle\OGAMBundle\Services\AnonymousUser
+      class: Ign\Bundle\GincoBundle\Services\AnonymousUser
       arguments: ["@doctrine", "visiteur"]
 
     # Service used to encode a challenge for the user login
-    ogam.challenge_response_encoder:
-        class: Ign\Bundle\OGAMBundle\Services\ChallengeResponseEncoder
+    ginco.challenge_response_encoder:
+        class: Ign\Bundle\GincoBundle\Services\ChallengeResponseEncoder
         arguments:
             session: "@session"
             logger: "@logger"
 
     # Service used to read the application parameters from the database
-    ogam.configuration_manager:
-        class: Ign\Bundle\OGAMBundle\Services\ConfigurationManager
+    ginco.configuration_manager:
+        class: Ign\Bundle\GincoBundle\Services\ConfigurationManager
         arguments:
             em: "@doctrine.orm.entity_manager"
             logger: "@logger"
 
     # Service used to read the breadcrumbs config
-    ogam.breadcrumb_config_service:
-        class: Ign\Bundle\OGAMBundle\Services\BreadcrumbsConfigService
+    ginco.breadcrumb_config_service:
+        class: Ign\Bundle\GincoBundle\Services\BreadcrumbsConfigService
         arguments: ["@router", "%kernel.root_dir%/config/breadcrumb.yml"]
 
     # Listener for the breadcrumb
-    ogam.breadcumb_listener:
-        class: Ign\Bundle\OGAMBundle\EventListener\BreadcrumbListener
-        arguments: ["@white_october_breadcrumbs", "@ogam.breadcrumb_config_service"]
+    ginco.breadcumb_listener:
+        class: Ign\Bundle\GincoBundle\EventListener\BreadcrumbListener
+        arguments: ["@white_october_breadcrumbs", "@ginco.breadcrumb_config_service"]
         tags:
             - { name: kernel.event_subscriber }
 
     # Listener for the user locale (todo: unused now the site is just in french ?)
-    ogam.locale_listener:
-        class: Ign\Bundle\OGAMBundle\EventListener\LocaleListener
+    ginco.locale_listener:
+        class: Ign\Bundle\GincoBundle\EventListener\LocaleListener
         arguments: ['%kernel.default_locale%']
         tags:
             - { name: kernel.event_subscriber }
 
     # Listener for the schema (todo: unused ?)
-    ogam.schema_listener:
-        class: Ign\Bundle\OGAMBundle\EventListener\SchemaListener
+    ginco.schema_listener:
+        class: Ign\Bundle\GincoBundle\EventListener\SchemaListener
         tags:
             - { name: kernel.event_subscriber }
 
     # Repositories not linked to a specific entity
-    ogam.generic_repository:
+    ginco.generic_repository:
         abstract: true
-        class: Ign\Bundle\OGAMBundle\Repository\GenericRepository
+        class: Ign\Bundle\GincoBundle\Repository\GenericRepository
         arguments: ["@doctrine.orm.entity_manager"]
 
-    ogam.repository.database.metadata:
-        parent: ogam.generic_repository
-        class: Ign\Bundle\OGAMBundle\Repository\Database\MetadataRepository
+    ginco.repository.database.metadata:
+        parent: ginco.generic_repository
+        class: Ign\Bundle\GincoBundle\Repository\Database\MetadataRepository
 
-    ogam.repository.database.postgresql:
-        parent: ogam.generic_repository
-        class: Ign\Bundle\OGAMBundle\Repository\Database\PostgresqlRepository
+    ginco.repository.database.postgresql:
+        parent: ginco.generic_repository
+        class: Ign\Bundle\GincoBundle\Repository\Database\PostgresqlRepository
 
     ginco.repository.mapping.map:
-        parent: ogam.generic_repository
+        parent: ginco.generic_repository
         class: Ign\Bundle\GincoBundle\Repository\Mapping\MapRepository
 
     # Managers
-    ogam.manager.generic:
+    ginco.manager.generic:
         class: Ign\Bundle\GincoBundle\Manager\GenericManager
-        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ogam.generic_service", "@ogam.configuration_manager"]
+        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ginco.generic_service", "@ginco.configuration_manager"]
         calls:
           - [setLogger, ['@logger']]
 
-    ogam.manager.query:
-        class: Ign\Bundle\OGAMBundle\Manager\QueryManager
-        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ogam.query_service","@ogam.configuration_manager"]
+    ginco.manager.query:
+        class: Ign\Bundle\GincoBundle\Manager\QueryManager
+        arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ginco.query_service","@ginco.configuration_manager"]
         calls:
           - [setLogger, ['@logger']]
 
     # Services
-    ogam.generic_service:
+    ginco.generic_service:
         class: Ign\Bundle\GincoBundle\Services\GenericService
-        arguments: ["@doctrine.orm.metadata_entity_manager","@ogam.configuration_manager", "@logger", "%locale%"]
+        arguments: ["@doctrine.orm.metadata_entity_manager","@ginco.configuration_manager", "@logger", "%locale%"]
 
-    ogam.query_service:
+    ginco.query_service:
         class: Ign\Bundle\GincoBundle\Services\QueryService
-        arguments: ["@doctrine", "@ogam.generic_service" ,"@ogam.configuration_manager", "@logger", "%locale%", "RAW_DATA", "@ogam.manager.generic", "@ginco.repository.mapping.map"]
+        arguments: ["@doctrine", "@ginco.generic_service" ,"@ginco.configuration_manager", "@logger", "%locale%", "RAW_DATA", "@ginco.manager.generic", "@ginco.repository.mapping.map"]
 
     ginco.submission_service:
       class: Ign\Bundle\GincoBundle\Services\SubmissionService
-      arguments: ["@logger", "@ogam.configuration_manager", "@ogam.generic_service","@ogam.query_service", "@doctrine.orm.raw_data_entity_manager", "@doctrine.orm.metadata_entity_manager", "@translator"]
+      arguments: ["@logger", "@ginco.configuration_manager", "@ginco.generic_service","@ginco.query_service", "@doctrine.orm.raw_data_entity_manager", "@doctrine.orm.metadata_entity_manager", "@translator"]
 
     ginco.ogr2ogr:
       class: Ign\Bundle\GincoBundle\Services\Ogr2ogr
-      arguments: ["@logger", "@ogam.configuration_manager"]
+      arguments: ["@logger", "@ginco.configuration_manager"]
 
     ginco.inpn_provider_service:
       class: Ign\Bundle\GincoBundle\Services\INPNProviderService
-      arguments: ["@doctrine", "@ogam.configuration_manager", "@logger"]
+      arguments: ["@doctrine", "@ginco.configuration_manager", "@logger"]
 
     # RabbitMQ Decorated Producer
     ginco.decorating_ginco_generic_producer:
@@ -136,34 +128,34 @@ services:
     # RabbitMQ Consumers
     generic_consumer_service:
         class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericConsumer
-        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@logger", "@=service('ogam.locale_listener').getLocale()"]
+        arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@logger", "@=service('ginco.locale_listener').getLocale()"]
         calls:
           - [setDEEProcess, ['@ginco.dee_process']]
           - [setExportCSV, ['@ginco.export_csv']]
 
     #templatehelper
-    ogam.helper.AddLink:
-        class: Ign\Bundle\OGAMBundle\Helper\GenerateAddLink
+    ginco.helper.AddLink:
+        class: Ign\Bundle\GincoBundle\Helper\GenerateAddLink
         # the tag alias is later used in the view to access your service
         tags:
             - { name: templating.helper, alias: dataEditionAdd }
 
-    ogam.helper.EditLink:
-        class: Ign\Bundle\OGAMBundle\Helper\GenerateEditLink
+    ginco.helper.EditLink:
+        class: Ign\Bundle\GincoBundle\Helper\GenerateEditLink
         # the tag alias is later used in the view to access your service
         tags:
             - { name: templating.helper, alias: dataEditionEdit }
 
-    OGAMBundle.login_entry_point:
-        class: Ign\Bundle\OGAMBundle\EventListener\LoginEntryPoint
+    GincoBundle.login_entry_point:
+        class: Ign\Bundle\GincoBundle\EventListener\LoginEntryPoint
         arguments: [ "@router" ]
 
     app.exception_controller:
-        class: Ign\Bundle\OGAMBundle\Controller\ExceptionController
+        class: Ign\Bundle\GincoBundle\Controller\ExceptionController
         arguments: ['@twig', '%kernel.debug%']
 
-#    ogam.ajaxError:
-#        class: Ign\Bundle\OGAMBundle\EventListener\AjaxErrorListener
+#    ginco.ajaxError:
+#        class: Ign\Bundle\GincoBundle\EventListener\AjaxErrorListener
 #        tags:
 #            - { name: kernel.event_listener, event: kernel.exception, priority: 1000 }
 
@@ -195,28 +187,28 @@ services:
 
     # Mail Manager
     app.mail_manager:
-        class: Ign\Bundle\OGAMBundle\Services\MailManager
-        arguments: ["@mailer", "@twig", "@logger", "noreply@ign.fr", "@=service('ogam.configuration_manager').getConfig('site_name', 'Plateforme GINCO')"]
+        class: Ign\Bundle\GincoBundle\Services\MailManager
+        arguments: ["@mailer", "@twig", "@logger", "noreply@ign.fr", "@=service('ginco.configuration_manager').getConfig('site_name', 'Plateforme GINCO')"]
 
     # Service reading and parsing the xml metadata files from INPN metadata application
     ginco.metadata_reader:
         class: Ign\Bundle\GincoBundle\Services\MetadataReader
-        arguments: ["@ogam.configuration_manager","@logger"]
+        arguments: ["@ginco.configuration_manager","@logger"]
 
     # Service generating DEE
     ginco.dee_generator:
         class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGenerator
-        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@ogam.generic_service", "@ogam.query_service","@logger"]
+        arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.generic_service", "@ginco.query_service","@logger"]
 
     # Service doing the whole process of generating and sending the DEE file
     ginco.dee_process:
         class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess
-        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@ginco.dee_generator", "@app.mail_manager","@logger"]
+        arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.dee_generator", "@app.mail_manager","@logger"]
         
     # Service doing the whole process of generating and sending the export file
     ginco.export_csv:
         class: Ign\Bundle\GincoBundle\Services\ExportCSV
-        arguments: ["@doctrine.orm.entity_manager","@ogam.configuration_manager", "@app.mail_manager", "@ogam.query_service", "@logger", "@=service('ogam.locale_listener').getLocale()", "@translator"]
+        arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@app.mail_manager", "@ginco.query_service", "@logger", "@=service('ginco.locale_listener').getLocale()", "@translator"]
 
     # Forms
     form.type.link_file:
@@ -232,7 +224,7 @@ services:
             - { name: form.type }
 
     validator.unique.epsg_code:
-      class: Ign\Bundle\OGAMBundle\Validator\Constraints\EPSGCodeValidator
+      class: Ign\Bundle\GincoBundle\Validator\Constraints\EPSGCodeValidator
       tags:
         - {  name: validator.constraint_validator }
       arguments: ["@doctrine.orm.entity_manager"]

@@ -1,8 +1,0 @@
-{% extends 'OGAMBundle:Query:ajaxgettreecodes.json.twig' %}
-{% block mode %}
-{% autoescape false %}
-	{{ parent() }},
-	"isReference":{{ mode.isReference|json_encode }},
-	"vernacularName":{{ mode.vernacularName|json_encode }}
-{% endautoescape %}
-{% endblock %}

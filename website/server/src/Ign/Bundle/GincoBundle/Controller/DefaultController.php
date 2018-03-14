@@ -6,12 +6,11 @@ use Ign\Bundle\GincoBundle\Form\ConfigurationType;
 use Ign\Bundle\GincoBundle\Form\ContactType;
 use Ign\Bundle\GincoBundle\Form\HomepageContentType;
 use Ign\Bundle\GincoBundle\Form\PresentationContentType;
-use Ign\Bundle\OGAMBundle\Controller\DefaultController as BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends BaseController {
+class DefaultController extends GincoController {
 	
 	// Max number of links of each type displayed on homepage
 	private $numLinks = 5;
@@ -111,7 +110,7 @@ class DefaultController extends BaseController {
 			
 			if ($form->isValid()) {
 				// Contact recipients
-				$contactRecipients = $this->get('ogam.configuration_manager')->getConfig('contactEmail', 'sinp-dev@ign.fr');
+				$contactRecipients = $this->get('ginco.configuration_manager')->getConfig('contactEmail', 'sinp-dev@ign.fr');
 				$contactRecipients = explode(',', $contactRecipients);
 				
 				// Send the email
@@ -144,14 +143,14 @@ class DefaultController extends BaseController {
 	 */
 	public function configurationParametersAction(Request $request) {
 		$em = $this->getDoctrine()->getManager();
-		$confRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\ApplicationParameter', 'website');
+		$confRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\ApplicationParameter', 'website');
 		
 		// Get contact Email
 		$emailConf = $confRepo->find('contactEmail');
 		$resultsEPSGConf = $confRepo->find('srs_results');
 		
 		// Get default role
-		$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+		$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Role', 'website');
 		$defaultRole = $roleRepo->findOneByIsDefault(true);
 		
 		$form = $this->createForm(new ConfigurationType(), null, array(

@@ -1178,7 +1178,6 @@ INSERT INTO mode VALUES ('PROVIDER_ID','1',1,'admin','admin');
 --
 
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('RAW_DATA', 'RAW_DATA', 'Données sources', 'Contains raw data');
-INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('HARMONIZED_DATA', 'HARMONIZED_DATA', 'Données élémentaires d''échange', 'Contains harmonized data');
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('METADATA', 'METADATA', 'Metadata', 'Contains the tables describing the data');
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('WEBSITE', 'WEBSITE', 'Website', 'Contains the tables used to operate the web site');
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('PUBLIC', 'PUBLIC', 'Public', 'Contains the default PostgreSQL tables and PostGIS functions');
@@ -2539,7 +2538,6 @@ INSERT INTO mode VALUES ('PROVIDER_ID','1',1,'admin','admin');
 --
 
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('RAW_DATA', 'RAW_DATA', 'Données sources', 'Contains raw data');
-INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('HARMONIZED_DATA', 'HARMONIZED_DATA', 'Données élémentaires d''échange', 'Contains harmonized data');
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('METADATA', 'METADATA', 'Metadata', 'Contains the tables describing the data');
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('WEBSITE', 'WEBSITE', 'Website', 'Contains the tables used to operate the web site');
 INSERT INTO table_schema (schema_code, schema_name, label, description) VALUES ('PUBLIC', 'PUBLIC', 'Public', 'Contains the default PostgreSQL tables and PostGIS functions');

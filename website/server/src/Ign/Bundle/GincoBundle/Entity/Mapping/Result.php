@@ -4,7 +4,7 @@ namespace Ign\Bundle\GincoBundle\Entity\Mapping;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ResultLocation
+ * Result
  *
  * @ORM\Table(name="mapping.results")
  * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\Mapping\ResultRepository")
@@ -151,7 +151,7 @@ class Result {
 	 *
 	 * @param string $hidingLevel
 	 *
-	 * @return ResultLocation
+	 * @return Result
 	 */
 	public function setHidingLevel($hidingLevel) {
 		$this->hidingLevel = $hidingLevel;

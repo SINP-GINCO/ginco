@@ -87,7 +87,7 @@
 		</tbody>
 	</table>
 {% else %}
-	<p>{% trans %}Users.no_users{% endtrans %}</p>
+	<p>{% trans %}User.no_users{% endtrans %}</p>
 {% endif %}
 
 
@@ -98,7 +98,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
-				{% trans with {'%userLogin%': '<span class="user-login-placeholder"></span>'} %} Users.delete.prompt {% endtrans %}
+				{% trans with {'%userLogin%': '<span class="user-login-placeholder"></span>'} %} User.delete.prompt {% endtrans %}
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default"

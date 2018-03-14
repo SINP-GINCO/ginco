@@ -1,3 +1,0 @@
-Ce répertoire est partagé par les applications EFDAC, EDB et RTM.
-
-Tous les commits faits dans ce répertoire peuvent avoir des impacts sur plusieurs projets.

@@ -1,11 +1,16 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
+use Ign\Bundle\GincoBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Form\ChangeForgottenPasswordType;
+use Ign\Bundle\GincoBundle\Form\ChangeUserPasswordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Ign\Bundle\OGAMBundle\Controller\UserController as BaseController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -19,7 +24,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @Route("/user")
  */
-class UserController extends BaseController {
+class UserController extends GincoController {
 
 	/**
 	 * Default action: a "my account" page
@@ -75,8 +80,8 @@ class UserController extends BaseController {
 	 * @Route("/login", name = "user_login")
 	 */
 	public function showLoginFormAction(Request $request) {
-		$CASloginUrl = $this->get('ogam.configuration_manager')->getConfig('CAS_login_url');
-		$CASservice = $this->get('ogam.configuration_manager')->getConfig('CAS_service_parameter');
+		$CASloginUrl = $this->get('ginco.configuration_manager')->getConfig('CAS_login_url');
+		$CASservice = $this->get('ginco.configuration_manager')->getConfig('CAS_service_parameter');
 		// Get the referer url
 		$refererUrl = $request->headers->get('referer');
 		// returns to the page where the action comes from
@@ -91,8 +96,8 @@ class UserController extends BaseController {
 	 * @Route("/logout", name = "user_logout")
 	 */
 	public function CASlogoutAction() {
-		$CASlogoutUrl = $this->get('ogam.configuration_manager')->getConfig('CAS_logout_url');
-		$CASservice = $this->get('ogam.configuration_manager')->getConfig('CAS_service_parameter');
+		$CASlogoutUrl = $this->get('ginco.configuration_manager')->getConfig('CAS_logout_url');
+		$CASservice = $this->get('ginco.configuration_manager')->getConfig('CAS_service_parameter');
 		$redirectUrl = urlencode($this->generateUrl('app_logout', array(),UrlGeneratorInterface::ABSOLUTE_URL));
 		$CASlogoutUrl .= '?' . $CASservice . '=' . $redirectUrl;
 		return new RedirectResponse($CASlogoutUrl);
@@ -139,5 +144,21 @@ class UserController extends BaseController {
 	 */
 	public function validateLoginAction() {
 		throw $this->createNotFoundException('To manage your user account settings, please visit INPN website');
+	}
+	
+	/**
+	 * Return the current logged user
+	 *
+	 * @Route("/currentuser", name="current_user")
+	 */
+	public function getCurrentUserAction() {
+		$logger = $this->get('logger');
+		$logger->debug('getCurrentUserAction');
+	
+		$response = new Response();
+		$response->headers->set('Content-Type', 'application/json');
+		return $this->render('IgnGincoBundle:User:get_current_user.json.twig', array(
+			'data' => $this->getUser()
+		), $response);
 	}
 }

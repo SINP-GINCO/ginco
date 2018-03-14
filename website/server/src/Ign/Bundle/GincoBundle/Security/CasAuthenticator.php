@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use Ign\Bundle\GincoBundle\Exception\CASException;
 use Ign\Bundle\GincoBundle\Services\INPNUserUpdater;
-use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

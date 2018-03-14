@@ -1,30 +1,45 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Ign\Bundle\GincoBundle\Entity\Mapping\Result;
-use Ign\Bundle\OGAMBundle\Controller\QueryController as BaseController;
-use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Dynamode;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableTree;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
-use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequest;
-use Ign\Bundle\OGAMBundle\Entity\Website\PredefinedRequestCriterion;
+use Ign\Bundle\GincoBundle\Entity\Generic\GenericField;
+use Ign\Bundle\GincoBundle\Entity\Generic\QueryForm;
+use Ign\Bundle\GincoBundle\Entity\Mapping\Layer;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Data;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Dynamode;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FormField;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FormFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Format;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableField;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableTree;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Unit;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 /**
  * @Route("/query")
  */
-class QueryController extends BaseController {
+class QueryController extends GincoController {
+
+	/**
+	 * @Route("/index", name = "query_home")
+	 * The "/" route is disabled for security raison (see security.yml)
+	 */
+	public function indexAction(Request $request) {
+		return $this->redirectToRoute('query_show-query-form', [
+			'tab' => $request->query->get('tab')
+		]);
+	}
 
 	/**
 	 * Show the main query page.
-	 * GINCO : Change the results table that is cleaned (result instead of result_location)
 	 *
 	 * @Route("/show-query-form", name = "query_show-query-form")
 	 */
@@ -49,7 +64,7 @@ class QueryController extends BaseController {
 		
 		// Add the configuration parameters to the session for the map proxies (mapserverProxy and tilecacheProxy)
 		if (!$request->getSession()->has('proxy_ConfigurationParameters')) {
-			$configuration = $this->get('ogam.configuration_manager');
+			$configuration = $this->get('ginco.configuration_manager');
 			$request->getSession()->set('proxy_ConfigurationParameters', $configuration->getParameters());
 		}
 		
@@ -64,6 +79,14 @@ class QueryController extends BaseController {
 		} else {
 			return $this->redirect($visuUrl . '/index.html?locale=' . $request->getLocale() . (isset($defaultTab) ? '#' . $defaultTab : ''));
 		}
+	}
+
+	/**
+	 * @Route("/ajaxgetdatasets")
+	 */
+	public function ajaxgetdatasetsAction(Request $request) {
+		$this->get('logger')->debug('ajaxgetdatasetsAction');
+		return new JsonResponse($this->get('ginco.manager.query')->getDatasets($this->getUser()));
 	}
 
 	/**
@@ -82,6 +105,95 @@ class QueryController extends BaseController {
 		return new JsonResponse([
 			'success' => true
 		]);
+	}
+
+	/**
+	 * @Route("/ajaxgetqueryform")
+	 */
+	public function ajaxgetqueryformAction(Request $request) {
+		$logger = $this->get('logger');
+		$logger->debug('ajaxgetqueryformAction');
+		
+		$filters = json_decode($request->query->get('filter'));
+		
+		$datasetId = null;
+		$requestId = null;
+		
+		if (is_array($filters)) {
+			foreach ($filters as $aFilter) {
+				switch ($aFilter->property) {
+					case 'processId':
+						$datasetId = $aFilter->value;
+						break;
+					case 'request_id':
+						$requestId = $aFilter->value;
+						break;
+					default:
+						$logger->debug('filter unattended : ' . $aFilter->property);
+				}
+			}
+		} else {
+			$datasetId = json_decode($request->query->get('datasetId'));
+			$requestId = $request->request->get('request_id');
+		}
+		
+		$response = new Response();
+		$response->headers->set('Content-Type', 'application/json');
+		return $this->render('IgnGincoBundle:Query:ajaxgetqueryform.json.twig', array(
+			'forms' => $this->get('ginco.manager.query')
+				->getQueryForms($datasetId, $requestId)
+		), $response);
+	}
+
+	/**
+	 * AJAX function : Get the list of criteria or columns available for a process form.
+	 *
+	 * @Route("/ajaxgetqueryformfields")
+	 */
+	public function ajaxgetqueryformfieldsAction(Request $request) {
+		$logger = $this->get('logger');
+		$logger->debug('ajaxgetqueryformfieldsAction');
+		
+		$filters = json_decode($request->query->get('filter'));
+		
+		$datasetId = null;
+		
+		if (is_array($filters)) {
+			foreach ($filters as $aFilter) {
+				switch ($aFilter->property) {
+					case 'processId':
+						$datasetId = $aFilter->value;
+						break;
+					case 'form':
+						$formFormat = $aFilter->value;
+						break;
+					case 'fieldsType':
+						$fieldsType = $aFilter->value;
+						break;
+					default:
+						$logger->debug('filter unattended : ' . $aFilter->property);
+				}
+			}
+		}
+		
+		$query = $request->query->get('query');
+		$start = $request->query->get('start');
+		$limit = $request->query->get('limit');
+		
+		$schema = $this->get('ginco.schema_listener')->getSchema();
+		$locale = $this->get('ginco.locale_listener')->getLocale();
+		
+		$response = new Response();
+		$response->headers->set('Content-Type', 'application/json');
+		return $this->render('IgnGincoBundle:Query:ajaxgetqueryformfields.json.twig', array(
+			'fieldsType' => $fieldsType,
+			'list' => $this->getDoctrine()
+				->getRepository(FormField::class)
+				->getFormFields($datasetId, $formFormat, $schema, $locale, $query, $start, $limit, $fieldsType),
+			'count' => $this->getDoctrine()
+				->getRepository(FormField::class)
+				->getFormFieldsCount($datasetId, $formFormat, $schema, $locale, $query, $fieldsType)
+		), $response);
 	}
 
 	/**
@@ -108,7 +220,7 @@ class QueryController extends BaseController {
 			$queryForm = new QueryForm();
 			$queryForm->setDatasetId($datasetId);
 			foreach ($request->request->all() as $inputName => $inputValue) {
-				if (strpos($inputName, "criteria__") === 0 && !$this->get('ogam.query_service')->isEmptyCriteria($inputValue)) {
+				if (strpos($inputName, "criteria__") === 0 && !$this->get('ginco.query_service')->isEmptyCriteria($inputValue)) {
 					$criteriaName = substr($inputName, strlen("criteria__"));
 					$split = explode("__", $criteriaName);
 					
@@ -131,11 +243,7 @@ class QueryController extends BaseController {
 			if ($queryForm->isValid()) {
 				// Store the request parameters in session
 				$request->getSession()->set('query_QueryForm', $queryForm);
-				
-				// Activate the result layer
-				// TODO: Check if still mandatory
-				// $this->mappingSession->activatedLayers[] = 'result_locations';
-				
+								
 				return new JsonResponse([
 					'success' => true
 				]);
@@ -162,17 +270,17 @@ class QueryController extends BaseController {
 		$logger = $this->get('logger');
 		$logger->debug('ajaxgetresultsbboxAction');
 		
-		$configuration = $this->get('ogam.configuration_manager');
+		$configuration = $this->get('ginco.configuration_manager');
 		ini_set("max_execution_time", $configuration->getConfig('max_execution_time', 480));
 		try {
 			$grandPublicRole = $this->getDoctrine()
 				->getManager('website')
-				->getRepository('OGAMBundle:Website\Role')
+				->getRepository('IgnGincoBundle:Website\Role')
 				->findByLabel('Grand public');
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
-			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
+			$queryForm = $this->get('ginco.query_service')->setQueryFormFieldsMappings($queryForm);
 			
 			// Call the service to get the definition of the columns
 			$userInfos = [
@@ -188,9 +296,9 @@ class QueryController extends BaseController {
 			$from = $request->getSession()->get('query_SQLFrom');
 			$nbResults = $request->getSession()->get('query_Count');
 			
-			$this->get('ogam.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
+			$this->get('ginco.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
 			// Execute the request
-			$resultsbbox = $this->get('ogam.query_service')->getResultsBBox($request->getSession()
+			$resultsbbox = $this->get('ginco.query_service')->getResultsBBox($request->getSession()
 				->getId(), $nbResults);
 			// Send the result as a JSON String
 			return new JsonResponse([
@@ -216,10 +324,10 @@ class QueryController extends BaseController {
 		$logger = $this->get('logger');
 		$observationId = $request->request->get('observationId');
 		$logger->debug('ajaxgetobservationbboxAction : ' . $observationId);
-		$locale = $this->get('ogam.locale_listener')->getLocale();
+		$locale = $this->get('ginco.locale_listener')->getLocale();
 		
 		try {
-			$bbox = $this->get('ogam.query_service')->getObservationBoundingBox($observationId, $request->getSession(), $this->getUser(), $locale);
+			$bbox = $this->get('ginco.query_service')->getObservationBoundingBox($observationId, $request->getSession(), $this->getUser(), $locale);
 			// Send the result as a JSON String
 			return new JsonResponse([
 				'success' => true,
@@ -245,19 +353,19 @@ class QueryController extends BaseController {
 		try {
 			$grandPublicRole = $this->getDoctrine()
 				->getManager('website')
-				->getRepository('OGAMBundle:Website\Role')
+				->getRepository('IgnGincoBundle:Website\Role')
 				->findByLabel('Grand public');
 			// Get the request from the session
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			// Get the mappings for the query form fields
-			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
+			$queryForm = $this->get('ginco.query_service')->setQueryFormFieldsMappings($queryForm);
 			// Get the request id
 			$requestId = $this->getDoctrine()
 				->getManager('mapping')
 				->getRepository('IgnGincoBundle:Mapping\Request')
 				->getLastRequestIdFromSession(session_id());
 			// Get the maximum precision level
-			$maxPrecisionLevel = $this->get('ogam.query_service')->getMaxPrecisionLevel($queryForm->getCriteria());
+			$maxPrecisionLevel = $this->get('ginco.query_service')->getMaxPrecisionLevel($queryForm->getCriteria());
 			// Call the service to get the definition of the columns
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()->getProvider() : NULL,
@@ -268,12 +376,12 @@ class QueryController extends BaseController {
 				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
 			];
 			
-			$this->get('ogam.query_service')->buildRequestGinco($queryForm, $userInfos, $maxPrecisionLevel, $requestId, $request->getSession());
+			$this->get('ginco.query_service')->buildRequestGinco($queryForm, $userInfos, $maxPrecisionLevel, $requestId, $request->getSession());
 			
 			$response = new Response();
 			$response->headers->set('Content-Type', 'application/json');
-			return $this->render('OGAMBundle:Query:ajaxgetresultcolumns.json.twig', array(
-				'columns' => $this->get('ogam.query_service')
+			return $this->render('IgnGincoBundle:Query:ajaxgetresultcolumns.json.twig', array(
+				'columns' => $this->get('ginco.query_service')
 					->getColumns($queryForm),
 				'userInfos' => $userInfos
 			), $response);
@@ -305,7 +413,7 @@ class QueryController extends BaseController {
 			"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 		];
 		
-		$resultRows = $this->get('ogam.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
+		$resultRows = $this->get('ginco.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ginco.locale_listener')
 			->getLocale());
 		
 		// Send the result as a JSON String
@@ -348,14 +456,14 @@ class QueryController extends BaseController {
 			if ($request->getSession()->get('query_Count', 0) == 0) {
 				return new JsonResponse($defaultResponseArray);
 			} else {
-				$schema = $this->get('ogam.schema_listener')->getSchema();
-				$locale = $this->get('ogam.locale_listener')->getLocale();
+				$schema = $this->get('ginco.schema_listener')->getSchema();
+				$locale = $this->get('ginco.locale_listener')->getLocale();
 				$queryForm = $request->getSession()->get('query_QueryForm');
 				// Get the mappings for the query form fields
-				$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
+				$queryForm = $this->get('ginco.query_service')->setQueryFormFieldsMappings($queryForm);
 				
 				// Get the location table information
-				$tables = $this->get('ogam.generic_service')->getAllFormats($schema, $queryForm->getFieldMappingSet()
+				$tables = $this->get('ginco.generic_service')->getAllFormats($schema, $queryForm->getFieldMappingSet()
 					->getFieldMappingArray()); // Extract the location table from the last query
 				$locationField = $this->getDoctrine()
 					->getRepository(TableField::class)
@@ -366,7 +474,7 @@ class QueryController extends BaseController {
 					->getFormat(), $locale); // Get info about the location table
 					                         
 				// Get the intersected locations
-				$locations = $this->get('ogam.query_service')->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ogam.configuration_manager'), $locale, $activeLayers, $resultsLayer);
+				$locations = $this->get('ginco.query_service')->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ginco.configuration_manager'), $locale, $activeLayers, $resultsLayer);
 				// $resultsLayers is the most precise layer where we have found results
 				if ($resultsLayer) {
 					$resultsLayer = 'result_' . $resultsLayer; // real name
@@ -486,48 +594,6 @@ class QueryController extends BaseController {
 	}
 
 	/**
-	 * @Route("/ajaxgetpredefinedrequestlist", name="query_get_predefined_request_list")
-	 */
-	public function ajaxgetpredefinedrequestlistAction(Request $request) {
-		$logger = $this->get('logger');
-		$logger->debug('ajaxgetpredefinedrequestlist');
-		
-		$sort = $request->query->get('sort');
-		$dir = $request->query->getAlpha('dir');
-		
-		// Get the predefined values for the forms
-		$schema = $this->get('ogam.schema_listener')->getSchema();
-		$locale = $this->get('ogam.locale_listener')->getLocale();
-		$predefinedRequestRepository = $this->get('doctrine')->getRepository(PredefinedRequest::class);
-		$predefinedRequestList = $predefinedRequestRepository->getPredefinedRequestList($schema, $dir, $sort, $locale, $this->getUser());
-		
-		$response = new Response();
-		$response->headers->set('Content-Type', 'application/json');
-		return $this->render('OGAMBundle:Query:ajaxgetpredefinedrequestlist.json.twig', array(
-			'data' => $predefinedRequestList,
-			'user' => $this->getUser()
-		), $response);
-	}
-
-	/**
-	 * @Route("/ajaxgetpredefinedrequestcriteria", name="query_get_predefined_request_criteria")
-	 */
-	public function ajaxgetpredefinedrequestcriteriaAction(Request $request) {
-		$logger = $this->get('logger');
-		$logger->debug('ajaxgetpredefinedrequestcriteria');
-		
-		$requestName = $request->query->get('request_name');
-		$predefinedRequestCriterionRepository = $this->get('doctrine')->getRepository(PredefinedRequestCriterion::class);
-		$locale = $this->get('ogam.locale_listener')->getLocale();
-		
-		$response = new Response();
-		$response->headers->set('Content-Type', 'application/json');
-		return $this->render('OGAMBundle:Query:ajaxgetpredefinedrequestcriteria.html.twig', array(
-			'data' => $predefinedRequestCriterionRepository->getPredefinedRequestCriteria($requestName, $locale)
-		), $response);
-	}
-
-	/**
 	 * Get the parameters used to initialise the result grid.
 	 * @Route("/getgridparameters", name="query_get_grid_parameters")
 	 */
@@ -538,15 +604,12 @@ class QueryController extends BaseController {
 		$viewParam['checkEditionRights'] = true; // By default, we don't check for rights on the data
 		
 		$user = $this->getUser();
-		$schema = $this->get('ogam.schema_listener')->getSchema();
+		$schema = $this->get('ginco.schema_listener')->getSchema();
 		
 		if ($schema == 'RAW_DATA' && $user->isAllowed('EXPORT_RAW_DATA')) {
 			$viewParam['hideGridCsvExportMenuItem'] = false;
 		}
-		if ($schema == 'HARMONIZED_DATA' && $user->isAllowed('EXPORT_HARMONIZED_DATA')) {
-			$viewParam['hideGridCsvExportMenuItem'] = false;
-		}
-		if (($schema == 'RAW_DATA' || $schema == 'HARMONIZED_DATA') && $user->isAllowed('DATA_EDITION')) {
+		if ($schema == 'RAW_DATA' && $user->isAllowed('DATA_EDITION')) {
 			$viewParam['hideGridDataEditButton'] = false;
 		}
 		if ($user->isAllowed('DATA_EDITION_OTHER_PROVIDER')) {
@@ -555,7 +618,7 @@ class QueryController extends BaseController {
 		
 		$response = new Response();
 		$response->headers->set('Content-type', 'application/javascript');
-		return $this->render('OGAMBundle:Query:getgridparameters.html.twig', $viewParam, $response);
+		return $this->render('IgnGincoBundle:Query:getgridparameters.html.twig', $viewParam, $response);
 	}
 
 	/**
@@ -594,7 +657,7 @@ class QueryController extends BaseController {
 			$response = new Response();
 			$response->headers->set('Content-Type', 'application/json');
 			return $this->render('IgnGincoBundle:Query:ajaxgetdetails.json.twig', array(
-				'data' => $this->get('ogam.query_service')
+				'data' => $this->get('ginco.query_service')
 					->getDetailsDataGinco($id, $detailsLayers, $datasetId, $bbox, true, $userInfos)
 			), $response);
 		} catch (\Exception $e) {
@@ -623,7 +686,7 @@ class QueryController extends BaseController {
 			$label = $this->traductions[$key][$value];
 		} else {
 			// Check in database
-			$trad = $this->get('ogam.generic_service')->getValueLabel($tableField, $value);
+			$trad = $this->get('ginco.generic_service')->getValueLabel($tableField, $value);
 			
 			// Put in cache
 			if (!empty($trad)) {
@@ -647,9 +710,9 @@ class QueryController extends BaseController {
 		$logger->debug('csvExportAction');
 		
 		$user = $this->getUser();
-		$schema = $this->get('ogam.schema_listener')->getSchema();
+		$schema = $this->get('ginco.schema_listener')->getSchema();
 		
-		$configuration = $this->get('ogam.configuration_manager');
+		$configuration = $this->get('ginco.configuration_manager');
 		
 		// Number of results to export
 		$total = $request->getSession()->get('query_Count');
@@ -692,7 +755,7 @@ class QueryController extends BaseController {
 			$queryForm = $request->getSession()->get('query_QueryForm');
 			
 			// Get the mappings for the query form fields
-			$queryForm = $this->get('ogam.query_service')->setQueryFormFieldsMappings($queryForm);
+			$queryForm = $this->get('ginco.query_service')->setQueryFormFieldsMappings($queryForm);
 			
 			// Display the default message
 			$content .= iconv("UTF-8", $charset, '// *************************************************' . "\n");
@@ -721,7 +784,7 @@ class QueryController extends BaseController {
 			// Get requested data
 			// they come in the form of a json; convert them associative array and then to csv
 			// C'est ça qui prend du temps (notamment récupérer le label de chaque code...)
-			$data = $this->get('ogam.query_service')->getResultRowsGinco(0, 150, null, null, $request->getSession(), $userInfos, $this->get('ogam.locale_listener')
+			$data = $this->get('ginco.query_service')->getResultRowsGinco(0, 150, null, null, $request->getSession(), $userInfos, $this->get('ginco.locale_listener')
 				->getLocale());
 			
 			if ($data != null) {
@@ -764,7 +827,7 @@ class QueryController extends BaseController {
 		
 		try {
 			$user = $this->getUser();
-			$schema = $this->get('ogam.schema_listener')->getSchema();
+			$schema = $this->get('ginco.schema_listener')->getSchema();
 			
 			if (($schema == 'RAW_DATA' && !$user->isAllowed('EXPORT_RAW_DATA'))) {
 				return new JsonResponse([
@@ -799,44 +862,39 @@ class QueryController extends BaseController {
 			]);
 		}
 	}
-
+	
 	/**
-	 * KML export is not defined in GINCO because of the hiding of geometry
-	 * @Route("/kml-export", name="query_kml_export")
+	 * Export the request criterias in the CSV file.
+	 *
+	 * @return String the criterias
 	 */
-	public function kmlExportAction(Request $request) {
-		$logger = $this->get('logger');
-		$logger->debug('kmlExportAction');
-		
-		$charset = $this->get('ogam.configuration_manager')->getConfig('csvExportCharset', 'UTF-8');
-		
-		$content = iconv("UTF-8", $charset, "// L'export KML n'est pas prévu dans GINCO, merci de contacter l'administrateur.");
-		
-		$response = new Response($content, 200);
-		$response->headers->set('Content-Type', 'application/vnd.google-earth.kml+xml;charset=' . $charset . ';application/force-download;');
-		$response->headers->set('Content-disposition', 'attachment; filename=DataExport_' . date('Ymd_Hi') . '.kml');
-		
-		return $response;
-	}
-
-	/**
-	 * GeoJson export is not defined in GINCO
-	 * @Route("/geojson-export", name="query_geojson_export")
-	 */
-	public function geojsonExportAction(Request $request) {
-		$logger = $this->get('logger');
-		$logger->debug('geojsonExportAction');
-		
-		// Define the header of the response
-		$charset = $this->get('ogam.configuration_manager')->getConfig('csvExportCharset', 'UTF-8');
-		
-		$content = iconv("UTF-8", $charset, "// L'export GeoJson n'est pas prévu dans GINCO, merci de contacter l'administrateur.");
-		
-		$response = new Response($content, 200);
-		$response->headers->set('Content-Type', 'application/json;charset=' . $charset . ';application/force-download;');
-		$response->headers->set('Content-disposition', 'attachment; filename=DataExport_' . date('Ymd_Hi') . '.geojson');
-		
-		return $response;
+	protected function csvExportCriterias(Request $request) {
+		$criteriasLine = "";
+	
+		$criteriasLine .= '// ' . $this->get('translator')->trans('Request Criterias') . "\n";
+	
+		// Get the request from the session
+		$queryForm = $request->getSession()->get('query_QueryForm');
+	
+		// List all the criterias
+		foreach ($queryForm->getCriteria() as $genericFormField) {
+	
+			$genericTableField = $queryForm->getFieldMappingSet()->getDstField($genericFormField);
+			$tableField = $genericTableField->getMetadata();
+	
+			// Get the descriptor of the form field
+			$criteriasLine .= '// ' . $tableField->getLabel() . ';';
+	
+			if (is_array($genericFormField->getValueLabel())) {
+				$criteriasLine .= implode(', ', $genericFormField->getValueLabel());
+			} else {
+				$criteriasLine .= $genericFormField->getValueLabel();
+			}
+	
+			$criteriasLine .= "\n";
+		}
+	
+		return $criteriasLine;
 	}
 
 	/**
@@ -855,11 +913,11 @@ class QueryController extends BaseController {
 				throw new \InvalidArgumentException("The 'unit', 'node' and 'depth' parameters are required.");
 			}
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
-			$locale = $this->get('ogam.locale_listener')->getLocale();
+			$locale = $this->get('ginco.locale_listener')->getLocale();
 			$unit = $em->find(Unit::class, $unitCode);
-			$tree = $em->getRepository('OGAMBundle:Metadata\ModeTree')->getTreeChildrenModes($unit, $code, $depth ? $depth + 1 : 0, $locale);
+			$tree = $em->getRepository('IgnGincoBundle:Metadata\ModeTree')->getTreeChildrenModes($unit, $code, $depth ? $depth + 1 : 0, $locale);
 			array_shift($tree);
-			return $this->render('OGAMBundle:Query:ajaxgettreenodes.json.twig', array(
+			return $this->render('IgnGincoBundle:Query:ajaxgettreenodes.json.twig', array(
 				'data' => $tree
 			));
 		} catch (\Exception $e) {
@@ -887,11 +945,11 @@ class QueryController extends BaseController {
 				throw new \InvalidArgumentException("The 'unit', 'node' and 'depth' parameters are required.");
 			}
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
-			$locale = $this->get('ogam.locale_listener')->getLocale();
+			$locale = $this->get('ginco.locale_listener')->getLocale();
 			$unit = $em->find(Unit::class, $unitCode);
-			$tree = $em->getRepository('OGAMBundle:Metadata\ModeTaxref')->getTaxrefChildrenModes($unit, $code, $depth ? $depth + 1 : 0, $locale);
+			$tree = $em->getRepository('IgnGincoBundle:Metadata\ModeTaxref')->getTaxrefChildrenModes($unit, $code, $depth ? $depth + 1 : 0, $locale);
 			array_shift($tree);
-			return $this->render('OGAMBundle:Query:ajaxgettaxrefnodes.json.twig', array(
+			return $this->render('IgnGincoBundle:Query:ajaxgettaxrefnodes.json.twig', array(
 				'data' => $tree
 			));
 		} catch (\Exception $e) {
@@ -924,12 +982,12 @@ class QueryController extends BaseController {
 			
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
-			$locale = $this->get('ogam.locale_listener')->getLocale();
+			$locale = $this->get('ginco.locale_listener')->getLocale();
 			$modes = $em->getRepository(Dynamode::class)->getModesFilteredByLabel($unit, $query, $locale);
 			
 			$response = new JsonResponse();
 			
-			return $this->render('OGAMBundle:Query:ajaxgetcodes.json.twig', array(
+			return $this->render('IgnGincoBundle:Query:ajaxgetcodes.json.twig', array(
 				'total' => count($modes),
 				'data' => array_slice($modes, $start, $limit)
 			), $response);
@@ -959,17 +1017,17 @@ class QueryController extends BaseController {
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
 			
-			$locale = $this->get('ogam.locale_listener')->getLocale();
+			$locale = $this->get('ginco.locale_listener')->getLocale();
 			
 			if ($query === null) {
 				$modes = $em->getRepository(Unit::class)->getModes($unit, $locale);
 			} else {
-				$modes = $em->getRepository('OGAMBundle:Metadata\Mode')->getModesFilteredByLabel($unit, $query, $locale);
+				$modes = $em->getRepository('IgnGincoBundle:Metadata\Mode')->getModesFilteredByLabel($unit, $query, $locale);
 			}
 			
 			$response = new JsonResponse();
 			
-			return $this->render('OGAMBundle:Query:ajaxgetcodes.json.twig', array(
+			return $this->render('IgnGincoBundle:Query:ajaxgetcodes.json.twig', array(
 				'data' => $modes
 			), $response);
 		} catch (\Exception $e) {
@@ -1000,18 +1058,18 @@ class QueryController extends BaseController {
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
 			
-			$locale = $this->get('ogam.locale_listener')->getLocale();
+			$locale = $this->get('ginco.locale_listener')->getLocale();
 			
 			// $em->getRepository(Unit::class)->getModesFilteredByLabel($unit, $query, $locale);
-			$rows = $em->getRepository('OGAMBundle:Metadata\ModeTree')->getTreeModesSimilareTo($unit, $query, $locale, $start, $limit);
+			$rows = $em->getRepository('IgnGincoBundle:Metadata\ModeTree')->getTreeModesSimilareTo($unit, $query, $locale, $start, $limit);
 			if (count($rows) < $limit) {
 				// optimisation
 				$count = count($rows);
 			} else {
 				// TODO use a paginator ?
-				$count = $em->getRepository('OGAMBundle:Metadata\ModeTree')->getTreeModesSimilareToCount($unit, $query, $locale);
+				$count = $em->getRepository('IgnGincoBundle:Metadata\ModeTree')->getTreeModesSimilareToCount($unit, $query, $locale);
 			}
-			return $this->render('OGAMBundle:Query:ajaxgettreecodes.json.twig', array(
+			return $this->render('IgnGincoBundle:Query:ajaxgettreecodes.json.twig', array(
 				'data' => $rows,
 				'total' => $count
 			), new JsonResponse());
@@ -1042,16 +1100,16 @@ class QueryController extends BaseController {
 			$em = $this->get('doctrine.orm.metadata_entity_manager');
 			$unit = $em->find(Unit::class, $unitCode);
 			
-			$locale = $this->get('ogam.locale_listener')->getLocale();
+			$locale = $this->get('ginco.locale_listener')->getLocale();
 			
-			$rows = $em->getRepository('OGAMBundle:Metadata\ModeTaxref')->getTaxrefModesSimilarTo($unit, $query, $locale, $start, $limit);
+			$rows = $em->getRepository('IgnGincoBundle:Metadata\ModeTaxref')->getTaxrefModesSimilarTo($unit, $query, $locale, $start, $limit);
 			if (count($rows) < $limit) {
 				// optimisation
 				$count = count($rows);
 			} else {
-				$count = $em->getRepository('OGAMBundle:Metadata\ModeTaxref')->getTaxrefModesCount($unit, $query, $locale);
+				$count = $em->getRepository('IgnGincoBundle:Metadata\ModeTaxref')->getTaxrefModesCount($unit, $query, $locale);
 			}
-			return $this->render('OGAMBundle:Query:ajaxgettaxrefcodes.json.twig', array(
+			return $this->render('IgnGincoBundle:Query:ajaxgettaxrefcodes.json.twig', array(
 				'data' => $rows,
 				'total' => $count
 			), new JsonResponse());

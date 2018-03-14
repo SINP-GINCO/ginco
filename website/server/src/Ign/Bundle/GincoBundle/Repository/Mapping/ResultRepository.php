@@ -4,8 +4,8 @@ namespace Ign\Bundle\GincoBundle\Repository\Mapping;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableField;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -34,7 +34,6 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 
 	/**
 	 * Insert results in the result table.
-	 * This is the Ginco method for Ogam fillResultLocation method.
 	 *
 	 * @param int $reqId
 	 *        	the id of the request
@@ -127,29 +126,6 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 		$query->execute(array(
 			$reqId
 		));
-	}
-
-	/**
-	 * Returns the bounding box that bounds geometries of results table.
-	 *
-	 * @param
-	 *        	String the user session id.
-	 * @param
-	 *        	String the srs_visualisation
-	 * @return String the bounging box as WKT (well known text)
-	 */
-	public function getResultsBBox($sessionId, $projection) {
-		$conn = $this->_em->getConnection();
-		$sql = "SELECT st_astext(st_extent(st_transform(the_geom," . $projection . "))) as wkt FROM result_location WHERE session_id = :session_id";
-		$stmt = $conn->prepare($sql);
-		$stmt->bindValue("session_id", $sessionId);
-		$stmt->execute();
-		$bbox = $stmt->fetchColumn();
-		if ($bbox !== FALSE && $bbox !== "") {
-			return $bbox;
-		} else {
-			throw new NoResultException('No result location found for the current session.');
-		}
 	}
 
 	/**

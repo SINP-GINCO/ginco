@@ -23,10 +23,4 @@ thématiques du SINP.
 La documentation utilisateur est consultable en ligne [ici](https://ginco.naturefrance.fr/doc).
 
 ## Installation
-Le code actuellement en ligne n'est pas suffisant pour installer GINCO. Il manque
-la brique de base OGAM. OGAM est un logiciel open souce sous licence GPL v3, mais
-il est en cours de publication sur Github.
-En attendant, le code d'OGAM actuellement utilisé par le projet peut être demandé
-à l'équipe de développement GINCO: sinp-dev@ign.fr
-
 Voir [ce document](/INSTALL.md/) pour la procédure complète d'installation.

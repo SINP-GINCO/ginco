@@ -40,7 +40,7 @@ twig:
     strict_variables: "%kernel.debug%"
     exception_controller: app.exception_controller:showAction
     globals: 
-      configurationManager : '@ogam.configuration_manager'
+      configurationManager : '@ginco.configuration_manager'
       anonymous: '@app.anonymous_user'
 
     # Use Boostrap forms - horizontal and overriden 4 + 4 columns
@@ -51,7 +51,7 @@ twig:
 assetic:
     debug:          '%kernel.debug%'
     use_controller: '%kernel.debug%'
-    bundles: ['IgnOGAMConfigurateurBundle', 'OGAMBundle', 'IgnGincoBundle', 'IgnGincoConfigurateurBundle']
+    bundles: ['IgnOGAMConfigurateurBundle', 'IgnGincoBundle', 'IgnGincoConfigurateurBundle']
     filters:
         cssrewrite: ~
         yui_css:
@@ -166,38 +166,6 @@ doctrine:
                 schema_filter: /raw_data\./i
                 logging: false
                 profiling: false
-            harmonized_data:
-                driver:   "%database_driver%"
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   "%database_name%"
-                user:     "%database_user%"
-                password: "%database_password%"
-                server_version: "%database_version%"
-                charset:  UTF8
-                mapping_types:
-                    geometry: string
-                    _text: string
-                schema_filter: /harmonized_data\./i
-                logging: false
-                profiling: false
-            result_location:
-                driver:   "%database_driver%"
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   "%database_name%"
-                user:     "%database_user%"
-                password: "%database_password%"
-                server_version: "%database_version%"
-                charset:  UTF8
-                mapping_types:
-                    geometry: string
-                    _text: string
-                schema_filter: /mapping\./i
-                options:
-                    "PDO::ATTR_TIMEOUT": 480
-                logging: false
-                profiling: false
 
     orm:
         auto_generate_proxy_classes: "FILE_NOT_EXISTS"
@@ -209,39 +177,23 @@ doctrine:
             website:
                  connection: website
                  mappings:
-                     OGAMBundle: 
-                        dir: Entity/Website
                      IgnGincoBundle:
                         dir: Entity/Website
             mapping:
                  connection: mapping
                  mappings:
-                    OGAMBundle:
-                        dir: Entity/Mapping
                     IgnGincoBundle:
                         dir: Entity/Mapping
             metadata:
                  connection: metadata
                  mappings:
-                    OGAMBundle:
+                    IgnGincoBundle:
                      dir: Entity/Metadata
             raw_data:
                  connection: raw_data
                  mappings:
-                     OGAMBundle:
-                        dir: Entity/RawData
                      IgnGincoBundle:
                         dir: Entity/RawData
-            harmonized_data:
-                 connection: harmonized_data
-                 mappings:
-                     OGAMBundle:
-                        dir: Entity/HarmonizedData
-            result_location:
-                 connection: result_location
-                 mappings:
-                    OGAMBundle:
-                        dir: Entity/Mapping
 
 
 # Swiftmailer Configuration

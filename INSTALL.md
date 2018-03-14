@@ -11,15 +11,11 @@ git clone https://github.com/SINP-GINCO/ginco.git`
 cd ginco
 # lire les versions des dépendances nécessaires
 cat dependencies.ppts
-# ogam : ginco
 # configurator : develop
 
 # récupérer le code du configurateur
 git clone -b develop https://github.com/SINP-GINCO/ogam-configurator.git configurator
 
-# récupérer le code d'OGAM et le placer dans le répertoire ogam:
-# Ce code n'est pas encore disponible en ligne.
-# git clone -b ginco https://github.com/ORGANISATION/OGAM.git ogam
 ```
 
 ## Configurer votre instance

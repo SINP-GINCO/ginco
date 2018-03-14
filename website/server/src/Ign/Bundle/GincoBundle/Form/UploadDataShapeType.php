@@ -2,10 +2,10 @@
 namespace Ign\Bundle\GincoBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Submission;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 use Symfony\Component\Form\AbstractType;
-use Ign\Bundle\OGAMBundle\OGAMBundle;
+use Ign\Bundle\GincoBundle\GincoBundle;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\FileFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
 
 class UploadDataShapeType extends AbstractType {
 
