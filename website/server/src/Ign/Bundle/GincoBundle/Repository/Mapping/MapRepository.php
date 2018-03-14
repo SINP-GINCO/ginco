@@ -1,7 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Repository\Mapping;
 
-use Ign\Bundle\OGAMBundle\Repository\GenericRepository;
+use Ign\Bundle\GincoBundle\Repository\GenericRepository;
 
 /**
  * Class MapRepository

@@ -4,17 +4,46 @@ namespace Ign\Bundle\GincoBundle\Controller;
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Exception\MetadataException;
 use Ign\Bundle\GincoBundle\Form\GincoJddType;
-use Ign\Bundle\OGAMBundle\Controller\JddController as BaseController;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Form\JddType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/")
  */
-class JddController extends BaseController {
+class JddController extends GincoController {
 
+	/**
+	 * Default action: Show the jdd list page
+	 * todo: pagination, filter by user/provider, filter with exposed fields (filter form)
+	 *
+	 * @Route("/jdd/list", name = "jdd_list")
+	 */
+	public function listAction() {
+		$em = $this->get('doctrine.orm.raw_data_entity_manager');
+		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds();
+	
+		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
+			'jddList' => $jddList,
+			'user' => $this->getUser()
+		));
+	}
+	
+	/**
+	 * Jdd view page
+	 *
+	 * @Route("/jdd/{id}/show", name = "jdd_show", requirements={"id": "\d+"})
+	 */
+	public function showAction(Jdd $jdd) {
+		return $this->render('IgnGincoBundle:Jdd:jdd_show_page.html.twig', array(
+			'jdd' => $jdd,
+			'user' => $this->getUser()
+		));
+	}
+	
 	/**
 	 * Default action: Show the jdd list page
 	 * Ginco customisation: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
@@ -31,7 +60,7 @@ class JddController extends BaseController {
 		}
 
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-		$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds();
+		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds();
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		foreach ($jddList as $jdd) {
 			$jdd->trueDeletable = $this->isJddDeletable($jdd);
@@ -45,7 +74,7 @@ class JddController extends BaseController {
 			$jdd->dee = $deeRepo->findLastVersionByJdd($jdd);
 		}
 
-		return $this->render('OGAMBundle:Jdd:jdd_list_page.html.twig', array(
+		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
 			'jddList' => $jddList,
 			'allJdds' => true
 		));
@@ -58,12 +87,12 @@ class JddController extends BaseController {
 	 */
 	public function listUserAction() {
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-		$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
+		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
 		foreach ($jddList as $jdd) {
 			$jdd->trueDeletable = $this->isJddDeletable($jdd);
 		}
 
-		return $this->render('OGAMBundle:Jdd:jdd_list_page.html.twig', array(
+		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
 			'jddList' => $jddList,
 			'allJdds' => false
 		));
@@ -71,7 +100,6 @@ class JddController extends BaseController {
 
 	/**
 	 * Jdd creation page
-	 * Ginco customisation: add a field for metadata identifier
 	 * Checks, via a service, the xml file on metadata platform, and fills jdd fields with metadata fields
 	 *
 	 * @Route("/jdd/new", name = "jdd_new")
@@ -92,7 +120,7 @@ class JddController extends BaseController {
 		$em = $this->get('doctrine.orm.entity_manager');
 
 		// Get the url of the metadata service
-		$metadataServiceUrl = $this->get('ogam.configuration_manager')->getConfig('jddMetadataFileDownloadServiceURL');
+		$metadataServiceUrl = $this->get('ginco.configuration_manager')->getConfig('jddMetadataFileDownloadServiceURL');
 		// Format the URL to only get prefix
 		$endUrl = strpos($metadataServiceUrl, "cadre");
 		$metadataServiceUrl = substr($metadataServiceUrl, 0, $endUrl + 6);
@@ -111,7 +139,7 @@ class JddController extends BaseController {
 			$metadataId = $form->get('metadata_id')->getData();
 
 			// Test if another jdd already exists with this metadataId
-			$jddWithSameMetadataId = $em->getRepository('OGAMBundle:RawData\Jdd')->findByField(array(
+			$jddWithSameMetadataId = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findByField(array(
 				'metadataId' => $metadataId
 			));
 			if (count($jddWithSameMetadataId) > 0) {
@@ -162,13 +190,16 @@ class JddController extends BaseController {
 
 	/**
 	 * Jdd delete action
-	 * Ginco customisation:: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
+	 * The test for 'Jdd deletable' takes into account if the jdd has active DEEs
 	 *
 	 * @Route("/jdd/{id}/delete", name = "jdd_delete", requirements={"id": "\d+"})
 	 */
 	public function deleteAction(Jdd $jdd, Request $request) {
 
-		// Test if deletable
+		// Get the referer url, to redirect to it at the end of the action
+		$refererUrl = $request->headers->get('referer');
+		
+		// Test if jdd is deletable
 		if (!$this->isJddDeletable($jdd)) {
 			$this->addFlash('error', [
 				'id' => 'Jdd.delete.impossible',
@@ -176,13 +207,30 @@ class JddController extends BaseController {
 					'%jddId%' => $jdd->getField('title')
 				]
 			]);
-			// Get the referer url, to redirect to it at the end of the action
-			$refererUrl = $request->headers->get('referer');
+
 			$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_jdd_list');
 			return $this->redirect($redirectUrl);
 		}
+		
+		// Change jdd status to deleted
+		$jdd->Delete();
+		// Persist change to db
+		$em = $this->get('doctrine.orm.raw_data_entity_manager');
+		$em->merge($jdd);
+		$em->flush();
 
-		return parent::deleteAction($jdd, $request);
+		$this->get('session')
+			->getFlashBag()
+			->add('success', 'Jdd.delete.success');
+		
+		// Redirect according to the referer
+		if ($refererUrl && in_array($refererUrl, [$this->generateUrl('user_jdd_list', [], true), $this->generateUrl('all_jdd_list', [], true)])) {
+			$redirectUrl = $refererUrl;
+		} else {
+			$redirectUrl = $this->generateUrl('integration_home');
+		}
+		// Redirects to a jdd list page
+		return $this->redirect($redirectUrl);
 	}
 
 	/**
@@ -240,5 +288,113 @@ class JddController extends BaseController {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Jdd view fields - test page for developers
+	 *
+	 * @Route("/jdd/{id}/fields", name = "jdd_fields", requirements={"id": "\d+"})
+	 */
+	public function showFieldsAction(Jdd $jdd) {
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+		$user = $this->getUser();
+		$allowed = false;
+		foreach ($user->getRoles() as $role) {
+			if ('developpeur' == $role->getCode()) {
+				$allowed = true;
+			}
+		}
+		if (!$allowed) {
+			throw $this->createAccessDeniedException();
+		}
+	
+		return $this->render('IgnGincoBundle:Jdd:jdd_show_fields.html.twig', array(
+			'jdd' => $jdd
+		));
+	}
+	
+	/**
+	 * Add a field by key value
+	 *
+	 * @Route("/jdd/{id}/add-field/{key}/{value}", name = "jdd_add_field", requirements={"id": "\d+"})
+	 *
+	 * @param Jdd $jdd
+	 * @param
+	 *        	$key
+	 * @param
+	 *        	$value
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	public function addField($id, $key = null, $value = null) {
+		$em = $this->get('doctrine.orm.entity_manager');
+		$jdd = $em->getRepository('IgnGincoBundle:RawData\Jdd')->find($id);
+		if ($jdd) {
+			$jdd->setField($key, $value);
+			$em->flush();
+		}
+		// Redirects to the jdd show page
+		return $this->redirect($this->generateUrl('jdd_fields', array(
+			'id' => $jdd->getId()
+		)));
+	}
+	
+	/**
+	 * Removes a field by key
+	 *
+	 * @Route("/jdd/{id}/remove-field/{key}", name = "jdd_remove_field", requirements={"id": "\d+"})
+	 *
+	 * @param Jdd $jdd
+	 * @param
+	 *        	$key
+	 * @param
+	 *        	$value
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	public function removeField($id, $key) {
+		$em = $this->get('doctrine.orm.entity_manager');
+		$jdd = $em->getRepository('IgnGincoBundle:RawData\Jdd')->find($id);
+		if ($jdd) {
+			$jdd->removeField($key);
+			$em->flush();
+		}
+		// Redirects to the jdd show page
+		return $this->redirect($this->generateUrl('jdd_fields', array(
+			'id' => $jdd->getId()
+		)));
+	}
+	
+	/**
+	 * Find and show the jdd for a given key/value field
+	 *
+	 * @Route("/jdd/find-field/{key}/{value}", name = "jdd_find_field")
+	 */
+	public function findByFieldAction($key, $value) {
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+		$user = $this->getUser();
+		$allowed = false;
+		foreach ($user->getRoles() as $role) {
+			if ('developpeur' == $role->getCode()) {
+				$allowed = true;
+			}
+		}
+		if (!$allowed) {
+			throw $this->createAccessDeniedException();
+		}
+	
+		$em = $this->get('doctrine.orm.raw_data_entity_manager');
+		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findByField(array(
+			$key => $value
+		), array(
+			'id' => 'DESC'
+		));
+	
+		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
+			'allJdds' => false,
+			'jddList' => $jddList
+		));
 	}
 }

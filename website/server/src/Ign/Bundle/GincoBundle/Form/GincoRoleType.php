@@ -1,8 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
-use Ign\Bundle\OGAMBundle\Form\RoleType;
-use Ign\Bundle\OGAMBundle\Entity\Website\Role;
+use Ign\Bundle\GincoBundle\Form\RoleType;
+use Ign\Bundle\GincoBundle\Entity\Website\Role;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

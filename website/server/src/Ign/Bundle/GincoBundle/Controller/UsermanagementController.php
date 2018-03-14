@@ -3,27 +3,171 @@ namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Exception\UserUpdaterException;
 use Ign\Bundle\GincoBundle\Form\GincoRoleType;
+use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
+use Ign\Bundle\GincoBundle\GincoBundle;
 use Ign\Bundle\GincoBundle\Form\UserAddFromINPNType;
 use Ign\Bundle\GincoBundle\Form\UserRoleType;
-use Ign\Bundle\OGAMBundle\Controller\UsermanagementController as BaseController;
-use Ign\Bundle\OGAMBundle\Entity\Website\Provider;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
-use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
-use Ign\Bundle\OGAMBundle\Entity\Website\Role;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Services\ProviderService;
+use Ign\Bundle\GincoBundle\Entity\Mapping\ProviderMapParameters;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\Website\Provider;
+use Ign\Bundle\GincoBundle\Entity\Website\Role;
+use Ign\Bundle\GincoBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Form\ChangePasswordType;
+use Ign\Bundle\GincoBundle\Form\ProviderType;
+use Ign\Bundle\GincoBundle\Form\RoleType;
+use Ign\Bundle\GincoBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Ign\Bundle\GincoBundle\Services\ProviderService;
 use Symfony\Component\Validator\Constraints\Length;
-
 /**
  * @Route("/usermanagement")
  */
-class UsermanagementController extends BaseController {
+class UsermanagementController extends GincoController {
 
+	/**
+	 * @Route("/", name = "usermanagement_home")
+	 */
+	public function indexAction() {
+		return $this->render('IgnGincoBundle:UsermanagementController:index.html.twig', array());
+	}
+	
+	/**
+	 * Delete a provider.
+	 *
+	 * @Route("/deleteProvider/{id}", name="usermanagement_deleteProvider")
+	 */
+	public function deleteProviderAction($id) {
+		$providerRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website');
+		$provider = $providerRepo->find($id);
+	
+		if ($provider == null) {
+			$this->addFlash('error', $this->get('translator')
+				->trans('The provider does not exist.'));
+			return $this->redirectToRoute('usermanagement_showProviders');
+		}
+	
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($provider);
+	
+		// Delete provider map parameters
+		$providerMapParametersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Mapping\ProviderMapParameters', 'mapping');
+		$detachedProviderMapParameters = $providerMapParametersRepo->find($provider->getId());
+	
+		if ($detachedProviderMapParameters == null) {
+			$this->addFlash('error', $this->get('translator')
+				->trans('The provider map parameters do not exist.'));
+			return $this->redirectToRoute('usermanagement_showProviders');
+		}
+	
+		$providerMapParameters = $em->merge($detachedProviderMapParameters);
+		$em->remove($providerMapParameters);
+	
+		$em->flush();
+	
+		$this->addFlash('success', $this->get('translator')
+			->trans('The provider has been deleted.'));
+	
+		return $this->redirectToRoute('usermanagement_showProviders');
+	}
+	
+	/**
+	 * Delete a role.
+	 *
+	 * @Route("/deleteRole/{code}", name="usermanagement_deleteRole")
+	 */
+	public function deleteRoleAction($code) {
+		$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Role', 'website');
+		$role = $roleRepo->find($code);
+	
+		if ($role == null) {
+			$this->addFlash('error', $this->get('translator')
+				->trans('The role does not exist.'));
+			return $this->redirectToRoute('usermanagement_showRoles');
+		}
+	
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($role);
+		$em->flush();
+	
+		$this->addFlash('success', $this->get('translator')
+			->trans('The role has been deleted.'));
+	
+		return $this->redirectToRoute('usermanagement_showRoles');
+	}
+	
+	/**
+	 * @Route("/deleteUser/{login}", name="usermanagement_deleteUser")
+	 */
+	public function deleteUserAction($login) {
+		$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
+		$user = $userRepo->find($login);
+	
+		if ($user == null) {
+			$this->addFlash('error', $this->get('translator')
+				->trans('The user does not exist.'));
+			return $this->redirectToRoute('usermanagement_showUsers');
+		}
+	
+		$em = $this->getDoctrine()->getManager();
+		$em->remove($user);
+		$em->flush();
+	
+		$this->addFlash('success', $this->get('translator')
+			->trans('The user has been deleted.'));
+	
+		return $this->redirectToRoute('usermanagement_showUsers');
+	}
+	
+	/**
+	 * @Route("/changePassword/{login}", name="usermanagement_changePassword")
+	 */
+	public function changePasswordAction(Request $request, $login) {
+		$logger = $this->get('logger');
+		$logger->debug('changePasswordAction');
+	
+		// Load the user
+		$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
+		$user = $userRepo->find($login);
+	
+		// Get the change password form
+		$form = $this->createForm(ChangePasswordType::class, $user);
+	
+		$form->handleRequest($request);
+	
+		if ($form->isSubmitted() && $form->isValid()) {
+			// $form->getData() holds the submitted values
+			// but, the original `$user` variable has also been updated
+			$user = $form->getData();
+	
+			// Encrypt the password if in creation mode
+			if (!empty($user->getPlainPassword())) {
+				$encoder = $this->get('ginco.challenge_response_encoder');
+				$password = $encoder->encodePassword($user->getPlainPassword(), '');
+				$user->setPassword($password);
+			}
+	
+			// Save the user
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($user);
+			$em->flush();
+	
+			$this->addFlash('success', $this->get('translator')
+				->trans('The user password information has been saved.'));
+	
+			return $this->redirectToRoute('usermanagement_showUsers');
+		}
+	
+		return $this->render('IgnGincoBundle:UsermanagementController:change_password.html.twig', array(
+			'form' => $form->createView(),
+			'user' => $user
+		));
+	}
+	
 	/**
 	 * Add a User:
 	 * Search him in the INPN directory, given his login.
@@ -48,7 +192,7 @@ class UsermanagementController extends BaseController {
 			$userLogin = $form->get('login')->getData();
 
 			// If already existing in db, display error
-			$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+			$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
 			if ($userRepo->find($userLogin)) {
 				$error = new FormError($this->get('translator')->trans('administration.user.add.alreadyExists', array(), 'validators'));
 				$form->get('login')->addError($error);
@@ -99,7 +243,7 @@ class UsermanagementController extends BaseController {
 		$logger->debug('editUserAction');
 
 		if ($login != null) {
-			$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+			$userRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
 			$user = $userRepo->find($login);
 		}
 
@@ -130,9 +274,6 @@ class UsermanagementController extends BaseController {
 
 	/**
 	 * Edit a role.
-	 * Ginco customisation: removes the "schema" and "datasets restriction" fields from the form:
-	 * --> schema: always RAW_DATA
-	 * --> datasets restrictions: none
 	 *
 	 * @Route("/editRole/{code}", name="usermanagement_editRole")
 	 */
@@ -142,7 +283,7 @@ class UsermanagementController extends BaseController {
 		$logger->debug('editRoleAction');
 
 		if ($code != null) {
-			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Role', 'website');
 			$role = $roleRepo->find($code);
 		}
 		// Get the role form
@@ -157,7 +298,7 @@ class UsermanagementController extends BaseController {
 			$logger->debug('provider : ' . \Doctrine\Common\Util\Debug::dump($role, 3, true, false));
 			// Always give the permission to RAW_DATA schema (and only RAW_DATA)
 			if (!$role->isSchemaAllowed('RAW_DATA')) {
-				$schemaRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Metadata\TableSchema');
+				$schemaRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableSchema');
 				$schemaRawData = $schemaRepo->find('RAW_DATA');
 				$role->addSchema($schemaRawData);
 			}
@@ -178,7 +319,7 @@ class UsermanagementController extends BaseController {
 			return $this->redirectToRoute('usermanagement_showRoles');
 		}
 
-		return $this->render('OGAMBundle:UsermanagementController:edit_role.html.twig', array(
+		return $this->render('IgnGincoBundle:UsermanagementController:edit_role.html.twig', array(
 			'form' => $form->createView(),
 			'label_role' => $role->getLabel()
 		));
@@ -195,7 +336,7 @@ class UsermanagementController extends BaseController {
 		$logger->info('showUsersAction');
 
 		// Get the list of roles
-		$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+		$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
 		$users = $usersRepo->findAll();
 
 		// Calculate if each user can be deleted (thus, modified or change-password ability given) or not
@@ -211,7 +352,7 @@ class UsermanagementController extends BaseController {
 			$isDeletableUser[$user->getLogin()] = $isDeletable;
 		}
 
-		return $this->render('OGAMBundle:UsermanagementController:show_users.html.twig', array(
+		return $this->render('IgnGincoBundle:UsermanagementController:show_users.html.twig', array(
 			'users' => $users,
 			'isDeletableUser' => $isDeletableUser
 		));
@@ -219,7 +360,7 @@ class UsermanagementController extends BaseController {
 
 	/**
 	 * Show the list of roles.
-	 * Ginco: The default role (Grand public) cannot be edited.
+	 * The default role (Grand public) cannot be edited.
 	 *
 	 * @Route("/showRoles", name="usermanagement_showRoles")
 	 */
@@ -228,7 +369,7 @@ class UsermanagementController extends BaseController {
 		$logger->info('showRolesAction');
 
 		// Get the list of roles
-		$rolesRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+		$rolesRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Role', 'website');
 		$roles = $rolesRepo->findAll();
 
 		// Calculate if each role can be deleted or not
@@ -238,7 +379,7 @@ class UsermanagementController extends BaseController {
 			$isDeletable = true;
 
 			// If a user is using this role then we cannot delete it
-			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Role', 'website');
+			$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Role', 'website');
 			$nbUsers = $roleRepo->userCount($role->getCode());
 			if ($nbUsers > 0) {
 				$isDeletable = false;
@@ -271,7 +412,7 @@ class UsermanagementController extends BaseController {
 			$isModifiableRole[$role->getCode()] = $isModifiable;
 		}
 
-		return $this->render('OGAMBundle:UsermanagementController:show_roles.html.twig', array(
+		return $this->render('IgnGincoBundle:UsermanagementController:show_roles.html.twig', array(
 			'roles' => $roles,
 			'isDeletableRole' => $isDeletableRole,
 			'isModifiableRole' => $isModifiableRole
@@ -307,7 +448,7 @@ class UsermanagementController extends BaseController {
 			if (count($matches) == 0) {
 				$this->addFlash('error', $this->get('translator')
 					->trans('Providers.flash.error_label'));
-				return $this->render('OGAMBundle:UsermanagementController:add_provider.html.twig', array(
+				return $this->render('IgnGincoBundle:UsermanagementController:add_provider.html.twig', array(
 					'form' => $form->createView()
 				));
 			}
@@ -315,7 +456,7 @@ class UsermanagementController extends BaseController {
 			//Check if organism exist in database
 			$idProvider = intval($matches[1]);
 
-			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\OgamBundle\Entity\Website\Provider', 'website')->find($idProvider);
+			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website')->find($idProvider);
 			if ($findID) {
 				$this->addFlash('warning', $this->get('translator')
 					->trans('Providers.flash.exist_provider'));
@@ -334,7 +475,7 @@ class UsermanagementController extends BaseController {
 			}
 		}
 
-		return $this->render('OGAMBundle:UsermanagementController:add_provider.html.twig', array(
+		return $this->render('IgnGincoBundle:UsermanagementController:add_provider.html.twig', array(
 			'form' => $form->createView()
 		));
 
@@ -352,16 +493,6 @@ class UsermanagementController extends BaseController {
 		$results = $this->get('ginco.inpn_provider_service')->searchOrganism($term);
 		return new JsonResponse($results);
 	}
-
-	/**
-	 * Edit a provider : disable route (we can't anymore edit providers as they come from INPN)
-	 *
-	 * @Route("/editProvider/{id}", name="usermanagement_editProvider")
-	 */
-	public function editProviderAction(Request $request, $id = null) {
-		throw $this->createNotFoundException();
-	}
-
 
 	/**
 	 * Refresh provider infos from INPN webservice
@@ -384,6 +515,49 @@ class UsermanagementController extends BaseController {
 		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('usermanagement_showProviders');
 		return $this->redirect($redirectUrl);
 	}
+	
+	/**
+	 * Show the list of providers.
+	 *
+	 * @Route("/showProviders", name="usermanagement_showProviders")
+	 */
+	public function showProvidersAction() {
+		$logger = $this->get('logger');
+		$logger->info('showProvidersAction');
+	
+		// Get the list of providers
+		$providersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website');
+		$providers = $providersRepo->findAll();
+	
+		// Calculate if each provider can be deleted or not
+		$isDeletableProvider = array();
+		foreach ($providers as $provider) {
+	
+			$isDeletable = true;
+	
+			// If a user is using this provider then we cannot delete
+			$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
+			$users = $usersRepo->findByProvider($provider->getId());
+			if (count($users) > 0) {
+				$isDeletable = false;
+			}
+	
+			// If a submission exists with this provider then we cannot delete
+			$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
+			$submissions = $submissionRepo->getActiveSubmissions($provider->getId());
+			if (count($submissions) > 0) {
+				$isDeletable = false;
+			}
+	
+			$isDeletableProvider[$provider->getId()] = $isDeletable;
+		}
+	
+		return $this->render('IgnGincoBundle:UsermanagementController:show_providers.html.twig', array(
+			'providers' => $providers,
+			'isDeletableProvider' => $isDeletableProvider
+		));
+	}
+	
 	/**
 	 * Show the detail of a provider.
 	 *
@@ -399,23 +573,23 @@ class UsermanagementController extends BaseController {
 		$logger->info('id : ' . $id);
 		
 		// Get the provider detail
-		$providersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\Provider', 'website');
+		$providersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website');
 		$provider = $providersRepo->find($id);
 		
 		$logger->info('provider : ' . \Doctrine\Common\Util\Debug::dump($provider, 3, true, false));
 		
 		// Get the users linked to this provider
-		$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\Website\User', 'website');
+		$usersRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\User', 'website');
 		$users = $usersRepo->findByProvider($provider->getId());
 		
 		// Get the submissions linked to this provider
-		$submissionsRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
+		$submissionsRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
 		$submissions = $submissionsRepo->getActiveSubmissions($provider->getId());
 		
 		$logger->info('submissions : ' . \Doctrine\Common\Util\Debug::dump($submissions, 3, true, false));
 		
 		//Get the JDD linked to JDDId
-		$submRepo = $this->getDoctrine()->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Jdd', 'raw_data');
+		$submRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Jdd', 'raw_data');
 		$jddInfos = array();
 		$previousJddId = 0;
 		foreach ($submissions as $key=>$valuesField) {
@@ -426,11 +600,33 @@ class UsermanagementController extends BaseController {
 			}
 		}
 		// Get the raw data linked to this provider
-		return $this->render('OGAMBundle:UsermanagementController:show_provider_content.html.twig', array(
+		return $this->render('IgnGincoBundle:UsermanagementController:show_provider_content.html.twig', array(
 			'provider' => $provider,
 			'users' => $users,
 			'submissions' => $submissions,
 			'jddInfos' => $jddInfos
 		));
+	}
+	
+	/**
+	 * Create a new BoundingBox object with default values from database.
+	 *
+	 * @return BoundingBox the BoundingBox
+	 */
+	public function createDefaultBoundingBox() {
+	
+		// Get the parameters from configuration file
+		$configuration = $this->get("ginco.configuration_manager");
+		$xMin = $configuration->getConfig('default_provider_bbox_x_min');
+		$xMax = $configuration->getConfig('default_provider_bbox_x_max');
+		$yMin = $configuration->getConfig('default_provider_bbox_y_min');
+		$yMax = $configuration->getConfig('default_provider_bbox_y_max');
+		$zoomLevel = $configuration->getConfig('default_provider_zoom_level');
+	
+		$em = $this->getDoctrine()->getManager();
+		$zoomLevel = $em->find('Ign\Bundle\GincoBundle\Entity\Mapping\ZoomLevel', $zoomLevel);
+	
+		$bb = new ProviderMapParameters();
+		return $bb->createBoundingBox($xMin, $xMax, $yMin, $yMax, $zoomLevel);
 	}
 }

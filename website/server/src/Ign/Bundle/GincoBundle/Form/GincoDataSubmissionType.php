@@ -2,7 +2,7 @@
 namespace Ign\Bundle\GincoBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Submission;
+use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +19,7 @@ class GincoDataSubmissionType extends AbstractType  {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder->add('provider', EntityType::class, array(
-			'class' => 'OGAMBundle:Website\Provider',
+			'class' => 'IgnGincoBundle:Website\Provider',
 			'query_builder' => function (EntityRepository$er) {
 				return $er->createQueryBuilder('p')
 					->orderBy('p.label', 'ASC');
@@ -43,6 +43,6 @@ class GincoDataSubmissionType extends AbstractType  {
 
 	public function getParent()
 	{
-		return \Ign\Bundle\OGAMBundle\Form\DataSubmissionType::class;
+		return \Ign\Bundle\GincoBundle\Form\DataSubmissionType::class;
 	}
 }

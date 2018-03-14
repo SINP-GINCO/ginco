@@ -1,7 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
-use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,6 +40,6 @@ class GincoJddType extends AbstractType  {
 
 	public function getParent()
 	{
-		return \Ign\Bundle\OGAMBundle\Form\JddType::class;
+		return \Ign\Bundle\GincoBundle\Form\JddType::class;
 	}
 }

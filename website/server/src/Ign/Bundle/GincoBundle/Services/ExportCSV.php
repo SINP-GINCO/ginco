@@ -4,9 +4,9 @@ namespace Ign\Bundle\GincoBundle\Services;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
-use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
-use Ign\Bundle\OGAMBundle\Services\MailManager;
+use Ign\Bundle\GincoBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Services\MailManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 

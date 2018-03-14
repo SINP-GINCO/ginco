@@ -4,11 +4,11 @@ namespace Ign\Bundle\GincoBundle\Services\DEEGeneration;
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use Ign\Bundle\GincoBundle\Exception\DEEException;
-use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
+use Ign\Bundle\GincoBundle\Entity\Generic\QueryForm;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
-use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
 
 /**
@@ -118,9 +118,9 @@ class DEEGenerator {
 		$queryForm = new QueryForm();
 
 		// Get all table fields for model
-		$tableFields = $this->em->getRepository('OGAMBundle:Metadata\TableField')->getTableFieldsForModel($model->getId());
+		$tableFields = $this->em->getRepository('IgnGincoBundle:Metadata\TableField')->getTableFieldsForModel($model->getId());
 		// Get all Form Fields for Model
-		$formFields = $this->em->getRepository('OGAMBundle:Metadata\FormField')->getFormFieldsFromModel($model->getId());
+		$formFields = $this->em->getRepository('IgnGincoBundle:Metadata\FormField')->getFormFieldsFromModel($model->getId());
 
 		// -- Criteria fields for the query : we only add SUBMISSION_ID
 		// -- Result fields for the query : all fields of the model

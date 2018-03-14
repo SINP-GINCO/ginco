@@ -4,8 +4,8 @@ namespace Ign\Bundle\GincoBundle\Entity\RawData;
 
 use Doctrine\ORM\Mapping as ORM;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
-use Ign\Bundle\OGAMBundle\Entity\RawData\Jdd;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\Website\User;
 
 /**
  * DEE
@@ -33,7 +33,7 @@ class DEE
     /**
      * @var Jdd
 	 *
-	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\OGAMBundle\Entity\RawData\Jdd")
+	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\GincoBundle\Entity\RawData\Jdd")
 	 * @ORM\JoinColumn(name="jdd_id", referencedColumnName="id")
 	 */
     private $jdd;
@@ -43,7 +43,7 @@ class DEE
 	 *
 	 * @var User
 	 *
-	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\OGAMBundle\Entity\Website\User")
+	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\GincoBundle\Entity\Website\User")
 	 * @ORM\JoinColumn(name="user_login", referencedColumnName="user_login")
 	 */
 	private $user;
@@ -253,11 +253,11 @@ class DEE
     /**
      * Set jdd
      *
-     * @param \Ign\Bundle\OGAMBundle\Entity\RawData\Jdd $jdd
+     * @param \Ign\Bundle\GincoBundle\Entity\RawData\Jdd $jdd
      *
      * @return DEE
      */
-    public function setJdd(\Ign\Bundle\OGAMBundle\Entity\RawData\Jdd $jdd = null)
+    public function setJdd(\Ign\Bundle\GincoBundle\Entity\RawData\Jdd $jdd = null)
     {
         $this->jdd = $jdd;
 
@@ -267,7 +267,7 @@ class DEE
     /**
      * Get jdd
      *
-     * @return \Ign\Bundle\OGAMBundle\Entity\RawData\Jdd
+     * @return \Ign\Bundle\GincoBundle\Entity\RawData\Jdd
      */
     public function getJdd()
     {
@@ -277,11 +277,11 @@ class DEE
     /**
      * Set user
      *
-     * @param \Ign\Bundle\OGAMBundle\Entity\Website\User $user
+     * @param \Ign\Bundle\GincoBundle\Entity\Website\User $user
      *
      * @return DEE
      */
-    public function setUser(\Ign\Bundle\OGAMBundle\Entity\Website\User $user = null)
+    public function setUser(\Ign\Bundle\GincoBundle\Entity\Website\User $user = null)
     {
         $this->user = $user;
 
@@ -291,7 +291,7 @@ class DEE
     /**
      * Get user
      *
-     * @return \Ign\Bundle\OGAMBundle\Entity\Website\User
+     * @return \Ign\Bundle\GincoBundle\Entity\Website\User
      */
     public function getUser()
     {

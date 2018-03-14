@@ -1,7 +1,7 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Entity\Website\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,7 +24,7 @@ class UserRoleType extends AbstractType  {
 		// Roles
 		$builder->add('roles', EntityType::class, array(
 			'label' => 'Roles',
-			'class' => 'Ign\Bundle\OGAMBundle\Entity\Website\Role',
+			'class' => 'Ign\Bundle\GincoBundle\Entity\Website\Role',
 			'choice_label' => 'label',
 			'multiple' => true,
 			'expanded' => true

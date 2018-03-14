@@ -1,0 +1,10 @@
+{% extends 'IgnGincoBundle:Query:ajaxgettreenodes.json.twig' %}
+{%  block node %}
+{% autoescape false %}
+    {{ parent() }},
+	"isReference":{{ mode.isReference|json_encode }},
+	"vernacularName":{{ mode.vernacularName|json_encode }},
+	"scientificName":{{ mode.scientificName|json_encode }},
+	"completeName":{{ mode.completeName|json_encode }}
+{% endautoescape %}
+{% endblock %}

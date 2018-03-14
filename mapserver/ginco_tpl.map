@@ -143,13 +143,7 @@ LAYER
     DUMP TRUE
     CONNECTIONTYPE postgis
     CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
-#    DATA "the_geom FROM (
-#            SELECT the_geom, oid
-#            FROM result_location
-#            WHERE session_id = '%SESSION_ID%'
-#            AND GeometryType(the_geom) = 'POINT'
-#        ) as foo USING UNIQUE oid USING srid=3857    "
-        
+    
      DATA "geom FROM (
        SELECT DISTINCT ON(id)
        bac.id_geometrie AS id, geom
@@ -245,16 +239,6 @@ LAYER
     DUMP TRUE
     CONNECTIONTYPE postgis
     CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
-
-#    DATA "the_geom FROM (
-#        SELECT the_geom, row_number() OVER(ORDER BY ST_Length(the_geom) DESC) as row_number
-#        FROM (
-#          SELECT DISTINCT the_geom
-#          FROM result_location
-#          WHERE session_id = '%SESSION_ID%'
-#          AND GeometryType(the_geom) IN ('LINE','LINESTRING', 'MULTILINESTRING')
-#        ) AS foo
-#    ) as bar USING UNIQUE row_number USING srid=3857"
     
     DATA "geom FROM (
        SELECT DISTINCT ON(id)
@@ -302,16 +286,6 @@ LAYER
     DUMP TRUE
     CONNECTIONTYPE postgis
     CONNECTION "user=@db.user@ password=@db.user.pw@ dbname=@db.name@ host=@db.host@ port=@db.port@"
-
-#    DATA "the_geom FROM (
-#        SELECT the_geom, row_number() OVER(ORDER BY ST_Area(the_geom) DESC) as row_number
-#        FROM (
-#          SELECT DISTINCT the_geom
-#          FROM result_location
-#          WHERE session_id = '%SESSION_ID%'
-#          AND GeometryType(the_geom) IN ('POLYGON','MULTIPOLYGON')
-#        ) AS foo
-#    ) as bar USING UNIQUE row_number USING srid=3857"
     
     DATA "geom FROM (
        SELECT DISTINCT ON(id)

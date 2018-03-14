@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\FormBuilderInterface;
 use Ign\Bundle\GincoBundle\Validator\Constraints\EmailList;
-use Ign\Bundle\OGAMBundle\Validator\Constraints\EPSGCode;
+use Ign\Bundle\GincoBundle\Validator\Constraints\EPSGCode;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -53,7 +53,7 @@ class ConfigurationType extends AbstractType
 				)
 			))
 			->add('defaultRole', EntityType::class, array(
-				'class' => 'Ign\Bundle\OGAMBundle\Entity\Website\Role',
+				'class' => 'Ign\Bundle\GincoBundle\Entity\Website\Role',
 				'choice_label' => 'label',
 				'query_builder' => function(EntityRepository $er) use($defaultRole){
 					return $er->createQueryBuilder('r')

@@ -81,12 +81,8 @@
                 <td>
                     {% if submission.status in ['OK','CHECK'] %}
                         <span class="glyphicon glyphicon-ok color-success" aria-hidden="true"></span>&nbsp;{{ submission.status }}
-                    {% elseif submission.status in ['WARNING'] %}
+                    {% elseif submission.status in ['WARNING','RUNNING'] %}
                         <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;{{ submission.status }}
-                    {% elseif submission.status in ['RUNNING'] %}
-                        <div class="tempStatusDiv" id="tempStatusDiv_{{ submission.id }}">
-                            {{ include('OGAMBundle::integration_script.html.twig') }}
-                        </div>
                     {% else %}
                         <span class="glyphicon glyphicon-remove color-danger" aria-hidden="true"></span>&nbsp;{{ submission.status }}
                     {% endif %}

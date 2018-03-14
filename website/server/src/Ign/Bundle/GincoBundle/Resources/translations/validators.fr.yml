@@ -20,3 +20,4 @@ administration:
   role:
     label: Ce label pour un rôle est déjà utilisé
 
+permissions.savedRequest.invalid: Pour attribuer la permission "Gérer les requêtes publiques", il faut également attribuer la permission "Gérer les requêtes privées".

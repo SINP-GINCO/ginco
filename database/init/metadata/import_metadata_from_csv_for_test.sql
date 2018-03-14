@@ -263,32 +263,6 @@ WHERE format||'_'||data NOT IN (
 	WHERE mapping_type = 'FORM'
 	)
 UNION
--- Raw data field should be mapped with harmonized fields
-SELECT format||'_'||data, 'This raw_data table field is not mapped with an harmonized field'
-FROM table_field
-JOIN table_format using (format)
-WHERE schema_code = 'RAW_DATA'
-AND data <> 'SUBMISSION_ID'
-AND data <> 'LINE_NUMBER'
-AND format||'_'||data NOT IN (
-	SELECT (src_format||'_'||src_data )
-	FROM field_mapping
-	WHERE mapping_type = 'HARMONIZE'
-	)
-UNION
--- Raw data field should be mapped with harmonized fields
-SELECT format||'_'||data, 'This harmonized_data table field is not used by a mapping'
-FROM table_field
-JOIN table_format using (format)
-WHERE schema_code = 'HARMONIZED_DATA'
-AND column_name <> 'REQUEST_ID'  -- request ID added automatically
-AND is_calculated <> '1'  -- field is not calculated
-AND format||'_'||data NOT IN (
-	SELECT (dst_format||'_'||dst_data )
-	FROM field_mapping
-	WHERE mapping_type = 'HARMONIZE'
-	)
-UNION
 -- the SUBMISSION_ID field is mandatory for raw data tables
 SELECT format, 'This raw table format is missing the SUBMISSION_ID field'
 FROM table_format 

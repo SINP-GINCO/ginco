@@ -1,21 +1,33 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services;
 
+use Doctrine\ORM\NoResultException;
 use Ign\Bundle\GincoBundle\Entity\Mapping\Request;
 use Ign\Bundle\GincoBundle\Entity\Mapping\Result;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericField;
-use Ign\Bundle\OGAMBundle\Entity\Generic\GenericFormField;
-use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
-use Ign\Bundle\OGAMBundle\Entity\Mapping\Layer;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Dataset;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Format;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\FormField;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableField;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\Unit;
-use Ign\Bundle\OGAMBundle\Entity\Website\User;
-use Ign\Bundle\OGAMBundle\OGAMBundle;
-use Ign\Bundle\OGAMBundle\Services\QueryService as BaseService;
+use Ign\Bundle\GincoBundle\Entity\Generic\BoundingBox;
+use Ign\Bundle\GincoBundle\Entity\Generic\GenericField;
+use Ign\Bundle\GincoBundle\Entity\Generic\GenericFieldMappingSet;
+use Ign\Bundle\GincoBundle\Entity\Generic\GenericFormField;
+use Ign\Bundle\GincoBundle\Entity\Generic\QueryForm;
+use Ign\Bundle\GincoBundle\Entity\Mapping\Layer;
+use Ign\Bundle\GincoBundle\Entity\Mapping\LayerService;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Data;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FormField;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FormFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Format;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableField;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Unit;
+use Ign\Bundle\GincoBundle\Entity\Website\PredefinedRequest;
+use Ign\Bundle\GincoBundle\Entity\Website\PredefinedRequestColumn;
+use Ign\Bundle\GincoBundle\Entity\Website\PredefinedRequestCriterion;
+use Ign\Bundle\GincoBundle\Entity\Website\PredefinedRequestGroup;
+use Ign\Bundle\GincoBundle\Entity\Website\PredefinedRequestGroupAsso;
+use Ign\Bundle\GincoBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\GincoBundle;
+use Ign\Bundle\GincoBundle\Repository\GenericRepository;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -23,8 +35,60 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * This service handles the queries used to feed the query interface with ajax requests.
  */
-class QueryService extends BaseService {
+class QueryService {
 
+	/**
+	 * The logger.
+	 *
+	 * @var Logger
+	 */
+	protected $logger;
+	
+	/**
+	 * The locale.
+	 *
+	 * @var locale
+	 */
+	protected $locale;
+	
+	/**
+	 * The schema.
+	 *
+	 * @var schema
+	 */
+	protected $schema;
+	
+	/**
+	 */
+	protected $configuration;
+	
+	/**
+	 *
+	 * @var GenericService
+	 */
+	protected $genericService;
+	
+	/**
+	 * The models.
+	 *
+	 * @var EntityManager
+	 */
+	protected $metadataModel;
+	
+	/**
+	 * The doctrine service
+	 *
+	 * @var Service
+	 */
+	protected $doctrine;
+	
+	/**
+	 * The generic manager
+	 *
+	 * @var genericModel
+	 */
+	protected $genericModel;
+	
 	private static $fieldLevels = array(
 		'geometrie' => 0,
 		'nomcommune' => 1,
@@ -65,29 +129,497 @@ class QueryService extends BaseService {
 	public static function getFieldsLevels() {
 		return self::$fieldLevels;
 	}
-
-	/**
-	 * The map repository.
-	 *
-	 * @var Repository
-	 */
-	protected $mapRepository;
-
-	public function __construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $mapRepository, $user = null) {
-		parent::__construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $user);
-
+	
+	function __construct($doctrine, $genericService, $configuration, $logger, $locale, $schema, $genericModel, $mapRepository, $user = null) {
+		// Initialise the logger
+		$this->logger = $logger;
+	
+		// Initialise the locale
+		$this->locale = $locale;
+	
+		// Initialise the schema
+		$this->schema = $schema;
+	
+		$this->genericService = $genericService;
+	
+		$this->configuration = $configuration;
+	
+		$this->doctrine = $doctrine;
+		
 		$this->mapRepository = $mapRepository;
+	
+		$this->genericModel = $genericModel;
+	
+		// Initialise the metadata models
+		$this->metadataModel = $this->doctrine->getManager('metadata');
 	}
-
+	
+	/**
+	 * Get the list of available datasets for a given user.
+	 *
+	 * @return [Ign\Bundle\GincoBundle\Entity\Metadata\Dataset] The list of datasets
+	 */
+	public function getDatasets(User $user = null) {
+		return $this->metadataModel->getRepository(Dataset::class)->getDatasetsForDisplay($this->locale, $user);
+	}
+	
+	/**
+	 * TODO: Get the list of available forms and criterias for the dataset.
+	 *
+	 * @param String $datasetId
+	 *        	the identifier of the selected dataset
+	 * @param String $requestId
+	 *        	the id of the predefined request if available
+	 * @return FormFormat[]
+	 */
+	public function getQueryForms($datasetId, $requestId) {
+		if (!empty($requestId)) {
+			// If request name is filled then we are coming from the predefined request screen
+			// and we build the form corresponding to the request
+			return $this->_getPredefinedRequest($requestId);
+		} else {
+			// Otherwise we get all the fields available with their default value
+			return $this->metadataModel->getRepository(FormFormat::class)->getFormFormats($datasetId, $this->schema, $this->locale);
+		}
+	}
+	
+	/**
+	 * Get the predefined request.
+	 *
+	 * @param String $requestId
+	 *        	The request id
+	 * @return Forms
+	 */
+	protected function _getPredefinedRequest($requestId) {
+		$this->logger->debug('_getPredefinedRequest');
+	
+		// Get the predefined request
+		$predefinedRequest = $this->doctrine->getRepository(PredefinedRequest::class)->getPredefinedRequest($requestId, $this->locale);
+	
+		// Get the default values for the forms
+		$forms = $this->metadataModel->getRepository(FormFormat::class)->getFormFormats($predefinedRequest->getDatasetId()
+			->getId(), $this->schema, $this->locale);
+	
+		// Update the default values with the saved values.
+		foreach ($forms as $form) {
+			foreach ($form->getCriteria() as $criterion) {
+				$criterion->setIsDefaultCriteria(FALSE);
+				$criterion->setDefaultValue('');
+	
+				if ($predefinedRequest->hasCriterion($criterion->getName())) {
+					$pRCriterion = $predefinedRequest->getCriterion($criterion->getName());
+					$criterion->setIsDefaultCriteria(TRUE);
+					$criterion->setDefaultValue($pRCriterion->getValue());
+					$criterion->getData()
+					->getUnit()
+					->setModes($pRCriterion->getData()
+						->getUnit()
+						->getModes());
+				}
+			}
+	
+			foreach ($form->getColumns() as $column) {
+				$column->setIsDefaultResult(FALSE);
+	
+				if ($predefinedRequest->hasColumn($column->getName())) {
+					$column->setIsDefaultResult(TRUE);
+				}
+			}
+		}
+	
+		// return the forms
+		return $forms;
+	}
+	
+	/**
+	 * Check if a criteria is empty.
+	 * (not private as this function is extended in custom directory of derivated applications)
+	 *
+	 * @param Undef $criteria
+	 * @return true if empty
+	 */
+	public function isEmptyCriteria($criteria) {
+		if (is_array($criteria)) {
+			$emptyArray = true;
+			foreach ($criteria as $value) {
+				if ($value != "") {
+					$emptyArray = false;
+				}
+			}
+			return $emptyArray;
+		} else {
+			return ($criteria == "");
+		}
+	}
+	
+	/**
+	 * Update and persist a predefined request object.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 * @param string $datasetId The dataset id
+	 * @param string $label The request label
+	 * @param string $definition The request definition
+	 * @param string $isPublic The request privacy
+	 */
+	public function updatePredefinedRequest (PredefinedRequest $pr, $datasetId, $label, $definition, $isPublic, User $user = null) {
+		$em = $this->doctrine->getManager();
+		$datasetRepository = $em->getRepository(Dataset::class);
+		$dataset = $datasetRepository->find($datasetId);
+		$pr->setDatasetId($dataset);
+		$pr->setSchemaCode($this->schema);
+		$pr->setLabel($label);
+		$pr->setDefinition($definition);
+		$pr->setIsPublic($isPublic);
+		$pr->setDate(new \DateTime());
+		if ($user)
+			$pr->setUserLogin($user);
+		$em->persist($pr);
+	}
+	
+	/**
+	 * Delete the predefined request group association.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 */
+	public function deletePRGroupAssociations (PredefinedRequest $pr) {
+		$em = $this->doctrine->getManager();
+		$groupAssoRepo = $em->getRepository(PredefinedRequestGroupAsso::class);
+		$groupAssos = $groupAssoRepo->findBy(["requestId" => $pr->getRequestId()]);
+		foreach ($groupAssos as $index => $groupAsso) {
+			$em->remove($groupAsso);
+		}
+	}
+	
+	/**
+	 * Create and persist the predefined request group association.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 * @param string $groupId The group id
+	 */
+	public function createPRGroupAssociation (PredefinedRequest $pr, $groupId) {
+		$em = $this->doctrine->getManager();
+		$ga = new PredefinedRequestGroupAsso();
+		$ga->setRequestId($pr);
+		$groupRepository = $em->getRepository(PredefinedRequestGroup::class);
+		$group = $groupRepository->find($groupId);
+		$ga->setGroupId($group);
+		$ga->setPosition(1);
+		$em->persist($ga);
+	}
+	
+	/**
+	 * Delete the predefined request criteria.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 */
+	public function deletePRCriteria (PredefinedRequest $pr) {
+		$em = $this->doctrine->getManager();
+		$prCriterionRepo = $em->getRepository(PredefinedRequestCriterion::class);
+		$criteria = $prCriterionRepo->findBy(["requestId" => $pr->getRequestId()]);
+		foreach ($criteria as $index => $criterion) {
+			$em->remove($criterion);
+		}
+	}
+	
+	/**
+	 * Delete the predefined request columns.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 */
+	public function deletePRColumns (PredefinedRequest $pr) {
+		$em = $this->doctrine->getManager();
+		$prColumnRepo = $em->getRepository(PredefinedRequestColumn::class);
+		$columns = $prColumnRepo->findBy(["requestId" => $pr->getRequestId()]);
+		foreach ($columns as $index => $column) {
+			$em->remove($column);
+		}
+	}
+	
+	/**
+	 * Create and persist the predefined request criteria and columns.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 * @param ParameterBag $r The request parameter bag
+	 */
+	public function createPRCriteriaAndColumns (PredefinedRequest $pr, ParameterBag $r) {
+		foreach ($r->all() as $inputName => $inputValue) {
+			// Create the criterion entities and add its
+			if (strpos($inputName, "criteria__") === 0) {
+				$criteriaName = substr($inputName, strlen("criteria__"));
+				$split = explode("__", $criteriaName);
+				$this->createPRCriterion($pr, $split[0], $split[1], $inputValue[0]);
+			}
+			// Create the column entities and add its
+			if (strpos($inputName, "column__") === 0) {
+				$columnName = substr($inputName, strlen("column__"));
+				$split = explode("__", $columnName);
+				$this->createPRColumns($pr, $split[0], $split[1]);
+			}
+		}
+	}
+	
+	/**
+	 * Create and persist the predefined request criteria.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 * @param string $format The criterion format
+	 * @param string $data The criterion data
+	 * @param string $value The criterion value
+	 */
+	public function createPRCriterion (PredefinedRequest $pr, $format, $data, $value) {
+		$em = $this->doctrine->getManager();
+		$formatRepository = $em->getRepository(Format::class);
+		$dataRepository = $em->getRepository(Data::class);
+		$formFieldRepository = $em->getRepository(FormField::class);
+		$criterion = new PredefinedRequestCriterion();
+		$criterion->setRequestId($pr);
+		$format = $formatRepository->find($format);
+		$data = $dataRepository->find($data);
+		$formField = $formFieldRepository->find(['format' => $format, 'data' => $data]);
+		$criterion->setFormat($format);
+		$criterion->setData($data);
+		$criterion->setFormField($formField);
+		$criterion->setValue($value);
+		$em->persist($criterion);
+	}
+	
+	/**
+	 * Create and persist the predefined request columns.
+	 *
+	 * @param PredefinedRequest $pr The predefined request
+	 * @param string $format The column format
+	 * @param string $data The column data
+	 */
+	public function createPRColumns (PredefinedRequest $pr, $format, $data) {
+		$em = $this->doctrine->getManager();
+		$formatRepository = $em->getRepository(Format::class);
+		$dataRepository = $em->getRepository(Data::class);
+		$formFieldRepository = $em->getRepository(FormField::class);
+		$column = new PredefinedRequestColumn();
+		$column->setRequestId($pr);
+		$format = $formatRepository->find($format);
+		$data = $dataRepository->find($data);
+		$formField = $formFieldRepository->find(['format' => $format, 'data' => $data]);
+		$column->setFormat($format);
+		$column->setData($data);
+		$column->setFormField($formField);
+		$em->persist($column);
+	}
+	
+	/**
+	 * Return the total count of query result
+	 *
+	 * @param string $from
+	 *        	The FROM part of the query
+	 * @param string $where
+	 *        	The WHERE part of the query
+	 * @throws NoResultException
+	 * @return integer The total count
+	 */
+	public function getQueryResultsCount($from, $where) {
+		$conn = $this->doctrine->getManager()->getConnection();
+		$sql = "SELECT COUNT(*) as count " . $from . $where;
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->fetchColumn();
+		if ($result !== FALSE && $result !== "") {
+			return $result;
+		} else {
+			throw new NoResultException('No result found for the request : ' . $sql);
+		}
+	}
+	
+	/**
+	 * Get the form fields corresponding to the columns.
+	 *
+	 * @param QueryForm $queryForm
+	 *        	the request form
+	 * @return [FormField] The form fields corresponding to the columns
+	 */
+	public function getColumns($queryForm) {
+		$formFields = [];
+		foreach ($queryForm->getColumns() as $formField) {
+			// Get the full description of the form field
+			$formFields[] = $this->getFormField($formField->getFormat(), $formField->getData());
+		}
+		return $formFields;
+	}
+	
+	/**
+	 * Get a form field.
+	 *
+	 * @param String $format
+	 *        	the format
+	 * @param String $data
+	 *        	the data
+	 * @return FormField The form fields corresponding to the columns
+	 */
+	public function getFormField($format, $data) {
+		return $this->metadataModel->getRepository(FormField::class)->getFormField($format, $data, $this->locale);
+	}
+	
+	/**
+	 * Set the fields mappings for the provided schema into the query form.
+	 *
+	 * @param string $schema
+	 * @param \IgnGincoBundle\Entity\Generic\QueryForm $queryForm
+	 *        	the list of query form fields
+	 * @return the updated form
+	 */
+	public function setQueryFormFieldsMappings($queryForm) {
+		$mappingSet = $this->genericService->getFieldsFormToTableMappings($this->schema, $queryForm->getCriteria());
+		$mappingSet->addFieldMappingSet($this->genericService->getFieldsFormToTableMappings($this->schema, $queryForm->getColumns()));
+		$queryForm->setFieldMappingSet($mappingSet);
+	
+		return $queryForm;
+	}
+	
+	/**
+	 * Return the query result(s)
+	 *
+	 * @param string $sql
+	 *        	The sql of the query
+	 * @return array The result(s)
+	 */
+	public function getQueryResults($sql) {
+		$conn = $this->doctrine->getManager()->getConnection();
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->fetchAll();
+		return $result;
+	}
+	
+	/**
+	 * ********************* EDITION ************************************************************************************
+	 */
+	
+	/**
+	 * Get the form fields for a data to edit.
+	 *
+	 * @param GenericTableFormat $data
+	 *        	the data object to edit
+	 * @return array Serializable.
+	 */
+	public function getEditForm($data, User $user = null) {
+		$this->logger->debug('getEditForm');
+	
+		return $this->_generateEditForm($data, $user);
+	}
+	
+	/**
+	 * Convert a java/javascript-style date format to a PHP date format.
+	 *
+	 * @param String $format
+	 *        	the format in java style
+	 * @return String the format in PHP style
+	 */
+	protected function _convertDateFormat($format) {
+		$format = str_replace("yyyy", "Y", $format);
+		$format = str_replace("yy", "y", $format);
+		$format = str_replace("MMMMM", "F", $format);
+		$format = str_replace("MMMM", "F", $format);
+		$format = str_replace("MMM", "M", $format);
+		$format = str_replace("MM", "m", $format);
+		$format = str_replace("EEEEEE", "l", $format);
+		$format = str_replace("EEEEE", "l", $format);
+		$format = str_replace("EEEE", "l", $format);
+		$format = str_replace("EEE", "D", $format);
+		$format = str_replace("dd", "d", $format);
+		$format = str_replace("HH", "H", $format);
+		$format = str_replace("hh", "h", $format);
+		$format = str_replace("mm", "i", $format);
+		$format = str_replace("ss", "s", $format);
+		$format = str_replace("A", "a", $format);
+		$format = str_replace("S", "u", $format);
+	
+		return $format;
+	}
+	
+	/**
+	 *
+	 * @param GenericField $formEntryField
+	 * @param GenericField $tableRowField
+	 */
+	protected function _generateEditField($formEntryField, $tableRowField, User $user = null) {
+		$tableField = $tableRowField->getMetadata();
+		$formField = $formEntryField->getMetadata();
+	
+		$field = new \stdClass();
+		$field->inputType = $formField->getInputType();
+		$field->decimals = $formField->getDecimals();
+		$field->defaultValue = $formField->getDefaultValue();
+	
+		$field->unit = $formField->getData()
+		->getUnit()
+		->getUnit();
+		$field->type = $formField->getData()
+		->getUnit()
+		->getType();
+		$field->subtype = $formField->getData()
+		->getUnit()
+		->getSubType();
+	
+		$field->name = $tableRowField->getId();
+		$field->label = $tableField->getLabel();
+	
+		$field->isPK = in_array($tableField->getData()->getData(), $tableField->getFormat()->getPrimaryKeys(), true) ? '1' : '0';
+		if ($tableField->getData()->getUnit() === $formField->getData()->getUnit()) {
+			$this->logger->info('query_service :: table field and form field has not the same unit ?!');
+		}
+	
+		$field->value = $tableRowField->getValue();
+		$field->valueLabel = $tableRowField->getValueLabel();
+		$field->editable = $tableField->getIsEditable() ? '1' : '0';
+		$field->insertable = $tableField->getIsInsertable() ? '1' : '0';
+		$field->required = $field->isPK ? !($tableField->getIsCalculated()) : $tableField->getIsMandatory();
+		$field->data = $tableField->getData()->getData(); // The name of the data is the table one
+		$field->format = $tableField->getFormat()->getFormat();
+	
+		if ($field->value === null) {
+			if ($field->defaultValue === '%LOGIN%' && $user !== null) {
+				$field->value = $user->getLogin();
+			} else if ($field->defaultValue === '%TODAY%') {
+	
+				// Set the current date
+				if ($formField->mask !== null) {
+					$field->value = date($this->_convertDateFormat($formField->mask));
+				} else {
+					$field->value = date($this->_convertDateFormat('yyyy-MM-dd'));
+				}
+			} else {
+				$field->value = $field->defaultValue;
+			}
+		}
+	
+		// For the RANGE field, get the min and max values
+		if ($field->type === "NUMERIC" && $field->subtype === "RANGE") {
+			$range = $tableField->getData()
+			->getUnit()
+			->getRange();
+			$field->params = [
+				"min" => $range->getMin(),
+				"max" => $range->getMax()
+			];
+		}
+	
+		if ($field->inputType === 'RADIO' && $field->type === 'CODE') {
+	
+			$opts = $this->metadataModel->getRepository(Unit::class)->getModes($formField->getUnit());
+	
+			$field->options = array_column($opts, 'label', 'code');
+		}
+	
+		return $field;
+	}
+	
 	/**
 	 * Copy the locations of the result in a temporary table.
-	 * MIGRATED
 	 *
 	 * @param String $from
 	 *        	the FROM part of the SQL Request
 	 * @param String $where
 	 *        	the WHERE part of the SQL Request
-	 * @param \OGAMBundle\Entity\Generic\QueryForm $queryForm
+	 * @param \IgnGincoBundle\Entity\Generic\QueryForm $queryForm
 	 *        	the form request object
 	 * @param mixed $user
 	 *        	the user in session
@@ -128,7 +660,6 @@ class QueryService extends BaseService {
 
 	/**
 	 * Populate the result location table.
-	 * This is the Ginco method for Ogam fillResultLocation method.
 	 *
 	 * @param String $from
 	 *        	the FROM part of the SQL Request
@@ -138,9 +669,9 @@ class QueryService extends BaseService {
 	 *        	the user session id.
 	 * @param mixed $user
 	 *        	the user in session
-	 * @param \OGAMBundle\Entity\Metadata\TableFormat $locationTable
+	 * @param \IgnGincoBundle\Entity\Metadata\TableFormat $locationTable
 	 *        	the location table
-	 * @param array[Ign\Bundle\OGAMBundle\Entity\Generic\Field] $queryCriteria
+	 * @param array[Ign\Bundle\GincoBundle\Entity\Generic\Field] $queryCriteria
 	 *        	the form fields (query criteria)
 	 */
 	public function fillResultTable($from, $where, $sessionId, $user, $locationTable, $queryCriteria) {
@@ -345,8 +876,8 @@ class QueryService extends BaseService {
 
 		// Identify the field carrying the location information
 		$tables = $this->genericService->getAllFormats($this->schema, $mappingSet->getFieldMappingArray());
-		$tableFieldRepository = $this->metadataModel->getRepository('OGAMBundle:Metadata\TableField');
-		$tableFormatRepository = $this->metadataModel->getRepository('OGAMBundle:Metadata\TableFormat');
+		$tableFieldRepository = $this->metadataModel->getRepository('IgnGincoBundle:Metadata\TableField');
+		$tableFormatRepository = $this->metadataModel->getRepository('IgnGincoBundle:Metadata\TableFormat');
 		$locationField = $tableFieldRepository->getGeometryField($this->schema, array_keys($tables), $this->locale);
 		$locationTableInfo = $tableFormatRepository->getTableFormat($this->schema, $locationField->getFormat(), $this->locale);
 		$geometryTablePKeyIdWithTable = $locationTableInfo->getFormat() . "." . $locationTableInfo->getPrimaryKeys()[0];
@@ -731,6 +1262,25 @@ class QueryService extends BaseService {
 		}
 
 		return $dataDetails;
+	}
+	
+	/**
+	 * Decode the identifier
+	 *
+	 * @param String $id
+	 * @return Array the decoded id
+	 */
+	protected function _decodeId($id) {
+		// Transform the identifier in an array
+		$keyMap = array();
+		$idElems = explode("/", $id);
+		$i = 0;
+		$count = count($idElems);
+		while ($i < $count) {
+			$keyMap[$idElems[$i]] = $idElems[$i + 1];
+			$i += 2;
+		}
+		return $keyMap;
 	}
 
 	/**

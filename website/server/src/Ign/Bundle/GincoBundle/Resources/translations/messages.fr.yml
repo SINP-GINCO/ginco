@@ -1,8 +1,3 @@
-# In this file we just need to:
-# - write translations not defined in Ogam Bundle
-# - overwrite translations from Ogam Bundle
-# --> No need to rewrite correct translations from Ogam Bundle
-
 # General & layout
 # ---------------------------
 Home: Accueil
@@ -11,7 +6,7 @@ Legal notice: Mentions légales
 Geoportal copyrights: Copyrights Géoportail
 MNHN copyrights: Copyrights MNHN
 Ginco project: Projet Ginco
-Close: Close
+Close: Fermer
 Actions: Actions
 Suppress: Supprimer
 Online Help: Aide en ligne
@@ -31,6 +26,9 @@ Yes: Oui
 No: Non
 Never: Jamais
 Search: Rechercher
+Log out: Déconnexion
+Log in: Connexion
+
 
 # Main menu
 # ---------------------------
@@ -105,9 +103,9 @@ Contact:
   link: Contact
   page:
     title: Contact
-  name: "Votre nom :"
-  email: "Votre email :"
-  message: "Votre message :"
+  name: Votre nom :
+  email: Votre email :
+  message: Votre message :
   send:
     button: Envoyer
     success: Votre message a bien été envoyé à l'administrateur de la plateforme. Il y répondra au plus vite.
@@ -144,7 +142,7 @@ Configuration:
     epsg: Système de référence du champ géométrique, utilisé pour la visualisation et l'export (code EPSG).
 
 # Configuration homepage page
-# -----------------------------
+# ---------------------------
 ConfHomepage:
   title: Titre page d'accueil
   intro: Intro page d'accueil
@@ -156,20 +154,17 @@ ConfHomepage:
   privateLink: Lien privé
   privateDoc: Document privé
 
-# Configuration homepage page
-# -----------------------------
+# Configuration presentation page
+# -------------------------------
 ConfPresentation:
   title: Titre page de présentation
   intro: Contenu page de présentation
   image: Image d'illustration
   publicLinksTitle: Titre du bloc de liens
 
-
 # Integration, Datasets (Jdd) and DEE
 # -----------------------------------
-
 Data integration module: Gérer les jeux de données
-
 Datamodel: Modèle de données
 Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
@@ -219,6 +214,9 @@ Report:
 
 Confirm submission: Publier la soumission
 Invalidate submission: Dépublier la soumission
+Confirm_submission_warning: Une fois validées, les données seront disponibles pour la suite des traitements. Voulez-vous confirmer ?
+Confirm_invalidation_warning: Une fois invalidées, les données ne seront plus disponibles pour la suite des traitements. Voulez-vous confirmer ?
+
 
 Integration:
   Field:
@@ -238,15 +236,28 @@ Integration:
       delete: Cette soumission ne peut pas être supprimée.
       report: Le rapport de cette soumission n'est pas accessible.
 
-'The expected fields are:': Liste des champs attendus
-
 import.format:
   csv: Importer des données au format csv
   shp:
     label: Importer des données au format shapefile
     extension: Les fichiers shapefile doivent être transmis sous forme d'une archive zip.
     files: L'archive et les fichiers qu'elle contient doivent être nommés de la même façon, et l'archive doit contenir au moins 4 fichiers avec les extensions .shp, .dbf, .shx et .prj
-  
+
+Date: Date
+Step: Etape
+Status: Statut
+File: Fichier
+Lines: Lignes
+Actions: Actions
+Upload Data: Chargement des données
+Cancel Submission: Annuler la soumission
+Confirm submission: Confirmer la soumission
+Submit: Valider
+Error: Erreur
+Are you sure?: Etes-vous sûr ?
+No submission found: Aucune soumission trouvée.
+Download a file model for: Télécharger un modèle de fichier pour
+Spatial reference system (SRID): Système de référence (SRID)
 sridDescription: "Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 4326</li><li>Lambert-93 : 2154</li><li>UTM 20 N : 32620</li><li>UTM 22 N : 2972</li><li>UTM 40 S : 2975</li><li>UTM 38 S : 4471</li></ul>Voir le <a href='http://www.epsg-registry.org/' target='_blank'>registre des codes EPSG</a>.<br>Remarque : si les géométries de votre fichier sont vides, indiquez n'importe quel code valide."
 
 Jdd:
@@ -255,8 +266,8 @@ Jdd:
     metadataIdLabel: Identifiant de métadonnées
     metadataIdDescription: L'identifiant de métadonnées renseigné doit être présent dans <a href="%metadataUrl%" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="%documentationUrl%/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
   delete:
-    prompt: "Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?"
-    impossible: "Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données et/ou DEE liés)."
+    prompt: Voulez-vous vraiment supprimer le jeu de données '%jddId%' ?
+    impossible: Le jeu de données '%jddId%' ne peut pas être supprimé (imports de données et/ou DEE liés).
     success: Le jeu de données a bien été supprimé.
   submission:
     add: Ajouter un fichier
@@ -340,24 +351,21 @@ DEE:
 
 # Data Query
 # ----------
-
 Forbidden search: Vous n'avez pas les droits suffisants pour utiliser les critères sensiNiveau ou diffusionNiveauPrecision dans la recherche
+Invalid request.: Requête invalide.
+request.label.existing: Ce libellé de requête est déjà utilisé. Veuillez en choisir un autre.
+An unexpected error occurred.: Une erreur inattendue est apparue.
 
 # Configurateur
 # -------------
-
 Data models: Modèles de données
 Import models: Modèles d'import
 Data dictionary: Dictionnaire de données
 
 # Administration
 # --------------
-
-Users:
-  delete.prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
-  no_users: Pas encore d'utilisateurs.
-
 Providers:
+  label: Organismes
   id: Id INPN
   name: Nom
   uuid: UUID INPN
@@ -369,7 +377,7 @@ Providers:
     link_add: Ajouter un organisme
   delete:
     prompt: Voulez-vous vraiment supprimer l'organisme '%providerLabel%' ?
-    impossible: "Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés."
+    impossible: Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés.
   no_providers: Pas encore d'organismes.
   add:
     provider_inpn: Ajout d'un organisme
@@ -393,14 +401,13 @@ Providers:
 Role:
   delete:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
-    impossible: "Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés."
-    grand_public: "Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle technique par défaut"
-    isDefault: "Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle utilisateur par défaut"
+    impossible: Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés.
+    grand_public: Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle technique par défaut
+    isDefault: Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle utilisateur par défaut
   edit:
-    impossible: "Impossible d'éditer le rôle '%roleLabel%' car c'est le rôle technique par défaut."
-    default: "Vous pouvez choisir le rôle par défaut sur la page de configuration de la plateforme"
+    impossible: Impossible d'éditer le rôle '%roleLabel%' car c'est le rôle technique par défaut.
+    default: Vous pouvez choisir le rôle par défaut sur la page de configuration de la plateforme
 
-Create User: Ajouter un utilisateur
 User:
   account:
     title: Votre compte
@@ -427,19 +434,105 @@ User:
       L'utilisateur '%login%' a été ajouté avec succès.
       Merci de lui attribuer un ou plusieurs rôles et de valider.
   delete:
-    impossible: "Impossible de supprimer l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
-  change_password:
-    impossible: "Impossible de changer le mot de passe de l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
+    impossible: Impossible de supprimer l'utilisateur '%username%' car c'est l'utilisateur technique par défaut.
+    prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
   edit:
-    impossible: "Impossible de modifier l'utilisateur '%username%' car c'est l'utilisateur technique par défaut."
+    impossible: Impossible de modifier l'utilisateur '%username%' car c'est l'utilisateur technique par défaut.
     refreshLink: Actualiser depuis l'INPN
     roles: Modifier les rôles
     created: Création
     lastLogin: Dernière connexion
   refresh:
     notfound: L'utilisateur n'existe pas dans l'annuaire INPN.
+  no_users: Pas encore d'utilisateurs
 
-# Changing or Re-initialising user password
-#------------------------------
+#  User Management
+# ----------------
+Create Role: Créer un rôle
+Create User: Ajouter un utilisateur
+Edit Role: Edition d'un rôle
+Edit Role forbidden: Edition du rôle Grand Public (Les modifications ne sont pas permises)
+Edit User: Edition d'un utilisateur
+View related users and content: Voir les données et les utilisateurs
+Users and content for provider:: Utilisateurs et données pour l'organisme :
+This provider doesn't have any users.: Cet organisme n'a pas d'utilisateurs.
+Datas: Données
+Nb of datas: Nombre de lignes de données
+This provider doesn't have any raw datas.: Cet organisme n'a pas de données en base.
+Impossible to delete this provider.: Il est impossible de supprimer cet organisme\n(données et/ou utilisateurs rattachés).
+Impossible to delete this role.: Il est impossible de supprimer ce rôle\n(utilisateurs rattachés).
+Roles: Rôles
+Users: Utilisateurs
+User Login: Login
+User Name: Nom
+Provider: Organisme
+Email: Email
+Role: Rôle
+Delete: Supprimer
+Edit: Editer
+Code: Code
+Label: Libellé
+Definition: Définition
+Role Code: Code du rôle
+Role Label: Libellé du rôle
+Role Definition: Définition du rôle
+Permissions: Permissions
+The provider does not exist.: L'organisme n'existe pas.
+The provider map parameters do not exist.: L'organisme n'a pas d'emprise par défaut.
+The provider has been deleted.: L'organisme a été supprimé.
+The role does not exist.: Le rôle n'existe pas.
+The role has been deleted.: Le rôle a été supprimé.
+The user does not exist.: L'utilisateur n'existe pas.
+The user has been deleted.: L'utilisateur a été supprimé.
+The provider information has been saved.: L'organisme a bien été enregistré.
+The role information has been saved.: Le rôle a bien été enregistré.
+The user information has been saved.: L'utilisateur a bien été enregistré.
 
-Your password has been changed.: Votre mot de passe a bien été changé.
+
+# Error
+# -----
+An error occurred: Une erreur est survenue
+Page not found: Ressource introuvable
+Database Error: Accès refusé sur la base de données
+Application error: Un problème a été rencontré. Merci de signaler cet incident ainsi que les actions qui y ont mené afin qu'il puisse être corrigé.
+
+
+#  Check configuration
+# --------------------
+Check result: Résultat de la vérification
+PHP Parameters: Paramètres PHP
+Error %value% minimum: Erreur %value% minimum
+Expected value: Valeur attendue
+Database: Base de données
+Checking for missing schemas: Vérification de la présence des schemas 
+The schema '%s' described in the metadata doesn't exist in the system.: Le schéma '%s' décrit dans les métadonnées n'existe pas en base.
+Checking for missing tables: Vérification de la présence des tables
+The expected table '%s' of the schema '%s' is not found.: La table obligatoire '%s' du schéma '%s' est introuvable.
+The PK (%s) of the table '%s' is not compatible with the metadata PK (%s).: La clé primaire (%s) de la table '%s' n'est pas compatible avec la clé primaire des métadonnées (%s).
+Checking for primary keys: Vérification des clés primaires
+Checking for missing fields: Vérification de la présence des champs
+Checking field types: Vérification des types des champs
+The Expected data '%s' of the table '%s' of the schema '%s' is not found.: La donnée obligatoire '%s' de la table '%s' du schéma '%s' est manquante.
+The field '%s' of the table '%s' of the schema '%s' is of type '%s' which is incompatible with the metadata definition '%s'.: Le champ '%s' de la table '%s' du schema '%s' est de type '%s' lequel est incompatible avec la définition des métadonnées : '%s'.
+Unknow field type for the data '%s' of the table '%s' of the schema '%s'.: Le type de la donnée '%s' de la table '%s' du schéma '%s' est inconnu.
+Checking foreign keys: Vérification des clés étrangères
+The foreign key between the table '%s' and the table '%s' described in the metadata doesn't exist in the system.: La clé étrangère entre la table '%s' et la table '%s' décrit dans les métadonnées n'existe pas en base.
+The foreign key '%s' between the table '%s' and the table '%s' does not match the metadata definition '%s'.: la clé étrangère '%s' entre la table '%s' et la table '%s' ne correspond pas à la définition des métadonnées : '%s'.
+No database rights: L'utilisateur utilisé pour se connecter à la base doit être administreur pour pouvoir dérouler ces tests.
+
+
+# Mapping
+# -------
+empty_layer: Aucune couche
+
+
+#  Data Edition
+# -------------
+No %value% found.: Aucun(e) %value% trouvé(e).
+Form not submitted: Formulaire non soumis
+Invalid form: Formulaire invalide.
+Data saved: Données sauvegardées - Rechargement
+Item cannot be deleted because it has children: La donnée ne peut pas être effacée car d'autres données sont liées.
+Error while deleting data: Erreur lors de la suppression
+Data deleted: Donnée supprimée
+Error inserting data duplicate key: Erreur lors de l'insertion - la donnée existe déjà

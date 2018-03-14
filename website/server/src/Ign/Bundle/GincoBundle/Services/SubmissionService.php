@@ -3,9 +3,9 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\NoResultException;
-use Ign\Bundle\OGAMBundle\OGAMBundle;
+use Ign\Bundle\GincoBundle\GincoBundle;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Ign\Bundle\OGAMBundle\Entity\Generic\QueryForm;
+use Ign\Bundle\GincoBundle\Entity\Generic\QueryForm;
 
 /**
  * The Submission Service.
@@ -206,7 +206,7 @@ class SubmissionService {
 		$schema = 'RAW_DATA';
 		
 		// Get the dataset Id
-		$submissionRepo = $this->emrd->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
+		$submissionRepo = $this->emrd->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
 		$submission = $submissionRepo->find($submissionId);
 		$datasetId = $submission->getDataset()->getId();
 		$datasetLabel = $submission->getDataset()->getLabel();
@@ -230,10 +230,10 @@ class SubmissionService {
 		$queryForm = new QueryForm();
 		$queryForm->setDatasetId($datasetId);
 		
-		$tableFieldRepo = $this->emm->getRepository('Ign\Bundle\OGAMBundle\Entity\Metadata\TableField', 'metadata');
+		$tableFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableField', 'metadata');
 		$tableFields = $tableFieldRepo->getTableFieldsForModel($modelId);
 		
-		$formFieldRepo = $this->emm->getRepository('Ign\Bundle\OGAMBundle\Entity\Metadata\FormField', 'metadata');
+		$formFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\FormField', 'metadata');
 		$formFields = $formFieldRepo->getFormFieldsFromModel($modelId);
 		
 		// -- Criteria fields for the query
@@ -434,7 +434,7 @@ class SubmissionService {
 		$schema = 'RAW_DATA';
 		
 		// Get the dataset Id
-		$submissionRepo = $this->emrd->getRepository('Ign\Bundle\OGAMBundle\Entity\RawData\Submission', 'raw_data');
+		$submissionRepo = $this->emrd->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
 		$submission = $submissionRepo->find($submissionId);
 		$datasetId = $submission->getDataset()->getId();
 		$modelId = $submission->getDataset()
@@ -449,10 +449,10 @@ class SubmissionService {
 		$queryForm = new QueryForm();
 		$queryForm->setDatasetId($datasetId);
 		
-		$tableFieldRepo = $this->emm->getRepository('Ign\Bundle\OGAMBundle\Entity\Metadata\TableField', 'metadata');
+		$tableFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableField', 'metadata');
 		$tableFields = $tableFieldRepo->getTableFieldsForModel($modelId);
 		
-		$formFieldRepo = $this->emm->getRepository('Ign\Bundle\OGAMBundle\Entity\Metadata\FormField', 'metadata');
+		$formFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\FormField', 'metadata');
 		$formFields = $formFieldRepo->getFormFieldsFromModel($modelId);
 		
 		// -- Criteria fields for the query
