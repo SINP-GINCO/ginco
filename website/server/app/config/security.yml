@@ -41,7 +41,7 @@ security:
         - { path: ^/integration/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/jdd/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/submission/download-report, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
-        - { path: ^/dee/, allow_if: "user and is_authenticated() and user.isAllowed('MANAGE_DATASETS')"}
+        - { path: ^/dee/, allow_if: "user and is_authenticated() and (user.isAllowed('GENERATE_DEE_OWN_JDD') or user.isAllowed('GENERATE_DEE_ALL_JDD'))"}
         - { path: ^/proxy/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/harmonization/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/checkconf/, allow_if: "user and is_authenticated() and user.isAllowed('CHECK_CONF')"}

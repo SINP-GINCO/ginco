@@ -17,21 +17,31 @@ class JddController extends BaseController {
 
 	/**
 	 * Default action: Show the jdd list page
+	 * Can show own user's Jdd, or all Jdds
 	 * Ginco customisation: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
 	 *
-	 * @Route("/jdd/all/", name = "all_jdd_list")
+	 * @Route("/jdd/all/", name = "all_jdd_list", defaults={"allJdds": true})
+	 * @Route("/jdd/", name = "user_jdd_list", defaults={"allJdds": false})
 	 */
-	public function listAllAction() {
+	public function listAllAction($allJdds = false) {
+
 		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 			throw $this->createAccessDeniedException();
 		}
 
-		if (!$this->getUser()->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') || !$this->getUser()->isAllowed('DATA_INTEGRATION')) {
+		if ($allJdds && (!$this->getUser()->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') || !$this->getUser()->isAllowed('DATA_INTEGRATION'))) {
 			throw $this->createAccessDeniedException();
 		}
 
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-		$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds();
+
+		if ($allJdds) {
+			$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds();
+		}
+		else {
+			$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
+		}
+
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		foreach ($jddList as $jdd) {
 			$jdd->trueDeletable = $this->isJddDeletable($jdd);
@@ -47,27 +57,10 @@ class JddController extends BaseController {
 
 		return $this->render('OGAMBundle:Jdd:jdd_list_page.html.twig', array(
 			'jddList' => $jddList,
-			'allJdds' => true
+			'allJdds' => $allJdds,
 		));
 	}
 
-	/**
-	 * #1223 : Shows the user jdd list page.
-	 *
-	 * @Route("/jdd/", name = "user_jdd_list")
-	 */
-	public function listUserAction() {
-		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-		$jddList = $em->getRepository('OGAMBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
-		foreach ($jddList as $jdd) {
-			$jdd->trueDeletable = $this->isJddDeletable($jdd);
-		}
-
-		return $this->render('OGAMBundle:Jdd:jdd_list_page.html.twig', array(
-			'jddList' => $jddList,
-			'allJdds' => false
-		));
-	}
 
 	/**
 	 * Jdd creation page
