@@ -24,6 +24,16 @@ class DEEController extends Controller
 	 * @Route("/{id}/generate", name = "dee_direct", requirements={"id": "\d+"})
 	 */
 	public function directDEEAction(Jdd $jdd) {
+		// Check permissions on a per-jdd basis if necessary
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+
+		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
+			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
+		}
+
 		$deeProcess = $this->get('ginco.dee_process');
 
 		// Create a line in the DEE table
@@ -55,6 +65,16 @@ class DEEController extends Controller
 		$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
 		if (!$jdd) {
 			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
+		}
+
+		// Check permissions on a per-jdd basis if necessary
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+
+		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
+			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
 		// Get comment in GET parameters
@@ -99,6 +119,16 @@ class DEEController extends Controller
 		$jdd = $em->getRepository('OGAMBundle:RawData\Jdd')->findOneById($jddId);
 		if (!$jdd) {
 			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
+		}
+
+		// Check permissions on a pre-jdd basis if necessary
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+
+		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
+			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
 		// Get DEE and RabbitMQ message attached to the jdd
@@ -146,6 +176,16 @@ class DEEController extends Controller
 			return new JsonResponse(['success' => false, 'message' => 'No jdd found for this id: ' . $jddId]);
 		}
 
+		// Check permissions on a pre-jdd basis if necessary
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+
+		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
+			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
+		}
+
 		// Get comment in GET parameters
 		$comment = $request->query->get('comment', '');
 
@@ -182,6 +222,17 @@ class DEEController extends Controller
 	 */
 	public function downloadDEE(DEE $DEE)
 	{
+		// Check permissions on a pre-jdd basis if necessary
+		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+			throw $this->createAccessDeniedException();
+		}
+
+		$jdd = $DEE->getJdd();
+		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
+			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+			throw $this->createAccessDeniedException("You don't have the rights to download a DEE for this JDD.");
+		}
+
 		// Get archive
 		$archivePath = $DEE->getFilePath();
 		if (!$archivePath) {
@@ -290,7 +341,7 @@ class DEEController extends Controller
 				$json['dee'] = array(
 					'id' => $DEE->getId(),
 					'status' => $DEE->getStatus(),
-					'created' => $DEE->getCreatedAt()->format('d/m/Y H:i'),
+					'created' => $DEE->getCreatedAt()->format('d/m/Y H\hi'),
 					'fullCreated' => $DEE->getCreatedAt(),
 					'comment' => $DEE->getComment(),
 				);
