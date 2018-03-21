@@ -28,6 +28,7 @@ try {
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_export_dir.sql", $config);
 	execCustSQLFile("$sprintDir/delete_diffusionfloutagevalue_table.sql", $config);
+	execCustSQLFile("$sprintDir/update_dee_permissions.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
