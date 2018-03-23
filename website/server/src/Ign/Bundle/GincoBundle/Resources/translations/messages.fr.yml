@@ -137,7 +137,7 @@ Configuration:
     submit:
       button: Enregistrer
       success: Les paramètres de la plateforme ont bien été enregistrés.
-    email.success: L'email de contact a été modifié.<br>Vous pouvez tester cette (ces) adresse(s) en envoyant un mail depuis la page <a href="/contact">Contact</a>.
+    email.success: L'email de contact a été modifié.<br>Vous pouvez tester cette (ces) adresse(s) en envoyant un mail depuis la page <a href="%contactUrl%">Contact</a>.
     defaultRole:
       label: Rôle par défaut
       help: Indiquez le rôle qui sera attribué par défaut à tous les nouveaux utilisateurs.
