@@ -205,6 +205,8 @@ Report:
   Reports: Rapports
   Sensitivity:
     Title: Rapport de sensibilité
+    Date: Date de création du rapport
+    Provider: Organisme fournisseur
     DisabledTitle: Rapport de sensibilité - Indisponible
     SensibilityReport: Sensibilité
     SubmissionId: Identifiant de la soumission
