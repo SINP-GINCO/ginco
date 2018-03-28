@@ -56,7 +56,7 @@ function buildJavaServices($config, $buildMode)
 	$RGFilename = "SINP" . $config['instance.name'] . "RGService" ;
 	$gincoCustomPath = "$projectDir/services/service_integration/custom/fr/ifn/ogam/integration";
 	$ogamCustomPath = "$gincoDir/service_integration/custom/fr/ifn/ogam/integration";
-	$customServicesNames = array('ComputeGeoAssociationService', 'ChecksDSRGincoService', 'JddService', 'GenerateReportsService');
+	$customServicesNames = array('GeoAssociationService', 'ChecksDSRGincoService', 'JddService', 'GenerateReportsService');
 
 	// build du service d'intégration
 	echo("Building integration service...\n");
