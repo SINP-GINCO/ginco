@@ -1,0 +1,19 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+    <h1>{% trans %}Breadcrumb.Users.Administration{% endtrans %}</h1>
+
+    <ul>
+        <li>
+            <a href="{{ path('usermanagement_showUsers') }}"> {% trans %}Menu.Users{% endtrans %}</a>
+        </li>
+        <li>
+            <a href="{{ path('usermanagement_showProviders') }}"> {% trans %}Menu.Providers{% endtrans %}</a>
+        </li>
+        <li>
+            <a href="{{ path('usermanagement_showRoles') }}"> {% trans %}Menu.Roles{% endtrans %}</a>
+        </li>
+    </ul>
+
+{% endblock %}
