@@ -2,23 +2,14 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\Website\User;
-use Ign\Bundle\GincoBundle\Form\ChangeForgottenPasswordType;
-use Ign\Bundle\GincoBundle\Form\ChangeUserPasswordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Extends the UserController from OGAM in order
- * to invalidate the login form and the logout, to
- * replace it by CAS login and logout redirections.
- * We also invalidate all the no more useful account managment:
- * i.e. password operations.
+ * Authentication: CAS login and logout redirections.
  *
  * @author SCandelier
  *
@@ -110,42 +101,9 @@ class UserController extends GincoController {
 	 */
 	public function logoutAction() {
 		// todo: mettre un test sur le referer pour empêcher l'appel direct de la page
-		$test=1;
 		// Nothing to do, the security module redirects automatically to the homepage (cf security.yml)
 	}
 
-	/**
-	 * No more password operations.
-	 * @Route("/changePassword", name = "user_changepassword")
-	 */
-	public function changePasswordAction(Request $request) {
-		throw $this->createNotFoundException('To manage your user account settings, please visit INPN website');
-	}
-
-	/**
-	 * No more password operations.
-	 * @Route("/forgottenpassword", name = "user_forgotten_password")
-	 */
-	public function forgottenPasswordFormAction(Request $request) {
-		throw $this->createNotFoundException('To manage your user account settings, please visit INPN website');
-	}
-
-	/**
-	 * No more password operations.
-	 * @Route("/validateForgottenPassword", name = "user_validateForgottenPassword")
-	 */
-	public function validateForgottenPasswordAction(Request $request) {
-		throw $this->createNotFoundException('To manage your user account settings, please visit INPN website');
-	}
-
-	/**
-	 * No more login operations.
-	 * @Route("/validateLogin", name = "user_validatelogin")
-	 */
-	public function validateLoginAction() {
-		throw $this->createNotFoundException('To manage your user account settings, please visit INPN website');
-	}
-	
 	/**
 	 * Return the current logged user
 	 *

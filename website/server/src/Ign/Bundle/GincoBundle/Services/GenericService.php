@@ -1031,9 +1031,9 @@ class GenericService {
 	 *
 	 * @param String $schema
 	 *        	the schema
-	 * @param [OgamBundle\Entity\Generic\GenericField] $formFields
+	 * @param [IgnGincoBundle\Entity\Generic\GenericField] $formFields
 	 *        	a form fields array
-	 * @param OgamBundle\Entity\Generic\GenericFieldMappingSet $mappingSet
+	 * @param IgnGincoBundle\Entity\Generic\GenericFieldMappingSet $mappingSet
 	 *        	the field mapping set
 	 * @param Array $userInfos
 	 *        	Few user informations
@@ -1090,7 +1090,7 @@ class GenericService {
 	 *
 	 * @param String $schema
 	 *        	the schema
-	 * @param OgamBundle\Entity\Generic\GenericFieldMappingSet $mappingSet
+	 * @param IgnGincoBundle\Entity\Generic\GenericFieldMappingSet $mappingSet
 	 *        	the field mapping set
 	 * @return String a SQL request
 	 */
@@ -1133,9 +1133,9 @@ class GenericService {
 	 *
 	 * @param String $schema
 	 *        	the schema
-	 * @param [OgamBundle\Entity\Generic\GenericField] $formFields
+	 * @param [IgnGincoBundle\Entity\Generic\GenericField] $formFields
 	 *        	a form fields array
-	 * @param OgamBundle\Entity\Generic\GenericFieldMappingSet $mappingSet
+	 * @param IgnGincoBundle\Entity\Generic\GenericFieldMappingSet $mappingSet
 	 *        	the field mapping set
 	 * @return String a SQL request
 	 */
