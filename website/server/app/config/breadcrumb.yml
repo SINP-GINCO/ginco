@@ -29,7 +29,7 @@ home:
   pages:
     integration:
       label: Breadcrumb.Integration
-      route: jdd_list
+      route: user_jdd_list
       pages:
         newjdd:
           label: Breadcrumb.Integration.New
@@ -44,7 +44,7 @@ home:
             id: 1
     jdd:
       label: Breadcrumb.Integration
-      route: jdd_list
+      route: user_jdd_list
       pages:
         showDetail:
           label: Breadcrumb.Integration.Show

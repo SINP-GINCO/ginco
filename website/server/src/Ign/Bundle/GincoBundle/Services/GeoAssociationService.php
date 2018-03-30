@@ -3,8 +3,8 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\OGAMBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -134,7 +134,7 @@ class GeoAssociationService {
 			
 			$submissionId = null;
 			$submissionIdArray = array();
-			$tableFormats = $this->doctrine->getRepository('Ign\Bundle\OGAMBundle\Entity\Metadata\TableFormat', 'metadata')->getAllTableFormats();
+			$tableFormats = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat', 'metadata')->getAllTableFormats();
 			
 		// All input parameters are null : throw exception
 		} else {
