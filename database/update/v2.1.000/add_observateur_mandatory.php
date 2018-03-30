@@ -38,9 +38,9 @@ try {
 			echo "Traitement sur la table : " . $table['table_name'] . " pour la colonne " . $columnToChange . "\n";
 			
 			// Set column mandatory in raw_data. If value is null, fill it with Inconnu
-			$queryToSetMandatory = "ALTER TABLE " . $table['table_name'] . " ALTER COLUMN $columnToChange SET DEFAULT 'Inconnu';
-				ALTER TABLE " . $table['table_name'] . " ALTER COLUMN $columnToChange SET NOT NULL;
-				ALTER TABLE " . $table['table_name'] . " ALTER COLUMN $columnToChange DROP DEFAULT;";
+			$queryToSetMandatory =
+				"UPDATE " . $table['table_name'] . " SET $columnToChange = 'Inconnu' WHERE $columnToChange IS NULL;
+				ALTER TABLE " . $table['table_name'] . " ALTER COLUMN $columnToChange SET NOT NULL;";
 			$setMandatoryResult = pg_query($queryToSetMandatory);
 			
 			if (!$setMandatoryResult) {

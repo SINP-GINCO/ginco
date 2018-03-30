@@ -18,49 +18,31 @@ class JddController extends GincoController {
 
 	/**
 	 * Default action: Show the jdd list page
-	 * todo: pagination, filter by user/provider, filter with exposed fields (filter form)
-	 *
-	 * @Route("/jdd/list", name = "jdd_list")
-	 */
-	public function listAction() {
-		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds();
-	
-		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
-			'jddList' => $jddList,
-			'user' => $this->getUser()
-		));
-	}
-	
-	/**
-	 * Jdd view page
-	 *
-	 * @Route("/jdd/{id}/show", name = "jdd_show", requirements={"id": "\d+"})
-	 */
-	public function showAction(Jdd $jdd) {
-		return $this->render('IgnGincoBundle:Jdd:jdd_show_page.html.twig', array(
-			'jdd' => $jdd,
-			'user' => $this->getUser()
-		));
-	}
-	
-	/**
-	 * Default action: Show the jdd list page
+	 * Can show own user's Jdd, or all Jdds
 	 * Ginco customisation: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
 	 *
-	 * @Route("/jdd/all/", name = "all_jdd_list")
+	 * @Route("/jdd/all/", name = "all_jdd_list", defaults={"allJdds": true})
+	 * @Route("/jdd/", name = "user_jdd_list", defaults={"allJdds": false})
 	 */
-	public function listAllAction() {
+	public function listAllAction($allJdds = false) {
+
 		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 			throw $this->createAccessDeniedException();
 		}
 
-		if (!$this->getUser()->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') || !$this->getUser()->isAllowed('DATA_INTEGRATION')) {
+		if ($allJdds && (!$this->getUser()->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') || !$this->getUser()->isAllowed('DATA_INTEGRATION'))) {
 			throw $this->createAccessDeniedException();
 		}
 
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds();
+
+		if ($allJdds) {
+			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds();
+		}
+		else {
+			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
+		}
+
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		foreach ($jddList as $jdd) {
 			$jdd->trueDeletable = $this->isJddDeletable($jdd);
@@ -76,25 +58,19 @@ class JddController extends GincoController {
 
 		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
 			'jddList' => $jddList,
-			'allJdds' => true
+			'allJdds' => $allJdds,
 		));
 	}
 
 	/**
-	 * #1223 : Shows the user jdd list page.
+	 * Jdd view page
 	 *
-	 * @Route("/jdd/", name = "user_jdd_list")
+	 * @Route("/jdd/{id}/show", name = "jdd_show", requirements={"id": "\d+"})
 	 */
-	public function listUserAction() {
-		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
-		foreach ($jddList as $jdd) {
-			$jdd->trueDeletable = $this->isJddDeletable($jdd);
-		}
-
-		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
-			'jddList' => $jddList,
-			'allJdds' => false
+	public function showAction(Jdd $jdd) {
+		return $this->render('IgnGincoBundle:Jdd:jdd_show_page.html.twig', array(
+			'jdd' => $jdd,
+			'user' => $this->getUser()
 		));
 	}
 
@@ -198,7 +174,7 @@ class JddController extends GincoController {
 
 		// Get the referer url, to redirect to it at the end of the action
 		$refererUrl = $request->headers->get('referer');
-		
+
 		// Test if jdd is deletable
 		if (!$this->isJddDeletable($jdd)) {
 			$this->addFlash('error', [
@@ -211,7 +187,7 @@ class JddController extends GincoController {
 			$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_jdd_list');
 			return $this->redirect($redirectUrl);
 		}
-		
+
 		// Change jdd status to deleted
 		$jdd->Delete();
 		// Persist change to db
@@ -222,7 +198,7 @@ class JddController extends GincoController {
 		$this->get('session')
 			->getFlashBag()
 			->add('success', 'Jdd.delete.success');
-		
+
 		// Redirect according to the referer
 		if ($refererUrl && in_array($refererUrl, [$this->generateUrl('user_jdd_list', [], true), $this->generateUrl('all_jdd_list', [], true)])) {
 			$redirectUrl = $refererUrl;
@@ -289,7 +265,7 @@ class JddController extends GincoController {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Jdd view fields - test page for developers
 	 *
@@ -309,12 +285,12 @@ class JddController extends GincoController {
 		if (!$allowed) {
 			throw $this->createAccessDeniedException();
 		}
-	
+
 		return $this->render('IgnGincoBundle:Jdd:jdd_show_fields.html.twig', array(
 			'jdd' => $jdd
 		));
 	}
-	
+
 	/**
 	 * Add a field by key value
 	 *
@@ -339,7 +315,7 @@ class JddController extends GincoController {
 			'id' => $jdd->getId()
 		)));
 	}
-	
+
 	/**
 	 * Removes a field by key
 	 *
@@ -364,7 +340,7 @@ class JddController extends GincoController {
 			'id' => $jdd->getId()
 		)));
 	}
-	
+
 	/**
 	 * Find and show the jdd for a given key/value field
 	 *
@@ -384,14 +360,14 @@ class JddController extends GincoController {
 		if (!$allowed) {
 			throw $this->createAccessDeniedException();
 		}
-	
+
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
 		$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findByField(array(
 			$key => $value
 		), array(
 			'id' => 'DESC'
 		));
-	
+
 		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
 			'allJdds' => false,
 			'jddList' => $jddList

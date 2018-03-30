@@ -118,6 +118,10 @@ services:
       class: Ign\Bundle\GincoBundle\Services\INPNProviderService
       arguments: ["@doctrine", "@ginco.configuration_manager", "@logger"]
 
+    ginco.geo_association_service:
+        class: Ign\Bundle\GincoBundle\Services\GeoAssociationService
+        arguments: ["@doctrine", "@logger"]
+
     # RabbitMQ Decorated Producer
     ginco.decorating_ginco_generic_producer:
       class: Ign\Bundle\GincoBundle\Services\RabbitMQ\GenericProducer

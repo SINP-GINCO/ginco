@@ -196,7 +196,12 @@ class DefaultController extends GincoController {
 			if ($emailModified) {
 				$request->getSession()
 					->getFlashBag()
-					->add('success', 'Configuration.edit.email.success');
+					->add('success', [
+						'id' => 'Configuration.edit.email.success',
+						'parameters' => [
+							'%contactUrl%' => $this->generateUrl('contact')
+							]
+					]);
 			}
 			
 			return $this->redirect($this->generateUrl('configuration_parameters'));

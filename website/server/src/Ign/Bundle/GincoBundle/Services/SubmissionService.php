@@ -208,11 +208,7 @@ class SubmissionService {
 		// Get the dataset Id
 		$submissionRepo = $this->emrd->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
 		$submission = $submissionRepo->find($submissionId);
-		$datasetId = $submission->getDataset()->getId();
-		$datasetLabel = $submission->getDataset()->getLabel();
-		$modelId = $submission->getDataset()
-			->getModel()
-			->getId();
+		$modelId = $submission->getJdd()->getModel()->getId();
 		
 		// Total number of data in the submission
 		$subData = $this->queryService->getQueryResults("SELECT nb_line FROM raw_data.submission_file WHERE submission_id = " . $submissionId);
@@ -223,16 +219,12 @@ class SubmissionService {
 			$totalSubmission = 0;
 		}
 		
-		$this->logger->debug('writeSensibilityReport - Submission Id : ' . $submissionId . " DatasetId : " . $datasetId);
+		$this->logger->debug('writeSensibilityReport - Submission Id : ' . $submissionId);
 		
 		// -- Create a query object : the query must find all 'sensible = OUI' lines with given submission_id,
 		// And print a list of all fields in the model
 		$queryForm = new QueryForm();
-		$queryForm->setDatasetId($datasetId);
-		
-		$tableFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableField', 'metadata');
-		$tableFields = $tableFieldRepo->getTableFieldsForModel($modelId);
-		
+
 		$formFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\FormField', 'metadata');
 		$formFields = $formFieldRepo->getFormFieldsFromModel($modelId);
 		
@@ -252,7 +244,6 @@ class SubmissionService {
 		
 		// -- List of fields to print in the report
 		$reportFields = array(
-			'PROVIDER_ID',
 			'identifiantpermanent',
 			'identifiantorigine',
 			'cdref',
@@ -365,37 +356,40 @@ class SubmissionService {
 		
 		// -- Title
 		
-		$titleArray = array();
-		$titleArray[] = array(
-			'// ' . $this->translator->trans('Report.Sensitivity.SensibilityReport')
-		);
-		$titleArray[] = array(
-			'// ' . $this->translator->trans('Dataset') . ':',
-			$datasetLabel
-		);
-		$titleArray[] = array(
-			'// ' . $this->translator->trans('Report.Sensitivity.SubmissionId') . ':',
-			$submissionId
-		);
-		$titleArray[] = array(
-			'// ' . $this->translator->trans('Date') . ':',
-			date('d/m/Y')
-		);
-		$titleArray[] = array(
-			'// ' . $this->translator->trans('Report.Sensitivity.SensitiveDataNumber') . ':',
-			$total
-		);
-		$titleArray[] = array(
-			'// ' . $this->translator->trans('Report.Sensitivity.TotalDataNumber') . ':',
-			$totalSubmission
-		);
-		$titleArray[] = array(
-			''
-		);
-		$titleArray[] = array(
-			''
-		);
-		
+		$titleArray = [
+			['// ' . $this->translator->trans('Report.Sensitivity.Title')],
+			[
+				'// ' . $this->translator->trans('Jdd.list.jdd') . ':',
+				$submission->getJdd()->getField('title')
+			],
+			[
+				'// ' . $this->translator->trans('Jdd.list.metadataId') . ':',
+				$submission->getJdd()->getField('metadataId')
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.Provider') . ':',
+				$submission->getJdd()->getProvider()->getLabel()
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.SubmissionId') . ':',
+				$submissionId
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.Date') . ':',
+				date('d/m/Y H\hi')
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.SensitiveDataNumber') . ':',
+				$total
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.TotalDataNumber') . ':',
+				$totalSubmission
+			],
+			[],
+			[],
+		];
+
 		// -- Export results to a CSV file
 		// Open the file in write mode
 		$out = fopen($outputFile, 'w');
