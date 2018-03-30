@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
+	execCustSQLFile("$sprintDir/merge_ogam_into_ginco.sql", $config);
 	execCustSQLFile("$sprintDir/geographic_entities_association_tables.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";

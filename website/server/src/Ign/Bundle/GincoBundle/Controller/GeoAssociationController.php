@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Ign\Bundle\OGAMBundle\Controller\GincoController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/geo-association")
  */
-class GeoAssociationController extends GincoController {
+class GeoAssociationController extends GincoController  {
 
 	/**
 	 * Create or update geo association for a submission
@@ -25,7 +24,7 @@ class GeoAssociationController extends GincoController {
 		
 		$submission = $this->getDoctrine()
 			->getManager('website')
-			->getRepository('OGAMBundle:RawData\Submission')
+			->getRepository('IgnGincoBundle:RawData\Submission')
 			->find($submissionId);
 		$this->get('logger')->debug('submission: ' . $submissionId);
 		
@@ -55,7 +54,7 @@ class GeoAssociationController extends GincoController {
 		
 		$jdd = $this->getDoctrine()
 			->getManager('website')
-			->getRepository('OGAMBundle:RawData\Jdd')
+			->getRepository('IgnGincoBundle:RawData\Jdd')
 			->find($jddId);
 	
 		$this->get('ginco.geo_association_service')->computeGeoAssociation($providerId, $submission, $jdd, $entity);
