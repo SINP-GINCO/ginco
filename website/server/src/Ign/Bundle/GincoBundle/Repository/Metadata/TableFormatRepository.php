@@ -42,4 +42,21 @@ class TableFormatRepository extends \Doctrine\ORM\EntityRepository {
 		
 		return $query->getResult()[0];
 	}
+	
+	/**
+	 * Get all table formats.
+	 *
+	 * @return Array[TableFormat]
+	 */
+	public function getAllTableFormats() {
+		$rsm = new ResultSetMappingBuilder($this->_em);
+		$rsm->addRootEntityFromClassMetadata($this->_entityName, 't');
+	
+		$sql = "SELECT format, table_name, schema_code, primary_key, label, definition ";
+		$sql .= " FROM metadata.table_format;";
+		
+		$query = $this->_em->createNativeQuery($sql, $rsm);
+		
+		return $query->getResult();
+	}
 }

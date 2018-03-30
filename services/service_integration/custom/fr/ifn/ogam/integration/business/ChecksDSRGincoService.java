@@ -796,7 +796,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		}
 
 		// At least one georeferenced object must be given, ie geometry or one typeInfoGeo = 1
-		if (geometrieGD == null || empty(geometrieGD) && (georeferencedObjectsNumber == 0)) {
+		if ((geometrieGD == null || empty(geometrieGD)) && georeferencedObjectsNumber == 0) {
 			String errorMessage = "Au moins un géoréférencement doit être livré: soit une géométrie dans le champ " + DSRConstants.GEOMETRIE
 					+ ", soit l'un des champs suivants doit valoir 1 : " + StringUtils.join(typeInfoGeoAll, ", ") + ".";
 			if (georeferencedUnauthorizedNumber > 0) {

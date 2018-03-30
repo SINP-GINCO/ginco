@@ -67,9 +67,10 @@ INSERT INTO permission(permission_code, permission_label) VALUES ('CHECK_CONF', 
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_METAMODEL', 'Configurer le méta-modèle');
 INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_SENSITIVE', 'Visualiser les données sensibles');
 INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_PRIVATE', 'Visualiser les données privées');
-INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS', 'Exporter les jeux de données au format DEE');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer les jeux de données de tous les utilisateurs');
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIRM_SUBMISSION', 'Publier les données');
+INSERT INTO permission(permission_code, permission_label) VALUES ('GENERATE_DEE_OWN_JDD', 'Générer et transmettre à l''INPN les DEE de ses propres jeux de données' );
+INSERT INTO permission(permission_code, permission_label) VALUES ('GENERATE_DEE_ALL_JDD', 'Générer et transmettre à l''INPN les DEE de tous les jeux de données' );
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_PUBLIC_REQUEST', 'Gérer les requêtes publiques');
 INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_OWNED_PRIVATE_REQUEST', 'Gérer ses requêtes privées');
 INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_WEBSITE_PARAMETERS', 'Configurer les paramètres de la plateforme');
@@ -88,8 +89,9 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CHECK_CO
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_METAMODEL');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_SENSITIVE');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_PRIVATE');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_OWN_JDD');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_ALL_JDD');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIRM_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_PUBLIC_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_OWNED_PRIVATE_REQUEST');
@@ -106,8 +108,9 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CANCEL_O
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGURE_METAMODEL');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VIEW_SENSITIVE');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VIEW_PRIVATE');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_DATASETS');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_DATASETS_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_OWN_JDD');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_ALL_JDD');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIRM_SUBMISSION');

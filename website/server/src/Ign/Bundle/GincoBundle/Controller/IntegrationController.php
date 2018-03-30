@@ -40,11 +40,11 @@ class IntegrationController extends GincoController {
 	function getEntityManger() {
 		return $this->get('doctrine.orm.raw_data_entity_manager');
 	}
-	
+
 	function getLogger() {
 		return $this->get('logger');
 	}
-	
+
 	/**
 	 * Default action.
 	 *
@@ -244,16 +244,16 @@ class IntegrationController extends GincoController {
 	 */
 	public function checkSubmissionAction(Request $request) {
 		$this->getLogger()->debug('checkSubmissionAction');
-	
+
 		// Get the submission Id
 		$submissionId = $request->get("submissionId");
-	
+
 		// Send the cancel request to the integration server
 		try {
 			$this->get('ginco.integration_service')->checkDataSubmission($submissionId);
 		} catch (\Exception $e) {
 			$this->getLogger()->error('Error during upload: ' . $e);
-	
+
 			return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 				'error' => $this->get('translator')
 				->trans("An unexpected error occurred.")
@@ -264,8 +264,8 @@ class IntegrationController extends GincoController {
 		// returns to the page where the action comes from
 		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
 		return $this->redirect($redirectUrl);
-	}	
-	
+	}
+
 	/**
 	 * Validate the data and send a notification mail to the connected user
 	 *
@@ -310,9 +310,7 @@ class IntegrationController extends GincoController {
 				));
 			}
 			// Get the JDD Metadata Id
-			$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
-			$submission = $submissionRepo->find($submissionId);
-			$jddMetadataId = $submission->getJdd()->getField('metadataId');
+				$jddMetadataId = $submission->getJdd()->getField('metadataId');
 
 			// -- Send the email
 			$siteName = $this->get('ginco.configuration_manager')->getConfig('site_name');
@@ -329,8 +327,8 @@ class IntegrationController extends GincoController {
 			$user = $this->getUser();
 
 			// Title and body:
-			$title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
-			$title .= implode($fileNames, ", ");
+			// $title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
+			// $title .= implode($fileNames, ", ");
 
 			// -- Attachments
 			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
@@ -348,7 +346,7 @@ class IntegrationController extends GincoController {
 							->trans("An unexpected error occurred.")
 					));
 				}
-				$attachements[] = $reportPath;
+				if($report != 'integrationReport') {$attachements[] = $reportPath;}
 			}
 
 			$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:publication-notification-to-user.html.twig', array(
@@ -426,7 +424,7 @@ class IntegrationController extends GincoController {
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
 	}
-	
+
 	/**
 	 * Gets the integration status.
 	 *
@@ -436,13 +434,13 @@ class IntegrationController extends GincoController {
 	 */
 	protected function getStatus($servletName) {
 		$this->getLogger()->debug('getStatusAction');
-	
+
 		// Send the cancel request to the integration server
 		try {
 			$submissionId = $this->get('request_stack')
 			->getCurrentRequest()
 			->get("submissionId");
-	
+
 			$status = $this->get('ginco.integration_service')->getStatus($submissionId, $servletName);
 			$data = array(
 				'success' => TRUE,
@@ -463,7 +461,7 @@ class IntegrationController extends GincoController {
 			}
 		} catch (\Exception $e) {
 			$this->getLogger()->error('Error during get: ' . $e);
-	
+
 			return $this->json(array(
 				'success' => FALSE,
 				"errorMessage" => $this->get('translator')
@@ -471,7 +469,7 @@ class IntegrationController extends GincoController {
 			));
 		}
 	}
-	
+
 	/**
 	 * Gets the data integration status.
 	 * @Route("/get-data-status", name="integration_status")
@@ -479,7 +477,7 @@ class IntegrationController extends GincoController {
 	public function getDataStatusAction() {
 		return $this->getStatus('DataServlet');
 	}
-	
+
 	/**
 	 * Gets the check status.
 	 * @Route("/check-data-status", name="integration_checkstatus")
@@ -487,7 +485,7 @@ class IntegrationController extends GincoController {
 	public function getCheckStatusAction() {
 		return $this->getStatus('CheckServlet');
 	}
-	
+
 	/**
 	 * Generate a CSV file, model for import files,
 	 * with as first line (commented), the names of the expected fields, with mandatory fields (*) and date formats.
@@ -497,18 +495,18 @@ class IntegrationController extends GincoController {
 	 */
 	public function exportFileModelAction(Request $request) {
 		// TODO : add a permission for this action ?
-	
+
 		// -- Get the file
 		$fileFormatName = $request->query->get("fileFormat");
 		$locale = $this->get('ginco.locale_listener')->getLocale();
 		$fileFormat = $this->getDoctrine()
 		->getRepository(FileFormat::class)
 		->getFileFormat($fileFormatName, $locale);
-	
+
 		// -- Get file infos and fields - ordered by position
 		$fieldNames = array();
 		$fieldInfos = array();
-	
+
 		$fields = $fileFormat->getFields();
 		foreach ($fields as $field) {
 			$fieldNames[] = $field->getLabelCSV();
@@ -516,22 +514,22 @@ class IntegrationController extends GincoController {
 		}
 		// -- Comment this line
 		$fieldInfos[0] = '// ' . $fieldInfos[0];
-	
+
 		// -- Export results to a CSV file
-	
+
 		$configuration = $this->get('ginco.configuration_manager');
 		$charset = $configuration->getConfig('csvExportCharset', 'UTF-8');
-	
+
 		$response = new StreamedResponse();
-	
+
 		// Define the header of the response
 		$fileName = 'CSV_Model_' . $fileFormat->getLabel() . '_' . date('dmy_Hi') . '.csv';
 		$disposition = sprintf('%s; filename="%s"', ResponseHeaderBag::DISPOSITION_ATTACHMENT, str_replace('"', '\\"', $fileName));
 		$disposition .= sprintf("; filename*=utf-8''%s", rawurlencode($fileName));
-	
+
 		$response->headers->set('Content-Disposition', $disposition);
 		$response->headers->set('Content-Type', 'text/csv;charset=' . $charset . ';application/force-download;');
-	
+
 		$response->setCallback(function () use ($charset, $fieldNames, $fieldInfos) {
 			// Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
 			if ($charset == 'UTF-8') {
@@ -539,17 +537,17 @@ class IntegrationController extends GincoController {
 				echo (chr(0xBB));
 				echo (chr(0xBF));
 			}
-	
+
 			// Opens the standard output as a file flux
 			$out = fopen('php://output', 'w');
 			fputcsv($out, $fieldNames, ';');
 			fputcsv($out, $fieldInfos, ';');
 			fclose($out);
 		});
-	
+
 			return $response->send();
 	}
-	
+
 	/**
 	 * Returns a JsonResponse that uses the serializer component if enabled, or json_encode.
 	 *

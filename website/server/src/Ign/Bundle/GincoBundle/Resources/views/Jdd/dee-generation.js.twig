@@ -175,6 +175,7 @@ function updateDEEContent(jddId) {
     var contentDiv = deeDiv.find("div.dee-content");
     var actionsDiv = deeDiv.find("div.dee-actions");
 
+    var permissionGenerateDEE = deeDiv.data('perm-generate');
     var canGenerateDEE = deeDiv.data('can-generate-DEE');
     var deeStatus = deeDiv.data('dee-status');
     var messageStatus = deeDiv.data('message-status');
@@ -248,67 +249,69 @@ function updateDEEContent(jddId) {
 
     //-- Display actions depending on DEEStatus
 
-    actionsDiv.html('');
-    var titleRunning = "{{ 'DEE.status.generating'|trans }}";
+    if (permissionGenerateDEE) {
+        actionsDiv.html('');
+        var titleRunning = "{{ 'DEE.status.generating'|trans }}";
 
-   // GenerateDEE
-    if (deeStatus == 'GENERATING') {
-        var launchLink = $("<a role='button' class='btn btn-xs btn-default' title='"+ titleRunning+"' href='#'> " +
-                "<span class='glyphicon glyphicon-repeat' aria-hidden='true'></span></a>");
-        actionsDiv.append(launchLink);
-    } else {
-        var icon = 'glyphicon-play';
-        var action = 'create';
-        var title = "{{ 'DEE.dialogModal.create.title'|trans }}";
-        var color = (canGenerateDEE) ? 'btn-success' : 'btn-default';
+        // GenerateDEE
+        if (deeStatus == 'GENERATING') {
+            var launchLink = $("<a role='button' class='btn btn-xs btn-default' title='" + titleRunning + "' href='#'> " +
+                    "<span class='glyphicon glyphicon-repeat' aria-hidden='true'></span></a>");
+            actionsDiv.append(launchLink);
+        } else {
+            var icon = 'glyphicon-play';
+            var action = 'create';
+            var title = "{{ 'DEE.dialogModal.create.title'|trans }}";
+            var color = (canGenerateDEE) ? 'btn-success' : 'btn-default';
+            if (deeStatus == 'OK') {
+                icon = 'glyphicon-repeat';
+                action = 'update';
+                title = "{{ 'DEE.dialogModal.update.title'|trans }}";
+            }
+
+            var launchLink = $("<a role='button' class='btn btn-xs " + color + " ' title='" + title + "' href='#'> " +
+                    "<span class='glyphicon " + icon + "' aria-hidden='true'></span></a>");
+            actionsDiv.append(launchLink);
+
+            if (canGenerateDEE) {
+                launchLink.click(function (e) {
+                    e.preventDefault();
+                    showDialogModal(jddId, action);
+                });
+            }
+            else {
+                launchLink.click(function (e) {
+                    e.preventDefault();
+                    $('#DEECantGenerateModal').modal('show');
+                });
+            }
+        }
+        // Download link if file is available
         if (deeStatus == 'OK') {
-            icon = 'glyphicon-repeat';
-            action = 'update';
-            title = "{{ 'DEE.dialogModal.update.title'|trans }}";
+            var href = "{{ path('dee_download', {'id': '0'}) }}".replace('0', deeDiv.data('dee-id'));
+            var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='{{ 'DEE.download'|trans }}' href='" + href + "'> " +
+                    "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
+            actionsDiv.append(downloadLink);
+        } else {
+            var downloadLink = $("<a role='button' class='btn btn-xs btn-default' title='{{ 'DEE.noDownload'|trans }}' href='#'> " +
+                    "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
+            actionsDiv.append(downloadLink);
         }
 
-        var launchLink = $("<a role='button' class='btn btn-xs " + color + " ' title='" + title + "' href='#'> " +
-                "<span class='glyphicon " + icon + "' aria-hidden='true'></span></a>");
-        actionsDiv.append(launchLink);
-
-        if (canGenerateDEE) {
-            launchLink.click(function (e) {
+        // Delete DEE
+        if (deeStatus == 'OK') {
+            var deleteLink = $("<a role='button' class='btn btn-xs btn-danger' href='#' title='{{ 'DEE.dialogModal.suppress.title'|trans }}'>" +
+                    "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+            actionsDiv.append(deleteLink);
+            deleteLink.click(function (e) {
                 e.preventDefault();
-                showDialogModal(jddId, action);
+                showDialogModal(jddId, 'delete');
             });
+        } else {
+            var deleteLink = $("<a role='button' class='btn btn-xs btn-default' href='#' title='{{ 'DEE.noDownload'|trans }}'>" +
+                    "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
+            actionsDiv.append(deleteLink);
         }
-        else {
-            launchLink.click(function (e) {
-                e.preventDefault();
-                $('#DEECantGenerateModal').modal('show');
-            });
-        }
-    }
-    // Download link if file is available
-    if (deeStatus == 'OK') {
-        var href = "{{ path('dee_download', {'id': '0'})}}".replace('0', deeDiv.data('dee-id'));
-        var downloadLink = $("<a role='button' class='btn btn-xs btn-primary' title='{{ 'DEE.download'|trans }}' href='" + href + "'> " +
-                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
-        actionsDiv.append(downloadLink);
-    } else {
-        var downloadLink = $("<a role='button' class='btn btn-xs btn-default' title='{{ 'DEE.noDownload'|trans }}' href='#'> " +
-                "<span class='glyphicon glyphicon-download-alt' aria-hidden='true'></span></a>");
-        actionsDiv.append(downloadLink);
-    }
-
-    // Delete DEE
-    if (deeStatus == 'OK') {
-        var deleteLink = $("<a role='button' class='btn btn-xs btn-danger' href='#' title='{{ 'DEE.dialogModal.suppress.title'|trans }}'>" +
-                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
-        actionsDiv.append(deleteLink);
-        deleteLink.click(function (e) {
-            e.preventDefault();
-            showDialogModal(jddId, 'delete');
-        });
-    } else {
-        var deleteLink = $("<a role='button' class='btn btn-xs btn-default' href='#' title='{{ 'DEE.noDownload'|trans }}'>" +
-                "<span class='glyphicon glyphicon glyphicon-remove' aria-hidden='true'></span></a>");
-        actionsDiv.append(deleteLink);
     }
 }
 

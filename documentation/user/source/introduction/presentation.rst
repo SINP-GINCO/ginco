@@ -28,14 +28,18 @@ Occitanie                                 			https://ginco.naturefrance.fr/test-
 Pays de la Loire                           			https://ginco.naturefrance.fr/test-paysdelaloire
 ==============================================    =====================================
 
-Deux instances supra-régionales de test ont aussi été créées :
+Trois instances supra-régionales de test ont aussi été créées :
 
 ==============================================    =====================================
 Instance                                  			Url GINGO
 ==============================================    =====================================
 Thématique occurrences de taxons (MNHN) 			https://ginco.naturefrance.fr/test-occtax
 Développement continu (Dailybuild IGN)  			https://ginco.naturefrance.fr/dailybuild
+Dépôt Légal Biodiversité                            https://depot-legal-biodiversite.naturefrance.fr/test
 ==============================================    =====================================
+
+Cette dernière instance est une plateforme spécialisée dédiée aux dépôt légal de données brutes de biodiversité (dans le
+cadre des études d'impact par exemple).
 
 Instances de production
 ***********************
@@ -44,17 +48,19 @@ Pour les régions ayant fait la demande, des instances de production sont égale
 ==============================================    =====================================
 Région                                  			Url GINGO
 ==============================================    =====================================
-Centre-Val de Loire                     			https://centre-valdeloire-ginco.ign.fr
-Corse                                   			https://corse-ginco.ign.fr
-Grand Est                                           https://grandest-ginco.ign.fr
-Guyane                                  			https://guyane-ginco.ign.fr
-Languedoc-Roussillon                                https://languedocroussillon-ginco.ign.fr
-Midi-Pyrénées                                       https://midipyrenees-ginco.ign.fr
-Nouvelle-Aquitaine     			                    https://nouvelleaquitaine-ginco.ign.fr
+Centre-Val de Loire                     			https://ginco.naturefrance.fr/centre-valdeloire
+Corse                                   			https://ginco.naturefrance.fr/corse
+Grand Est                                           https://ginco.naturefrance.fr/grandest
+Guyane                                  			https://ginco.naturefrance.fr/guyane
+Languedoc-Roussillon                                https://ginco.naturefrance.fr/languedocroussillon
+Midi-Pyrénées                                       https://ginco.naturefrance.fr/midipyrenees
+Nouvelle-Aquitaine     			                    https://ginco.naturefrance.fr/nouvelleaquitaine
+Pays de la Loire                           			https://ginco.naturefrance.fr/paysdelaloire
 ==============================================    =====================================
 
 ==============================================    =====================================
 Instance                                  			Url GINGO
 ==============================================    =====================================
-Thématique occurrences de taxons (MNHN) 			https://occtax-ginco.ign.fr
+Thématique occurrences de taxons (MNHN) 			https://ginco.naturefrance.fr/occtax
+Dépôt Légal Biodiversité                            https://depot-legal-biodiversite.naturefrance.fr/versement
 ==============================================    =====================================
