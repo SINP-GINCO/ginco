@@ -19,7 +19,7 @@ class Data {
 	 *
 	 * @var string @ORM\Column(name="data", type="string", length=174, nullable=false)
 	 *      @ORM\Id
-	 * 		@Assert\NotBlank(message="data.name.notBlank")
+	 *      @Assert\NotBlank(message="data.name.notBlank")
 	 *      @Assert\Length(max="174", maxMessage="data.name.maxLength")
 	 *      @Assert\Regex(pattern="/^[a-z][a-z0-9_]*$/", match=true, message="data.name.regex")
 	 */
@@ -29,14 +29,14 @@ class Data {
 	 *
 	 * @var string @ORM\JoinColumn(name="unit", referencedColumnName="unit", nullable=false)
 	 *      @ORM\ManyToOne(targetEntity="Unit")
-	 * 		@Assert\NotNull(message="data.unit.notNull")
+	 *      @Assert\NotNull(message="data.unit.notNull")
 	 */
 	private $unit;
 
 	/**
 	 *
 	 * @var string @ORM\Column(name="label", type="string", length=125, nullable=true)
-	 * 		@Assert\NotBlank(message="data.label.notBlank")
+	 *      @Assert\NotBlank(message="data.label.notBlank")
 	 *      @Assert\Length(max="125", maxMessage="data.label.maxLength")
 	 */
 	private $label;
@@ -45,6 +45,7 @@ class Data {
 	 *
 	 * @var string @ORM\Column(name="definition", type="string", length=255, nullable=true)
 	 *      @Assert\Length(max="255", maxMessage="data.definition.maxLength")
+	 *      @Assert\regex(pattern="/\n/", match=false, message="data.definition.regex")
 	 */
 	private $definition;
 
@@ -55,7 +56,6 @@ class Data {
 	 */
 	private $comment;
 
-
 	/**
 	 * @ORM\OneToMany(targetEntity="Field", mappedBy="data")
 	 */
@@ -64,20 +64,19 @@ class Data {
 	/**
 	 * Constructor
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->fields = new ArrayCollection();
 	}
 
 	/**
 	 * Set data
 	 *
-	 * @param string $data
+	 * @param string $data        	
 	 * @return Data
 	 */
 	public function setName($data) {
 		$this->name = $data;
-
+		
 		return $this;
 	}
 
@@ -111,12 +110,12 @@ class Data {
 	/**
 	 * Set label
 	 *
-	 * @param string $label
+	 * @param string $label        	
 	 * @return Data
 	 */
 	public function setLabel($label) {
 		$this->label = $label;
-
+		
 		return $this;
 	}
 
@@ -132,12 +131,12 @@ class Data {
 	/**
 	 * Set definition
 	 *
-	 * @param string $definition
+	 * @param string $definition        	
 	 * @return Data
 	 */
 	public function setDefinition($definition) {
 		$this->definition = $definition;
-
+		
 		return $this;
 	}
 
@@ -153,12 +152,12 @@ class Data {
 	/**
 	 * Set comment
 	 *
-	 * @param string $comment
+	 * @param string $comment        	
 	 * @return Data
 	 */
 	public function setComment($comment) {
 		$this->comment = $comment;
-
+		
 		return $this;
 	}
 
@@ -174,12 +173,12 @@ class Data {
 	/**
 	 * Set unit
 	 *
-	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Unit $unit
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Unit $unit        	
 	 * @return Data
 	 */
 	public function setUnit(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Unit $unit = null) {
 		$this->unit = $unit;
-
+		
 		return $this;
 	}
 
@@ -192,39 +191,35 @@ class Data {
 		return $this->unit;
 	}
 
+	/**
+	 * Add fields
+	 *
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields        	
+	 * @return Data
+	 */
+	public function addField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields) {
+		$this->fields[] = $fields;
+		
+		return $this;
+	}
 
-    /**
-     * Add fields
-     *
-     * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields
-     * @return Data
-     */
-    public function addField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields)
-    {
-        $this->fields[] = $fields;
+	/**
+	 * Remove fields
+	 *
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields        	
+	 */
+	public function removeField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields) {
+		$this->fields->removeElement($fields);
+	}
 
-        return $this;
-    }
-
-    /**
-     * Remove fields
-     *
-     * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields
-     */
-    public function removeField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields)
-    {
-        $this->fields->removeElement($fields);
-    }
-
-    /**
-     * Get fields
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
+	/**
+	 * Get fields
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getFields() {
+		return $this->fields;
+	}
 
 	/**
 	 * Return whether current Data object is used as a field in the model;
@@ -232,8 +227,7 @@ class Data {
 	 *
 	 * @return bool
 	 */
-	public function isDeletable()
-	{
+	public function isDeletable() {
 		return ($this->fields->count() == 0);
 	}
 
@@ -242,8 +236,7 @@ class Data {
 	 *
 	 * @return bool
 	 */
-	public function isEditable()
-	{
+	public function isEditable() {
 		return $this->isDeletable();
 	}
 }

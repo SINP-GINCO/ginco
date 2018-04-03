@@ -42,6 +42,7 @@ data:
     maxLength: Le label du champ ne peut dépasser 100 caractères.
   definition:
     maxLength: La description du champ ne peut dépasser 255 caractères.
+    regex: La description du champ ne peut contenir de retour à la ligne.
   comment:
     maxLength: Le commentaire ne peut dépasser 255 caractères.
 
