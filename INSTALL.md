@@ -31,7 +31,7 @@ php database/init/create_db.php -f configs/moninstance.properties
 Le script `build_ginco.php` va builder tout ce qu'il faut et tout vous ranger dans
 le répertoire `build`
 ```bash
-build_ginco.php -f configs/moninstance.properties
+php build_ginco.php -f configs/moninstance.properties --mode=dev
 ```
 
 ## Déployer
