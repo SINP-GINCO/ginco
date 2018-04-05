@@ -1,6 +1,7 @@
 vendor
 *gradle
 build/
+ogamDesktop/app.json
 ogamDesktop/sencha-error-*.log
 ogamDesktop/bootstrap.json
 ogamDesktop/bootstrap.css
