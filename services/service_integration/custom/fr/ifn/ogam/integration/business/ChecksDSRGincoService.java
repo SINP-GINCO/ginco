@@ -47,10 +47,10 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 */
 	private ArrayList<CheckException> alce;
 
-    /**
-     * The destination format (table), assuming there is only one
-     */
-    private String destFormat;
+	/**
+	 * The destination format (table), assuming there is only one
+	 */
+	private String destFormat;
 
 	/**
 	 * The list of default values to fill when a value is not given
@@ -184,7 +184,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		oneGeoreferencedObject(values);
 
 		// if errors have been found while doing the checks, return an exception containing those to write in check_error
-		if( alce.size() > 0) {
+		if (alce.size() > 0) {
 			// The arrayList of exceptions
 			CheckExceptionArrayList checkExceptionArrayList = new CheckExceptionArrayList();
 			checkExceptionArrayList.setCheckExceptionArrayList(alce);
@@ -200,8 +200,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 *            the submission identifier
 	 * @param values
 	 *            Entry values
-	 * @throws Exception, CheckException
-	 *             in case of database error
+	 * @throws Exception,
+	 *             CheckException in case of database error
 	 */
 	public void beforeLineInsertion(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException, CheckExceptionArrayList {
 
@@ -210,50 +210,50 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			return;
 		}
 
-        // We need to know the destination format (table) of all fields,
-        // so We assume the destination fomat is the same for all fields, so we
-        // put the same as the one of SUBMISSION_ID (always existing field, whatever the model definition)
-        // GenericData submissionIdGD = values.get(SUBMISSION_ID);
-        // destFormat = submissionIdGD.getFormat();
-        // --
-        // This first idea didn't work because the format is no a real one for technical fields;
-        // So we take jour_date_debut which is mandatory in Occtax models
-        GenericData jourDateDebutGD = values.get(DSRConstants.JOUR_DATE_DEBUT);
-        destFormat = jourDateDebutGD.getFormat();
+		// We need to know the destination format (table) of all fields,
+		// so We assume the destination fomat is the same for all fields, so we
+		// put the same as the one of SUBMISSION_ID (always existing field, whatever the model definition)
+		// GenericData submissionIdGD = values.get(SUBMISSION_ID);
+		// destFormat = submissionIdGD.getFormat();
+		// --
+		// This first idea didn't work because the format is no a real one for technical fields;
+		// So we take jour_date_debut which is mandatory in Occtax models
+		GenericData jourDateDebutGD = values.get(DSRConstants.JOUR_DATE_DEBUT);
+		destFormat = jourDateDebutGD.getFormat();
 
 		// Then we check if every value we deal with (possible insertion of values) created as a Generic Data
-        Map<String, String> fields = new HashMap<String, String>();
-        fields.put(DSRConstants.OBS_METHODE, CODE);
-        fields.put(DSRConstants.OCC_ETAT_BIOLOGIQUE, CODE);
-        fields.put(DSRConstants.OCC_SEXE, CODE);
-        fields.put(DSRConstants.OCC_NATURALITE, CODE);
-        fields.put(DSRConstants.OCC_STADE_DE_VIE, CODE);
-        fields.put(DSRConstants.OCC_STATUT_BIOGEOGRAPHIQUE, CODE);
-        fields.put(DSRConstants.OCC_STATUT_BIOLOGIQUE, CODE);
-        fields.put(DSRConstants.PREUVE_EXISTANTE, CODE);
-        fields.put(DSRConstants.PREUVE_NUMERIQUE, CODE);
-        fields.put(DSRConstants.PREUVE_NON_NUMERIQUE, CODE);
-        fields.put(DSRConstants.DETERMINATEUR_NOM_ORGANISME, STRING);
-        fields.put(DSRConstants.NOM_VALIDE, STRING);
-        fields.put(DSRConstants.HEURE_DATE_DEBUT, TIME);
-        fields.put(DSRConstants.HEURE_DATE_FIN, TIME);
-        fields.put(DSRConstants.ANNEE_REF_COMMUNE, INTEGER);
-        fields.put(DSRConstants.ANNEE_REF_DEPARTEMENT, INTEGER);
-        fields.put(DSRConstants.VERSION_REF_MAILLE, STRING);
-        fields.put(DSRConstants.NOM_REF_MAILLE, STRING);
-        fields.put(DSRConstants.VERSION_TAXREF, STRING);
+		Map<String, String> fields = new HashMap<String, String>();
+		fields.put(DSRConstants.OBS_METHODE, CODE);
+		fields.put(DSRConstants.OCC_ETAT_BIOLOGIQUE, CODE);
+		fields.put(DSRConstants.OCC_SEXE, CODE);
+		fields.put(DSRConstants.OCC_NATURALITE, CODE);
+		fields.put(DSRConstants.OCC_STADE_DE_VIE, CODE);
+		fields.put(DSRConstants.OCC_STATUT_BIOGEOGRAPHIQUE, CODE);
+		fields.put(DSRConstants.OCC_STATUT_BIOLOGIQUE, CODE);
+		fields.put(DSRConstants.PREUVE_EXISTANTE, CODE);
+		fields.put(DSRConstants.PREUVE_NUMERIQUE, CODE);
+		fields.put(DSRConstants.PREUVE_NON_NUMERIQUE, CODE);
+		fields.put(DSRConstants.DETERMINATEUR_NOM_ORGANISME, STRING);
+		fields.put(DSRConstants.NOM_VALIDE, STRING);
+		fields.put(DSRConstants.HEURE_DATE_DEBUT, TIME);
+		fields.put(DSRConstants.HEURE_DATE_FIN, TIME);
+		fields.put(DSRConstants.ANNEE_REF_COMMUNE, INTEGER);
+		fields.put(DSRConstants.ANNEE_REF_DEPARTEMENT, INTEGER);
+		fields.put(DSRConstants.VERSION_REF_MAILLE, STRING);
+		fields.put(DSRConstants.NOM_REF_MAILLE, STRING);
+		fields.put(DSRConstants.VERSION_TAXREF, STRING);
 
-        for (Map.Entry<String, String> field : fields.entrySet()) {
-            if (!values.containsKey(field.getKey())) {
-                GenericData data = new GenericData();
-                data.setFormat(destFormat);
-                data.setColumnName(field.getKey());
-                data.setType(field.getValue());
-                values.put(field.getKey(), data);
-            }
-        }
+		for (Map.Entry<String, String> field : fields.entrySet()) {
+			if (!values.containsKey(field.getKey())) {
+				GenericData data = new GenericData();
+				data.setFormat(destFormat);
+				data.setColumnName(field.getKey());
+				data.setType(field.getValue());
+				values.put(field.getKey(), data);
+			}
+		}
 
-        // ----- SUJET OBSERVATION ------
+		// ----- SUJET OBSERVATION ------
 
 		// If cdNom or cdRef Given, versionTaxref must be present. If not, fill it with default value
 		taxrefVersion(values);
@@ -304,9 +304,9 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 */
 	public void beforeIntegration(Integer submissionId) throws Exception {
 		logger.debug("coherenceChecks: beforeIntegration");
-        ListReferentielsDAO refDAO = new ListReferentielsDAO();
+		ListReferentielsDAO refDAO = new ListReferentielsDAO();
 
-        //-- Fill default values
+		// -- Fill default values
 
 		// Versions taken from referentiels list table
 		defaultValues.put(DSRConstants.VERSION_TAXREF, refDAO.getReferentielVersion("taxref"));
@@ -413,8 +413,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			// if dataGD is null (not defined in values taken from CSV), it must be considered as empty
 			if (dataGD == null) {
 				emptyFields.add(name);
-			}
-			else {
+			} else {
 				if (empty(dataGD)) {
 					emptyFields.add(name);
 				}
@@ -547,8 +546,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	}
 
 	/**
-	 * If taxrefVersion is empty and if cdNom or cdRef are present,
-	 * fill it with default version
+	 * If taxrefVersion is empty and if cdNom or cdRef are present, fill it with default version
 	 *
 	 * @param values
 	 * @throws Exception
@@ -560,43 +558,41 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		if (notEmpty.size() > 0) {
 			// checks if versionTaxref is empty
-            String[] vTaxref = { DSRConstants.VERSION_TAXREF };
-            ArrayList<String> emptyVersion = emptyInList(vTaxref, values);
+			String[] vTaxref = { DSRConstants.VERSION_TAXREF };
+			ArrayList<String> emptyVersion = emptyInList(vTaxref, values);
 			if (emptyVersion.size() > 0) {
 
-                // Fills with the default value of versionTaxref (taken from table liste_referentiels)
-                GenericData versionTaxrefGD = values.get(DSRConstants.VERSION_TAXREF);
-                versionTaxrefGD.setValue(defaultValues.get(DSRConstants.VERSION_TAXREF));
+				// Fills with the default value of versionTaxref (taken from table liste_referentiels)
+				GenericData versionTaxrefGD = values.get(DSRConstants.VERSION_TAXREF);
+				versionTaxrefGD.setValue(defaultValues.get(DSRConstants.VERSION_TAXREF));
 			}
 		}
 	}
 
 	/**
-	 * If mailleReferentielName and version are empty but a code maille is given,
-	 * fill it with default version
-	 * And also anneeRefCommune and anneeRefDepartement
+	 * If mailleReferentielName and version are empty but a code maille is given, fill it with default version And also anneeRefCommune and anneeRefDepartement
 	 *
 	 * @param values
 	 * @throws Exception
 	 */
 	private void refsGeoVersion(Map<String, GenericData> values) throws CheckException {
 
-        // If typeInfoGeoMaille Given, infos about the maille referentiel must be present
+		// If typeInfoGeoMaille Given, infos about the maille referentiel must be present
 		String[] codeMaille = { DSRConstants.TYPE_INFO_GEO_MAILLE };
 		ArrayList<String> notEmpty = notEmptyInList(codeMaille, values);
 
 		if (notEmpty.size() > 0) {
 
-            // Then checks if they are empty
-            String[] refMaille = { DSRConstants.VERSION_REF_MAILLE, DSRConstants.NOM_REF_MAILLE };
-            ArrayList<String> emptyVersion = emptyInList(refMaille, values);
+			// Then checks if they are empty
+			String[] refMaille = { DSRConstants.VERSION_REF_MAILLE, DSRConstants.NOM_REF_MAILLE };
+			ArrayList<String> emptyVersion = emptyInList(refMaille, values);
 			if (emptyVersion.size() > 0) {
-                // Fills with the default values (taken from table liste_referentiels)
-                GenericData versionRefMailleGD = values.get(DSRConstants.VERSION_REF_MAILLE);
-                versionRefMailleGD.setValue(defaultValues.get(DSRConstants.VERSION_REF_MAILLE));
+				// Fills with the default values (taken from table liste_referentiels)
+				GenericData versionRefMailleGD = values.get(DSRConstants.VERSION_REF_MAILLE);
+				versionRefMailleGD.setValue(defaultValues.get(DSRConstants.VERSION_REF_MAILLE));
 
-                GenericData nomRefMailleGD = values.get(DSRConstants.NOM_REF_MAILLE);
-                nomRefMailleGD.setValue(defaultValues.get(DSRConstants.NOM_REF_MAILLE));
+				GenericData nomRefMailleGD = values.get(DSRConstants.NOM_REF_MAILLE);
+				nomRefMailleGD.setValue(defaultValues.get(DSRConstants.NOM_REF_MAILLE));
 			}
 		}
 
@@ -805,7 +801,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			CheckException ce = new CheckException(NO_GEOREFERENCE, errorMessage);
 			// Add the exception in the array list and continue doing the checks
 			alce.add(ce);
-		
+
 		} else if (georeferencedObjectsNumber > 1) {
 			String errorMessage = "Un seul des champs typeInfoGeo peut valoir 1 (parmi " + StringUtils.join(typeInfoGeoAll, ", ") + ").";
 			CheckException ce = new CheckException(MORE_THAN_ONE_GEOREFERENCE, errorMessage);
@@ -813,7 +809,6 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			alce.add(ce);
 		}
 	}
-
 
 	/**
 	 * Fills nomValide if it is empty.
@@ -827,7 +822,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		if (nomValideGD != null) {
 			if (empty(nomValideGD)) {
 				GenericData cdRefGD = values.get(DSRConstants.CD_REF);
-				if (!empty(cdRefGD)) {
+				if (cdRefGD != null && !empty(cdRefGD)) {
 					try {
 						List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdRefGD.getValue().toString());
 						String nomValide = codeNames.get(0);
@@ -837,7 +832,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 					}
 				} else {
 					GenericData cdNomGD = values.get(DSRConstants.CD_NOM);
-					if (!empty(cdNomGD)) {
+					if (cdNomGD != null && !empty(cdNomGD)) {
 						try {
 							List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdNomGD.getValue().toString());
 							String nomValide = codeNames.get(0);
@@ -940,10 +935,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	}
 
 	/**
-	 * Checks that heureDateDebut and heureDateFin are not empty.
-	 * If so, fill with default values:
-	 * heureDateDebut: 00:00:00
-	 * heureDateFin: 23:59:59
+	 * Checks that heureDateDebut and heureDateFin are not empty. If so, fill with default values: heureDateDebut: 00:00:00 heureDateFin: 23:59:59
 	 *
 	 * @param values
 	 */
@@ -951,12 +943,12 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		GenericData heureDateDebutGD = values.get(DSRConstants.HEURE_DATE_DEBUT);
 		if (empty(heureDateDebutGD)) {
-			Time heureDateDebut = new Time(0,0,0);
+			Time heureDateDebut = new Time(0, 0, 0);
 			heureDateDebutGD.setValue(heureDateDebut);
 		}
 		GenericData heureDateFinGD = values.get(DSRConstants.HEURE_DATE_FIN);
 		if (empty(heureDateFinGD)) {
-			Time heureDateFin = new Time(23,59,59);
+			Time heureDateFin = new Time(23, 59, 59);
 			heureDateFinGD.setValue(heureDateFin);
 		}
 	}
