@@ -30,6 +30,11 @@ class PresentationContentType extends AbstractType
 					new NotBlank(),
 				),
 			))
+			// The presentation abstract
+			->add('presentationAbstract', CKEditorType::class, array(
+			    'required' => false,
+			    'label' => 'ConfPresentation.abstract'
+			))
 			// The presentation intro text field
 			->add('presentationIntro', CKEditorType::class, array(
 				'required' => false,

@@ -158,6 +158,7 @@ ConfHomepage:
 # -------------------------------
 ConfPresentation:
   title: Titre page de présentation
+  abstract: Résumé de la présentation 
   intro: Contenu page de présentation
   image: Image d'illustration
   publicLinksTitle: Titre du bloc de liens
