@@ -187,6 +187,14 @@ DELETE FROM bac_commune;
 DELETE FROM bac_departement;
 DELETE FROM bac_maille;
 -- Populate the vizualisation bacs with the referentiels tables
-INSERT INTO bac_commune SELECT r.insee_com, St_Transform(r.geom, 3857) FROM referentiels.commune_carto_2017 AS r;
+INSERT INTO bac_commune SELECT r.insee_com, St_Transform(r.geom, 3857), r.insee_dep FROM referentiels.commune_carto_2017 AS r;
 INSERT INTO bac_departement SELECT r.code_dept, St_Transform(r.geom, 3857) FROM referentiels.departement_carto_2017 AS r;
 INSERT INTO bac_maille SELECT r.code_10km, St_Transform(r.geom, 3857) FROM referentiels.codemaillevalue AS r;
+
+-- Populate maille_departement table
+INSERT INTO mapping.maille_departement
+SELECT id_maille, id_departement FROM mapping.bac_maille, mapping.bac_departement WHERE st_intersects(bac_maille.geom, bac_departement.geom);
+
+-- Populate commune_maille table
+INSERT INTO mapping.commune_maille
+SELECT id_commune, id_maille FROM mapping.bac_commune, mapping.bac_maille WHERE st_intersects(bac_commune.geom, bac_maille.geom);

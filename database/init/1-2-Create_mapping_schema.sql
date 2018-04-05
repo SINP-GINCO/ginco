@@ -257,12 +257,14 @@ CREATE TABLE bac_commune
 (
   id_commune character varying(5),
   geom geometry(Geometry,3857),
+  id_departement character varying(3),
   CONSTRAINT bac_commune_pkey PRIMARY KEY (id_commune)
 );
 
 COMMENT ON TABLE bac_commune IS 'The visualization bac for communes geometries in web mercator';
 COMMENT ON COLUMN bac_commune.id_commune IS 'The INSEE code id of the commune';
 COMMENT ON COLUMN bac_commune.geom IS 'The geometry of the commune in Web Mercator projection';
+COMMENT ON COLUMN bac_commune.id_departement IS 'The INSEE code id of the departement';
 
 ALTER TABLE bac_commune ADD CONSTRAINT FK_bac_commune_commune_carto_2017
 FOREIGN KEY (id_commune) REFERENCES referentiels.commune_carto_2017 (insee_com)
@@ -323,6 +325,49 @@ ALTER TABLE bac_maille ADD CONSTRAINT FK_bac_maille_codemaillevalue
 FOREIGN KEY (id_maille) REFERENCES referentiels.codemaillevalue (code_10km)
 ON DELETE RESTRICT ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX IX_BAC_REGION_MAILLE_INDEX ON bac_maille USING GIST ( geom  );
+
+/*==============================================================*/
+/*  Table: bac_maille                                           */
+/*==============================================================*/
+
+CREATE TABLE maille_departement
+(
+  id_maille character varying(20) NOT NULL, -- The id of the maille
+  id_departement character varying(3) NOT NULL, -- The INSEE code id of the departement
+  CONSTRAINT maille_departement_pkey PRIMARY KEY (id_maille, id_departement),
+  CONSTRAINT fk_maille_departement_bac_maille FOREIGN KEY (id_maille)
+      REFERENCES mapping.bac_maille (id_maille) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT fk_maille_departement_bac_departement FOREIGN KEY (id_departement)
+      REFERENCES mapping.bac_departement (id_departement) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED
+);
+
+COMMENT ON TABLE maille_departement IS 'Association table beetween bac_maille and bac_departement';
+COMMENT ON COLUMN maille_departement.id_maille IS 'The code id of the maille';
+COMMENT ON COLUMN maille_departement.id_departement IS 'The code id of the department';
+
+/*==============================================================*/
+/*  Table: bac_maille                                           */
+/*  Association table beetween bac_commune and bac_maille   */
+/*==============================================================*/
+
+CREATE TABLE commune_maille
+(
+  id_commune character varying(5) NOT NULL, -- The INSEE code id of the commune
+  id_maille character varying(20) NOT NULL, -- The id of the maille
+  CONSTRAINT commune_maille_pkey PRIMARY KEY (id_commune, id_maille),
+  CONSTRAINT fk_commune_maille_bac_commmune FOREIGN KEY (id_commune)
+      REFERENCES mapping.bac_commune (id_commune) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
+  CONSTRAINT fk_commune_maille_bac_maille FOREIGN KEY (id_maille)
+      REFERENCES mapping.bac_maille(id_maille) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED
+);
+
+COMMENT ON TABLE commune_maille IS 'Association table beetween bac_commune and bac_maille';
+COMMENT ON COLUMN commune_maille.id_commune IS 'The code id of the commune';
+COMMENT ON COLUMN commune_maille.id_maille IS 'The code id of the maille';
 
 /*==============================================================*/
 /*  Table: observation_geometrie                                */
