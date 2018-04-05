@@ -397,6 +397,7 @@ Providers:
     exist_provider : L'organisme est déja présent dans la plateforme, il n'a pas été rajouté.
     success: L'organisme a bien été enregistré
   detail:
+    submissions: Soumissions
     Jdd: Jeux de données
     JddIdentifiant: Identifiant
     JddTitle: Titre
