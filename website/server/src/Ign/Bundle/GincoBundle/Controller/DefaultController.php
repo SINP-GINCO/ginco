@@ -27,7 +27,7 @@ class DefaultController extends GincoController {
 		$content = array();
 		$content['title'] = $contentRepo->find('homepage.title')->getValue();
 		$content['intro'] = $contentRepo->find('homepage.intro')->getValue();
-		$content['presentation'] = $contentRepo->find('presentation.intro')->getValue();
+		$content['presentation'] = $contentRepo->find('presentation.abstract')->getValue();
 		$content['image'] = $contentRepo->find('homepage.image')->getValue();
 		$content['publicLinksTitle'] = $contentRepo->find('homepage.links.title')->getValue();
 		$content['privateLinksTitle'] = $contentRepo->find('homepage.private.links.title')->getValue();
@@ -318,6 +318,7 @@ class DefaultController extends GincoController {
 		
 		// Get presentation intro html, image, links title and links
 		$presentationTitle = $contentRepo->find('presentation.title');
+		$presentationAbstract = $contentRepo->find('presentation.abstract');
 		$presentationIntro = $contentRepo->find('presentation.intro');
 		$presentationImage = $contentRepo->find('presentation.image');
 		$presentationPublicLinksTitle = $contentRepo->find('presentation.links.title');
@@ -339,6 +340,7 @@ class DefaultController extends GincoController {
 		
 		$data = array(
 			'presentationTitle' => $presentationTitle->getValue(),
+		    'presentationAbstract' => $presentationAbstract->getValue(),
 			'presentationIntro' => $presentationIntro->getValue(),
 			'presentationImage' => $presentationImage->getValue(),
 			'presentationPublicLinksTitle' => $presentationPublicLinksTitle->getValue(),
@@ -357,6 +359,8 @@ class DefaultController extends GincoController {
 			// Persist the value
 			$presentationTitle->setValue($form->get('presentationTitle')
 				->getData());
+			$presentationAbstract->setValue($form->get('presentationAbstract')
+			    ->getData());
 			$presentationIntro->setValue($form->get('presentationIntro')
 				->getData());
 			$presentationImage->setValue($form->get('presentationImage')
