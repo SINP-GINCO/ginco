@@ -30,8 +30,11 @@ INSERT INTO website.users(user_login, provider_id, email) VALUES
   ('vsagniez',1,'vincent.sagniez@ign.fr'),
   ('jpanijel',1,'jpanijel@mnhn.fr'),
   ('nbotte',1,'noemie.botte@mnhn.fr'),
-  ('tgerbeau',1,'thierry.gerbeau@ign.fr')
+  ('tgerbeau',1,'thierry.gerbeau@ign.fr'),
+  ('cgimazane',1,'clement.gimazane@ign.fr'),
+  ('rpas',1,'remi.pas@ign.fr')
 ;
+
 -- Create visiteur special user
 INSERT INTO users(user_login, user_name, provider_id, email) VALUES ('visiteur', 'visiteur', '1', 'sinp-dev@ign.fr');
 
@@ -43,7 +46,9 @@ INSERT INTO website.role_to_user(user_login, role_code) VALUES
   ('vsagniez', 1),
   ('jpanijel', 2),
   ('nbotte', 2),
-  ('tgerbeau', 1)
+  ('tgerbeau', 1),
+  ('cgimazane', 1),
+  ('rpas', 1)
 ;
 INSERT INTO role_to_user(user_login, role_code) VALUES ('visiteur', 4);
 
