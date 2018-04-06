@@ -19,7 +19,12 @@ class DEEModel {
 	 */
 	public function concatDates($observation) 
 	{
-		$observation['datedetermination'] = $observation['datedetermination'] . 'T00:00:00+01:00';
+                if ($observation['datedetermination']){
+                        $observation['datedetermination'] .= 'T00:00:00+01:00';
+                }else{
+                        $observation['datedetermination'] = null;
+                }
+		
 		
 		$observation['datefin'] = $observation['jourdatefin'] . 'T' . $observation['heuredatefin'] . ':00+01:00';
 		$observation['datedebut'] = $observation['jourdatedebut'] . 'T' . $observation['heuredatedebut'] . ':00+01:00';
