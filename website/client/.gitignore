@@ -1,4 +1,6 @@
 vendor
+.sencha
+ogamDesktop/.sencha
 *gradle
 build/
 ogamDesktop/app.json
