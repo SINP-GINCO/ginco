@@ -426,7 +426,9 @@ function buildSupervisorConf($config, $buildMode)
 
 	$buildConfFile = "$confsupervisorBuildDir/ginco_{$config['instance.name']}.conf";
 	echo("Creating supervisor configuration file: $buildConfFile...\n");
-
+	
+	// Add parameter in config
+	$config['consumer.name'] = 'ginco_generic';
 	substituteInFile("$projectDir/confsupervisor/ginco_supervisor_tpl.conf", $buildConfFile, $config);
 
 	if ($buildMode == 'dev') {
