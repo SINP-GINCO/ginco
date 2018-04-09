@@ -61,20 +61,20 @@ class IntegrationController extends GincoController {
 	 * @Route("/create-data-submission", name="integration_creation")
 	 */
 	public function createDataSubmissionAction(Request $request) {
-
+		
 		// Get the referer url, and put it in session to redirect to it at the end of the process
 		$refererUrl = $request->headers->get('referer');
 		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('user_jdd_list');
 		$session = $request->getSession();
 		if (!$session->has('redirectToUrl'))
 			$session->set('redirectToUrl', $redirectUrl);
-
+		
 		$em = $this->get('doctrine.orm.entity_manager');
-
+		
 		// Find jddid if given in GET parameters
 		$jddId = intval($request->query->get('jddid', 0));
 		$jdd = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findOneById($jddId);
-
+		
 		// If the model of the jdd has no published datasets, add a flash error message
 		// And disable the whole form
 		$formDisabled = false;
@@ -91,13 +91,13 @@ class IntegrationController extends GincoController {
 				->getProvider(),
 			'disabled' => $formDisabled
 		));
-
+		
 		$form->handleRequest($request);
-
+		
 		if ($form->isSubmitted() && $form->isValid()) {
 			// Add user relationship
 			$submission->setUser($this->getUser());
-
+			
 			// Add jdd relationship
 			// And update jdd "dataUpdatedAt"
 			if ($form->has('jddid')) {
@@ -107,19 +107,19 @@ class IntegrationController extends GincoController {
 				$jdd->setDataUpdatedAt(new \DateTime());
 				$em->merge($jdd);
 			}
-
+			
 			// writes the submission to the database
 			// merge because cascade persist is not set in the entity
 			// and get the merged object to access auto-generated id
 			$attachedSubmission = $em->merge($submission);
 			$em->flush();
-
+			
 			// Redirects to page 2 of the form: upload data
 			return $this->redirect($this->generateUrl('integration_upload_data', array(
 				'id' => $attachedSubmission->getId()
 			)));
 		}
-
+		
 		return $this->render('IgnGincoBundle:Integration:show_create_data_submission.html.twig', array(
 			'form' => $form->createView()
 		));
@@ -138,9 +138,9 @@ class IntegrationController extends GincoController {
 		$dataset = $submission->getDataset();
 		$this->get('logger')->debug('$showDetail : ' . $showDetail);
 		$this->get('logger')->debug('$showModel : ' . $showModel);
-
+		
 		$geomFieldInFile = false;
-
+		
 		$requestedFiles = $submission->getDataset()->getFiles();
 		foreach ($requestedFiles as $requestedFile) {
 			// Checks if geom unit field is present in the file
@@ -160,9 +160,9 @@ class IntegrationController extends GincoController {
 		$submissionFiles = $this->getDoctrine()
 			->getRepository(FileFormat::class)
 			->getFileFormats($dataset->getId(), $locale);
-
+		
 		$files = [];
-
+		
 		foreach ($submissionFiles as $file) {
 			$files[$file->getFormat()] = $file;
 		}
@@ -171,7 +171,7 @@ class IntegrationController extends GincoController {
 		$optionsForm['fileMaxSize'] = $fileMaxSize;
 		$form = $this->createForm(UploadDataType::class, $optionsForm);
 		$form->handleRequest($request);
-
+		
 		if ($form->isValid() && $form->isSubmitted()) {
 			// Get the configuration info
 			$uploadDir = $configuration->getConfig('uploadDir', '/var/www/html/upload');
@@ -179,21 +179,21 @@ class IntegrationController extends GincoController {
 			if ($form->has('SRID')) {
 				$srid = $form->get('SRID')->getData();
 			}
-
+			
 			// For each requested file
-
+			
 			$requestedFiles = $submission->getDataset()->getFiles();
 			foreach ($requestedFiles as $key => $requestedFile) {
 				$file = $form[$requestedFile->getFormat()]->getData();
 				// Get the uploaded filename
-
+				
 				$filename = $file->getClientOriginalName();
-
+				
 				// Print it only if it is not an array (ie: nothing has been selected by the user)
 				if (!is_array($filename)) {
 					$this->getLogger()->debug('uploaded filename ' . $filename);
 				}
-
+				
 				// Check that the file is present
 				if (empty($file) || !$file->isValid()) {
 					$this->getLogger()->debug('File ' . $requestedFile->format . ' is missing, skipping');
@@ -220,7 +220,7 @@ class IntegrationController extends GincoController {
 					'error' => $e->getMessage()
 				));
 			}
-
+			
 			// Returns to the page where the action comes from in the first place
 			// (get it from session)
 			$session = $request->getSession();
@@ -244,19 +244,19 @@ class IntegrationController extends GincoController {
 	 */
 	public function checkSubmissionAction(Request $request) {
 		$this->getLogger()->debug('checkSubmissionAction');
-
+		
 		// Get the submission Id
 		$submissionId = $request->get("submissionId");
-
+		
 		// Send the cancel request to the integration server
 		try {
 			$this->get('ginco.integration_service')->checkDataSubmission($submissionId);
 		} catch (\Exception $e) {
 			$this->getLogger()->error('Error during upload: ' . $e);
-
+			
 			return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 				'error' => $this->get('translator')
-				->trans("An unexpected error occurred.")
+					->trans("An unexpected error occurred.")
 			));
 		}
 		// Get the referer url
@@ -275,13 +275,13 @@ class IntegrationController extends GincoController {
 	 */
 	public function validateDataAction(Request $request) {
 		$this->getLogger()->debug('validateDataAction');
-
+		
 		// Get the submission Id
 		$submissionId = $request->get("submissionId");
-
+		
 		$em = $this->get('doctrine.orm.entity_manager');
 		$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
-
+		
 		// Check if submission exists
 		if ($submission == null) {
 			$this->addFlash('error', [
@@ -290,31 +290,31 @@ class IntegrationController extends GincoController {
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
-
+		
 		// Check if submission is validable
 		$insertedOk = $submission->getStep() == Submission::STEP_INSERTED && $submission->getStatus() == Submission::STATUS_OK;
 		$checkedOk = $submission->getStep() == Submission::STEP_CHECKED && $submission->getStatus() == Submission::STATUS_OK;
 		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
-
+		
 		if ($insertedOk || $checkedOk || $warning) {
-
+			
 			// Send the validation request to the integration server
 			try {
 				$this->get('ginco.integration_service')->validateDataSubmission($submissionId);
 			} catch (\Exception $e) {
 				$this->getLogger()->error('Error during upload: ' . $e);
-
+				
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 					'error' => $this->get('translator')
 						->trans("An unexpected error occurred.")
 				));
 			}
 			// Get the JDD Metadata Id
-				$jddMetadataId = $submission->getJdd()->getField('metadataId');
-
+			$jddMetadataId = $submission->getJdd()->getField('metadataId');
+			
 			// -- Send the email
 			$siteName = $this->get('ginco.configuration_manager')->getConfig('site_name');
-
+			
 			// Files of the submission
 			$submissionFiles = $submission->getFiles();
 			$fileNames = array();
@@ -322,21 +322,21 @@ class IntegrationController extends GincoController {
 				$fileName = basename($submissionFile->getFileName());
 				$fileNames[] = $fileName;
 			}
-
+			
 			// Get recipient, the connected user.
 			$user = $this->getUser();
-
+			
 			// Title and body:
 			// $title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
 			// $title .= implode($fileNames, ", ");
-
+			
 			// -- Attachments
 			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
 			$attachements = array();
-
+			
 			// Regenerate sensibility report each time (see #815)
 			$this->get('ginco.submission_service')->generateReport($submissionId, "sensibilityReport");
-
+			
 			foreach ($reports as $report => $reportPath) {
 				// Regenerate report if does not exist
 				if (!is_file($reportPath)) {
@@ -346,9 +346,11 @@ class IntegrationController extends GincoController {
 							->trans("An unexpected error occurred.")
 					));
 				}
-				if($report != 'integrationReport') {$attachements[] = $reportPath;}
+				if ($report != 'integrationReport') {
+					$attachements[] = $reportPath;
+				}
 			}
-
+			
 			$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:publication-notification-to-user.html.twig', array(
 				'metadata_uuid' => $jddMetadataId,
 				'user' => $user,
@@ -356,7 +358,7 @@ class IntegrationController extends GincoController {
 				'filename' => implode($fileNames, ", "),
 				'file_number' => count($fileNames)
 			), $user->getEmail(), $attachements);
-
+			
 			// Get the referer url
 			$refererUrl = $request->headers->get('referer');
 			// returns to the page where the action comes from
@@ -379,13 +381,13 @@ class IntegrationController extends GincoController {
 	 */
 	public function invalidateDataAction(Request $request) {
 		$this->getLogger()->debug('invalidateDataAction');
-
+		
 		// Get the submission Id
 		$submissionId = $request->get("submissionId");
-
+		
 		$em = $this->get('doctrine.orm.entity_manager');
 		$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
-
+		
 		// Check if submission exists
 		if ($submission == null) {
 			$this->addFlash('error', [
@@ -394,23 +396,23 @@ class IntegrationController extends GincoController {
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
-
+		
 		// Check if submission is validable
 		$validateOk = $submission->getStep() == Submission::STEP_VALIDATED && $submission->getStatus() == Submission::STATUS_OK;
 		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
-
+		
 		if ($validateOk || $warning) {
 			// Send the cancel request to the integration server
 			try {
 				$this->get('ginco.integration_service')->invalidateDataSubmission($submissionId);
 			} catch (Exception $e) {
 				$this->getLogger()->error('Error during unvalidation: ' . $e);
-
+				
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 					'error' => $e->getMessage()
 				));
 			}
-
+			
 			// Get the referer url
 			$refererUrl = $request->headers->get('referer');
 			// returns to the page where the action comes from
@@ -434,13 +436,13 @@ class IntegrationController extends GincoController {
 	 */
 	protected function getStatus($servletName) {
 		$this->getLogger()->debug('getStatusAction');
-
+		
 		// Send the cancel request to the integration server
 		try {
 			$submissionId = $this->get('request_stack')
-			->getCurrentRequest()
-			->get("submissionId");
-
+				->getCurrentRequest()
+				->get("submissionId");
+			
 			$status = $this->get('ginco.integration_service')->getStatus($submissionId, $servletName);
 			$data = array(
 				'success' => TRUE,
@@ -461,11 +463,11 @@ class IntegrationController extends GincoController {
 			}
 		} catch (\Exception $e) {
 			$this->getLogger()->error('Error during get: ' . $e);
-
+			
 			return $this->json(array(
 				'success' => FALSE,
 				"errorMessage" => $this->get('translator')
-				->trans("An unexpected error occurred.")
+					->trans("An unexpected error occurred.")
 			));
 		}
 	}
@@ -495,57 +497,55 @@ class IntegrationController extends GincoController {
 	 */
 	public function exportFileModelAction(Request $request) {
 		// TODO : add a permission for this action ?
-
+		
 		// -- Get the file
 		$fileFormatName = $request->query->get("fileFormat");
 		$locale = $this->get('ginco.locale_listener')->getLocale();
 		$fileFormat = $this->getDoctrine()
-		->getRepository(FileFormat::class)
-		->getFileFormat($fileFormatName, $locale);
-
+			->getRepository(FileFormat::class)
+			->getFileFormat($fileFormatName, $locale);
+		
 		// -- Get file infos and fields - ordered by position
 		$fieldNames = array();
 		$fieldInfos = array();
-
+		
 		$fields = $fileFormat->getFields();
 		foreach ($fields as $field) {
 			$fieldNames[] = $field->getLabelCSV();
 			$fieldInfos[] = (!empty($field->getMask()) ? ' (' . $field->getMask() . ') ' : '') . (($field->getIsMandatory() == 1) ? '*' : '');
 		}
 		// -- Comment this line
-		$fieldInfos[0] = '// ' . $fieldInfos[0];
-
+		$fieldInfos[0] = '//' . $fieldInfos[0];
+		
 		// -- Export results to a CSV file
-
+		
 		$configuration = $this->get('ginco.configuration_manager');
 		$charset = $configuration->getConfig('csvExportCharset', 'UTF-8');
-
+		
 		$response = new StreamedResponse();
-
+		
 		// Define the header of the response
 		$fileName = 'CSV_Model_' . $fileFormat->getLabel() . '_' . date('dmy_Hi') . '.csv';
 		$disposition = sprintf('%s; filename="%s"', ResponseHeaderBag::DISPOSITION_ATTACHMENT, str_replace('"', '\\"', $fileName));
 		$disposition .= sprintf("; filename*=utf-8''%s", rawurlencode($fileName));
-
+		
 		$response->headers->set('Content-Disposition', $disposition);
 		$response->headers->set('Content-Type', 'text/csv;charset=' . $charset . ';application/force-download;');
-
-		$response->setCallback(function () use ($charset, $fieldNames, $fieldInfos) {
-			// Prepend the Byte Order Mask to inform Excel that the file is in UTF-8
-			if ($charset == 'UTF-8') {
-				echo (chr(0xEF));
-				echo (chr(0xBB));
-				echo (chr(0xBF));
-			}
-
+		
+		$response->setCallback(function () use($charset, $fieldNames, $fieldInfos) {
 			// Opens the standard output as a file flux
 			$out = fopen('php://output', 'w');
+			
+			// add BOM to fix UTF-8 in Excel
+			// Removed -> With UTF-8 BOM, column names are not recognized
+			// fputs($out, $bom = (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+			
 			fputcsv($out, $fieldNames, ';');
 			fputcsv($out, $fieldInfos, ';');
 			fclose($out);
 		});
-
-			return $response->send();
+		
+		return $response->send();
 	}
 
 	/**
@@ -559,7 +559,7 @@ class IntegrationController extends GincoController {
 	 *        	Array of extra headers to add
 	 * @param array $context
 	 *        	Context to pass to serializer when using serializer component
-	 *
+	 *        	
 	 * @return JsonResponse //import from symfony 3.1
 	 */
 	protected function json($data, $status = 200, $headers = array(), $context = array()) {
@@ -582,13 +582,13 @@ class IntegrationController extends GincoController {
 		$this->get('logger')->debug('cancelDataSubmissionAction');
 		// Desactivate the timeout
 		set_time_limit(0);
-
+		
 		// Get the submission Id
 		$submissionId = $request->get("submissionId");
-
+		
 		$em = $this->get('doctrine.orm.entity_manager');
 		$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
-
+		
 		// Check if submission exists
 		if ($submission == null) {
 			$this->addFlash('error', [
@@ -597,27 +597,27 @@ class IntegrationController extends GincoController {
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
-
+		
 		// Check if submission is validable
 		$user = $this->getUser();
 		$notValidateCancel = $submission->getStep() != Submission::STEP_VALIDATED && $submission->getStep() != Submission::STEP_CANCELLED;
 		$allowedOwnCancel = $user->isAllowed('CANCEL_VALIDATED_SUBMISSION') && $submission->getProvider()->getId() == $user->getProvider()->getId();
 		$allowedOtherCancel = $user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION');
-
+		
 		if ($notValidateCancel && ($allowedOwnCancel || $allowedOtherCancel)) {
-
+			
 			// Send the cancel request to the integration server
 			try {
 				$this->get('ginco.integration_service')->cancelDataSubmission($submissionId);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload: ' . $e);
-
+				
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 					'error' => $this->get('translator')
 						->trans("An unexpected error occurred.")
 				));
 			}
-
+			
 			// Update "DataUpdatedAt" field for jdd
 			$em = $this->get('doctrine.orm.entity_manager');
 			$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
@@ -627,7 +627,7 @@ class IntegrationController extends GincoController {
 				$em->merge($jdd);
 				$em->flush();
 			}
-
+			
 			// Get the referer url
 			$refererUrl = $request->headers->get('referer');
 			// returns to the page where the action comes from
@@ -649,21 +649,21 @@ class IntegrationController extends GincoController {
 	 */
 	public function importShapefileAction(Request $request, Submission $submission) {
 		$this->get('logger')->debug('importShapefileAction');
-
+		
 		$configuration = $this->get('ginco.configuration_manager');
 		$fileMaxSize = intval($this->get('ginco.configuration_manager')->getConfig('fileMaxSize', '40'));
 		$showModel = $configuration->getConfig('showUploadFileModel', true) == 1;
 		$dataset = $submission->getDataset();
-
+		
 		$geomFieldInFile = true;
-
+		
 		$locale = $this->get('ginco.locale_listener')->getLocale();
 		$submissionFiles = $this->getDoctrine()
 			->getRepository(FileFormat::class)
 			->getFileFormats($dataset->getId(), $locale);
-
+		
 		$files = [];
-
+		
 		foreach ($submissionFiles as $file) {
 			$files[$file->getFormat()] = $file;
 		}
@@ -671,26 +671,26 @@ class IntegrationController extends GincoController {
 		$optionsForm['fileMaxSize'] = $fileMaxSize;
 		$form = $this->createForm(UploadDataShapeType::class, $optionsForm);
 		$form->handleRequest($request);
-
+		
 		if ($form->isValid() && $form->isSubmitted()) {
 			// Get the configuration info
 			$uploadDir = $configuration->getConfig('uploadDir', '/var/www/html/upload');
-
+			
 			// For each requested file
 			$requestedFiles = $submission->getDataset()->getFiles();
 			foreach ($requestedFiles as $key => $requestedFile) {
 				$file = $form[$requestedFile->getFormat()]->getData();
 				// Get the uploaded filename
-
+				
 				$filename = $file->getClientOriginalName();
-
+				
 				// Custom validator to check uploaded file extension
 				if (substr($filename, -4) != '.zip') {
 					// We add an error to the form
 					$errorMessage = $this->get('translator')->trans('import.format.shp.extension');
 					$form->get($requestedFile->getFormat())
 						->addError(new FormError($errorMessage));
-
+					
 					// And print the form again with an error
 					return $this->render('IgnGincoBundle:Integration:import_shapefile.html.twig', array(
 						'id' => $submission->getId(),
@@ -700,7 +700,7 @@ class IntegrationController extends GincoController {
 						'showModel' => $showModel
 					));
 				}
-
+				
 				// Check that the file is present
 				if (empty($file) || !$file->isValid()) {
 					$this->getLogger()->debug('File ' . $requestedFile->format . ' is missing, skipping');
@@ -709,19 +709,19 @@ class IntegrationController extends GincoController {
 					// Move the file to the upload directory on the php server
 					$targetPath = $uploadDir . DIRECTORY_SEPARATOR . $submission->getId() . DIRECTORY_SEPARATOR . $requestedFile->getFileType();
 					$targetName = $targetPath . DIRECTORY_SEPARATOR . $filename;
-
+					
 					@mkdir($uploadDir . DIRECTORY_SEPARATOR . $submission->getId()); // create the submission dir
 					@mkdir($targetPath);
-
+					
 					$file->move($targetPath, $filename);
-
+					
 					// Extract shapefile files from zip archive
 					$zip = new \ZipArchive();
 					if ($zip->open($targetPath . '/' . $filename) === TRUE) {
 						$zip->extractTo($targetPath);
 						$zip->close();
 					}
-
+					
 					// Custom validator to check shapefile files names and extensions in zip archive
 					$pathWithoutExtension = substr($targetPath . '/' . $filename, 0, -3);
 					if (!file_exists($pathWithoutExtension . 'shp') || !file_exists($pathWithoutExtension . 'dbf') || !file_exists($pathWithoutExtension . 'shx') || !file_exists($pathWithoutExtension . 'prj')) {
@@ -729,7 +729,7 @@ class IntegrationController extends GincoController {
 						$errorMessage = $this->get('translator')->trans('import.format.shp.files');
 						$form->get($requestedFile->getFormat())
 							->addError(new FormError($errorMessage));
-
+						
 						// And print the form again with an error
 						return $this->render('IgnGincoBundle:Integration:import_shapefile.html.twig', array(
 							'id' => $submission->getId(),
@@ -739,12 +739,12 @@ class IntegrationController extends GincoController {
 							'showModel' => $showModel
 						));
 					}
-
+					
 					// Transform the upload file in CSV with GDAL (ogr2ogr)
 					$inputPath = preg_replace('"\.zip$"', '.shp', $targetPath . '/' . $filename);
 					$outputPath = preg_replace('"\.zip$"', '.csv', $targetPath . '/' . $filename);
 					$this->get('ginco.ogr2ogr')->shp2csv('"' . $inputPath . '"', '"' . $outputPath . '"');
-
+					
 					$requestedFile->filePath = $outputPath; // TODO : clean this fake filePath property
 				}
 			}
@@ -761,7 +761,7 @@ class IntegrationController extends GincoController {
 					'error' => $e->getMessage()
 				));
 			}
-
+			
 			// Returns to the page where the action comes from in the first place
 			// (get it from session)
 			$session = $request->getSession();
@@ -769,7 +769,7 @@ class IntegrationController extends GincoController {
 			$session->remove('redirectToUrl');
 			return $this->redirect($redirectUrl);
 		}
-
+		
 		return $this->render('IgnGincoBundle:Integration:import_shapefile.html.twig', array(
 			'id' => $submission->getId(),
 			'dataset' => $dataset,
