@@ -15,8 +15,8 @@ nationale.
 * importer des jeux de données au standard gml DEE en provenance de la plate-forme
 nationale.
 
-GINCO est basé sur le logiciel OGAM. Ce logiciel développé par l'IGN à été choisi
-parce qu'il largement configurable et qu'il doit permettre de s'adapter aux différentes
+GINCO a commencé comme un fork de [OGAM](https://github.com/IGNF/ogam). Ce logiciel développé par l'IGN à été choisi
+parce qu'il largement configurable et qu'il permet de s'adapter aux différentes
 thématiques du SINP.
 
 ## Documentation utilisateur
