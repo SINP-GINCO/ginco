@@ -3,7 +3,7 @@
 #
 # It must be completed/corrected to locale configuration and renamed localhost.properties
 # Usage:
-# php build_ginco.php -f localhost.properties -i instance <options>
+# php build_ginco.php -f localhost.properties <options>
 
 # Instance name (ex localhost)
 instance.name=localhost
@@ -19,7 +19,7 @@ db.adminuser=admin
 db.adminuser.pw=#####
 db.version=9.6.0
 
-# Deployment  / parameters unused on localhost
+# Deployment  / some parameters unused on localhost
 #==================================
 # La machine sur laquelle déployer cette instance
 deploy.host=localhost
@@ -45,7 +45,7 @@ apache.path.to.app=ginco
 # Mailer configuration
 #=====================
 mailer.transport=smtp
-mailer.host=mailex.ign.fr
+mailer.host=exemple.mailer.fr
 
 # Application parameters
 #=======================
@@ -69,7 +69,7 @@ ogam.services.host=http://localhost:8080
 ogam.local.map.services.url=http://localhost
 
 # Contact mail (initial config, can be changed on the platform)
-contact.mail=YOURMAIL@ign.fr
+contact.mail=YOURMAIL@DOMAIN.fr
 
 # URL du service WXS du Géoportail
 geoportail.wxs.url=https://wxs-i.ign.fr
@@ -81,7 +81,7 @@ print.geoportail.key=7gr31kqe5xttprd2g7zbkqgo
 metadata.url=https://preprod-inpn.mnhn.fr/mtd/
 metadata.jdd.url=https://preprod-inpn.mnhn.fr/mtd/cadre/jdd/export/xml/GetRecordById?id=
 # Email to send a notification to when generating DEE
-dee.notification.mail=YOURMAIL@ign.fr
+dee.notification.mail=YOURMAIL@DOMAIN.fr
 
 
 # CAS and INPN auth parameters
@@ -95,7 +95,7 @@ inpn.account.url=https://inpn.mnhn.fr/accueil/compte/Compte
 inpn.providers.webservice=https://odata-inpn.mnhn.fr/solr-ws/organismes/records?
 
 # Url of the documentation website
-documentation.url=http://ginco.naturefrance.fr/doc-ginco-prod
+documentation.url=http://ginco.naturefrance.fr/doc-ginco-dailybuild
 
 # Bounding box pour l'initialisation de la visualisation en WebMercator
 bb.xmin=-899390
