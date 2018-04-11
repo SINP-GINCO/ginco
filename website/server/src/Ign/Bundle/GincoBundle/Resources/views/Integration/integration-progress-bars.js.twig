@@ -115,6 +115,9 @@ function updateContentDiv($submissionId, $status, $progress = 0, $task = 'Insert
             $class = 'color-1'
         } else if ($task.slice(0, $task.indexOf(" ")) == 'Inserting') {
             $taskName = 'import_';
+        } else if ($task.slice(0, $task.indexOf(" ")) == 'Computing') {
+            $taskName = 'calcul_';
+            $class = 'color-3'
         }
         $progressBar.css('width', $progress+'%').addClass($class).attr('aria-valuenow', $progress).html( $taskName+$progress+'%');
     }

@@ -443,6 +443,14 @@ public class IntegrationService extends GenericMapper {
 				submissionDAO.updateSubmissionFileName(submissionId, filePath.replaceAll(".csv", ".zip"));
 			}
 			
+			// Indicate insert step is over, post import computations are running
+			if (thread != null) {
+				thread.updateInfo("Computing " + sourceFormat + " data", row, csvFile.getRowsCount());
+				if (thread.isCancelled()) {
+					return false; // don't finish the job
+				}
+			}
+			
 		} catch (
 
 		CheckException ce) {

@@ -6913,6 +6913,10 @@ form .checkboxes.disabled {
   background-color: #b3c951;
   color: #5a6915;
 }
+.progress .progress-bar.color-3 {
+  background-color: #7e931e;
+  color: #c5d287;
+}
 .well {
   border: none;
   border-radius: 0;
