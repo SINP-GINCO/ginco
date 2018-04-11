@@ -192,6 +192,16 @@ class Submission {
 	public function isCancelledRunning() {
 		return $this->step == self::STEP_CANCELLED && $this->status == self::STATUS_RUNNING;
 	}
+        
+
+	/**
+	 * 
+	 *
+	 * @return bool
+	 */
+	public function isInError() {
+		return $this->status == self::STATUS_ERROR;
+	}
 
 	/**
 	 * Set status

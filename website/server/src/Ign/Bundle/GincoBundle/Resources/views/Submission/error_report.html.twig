@@ -1,138 +1,99 @@
-{# Page displaying one jdd with all  #}
-{# Variables : jdd #}
+{# Variables : errorReport #}
 
 {% extends "base.html.twig" %}
 
 {% set user = app.user %}
 
 {% block body %}
-    <h1><small>{{ 'Jdd.page.title'|trans }} :</small><br>
-    {{ jdd.field('title') }}</h1>
+    <h1>Rapport d'intégration de données</h1>
     <hr>
 
-    <table class="table table-nonfluid table-bordered">
+    <h2>Description de l'import</h2>
+    <ul>
+        <li>Date d'intégration : {{ submission.creationDate|date("Y-m-d")}}</li>
+        <li>Modèle d'import : {{ submission.dataset.label }}</li>
+        <li>Identifiant de la soumission : {{ submission.id }}</li>
+        <li>Etape : {{ submission.step }}</li>
+        <li>Statut : {{ submission.status }}</li>
+        <li>Nb d'erreurs : {{ errors|length }}</li>
+    </ul>
+        
+    <h2>Fichiers importés</h2>
+    <table class="table table-hover table-bordered">
         <tr>
-            <th>{{ 'Jdd.page.metadataId'|trans }}</th>
-            <td>
-                <a href="{{ configurationManager.getConfig('jddMetadataFileDownloadServiceURL') }}{{ jdd.field('metadataId') }}"
-                    target="_blank" title="{{ 'Jdd.page.metadataLinkTitle'|trans }}">
-                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ jdd.field('metadataId') }}
-                </a>
-            </td>
+            <th>Nom du modèle de fichier</th>
+            <th>Nom du fichier</th>
+            <th>Nombre de données (lignes)</th>
         </tr>
+        {% for file in submission.files %}
+            <tr>    
+                <td>{{ file.fileType.label }}</td>
+                <td>{{ file.basename }}</td>
+                <td>{{ file.nbLines }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+       
+    <h2>Erreurs de conformité</h2>
+    <table class="table table-hover table-bordered">
         <tr>
-            <th>{{ 'Datamodel'|trans }}</th>
-            <td>{{ jdd.model.name }}</td>
+            <th>Identifiant de l'erreur</th>
+            <th>Nombre d'occurrences</th>
+            <th>Message d'erreur</th>
         </tr>
+        
+    </table>
+       
+    <h2>Détails des erreurs de conformité</h2>
+    <table class="table table-hover table-bordered">
         <tr>
-            <th>{{ 'Provider'|trans }}</th>
-            <td>{{ jdd.provider.label }}</td>
+            <th>Identifiant</th>
+            <th>Modèle de fichier</th>
+            <th>Champ</th>
+            <th>Ligne</th>
+            <th>Valeur</th>
+            <th>Valeur ou format attendu</th>
+            <th>Message d'erreur</th>
         </tr>
+        {% for error in errors if error.error.id < 1200 %}
+            <tr>    
+                <td>{{ error.error.id }}</td>
+                <td>{{ error.error.id }}</td>
+                <td>{{ error.field }}</td>
+                <td>{{ error.lineNumber }}</td>
+                <td>{{ error.foundValue }}</td>
+                <td>{{ error.expectedValue }}</td>
+                <td>{{ error.comment }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <h2>Erreurs de cohérence</h2>
+    <table class="table table-hover table-bordered">
         <tr>
-            <th>{{ 'User'|trans }}</th>
-            <td>{{ jdd.user.username }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'Jdd.page.createdAt'|trans }}</th>
-            <td>{{ jdd.createdAt|date("Y-m-d H:i:s")  }}</td>
-        </tr>
-        <tr>
-            <th>{{ 'Jdd.page.dataUpdatedAt'|trans }}</th>
-            <td>{{ jdd.dataUpdatedAt|date("Y-m-d H:i:s")  }}</td>
+            <th>Identifiant de l'erreur</th>
+            <th>Nombre d'occurrences</th>
+            <th>Message d'erreur</th>
         </tr>
     </table>
-
-    <h2>{{ 'Jdd.page.dataSubmissions'|trans }}</h2>
-
-    {% if jdd.activeSubmissions is not empty %}
-    {# List of submissions #}
-        <table class="table table-hover table-bordered submissions-table">
-            <thead>
-                {%  include "@IgnGinco/Integration/submission_line_complete.html.twig" %}
-            </thead>
-            <tbody>
-                {% for submission in jdd.activeSubmissions %}
-                    {%  include "@IgnGinco/Integration/submission_line_complete.html.twig" %}
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>{{ 'Jdd.page.nosubmissions'|trans }}</p>
-    {% endif %}
-
-    {# Add a new submission to dataset #}
-    <div>
-        <a href="{{ path("integration_creation", { 'jddid': jdd.id }) }}">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  {{ 'Jdd.submission.add'|trans }}
-        </a>
-    </div>
-
-
-    {# == Actions on the dataset == #}
-    <hr>
-    {# Update Metadata#}
-
-    <a class="btn btn-primary" href="{{ path("jdd_update_metadatas", { 'id': jdd.id }) }}">
-        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-        {{ 'Jdd.page.metadataUpdate'|trans }}
-    </a>
-
-    {# Delete #}
-    {% if jdd.deletable %}
-        <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            {{ 'Delete'|trans }}
-        </button>
-
-        <!-- Modal - Delete jdd -->
-        <div class="modal fade" id="modal-delete-jdd-{{ jdd.id }}"
-             tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        {% trans with {'%jddId%': jdd.field('title')} %} Jdd.delete.prompt {% endtrans %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default"
-                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                        <a type="button" class="btn btn-primary"
-                           href="{{ path('jdd_delete', {'id' : jdd.id}) }}">
-                            {% trans %}Continue{% endtrans %} </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <button class="btn btn-default btn-disabled" data-toggle="modal" data-target="#modal-impossible-delete-jdd-{{ jdd.id }}">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            {{ 'Delete'|trans }}
-        </button>
-
-        <!-- Modal - Delete Jdd -->
-        <div class="modal fade" id="modal-impossible-delete-jdd-{{ jdd.id }}"
-             tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        {% trans with {'%jddId%': jdd.field('title')} %} Jdd.delete.impossible {% endtrans %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default"
-                                data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    </td>
-
+       
+    <h2>Détails des erreurs de cohérence</h2>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>Identifiant</th>
+            <th>Modèle de fichier</th>
+            <th>Ligne</th>
+            <th>Message d'erreur</th>
+        </tr>
+        {% for error in errors if error.error.id > 1120 %}
+            <tr>    
+                <td>{{ error.error.id }}</td>
+                <td>{{ error.error.id }}</td>
+                <td>{{ error.lineNumber }}</td>
+                <td>{{ error.comment }}</td>
+            </tr>
+        {% endfor %}
+    </table> 
 {% endblock %}
 
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        {% include '@IgnGinco/Integration/integration-progress-bars.js.twig' %}
-    </script>
-{% endblock %}
+
