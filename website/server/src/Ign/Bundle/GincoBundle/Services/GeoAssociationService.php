@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
 use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 use Symfony\Bridge\Monolog\Logger;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -21,12 +22,19 @@ use Symfony\Component\HttpFoundation\Request;
  * - si le champ "codeCommune" est renseigné, un calcul est effectué pour rattacher aux communes, aux mailles et aux départements.
  * - si le champ "codeMaille" est renseigné, un calcul est effectué pour rattacher aux communes, aux mailles et aux départements.
  * - si le champ "codeDepartement" est renseigné, un calcul est effectué pour rattacher aux communes, aux mailles et aux départements.
- * 
+ *
  * 2- fill calculated fields in raw_data tables
+ *
+ * 3- If it computes geo-association after a new submission, update submission status to OK (or ERROR)
  *
  * @package Ign\Bundle\GincoBundle\Services
  */
 class GeoAssociationService {
+
+	/**
+	 * The entity manager.
+	 */
+	protected $em;
 
 	/**
 	 * The doctrine service
@@ -49,43 +57,40 @@ class GeoAssociationService {
 
 	/**
 	 * Geo association constructor
-	 *
+	 * 
 	 * @param
-	 *        	$em
-	 * @param
-	 *        	$configuration
-	 * @param
-	 *        	$queryService
+	 *        	$doctrine
 	 * @param
 	 *        	$logger
 	 */
 	public function __construct($doctrine, $logger) {
-		$this->logger = $logger;
 		$this->doctrine = $doctrine;
+		$this->logger = $logger;
+		$this->em = $this->doctrine->getManager();
 		$this->conn = $this->doctrine->getManager()->getConnection();
 	}
 	
 	// Define geo association conditions for each entity
-	protected $geoAssociationFromCommuneFilter = " WHERE m.geometrie IS NULL 
-		AND (m.typeinfogeocommune = '1'
-			OR (m.codecommune IS NOT NULL 
-				AND m.typeinfogeomaille is distinct from '1' 
-				AND m.typeinfogeodepartement is distinct from '1')) ";
-
-	protected $geoAssociationFromMailleFilter = " WHERE m.geometrie IS NULL 
-		AND m.typeinfogeocommune is distinct from '1' 
-		AND (m.typeinfogeomaille = '1' 
-			OR (m.codecommune IS NULL
-				AND m.codemaille IS NOT NULL 
-				AND m.typeinfogeodepartement is distinct from '1')) ";
-
-	protected $geoAssociationFromDepartementFilter = " WHERE m.geometrie IS NULL 
-		AND m.typeinfogeocommune is distinct from '1' 
-		AND m.typeinfogeomaille is distinct from '1' 
-		AND (m.typeinfogeodepartement = '1'
-			OR (m.codecommune IS NULL
-				AND m.codemaille IS NULL
-				AND m.codedepartement IS NOT NULL))";
+	protected $geoAssociationFilter = array(
+		'commune' => " WHERE m.geometrie IS NULL
+						AND (m.typeinfogeocommune = '1'
+							OR (m.codecommune IS NOT NULL
+								AND m.typeinfogeomaille is distinct from '1'
+								AND m.typeinfogeodepartement is distinct from '1')) ",
+		'maille' => " WHERE m.geometrie IS NULL 
+ 						AND m.typeinfogeocommune is distinct from '1' 
+ 							AND (m.typeinfogeomaille = '1' 
+ 								OR (m.codecommune IS NULL
+ 									AND m.codemaille IS NOT NULL 
+ 									AND m.typeinfogeodepartement is distinct from '1')) ",
+		'departement' => " WHERE m.geometrie IS NULL
+							AND m.typeinfogeocommune is distinct from '1'
+							AND m.typeinfogeomaille is distinct from '1'
+							AND (m.typeinfogeodepartement = '1'
+								OR (m.codecommune IS NULL
+									AND m.codemaille IS NULL
+									AND m.codedepartement IS NOT NULL))"
+	);
 
 	/**
 	 * Compute geo associations
@@ -100,138 +105,147 @@ class GeoAssociationService {
 	public function computeGeoAssociation($providerId, $submission, $jdd, $entity = null) {
 		$this->logger->debug('computeGeoAssociation');
 		
-		/* ------- Get concerned submission(s) and table(s) in raw_data -------- */
-		
-		// Compute geo associations for a jdd
-		if ($jdd != null) {
+		try {
+			/* ------- Get concerned submission(s) and table(s) in raw_data -------- */
 			
-			$submissionId = null;
-			$submissionIdArray = array();
+			$isSubmissionRunning = false;
 			
-			$submissions = $jdd->getActiveSubmissions();
-			foreach ($submissions as $key => $valuesField) {
-				$submissionIdArray[] = $valuesField->getId();
+			// Compute geo associations for a jdd
+			if ($jdd != null) {
+				
+				$submissionId = null;
+				$submissionIdArray = array();
+				
+				$submissions = $jdd->getActiveSubmissions();
+				foreach ($submissions as $key => $valuesField) {
+					$submissionIdArray[] = $valuesField->getId();
+				}
+				
+				$tableFormats = $jdd->getModel()->getTables();
+				
+				// Compute geo associations for a submission
+			} elseif ($submission != null) {
+				
+				$submissionId = $submission->getId();
+				$isSubmissionRunning = $submission->getStatus() == 'RUNNING';
+				$submissionIdArray = array();
+				
+				$tableFormats = $submission->getJdd()
+					->getModel()
+					->getTables();
+				
+				// Compute geo association for an entity (commune or departement)
+			} elseif ($entity != null) {
+				if ($entity != 'commune' and $entity != 'departement') {
+					$this->logger->debug("Error while computing geo associations : entity not known");
+					throw new \Exception("Error while computing geo associations : entity not known");
+				}
+				
+				$submissionId = null;
+				$submissionIdArray = array();
+				$tableFormats = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat', 'metadata')->getAllTableFormats();
+				
+				// All input parameters are null : throw exception
+			} else {
+				$this->logger->debug("Error while computing geo associations : submission, jdd and entity are null");
+				throw new \Exception("Error while computing geo associations : submission, jdd and entity are null");
 			}
 			
-			$tableFormats = $jdd->getModel()->getTables();
+			// Get filters corresponding to input parameters
+			$filter = $this->filter($providerId, $submissionId, $submissionIdArray);
 			
-		// Compute geo associations for a submission
-		} elseif ($submission != null) {
-			
-			$submissionId = $submission->getId();
-			$submissionIdArray = array();
-			
-			$tableFormats = $submission->getJdd()
-				->getModel()
-				->getTables();
-			
-		// Compute geo association for an entity (commune or departement)
-		} elseif ($entity != null) {
-			if ($entity != 'commune' and $entity != 'departement') {
-				$this->logger->debug("Error while computing geo associations : entity not known");
-				throw new \Exception("Error while computing geo associations : entity not known");
-			}
-			
-			$submissionId = null;
-			$submissionIdArray = array();
-			$tableFormats = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat', 'metadata')->getAllTableFormats();
-			
-		// All input parameters are null : throw exception
-		} else {
-			$this->logger->debug("Error while computing geo associations : submission, jdd and entity are null");
-			throw new \Exception("Error while computing geo associations : submission, jdd and entity are null");
-		}
-		
-		// Get filters corresponding to input parameters
-		$filter = $this->filter($providerId, $submissionId, $submissionIdArray);
-		
-		/* ------------- DELETE ------------ */
-		$deleteObsGeometrie = "DELETE FROM mapping.observation_geometrie AS obs";
-		$deleteObsCommune = "DELETE FROM mapping.observation_commune AS obs";
-		$deleteObsMaille = "DELETE FROM mapping.observation_maille AS obs";
-		$deleteObsDepartement = "DELETE FROM mapping.observation_departement AS obs";
-		
-		// Commune referential update
-		if ($entity == 'commune') {
-			$this->deleteForReferentielUpdate($deleteObsCommune, $this->geoAssociationFromCommuneFilter, $tableFormats);
-		}
-		
-		// Departement referential update
-		if ($entity == 'departement') {
-			$this->deleteForReferentielUpdate($deleteObsDepartement, $this->geoAssociationFromDepartementFilter, $tableFormats);
-		}
-		
-		// Delete geo associations to calculate it again (update for a submission or a jdd)
-		if ($entity == null) {
-			
-			$obsToDeleteArray = array(
-				$deleteObsGeometrie,
-				$deleteObsCommune,
-				$deleteObsMaille,
-				$deleteObsDepartement
+			/* ------------- DELETE ------------ */
+			$deleteObs = array(
+				'geometrie' => "DELETE FROM mapping.observation_geometrie AS obs",
+				'commune' => "DELETE FROM mapping.observation_commune AS obs",
+				'maille' => "DELETE FROM mapping.observation_maille AS obs",
+				'departement' => "DELETE FROM mapping.observation_departement AS obs"
 			);
 			
-			foreach ($tableFormats as $tableFormat) {
-				foreach ($obsToDeleteArray as $obsToDelete) {
-					$delete = "";
-					$delete .= $obsToDelete;
-					$leftJoin = " USING raw_data." . $tableFormat->getTableName() . " AS m WHERE m." . $tableFormat->getPrimaryKeys()[0] . " = obs.id_observation ";
-					$delete .= $leftJoin . $filter . ";
+			// Commune or departement referential update
+			if ($entity == 'commune' || $entity == 'departement') {
+				$this->deleteForReferentielUpdate($deleteObs[$entity], $this->geoAssociationFilter[$entity], $tableFormats);
+			}
+			
+			// Delete geo associations to calculate it again (update for a submission or a jdd)
+			if ($entity == null) {
+				foreach ($tableFormats as $tableFormat) {
+					foreach ($deleteObs as $key => $obsToDelete) {
+						$delete = "";
+						$delete .= $obsToDelete;
+						$leftJoin = " USING raw_data." . $tableFormat->getTableName() . " AS m WHERE m." . $tableFormat->getPrimaryKeys()[0] . " = obs.id_observation ";
+						$delete .= $leftJoin . $filter . ";
 					";
-					$this->logger->debug('delete : ' . $delete);
-					$stmt = $this->conn->prepare($delete);
-					$stmt->execute();
+						$this->logger->debug('delete : ' . $delete);
+						$stmt = $this->conn->prepare($delete);
+						$stmt->execute();
+					}
 				}
 			}
+			
+			/* ------------- CALCULATE ------------------ */
+			foreach ($tableFormats as $tableFormat) {
+				// Calculate from and to commune
+				if ($entity == 'commune') {
+					$this->entityToGeom('commune', $tableFormat, $filter);
+					$this->entityAToEntityB('commune', 'commune', $tableFormat, $filter);
+					$this->entityAToEntityB('commune', 'maille', $tableFormat, $filter);
+					$this->entityAToEntityB('commune', 'departement', $tableFormat, $filter);
+					$this->geomToEntity('commune', $tableFormat, $filter);
+					$this->entityAToEntityB('maille', 'commune', $tableFormat, $filter);
+					$this->entityAToEntityB('departement', 'commune', $tableFormat, $filter);
+				}
+				// Calculate from and to departement
+				if ($entity == 'departement') {
+					$this->entityToGeom('departement', $tableFormat, $filter);
+					$this->entityAToEntityB('departement', 'commune', $tableFormat, $filter);
+					$this->entityAToEntityB('departement', 'maille', $tableFormat, $filter);
+					$this->entityAToEntityB('departement', 'departement', $tableFormat, $filter);
+					$this->geomToEntity('departement', $tableFormat, $filter);
+					$this->entityAToEntityB('commune', 'departement', $tableFormat, $filter);
+					$this->entityAToEntityB('maille', 'departement', $tableFormat, $filter);
+				}
+				// Calculate all
+				if ($entity == null) {
+					$this->entityToGeom('geom', $tableFormat, $filter);
+					$this->entityToGeom('commune', $tableFormat, $filter);
+					$this->entityToGeom('maille', $tableFormat, $filter);
+					$this->entityToGeom('departement', $tableFormat, $filter);
+					$this->geomToEntity('commune', $tableFormat, $filter);
+					$this->entityAToEntityB('commune', 'commune', $tableFormat, $filter);
+					$this->entityAToEntityB('maille', 'commune', $tableFormat, $filter);
+					$this->entityAToEntityB('departement', 'commune', $tableFormat, $filter);
+					$this->geomToEntity('maille', $tableFormat, $filter);
+					$this->entityAToEntityB('commune', 'maille', $tableFormat, $filter);
+					$this->entityAToEntityB('maille', 'maille', $tableFormat, $filter);
+					$this->entityAToEntityB('departement', 'maille', $tableFormat, $filter);
+					$this->geomToEntity('departement', $tableFormat, $filter);
+					$this->entityAToEntityB('commune', 'departement', $tableFormat, $filter);
+					$this->entityAToEntityB('maille', 'departement', $tableFormat, $filter);
+					$this->entityAToEntityB('departement', 'departement', $tableFormat, $filter);
+				}
+				// Fill calculated fields
+				$this->communeCalcule($tableFormat, $filter);
+				$this->codeMailleCalcule($tableFormat, $filter);
+				$this->codeDepartementCalcule($tableFormat, $filter);
+			}
+			
+			/* If we are after a new submission, update submission status to OK */
+			if ($isSubmissionRunning) {
+				$submission->setStatus('OK');
+				$this->em->flush();
+			}
+			
+			return true;
+		} catch (\Exception $e) {
+			/* If we are after a new submission, update submission status to ERROR */
+			if ($isSubmissionRunning) {
+				$submission->setStatus('ERROR');
+				$this->em->flush();
+			}
+			
+			throw new Exception("Could not compute geo-association: " . $e->getMessage());
 		}
-		
-		/* ------------- CALCULATE ------------------ */
-		foreach ($tableFormats as $tableFormat) {
-			// Calculate from and to commune
-			if ($entity == 'commune') {
-				$this->entityToGeom('commune', $tableFormat, $filter);
-				$this->entityAToEntityB('commune', 'commune', $tableFormat, $filter);
-				$this->entityAToEntityB('commune', 'maille', $tableFormat, $filter);
-				$this->entityAToEntityB('commune', 'departement', $tableFormat, $filter);
-				$this->geomToEntity('commune', $tableFormat, $filter);
-				$this->entityAToEntityB('maille', 'commune', $tableFormat, $filter);
-				$this->entityAToEntityB('departement', 'commune', $tableFormat, $filter);
-			}
-			// Calculate from and to departement
-			if ($entity == 'departement') {
-				$this->entityToGeom('departement', $tableFormat, $filter);
-				$this->entityAToEntityB('departement', 'commune', $tableFormat, $filter);
-				$this->entityAToEntityB('departement', 'maille', $tableFormat, $filter);
-				$this->entityAToEntityB('departement', 'departement', $tableFormat, $filter);
-				$this->geomToEntity('departement', $tableFormat, $filter);
-				$this->entityAToEntityB('commune', 'departement', $tableFormat, $filter);
-				$this->entityAToEntityB('maille', 'departement', $tableFormat, $filter);
-			}
-			// Calculate all
-			if ($entity == null) {
-				$this->entityToGeom('geom', $tableFormat, $filter);
-				$this->entityToGeom('commune', $tableFormat, $filter);
-				$this->entityToGeom('maille', $tableFormat, $filter);
-				$this->entityToGeom('departement', $tableFormat, $filter);
-				$this->geomToEntity('commune', $tableFormat, $filter);
-				$this->entityAToEntityB('commune', 'commune', $tableFormat, $filter);
-				$this->entityAToEntityB('maille', 'commune', $tableFormat, $filter);
-				$this->entityAToEntityB('departement', 'commune', $tableFormat, $filter);
-				$this->geomToEntity('maille', $tableFormat, $filter);
-				$this->entityAToEntityB('commune', 'maille', $tableFormat, $filter);
-				$this->entityAToEntityB('maille', 'maille', $tableFormat, $filter);
-				$this->entityAToEntityB('departement', 'maille', $tableFormat, $filter);
-				$this->geomToEntity('departement', $tableFormat, $filter);
-				$this->entityAToEntityB('commune', 'departement', $tableFormat, $filter);
-				$this->entityAToEntityB('maille', 'departement', $tableFormat, $filter);
-				$this->entityAToEntityB('departement', 'departement', $tableFormat, $filter);
-			}
-			// Fill calculated fields
-			$this->communeCalcule($tableFormat, $filter);
-			$this->codeMailleCalcule($tableFormat, $filter);
-			$this->codeDepartementCalcule($tableFormat, $filter);
-		}
-		return true;
 	}
 
 	/**
@@ -313,10 +327,12 @@ class GeoAssociationService {
 			SELECT m." . $tableFormat->getPrimaryKeys()[0] . ",  m.provider_id, '" . $tableFormat->getFormat() . "', ref.id_" . $entity . ", 1
 			FROM mapping.bac_" . $entity . " AS ref, raw_data." . $tableFormat->getTableName() . " AS m
 			WHERE m.geometrie IS NOT NULL
-			AND St_Intersects(St_Transform(m.geometrie, 3857), ref.geom) = true " . $filter . ";
-				";
+			AND St_Intersects(St_Transform(m.geometrie, 3857), ref.geom) 
+			-- To force postgis 2.3 to use gist geom index, we add the condition of geometries' bounding box intersection (true if the intersection above is true)
+			AND St_Transform(m.geometrie, 3857) && ref.geom  " . $filter . ";
+			";
 		
-		$this->logger->debug('geomToEntity : ' . $geomToEntity);
+		$this->logger->debug('geomToEntity : geomTo' . $entity . ' : ' . $geomToEntity);
 		$stmt = $this->conn->prepare($geomToEntity);
 		$stmt->execute();
 		
@@ -344,27 +360,24 @@ class GeoAssociationService {
 		$stmt->execute();
 		
 		if ($entity == 'geom') {
+			$visuGeom = " ST_Union(geom3857) ";
+			$refGeometrie = "m.geometrie";
 			$joinAndWhere = " WHERE m.geometrie IS NOT NULL ";
-			$geometrie = "m.geometrie";
-		} elseif ($entity == 'commune') {
-			$joinAndWhere = "  JOIN mapping.bac_commune AS ref ON ref.id_commune = ANY(m.codecommune::text[])
-				" . $this->geoAssociationFromCommuneFilter;
-			$geometrie = "St_Envelope(ref.geom)";
-		} elseif ($entity == 'maille') {
-			$joinAndWhere = " JOIN mapping.bac_maille AS ref ON ref.id_maille = ANY(m.codemaille::text[])
-   				" . $this->geoAssociationFromMailleFilter;
-			$geometrie = "St_Envelope(ref.geom)";
-		} elseif ($entity = 'departement') {
-			$joinAndWhere = " JOIN mapping.bac_departement AS ref ON ref.id_departement = ANY(m.codedepartement::text[])
-				" . $this->geoAssociationFromDepartementFilter;
-			$geometrie = "St_Envelope(ref.geom)";
+		} else {
+			$visuGeom = " ST_Envelope(ST_Union(geom3857)) ";
+			$refGeometrie = "ref.geom";
+			$joinAndWhere = " JOIN mapping.bac_" . $entity . " AS ref ON ref.id_" . $entity . " = ANY(m.code" . $entity . "::text[])
+				" . $this->geoAssociationFilter[$entity];
 		}
 		
 		$fillGeomBacAndObsTables = "WITH rows AS (
 		  INSERT INTO bac_obs_geom (id_observation, id_provider, geom)
-		    SELECT m." . $tableFormat->getPrimaryKeys()[0] . ", m.provider_id, St_Transform(" . $geometrie . ", 3857) 
-		    FROM raw_data." . $tableFormat->getTableName() . " AS m 
-		   	" . $joinAndWhere . $filter . "
+			SELECT " . $tableFormat->getPrimaryKeys()[0] . ", provider_id, " . $visuGeom . "
+			FROM (
+		    	SELECT m." . $tableFormat->getPrimaryKeys()[0] . ", m.provider_id, St_Transform(" . $refGeometrie . ", 3857) as geom3857
+		    	FROM raw_data." . $tableFormat->getTableName() . " AS m 
+		   		" . $joinAndWhere . $filter . ") as foo
+			GROUP BY " . $tableFormat->getPrimaryKeys()[0] . ", provider_id
 		  RETURNING *
 		), insert_bac AS (
 		  INSERT INTO mapping.bac_geometrie
@@ -376,7 +389,7 @@ class GeoAssociationService {
 		  FROM rows
 		  		;";
 		
-		$this->logger->debug('entityToGeom : ' . $fillGeomBacAndObsTables);
+		$this->logger->debug('entityToGeom : ' . $entity . 'ToGeom : ' . $fillGeomBacAndObsTables);
 		$stmt = $this->conn->prepare($fillGeomBacAndObsTables);
 		$stmt->execute();
 		
@@ -395,8 +408,8 @@ class GeoAssociationService {
 	 * @param String $filter        	
 	 */
 	public function entityAToEntityB($entityA, $entityB, $tableFormat, $filter) {
+		$where = $this->geoAssociationFilter[$entityA];
 		if ($entityA == 'commune') {
-			$where = $this->geoAssociationFromCommuneFilter;
 			if ($entityB == 'commune') {
 				$assoTable = 'bac_commune';
 			} elseif ($entityB == 'maille') {
@@ -405,7 +418,6 @@ class GeoAssociationService {
 				$assoTable = 'bac_commune';
 			}
 		} elseif ($entityA == 'maille') {
-			$where = $this->geoAssociationFromMailleFilter;
 			if ($entityB == 'commune') {
 				$assoTable = 'commune_maille';
 			} elseif ($entityB == 'maille') {
@@ -414,7 +426,6 @@ class GeoAssociationService {
 				$assoTable = 'maille_departement';
 			}
 		} elseif ($entityA = 'departement') {
-			$where = $this->geoAssociationFromDepartementFilter;
 			if ($entityB == 'commune') {
 				$assoTable = 'bac_commune';
 			} elseif ($entityB == 'maille') {
@@ -432,7 +443,7 @@ class GeoAssociationService {
 		GROUP BY m." . $tableFormat->getPrimaryKeys()[0] . ",  m.provider_id, asso.id_" . $entityB . ";
 		";
 		
-		$this->logger->debug('entityAToEntityB : ' . $entityAToEntityB);
+		$this->logger->debug('entityAToEntityB : ' . $entityA . 'To' . $entityB . ' : ' . $entityAToEntityB);
 		$stmt = $this->conn->prepare($entityAToEntityB);
 		$stmt->execute();
 		

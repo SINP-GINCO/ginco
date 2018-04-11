@@ -62,7 +62,6 @@ class ConfigurationManager {
 	 * @throws An exception if the parameter cannot be found and no default value is set
 	 */
 	public function getConfig($name, $defaultValue = null, $silent = false) {
-		$this->logger->debug("getConfig : " . $name);
 
 		if (isset($this->parameters[$name])) {
 			$parameter = $this->parameters[$name];
