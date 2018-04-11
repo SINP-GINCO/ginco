@@ -57,7 +57,8 @@ public class GeoAssociationService implements IntegrationEventListener {
 
 		try {
 			String baseUrl = parameterDAO.getApplicationParameter("site_url");
-			URL myURL = new URL(baseUrl + "/app_dev.php/geo-association/compute?submissionId=" + submissionId);
+			// Call prod url first
+			URL myURL = new URL(baseUrl + "/geo-association/compute?submissionId=" + submissionId);
 			logger.debug("Calling url: " + myURL);
 			HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
 			responseCode = conn.getResponseCode();
@@ -70,12 +71,11 @@ public class GeoAssociationService implements IntegrationEventListener {
 			logger.debug("IOException", e);
 		}
 
-		// Call prod URL if dev URL did not succeed
-		if (responseCode == 404 || responseCode == 500) {
+		// Call dev URL if prod URL did not succeed
+		if (responseCode != 200) {
 			try {
 				String baseUrl = parameterDAO.getApplicationParameter("site_url");
-				// Call prod url first
-				URL myURL = new URL(baseUrl + "/geo-association/compute?submissionId=" + submissionId);
+				URL myURL = new URL(baseUrl + "/app_dev.php/geo-association/compute?submissionId=" + submissionId);
 				logger.debug("Calling url: " + myURL);
 				HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
 				responseCode = conn.getResponseCode();
@@ -88,7 +88,6 @@ public class GeoAssociationService implements IntegrationEventListener {
 				logger.debug("IOException", e);
 			}
 		}
-
 	}
 
 	/**
