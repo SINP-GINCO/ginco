@@ -72,7 +72,7 @@ public class GeoAssociationService implements IntegrationEventListener {
 		}
 
 		// Call dev URL if prod URL did not succeed
-		if (responseCode == 404) {
+		if (responseCode == 404 || responseCode == 500) {
 			try {
 				String baseUrl = parameterDAO.getApplicationParameter("site_url");
 				URL myURL = new URL(baseUrl + "/app_dev.php/geo-association/compute?submissionId=" + submissionId);

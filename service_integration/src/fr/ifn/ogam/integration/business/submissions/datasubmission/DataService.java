@@ -281,10 +281,8 @@ public class DataService extends AbstractService {
 
 			}
 
-			// Update the submission status
-			if (isSubmitValid) {
-				submissionDAO.updateSubmissionStatus(submissionId, SubmissionStep.DATA_INSERTED, SubmissionStatus.OK);
-			} else {
+			// Update the submission status if needed
+			if (!isSubmitValid) {
 				// Immediately cancel the submission data
 				cancelSubmission(submissionId);
 
