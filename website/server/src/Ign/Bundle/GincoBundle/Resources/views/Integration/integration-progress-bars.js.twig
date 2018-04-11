@@ -112,14 +112,21 @@ function updateContentDiv($submissionId, $status, $progress = 0, $task = 'Insert
         var $taskName = '', $class = 'color-2';
         if ($task.slice(0, $task.indexOf(" ")) == 'Checking') {
             $taskName = 'checks_';
-            $class = 'color-1'
+            $class = 'color-1';
+            $progressBar.css('width', $progress+'%').addClass($class).attr('aria-valuenow', $progress).html( $taskName+$progress+'%');
         } else if ($task.slice(0, $task.indexOf(" ")) == 'Inserting') {
             $taskName = 'import_';
+            $progressBar.css('width', $progress+'%').addClass($class).attr('aria-valuenow', $progress).html( $taskName+$progress+'%');
         } else if ($task.slice(0, $task.indexOf(" ")) == 'Computing') {
             $taskName = 'calcul_';
-            $class = 'color-3'
+            $class = 'color-3';
+            $progressBar.css('width', $progress+'%').addClass($class).attr('aria-valuenow', $progress).html( $taskName+$progress+'%');
+        } else {
+            // Submission status still RUNNING (php geo-association are computing), but java import process is over
+            $taskName = 'calculs';
+            $class = 'color-3';
+            $progressBar.css('width', '100%').addClass($class).attr('aria-valuenow', 100).html( $taskName);
         }
-        $progressBar.css('width', $progress+'%').addClass($class).attr('aria-valuenow', $progress).html( $taskName+$progress+'%');
     }
     // If not RUNNING remove progress bar and show Status
     else {
