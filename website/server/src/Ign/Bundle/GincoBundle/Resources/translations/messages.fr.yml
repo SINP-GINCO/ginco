@@ -182,7 +182,36 @@ Submission:
     impossible: La publication de ce fichier est impossible.
   delete:
     impossible: La suppression de ce fichier est impossible.
-
+  Report:
+    title: Rapport d'intégration de données
+    description: Description de l'import
+    submissionId: Identifiant de la soumission
+    integrationDate: Date d'intégration
+    dataset: Modèle d'import
+    step: Etape
+    status: Statut
+    importedFiles: Fichiers importés
+    conformityErrors: Erreurs de cohérence
+    conformityDetails: Détails des erreurs de cohérence
+    complianceErrors: Erreurs de conformité
+    complianceDetails: Détails des erreurs de conformité
+    filesTable:
+      fileType: Nom du modèle de fichier
+      filename: Nom du fichier
+      data: Nombre de données (lignes)
+    errorTable:
+      errorId: Identifiant de l'erreur
+      occurrences: Nombre d'occurrences
+      errorMessage: Message d'erreur
+    detailTable:
+      errorId: Identifiant
+      fileType: Modèle de fichier
+      field: Champ
+      line: Ligne
+      value: Valeur
+      expectedValue: Valeur ou format attendu
+      errorMessage: Message d'erreur
+    
 IntegrationPage:
   File: Fichier
   Files: Fichiers

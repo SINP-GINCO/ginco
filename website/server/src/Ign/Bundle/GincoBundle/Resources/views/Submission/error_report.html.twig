@@ -1,29 +1,25 @@
-{# Variables : errorReport #}
-
 {% extends "base.html.twig" %}
 
-{% set user = app.user %}
-
 {% block body %}
-    <h1>Rapport d'intégration de données</h1>
+    <h1>{{ 'Submission.Report.title'|trans }}</h1>
     <hr>
 
-    <h2>Description de l'import</h2>
+    <h2>{{ 'Submission.Report.description'|trans }}</h2>
     <ul>
-        <li>Date d'intégration : {{ submission.creationDate|date("Y-m-d")}}</li>
-        <li>Modèle d'import : {{ submission.dataset.label }}</li>
-        <li>Identifiant de la soumission : {{ submission.id }}</li>
-        <li>Etape : {{ submission.step }}</li>
-        <li>Statut : {{ submission.status }}</li>
+        <li>{{ 'Submission.Report.integrationDate'|trans }} : {{ submission.creationDate|date("Y-m-d")}}</li>
+        <li>{{ 'Submission.Report.dataset'|trans }} : {{ submission.dataset.label }}</li>
+        <li>{{ 'Submission.Report.submissionId'|trans }} : {{ submission.id }}</li>
+        <li>{{ 'Submission.Report.step'|trans }} : {{ submission.step }}</li>
+        <li>{{ 'Submission.Report.status'|trans }} : {{ submission.status }}</li>
         <li>Nb d'erreurs : {{ errors|length }}</li>
     </ul>
         
-    <h2>Fichiers importés</h2>
+    <h2>{{ 'Submission.Report.importedFiles'|trans }}</h2>
     <table class="table table-hover table-bordered">
         <tr>
-            <th>Nom du modèle de fichier</th>
-            <th>Nom du fichier</th>
-            <th>Nombre de données (lignes)</th>
+            <th>{{ 'Submission.Report.filesTable.fileType'|trans }}</th>
+            <th>{{ 'Submission.Report.filesTable.filename'|trans }}</th>
+            <th>{{ 'Submission.Report.filesTable.data'|trans }}</th>
         </tr>
         {% for file in submission.files %}
             <tr>    
@@ -34,12 +30,12 @@
         {% endfor %}
     </table>
        
-    <h2>Erreurs de conformité</h2>
+    <h2>{{ 'Submission.Report.complianceErrors'|trans }}</h2>
     <table class="table table-hover table-bordered">
         <tr>
-            <th>Identifiant de l'erreur</th>
-            <th>Nombre d'occurrences</th>
-            <th>Message d'erreur</th>
+            <th>{{ 'Submission.Report.errorTable.errorId'|trans }}</th>
+            <th>{{ 'Submission.Report.errorTable.occurrences'|trans }}</th>
+            <th>{{ 'Submission.Report.errorTable.errorMessage'|trans }}</th>
         </tr>
         {% for errorCount in errorCounts if errorCount.check_id < 1200 %}
             <tr>
@@ -50,16 +46,16 @@
         {% endfor %}
     </table>
        
-    <h2>Détails des erreurs de conformité</h2>
+    <h2>{{ 'Submission.Report.complianceDetails'|trans }}</h2>
     <table class="table table-hover table-bordered">
         <tr>
-            <th>Identifiant</th>
-            <th>Modèle de fichier</th>
-            <th>Champ</th>
-            <th>Ligne</th>
-            <th>Valeur</th>
-            <th>Valeur ou format attendu</th>
-            <th>Message d'erreur</th>
+            <th>{{ 'Submission.Report.detailTable.errorId'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.fileType'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.field'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.line'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.value'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.expectedValue'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.errorMessage'|trans }}</th>
         </tr>
         {% for error in errors if error.checkError.id < 1200 %}
             <tr>    
@@ -74,12 +70,12 @@
         {% endfor %}
     </table>
     
-    <h2>Erreurs de cohérence</h2>
+    <h2>{{ 'Submission.Report.conformityErrors'|trans }}</h2>
     <table class="table table-hover table-bordered">
         <tr>
-            <th>Identifiant de l'erreur</th>
-            <th>Nombre d'occurrences</th>
-            <th>Message d'erreur</th>
+            <th>{{ 'Submission.Report.errorTable.errorId'|trans }}</th>
+            <th>{{ 'Submission.Report.errorTable.occurrences'|trans }}</th>
+            <th>{{ 'Submission.Report.errorTable.errorMessage'|trans }}</th>
         </tr>
         {% for errorCount in errorCounts if errorCount.check_id > 1120 %}
             <tr>
@@ -90,13 +86,13 @@
         {% endfor %}
     </table>
        
-    <h2>Détails des erreurs de cohérence</h2>
+    <h2>{{ 'Submission.Report.conformityDetails'|trans }}</h2>
     <table class="table table-hover table-bordered">
         <tr>
-            <th>Identifiant</th>
-            <th>Modèle de fichier</th>
-            <th>Ligne</th>
-            <th>Message d'erreur</th>
+            <th>{{ 'Submission.Report.detailTable.errorId'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.fileType'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.line'|trans }}</th>
+            <th>{{ 'Submission.Report.detailTable.errorMessage'|trans }}</th>
         </tr>
         {% for error in errors if error.checkError.id > 1120 %}
             <tr>    
