@@ -196,14 +196,16 @@ class SubmissionController extends GincoController {
                     throw $this->createNotFoundException("La donnée n'existe pas");
                 }
                                
-                $errorRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Error', 'raw_data');
+                $errorRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\CheckError', 'raw_data');
                 $errors = $errorRepository->findBySubmission($submission->getId(),array());
+                $errorCounts = $errorRepository->getErrorCounts($submission);
                 
-                dump($errors);
+                dump($errors);dump($errorCounts);
 
                 return $this->render('IgnGincoBundle:Submission:error_report.html.twig', array(
 			'submission' => $submission,
-                        'errors' => $errors
+                        'errors' => $errors,
+                        'errorCounts' => $errorCounts
 		));
                 
         }

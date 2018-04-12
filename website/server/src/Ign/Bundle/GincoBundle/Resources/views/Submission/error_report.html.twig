@@ -41,7 +41,13 @@
             <th>Nombre d'occurrences</th>
             <th>Message d'erreur</th>
         </tr>
-        
+        {% for errorCount in errorCounts if errorCount.check_id < 1200 %}
+            <tr>
+                <td>{{ errorCount.check_id }}</td>
+                <td>{{ errorCount.count }}</td>
+                <td>{{ errorCount.description }}</td>
+            </tr>
+        {% endfor %}
     </table>
        
     <h2>Détails des erreurs de conformité</h2>
@@ -55,15 +61,15 @@
             <th>Valeur ou format attendu</th>
             <th>Message d'erreur</th>
         </tr>
-        {% for error in errors if error.error.id < 1200 %}
+        {% for error in errors if error.checkError.id < 1200 %}
             <tr>    
-                <td>{{ error.error.id }}</td>
-                <td>{{ error.error.id }}</td>
-                <td>{{ error.field }}</td>
+                <td>{{ error.checkError.id }}</td>
+                <td>{{ error.srcFormat.label }}</td>
+                <td>{{ error.srcData }}</td>
                 <td>{{ error.lineNumber }}</td>
                 <td>{{ error.foundValue }}</td>
                 <td>{{ error.expectedValue }}</td>
-                <td>{{ error.comment }}</td>
+                <td>{{ error.errorMessage }}</td>
             </tr>
         {% endfor %}
     </table>
@@ -75,6 +81,13 @@
             <th>Nombre d'occurrences</th>
             <th>Message d'erreur</th>
         </tr>
+        {% for errorCount in errorCounts if errorCount.check_id > 1120 %}
+            <tr>
+                <td>{{ errorCount.check_id }}</td>
+                <td>{{ errorCount.count }}</td>
+                <td>{{ errorCount.description }}</td>
+            </tr>
+        {% endfor %}
     </table>
        
     <h2>Détails des erreurs de cohérence</h2>
@@ -85,12 +98,12 @@
             <th>Ligne</th>
             <th>Message d'erreur</th>
         </tr>
-        {% for error in errors if error.error.id > 1120 %}
+        {% for error in errors if error.checkError.id > 1120 %}
             <tr>    
-                <td>{{ error.error.id }}</td>
-                <td>{{ error.error.id }}</td>
+                <td>{{ error.checkError.id }}</td>
+                <td>{{ error.srcFormat.label }}</td>
                 <td>{{ error.lineNumber }}</td>
-                <td>{{ error.comment }}</td>
+                <td>{{ error.errorMessage }}</td>
             </tr>
         {% endfor %}
     </table> 

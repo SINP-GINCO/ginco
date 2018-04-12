@@ -4,18 +4,18 @@ namespace Ign\Bundle\GincoBundle\Entity\RawData;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SubmissionFile.
+ * CheckError.
  *
  * @ORM\Table(name="raw_data.check_error")
- * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\RawData\ErrorRepository")
+ * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\RawData\CheckErrorRepository")
  */
-class Error {
+class CheckError {
     
         /**
          * @ORM\Column(name="check_error_id")
          * @ORM\Id
          * 
-         * @var integer 
+         * @var integer
          */    
         private $id;
 
@@ -29,7 +29,7 @@ class Error {
         /**
          * @ORM\Column(name="line_number")
          * 
-         * @var integer 
+         * @var integer
          */
         private $lineNumber;
         
@@ -38,7 +38,15 @@ class Error {
          * 
          * @var string 
          */        
-        private $field;
+        private $srcData;
+        
+        /**
+         * @ORM\ManyToOne(targetEntity="\Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat")
+         * @ORM\JoinColumn(name="src_format", referencedColumnName="format")
+         * 
+         * @var integer 
+         */
+        private $srcFormat;        
 
         /**
          * @ORM\ManyToOne(targetEntity="\Ign\Bundle\GincoBundle\Entity\Metadata\Check")
@@ -47,7 +55,7 @@ class Error {
          * 
          * @var integer 
          */
-        private $error;
+        private $checkError;
 
         /**
          * @ORM\Column(name="found_value")
@@ -68,7 +76,7 @@ class Error {
          * 
          * @var string 
          */
-        private $comment;
+        private $errorMessage;
         
         /**
 	 * @ORM\Column(name="_creationdt", type="date")
@@ -84,16 +92,6 @@ class Error {
         function getId() {
             return $this->id;
         }
-
-        /**
-         * 
-         * @param integer $id
-         * @return Error
-         */
-        function setId($id) {
-            $this->id = $id;
-            return $this;
-        }
        
         /**
 	 *
@@ -106,7 +104,7 @@ class Error {
 	/**
 	 *
 	 * @param Submission $submission
-	 * @return Error
+	 * @return $this
 	 */
 	public function setSubmission(Submission $submission) {
             $this->submission = $submission;		
@@ -124,7 +122,7 @@ class Error {
         /**
          * 
          * @param integer $lineNumber
-         * @return Error
+         * @return $this
          */
         function setLineNumber($lineNumber) {
             $this->lineNumber = $lineNumber;
@@ -135,54 +133,53 @@ class Error {
          * 
          * @return string
          */
-        function getField() {
-            return $this->field;
+        function getSrcData() {
+            return $this->srcData;
         }
 
         /**
          * 
-         * @param string $field
-         * @return Error
+         * @param string $srcData
+         * @return $this
          */
-        function setField($field) {
-            $this->field = $field;
+        function setSrcData($srcData) {
+            $this->srcData = $srcData;
             return $this;
         }
 
+        /**
+         * 
+         * @return \Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat
+         */
+        function getSrcFormat() {
+            return $this->srcFormat;
+        }
+
+        /**
+         * 
+         * @param FileFormat $srcFormat
+         * @return $this
+         */
+        function setSrcFormat(\Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat $srcFormat) {
+            $this->srcFormat = $srcFormat;
+            return $this;
+        }
                 
         /**
          * 
-         * @return integer
+         * @return \Ign\Bundle\GincoBundle\Entity\Metadata\Check
          */
-        function getError() {
-            return $this->error;
+        function getCheckError() {
+            return $this->checkError;
         }
 
         /**
          * 
-         * @param integer $error
-         * @return Error
+         * @param CheckError $checkError
+         * @return $this
          */
-        function setError($error) {
-            $this->error = $error;
-            return $this;
-        }
-
-        /**
-         * 
-         * @return \DateTime
-         */
-        function getCreationDate() {
-            return $this->creationDate;
-        }
-
-        /**
-         * 
-         * @param \DateTime $creationDate
-         * @return Error
-         */
-        function setCreationDate(\DateTime $creationDate) {
-            $this->creationDate = $creationDate;
+        function setCheckError(\Ign\Bundle\GincoBundle\Entity\Metadata\Check $checkError) {
+            $this->checkError = $checkError;
             return $this;
         }
 
@@ -215,28 +212,46 @@ class Error {
         /**
          * 
          * @param string $expectedValue
-         * @return Error
+         * @return $this
          */
         function setExpectedValue($expectedValue) {
             $this->expectedValue = $expectedValue;
             return $this;
         }
-
+        
         /**
          * 
          * @return string
          */
-        function getComment() {
-            return $this->comment;
+        function getErrorMessage() {
+            return $this->errorMessage;
         }
 
         /**
          * 
-         * @param string $comment
-         * @return Error
+         * @param string $errorMessage
+         * @return $this
          */
-        function setComment($comment) {
-            $this->comment = $comment;
+        function setErrorMessage($errorMessage) {
+            $this->errorMessage = $errorMessage;
+            return $this;
+        }
+
+        /**
+         * 
+         * @return \DateTime
+         */
+        function getCreationDate() {
+            return $this->creationDate;
+        }
+
+        /**
+         * 
+         * @param \DateTime $creationDate
+         * @return $this
+         */
+        function setCreationDate(\DateTime $creationDate) {
+            $this->creationDate = $creationDate;
             return $this;
         }
 
