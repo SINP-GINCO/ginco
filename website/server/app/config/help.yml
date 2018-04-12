@@ -107,3 +107,8 @@ platform_parameters:
     - configuration_parameters
     - configuration_homepage
     - configuration_presentation
+    
+error_codes:
+  label: Help.error_codes
+  url: /gestion-jdd/rapport-erreur.html#signification-des-erreurs
+  route: submission_view-error-report
