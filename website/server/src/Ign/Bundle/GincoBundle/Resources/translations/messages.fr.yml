@@ -58,6 +58,7 @@ Breadcrumb:
   Integration: Gérer les jeux de données
   Integration.New: Importer un nouveau jeu de données
   Integration.Show: Détails du jeu de données
+  ErrorReport: Rapport d'intégration de données
   User: Mon compte
   Check.Configuration: Vérifier la configuration technique
   Users.Administration: Administrer les utilisateurs
@@ -88,6 +89,7 @@ Help:
     import_models: Aide sur les modèles d'import
     data: Aide dictionnaire de données
   platform_config: Aide sur la personnalisation de la plateforme
+  error_codes: Aide sur les codes d'erreur
 
 # Homepage
 # ----------------------

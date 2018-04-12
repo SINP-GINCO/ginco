@@ -93,7 +93,7 @@ class SubmissionFile {
          * @return string
          */
         public function getBasename(){
-            return ltrim(strrchr($this->fileName,'/'),'/');
+            return basename($this->fileName);
         }
 
 	/**

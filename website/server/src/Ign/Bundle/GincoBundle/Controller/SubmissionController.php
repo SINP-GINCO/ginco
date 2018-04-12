@@ -200,8 +200,6 @@ class SubmissionController extends GincoController {
                 $errors = $errorRepository->findBySubmission($submission->getId(),array());
                 $errorCounts = $errorRepository->getErrorCounts($submission);
                 
-                dump($errors);dump($errorCounts);
-
                 return $this->render('IgnGincoBundle:Submission:error_report.html.twig', array(
 			'submission' => $submission,
                         'errors' => $errors,

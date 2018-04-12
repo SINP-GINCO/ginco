@@ -34,7 +34,8 @@ class CheckError {
         private $lineNumber;
         
         /**
-         * @ORM\Column(name="src_data")
+         * @ORM\ManyToOne(targetEntity="\Ign\Bundle\GincoBundle\Entity\Metadata\Data")
+         * @ORM\JoinColumn(name="src_data", referencedColumnName="data")
          * 
          * @var string 
          */        
@@ -44,7 +45,7 @@ class CheckError {
          * @ORM\ManyToOne(targetEntity="\Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat")
          * @ORM\JoinColumn(name="src_format", referencedColumnName="format")
          * 
-         * @var integer 
+         * @var string 
          */
         private $srcFormat;        
 
@@ -139,10 +140,10 @@ class CheckError {
 
         /**
          * 
-         * @param string $srcData
+         * @param Data $srcData
          * @return $this
          */
-        function setSrcData($srcData) {
+        function setSrcData(\Ign\Bundle\GincoBundle\Entity\Metadata\Data $srcData) {
             $this->srcData = $srcData;
             return $this;
         }
