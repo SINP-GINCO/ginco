@@ -213,6 +213,9 @@ Submission:
       value: Valeur
       expectedValue: Valeur ou format attendu
       errorMessage: Message d'erreur
+    errorNumber:
+      max: Votre soumission comporte un trop grand nombre d'erreurs pour toutes les afficher ici. Seules les %nbError% premières erreurs de votre soumission apparaissent ci-dessous. Veuillez les corriger et refaire votre import afin de voir les erreurs suivantes.
+      normal: Votre soumission comporte %nbError% erreur(s), détaillée(s) ci-dessous
     
 IntegrationPage:
   File: Fichier
