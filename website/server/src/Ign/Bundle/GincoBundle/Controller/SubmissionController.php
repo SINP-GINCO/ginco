@@ -57,10 +57,7 @@ class SubmissionController extends GincoController {
 					->trans("An unexpected error occurred.")
 			));
 		}
-		
-		// Generate Integration report (always)
-		$this->get('ginco.submission_service')->writeIntegrationReport($submissionId, $filenames['integrationReport']);
-		
+			
 		// only if status=OK
 		if ($submission->getStatus() == "OK") {
 			// Generate sensibility report

@@ -32,7 +32,11 @@
         <li>{{ 'Submission.Report.submissionId'|trans }} : {{ submission.id }}</li>
         <li>{{ 'Submission.Report.step'|trans }} : {{ submission.step }}</li>
         <li>{{ 'Submission.Report.status'|trans }} : {{ submission.status }}</li>
-        <li>Nb d'erreurs : {{ errors|length }}</li>
+        {% if errors|length == 1000 %}
+            <li> {% trans with {'%nbError%' : errors|length} %}Submission.Report.errorNumber.normal{% endtrans %}</li>
+        {% else %}
+            <li> {% trans with {'%nbError%' : errors|length} %}Submission.Report.errorNumber.normal{% endtrans %}</li>
+        {% endif %}
     </ul>
    
     <h2>{{ 'Submission.Report.importedFiles'|trans }}</h2>
