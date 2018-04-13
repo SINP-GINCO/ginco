@@ -10,6 +10,7 @@ Modalités
 
 * Avoir un compte sur l’INPN. Si vous n'en avez pas déjà, vous pouvez en créer un en suivant `https://inpn.mnhn.fr/accueil/compte/Compte<ce lien>`_.
 * Faire la demande d’accès à l’application  par mail à sinp-data@mnhn.fr en indiquant :
+
  1- le login ;
  2- la personne ;
  3- le profil utilisateur demandé.
