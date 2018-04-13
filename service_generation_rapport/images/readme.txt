@@ -1,1 +1,0 @@
-This directory is necessary for the build process
