@@ -100,14 +100,16 @@ Au sein d'un jeu de données, ce tableau liste les fichiers de données qui ont 
 * le nombre de lignes (plus exactement le nombre de données) que comporte le fichier
 * le statut de la soumission (en cours, ok, error)
 
-Sous "Rapport" (**5**): 
+Sous "Rapport" (**5**):
 
-On peut télécharger en cas d'erreur lors de l'import de données:
+On peut consulter en cas d'erreur lors de l'import de données:
 
-* le **Rapport de conformité et cohérence** qui est un pdf listant les éventuelles erreurs rencontrées lors de l'intégration.
+* le **Rapport de conformité et cohérence** qui est proposé sur une page listant les éventuelles erreurs rencontrées lors de l'intégration.
+
+.. image:: ../images/gestion-jdd/rapport-erreur.png
 
 On peut télécharger en cas de succès d'import de données:
- 
+
 * le **Rapport de sensibilité** qui est un csv listant les données sensibles du jeu de données (le calcul de la sensibilité
   fait partie des traitements réalisés par l'application lors de l'import). Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
 * le **Rapport des identifiants permanents** qui est un csv associant un identifiant permanent à chaque donnée de la soumission (plus précisément le champ identifiantOrigine). Le calcul de l’identifiant permanent est réalisé par l’application lorsque le champ du fichier est vide à l’import.. Ce rapport est téléchargeable seulement si le statut de la soumission est OK.
@@ -121,9 +123,9 @@ Enfin, sous "Actions" il est possible de :
 * **Dépublier les données** rend les données de la soumission non consultables pour les utilisateurs d'un organisme différent de celui ayant importé les données, ou ne possédant pas la permission "Visualiser les données non publiées d'un autre organisme".
   Pour réaliser l'action de dépublication, il faut avoir la permission "Publier les données".
   De même, l'export GML n'est plus réalisable.
-  
+
 .. note:: Les utilisateurs qui ne sont pas rattachés à un véritable organisme (et donc rattachés à l'organisme d'attente noté Défaut), ne peuvent pas voir les données importées non publiées avec l'organisme Défaut.
-  
+
 * **Supprimer le jeu de données** (**6**) supprime le jeu de données et les données associées, même si elles ont été publiées entre temps et ont fait l'objet d'un export vers la plateforme nationale.
 
 Visualiser la page de détail d'un jeu de données
@@ -142,5 +144,3 @@ Un lien (**4**) permet d'ajouter un nouveau fichier au jeu de données en cours 
 Il est possible de mettre à jour la fiche de métadonnée et les informations la concernant via le bouton "Mettre à jour les métadonnées depuis l'INPN" (**5**).
 
 Enfin, si le jeu de données ne comporte pas de soumission il est possible de le supprimer (**6**).
-
-

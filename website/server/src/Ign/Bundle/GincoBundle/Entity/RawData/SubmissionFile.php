@@ -21,8 +21,10 @@ class SubmissionFile {
 	/**
 	 * The type of the file (reference a DATASET_FILES.FORMAT).
 	 * 
-	 * @var string @ORM\Column(name="file_type", type="string", length=36)
-	 *      @ORM\Id
+	 * @var string
+         * @ORM\ManyToOne(targetEntity="\Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat")
+         * @ORM\JoinColumn(name="file_type", referencedColumnName="format")     
+         * @ORM\Id
 	 */
 	private $fileType;
 
@@ -43,11 +45,11 @@ class SubmissionFile {
 	/**
 	 * Set fileType
 	 *
-	 * @param string $fileType        	
+	 * @param \Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat $fileType        	
 	 *
 	 * @return SubmissionFile
 	 */
-	public function setFileType($fileType) {
+	public function setFileType(\Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat $fileType) {
 		$this->fileType = $fileType;
 		
 		return $this;
@@ -83,6 +85,16 @@ class SubmissionFile {
 	public function getFileName() {
 		return $this->fileName;
 	}
+
+        /**
+         * gets basename of file 
+         * e.g. "file.csv" for "/var/data/sinp/data/file.csv" 
+         * 
+         * @return string
+         */
+        public function getBasename(){
+            return basename($this->fileName);
+        }
 
 	/**
 	 * Set nbLines
