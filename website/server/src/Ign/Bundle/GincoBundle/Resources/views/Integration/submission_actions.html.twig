@@ -109,14 +109,13 @@
         </button>
         <ul class="dropdown-menu dropup" role ="menu">
            {% if statusSubmissionOk %}
-               <li>
-                   <a class="btn {{ integrationDisabled ? 'disabled'}} btn-xs"
-                       title="{{ integrationDisabled ? 'Report.Integration.DisabledTitle'|trans : 'Report.Integration.Title'|trans }}"
-                       href="{{ path('download-report', {'submissionId': submission.id , 'report': 'integrationReport'}) }}">
-                      {{ 'Report.Integration.Title'|trans }}
-                   </a>
-
-            </li>
+                <li>
+                    <a class="btn {{ integrationDisabled ? 'disabled'}} btn-xs"
+                        title="{{ integrationDisabled ? 'Report.Integration.DisabledTitle'|trans : 'Report.Integration.Title'|trans }}"
+                        href="{{ path('submission_view-error-report', {'submissionId': submission.id }) }}">
+                       {{ 'Report.Integration.Title'|trans }}
+                    </a>
+                </li>
             {% endif %}
             {% if  not statusSubmissionOk %}
                 <li>

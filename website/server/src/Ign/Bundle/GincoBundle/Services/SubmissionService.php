@@ -140,7 +140,6 @@ class SubmissionService {
 		switch ($report) {
 			case 'integrationReport':
 				// generate Integration report
-				$this->writeIntegrationReport($submissionId, $filenames['integrationReport']);
 				break;
 			case 'sensibilityReport':
 				// generate sensibility report
@@ -153,42 +152,6 @@ class SubmissionService {
 			default:
 				break;
 		}
-	}
-
-	/**
-	 * Call the Java report service to generate the
-	 * integration report, and write it down to $outputFile
-	 *
-	 * @param
-	 *        	$submissionId
-	 * @param
-	 *        	$outputFile
-	 * @return bool
-	 * @throws Exception
-	 */
-	function writeIntegrationReport($submissionId, $outputFile) {
-		$reportServiceURL = $this->configuration->getConfig('reportGenerationService_url', 'http://localhost:8080/OGAMRG/');
-		$errorReport = $this->configuration->getConfig('errorReport', 'ErrorReport.rptdesign');
-		
-		$reportURL = $reportServiceURL . "/run?__format=pdf&__report=report/" . $errorReport . "&submissionid=" . $submissionId;
-		
-		$this->logger->debug('writeIntegrationReport, submissionId ' . $submissionId . ' : ' . $reportURL);
-		
-		// Open the reportUrl (pdf report)
-		$handle = fopen($reportURL, "rb");
-		// Open the file in write mode
-		$out = fopen($outputFile, 'wb');
-		if (!$out) {
-			$this->logger->debug("Error: could not open (w) file: $outputFile");
-			throw new \Exception("Error: could not open (w) file: $outputFile");
-		}
-		// Read the report and write it to the output file
-		$result = stream_get_contents($handle);
-		fwrite($out, $result);
-		
-		fclose($handle);
-		fclose($out);
-		return true;
 	}
 
 	/**

@@ -39,24 +39,28 @@ class Submission {
 	/**
 	 * The submission identifier.
 	 *
-	 * @var int @ORM\Column(name="submission_id", type="integer")
-	 *      @ORM\Id
-	 *      @ORM\GeneratedValue(strategy="AUTO")
-	 * 		@ORM\SequenceGenerator(sequenceName="submission_id_seq")
+	 * @var int 
+         * 
+         * @ORM\Column(name="submission_id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * @ORM\SequenceGenerator(sequenceName="submission_id_seq")
 	 */
 	private $id;
 
 	/**
 	 * The submission step (INIT, INSERT, CHECK, VALIDATE, CANCEL).
 	 *
-	 * @var string @ORM\Column(name="step", type="string", length=36, nullable=true)
+	 * @var string
+         * @ORM\Column(name="step", type="string", length=36, nullable=true)
 	 */
 	private $step='INIT';
 
 	/**
 	 * The submission status (OK, WARNING, ERROR, CRASH).
 	 *
-	 * @var string @ORM\Column(name="status", type="string", length=36, nullable=true)
+	 * @var string
+         * @ORM\Column(name="status", type="string", length=36, nullable=true)
 	 */
 	private $status;
 
@@ -86,13 +90,15 @@ class Submission {
 
 	/**
 	 *
-	 * @var \DateTime @ORM\Column(name="_creationdt", type="datetime", nullable=true)
+	 * @var \DateTime
+         * @ORM\Column(name="_creationdt", type="datetime", nullable=true)
 	 */
 	private $creationDate;
 
 	/**
 	 *
-	 * @var \DateTime @ORM\Column(name="_validationdt", type="datetime", nullable=true)
+	 * @var \DateTime
+         * @ORM\Column(name="_validationdt", type="datetime", nullable=true)
 	 */
 	private $validationDate;
 
@@ -191,6 +197,16 @@ class Submission {
 	 */
 	public function isCancelledRunning() {
 		return $this->step == self::STEP_CANCELLED && $this->status == self::STATUS_RUNNING;
+	}
+        
+
+	/**
+	 * 
+	 *
+	 * @return bool
+	 */
+	public function isInError() {
+		return $this->status == self::STATUS_ERROR;
 	}
 
 	/**

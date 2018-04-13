@@ -58,6 +58,7 @@ Breadcrumb:
   Integration: Gérer les jeux de données
   Integration.New: Importer un nouveau jeu de données
   Integration.Show: Détails du jeu de données
+  ErrorReport: Rapport d'intégration de données
   User: Mon compte
   Check.Configuration: Vérifier la configuration technique
   Users.Administration: Administrer les utilisateurs
@@ -88,6 +89,7 @@ Help:
     import_models: Aide sur les modèles d'import
     data: Aide dictionnaire de données
   platform_config: Aide sur la personnalisation de la plateforme
+  error_codes: Aide sur les codes d'erreur
 
 # Homepage
 # ----------------------
@@ -182,7 +184,39 @@ Submission:
     impossible: La publication de ce fichier est impossible.
   delete:
     impossible: La suppression de ce fichier est impossible.
-
+  Report:
+    title: Rapport d'intégration de données
+    description: Description de l'import
+    submissionId: Identifiant de la soumission
+    integrationDate: Date d'intégration
+    dataset: Modèle d'import
+    step: Etape
+    status: Statut
+    importedFiles: Fichiers importés
+    conformityErrors: Erreurs de cohérence
+    conformityDetails: Détails des erreurs de cohérence
+    complianceErrors: Erreurs de conformité
+    complianceDetails: Détails des erreurs de conformité
+    filesTable:
+      fileType: Nom du modèle de fichier
+      filename: Nom du fichier
+      data: Nombre de données (lignes)
+    errorTable:
+      errorId: Identifiant de l'erreur
+      occurrences: Nombre d'occurrences
+      errorMessage: Message d'erreur
+    detailTable:
+      errorId: Identifiant
+      fileType: Modèle de fichier
+      field: Champ
+      line: Ligne
+      value: Valeur
+      expectedValue: Valeur ou format attendu
+      errorMessage: Message d'erreur
+    errorNumber:
+      max: Votre soumission comporte un trop grand nombre d'erreurs pour toutes les afficher ici. Seules les %nbError% premières erreurs de votre soumission apparaissent ci-dessous. Veuillez les corriger et refaire votre import afin de voir les erreurs suivantes.
+      normal: Votre soumission comporte %nbError% erreur(s), détaillée(s) ci-dessous
+    
 IntegrationPage:
   File: Fichier
   Files: Fichiers

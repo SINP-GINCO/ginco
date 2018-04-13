@@ -1,0 +1,138 @@
+{% extends "base.html.twig" %}
+
+
+{% set conformityErrorCount = 0 %}
+{% set complianceErrorCount = 0 %}
+
+{% for count in errorCounts %}
+    {% if count.check_id < 1200 %}
+        {% set complianceErrorCount = complianceErrorCount + count.count %}
+    {% else %}
+        {% set conformityErrorCount = conformityErrorCount + count.count %}
+    {% endif %}
+{% endfor %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    {% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+    <li><a href="{{ path('all_jdd_list') }}">{{ 'Breadcrumb.Integration'|trans }}</a></li>
+    <li class="active">{{ 'Breadcrumb.ErrorReport'|trans }}</li>
+</ol>
+{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'Submission.Report.title'|trans }}</h1>
+    <hr>
+
+    <h2>{{ 'Submission.Report.description'|trans }}</h2>
+    <ul>
+        <li>{{ 'Submission.Report.integrationDate'|trans }} : {{ submission.creationDate|date("Y-m-d")}}</li>
+        <li>{{ 'Submission.Report.dataset'|trans }} : {{ submission.dataset.label }}</li>
+        <li>{{ 'Submission.Report.submissionId'|trans }} : {{ submission.id }}</li>
+        <li>{{ 'Submission.Report.step'|trans }} : {{ submission.step }}</li>
+        <li>{{ 'Submission.Report.status'|trans }} : {{ submission.status }}</li>
+        {% if errors|length == 1000 %}
+            <li> {% trans with {'%nbError%' : errors|length} %}Submission.Report.errorNumber.normal{% endtrans %}</li>
+        {% else %}
+            <li> {% trans with {'%nbError%' : errors|length} %}Submission.Report.errorNumber.normal{% endtrans %}</li>
+        {% endif %}
+    </ul>
+   
+    <h2>{{ 'Submission.Report.importedFiles'|trans }}</h2>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>{{ 'Submission.Report.filesTable.fileType'|trans }}</th>
+            <th>{{ 'Submission.Report.filesTable.filename'|trans }}</th>
+            <th>{{ 'Submission.Report.filesTable.data'|trans }}</th>
+        </tr>
+        {% for file in submission.files %}
+            <tr>    
+                <td>{{ file.fileType.label }}</td>
+                <td>{{ file.basename }}</td>
+                <td>{{ file.nbLines }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    {% if complianceErrorCount %}
+        <h2>{{ 'Submission.Report.complianceErrors'|trans }}</h2>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>{{ 'Submission.Report.errorTable.errorId'|trans }}</th>
+                <th>{{ 'Submission.Report.errorTable.occurrences'|trans }}</th>
+                <th>{{ 'Submission.Report.errorTable.errorMessage'|trans }}</th>
+            </tr>
+            {% for errorCount in errorCounts if errorCount.check_id < 1200 %}
+                <tr>
+                    <td>{{ errorCount.check_id }}</td>
+                    <td>{{ errorCount.count }}</td>
+                    <td>{{ errorCount.description }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h2>{{ 'Submission.Report.complianceDetails'|trans }}</h2>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>{{ 'Submission.Report.detailTable.errorId'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.fileType'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.field'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.line'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.value'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.expectedValue'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.errorMessage'|trans }}</th>
+            </tr>
+            {% for error in errors if error.checkError.id < 1200 %}
+                <tr>    
+                    <td>{{ error.checkError.id }}</td>
+                    <td>{% if error.srcFormat %}{{ error.srcFormat.label }}{% endif %}</td>
+                    <td>{% if error.srcData %}{{ error.srcData.label }}{% endif %}</td>
+                    <td>{{ error.lineNumber }}</td>
+                    <td>{{ error.foundValue }}</td>
+                    <td>{{ error.expectedValue }}</td>
+                    <td>{{ error.errorMessage }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    
+    {% if conformityErrorCount %}
+        <h2>{{ 'Submission.Report.conformityErrors'|trans }}</h2>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>{{ 'Submission.Report.errorTable.errorId'|trans }}</th>
+                <th>{{ 'Submission.Report.errorTable.occurrences'|trans }}</th>
+                <th>{{ 'Submission.Report.errorTable.errorMessage'|trans }}</th>
+            </tr>
+            {% for errorCount in errorCounts if errorCount.check_id > 1120 %}
+                <tr>
+                    <td>{{ errorCount.check_id }}</td>
+                    <td>{{ errorCount.count }}</td>
+                    <td>{{ errorCount.description }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h2>{{ 'Submission.Report.conformityDetails'|trans }}</h2>
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th>{{ 'Submission.Report.detailTable.errorId'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.fileType'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.line'|trans }}</th>
+                <th>{{ 'Submission.Report.detailTable.errorMessage'|trans }}</th>
+            </tr>
+            {% for error in errors if error.checkError.id > 1120 %}
+                <tr>    
+                    <td>{{ error.checkError.id }}</td>
+                    <td>{{ error.srcFormat.label }}</td>
+                    <td>{{ error.lineNumber }}</td>
+                    <td>{{ error.errorMessage }}</td>
+                </tr>
+            {% endfor %}
+        </table> 
+    {% endif %}
+    
+{% endblock %}
+
+
