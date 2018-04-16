@@ -83,6 +83,7 @@ function buildJavaServices($config, $buildMode)
 		"$servicesBuildDir/conf/$ISFilename.xml", $config);
 
 	//build du service de rapport
+	/*
 	echo("Building report service...\n");
 	// remplacement des rapports par défaut d'ogam par le rapport d'erreur GINCO
 	system("mv -f $gincoDir/service_generation_rapport/report $gincoDir/service_generation_rapport/report.save");
@@ -107,6 +108,7 @@ function buildJavaServices($config, $buildMode)
 		"$servicesBuildDir/webapps/$RGFilename.war");
 	substituteInFile("$projectDir/services_configs/service_generation_rapport/ReportService_tpl.xml",
 		"$servicesBuildDir/conf/$RGFilename.xml", $config);
+	*/
 
 	// Post installation command
 	if ($buildMode == 'dev') {
