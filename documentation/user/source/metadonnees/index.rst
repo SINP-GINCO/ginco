@@ -12,6 +12,7 @@ Le standard de métadonnées se décompose en deux notions :
  - **Les métadonnées de dispositifs de collecte (DC);** Un dispositif de collecte décrit l’ensemble des moyens mis en œuvre et les ressources utilisées pour l’acquisition de données dans le cadre d’un projet défini par un maître d’ouvrage.  La conception de ce dispositif est réalisée par un ou plusieurs maîtres d’œuvre qui coordonnent son application et en assure le suivi. Un dispositif de collecte peut faire appel à plusieurs protocoles d’acquisition, plusieurs méthodes de collecte, plusieurs producteurs de données et plusieurs sources de financement différentes affectées au dispositif ou à des parties de ce dernier.  Chaque dispositif de collecte génère la collecte ou la centralisation d’un ensemble de données. Celles-ci sont généralement structurées en plusieurs jeux de données. Cette structuration est définie par un maître d’œuvre en fonction des objectifs du projet.
 
  - **Les métadonnées de jeux de données (JDD);** Un jeu de données est un ensemble de données d’occurrences partageant des éléments descriptifs communs, à la fois une même métadonnée de JDD et une même métadonnée de DC.
+
 La constitution d’un jeu de données doit répondre à une volonté de structuration sémantique de l’information naturaliste. 
 
 
