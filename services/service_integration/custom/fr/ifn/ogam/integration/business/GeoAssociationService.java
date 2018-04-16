@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import fr.ifn.ogam.common.database.GenericData;
 import fr.ifn.ogam.common.database.website.ApplicationParametersDAO;
 import fr.ifn.ogam.common.business.checks.CheckException;
+import fr.ifn.ogam.common.database.rawdata.SubmissionDAO;
+import fr.ifn.ogam.common.business.submissions.SubmissionStep;
+import fr.ifn.ogam.common.business.submissions.SubmissionStatus;
 import java.util.Map;
 import java.net.URL;
 import java.net.HttpURLConnection;
@@ -29,6 +32,7 @@ public class GeoAssociationService implements IntegrationEventListener {
 	 * Data Access Object.
 	 */
 	private ApplicationParametersDAO parameterDAO = new ApplicationParametersDAO();
+	private SubmissionDAO submissionDAO = new SubmissionDAO();
 
 	/**
 	 * Event called before the integration of a submission of data. Get the metadataId from submissionId
@@ -87,6 +91,11 @@ public class GeoAssociationService implements IntegrationEventListener {
 				// openConnection() failed
 				logger.debug("IOException", e);
 			}
+		}
+
+		// Set submission status to ERROR if prod URL did not succeed either
+		if (responseCode != 200) {
+			submissionDAO.updateSubmissionStatus(submissionId, SubmissionStep.DATA_INSERTED, SubmissionStatus.ERROR);
 		}
 	}
 

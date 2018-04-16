@@ -118,14 +118,14 @@ function updateContentDiv($submissionId, $status, $progress = 0, $task = 'Insert
             $taskName = 'import_';
             $progressBar.css('width', $progress+'%').addClass($class).attr('aria-valuenow', $progress).html( $taskName+$progress+'%');
         } else if ($task.slice(0, $task.indexOf(" ")) == 'Computing') {
-            $taskName = 'calcul_';
+            $taskName = 'calculs_';
             $class = 'color-3';
-            $progressBar.css('width', $progress+'%').addClass($class).attr('aria-valuenow', $progress).html( $taskName+$progress+'%');
+            $progressBar.css('width', '50%').addClass($class).attr('aria-valuenow', 50).html( $taskName+'1/2');
         } else {
-            // Submission status still RUNNING (php geo-association are computing), but java import process is over
-            $taskName = 'calculs';
+            // Submission status still RUNNING (php geo-associations are computing), but java import process is over
+            $taskName = 'calculs_';
             $class = 'color-3';
-            $progressBar.css('width', '100%').addClass($class).attr('aria-valuenow', 100).html( $taskName);
+            $progressBar.css('width', '100%').addClass($class).attr('aria-valuenow', 100).html( $taskName+'2/2');
         }
     }
     // If not RUNNING remove progress bar and show Status
