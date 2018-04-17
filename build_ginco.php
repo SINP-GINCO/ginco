@@ -84,6 +84,8 @@ function buildJavaServices($config, $buildMode)
 
 	//build du service de rapport
 	/*
+	 * suppression 
+	 * 
 	echo("Building report service...\n");
 	// remplacement des rapports par défaut d'ogam par le rapport d'erreur GINCO
 	system("mv -f $gincoDir/service_generation_rapport/report $gincoDir/service_generation_rapport/report.save");

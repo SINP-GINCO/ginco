@@ -30,6 +30,7 @@ try {
 	execCustSQLFile("$sprintDir/merge_ogam_into_ginco.sql", $config);
 	execCustSQLFile("$sprintDir/geographic_entities_association_tables.sql", $config);
 	execCustSQLFile("$sprintDir/update_content.sql", $config);
+	execCustSQLFile("$sprintDir/delete_generate_report_event.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
