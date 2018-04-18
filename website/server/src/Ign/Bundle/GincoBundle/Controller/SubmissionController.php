@@ -155,7 +155,7 @@ class SubmissionController extends GincoController {
 			// We try to generate the reports, and then re-test
 			$this->get('ginco.submission_service')->generateReport($submissionId, $report);
 			if (!is_file($filePath)) {
-				$this->getLogger()->error("Report file '$report' does not exist for submission $submissionId");
+				$this->get('logger')->error("Report file '$report' does not exist for submission $submissionId");
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 					'error' => $this->get('translator')
 						->trans("An unexpected error occurred.")
