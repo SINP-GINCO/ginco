@@ -6,6 +6,16 @@ Ext.define('Ginco.controller.map.Main', {
 			detailTab : 'grid-detail-panel'
 		}
 	},
+	
+    /**
+     * @cfg {String} getToMuchResultsTitle
+     */
+    getToMuchResultsTitle: 'Search failed :',
+    
+    /**
+     * @cfg {String} getToMuchResultsMessage
+     */
+    getToMuchResultsMessage: 'Number of results is huge. Please precise your research.',
 
 	/**
 	* Manage the launch event
@@ -46,21 +56,23 @@ Ext.define('Ginco.controller.map.Main', {
 				var result = Ext.decode(response.responseText);
 				if (result.success ) {
 					if (result.resultsbbox){
-						this.setResultsBbox(result.resultsbbox.bbox);
+						this.setResultsBbox(result.resultsbbox);
 					} else {
 						this.setResultsBbox(null);
 					}
+					
 					this.updateRequestLayers();
 					Ext.GlobalEvents.fireEvent('resultsPrepared');
-					if (result.resultsbbox && result.resultsbbox.restrained) {
-						OgamDesktop.toast(this.restrainedBboxWarning,
-								this.restrainedBboxWarningTitle, 5000);
+				} else {
+					if (result.count) {
+						OgamDesktop.toast(this.getToMuchResultsMessage,
+								this.getToMuchResultsTitle);
+						this.getMapmainwin().unmask();
+					} else {
+						OgamDesktop.toast(result.errorMessage,
+								this.getresultsbboxErrorTitle);
 						this.getMapmainwin().unmask();
 					}
-				} else {
-					OgamDesktop.toast(result.errorMessage,
-							this.getresultsbboxErrorTitle);
-					this.getMapmainwin().unmask();
 				}
 			},
 			scope : this

@@ -19,6 +19,8 @@ class GeoAssociationController extends GincoController  {
 	public function computeGeoAssociationAction(Request $request) {
 		$this->get('logger')->debug('computeGeoAssociationAction');
 		
+		set_time_limit(1000);
+		
 		// Get the submission Id
 		$submissionId = $request->query->getInt("submissionId");
 		

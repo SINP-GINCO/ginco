@@ -243,7 +243,7 @@ class QueryController extends GincoController {
 			if ($queryForm->isValid()) {
 				// Store the request parameters in session
 				$request->getSession()->set('query_QueryForm', $queryForm);
-								
+				
 				return new JsonResponse([
 					'success' => true
 				]);
@@ -294,17 +294,31 @@ class QueryController extends GincoController {
 			
 			$where = $request->getSession()->get('query_SQLWhere');
 			$from = $request->getSession()->get('query_SQLFrom');
-			$nbResults = $request->getSession()->get('query_Count');
+			$logger->info('where :' . $where);
+			$logger->info('from : ' . $from);
+				
+			$resultCount = $this->get('ginco.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
 			
-			$this->get('ginco.query_service')->prepareResults($from, $where, $queryForm, $this->getUser(), $userInfos, $request->getSession());
-			// Execute the request
-			$resultsbbox = $this->get('ginco.query_service')->getResultsBBox($request->getSession()
-				->getId(), $nbResults);
-			// Send the result as a JSON String
-			return new JsonResponse([
-				'success' => true,
-				'resultsbbox' => $resultsbbox
-			]);
+			if ($resultCount > $configuration->getConfig('max_results', 5000)) {
+				return new JsonResponse([
+					'success' => false,
+					'count' => $resultCount
+				]);
+			} else {
+				// Execute the request
+				$sessionId = $request->getSession()->getId();
+				$projection = $configuration->getConfig('srs_visualisation', 3857);
+				$logger->info('getResultsBBox session_id : ' . $sessionId . ', projection : ' . $projection);
+				
+				$mapRepo = $this->get('ginco.repository.mapping.map');
+				$resultsBbox = $mapRepo->getResultsBbox($projection, $sessionId);
+				
+				// Send the result as a JSON String
+				return new JsonResponse([
+					'success' => true,
+					'resultsbbox' => $resultsBbox
+				]);
+			}
 		} catch (\Exception $e) {
 			$logger->error('Error while getting result : ' . $e);
 			return new JsonResponse([
@@ -862,7 +876,7 @@ class QueryController extends GincoController {
 			]);
 		}
 	}
-	
+
 	/**
 	 * Export the request criterias in the CSV file.
 	 *
@@ -870,30 +884,30 @@ class QueryController extends GincoController {
 	 */
 	protected function csvExportCriterias(Request $request) {
 		$criteriasLine = "";
-	
+		
 		$criteriasLine .= '// ' . $this->get('translator')->trans('Request Criterias') . "\n";
-	
+		
 		// Get the request from the session
 		$queryForm = $request->getSession()->get('query_QueryForm');
-	
+		
 		// List all the criterias
 		foreach ($queryForm->getCriteria() as $genericFormField) {
-	
+			
 			$genericTableField = $queryForm->getFieldMappingSet()->getDstField($genericFormField);
 			$tableField = $genericTableField->getMetadata();
-	
+			
 			// Get the descriptor of the form field
 			$criteriasLine .= '// ' . $tableField->getLabel() . ';';
-	
+			
 			if (is_array($genericFormField->getValueLabel())) {
 				$criteriasLine .= implode(', ', $genericFormField->getValueLabel());
 			} else {
 				$criteriasLine .= $genericFormField->getValueLabel();
 			}
-	
+			
 			$criteriasLine .= "\n";
 		}
-	
+		
 		return $criteriasLine;
 	}
 

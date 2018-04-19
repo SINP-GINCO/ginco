@@ -44,12 +44,6 @@ Ext.define('OgamDesktop.controller.map.Main',{
      * The request loading message (defaults to <tt>'Please wait, while loading the map...'</tt>)
      */
     requestLoadingMessage: 'Please wait, while loading the map...',
-    /**
-     * @cfg {String} getresultsbboxErrorTitle
-     * The error title when the bounding box loading fails (defaults to <tt>'Loading of bounding box failed:'</tt>)
-     */
-    getresultsbboxErrorTitle: 'Loading of bounding box failed:',
-    //</locale>
 
     /**
      * Manage the launch event
