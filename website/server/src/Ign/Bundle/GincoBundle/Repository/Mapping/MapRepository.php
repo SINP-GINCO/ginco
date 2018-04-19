@@ -18,7 +18,7 @@ class MapRepository extends GenericRepository {
 	 * @param string $sessionId
 	 *        	the session id
 	 */
-	public function getPreciseBbox($projection, $resultLayer, $sessionId) {
+	public function getResultsBbox($projection, $sessionId, $resultLayer = 'departement') {
 		$conn = $this->getConnection();
 
 		$req = "SELECT st_astext(st_extent(st_transform(geom, $projection ))) as wkt
@@ -35,50 +35,6 @@ class MapRepository extends GenericRepository {
 			$sessionId
 		));
 		$result = $query->fetchColumn(0);
-		return $result;
-	}
-
-	/**
-	 * Get the bbox calculated with the envelope of the region given.
-	 *
-	 * @param int $projection
-	 *        	the projection used for the results
-	 * @param string $regionCode
-	 *        	the code of the region (in region_carto_2017)
-	 */
-	public function getRegionBbox($projection, $regionCode) {
-		$conn = $this->getConnection();
-
-		$req = "SELECT st_astext(st_envelope(st_transform(geom, $projection))) as wkt
-				FROM referentiels.region_carto_2017
-				WHERE code_reg = ?";
-
-		$query = $conn->prepare($req);
-		$query->execute(array(
-			$regionCode
-		));
-		$result = $query->fetchColumn(0);
-		return $result;
-	}
-
-	/**
-	 * Get the bbox calculated by getting the envelope of all regions
-	 * contained in the French metropolitan area.
-	 *
-	 * @param int $projection
-	 *        	the projection used for the results
-	 */
-	public function getMetropolitanBbox($projection) {
-		$conn = $this->getConnection();
-
-		$req = "SELECT st_astext(st_extent(st_transform(geom, 3857))) as wkt
-				FROM referentiels.region_carto_2017
-				WHERE code_reg NOT LIKE '0%'";
-
-		$query = $conn->prepare($req);
-		$query->execute();
-		$result = $query->fetchColumn(0);
-
 		return $result;
 	}
 }

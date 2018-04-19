@@ -21,7 +21,7 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	function cleanPreviousResults($session_id) {
 		$qm = $this->getEntityManager();
-
+		
 		// Deleting from requests also delete from results because of the
 		// ON DELETE CASCADE in the definition of the table
 		$sql = "DELETE FROM requests
@@ -30,6 +30,29 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 		$query->execute(array(
 			$session_id
 		));
+	}
+
+	/**
+	 * Count results.
+	 *
+	 * @param string $tableFormat
+	 *        	the table format
+	 * @param array $keys
+	 *        	the name of the primary keys of the table
+	 * @param string $from
+	 *        	the FROM part of the SQL request
+	 * @param string $where
+	 *        	the WHERE part of the SQL Request
+	 */
+	public function countResults($tableFormat, $keys, $from, $where) {
+		$conn = $this->_em->getConnection();
+		
+		$sql = "SELECT count(DISTINCT " . $tableFormat . "." . $keys['id_observation'] . ") $from $where;";
+		
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		
+		return $stmt->fetchColumn();
 	}
 
 	/**
@@ -53,10 +76,10 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 		$sql = "INSERT INTO results (id_request, id_observation, id_provider, table_format, hiding_level)
 				SELECT DISTINCT $reqId, " . $tableFormat . "." . $keys['id_observation'] . "
 				, $tableFormat." . $keys['id_provider'] . ", ? , $defaultHidingLevel $from $where;";
-
-
 		$query = $em->createNativeQuery($sql, new ResultSetMapping());
-		$query->execute(array($tableFormat));
+		$query->execute(array(
+			$tableFormat
+		));
 	}
 
 	/**
@@ -79,7 +102,7 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 		} else {
 			$minHidingLevel = 1;
 		}
-
+		
 		for ($i = 0; $i < count($tableValues); $i ++) {
 			if ($tableValues[$i]['hiding_level'] > $minHidingLevel) {
 				$fullRequest .= "UPDATE results AS res SET hiding_level = " . $tableValues[$i]['hiding_level'] . " FROM requests AS req ";
@@ -89,11 +112,11 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 				$fullRequest .= "AND res.id_request = req.id AND req.session_id = '" . $sessionId . "';";
 			}
 		}
-
+		
 		if (!empty($fullRequest)) {
 			$em->getConnection()->exec($fullRequest);
-// 			$query = $em->createNativeQuery($fullRequest, new ResultSetMapping());
-// 			$query->execute();
+			// $query = $em->createNativeQuery($fullRequest, new ResultSetMapping());
+			// $query->execute();
 		}
 	}
 
@@ -113,14 +136,14 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	public function deleteUnshowableResults($reqId, $maxPrecisionLevel) {
 		$sql = "DELETE FROM results WHERE hiding_level > ? AND id_request = ?";
-
+		
 		$em = $this->getEntityManager();
 		$query = $em->createNativeQuery($sql, new ResultSetMapping());
 		$query->execute(array(
 			$maxPrecisionLevel,
 			$reqId
 		));
-
+		
 		$sql = "DELETE FROM results WHERE hiding_level = 4 AND id_request = ?";
 		$query = $em->createNativeQuery($sql, new ResultSetMapping());
 		$query->execute(array(
@@ -138,13 +161,13 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 	public function getResultsCount($sessionId) {
 		$rsm = new ResultSetMappingBuilder($this->_em);
 		$rsm->addScalarResult('count', 'count', 'integer');
-
+		
 		$sql = "SELECT count(*) FROM results
  				INNER JOIN requests ON results.id_request = requests.id
  				WHERE session_id = ?";
 		$query = $this->_em->createNativeQuery($sql, $rsm);
 		$query->setParameter(1, $sessionId);
-
+		
 		return $query->getSingleScalarResult();
 	}
 

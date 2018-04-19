@@ -250,4 +250,4 @@ Enfin, "Réinitialiser" permet de recharger le requêteur par défaut.
 Les résultats de la recherche sont visibles au centre de la page de visualisation, sous forme cartographique dans l'onglet "Carte", 
 et sous forme tabulaire dans l'onglet "Résultats".
 
-.. note:: Lorsqu'une plateforme contient un nombre important de données, une recherche imprécise peut prendre jusqu'à plusieurs minutes à s'éxécuter.
+.. note:: Lorsqu'une recherche dépasse 50000 résultats, elle n'est pas lancée par l'application. L'utilisateur doit alors utiliser les critères du requêteur pour préciser sa recherche et diminuer ainsi le nombre de données à représenter.
