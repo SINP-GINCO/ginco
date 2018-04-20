@@ -128,6 +128,11 @@ class GeoAssociationService {
 				
 				$submissionId = $submission->getId();
 				$isSubmissionRunning = $submission->getStatus() == 'RUNNING';
+				/* If we are after a new submission, update submission step to GEO-ASSOCIATION */
+				if ($isSubmissionRunning) {
+					$submission->setStep('GEO-ASSOCIATION');
+					$this->em->flush();
+				}
 				$submissionIdArray = array();
 				
 				$tableFormats = $submission->getJdd()
@@ -232,6 +237,7 @@ class GeoAssociationService {
 			
 			/* If we are after a new submission, update submission status to OK */
 			if ($isSubmissionRunning) {
+				$submission->setStep('INSERT');
 				$submission->setStatus('OK');
 				$this->em->flush();
 			}
@@ -240,6 +246,7 @@ class GeoAssociationService {
 		} catch (\Exception $e) {
 			/* If we are after a new submission, update submission status to ERROR */
 			if ($isSubmissionRunning) {
+				$submission->setStep('INSERT');
 				$submission->setStatus('ERROR');
 				$this->em->flush();
 			}
