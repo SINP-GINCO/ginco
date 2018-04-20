@@ -22,6 +22,8 @@ class Submission {
 
 	const STEP_CHECKED = 'CHECK';
 
+	const STEP_GEO_ASSO = 'GEO-ASSOCIATION';
+
 	const STEP_VALIDATED = 'VALIDATE';
 
 	const STEP_CANCELLED = 'CANCEL';

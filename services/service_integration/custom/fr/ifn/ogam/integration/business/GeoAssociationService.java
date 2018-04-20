@@ -76,7 +76,7 @@ public class GeoAssociationService implements IntegrationEventListener {
 		}
 
 		// Call dev URL if prod URL did not succeed
-		if (responseCode != 200) {
+		if (responseCode != 200 && !submissionDAO.getSubmission(submissionId).getStep().equals("GEO-ASSOCIATION")) {
 			try {
 				String baseUrl = parameterDAO.getApplicationParameter("site_url");
 				URL myURL = new URL(baseUrl + "/app_dev.php/geo-association/compute?submissionId=" + submissionId);
@@ -93,8 +93,8 @@ public class GeoAssociationService implements IntegrationEventListener {
 			}
 		}
 
-		// Set submission status to ERROR if prod URL did not succeed either
-		if (responseCode != 200) {
+		// Set submission status to ERROR if dev URL did not succeed either
+		if (responseCode != 200 && !submissionDAO.getSubmission(submissionId).getStep().equals("GEO-ASSOCIATION")) {
 			submissionDAO.updateSubmissionStatus(submissionId, SubmissionStep.DATA_INSERTED, SubmissionStatus.ERROR);
 		}
 	}
