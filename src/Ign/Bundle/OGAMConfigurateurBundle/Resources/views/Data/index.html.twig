@@ -60,11 +60,8 @@
     {{ parent() }}
 
     <script>
-
-        jQuery(document).ready(function() {
-            // Enable tooltips
-            $("[data-toggle=tooltip]").tooltip();
-
+  		// Add event each time the table move (pagination / search ...)
+		$("table[data-id-table='advancedTable']").on('all.bs.table', function (e, name, args) {
             //  Load content into the "show" modal
             $('[data-load-remote]').on('click',function(e) {
                 e.preventDefault();
@@ -74,7 +71,7 @@
                     $($this.data('remote-target')).load(remote);
                 }
             });
-        });
+		});
     </script>
 
 {%  endblock specificjavascripts %}
