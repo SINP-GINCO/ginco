@@ -15,7 +15,7 @@ Ext.define('Ginco.controller.map.Main', {
     /**
      * @cfg {String} getToMuchResultsMessage
      */
-    getToMuchResultsMessage: 'Number of results is huge. Please precise your research.',
+    getToMuchResultsMessage: '{0} results found. This number of results is huge. Please precise your research.',
 
 	/**
 	* Manage the launch event
@@ -65,7 +65,7 @@ Ext.define('Ginco.controller.map.Main', {
 					Ext.GlobalEvents.fireEvent('resultsPrepared');
 				} else {
 					if (result.count) {
-						OgamDesktop.toast(this.getToMuchResultsMessage,
+						OgamDesktop.toast(Ext.String.format(this.getToMuchResultsMessage, result.count),
 								this.getToMuchResultsTitle);
 						this.getMapmainwin().unmask();
 					} else {
