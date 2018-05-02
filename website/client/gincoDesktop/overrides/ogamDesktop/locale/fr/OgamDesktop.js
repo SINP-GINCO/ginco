@@ -31,7 +31,7 @@ Ext.define("Ginco.locale.fr.controller.map.Main", {
     restrainedBboxWarningTitle: 'L\'emprise spatiale des résultats est restreinte',
     restrainedBboxWarning: 'Le nombre de résultats étant très élevé, l\'emprise spatiale affichée correspond à l\'emprise par défaut de la plateforme',
 	getToMuchResultsTitle: "Echec de la recherche :",
-	getToMuchResultsMessage: "Le nombre de résultats est trop élevé pour pouvoir les afficher. Veuillez préciser votre recherche."
+	getToMuchResultsMessage: "{0} résultats trouvés. Ce nombre est trop élevé pour pouvoir les afficher. Veuillez préciser votre recherche."
 });
 
 /*
