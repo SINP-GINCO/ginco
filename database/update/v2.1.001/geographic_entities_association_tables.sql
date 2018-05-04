@@ -70,8 +70,4 @@ UPDATE mapping.bac_commune SET id_departement=
 DELETE FROM metadata.event_listener WHERE listener_id='GincoComputeGeoAssociationService';
 INSERT INTO metadata.event_listener(listener_id, classname, _creationdt) VALUES ('GeoAssociationService', 'fr.ifn.ogam.integration.business.GeoAssociationService', now());
 
-DELETE FROM metadata_work.event_listener WHERE listener_id='GincoComputeGeoAssociationService';
-INSERT INTO metadata_work.event_listener(listener_id, classname, _creationdt) VALUES ('GeoAssociationService', 'fr.ifn.ogam.integration.business.GeoAssociationService', now());
-
-
 
