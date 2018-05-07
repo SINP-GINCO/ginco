@@ -4,6 +4,17 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.1.1 (07/05/2018)
+
+* Amélioration des performances pour le calcul des rattachements administratifs
+* Rapport d'erreur pour l'import de jeux de données formatté en page HTML (précédemment PDF)
+* Limite à 50000 objets pour la visualisation dans le requêtes (performances)
+* Corrections les exports DEE : suppression des champs vides, et date incomplète
+* Possibilité d'écrire un résumé indépendant pour la présentation de la plateforme
+* Corrections de bug
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.1.0...v2.1.1)
+
 ## V2.1.0 (28/03/2018)
 
 * Export asynchrone des résultats de recherche, ce qui permet l'export sans limite de taills (#1065)
