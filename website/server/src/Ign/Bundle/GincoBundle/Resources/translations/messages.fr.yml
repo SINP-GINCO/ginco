@@ -39,7 +39,7 @@ Menu:
   Datasets: Jeux de données
   ManageAllDatasets: Gérer tous les jeux de données
   ManageMyDatasets: Gérer mes jeux de données
-  ImportDataset: Créer un jeu de données
+  ImportDataset: Importer des données
   Configurator: Configuration des modèles
   DataModels: Modèles de données
   ImportModels: Modèles d'import
@@ -299,7 +299,7 @@ sridDescription: "Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 4
 
 Jdd:
   new:
-    title: Créer un jeu de données
+    title: Importer des données dans un jeu de données
     metadataIdLabel: Identifiant de métadonnées
     metadataIdDescription: L'identifiant de métadonnées renseigné doit être présent dans <a href="%metadataUrl%" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="%documentationUrl%/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
   delete:
