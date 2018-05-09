@@ -100,7 +100,7 @@ class INPNUserUpdater
 
 		// Provider of the user: create it if not present in db
 		$providerId = $distantUser->codeOrganisme;
-		if (intval($providerId) > 1) { // Don't override default provider (1)
+		if (intval($providerId) > 0) { // Don't override default provider (0)
 			$provider = $providerRepo->find($providerId);
 			if (!$provider) {
 				// Add the provider in application DB
@@ -108,7 +108,7 @@ class INPNUserUpdater
 			}
 		} else {
 			// Default provider
-			$provider = $providerRepo->find(1);
+			$provider = $providerRepo->find(0);
 		}
 
 		// Tests if user exists in database; if not create it
