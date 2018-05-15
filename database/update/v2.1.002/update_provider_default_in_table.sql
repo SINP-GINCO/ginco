@@ -7,9 +7,6 @@ WHERE provider_id = '1';
 UPDATE raw_data.jdd SET provider_id = '0'
 WHERE provider_id = '1';
 
-UPDATE raw_data.model_1_observation SET provider_id = '0'
-WHERE provider_id = '1';
-
 UPDATE raw_data.submission SET provider_id = '0'
 WHERE provider_id = '1';
 

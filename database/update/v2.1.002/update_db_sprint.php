@@ -36,11 +36,11 @@ try {
 
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch php here */
-/* system("php $sprintDir/update_saved_request_permissions.php $CLIParams", $returnCode1);
- system("php $sprintDir/add_observateur_mandatory.php $CLIParams", $returnCode2);
+system("php $sprintDir/update_model_table_providerid.php $CLIParams", $returnCode1);
+
 
 if ($returnCode1 != 0 || $returnCode2 != 0) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
 	exit(1);
-}*/
+}
