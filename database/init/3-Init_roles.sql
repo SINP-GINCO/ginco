@@ -19,20 +19,20 @@ INSERT INTO role(role_label, role_definition, is_default) VALUES ('Producteur', 
 INSERT INTO role(role_label, role_definition, is_default) VALUES ('Grand public', 'Rôle par défaut non-modifiable pour un utilisateur non identifié', false);
 
 -- Create default provider
-INSERT INTO website.providers(id,label,definition) VALUES ('1', 'Defaut', 'Organisme par défaut');
+INSERT INTO website.providers(id,label,definition) VALUES ('0', 'Pas d''organisme', 'Organisme par défaut');
 
 -- Create users with rights on every platforms
 -- We add users on default provider because we don't want to create other providers on the platform
 INSERT INTO website.users(user_login, provider_id, email) VALUES
-  ('gautam.pastakia',1,'gautam.pastakia@ign.fr'),
-  ('anna.mouget@ign.fr',1,'anna.mouget@ign.fr'),
-  ('scandel',1,'severine.candelier@ign.fr'),
-  ('vsagniez',1,'vincent.sagniez@ign.fr'),
-  ('jpanijel',1,'jpanijel@mnhn.fr'),
-  ('nbotte',1,'noemie.botte@mnhn.fr'),
-  ('tgerbeau',1,'thierry.gerbeau@ign.fr'),
-  ('cgimazane',1,'clement.gimazane@ign.fr'),
-  ('rpas',1,'remi.pas@ign.fr')
+  ('gautam.pastakia',0,'gautam.pastakia@ign.fr'),
+  ('anna.mouget@ign.fr',0,'anna.mouget@ign.fr'),
+  ('scandel',0,'severine.candelier@ign.fr'),
+  ('vsagniez',0,'vincent.sagniez@ign.fr'),
+  ('jpanijel',0,'jpanijel@mnhn.fr'),
+  ('nbotte',0,'noemie.botte@mnhn.fr'),
+  ('tgerbeau',0,'thierry.gerbeau@ign.fr'),
+  ('cgimazane',0,'clement.gimazane@ign.fr'),
+  ('rpas',0,'remi.pas@ign.fr')
 ;
 
 -- Create visiteur special user
