@@ -51,9 +51,6 @@ home:
           route: jdd_show 
           defaults:
             id: 1
-    checkconf:
-      label: Breadcrumb.Check.Configuration
-      route: checkconf_showconfig
     user:
       label: Breadcrumb.User
       route: user_home

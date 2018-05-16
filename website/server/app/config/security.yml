@@ -45,7 +45,6 @@ security:
         - { path: ^/submission/download-report, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/dee/, allow_if: "user and is_authenticated() and (user.isAllowed('GENERATE_DEE_OWN_JDD') or user.isAllowed('GENERATE_DEE_ALL_JDD'))"}
         - { path: ^/proxy/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
-        - { path: ^/checkconf/, allow_if: "user and is_authenticated() and user.isAllowed('CHECK_CONF')"}
         - { path: ^/configuration/, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')"}
         - { path: ^/configurator/, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_METAMODEL')"}
 

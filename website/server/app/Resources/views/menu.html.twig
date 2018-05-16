@@ -37,7 +37,7 @@
         </li>
     {% endif %}
 
-    {% if (user.isAllowed('MANAGE_USERS') or user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS') or user.isAllowed('CHECK_CONF')) %}
+    {% if user.isAllowed('MANAGE_USERS') or user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS') %}
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Menu.Administration'|trans }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -48,9 +48,6 @@
                 {% endif %}
                 {% if (user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')) %}
                     <li><a href="{{ path('configuration_parameters') }}">{{ 'Menu.PlatformParameters'|trans }}</a></li>
-                {% endif %}
-                {% if (user.isAllowed('CHECK_CONF')) %}
-                    <li><a href="{{ path('checkconf_showconfig') }}">{{ 'Menu.CheckConfiguration'|trans }}</a></li>
                 {% endif %}
             </ul>
         </li>
