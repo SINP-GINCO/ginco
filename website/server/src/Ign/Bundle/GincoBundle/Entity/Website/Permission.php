@@ -2,6 +2,8 @@
 namespace Ign\Bundle\GincoBundle\Entity\Website;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ign\Bundle\GincoBundle\Entity\Website\PermissionGroup;
+
 
 /**
  * Permission
@@ -23,6 +25,25 @@ class Permission implements \Serializable {
 	 * @var string @ORM\Column(name="permission_label", type="string", length=255, nullable=true)
 	 */
 	private $label;
+	
+	
+	/**
+	 * 
+	 * @var PermissionGroup
+	 * 
+	 * @ORM\ManyToOne(targetEntity="PermissionGroup", inversedBy="permissions")
+	 * @ORM\JoinColumn(name="permission_group_code", referencedColumnName="code")
+	 */
+	private $group ;
+	
+	
+	/**
+	 * 
+	 * @var string
+	 * 
+	 * @ORM\Column(name="description", type="text")
+	 */
+	private $description ;
 
 	/**
 	 * Set code
@@ -67,7 +88,43 @@ class Permission implements \Serializable {
 	public function getLabel() {
 		return $this->label;
 	}
+	
+	/**
+	 * Get permission group
+	 * @return \Ign\Bundle\GincoBundle\Entity\Website\PermissionGroup
+	 */
+	public function getGroup() {
+		return $this->group ;
+	}
+	
+	/**
+	 * Set permission group
+	 * @param PermissionGroup $group
+	 * @return \Ign\Bundle\GincoBundle\Entity\Website\Permission
+	 */
+	public function setGroup(PermissionGroup $group) {
+		$this->group = $group ;
+		return $this ;
+	}
 
+	/**
+	 * Get description
+	 * @return string
+	 */
+	public function getDescription() {
+		return $this->description ;
+	}
+	
+	/**
+	 * Set description
+	 * @param unknown $description
+	 * @return \Ign\Bundle\GincoBundle\Entity\Website\Permission
+	 */
+	public function setDescription($description) {
+		$this->description = $description ;
+		return $this ;
+	}
+	
 	/**
 	 *
 	 * @see \Serializable::serialize()
@@ -75,7 +132,8 @@ class Permission implements \Serializable {
 	public function serialize() {
 		return serialize(array(
 			$this->code,
-			$this->label
+			$this->label,
+			$this->description
 		));
 	}
 

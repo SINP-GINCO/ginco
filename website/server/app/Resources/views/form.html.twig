@@ -128,3 +128,39 @@
         </div>
   </div>
 {%- endblock image_widget %}
+
+{# Render permission list #}
+{% block permission_widget %}
+	
+	{% set oldGroupName = '' %}
+	{% set groupName = '' %}
+
+	{% for child in form.children %}
+	
+		{% set permission = form.vars.choices[loop.index0].data %}
+		{% set groupName = permission.group.label %}
+		{% if oldGroupName != groupName %}
+			{% set oldGroupName = groupName %}
+			<div class="col-sm-12">
+				<br >
+				<strong>{{ groupName }}</strong>
+			</div>
+		{% endif %}
+		
+		<div class="col-sm-11">
+		    {{ form_widget(child) }}
+		</div>
+		<div class="col-sm-1">
+			<span class="glyphicon glyphicon-question-sign" onclick="javascript:$('#description-{{ permission.code }}').show();"></span>
+		</div>
+		<div class="col-sm-12">	    
+            <div class="well well-sm" id="description-{{ permission.code }}" hidden="">
+    			<small class="text-muted">{{ permission.description }}</small>
+    		</div>
+		</div>
+	        
+	{% endfor %}
+	
+{% endblock %}
+
+

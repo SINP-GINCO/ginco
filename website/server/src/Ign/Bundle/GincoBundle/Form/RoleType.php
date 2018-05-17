@@ -14,6 +14,8 @@ use Ign\Bundle\GincoBundle\Entity\Metadata\TableSchema;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Ign\Bundle\GincoBundle\Validator\Constraints\SavedRequestPermissions;
+use Ign\Bundle\GincoBundle\Form\PermissionType;
+
 
 class RoleType extends AbstractType {
 
@@ -49,20 +51,9 @@ class RoleType extends AbstractType {
 				'title' => 'Role.edit.default'
 			)
 		))
-			->add('permissions', EntityType::class, array(
+			->add('permissions', PermissionType::class, array(
 			'label' => 'Permissions',
-			'class' => Permission::class,
-			'choice_label' => 'label',
-			'multiple' => true,
-			'expanded' => true,
-			'disabled' => $button_inactive,
-			'constraints' => array(
-				new SavedRequestPermissions()
-			),
-			'query_builder' => function (EntityRepository $er) {
-				return $er->createQueryBuilder('d')
-					->orderBy('d.label', 'ASC');
-			}
+			'disabled' => $button_inactive
 		))
 			->add('schemas', EntityType::class, array(
 			'label' => 'Schemas Permissions',
