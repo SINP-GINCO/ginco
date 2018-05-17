@@ -29,6 +29,7 @@ try {
     execCustSQLFile("$sprintDir/add_provider_default0.sql", $config);
     execCustSQLFile("$sprintDir/update_provider_default_in_table.sql", $config);
     execCustSQLFile("$sprintDir/delete_parameters.sql", $config);
+	execCustSQLFile("$sprintDir/add_permission_groups.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";
