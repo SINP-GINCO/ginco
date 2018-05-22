@@ -56,10 +56,8 @@ class JddRepository extends EntityRepository  {
 			// add criterias to the request
 			foreach ($criteria as $key => $value) {
 				$qb->andWhere('f.key = :key')
-				->andWhere('(f.jdd= :jddId OR f.valueString = :valueStr OR f.valueText = :valueStr OR f.valueInteger = :valueInt OR f.valueFloat = :valueFloat OR j.provider = :provider)')
+				->andWhere('(f.valueString = :valueStr OR f.valueText = :valueStr OR f.valueInteger = :valueInt OR f.valueFloat = :valueFloat)')
 				->setParameter('key', $key)
-				->setParameter('jddId', intval($value))
-				->setParameter('provider',(string) $value)
 				->setParameter('valueStr', (string) $value)
 				->setParameter('valueInt', intval($value))
 				->setParameter('valueFloat', floatval($value));
