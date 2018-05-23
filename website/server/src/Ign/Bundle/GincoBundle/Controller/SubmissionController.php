@@ -151,7 +151,7 @@ class SubmissionController extends GincoController {
 		
 		// Test the existence of the file
 		if (!is_file($filePath)) {
-			$this->get('logger')->debug("downloadReportAction: sensibility report file $filePath does not exist, trying to generate them");
+			$this->get('logger')->debug("downloadReportAction: report file $filePath does not exist, trying to generate them");
 			// We try to generate the reports, and then re-test
 			$this->get('ginco.submission_service')->generateReport($submissionId, $report);
 			if (!is_file($filePath)) {

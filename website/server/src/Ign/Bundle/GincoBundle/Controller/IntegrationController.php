@@ -334,19 +334,21 @@ class IntegrationController extends GincoController {
 			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
 			$attachements = array();
 			
-			// Regenerate sensibility report each time (see #815)
+			// (Re)Generate sensibility report each time (see #815)
 			$this->get('ginco.submission_service')->generateReport($submissionId, "sensibilityReport");
 			
+			// (Re)Generate permanentIdsReport report
+			$this->get('ginco.submission_service')->generateReport($submissionId, "permanentIdsReport");
+			
 			foreach ($reports as $report => $reportPath) {
-				// Regenerate report if does not exist
-				if (!is_file($reportPath)) {
-					$this->getLogger()->error("Report file '$report' does not exist for submission $submissionId");
-					return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
-						'error' => $this->get('translator')
-							->trans("An unexpected error occurred.")
-					));
-				}
 				if ($report != 'integrationReport') {
+					if (!is_file($reportPath)) {
+						$this->getLogger()->error("Report file '$report' does not exist for submission $submissionId");
+						return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
+							'error' => $this->get('translator')
+								->trans("An unexpected error occurred.")
+						));
+					}
 					$attachements[] = $reportPath;
 				}
 			}
