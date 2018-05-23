@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <title>OgamDesktop</title>
+    <title>Ginco</title>
+    <link rel="shortcut icon" href="../favicon.gif" />
 
 	<script type="text/javascript">
 	    var Ext = Ext || {};
@@ -28,5 +29,21 @@
     <script id="microloader" type="text/javascript" src="bootstrap.js"></script>
 
 </head>
-<body></body>
+<body>
+<!-- Piwik -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="//ginco.naturefrance.fr/piwik/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '@piwik.id@']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<noscript><p><img src="//ginco.naturefrance.fr/piwik/piwik.php?idsite=@piwik.id@" style="border:0;" alt="" /></p></noscript>
+<!-- End Piwik Code -->
+</body>
 </html>

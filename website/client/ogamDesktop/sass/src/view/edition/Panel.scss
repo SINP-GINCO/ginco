@@ -5,6 +5,13 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+#edition_panel .x-field > label {
+  width: 220px !important;
+}
+#edition_panel .x-field > label > span {
+  width: 210px !important;
+  text-align: right;
+}
 #edition_panel a {
     display: block;
     text-align: center;
@@ -13,4 +20,11 @@
 #edition_panel a.x-btn {
     margin-top: 0;
     margin-bottom: 15px;
+}
+.x-form-item-default.x-item-disabled {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+}
+.x-panel-body-default {
+  border-color:#fff;
 }

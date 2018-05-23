@@ -33,6 +33,7 @@ Ext.define('OgamDesktop.ux.form.field.Tree', {
 	triggerAction:'query',
 	queryMode:'remote',
 	pageSize: 25,
+	minChars : 2,
 
 	/**
 	 * @cfg {Boolean} hideValidationButton if true hide the tree validation button (defaults to true).
@@ -135,19 +136,22 @@ Ext.define('OgamDesktop.ux.form.field.Tree', {
      */
 	createTreePicker:function(){
 		var storepiker = this.treePickerStore;
-		
+
 		this.tree = new OgamDesktop.ux.picker.Tree({
-			columns:this.treePickerColumns,
+			columns : this.treePickerColumns,
 			hideOnClick : false,
 			hideValidationButton : this.hideValidationButton,
-			store:storepiker,
-			floating: true,
-			focusable:false,
-			multiple : this.multiple
+			store : storepiker,
+			floating : true,
+			focusable : false,
+			resizable:true,
+			multiple : this.multiple,
+			width : '50%'
 		});
-		this.mon(this.tree,{
-			choicemake:this.onTreeChoice,
-			scope: this});
+		this.mon(this.tree, {
+			choicemake : this.onTreeChoice,
+			scope : this
+		});
 		return this.tree;
 	},
 

@@ -40,4 +40,20 @@
     display:inline !important;
     margin:0 5px;
 }
+
 /*****************************************************************************************************/
+
+.advanced-request .x-header{
+    background-image:none;
+    background-color: #a4c7b3;
+}
+
+.process-panel .x-header, #advReqPredPanel-placeholder, .advReqPredPanel .x-header{
+    background-image:none;
+    background-color: #96d5b1;
+}
+
+.advanced-request-fieldset .x-header{
+    background-image:none;
+    background-color: #c7e6d4;
+}

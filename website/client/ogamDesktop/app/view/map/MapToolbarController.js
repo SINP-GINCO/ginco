@@ -27,6 +27,13 @@ Ext.define('OgamDesktop.view.map.MapToolbarController', {
         this.selectInteraction = new ol.interaction.Select({
             layers: [this.mapCmpCtrl.getMapLayer('drawingLayer')]
         });
+        
+        // Add event listener for locationInfo
+        this.map.on("click", this.getLocationInfo, this);
+
+        // Hide buttons of consultation toolbar
+        this.lookupReference('zoomInButton').hide();
+        this.lookupReference('resultFeatureInfoButton').hide();
     },
 
     /**
@@ -255,7 +262,24 @@ Ext.define('OgamDesktop.view.map.MapToolbarController', {
 //          Consultation buttons                                                                             //
 //                                                                                                           //
 // ********************************************************************************************************* //
-
+    
+    /**
+     * get the active (currently visible) request layers
+     */
+    getActiveRequestLayersNames: function() {
+        var currentResolution = this.mapCmpCtrl.map.getView().getResolution();
+        var requestLayers = this.mapCmpCtrl.requestLayers;
+        var activeRequestLayersNames = [];
+        requestLayers.forEach(function(element, index, array){
+            // test if element is currently viewed, ie visible (checked in layer_tree)
+            // and current resolution is between min and max resolutions for this layer
+            if (element.getVisible() && this.mapCmpCtrl.isResInLayerRange(element, currentResolution)) {
+                activeRequestLayersNames.push(element.get("name"));
+            }
+        },this);
+        return activeRequestLayersNames;
+    },
+    
     /**
      * Makes a ajax request to get some information about a location.
      * @param {ol.MapBrowserEvent} e the map click event
@@ -266,6 +290,14 @@ Ext.define('OgamDesktop.view.map.MapToolbarController', {
         if (OgamDesktop.map.featureinfo_maxfeatures !== 0) {
             url = url + "&MAXFEATURES=" + OgamDesktop.map.featureinfo_maxfeatures;
         }
+        // Add the active request layers names
+        var activeRequestLayersNames = this.getActiveRequestLayersNames();
+        var layersString = [];
+        activeRequestLayersNames.forEach(function (element, index) {
+            layersString.push( 'layers[]=' + element);
+        });
+        url += '&' + layersString.join('&');
+
         Ext.Ajax.request({
             url : url,
             success : function(rpse, options) {
