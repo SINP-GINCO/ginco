@@ -247,12 +247,9 @@ function buildExtJS($config, $buildMode)
 	// Customize app.json and index.html
 	echo("Customize app.json...\n");
 	substituteInFile("$clientDir/ogamDesktop/app_tpl.json", "$clientDir/ogamDesktop/app.json", $config);
-	// in dev mode, keep original file
-	if ($buildMode == 'dev') {
-		system("cp $clientDir/ogamDesktop/index_tpl.html $clientDir/ogamDesktop/index.html");
-	}
+
 	echo("Customize index.html...\n");
-	substituteInFile("$clientDir/ogamDesktop/index.html", "$clientDir/ogamDesktop/index.html", $config);
+	substituteInFile("$clientDir/ogamDesktop/index_tpl.html", "$clientDir/ogamDesktop/index.html", $config);
 
 	// Build with sencha command
 	echo("Upgrade sencha command...\n");
