@@ -34,6 +34,9 @@ INSERT INTO website.permission_group VALUES
 -- UPDATE permission TABLE
 UPDATE website.permission SET permission_group_code = NULL ;
 
+UPDATE website.permission SET permission_group_code = 'PLATFORM_ADMINISTRATION'
+	WHERE permission_code IN ('CONFIGURE_WEBSITE_PARAMETERS') ;
+
 UPDATE website.permission SET permission_group_code = 'USER_MANAGEMENT' 
 	WHERE permission_code IN ('MANAGE_USERS') ;
 	
