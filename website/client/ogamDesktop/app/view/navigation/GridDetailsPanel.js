@@ -117,6 +117,17 @@ Ext.define('OgamDesktop.view.navigation.GridDetailsPanel', {
      * @param {Object} initConf The initial configuration
      */
     configureDetailGrid : function(initConf) {
+    	// Set the panel title according to the layer where results are returned from
+        var layerLabel = initConf.layerLabel;
+        if (layerLabel) {
+            this.setTitle(this.panelTitle + layerLabel);
+            for (i = 0; i<initConf.columns.length; i++) {
+                initConf.columns[i].flex = 1;
+            }
+        } else {
+            this.setTitle(this.panelTitleNoResults);
+        }
+    	
         this.itemId = initConf.id;
         this.title = initConf.title;
         var store = new Ext.data.ArrayStore({
@@ -180,5 +191,23 @@ Ext.define('OgamDesktop.view.navigation.GridDetailsPanel', {
 			}]
         });
         this.reconfigure(store, columns);
+	},
+	
+    /**
+     * Clear the detail grid
+     */
+	reinitializeDetailGrid : function() {
+		this.setTitle("Tableau(x) détaillé(s)");
+        var store = new Ext.data.ArrayStore({
+            // store configs
+            autoDestroy: true,
+            // reader configs
+            idIndex: 0,
+            fields: null,
+            data: null
+        });
+        var columns = [];
+		this.reconfigure(store, columns);
+		this.collapse();
 	}
 });

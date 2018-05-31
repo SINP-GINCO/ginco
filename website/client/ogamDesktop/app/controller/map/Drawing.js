@@ -205,6 +205,10 @@ Ext.define('OgamDesktop.controller.map.Drawing', {
 				map.getSize()
 			);
 		}
+		
+		// Desactive on map click result feature info
+		this.getMaptb().getController().onResultFeatureInfoButtonPress(null,
+				false, null);
 	},
 
 	/**
@@ -220,6 +224,10 @@ Ext.define('OgamDesktop.controller.map.Drawing', {
 			this.toggleDrawingTbar(false);
 			this.removeDrawingLayerFeatures();
 		}
+		
+		// Active on map click result feature info
+		this.getMaptb().getController().onResultFeatureInfoButtonPress(null,
+				true, null);
 	},
 
 	/**

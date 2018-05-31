@@ -7,3 +7,7 @@
 .o-result-tools-edit-editdetails {
     background-image:url(images/OgamDesktop/tools/edit/page_white_edit.png) !important;
 }
+.disabled {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}

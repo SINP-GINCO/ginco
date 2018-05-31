@@ -26,12 +26,9 @@ class UserController extends GincoController {
 	public function indexAction(Request $request) {
 		// Check if user is logged in; if not redirect to login
 		// It is because this route is not protected in security.yml)
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
-		}
-		// No need to pass the user, it is already in app.user
-		return $this->render('IgnGincoBundle:User:index.html.twig', array(
-		));
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY') ;
+		
+		return $this->render('IgnGincoBundle:User:index.html.twig', array());
 	}
 
 	/**

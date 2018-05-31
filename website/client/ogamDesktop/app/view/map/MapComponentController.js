@@ -190,6 +190,6 @@ Ext.define('OgamDesktop.view.map.MapComponentController', {
                 map.render();
             }
             listenerKey = map.on('postcompose', animate);
-            map.getView().fit(feature.getGeometry().getExtent(), map.getSize());
+            map.getView().fit(feature.getGeometry().getExtent(), map.getSize(), { maxZoom: 10});
     }
 });

@@ -49,7 +49,6 @@ Menu:
   Providers: Organismes
   Roles: Rôles et permissions
   PlatformParameters: Configuration de la plateforme
-  CheckConfiguration: Vérifier la configuration technique
 
 # Breadcrumb
 # ---------------------------
@@ -171,7 +170,7 @@ Data integration module: Gérer les jeux de données
 Datamodel: Modèle de données
 Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
-Create data submission: Créer un jeu de données
+Create data submission: Importer des données
 Submission ID: Id
 
 Submission:
@@ -533,30 +532,6 @@ An error occurred: Une erreur est survenue
 Page not found: Ressource introuvable
 Database Error: Accès refusé sur la base de données
 Application error: Un problème a été rencontré. Merci de signaler cet incident ainsi que les actions qui y ont mené afin qu'il puisse être corrigé.
-
-
-#  Check configuration
-# --------------------
-Check result: Résultat de la vérification
-PHP Parameters: Paramètres PHP
-Error %value% minimum: Erreur %value% minimum
-Expected value: Valeur attendue
-Database: Base de données
-Checking for missing schemas: Vérification de la présence des schemas 
-The schema '%s' described in the metadata doesn't exist in the system.: Le schéma '%s' décrit dans les métadonnées n'existe pas en base.
-Checking for missing tables: Vérification de la présence des tables
-The expected table '%s' of the schema '%s' is not found.: La table obligatoire '%s' du schéma '%s' est introuvable.
-The PK (%s) of the table '%s' is not compatible with the metadata PK (%s).: La clé primaire (%s) de la table '%s' n'est pas compatible avec la clé primaire des métadonnées (%s).
-Checking for primary keys: Vérification des clés primaires
-Checking for missing fields: Vérification de la présence des champs
-Checking field types: Vérification des types des champs
-The Expected data '%s' of the table '%s' of the schema '%s' is not found.: La donnée obligatoire '%s' de la table '%s' du schéma '%s' est manquante.
-The field '%s' of the table '%s' of the schema '%s' is of type '%s' which is incompatible with the metadata definition '%s'.: Le champ '%s' de la table '%s' du schema '%s' est de type '%s' lequel est incompatible avec la définition des métadonnées : '%s'.
-Unknow field type for the data '%s' of the table '%s' of the schema '%s'.: Le type de la donnée '%s' de la table '%s' du schéma '%s' est inconnu.
-Checking foreign keys: Vérification des clés étrangères
-The foreign key between the table '%s' and the table '%s' described in the metadata doesn't exist in the system.: La clé étrangère entre la table '%s' et la table '%s' décrit dans les métadonnées n'existe pas en base.
-The foreign key '%s' between the table '%s' and the table '%s' does not match the metadata definition '%s'.: la clé étrangère '%s' entre la table '%s' et la table '%s' ne correspond pas à la définition des métadonnées : '%s'.
-No database rights: L'utilisateur utilisé pour se connecter à la base doit être administreur pour pouvoir dérouler ces tests.
 
 
 # Mapping

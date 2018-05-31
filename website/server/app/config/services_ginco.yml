@@ -72,14 +72,6 @@ services:
         class: Ign\Bundle\GincoBundle\Repository\GenericRepository
         arguments: ["@doctrine.orm.entity_manager"]
 
-    ginco.repository.database.metadata:
-        parent: ginco.generic_repository
-        class: Ign\Bundle\GincoBundle\Repository\Database\MetadataRepository
-
-    ginco.repository.database.postgresql:
-        parent: ginco.generic_repository
-        class: Ign\Bundle\GincoBundle\Repository\Database\PostgresqlRepository
-
     ginco.repository.mapping.map:
         parent: ginco.generic_repository
         class: Ign\Bundle\GincoBundle\Repository\Mapping\MapRepository

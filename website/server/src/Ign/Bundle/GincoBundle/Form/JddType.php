@@ -34,7 +34,7 @@ class JddType extends AbstractType {
 				},
 			))
 			->add('submit', SubmitType::class, array(
-				'label' => 'Créer le jeu de données'
+				'label' => 'Importer des données'
 			));
 	}
 

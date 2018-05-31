@@ -5,9 +5,9 @@ Gérer les de jeux de données
 
 Dans Ginco, un import de données est nommé **soumission**. Une soumission doit être associée à un jeu de données. Un **jeu de données** se rattache à une fiche de métadonnées. Il peut contenir plusieurs soumissions.
 
-Créer un jeu de données
+Importer des données
 -----------------------
-Pour créer un nouveau jeu de données, cliquez sur "Créer un jeu de données".
+Pour créer un nouveau jeu de données, cliquez sur "Importer des données".
 
 .. image:: ../images/gestion-jdd/lien-jdd-creer.png
 
@@ -23,7 +23,7 @@ Vous devez indiquer :
 
 Pour créer une fiche de métadonnée de jeu de données, un lien vers l’application de métadonnées de l’INPN est proposé (**3**).
 
-Valider le formulaire via le bouton "Créer le jeu de données" (**4**).
+Valider le formulaire via le bouton "Importer des données" (**4**).
 
 Importer des données
 --------------------
