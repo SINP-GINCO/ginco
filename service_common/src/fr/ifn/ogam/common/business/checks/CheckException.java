@@ -103,7 +103,7 @@ public class CheckException extends Exception {
 	public static String getErrorLabel(Integer checkCode) {
 		String label = errorLabels.get(checkCode);
 		if (label == null) {
-			label = "Unknow error type";
+			label = "Unknown error type";
 		}
 		return label;
 	}
