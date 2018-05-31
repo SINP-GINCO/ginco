@@ -334,6 +334,8 @@ public class IntegrationService extends GenericMapper {
 				csvLine = csvFile.readNextLine();
 				row++;
 			}
+			//1005
+			
 
 			// -- Insertion Step --
 			// Do the insert if no error has been found before

@@ -22,7 +22,7 @@ public interface CheckCodes {
 	Integer EMPTY_FILE = 1000;
 
 	/**
-	 * Wrong file number.
+	 * Wrong field number.
 	 */
 	Integer WRONG_FIELD_NUMBER = 1001;
 
@@ -40,6 +40,11 @@ public interface CheckCodes {
 	 * Duplicate row.
 	 */
 	Integer DUPLICATE_ROW = 1004;
+	
+	/**
+	 * No data in file (the file doesn't contain any data)
+	 */
+	Integer NO_DATA_IN_FILE = 1005;
 
 	/**
 	 * Mandatory field missing.
