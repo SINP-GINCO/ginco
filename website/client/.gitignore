@@ -4,6 +4,7 @@ ogamDesktop/.sencha
 *gradle
 build/
 ogamDesktop/app.json
+ogamDesktop/index.html
 ogamDesktop/sencha-error-*.log
 ogamDesktop/bootstrap.json
 ogamDesktop/bootstrap.css

@@ -23,12 +23,14 @@ Ext.define('OgamDesktop.view.request.AdvancedRequest', {
 		itemId:'CancelButton',
 		type: 'button',
 		text : 'Cancel',
-		tooltip : 'Cancel the request'
+		tooltip : 'Cancel the request',
+	    cls: 'x-btn-cancel'
 	},'-',{
 		itemId:'ResetButton',
 		type: 'button',
 		text : 'Reset',
-		tooltip : 'Reset the request form'
+		tooltip : 'Reset the request form',
+	    cls: 'x-btn-cancel'
 	},{ 
 		itemId:'SaveButtonSeparator',
 		xtype: 'tbseparator',
@@ -38,7 +40,8 @@ Ext.define('OgamDesktop.view.request.AdvancedRequest', {
 		type: 'button',
 		text : 'Save',
 		tooltip : 'Save the request',
-		hidden: true
+		hidden: true,
+	    cls: 'x-btn-cancel'
 	},{
 		xtype: 'tbspacer',
 		flex: 1
@@ -48,7 +51,8 @@ Ext.define('OgamDesktop.view.request.AdvancedRequest', {
 		type: 'button',
 		action: 'submit',
 		text : 'Launch',
-		tooltip : 'Launch the request'
+		tooltip : 'Launch the request',
+        cls: 'x-btn-submit'
 	}],
 
 	/**

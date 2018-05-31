@@ -12,7 +12,13 @@
 	    var Ext = Ext || {};
 	    Ext.beforeLoad = function (tags) {
 	    	if (!location.href.match(/client/)) {
-		        Ext.manifest = 'app-theme-gray-fr';
+		        var theme = location.href.match(/theme=([\w-]+)/),
+		            locale = location.href.match(/locale=([\w-]+)/);
+
+		        theme  = (theme && theme[1]) || 'theme-gray';
+		        locale = (locale && locale[1]) || 'fr';
+
+		        Ext.manifest = 'app-' + theme + '-' + locale;
 		    }
 	    };
 	</script>

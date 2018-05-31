@@ -65,6 +65,8 @@ Ext.define('OgamDesktop.ux.request.RequestFieldSet', {
 	 *      <tt>10</tt>)
 	 */
 	comboPageSize : 10,
+	
+    resizable:true,
 
 	/**
 	 * Initializes the component.
@@ -190,9 +192,10 @@ Ext.define('OgamDesktop.ux.request.RequestFieldSet', {
 		dateFormat : 'Y/m/d',
 		/**
 		 * @cfg {String} timeFormat The time format for the time fields
-		 *  default<tt>'H:i'</tt>)
+		 *  default<tt>'H:i:s'</tt>)
 		 */
-		timeFormat : 'H:i',
+		timeFormat : 'H:i:s',
+		
 		/**
 		 * Builds a criteria from the record.
 		 * @private
@@ -276,7 +279,7 @@ Ext.define('OgamDesktop.ux.request.RequestFieldSet', {
 					// type TIME
 					field.xtype = 'timerangefield';
 					field.format = cls.timeFormat;
-					field.submitFormat = 'H:i:s';
+					//field.submitFormat = 'H:i:s';
 					break;
 				case 'NUMERIC': // The input type NUMERIC correspond generally to a data
 					// type NUMERIC or RANGE
@@ -400,61 +403,78 @@ Ext.define('OgamDesktop.ux.request.RequestFieldSet', {
 					}
 	
 					field.treePickerColumns = {
-						items: [{
-							xtype: 'treecolumn',
-							text: cls.prototype.taxrefLatinNameColumnTitle,
-							dataIndex: "label"
-						},{
-							text: cls.prototype.taxrefVernacularNameColumnTitle,
-							dataIndex: "vernacularName"
-						},Ext.applyIf({
-							text: cls.prototype.taxrefReferentColumnTitle,
-							dataIndex: "isReference",
-							flex:0,
-							witdh:15
-						}, OgamDesktop.ux.grid.column.Factory.buildBooleanColumnConfig())],
-						defaults : {
-							flex : 1
-						}
-					};
-					field.listConfig={
-						itemTpl:  [
-							'<tpl for=".">',
-							'<div>',
-								'<tpl if="!Ext.isEmpty(values.isReference) && values.isReference == 0"><i>{label}</i></tpl>',
-								'<tpl if="!Ext.isEmpty(values.isReference) && values.isReference == 1"><b>{label}</b></tpl>',
-								'<br/>',
-								'<tpl if="!Ext.isEmpty(values.vernacularName) && values.vernacularName != null">({vernacularName})</tpl>',
-							'</div></tpl>'
-							]};
-					field.store = {
-						xtype : 'jsonstore',
-						autoDestroy : true,
-						remoteSort : true,
-						model:'OgamDesktop.model.NodeRef',
-						proxy:{
-							type:'ajax',
-							url : Ext.manifest.OgamDesktop.requestServiceUrl + 'ajaxgettaxrefcodes',
-							extraParams:{unit:record.get('unit')},
-							reader:{
-								idProperty : 'code',
-								totalProperty : 'results',
-								rootProperty : 'rows'
+						    items: [{
+						        xtype: 'treecolumn',
+					            text: cls.prototype.taxrefScientificNameColumnTitle,
+					            tooltip: cls.prototype.taxrefScientificNameColumnTooltip,
+					            dataIndex: "scientificName",
+					            flex:37
+					        },{
+					            text: cls.prototype.taxrefLatinNameColumnTitle,
+					            tooltip: cls.prototype.taxrefLatinNameColumnTitle,
+					            dataIndex: "label",
+					            flex:6
+					        },{
+					            text: cls.prototype.taxrefCompleteNameColumnTitle,
+					            tooltip: cls.prototype.taxrefCompleteNameColumnTooltip,
+					            dataIndex: "completeName",
+					            flex:32
+					        },{
+					            text: cls.prototype.taxrefVernacularNameColumnTitle,
+					            tooltip: cls.prototype.taxrefVernacularNameColumnTooltip,
+					            dataIndex: "vernacularName",
+					            flex:25
+					        }],
+							defaults : {
+								flex : 1
 							}
-						},
-						data:codes
-					};
-					field.treePickerStore = Ext.create('OgamDesktop.store.Tree',{
-						model:'OgamDesktop.model.NodeRef',
-						root :{
-							allowDrag : false,
-							id : '*'
-						},
-						proxy:{
-							type:'ajax',
-							url:Ext.manifest.OgamDesktop.requestServiceUrl + 'ajaxgettaxrefnodes',
-							extraParams:{unit:record.get('unit')}
-						}});
+						};
+					field.listConfig={
+							itemTpl:  [
+								'<tpl for=".">',
+								'<div>',
+									'<tpl if="!Ext.isEmpty(values.isReference) && values.isReference == 0"><i>{label}</i></tpl>',
+									'<tpl if="!Ext.isEmpty(values.isReference) && values.isReference == 1"><b>{label}</b></tpl>',
+									'<br/>',
+									'<tpl if="!Ext.isEmpty(values.label) && values.label != null">({label})</tpl>',
+									'<tpl if="!Ext.isEmpty(values.completeName) && values.completeName != null">({completeName})</tpl>',
+									'<tpl if="!Ext.isEmpty(values.vernacularName) && values.vernacularName != null">({vernacularName})</p></tpl>',
+						        '</div></tpl>'
+						   ]};
+						field.store = {
+							xtype : 'jsonstore',
+							autoDestroy : true,
+							remoteSort : true,
+							model:'OgamDesktop.model.NodeRef',
+							proxy:{
+								type:'ajax',
+								url : Ext.manifest.OgamDesktop.requestServiceUrl + 'ajaxgettaxrefcodes',
+								extraParams:{unit: record.get('unit')},
+								reader:{
+									idProperty : 'code',
+									totalProperty : 'results',
+									rootProperty : 'rows'
+								}
+							},
+							data:codes
+						};
+						field.treePickerStore = Ext.create('OgamDesktop.store.Tree',{
+							width : 1200,
+							model:'OgamDesktop.model.NodeRef',
+							root :{
+								allowDrag : false,
+								id : '*'
+							},
+							proxy:{
+								type:'ajax',
+								url:Ext.manifest.OgamDesktop.requestServiceUrl + 'ajaxgettaxrefnodes',
+								extraParams:{unit: record.get('unit')}
+							}
+						});
+						
+						if(record.get('label') == 'cdRef'){
+							field.treePickerStore.filter('isReference', true);
+						}
 					break;
 				default:
 					field.xtype = 'field';

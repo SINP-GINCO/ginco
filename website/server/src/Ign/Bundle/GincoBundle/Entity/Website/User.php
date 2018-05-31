@@ -215,11 +215,23 @@ class User implements UserInterface, \Serializable {
 		return false;
 	}
 
+	/**
+	 * Get permissions ordered by group label.
+	 * @return \Doctrine\Common\Collections\ArrayCollection
+	 */
 	public function getPermissions() {
 		$permissions = array();
 		foreach ($this->roles as $role) {
 			$permissions = array_merge($permissions, $role->getPermissions()->toArray());
 		}
+		
+		usort($permissions, function(Permission $a, Permission $b) {
+			if ($a->getGroup()->getLabel() == $b->getGroup()->getLabel()) {
+				return $a->getLabel() > $b->getLabel() ; 
+			}
+			return $a->getGroup()->getLabel() > $b->getGroup()->getLabel() ;
+		});
+		
 		return new ArrayCollection($permissions);
 	}
 

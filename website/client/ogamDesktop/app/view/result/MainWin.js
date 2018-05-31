@@ -23,8 +23,8 @@ Ext.define('OgamDesktop.view.result.MainWin', {
 	 * @cfg {Boolean} hideExportButton if true hide the export button (defaults to false).
 	 */
 	hideGridCsvExportMenuItem: false,
-	hideGridKmlExportMenuItem: false,
-	hideGridGeoJSONExportMenuItem: false,
+	hideGridKmlExportMenuItem: true,
+	hideGridGeoJSONExportMenuItem: true,
 
 	/**
 	 * @cfg {String} csvExportMenuItemText The grid Csv Export Menu Item Text (defaults to <tt>'Export CSV'</tt>)

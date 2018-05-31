@@ -21,8 +21,6 @@ insert into application_parameters (name, value, description) values ( 'max_repo
 insert into application_parameters (name, value, description) values ( 'useCache' , true , 'Cache');
 insert into application_parameters (name, value, description) values ( 'max_execution_time' , 480 , 'Timeout , 0 : no limit');
 insert into application_parameters (name, value, description) values ( 'memory_limit' , '1024M' , 'memory limit');
-insert into application_parameters (name, value, description) values ( 'post_max_size' , '100M' , 'Note : "post_max_size" and "upload_max_filesize" are under the PHP_INI_PERDIR mode (php.ini, .htaccess or httpd.conf).The parameter must be set into the php.ini file because it s not possible in the other files when php is running under the CGI mode. So we can only check if it s done.');
-insert into application_parameters (name, value, description) values ( 'upload_max_filesize' , '150M' , 'Note : "post_max_size" and "upload_max_filesize" are under the PHP_INI_PERDIR mode (php.ini, .htaccess or httpd.conf).The parameter must be set into the php.ini file because it s not possible in the other files when php is running under the CGI mode. So we can only check if it s done.');
 insert into application_parameters (name, value, description) values ( 'image_upload_dir' , 'APPLICATION_PATH "/../../upload/images' , 'File Upload');
 insert into application_parameters (name, value, description) VALUES ('image_dir_rights', '0662', 'File Upload');
 insert into application_parameters (name, value, description) values ( 'image_extensions' , 'jpg,png,jpeg' , 'File Upload');

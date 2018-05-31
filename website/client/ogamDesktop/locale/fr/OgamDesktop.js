@@ -22,7 +22,13 @@ Ext.define("OgamDesktop.locale.fr.controller.result.Grid", {
 Ext.define("OgamDesktop.locale.fr.controller.map.Main", {
     override: "OgamDesktop.controller.map.Main",
 	requestLoadingMessage: 'Veuillez patienter, pendant le chargement de la carte...',
-	getresultsbboxErrorTitle: "Chargement de l'emprise échoué :"
+	getresultsbboxErrorTitle: "Chargement de l'emprise échoué :",
+	noGeometryErrorTitle: 'Pas de géométrie observation',
+	noGeometryError: 'Cette observation n\'a pas de géométrie visible sur la carte.',
+	restrainedBboxWarningTitle: 'L\'emprise spatiale des résultats est restreinte',
+	restrainedBboxWarning: 'Le nombre de résultats étant très élevé, l\'emprise spatiale affichée correspond à l\'emprise par défaut de la plateforme',
+	ToMuchResultsTitle: "Echec de la recherche :",
+	ToMuchResultsMessage: "{0} résultats trouvés. Ce nombre est trop élevé pour pouvoir les afficher. Veuillez préciser votre recherche."
 });
 Ext.define("OgamDesktop.locale.fr.controller.request.PredefinedRequest", {
     override: "OgamDesktop.controller.request.PredefinedRequest",
@@ -34,16 +40,22 @@ Ext.define("OgamDesktop.locale.fr.controller.request.PredefinedRequest", {
 Ext.define("OgamDesktop.locale.fr.ux.request.RequestFieldSet", {
     override: "OgamDesktop.ux.request.RequestFieldSet",
 	criteriaComboEmptyText : "Sélectionner...",
-	taxrefLatinNameColumnTitle : 'Nom latin',
+	taxrefReferentColumnTitle : 'Référent',
+	taxrefScientificNameColumnTitle : 'Nom scientifique',
+	taxrefScientificNameColumnTooltip : 'Le nom scientifique sans l\'autorité (LB_NOM) du taxon',
+	taxrefLatinNameColumnTitle : 'Code',
+	taxrefLatinNameColumnTooltip : 'Le code (CD_NOM) du taxon',
 	taxrefVernacularNameColumnTitle : 'Nom vernaculaire',
-	taxrefReferentColumnTitle : 'Référent'
+	taxrefVernacularNameColumnTooltip : 'Le nom vernaculaire du taxon',
+	taxrefCompleteNameColumnTitle : 'Nom complet',
+	taxrefCompleteNameColumnTooltip : 'Le nom complet du taxon (nom et auteur)'
 });
 Ext.define("OgamDesktop.locale.fr.ux.request.AdvancedRequestFieldSet", {
     override: "OgamDesktop.ux.request.AdvancedRequestFieldSet",
-	criteriaPanelTbarLabel : "Critères",
+    criteriaPanelTbarLabel : "<strong>Critères</strong>",
 	criteriaPanelTbarComboEmptyText : "Sélectionner...",
 	criteriaPanelTbarComboLoadingText : "Recherche en cours...",
-	columnsPanelTbarLabel : "Colonnes",
+    columnsPanelTbarLabel : "<strong>Résultats</strong>",
 	columnsPanelTbarComboEmptyText : "Sélectionner...",
 	columnsPanelTbarComboLoadingText : "Recherche en cours...",
 	columnsPanelTbarAddAllButtonTooltip : "Ajouter toutes les colonnes",
@@ -173,7 +185,8 @@ Ext.define('OgamDesktop.locale.fr.view.edition.Panel',{
 	contentTitleEditPrefix : 'Edition d\'un(e)',
 	tipEditPrefix :'Editer le/la/l\'',
 	editToastTitle : 'Soumission du formulaire :',
-	deleteToastTitle : 'Opération de suppression :'
+	deleteToastTitle : 'Opération de suppression :',
+	toggleVisibilityLabel: 'Montrer/Cacher les champs facultatifs'
 });
 
 /*
@@ -226,7 +239,9 @@ Ext.define("OgamDesktop.locale.fr.view.request.AdvancedRequest", {
 	override:'OgamDesktop.view.request.AdvancedRequest',
 	requestSelectTitle:'<b>Formulaires</b>',
 	processPanelTitle:'Type de données',
-	processCBEmptyText:'Selectionner un type de données...'
+	processCBEmptyText:'Selectionner un type de données...',
+	processPanelHelpTitle: 'Sélectionner un modèle de données',
+	processPanelHelpDefinition:	"Ce composant permet de sélectionner l'ensemble de données dans lequel rechercher des données."
 }, function(overriddenClass){
 
 	var bbar = overriddenClass.prototype.bbar;
@@ -447,5 +462,7 @@ Ext.define('OgamDesktop.locale.fr.view.navigation.Tab', {
     loadingMsg: "Cgmt...",
     //dateFormat : 'Y/m/d',
     openNavigationButtonTitle : 'Afficher les détails',
-    openNavigationButtonTip : 'Affiche la fiche détaillée dans l\'onglet des fiches détaillées.'
+    openNavigationButtonTip : 'Affiche la fiche détaillée dans l\'onglet des fiches détaillées.',
+    panelTitle: 'Résultat(s) depuis la couche des ',
+    panelTitleNoResults: 'Pas de résultats'
 });

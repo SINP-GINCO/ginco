@@ -84,11 +84,27 @@ COMMENT ON COLUMN ROLE_TO_USER.USER_LOGIN IS 'The user';
 COMMENT ON COLUMN ROLE_TO_USER.ROLE_CODE IS 'The role';
 
 /*==============================================================*/
+/* Table : PERMISSION_GROUP                                     */
+/*==============================================================*/
+
+create table PERMISSION_GROUP (
+	code 				TEXT 						NOT NULL,
+	label 				TEXT,
+	CONSTRAINT pk_permission_group PRIMARY KEY (code)
+);
+
+COMMENT ON TABLE PERMISSION_GROUP IS 'List of permission groups';
+COMMENT ON COLUMN PERMISSION_GROUP.CODE IS 'Code of the group';
+COMMENT ON COLUMN PERMISSION_GROUP.LABEL IS 'Group description';
+
+/*==============================================================*/
 /* Table : PERMISSION                                           */
 /*==============================================================*/
 create table PERMISSION (
-permission_code      	VARCHAR(36)              not null,
-permission_label      	VARCHAR(255)             not null,
+permission_code      	VARCHAR(36)             	not null,
+permission_label      	VARCHAR(255)            	not null,
+permission_group_code	TEXT 						REFERENCES PERMISSION_GROUP(code),
+description				TEXT,
 constraint PK_PERMISSION primary key (PERMISSION_CODE)
 );
 
@@ -101,8 +117,8 @@ COMMENT ON COLUMN PERMISSION.PERMISSION_LABEL IS 'The label';
 /* Table : PERMISSION_PER_ROLE                                  */
 /*==============================================================*/
 create table PERMISSION_PER_ROLE (
-role_code              	INTEGER                 not null,
-permission_code      	VARCHAR(36)             not null,
+role_code              	INTEGER                		not null,
+permission_code      	VARCHAR(36)             	not null,
 constraint PK_PERMISSION_PER_ROLE primary key (ROLE_CODE, PERMISSION_CODE)
 );
 

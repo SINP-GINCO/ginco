@@ -58,27 +58,38 @@ INSERT INTO role_to_schema(role_code, schema_code) VALUES (2, 'RAW_DATA');
 INSERT INTO role_to_schema(role_code, schema_code) VALUES (3, 'RAW_DATA');
 INSERT INTO role_to_schema(role_code, schema_code) VALUES (4, 'RAW_DATA');
 
+-- List of permission groups.
+INSERT INTO website.permission_group VALUES
+	('USER_MANAGEMENT', 'Administration des utilisateurs'),
+	('PLATFORM_ADMINISTRATION', 'Administration de la plateforme'),
+	('MODEL_CONFIGURATION', 'Configuration des modèles'),
+	('JDD_MANAGEMENT', 'Gestion et consultation des jeux de données'),
+	('DATA_MANAGEMENT', 'Gestion et consultation des données'),
+	('REGISTERED_QUERIES', 'Requêtes enregistrées')
+;
+
 -- List the permissions of the web site
-INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_USERS', 'Administrer les utilisateurs');
-INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_INTEGRATION', 'Importer des données');
-INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_QUERY', 'Visualiser les données régionales publiées');
-INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_QUERY_OTHER_PROVIDER', 'Visualiser les données non publiées d''un autre organisme');
-INSERT INTO permission(permission_code, permission_label) VALUES ('EXPORT_RAW_DATA', 'Exporter les données (au format CSV, GeoJson, kml...)');
-INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_EDITION', 'Editer les données');
-INSERT INTO permission(permission_code, permission_label) VALUES ('DATA_EDITION_OTHER_PROVIDER', 'Editer les données d''un autre organisme');
-INSERT INTO permission(permission_code, permission_label) VALUES ('CANCEL_VALIDATED_SUBMISSION', 'Annuler une soumission de données validées');
-INSERT INTO permission(permission_code, permission_label) VALUES ('CANCEL_OTHER_PROVIDER_SUBMISSION', 'Annuler une soumission de données d''un autre organisme');
-INSERT INTO permission(permission_code, permission_label) VALUES ('CHECK_CONF', 'Vérifier la configuration technique (PHP, mémoire,...)');
-INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_METAMODEL', 'Configurer le méta-modèle');
-INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_SENSITIVE', 'Visualiser les données sensibles');
-INSERT INTO permission(permission_code, permission_label) VALUES ('VIEW_PRIVATE', 'Visualiser les données privées');
-INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer les jeux de données de tous les utilisateurs');
-INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIRM_SUBMISSION', 'Publier les données');
-INSERT INTO permission(permission_code, permission_label) VALUES ('GENERATE_DEE_OWN_JDD', 'Générer et transmettre à l''INPN les DEE de ses propres jeux de données' );
-INSERT INTO permission(permission_code, permission_label) VALUES ('GENERATE_DEE_ALL_JDD', 'Générer et transmettre à l''INPN les DEE de tous les jeux de données' );
-INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_PUBLIC_REQUEST', 'Gérer les requêtes publiques');
-INSERT INTO permission(permission_code, permission_label) VALUES ('MANAGE_OWNED_PRIVATE_REQUEST', 'Gérer ses requêtes privées');
-INSERT INTO permission(permission_code, permission_label) VALUES ('CONFIGURE_WEBSITE_PARAMETERS', 'Configurer les paramètres de la plateforme');
+INSERT INTO permission(permission_code, permission_label, permission_group_code, description) VALUES 
+  ('MANAGE_USERS', 'Administrer les utilisateurs, rôles et permissions', 'USER_MANAGEMENT', 'Ajouter et supprimer les utilisateurs dans la plateforme. Définir les rôles et y associer des permissions. Attribuer les rôles et permissions aux utilisateurs.'),
+  ('DATA_INTEGRATION', 'Créer et gérer ses propres jeux de données', 'DATA_MANAGEMENT', 'Créer des jeux de données à partir d''une fiche de métadonnées, voir et supprimer ses propres jeux de données. Importer des données dans ses propres jeux de données, supprimer ses propres imports.'),
+  ('DATA_QUERY', 'Consulter les données publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser les données publiées. L''accès aux informations de localisation plus ou moins précises dépend des éventuelles restrictions d''accès des données (sensibles, privées) et des autres permissions.'),
+  ('DATA_QUERY_OTHER_PROVIDER', 'Consulter toutes les données non publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser toutes les données non publiées.'),
+  ('EXPORT_RAW_DATA', 'Exporter les données', 'DATA_MANAGEMENT', 'Exporter (au format CSV, GeoJson, kml…) les données sur lesquelles on a les droits de consultation. Les limitations d''accès aux informations de localisation sont les mêmes que pour la consultation.'),
+  ('DATA_EDITION', 'Editer les données', 'DATA_MANAGEMENT', 'Editer les données.'),
+  ('DATA_EDITION_OTHER_PROVIDER', 'Editer les données d''un autre organisme', 'DATA_MANAGEMENT', 'Editer les données d''un autre organisme.'),
+  ('CANCEL_VALIDATED_SUBMISSION', 'Annuler une soumission de données validées', 'DATA_MANAGEMENT', 'Annuler une de ses soumissions de données pas encore publiée.'),
+  ('CANCEL_OTHER_PROVIDER_SUBMISSION', 'Annuler une soumission de données d''un autre organisme', 'DATA_MANAGEMENT', 'Annuler une soumission de données d''un autre organisme pas encore publiée.'),
+  ('CONFIGURE_METAMODEL', 'Configurer le méta-modèle', 'MODEL_CONFIGURATION', 'Configurer les modèles de données, les modèles d''import, et le dictionnaire de données.'),
+  ('VIEW_SENSITIVE', 'Consulter toutes les données sensibles', 'DATA_MANAGEMENT', 'Outrepasser les restrictions d''accès aux informations de localisation précises lorsque les données sont sensibles, pour toutes les données.'),
+  ('VIEW_PRIVATE', 'Consulter toutes les données privées', 'DATA_MANAGEMENT', 'Outrepasser les restrictions d''accès aux informations de localisation précises lorsque les données sont privées, pour toutes les données.'),
+  ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer tous les jeux de données', 'JDD_MANAGEMENT', 'Voir et supprimer n''importe quel jeu de données. Modifier l''organisme de rattachement d''un jeu de données, ou créer un jeu de données pour un autre organisme. Importer des données dans n''importe quel jeu de données, supprimer n''importe quel import. Attention cette permission n''est à confier qu''aux administrateurs.'),
+  ('CONFIRM_SUBMISSION', 'Publier n''importe quel jeu de données', 'JDD_MANAGEMENT', 'Publier et dépublier tous les jeux de données.  Attention cette permission n''est à confier qu''aux administrateurs.'),
+  ('GENERATE_DEE_OWN_JDD', 'Gérer les DEE de ses propres jeux de données', 'JDD_MANAGEMENT', 'Générer et transmettre à l''INPN les DEE de ses propres jeux de données. Les regénérer et les supprimer (avec notification à l''INPN), les télécharger.'),
+  ('GENERATE_DEE_ALL_JDD', 'Gérer les DEE de tous les jeux de données', 'JDD_MANAGEMENT', 'Générer et transmettre à l''INPN les DEE de tous les jeux de données. Les regénérer et les supprimer (avec notification à l''INPN), les télécharger.'),
+  ('MANAGE_PUBLIC_REQUEST', 'Gérer les requêtes publiques', 'REGISTERED_QUERIES', 'Créer, éditer, supprimer des requêtes enregistrées publiques.'),
+  ('MANAGE_OWNED_PRIVATE_REQUEST', 'Gérer ses requêtes privées', 'REGISTERED_QUERIES', 'Créer, éditer, supprimer des requêtes enregistrées privées.'),
+  ('CONFIGURE_WEBSITE_PARAMETERS', 'Configurer les paramètres de la plateforme', 'PLATFORM_ADMINISTRATION', 'Configurer les paramètres de la plateforme ainsi que la page d''accueil et la page de présentation.')
+;
 
 -- Add the permissions for role Développeur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS');
@@ -90,7 +101,6 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_EDI
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_EDITION_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CANCEL_VALIDATED_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CANCEL_OTHER_PROVIDER_SUBMISSION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CHECK_CONF');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_METAMODEL');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_SENSITIVE');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_PRIVATE');

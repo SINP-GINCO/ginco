@@ -44,7 +44,15 @@
             <p>{{ 'User.account.permissions.role'|trans }} <strong>{{ user.roles|join(', ') }}</strong>.</p>
             <p>{{ 'User.account.permissions.permissions'|trans }}</p>
             <ul class="triangle-bullets">
-            {% for permission in user.permissions %}
+            {% set oldPermissionGroup = '' %}
+            {% for permission in app.user.permissions %}
+            	{% set permissionGroup = permission.group.label %}
+            	{% if oldPermissionGroup != permissionGroup %}
+            		{% set oldPermissionGroup = permissionGroup %}
+            		<br />
+            		<strong>{{ permissionGroup }}</strong>
+            	{% endif %}
+            	
                 <li>{{ permission.label }}</li>
             {% endfor %}
             </ul>
