@@ -244,6 +244,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		fields.put(DSRConstants.VERSION_REF_MAILLE, STRING);
 		fields.put(DSRConstants.NOM_REF_MAILLE, STRING);
 		fields.put(DSRConstants.VERSION_TAXREF, STRING);
+		fields.put(DSRConstants.CD_NOM_CALC, CODE);
+		fields.put(DSRConstants.CD_REF_CALC, CODE);
 
 		for (Map.Entry<String, String> field : fields.entrySet()) {
 			if (!values.containsKey(field.getKey())) {
@@ -846,6 +848,23 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 				}
 			}
 		}
+		
+		// -- Calculate cdNomCalcule
+		GenericData cdNom = values.get(DSRConstants.CD_NOM) ;
+		if (cdNom != null && !empty(cdNom)) {
+			GenericData cdNomCalcule = values.get(DSRConstants.CD_NOM_CALC) ;
+			cdNomCalcule.setValue(cdNom.getValue());
+		}
+		
+		// -- Calculate cdRefCalcule
+		GenericData cdRef = values.get(DSRConstants.CD_REF) ;
+		GenericData cdRefCalcule = values.get(DSRConstants.CD_REF_CALC) ;
+		if (cdRef != null && !empty(cdRef)) {
+			cdRefCalcule.setValue(cdRef.getValue()) ;
+		} else if ((cdRef == null || empty(cdRef)) && cdNom != null && !empty(cdNom)) {
+			cdRefCalcule.setValue(cdNom.getValue());
+		}
+		
 	}
 
 	/**
