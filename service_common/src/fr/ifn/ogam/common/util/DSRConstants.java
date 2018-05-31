@@ -44,7 +44,9 @@ public class DSRConstants {
 
 	// Sujet Observation
 	public final static String CD_NOM = "cdnom";
+	public final static String CD_NOM_CALC = "cdnomcalcule";
 	public final static String CD_REF = "cdref";
+	public final static String CD_REF_CALC = "cdrefcalcule";
 	public final static String VERSION_TAXREF = "versiontaxref";
 	public final static String NOM_CITE = "nomcite";
 	public final static String JOUR_DATE_DEBUT = "jourdatedebut";

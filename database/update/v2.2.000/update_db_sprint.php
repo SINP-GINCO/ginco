@@ -1,5 +1,6 @@
 <?php
 $sprintDir = dirname(__FILE__);
+$initDir = realpath(dirname(__FILE__)."/../../init/") ;
 require_once "$sprintDir/../../../lib/share.php";
 
 // ------------------------------------------------
@@ -23,12 +24,31 @@ if (count($argv) == 1)
 	usage();
 $config = loadPropertiesFromArgs();
 
+$isDlb = strpos($config['db.name'], 'dlb') !== FALSE ;
+
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/permissions.sql", $config);
 	execCustSQLFile("$sprintDir/jdd.sql", $config);
 
+	if (!$isDlb) {
+		execCustSQLFile("$sprintDir/update_taxref_to_v11.sql", $config) ;
+		
+		$connectStr ="host="     .$config['db.host'];
+		$connectStr.=" port="    .$config['db.port'];
+		$connectStr.=" user="    .$config['db.adminuser'];
+		$connectStr.=" password=".$config['db.adminuser.pw'];
+		$connectStr.=" dbname="  .$config['db.name'];
+		system("$sprintDir/populateTaxref.sh $connectStr", $returnCode2) ;
+		if ($returnCode2 != 0) {
+			echo "$sprintDir/update_db_sprint.php\n";
+			echo "exception: " . $e->getMessage() . "\n";
+			exit(1);
+		}
+	}
+
+	execCustSQLFile("$initDir/populate_mode_taxref_table.sql", $config) ;	
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
@@ -39,10 +59,14 @@ try {
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch php here */
 //system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
+system("php $sprintDir/update_taxref_v11_metadata.php $CLIParams", $returnCode1) ;
 
+if (!$isDlb) {
+	system("php $sprintDir/update_taxref_v11_data.php $CLIParams", $returnCode3) ;
+}
 
-//if ($returnCode1 != 0) {
-//	echo "$sprintDir/update_db_sprint.php\n";
-//	echo "exception: " . $e->getMessage() . "\n";
-//	exit(1);
-//}
+if ($returnCode1 != 0 || $returnCode3 != 0) {
+ 	echo "$sprintDir/update_db_sprint.php\n";
+ 	echo "exception: " . $e->getMessage() . "\n";
+ 	exit(1);
+}
