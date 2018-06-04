@@ -39,7 +39,7 @@ Menu:
   Datasets: Jeux de données
   ManageAllDatasets: Gérer tous les jeux de données
   ManageMyDatasets: Gérer mes jeux de données
-  ImportDataset: Importer des données
+  ImportDataset: Verser des données
   Configurator: Configuration des modèles
   DataModels: Modèles de données
   ImportModels: Modèles d'import
@@ -55,7 +55,7 @@ Menu:
 Breadcrumb:
   Home: Accueil
   Integration: Gérer les jeux de données
-  Integration.New: Importer un nouveau jeu de données
+  Integration.New: Verser des données
   Integration.Show: Détails du jeu de données
   ErrorReport: Rapport d'intégration de données
   User: Mon compte
@@ -170,7 +170,7 @@ Data integration module: Gérer les jeux de données
 Datamodel: Modèle de données
 Dataset: Modèle d'import
 Manage datasets: Gérer les jeux de données
-Create data submission: Importer des données
+Create data submission: Verser des données
 Submission ID: Id
 
 Submission:
@@ -273,9 +273,9 @@ Integration:
       report: Le rapport de cette soumission n'est pas accessible.
 
 import.format:
-  csv: Importer des données au format csv
+  csv: Verser des données au format csv
   shp:
-    label: Importer des données au format shapefile
+    label: Verser des données au format shapefile
     extension: Les fichiers shapefile doivent être transmis sous forme d'une archive zip.
     files: L'archive et les fichiers qu'elle contient doivent être nommés de la même façon, et l'archive doit contenir au moins 4 fichiers avec les extensions .shp, .dbf, .shx et .prj
 
@@ -298,7 +298,7 @@ sridDescription: "Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 4
 
 Jdd:
   new:
-    title: Importer des données dans un jeu de données
+    title: Verser des données
     metadataIdLabel: Identifiant de métadonnées
     metadataIdDescription: L'identifiant de métadonnées renseigné doit être présent dans <a href="%metadataUrl%" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="%documentationUrl%/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
   delete:
@@ -383,7 +383,7 @@ DEE:
     nocomment: Vous n'avez pas laissé de commentaire !
 
   impossibleModal:
-    body: Pour générer et transmettre la DEE pour ce jeu de données, vous devez y importer des données puis les publier.
+    body: Pour générer et transmettre la DEE pour ce jeu de données, vous devez y verser des données puis les publier.
 
 # Data Query
 # ----------
