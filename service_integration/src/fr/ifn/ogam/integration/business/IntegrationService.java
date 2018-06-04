@@ -18,6 +18,7 @@ import static fr.ifn.ogam.common.business.checks.CheckCodes.UNEXPECTED_SQL_ERROR
 import static fr.ifn.ogam.common.business.checks.CheckCodes.WRONG_FIELD_NUMBER;
 import static fr.ifn.ogam.common.business.checks.CheckCodes.WRONG_FILE_FIELD_CSV_LABEL;
 import static fr.ifn.ogam.common.business.checks.CheckCodes.DUPLICATED_FILE_LABEL;
+import static fr.ifn.ogam.common.business.checks.CheckCodes.NO_DATA_IN_FILE;
 import static fr.ifn.ogam.common.business.checks.CheckCodes.MANDATORY_HEADER_LABEL_MISSING;
 
 import java.util.ArrayList;
@@ -335,6 +336,12 @@ public class IntegrationService extends GenericMapper {
 				row++;
 			}
 			//1005
+			if (row == 1) {
+				CheckException ce = new CheckException(NO_DATA_IN_FILE);
+				ce.setSourceFormat(sourceFormat);
+				ce.setSubmissionId(submissionId);
+				throw ce;				
+			}
 			
 
 			// -- Insertion Step --
