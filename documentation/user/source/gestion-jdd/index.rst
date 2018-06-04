@@ -9,7 +9,7 @@ fournis sous forme de fichiers CSV ou shapefile.
 
 
 .. warning::
-    L'accès au module de gestion de jeux de données GINCO nécessite un rôle possédant la permission "Importer des données", par
+    L'accès au module de gestion de jeux de données GINCO nécessite un rôle possédant la permission "Verser des données", par
     défaut seulement le rôle "Administrateur".
 
 .. toctree::

@@ -34,7 +34,7 @@ class JddType extends AbstractType {
 				},
 			))
 			->add('submit', SubmitType::class, array(
-				'label' => 'Importer des données'
+				'label' => 'Verser des données'
 			));
 	}
 
