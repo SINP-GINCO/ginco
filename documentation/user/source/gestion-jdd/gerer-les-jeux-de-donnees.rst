@@ -5,9 +5,9 @@ Gérer les de jeux de données
 
 Dans Ginco, un import de données est nommé **soumission**. Une soumission doit être associée à un jeu de données. Un **jeu de données** se rattache à une fiche de métadonnées. Il peut contenir plusieurs soumissions.
 
-Importer des données
+Verser des données
 -----------------------
-Pour créer un nouveau jeu de données, cliquez sur "Importer des données".
+Pour créer un nouveau jeu de données, cliquez sur "Verser des données".
 
 .. image:: ../images/gestion-jdd/lien-jdd-creer.png
 
@@ -23,9 +23,9 @@ Vous devez indiquer :
 
 Pour créer une fiche de métadonnée de jeu de données, un lien vers l’application de métadonnées de l’INPN est proposé (**3**).
 
-Valider le formulaire via le bouton "Importer des données" (**4**).
+Valider le formulaire via le bouton "Verser des données" (**4**).
 
-Importer des données
+Verser des données
 --------------------
 L’import de données ce fait au sein d’un jeu de données déclaré dans le SINP. Il faut donc en avoir créé un dans l'application nationale de Métadonnées SINP auparavant.
 
@@ -80,7 +80,7 @@ Liste des jeux de données
 Pour accéder à la liste de vos jeux de données, accédez à la page en cliquant dans le menu sur "*Jeux de données / Gérer mes jeux de données*".
 Cette page d'accueil de gestion des jeux de données liste l'ensemble de **vos** jeux de données ainsi que leurs actions associées.
 
-Par ailleurs, les utilisateurs ayant les permissions "*Gérer tous les jeux de données*" et "*Importer des données*" ont accès en plus à la page de gestion de **tous** les jeux de données de la plateforme.
+Par ailleurs, les utilisateurs ayant les permissions "*Gérer tous les jeux de données*" et "*Verser des données*" ont accès en plus à la page de gestion de **tous** les jeux de données de la plateforme.
 Sur cette page, une colonne "*Organisme / Utilisateur*" a été rajoutée pour déterminer rapidement l'origine de chaque jeu de données.
 La page d'accueil de gestion des jeux de données liste l'ensemble des jeux de données ainsi que leurs actions associées.
 
