@@ -26,7 +26,8 @@ try {
 	
 	$sql = "SELECT * FROM website.application_parameters WHERE name = 'environment'" ;
 	$result = pg_query($sql) ;
-	if ($result) {
+	$numRows = pg_num_rows($result) ;
+	if ($numRows > 0) {
 		echo "Parameter 'environment' is already set.".PHP_EOL ;
 		pg_close($dbconn) ;
 		exit(0) ;
