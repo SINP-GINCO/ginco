@@ -1,7 +1,7 @@
 {% extends "IgnGincoBundle:Emails:base-email.html.twig" %}
 
 {%- block subject %}
-    Nouveau message de contact
+    Nouveau message de contact - {{ subject|trans }}
 {% endblock -%}
 
 {%- block email_body_text %}
@@ -9,6 +9,10 @@
         {{ site_name }}
         ---------------------------------------------
         Message envoyé via le formulaire de contact :
+        
+        Emetteur : {{ sender }} {% if job %}({{ job }}){% endif %}
+        
+        Sujet : {{ subject|trans }}
 
         {{ message }}
         ---------------------------------------------
@@ -22,6 +26,10 @@
     {% autoescape false %}
         <p><strong>{{ site_name }}</strong></p>
         <p><em>Message envoyé via le formulaire de contact :</em></p>
+        
+        <p><em>Emetteur</em> : {{ sender }} {% if job %}<small>({{ job }})</small>{% endif %}</p>
+        
+        <p><em>Sujet</em> : {{ subject|trans }}</p>
 
         <p>{{ message|nl2br }}</p>
 
