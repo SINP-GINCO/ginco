@@ -17,12 +17,12 @@ try {
 	$conn_string = "host={$config['db.host']} port={$config['db.port']} user={$config['db.adminuser']} password={$config['db.adminuser.pw']} dbname={$config['db.name']}";
 	$dbconn = pg_connect($conn_string) or die('Connection failed');
 	
-	
 	$instanceEnv = $config['instance.environment'] ;
 	
 	$sql = "SELECT * FROM website.application_parameters WHERE name = 'environment'" ;
 	$result = pg_query($sql) ;
-	if ($result) {
+	$numRows = pg_num_rows($result) ;
+	if ($numRows > 0) {
 		echo "Parameter 'environment' is already set.".PHP_EOL ;
 		pg_close($dbconn) ;
 		exit(0) ;
