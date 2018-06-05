@@ -8,6 +8,9 @@
 # Instance name (ex localhost)
 instance.name=localhost
 
+# Instance environment (dev, test, prod)
+instance.environment=dev
+
 # Database configuration
 #=======================
 db.host=localhost

@@ -40,6 +40,7 @@ try {
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch php here */
 system("php $sprintDir/update_model_table_providerid.php $CLIParams", $returnCode1);
+system("php $sprintDir/update_instance_environment.php $CLIParams", $returnCode2);
 
 
 if ($returnCode1 != 0 || $returnCode2 != 0) {

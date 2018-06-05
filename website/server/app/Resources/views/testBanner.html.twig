@@ -1,0 +1,19 @@
+{% set environment = configurationManager.getConfig('environment', 'prod') %}
+
+{% if environment != 'prod' and app.request.cookies.get('ginco-test-banner') != 'false'  %}
+<div id="test-banner">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-11">
+				{% trans with {'%environment%' : environment } from 'messages' %}
+				Test warning
+				{% endtrans %}
+
+			</div>
+			<div class="col-xs-1">
+				<a href="#" id="test-banner-remove"><span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span></a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

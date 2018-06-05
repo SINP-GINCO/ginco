@@ -25,8 +25,10 @@
 <body>
 <div class="page">
     <header id="page-header">
+    
         {#== Logo and banner ==#}
         <div id="banner" class="container">
+        
             <div class="row">
                 <div class="col-xs-5">
                     <div id="header-logo">
@@ -48,6 +50,9 @@
             </div>
         </div>
     </header>
+    
+    {#== Dev or test banner ==#}
+    {% include 'testBanner.html.twig' with { configurationManager: configurationManager } %}
 
 	<!-- Display warning if user browser is not supported -->
 	<div id="browser-not-supported">
@@ -236,6 +241,30 @@
 	{% endif %}
 		
 	<script>
+
+		// Set a cookie
+    	function setCookie(name,value,days) {
+    	    var expires = "";
+    	    if (days) {
+    	        var date = new Date();
+    	        date.setTime(date.getTime() + (days*24*60*60*1000));
+    	        expires = "; expires=" + date.toUTCString();
+    	    }
+    	    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    	}
+
+    	// Get a cookie
+    	function getCookie(name) {
+    	    var nameEQ = name + "=";
+    	    var ca = document.cookie.split(';');
+    	    for(var i=0;i < ca.length;i++) {
+    	        var c = ca[i];
+    	        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    	        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    	    }
+    	    return null;
+    	}
+	
 		$(document).ready(function(){
 			// Enable tooltips
 			$('[data-toggle="tooltip"]').tooltip();
@@ -244,6 +273,11 @@
             $("button[name='advancedSearch']").on('click',function(e) {
                 $("#avdSearchModal_advancedTable .modal-title").html('Rechercher');
                 $("#btnCloseAvd_advancedTable").html('Fermer');
+            });
+
+            $('#test-banner-remove').click(function() {
+                $('#test-banner').hide() ;
+                setCookie("ginco-test-banner", "false", 14) ;
             });
 		});
 
