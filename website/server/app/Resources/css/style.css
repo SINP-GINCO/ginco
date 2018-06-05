@@ -6914,7 +6914,7 @@ form .checkboxes.disabled {
   color: #5a6915;
 }
 .progress .progress-bar.color-3 {
-  background-color: #7e931e;
+  background-color: #7E931E;
   color: #c5d287;
 }
 .well {
@@ -6948,6 +6948,23 @@ form .checkboxes.disabled {
 }
 #page-header #banner .header-title {
   color: white;
+}
+#test-banner {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#test-banner a:link {
+  color: white !important;
+  text-decoration: none;
+}
+#test-banner a:hover {
+  color: white !important;
+}
+#test-banner a:visited {
+  color: white !important;
 }
 /**
 * @see : https://github.com/reficedev/alert-old-browser-detection
