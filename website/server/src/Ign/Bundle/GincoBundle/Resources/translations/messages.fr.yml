@@ -105,6 +105,8 @@ Contact:
   page:
     title: Contact
   name: Votre nom :
+  sender: Votre nom :
+  job: Votre fonction :
   email: Votre email :
   message: Votre message :
   send:
@@ -116,7 +118,49 @@ Contact:
       notblank: Votre email ne doit pas être vide.
       invalid: Cette adresse email est invalide.
     message.notblank: Votre messsage ne doit pas être vide.
-
+    sender.notblank: Vous devez indiquer votre nom.
+  subject:
+    title: Sujet
+    legal:
+      title: Besoin d'aide pour comprendre la réglementation
+      questions: Questions juridiques : droits données, applications décret DBB, info personnelles, loi cada
+      rules: Règlementation de la procédure Etude d'impact
+    format:
+      title: Besoin d'aide pour formater des données de biodiversité
+      standard: Standard du SINP / comment formater les informations naturalistes spécifiques pour qu'elles soient conformes au standard 
+      structure: Structuration des jeux de données
+      taxref: TaxRef
+      sensitivity: Listes de sensibilité
+    rules:
+      title: Besoin d'assistance pour comprendre les règles du SINP
+      architecture: Architecture et principes du SINP
+      protocol: Protocole SINP
+      relation: Relations avec la PN
+      validation: Règles nationales de cohérence et validation 
+    operation:
+      title: Besoin d'assistance sur le fonctionnement des applications
+      organism: Création d'un nouvel organisme dans l'annuaire SINP
+      metadata: Assistance fonctionnelle Métadonnées
+      geonature: Assistance fonctionnelle GéoNature
+      geonatureWorkflow: Calculs et processus GéoNature
+      ginco: Assistance fonctionnelle GINCO
+      import: Import GINCO et DLDBB
+      gincoWorkflow: Calculs et processus GINCO
+    blocking:
+      title: Besoin d'assistance pour un blocage technique
+      ginco: Blocage technique GINCO
+      geonature: Blocage technique GéoNature
+      metadata: Blocage technique Métadonnées 
+      authentication: Blocage technique Authentification
+      sinpDirectory: Blocage technique Annuaire SINP
+    evolution:
+      title: Demande d'évolution d'une application
+      geonature: Demandes d'évolution GéoNature
+      ginco: Demandes d'évolution GINCO
+      dldbb: Demandes d'évolution DLDBB
+      metadata: Demandes d'évolution Métadonnées
+      directory: Demandes d'évolution Annuaire
+    other: Autre question
 
 # Configuration parameters page
 # -----------------------------

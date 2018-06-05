@@ -113,13 +113,16 @@ class DefaultController extends GincoController {
 				$contactRecipients = $this->get('ginco.configuration_manager')->getConfig('contactEmail', 'sinp-dev@ign.fr');
 				$contactRecipients = explode(',', $contactRecipients);
 				
+                                $parameters = array(
+					'email' => $form->get('email')->getData(),
+                                        'subject' => $form->get('subject')->getData(),
+					'message' => $form->get('message')->getData(),
+					'sender' => $form->get('sender')->getData(),
+					'job' => $form->get('job')->getData()
+				);
+                                                                
 				// Send the email
-				$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:contact.html.twig', array(
-					'email' => $form->get('email')
-						->getData(),
-					'message' => $form->get('message')
-						->getData()
-				), $contactRecipients);
+				$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:contact.html.twig', $parameters , $contactRecipients);
 				
 				$request->getSession()
 					->getFlashBag()
