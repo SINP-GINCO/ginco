@@ -76,6 +76,9 @@ Erreurs de conformité
   producteur qui existe déjà dans des jeux de données déjà intégrés par le même producteur (le champ
   mappé sur "OGAM_ID_table_xxx"). Il faut soit supprimer la donnée précedemment importée, voire le jeu de données entier,
   soit modifier les identifiants dans le jeu de données que l'on cherche à livrer.
+  
+* **1005 - Le fichier ne contient aucune donnée** ; Cette erreur survient lorsque le fichier ne contient aucun enregistrement
+  (i.e. il n'y a aucune ligne dans le fichier).
 
 * **1101 - Champ obligatoire manquant** ; Un champ obligatoire est manquant.
 
