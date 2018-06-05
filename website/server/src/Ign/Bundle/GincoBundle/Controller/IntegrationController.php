@@ -171,8 +171,6 @@ class IntegrationController extends GincoController {
 		$optionsForm['fileMaxSize'] = $fileMaxSize;
 		$form = $this->createForm(UploadDataType::class, $optionsForm);
 		$form->handleRequest($request);
-                
-                dump($files);
 		
 		if ($form->isValid() && $form->isSubmitted()) {
 			// Get the configuration info
@@ -671,9 +669,7 @@ class IntegrationController extends GincoController {
 		foreach ($submissionFiles as $file) {
 			$files[$file->getFormat()] = $file;
 		}
-                
-                dump($files);
-                
+
 		$optionsForm['submission'] = $submission;
 		$optionsForm['fileMaxSize'] = $fileMaxSize;
 		$form = $this->createForm(UploadDataShapeType::class, $optionsForm);
