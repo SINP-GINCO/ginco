@@ -12,7 +12,10 @@ L'authentification aux plateformes Ginco, ainsi que les fonctions de création d
 de modification des informations personnelles, de récupération de mot de passe perdu, sont donc centralisées
 et gérées par le site de l'INPN.
 
-Les rôles et permissions des utilisateurs, par contre, sont propres à chaque plateforme Ginco ; une personne peut
+L'organisme d'un utilisateur, même s'il a déjà été déclaré su le site de l'INNP, n'est pas repris dans Ginco.
+Lors de l'ajout d'un nouvel utilisateur sur une plateforme, son organisme doit donc être renseigné.
+
+Les rôles et permissions des utilisateurs sont propres à chaque plateforme Ginco ; une personne peut
 être administrateur sur une plateforme régionale donnée, mais simple utilisateur sur les autres. Les rôles et
 permissions Ginco ne sont pas liés aux rôles sur les autres applications du SINP (l'application de métadonnées
 par exemple).
@@ -22,6 +25,7 @@ par exemple).
     :maxdepth: 3
 
     initialiser-compte-ginco
+    declarer-son-propre-organisme
     administrer-les-organismes
     administrer-les-roles
     administrer-les-utilisateurs
