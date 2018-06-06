@@ -43,6 +43,8 @@ Les rôles livrés avec les plateformes ont les permissions suivantes :
 Permissions                                                 administrateur  producteur  grand_public
 ==========================================================  ==============  ==========  ============
 Administrer les utilisateurs                                 **Oui**          Non         Non
+Déclarer son propre organisme                                  Non            Non         Non
+Rattacher les utilisateurs à leur organisme                  **Oui**          Non         Non
 Annuler une soumission de données d'un autre organisme       **Oui**          Non         Non
 Annuler une soumission de données validées                   **Oui**          Non         Non
 Configurer le méta-modèle                                    **Oui**          Non         Non

@@ -27,6 +27,13 @@ Vous pouvez alors modifier le ou les rôles de l'utilisateur.
 
 Vous pouvez également actualiser ses informations personnelles à partir de son compte INPN.
 
+Modifier l'organisme Ginco d'un utilisateur
+-------------------------------------------
+
+Pour changer l'organisme d'un utilisateur, à partir de la page de visualisation des utilisateurs,
+cliquez sur la première icône à droite (1) de l'utilisateur à modifier.
+
+Vous pouvez alors modifier son organisme via la barre de recherche qui interroge l'annuaire des organismes de l'INPN. 
 
 Ajouter un utilisateur
 ----------------------
@@ -40,7 +47,7 @@ que vous souhaitez, sans avoir à attendre que cette personne se connecte une pr
 Attention : la recherche se fait par **l'identifiant exact** dans l'annuaire INPN. Si vous ne le connaissez pas,
 merci de vous rapprocher de la personne concernée.
 
-.. note:: L'organisme de l'utilisateur sera automatiquement rajouté à la plateforme, si il n'y était pas déjà présent.
+.. note:: Initialmement, un utilisateur n'a pas d'organisme. Il faut donc en déclarer un, afin qu'il puisse profiter pleinement des fonctionnalités liées à son organisme.
 
 
 Supprimer un utilisateur

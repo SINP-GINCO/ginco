@@ -47,7 +47,7 @@ Ajouter un organisme
 --------------------
 
 .. note:: Lorsqu'un nouvel utilisateur se connecte à la plateforme,
-	l'organisme auquel est rattaché son compte INPN est automatiquement ajouté à la liste des organismes de la plateforme.
+	l'organisme auquel est rattaché son compte INPN n'est pas pris en compte dans Ginco. Il faut donc le renseigner à nouveau.
 
 Vous pouvez ajouter manuellement un organisme, à partir de la page de visualisation des organismes,
 en cliquant sur le lien "Ajouter un organisme".
