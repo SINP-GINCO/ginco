@@ -71,6 +71,8 @@ INSERT INTO website.permission_group VALUES
 -- List the permissions of the web site
 INSERT INTO permission(permission_code, permission_label, permission_group_code, description) VALUES 
   ('MANAGE_USERS', 'Administrer les utilisateurs, rôles et permissions', 'USER_MANAGEMENT', 'Ajouter et supprimer les utilisateurs dans la plateforme. Définir les rôles et y associer des permissions. Attribuer les rôles et permissions aux utilisateurs.'),
+  ('MANAGE_OWN_PROVIDER', 'Déclarer son propre organisme', 'USER_MANAGEMENT', 'Déclarer soi-même son propre organisme lors de sa première connexion à la plateforme.'),
+  ('MANAGE_USERS_PROVIDER', 'Rattacher les utilisateurs à leur organisme', 'USER_MANAGEMENT', 'Rattacher les utilisateurs à leur organisme sur la page "Editer un utilisateur", à partir de l''annuaire de l''INPN.'),
   ('DATA_INTEGRATION', 'Créer et gérer ses propres jeux de données', 'DATA_MANAGEMENT', 'Créer des jeux de données à partir d''une fiche de métadonnées, voir et supprimer ses propres jeux de données. Importer des données dans ses propres jeux de données, supprimer ses propres imports.'),
   ('DATA_QUERY', 'Consulter les données publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser les données publiées. L''accès aux informations de localisation plus ou moins précises dépend des éventuelles restrictions d''accès des données (sensibles, privées) et des autres permissions.'),
   ('DATA_QUERY_OTHER_PROVIDER', 'Consulter toutes les données non publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser toutes les données non publiées.'),
@@ -93,6 +95,8 @@ INSERT INTO permission(permission_code, permission_label, permission_group_code,
 
 -- Add the permissions for role Développeur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_OWN_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_INTEGRATION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY_OTHER_PROVIDER');
@@ -114,6 +118,7 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGUR
 
 -- Add the permissions for role Administrateur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_USERS');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_INTEGRATION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY_OTHER_PROVIDER');

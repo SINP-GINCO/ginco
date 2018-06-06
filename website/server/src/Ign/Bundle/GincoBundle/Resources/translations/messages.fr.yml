@@ -461,19 +461,22 @@ Providers:
     impossible: Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés.
   no_providers: Pas encore d'organismes.
   add:
-    provider_inpn: Ajout d'un organisme
+    provider: Ajout d'un organisme
     accroche: >-
-      <p>Vous pouvez rajouter dans la plateforme des organismes issus de l'annuaire SINP. Pour celà, recherchez
-      l'organisme voulu par la barre de recherche ci-dessous (par son nom ou son identifiant dans l'annuaire SINP).</p>
-      <p>Si vous souhaitez ajouter un organisme qui n'est pas présent dans l'annuaire SINP, vous devez d'abord le
-      créer via la page d'ajout d'un organisme dans l'annuaire SINP.</p>
-    label: Recherche (nom ou identifiant)
+      <p>L'organisme dans Ginco n'est pas forcément celui déclaré sur le site de l'INPN. </p>
+    search: >-
+      <p>Pour attribuer un organisme dans Ginco, recherchez l'organisme voulu via barre de recherche ci-dessous (par son nom ou son identifiant dans l'annuaire SINP).</p>
+    explain:  >-
+      <p>Pour ajouter un organisme dans Ginco, recherchez l'organisme voulu via barre de recherche ci-dessous (par son nom ou son identifiant dans l'annuaire SINP).</p>
+    more:  >-
+      <p>Si vous souhaitez ajouter un organisme qui n'est pas présent dans l'annuaire des organismes du SINP, vous devez d'abord en faire la demande en envoyant un mail à organismes-SINP@mnhn.fr.</p>
+    label: Recherche
   flash:
     error_label: >-
       Nous n'avons pas trouvé cet organisme dans l'annuaire SINP.
       Merci de choisir un résultat avec l'autocomplétion, et de ne pas modifier le champ après la sélection.
     exist_provider : L'organisme est déja présent dans la plateforme, il n'a pas été rajouté.
-    success: L'organisme a bien été enregistré
+    success: L'organisme a bien été enregistré.
   detail:
     submissions: Soumissions
     Jdd: Jeux de données
@@ -495,8 +498,9 @@ User:
     title: Votre compte
     infos:
       title: Informations personnelles
-      provider: Votre organisme
-      description: Vous êtes connecté au site "%sitename%" grâce à votre compte utilisateur sur le compte de l'INPN.
+      provider: Organisme Ginco
+      no_provider: Vous devez déclarer un organisme pour pouvoir continuer à naviguer sur ce site.
+      description: Vous êtes connecté au site "%sitename%" grâce à votre compte utilisateur sur le site de l'INPN.
       updateLink: Mettre à jour vos informations sur la page de votre compte INPN
       refreshLink: Actualiser vos données depuis l'INPN
     permissions:
@@ -514,7 +518,7 @@ User:
     login: Identifiant dans l'annuaire INPN
     success: >-
       L'utilisateur '%login%' a été ajouté avec succès.
-      Merci de lui attribuer un ou plusieurs rôles et de valider.
+      Merci de lui attribuer un ou plusieurs rôles ainsi qu'un organisme, et de valider.
   delete:
     impossible: Impossible de supprimer l'utilisateur '%username%' car c'est l'utilisateur technique par défaut.
     prompt: Voulez-vous vraiment supprimer l'utilisateur '%userLogin%' ?
@@ -522,6 +526,7 @@ User:
     impossible: Impossible de modifier l'utilisateur '%username%' car c'est l'utilisateur technique par défaut.
     refreshLink: Actualiser depuis l'INPN
     roles: Modifier les rôles
+    provider: Modifier l'organisme
     created: Création
     lastLogin: Dernière connexion
   refresh:

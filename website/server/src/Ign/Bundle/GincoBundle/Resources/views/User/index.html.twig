@@ -8,6 +8,8 @@
     <div class="row">
         <div class="col-sm-6">
         <h2>{{ 'User.account.infos.title'|trans }}</h2>
+        
+            <p>{{ 'User.account.infos.description'|trans({'%sitename%': configurationManager.getConfig('site_name', 'GINCO')}) }}</p>
 
             <table class="table table-nonfluid table-bordered">
             <tr>
@@ -22,13 +24,8 @@
                 <td><strong>{{ 'Email'|trans }}</strong> </td>
                 <td>{{ user.email }}</td>
             </tr>
-            <tr>
-                <td><strong>{{ 'User.account.infos.provider'|trans }}</strong></td>
-                <td>{{ user.provider.label }}</td>
-            </tr>
             </table>
 
-            <p>{{ 'User.account.infos.description'|trans({'%sitename%': configurationManager.getConfig('site_name', 'GINCO')}) }}</p>
 
             <p><a href="{{ configurationManager.getConfig('INPN_account_url','') }}" target="_blank">
                     <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
@@ -36,6 +33,35 @@
             <p><a href="{{ path('user_refresh') }}">
                         <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     {{ 'User.account.infos.refreshLink'|trans }}</a></p>
+            
+            <p class="v-spacer"></p>
+            <p>{%trans %}Providers.add.accroche{% endtrans%}</p>
+            
+            <table class="table table-nonfluid table-bordered">
+            <tr>
+                <td><strong>{{ 'User.account.infos.provider'|trans }}</strong></td>
+                <td>{{ user.provider.label }}</td>
+            </tr>
+            </table>  
+            
+            {% if user.isAllowed('MANAGE_OWN_PROVIDER') %}
+            
+			<p>{%trans %}Providers.add.search{% endtrans%}</p>
+		
+		    {{ form_start(form) }}
+		    <div class="row">
+		        <div class="col-sm-3">{{ form_label(form.label) }}</div>
+		        <div class="col-sm-6">{{ form_widget(form.label) }}
+		            {{ form_errors(form.label) }}</div>
+		        <div class="col-sm-3">{{ form_widget(form.submit) }}</div>
+		    </div>
+		    {{ form_end(form) }}
+		    
+		    
+			<p>{%trans %}Providers.add.more{% endtrans%}</p>
+    
+    		{% endif %}
+    
         </div>
 
         <div class="col-sm-6">
@@ -59,4 +85,13 @@
             <p>{{ 'User.account.permissions.more'|trans({'%href%': path('contact')})|raw }}</p>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        {% include '@IgnGinco/UsermanagementController/provider_add.js.twig' %}
+		var formField = "#provider_search_label";
+        searchOrganisme(formField);
+    </script>
 {% endblock %}

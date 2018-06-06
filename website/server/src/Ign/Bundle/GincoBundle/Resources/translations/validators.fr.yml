@@ -17,6 +17,9 @@ administration:
       alreadyExists: Cet utilisateur existe déjà dans la plateforme. Vous pouvez éditer ses rôles mais pas l'ajouter à nouveau.
   provider:
     label: Ce label d'organisme est déjà utilisé
+    inpn_error_label: >-
+      Nous n'avons pas trouvé cet organisme dans l'annuaire SINP.
+      Merci de choisir un résultat avec l'autocomplétion, et de ne pas modifier le champ après la sélection.
   role:
     label: Ce label pour un rôle est déjà utilisé
 

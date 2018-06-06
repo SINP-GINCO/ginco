@@ -31,6 +31,7 @@ try {
     execCustSQLFile("$sprintDir/add_metadata_check.sql", $config);
     execCustSQLFile("$sprintDir/delete_parameters.sql", $config);
 	execCustSQLFile("$sprintDir/add_permission_groups.sql", $config);
+	execCustSQLFile("$sprintDir/link_user_to_provider.sql", $config);
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

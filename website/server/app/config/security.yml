@@ -32,6 +32,7 @@ security:
 
     access_control:
         - { path: ^/user/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/usermanagement/search-providers, allow_if: "user and is_authenticated() and (user.isAllowed('MANAGE_OWN_PROVIDER') or user.isAllowed('MANAGE_USERS'))"}
         - { path: ^/usermanagement/, allow_if: "user and is_authenticated() and user.isAllowed('MANAGE_USERS')"}
         - { path: ^/admin/, roles: ROLE_ADMIN }
         - { path: ^/dataedition/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_EDITION')"}
