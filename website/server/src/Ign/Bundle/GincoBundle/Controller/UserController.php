@@ -2,6 +2,7 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,8 +13,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * Authentication: CAS login and logout redirections.
  *
  * @author SCandelier
- *
- * @Route("/user")
+ *        
+ *         @Route("/user")
  */
 class UserController extends GincoController {
 
@@ -26,7 +27,78 @@ class UserController extends GincoController {
 	public function indexAction(Request $request) {
 		// Check if user is logged in; if not redirect to login
 		// It is because this route is not protected in security.yml)
-		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY') ;
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+		
+		$logger = $this->get('logger');
+		$logger->debug('see my account page');
+		
+		// If user has permission to manage his own provider, add the provider form
+		if ($this->getUser()->isAllowed('MANAGE_OWN_PROVIDER')) {
+			
+			$user = $this->getUser();
+			
+			// Get the provider form
+			$form = $this->createForm(ProviderSearchType::class);
+			$form->handleRequest($request);
+			
+			if ($form->isValid()) {
+				
+				// Get search request
+				$search = $form->get('label')->getData();
+				
+				// Test and extract the id of INPN provider - in parenthesis
+				$re = '/\((\d+)\)/';
+				preg_match($re, $search, $matches);
+				
+				// Test the selection if you have the id in ()
+				if (count($matches) == 0) {
+					$this->addFlash('error', $this->get('translator')
+						->trans('Providers.flash.error_label'));
+					
+					if ($user->getProvider()->getId() == 0) {
+						$this->addFlash('warning', $this->get('translator')
+							->trans('User.account.infos.no_provider'));
+					}
+					
+					return $this->render('IgnGincoBundle:User:index.html.twig', array(
+						'form' => $form->createView()
+					));
+				}
+				
+				// Check if organism exist in ginco database
+				$idProvider = intval($matches[1]);
+				$provider = $this->getDoctrine()
+					->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website')
+					->find($idProvider);
+				
+				if ($provider) {
+					$this->addFlash('warning', $this->get('translator')
+						->trans('Providers.flash.exist_provider'));
+				} else {
+					$providerService = $this->get('ginco.inpn_provider_service');
+					$provider = $providerService->updateOrCreateLocalProvider($idProvider);
+				}
+				
+				$user->setProvider($provider);
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($user);
+				$em->flush();
+				
+				$this->addFlash('success', $this->get('translator')
+					->trans('Providers.flash.success'));
+				
+				return $this->redirectToRoute('user_home');
+			}
+			
+			if ($user->getProvider()->getId() == 0) {
+				$this->addFlash('warning', $this->get('translator')
+					->trans('User.account.infos.no_provider'));
+			}
+			
+			return $this->render('IgnGincoBundle:User:index.html.twig', array(
+				'form' => $form->createView()
+			));
+		}
 		
 		return $this->render('IgnGincoBundle:User:index.html.twig', array());
 	}
@@ -37,7 +109,6 @@ class UserController extends GincoController {
 	 * @Route("/refresh/{username}", name = "user_refresh")
 	 */
 	public function refreshAction(Request $request, $username = null) {
-
 		if (!$username) {
 			// Get username
 			if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -45,16 +116,16 @@ class UserController extends GincoController {
 			}
 			$username = $this->getUser()->getLogin();
 		}
-
+		
 		// Update via the INPN webservice
 		$user = $this->get('ginco.inpn_user_updater')->updateOrCreateLocalUser($username);
-
+		
 		// If user not found, flash message
 		if (!$user) {
 			$this->addFlash('warning', $this->get('translator')
 				->trans('User.refresh.notfound'));
 		}
-
+		
 		// Get the referer url
 		$refererUrl = $request->headers->get('referer');
 		// returns to the page where the action comes from
@@ -73,7 +144,7 @@ class UserController extends GincoController {
 		// Get the referer url
 		$refererUrl = $request->headers->get('referer');
 		// returns to the page where the action comes from
-		$redirectUrl = ($refererUrl) ?: $this->generateUrl('homepage',array(),UrlGeneratorInterface::ABSOLUTE_URL);
+		$redirectUrl = ($refererUrl) ?  : $this->generateUrl('homepage', array(), UrlGeneratorInterface::ABSOLUTE_URL);
 		$CASloginUrl .= '?' . $CASservice . '=' . urlencode($redirectUrl);
 		return new RedirectResponse($CASloginUrl);
 	}
@@ -86,7 +157,7 @@ class UserController extends GincoController {
 	public function CASlogoutAction() {
 		$CASlogoutUrl = $this->get('ginco.configuration_manager')->getConfig('CAS_logout_url');
 		$CASservice = $this->get('ginco.configuration_manager')->getConfig('CAS_service_parameter');
-		$redirectUrl = urlencode($this->generateUrl('app_logout', array(),UrlGeneratorInterface::ABSOLUTE_URL));
+		$redirectUrl = urlencode($this->generateUrl('app_logout', array(), UrlGeneratorInterface::ABSOLUTE_URL));
 		$CASlogoutUrl .= '?' . $CASservice . '=' . $redirectUrl;
 		return new RedirectResponse($CASlogoutUrl);
 	}
@@ -109,7 +180,7 @@ class UserController extends GincoController {
 	public function getCurrentUserAction() {
 		$logger = $this->get('logger');
 		$logger->debug('getCurrentUserAction');
-	
+		
 		$response = new Response();
 		$response->headers->set('Content-Type', 'application/json');
 		return $this->render('IgnGincoBundle:User:get_current_user.json.twig', array(

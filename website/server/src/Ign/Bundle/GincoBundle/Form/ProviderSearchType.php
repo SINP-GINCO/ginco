@@ -12,22 +12,20 @@ class ProviderSearchType extends AbstractType {
 	/**
 	 * Build the provider form.
 	 *
-	 * @param FormBuilderInterface $builder
-	 * @param array $options
+	 * @param FormBuilderInterface $builder        	
+	 * @param array $options        	
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder
-		->add('label', TextType::class, array(
+		$builder->add('label', TextType::class, array(
 			'label' => 'Providers.add.label'
-		))
-		->add('submit', SubmitType::class, array(
-			'label' => 'Add'
+		))->add('submit', SubmitType::class, array(
+			'label' => 'Validate'
 		));
 	}
 
 	/**
 	 *
-	 * @param OptionsResolver $resolver
+	 * @param OptionsResolver $resolver        	
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array());

@@ -145,6 +145,12 @@ services:
     GincoBundle.login_entry_point:
         class: Ign\Bundle\GincoBundle\EventListener\LoginEntryPoint
         arguments: [ "@router" ]
+        
+    ginco.kernel_listener.user_redirect:
+        class: Ign\Bundle\GincoBundle\EventListener\UserRedirectListener
+        arguments: ["@security.token_storage", "@router" ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
     app.exception_controller:
         class: Ign\Bundle\GincoBundle\Controller\ExceptionController
@@ -216,6 +222,12 @@ services:
     form.type.image:
         class: Ign\Bundle\GincoBundle\Form\Components\ImageType
         arguments: ['%kernel.root_dir%/../web/upload']
+        tags:
+            - { name: form.type }
+            
+    form.type.provider:
+        class: Ign\Bundle\GincoBundle\Form\UserRoleType
+        arguments: ["@doctrine.orm.entity_manager", "@ginco.inpn_provider_service"]
         tags:
             - { name: form.type }
 
