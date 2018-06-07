@@ -124,8 +124,6 @@ execCustSQLFile("$initDir/3-Update_mapping_schema_tpl.sql",$config);
 execSQLFile("$initDir/3-Init_roles.sql",$config);
 execCustSQLFile("$initDir/3-Update_predefined_requests.sql",$config);
 
-system("php $initDir/3-Update_application_parameters.php $paramStr");
-
 # set ginco_version from the last update directory
 $lastUpdate = getCurrentVersion("$initDir/../update");
 execCustSQLFile("$initDir/3-Update_ginco_version.sql", $config + ["ginco.version" => $lastUpdate]);
