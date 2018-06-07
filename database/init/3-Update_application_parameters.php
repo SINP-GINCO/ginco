@@ -15,7 +15,7 @@ try {
 	echo "executing " . dirname(__FILE__) . "/" . basename(__FILE__) . " ...\n";
 	
 	if (!isset($config['instance.environment'])) {
-		throw new Exception("Parameters instance.environment must be set in properties file.") ;	
+		throw new Exception("Parameter instance.environment must be set in properties file.") ;	
 	}
 
 	$conn_string = "host={$config['db.host']} port={$config['db.port']} user={$config['db.adminuser']} password={$config['db.adminuser.pw']} dbname={$config['db.name']}";
