@@ -118,7 +118,7 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGUR
 
 -- Add the permissions for role Administrateur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_USERS');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_USERS_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_INTEGRATION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY_OTHER_PROVIDER');
