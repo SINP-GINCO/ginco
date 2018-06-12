@@ -14,6 +14,8 @@ Pour voir le diff entre deux versions, aller à (par exemple) : https://github.c
 * Présence d'un bandeau d'avertissement sur les instances de test.
 * Corrections de bugs.
 
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.1.1...v2.1.2)
+
 
 ## V2.1.1 (07/05/2018)
 
