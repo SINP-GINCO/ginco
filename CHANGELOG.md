@@ -4,6 +4,17 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.1.2 (12/06/2018)
+
+* Réorganisation des permissions par groupe
+* Les organismes des utilisateurs sont désormais déclarés directement dans l'application
+* Le rôle pétitionnaire peut désormais supprimer ses soumissions non déposées.
+* Bug : un JDD déposé ne peut désormais plus accueillir de nouvelle soumission
+* Corrections sur les rapports d'erreurs : indications plus précises sur certaines erreurs.
+* Présence d'un bandeau d'avertissement sur les instances de test.
+* Corrections de bugs.
+
+
 ## V2.1.1 (07/05/2018)
 
 * Amélioration des performances pour le calcul des rattachements administratifs
@@ -11,7 +22,7 @@ Pour voir le diff entre deux versions, aller à (par exemple) : https://github.c
 * Limite à 50000 objets pour la visualisation dans le requêtes (performances)
 * Corrections les exports DEE : suppression des champs vides, et date incomplète
 * Possibilité d'écrire un résumé indépendant pour la présentation de la plateforme
-* Corrections de bug
+* Corrections de bugs
 
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.1.0...v2.1.1)
 
