@@ -27,6 +27,7 @@ try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/set_identifiantpermanent_not_mandatory_in_file.sql", $config);
+	execCustSQLFile("$sprintDir/set_jddmetadonneedeeid_not_mandatory_in_file.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
