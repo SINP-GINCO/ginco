@@ -62,7 +62,7 @@ Gérer les DEE de tous les jeux de données                    **Oui**          
 Gérer tous les jeux de données                               **Oui**          Non         Non
 Publier n'importe quel jeux de données                       **Oui**          Non         Non
 Gérer les requêtes publiques                                 **Oui**          Non         Non
-Gérer ses requêtes privées                                   **Oui**        **Oui**       Non
+Gérer ses requêtes privées                                   **Oui**          Non         Non
 ==========================================================  ==============  ==========  ============
 
 Modifier un rôle
