@@ -2,12 +2,9 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 
 /**
  * Custom Submission Controller for GINCO
@@ -57,7 +54,7 @@ class SubmissionController extends GincoController {
 					->trans("An unexpected error occurred.")
 			));
 		}
-			
+		
 		// only if status=OK
 		if ($submission->getStatus() == "OK") {
 			// Generate sensibility report
@@ -180,30 +177,28 @@ class SubmissionController extends GincoController {
 		return $response;
 	}
 
-        /**
-         * @Route("/view-error-report", name = "submission_view-error-report")
-         */
-        public function viewErrorReport(Request $request){
-                //get submission
-                $submissionId = $request->query->getInt("submissionId");
+	/**
+	 *
+	 * @Route("/view-error-report", name = "submission_view-error-report")
+	 */
+	public function viewErrorReport(Request $request) {
+		// get submission
+		$submissionId = $request->query->getInt("submissionId");
 		$submissionRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
 		$submission = $submissionRepository->find($submissionId);
-                
-                if( $submission == null || !$submission->isInError() ) {
-                    throw $this->createNotFoundException("La donnée n'existe pas");
-                }
-                               
-                $errorRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\CheckError', 'raw_data');
-                $errors = $errorRepository->findBySubmission($submission->getId(),array());
-                $errorCounts = $errorRepository->getErrorCounts($submission);
-                
-                return $this->render('IgnGincoBundle:Submission:error_report.html.twig', array(
+		
+		if ($submission == null || !$submission->isInError()) {
+			throw $this->createNotFoundException("La donnée n'existe pas");
+		}
+		
+		$errorRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\CheckError', 'raw_data');
+		$errors = $errorRepository->findBySubmission($submission->getId(), array());
+		$errorCounts = $errorRepository->getErrorCounts($submission);
+		
+		return $this->render('IgnGincoBundle:Submission:error_report.html.twig', array(
 			'submission' => $submission,
-                        'errors' => $errors,
-                        'errorCounts' => $errorCounts
+			'errors' => $errors,
+			'errorCounts' => $errorCounts
 		));
-                
-        }
-        
-        
+	}
 }

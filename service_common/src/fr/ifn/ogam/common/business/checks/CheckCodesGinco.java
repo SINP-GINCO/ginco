@@ -66,5 +66,10 @@ public interface CheckCodesGinco {
 	 * heureDateDebut < heureDateFin
 	 */
 	Integer TIME_ORDER = 1210;
+	
+	/**
+	 * identifiantpermenent must be an UUID
+	 */
+	Integer IDENTIFIANT_PERMANENT_NOT_UUID = 1211;
 
 }

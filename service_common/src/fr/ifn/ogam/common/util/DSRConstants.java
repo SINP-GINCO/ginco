@@ -52,6 +52,7 @@ public class DSRConstants {
 	public final static String HEURE_DATE_DEBUT = "heuredatedebut";
 	public final static String HEURE_DATE_FIN = "heuredatefin";
 	public final static String NOM_VALIDE = "nomvalide";
+	public final static String IDENTIFIANT_PERMANENT = "identifiantpermanent";
 
 	// Descriptif Sujet
 	public final static String OBS_METHODE = "obsmethode";
