@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 import java.sql.Time;
 
 import org.apache.log4j.Logger;
@@ -79,6 +80,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		// jourDateDebut < jourDateFin < today
 		observationDatesAreCoherent(values);
+		identifiantPermanentIsUUID(values) ;
 
 		// ----- SOURCE ------
 
@@ -952,4 +954,30 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			heureDateFinGD.setValue(heureDateFin);
 		}
 	}
+	
+	
+	
+	/**
+	 * Checks if identifiantpermanent is an UUID.
+	 * 
+	 * @param values
+	 */
+	private void identifiantPermanentIsUUID(Map < String, GenericData > values) {
+		
+		String identifiantPermanent = values.get(DSRConstants.IDENTIFIANT_PERMANENT).getValue().toString() ;
+		if (empty(identifiantPermanent)) {
+			return ;
+		}
+		
+		try {
+			UUID uuid = UUID.fromString(identifiantPermanent) ;
+		} catch (IllegalArgumentException e) {
+			String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID, ou une valeur vide." ;
+			CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UUID, errorMessage) ;
+			ce.setFoundValue(identifiantPermanent) ;
+			alce.add(ce) ;
+		}
+		
+	}
+	
 }
