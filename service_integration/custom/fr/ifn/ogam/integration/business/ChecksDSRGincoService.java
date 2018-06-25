@@ -964,10 +964,12 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 */
 	private void identifiantPermanentIsUUID(Map < String, GenericData > values) {
 		
-		String identifiantPermanent = values.get(DSRConstants.IDENTIFIANT_PERMANENT).getValue().toString() ;
-		if (empty(identifiantPermanent)) {
+		GenericData identifiantPermanentGeneric = values.get(DSRConstants.IDENTIFIANT_PERMANENT) ;
+		if (identifiantPermanentGeneric == null || empty(identifiantPermanentGeneric)) {
 			return ;
 		}
+		
+		String identifiantPermanent = identifiantPermanentGeneric.getValue().toString() ;
 		
 		try {
 			UUID uuid = UUID.fromString(identifiantPermanent) ;
