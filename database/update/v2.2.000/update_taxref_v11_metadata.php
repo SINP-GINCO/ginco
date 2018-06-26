@@ -66,7 +66,22 @@ try {
 		('2', 'Suppression TAXREF', 'Suppression TAXREF'),
 		('3', 'Splittage TAXREF', 'Splittage TAXREF')		
 	");
-    
+	
+	$pdo->exec("CREATE TABLE referentiels.taxoalertevalue(
+			code varchar(32) NOT NULL,
+			label varchar(128) NULL,
+			definition varchar(510) NULL,
+			CONSTRAINT taxoalertvalue_pkey PRIMARY KEY (code)
+		)"
+	);
+
+	$pdo->exec("GRANT ALL ON SCHEMA referentiels TO ogam") ;
+	$pdo->exec("GRANT SELECT ON ALL TABLES IN SCHEMA referentiels TO ogam") ;
+
+	$pdo->exec("INSERT INTO referentiels.taxoalertevalue(code, label, definition) VALUES
+		('0', 'Oui', 'Taxon en alerte suite au passage V11'),
+		('1', 'Non', 'Taxon sans alerte suite au passage V11')
+	");
 
     $schemas = array('metadata', 'metadata_work') ;
 
@@ -75,13 +90,15 @@ try {
     	// Insertion des unit taxostatutvalue et taxomodifstatut
     	$sql = "INSERT INTO $schema.dynamode(unit, sql) VALUES
 			('TaxoStatutValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.TaxoStatutValue ORDER BY code'),
-			('TaxoModifValue',  'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.TaxoModifValue ORDER BY code')
+			('TaxoModifValue',  'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.TaxoModifValue ORDER BY code'),
+			('TaxoAlerteValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.TaxoAlerteValue ORDER BY code')
 		";
     	$pdo->exec($sql) ;
 		
 		$sql = "INSERT INTO $schema.unit(unit, type, subtype, label, definition) VALUES
 			('TaxoStatutValue', 'CODE', 'DYNAMIC', '[Liste] Statut du taxon pour le passage TAXREF V11', 'Statut du taxon pour le passage TAXREF V11'),
-			('TaxoModifValue', 'CODE', 'DYNAMIC', '[Liste] Modification effectuée lors du passage TAXREF V11', 'Modification effectuée sur le taxon lors du passage TAXREF V11')
+			('TaxoModifValue', 'CODE', 'DYNAMIC', '[Liste] Modification effectuée lors du passage TAXREF V11', 'Modification effectuée sur le taxon lors du passage TAXREF V11'),
+			('TaxoAlerteValue', 'CODE', 'DYNAMIC', '[Liste] Taxon en alerte ou non pour le passage TAXREF V11', 'Taxon en alerte ou non pour le passage TAXREF V11')
 		";
 		$pdo->exec($sql) ;
     	
@@ -91,7 +108,7 @@ try {
             ('cdrefcalcule', 'TaxRefValue',     'cdRefCalcule', 'Code du taxon \"cd_ref\" calculé.'),
 			('taxostatut',   'TaxoStatutValue', 'taxoStatut',   'Statut du taxon pour le passage TAXREF V11'),
 			('taxomodif',    'TaxoModifValue',  'taxoModif',    'Modification effectuée sur le taxon lors du passage TAXREF V11'),
-			('taxoalerte',   'CharacterString', 'taxoAlerte',   'Alerte sur le taxon pour le passage TAXREF V11')
+			('taxoalerte',   'TaxoAlerteValue', 'taxoAlerte',   'Alerte sur le taxon pour le passage TAXREF V11')
 		";
     	$pdo->exec($sql) ;
 		
@@ -184,7 +201,7 @@ try {
 				('cdrefcalcule', '{$format['format']}', 1, 1, 'TAXREF', (SELECT position+1 FROM $schema.form_field WHERE data='cdref' AND format = '{$format['format']}'), 0, 0),
 				('taxostatut',  '{$format['format']}', 1, 1, 'SELECT', (SELECT max(position) + 1 FROM $schema.form_field WHERE format = '{$format['format']}'), 0, 0),
 				('taxomodif',   '{$format['format']}', 1, 1, 'SELECT', (SELECT max(position) + 1 FROM $schema.form_field WHERE format = '{$format['format']}'), 0, 0),
-				('taxoalerte',  '{$format['format']}', 1, 1, 'TEXT',   (SELECT max(position) + 1 FROM $schema.form_field WHERE format = '{$format['format']}'), 0, 0)
+				('taxoalerte',  '{$format['format']}', 1, 1, 'SELECT', (SELECT max(position) + 1 FROM $schema.form_field WHERE format = '{$format['format']}'), 0, 0)
 			");
     		
     		$formatTable = $formatsTable[0] ; // normalement, il n'y en a qu'un.

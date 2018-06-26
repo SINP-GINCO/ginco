@@ -33,7 +33,7 @@ try {
 				cdrefcalcule = :valeurFinal,
 				taxostatut = '0',
 				taxomodif = '0',
-				taxoalerte = 'NON',
+				taxoalerte = '1',
 				deedatedernieremodification = now()
 			WHERE cdref = :valeurInit
 		");
@@ -52,7 +52,7 @@ try {
 				nomValide = (SELECT nom_valide FROM referentiels.taxref WHERE cd_nom = :cdNomRemplacement),
 				taxostatut = '0',
 				taxomodif = '0',
-				taxoalerte = 'NON',
+				taxoalerte = '1',
 				deedatedernieremodification = now()
 			WHERE cdnom = :valeurInit
 		");     
@@ -72,7 +72,7 @@ try {
 				nomvalide = NULL,
 				taxostatut = '1',
 				taxomodif = '1',
-				taxoalerte = 'OUI',
+				taxoalerte = '0',
 				deedatedernieremodification = now()
 			WHERE cdnom = :valeurInit
 		");
@@ -92,7 +92,7 @@ try {
 				nomvalide = NULL,
 				taxostatut = '1',
 				taxomodif = '1',
-				taxoalerte = 'OUI',
+				taxoalerte = '0',
 				deedatedernieremodification = now()
 			WHERE cdnom = :valeurInit
 		");
