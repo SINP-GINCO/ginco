@@ -30,4 +30,4 @@
 1207;CONFORMITY;NO_GEOREFERENCE;Géoréférencement manquant.;Géoréférencement manquant.;;ERROR
 1208;CONFORMITY;MORE_THAN_ONE_GEOREFERENCE;Plusieurs géoréférencements.;Plusieurs géoréférencements.;;ERROR
 1209;CONFORMITY;DATE_ORDER;Incohérence sur la chronologie des dates.;Incohérence sur la chronologie des dates.;;ERROR
-1211;CONFORMITY;IDENTIFIANT_PERMANENT_NOT_UUID;L'identifiant permanent n'est pas un UUID.;L’identifiant permanent doit être un UUID valide, ou sa valeur doit être vide.;;ERROR
+1211;CONFORMITY;IDENTIFIANT_PERMANENT_NOT_UUID;L'identifiant permanent n''est pas un UUID.;L’identifiant permanent doit être un UUID valide, ou sa valeur doit être vide.;;ERROR

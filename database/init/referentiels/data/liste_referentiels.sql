@@ -52,7 +52,7 @@ INSERT INTO referentiels.liste_referentiels (table_name,label,description,"versi
 INSERT INTO referentiels.liste_referentiels (table_name,label,description,"version","type","name",updated_at,url) VALUES (
   'region_carto_2017','Régions françaises','Référentiel administratif et géométrique des régions de France métropolitaine et d’outre-mer. Issu du produit IGN : ADMIN EXPRESS-COG carto millésimé 2017.','2017','referentiel','REGIONS','2017-06-19','http://professionnels.ign.fr/adminexpress');
 INSERT INTO referentiels.liste_referentiels (table_name,label,description,"version","type","name",updated_at,url) VALUES (
-  'taxref','Référentiel taxonomique TAXREF','Référentiel taxonomique : Faune, flore et fonge de France métropolitaine et d''outre-mer ','v10','referentiel','TAXREF','2016-11-03','https://inpn.mnhn.fr/telechargement/referentielEspece/taxref/10.0/menu');
+  'taxref','Référentiel taxonomique TAXREF','Référentiel taxonomique : Faune, flore et fonge de France métropolitaine et d''outre-mer ','v11','referentiel','TAXREF','2018-06-26','https://inpn.mnhn.fr/telechargement/referentielEspece/taxref/11.0/menu');
 INSERT INTO referentiels.liste_referentiels (table_name,label,description,"version","type","name",updated_at,url) VALUES (
   'occurrencestadedevievalue','Stade de vie : stade de développement du sujet','Nomenclature des stades de vie : stades de développement du sujet de l''observation.','Occtax v1.2.1','nomenclature','STADE_VIE','2016-03-24','https://inpn.mnhn.fr/telechargement/standard-occurrence-taxon');
 INSERT INTO referentiels.liste_referentiels (table_name,label,description,"version","type","name",updated_at,url) VALUES (
