@@ -181,7 +181,7 @@ UPDATE layer_tree_node SET definition = layer.label FROM layer WHERE layer_tree_
 
 DELETE FROM provider_map_params;
 -- Configure the provider_map_params for default data provider
-INSERT INTO provider_map_params (provider_id, zoom_level, bb_xmin, bb_ymin, bb_xmax, bb_ymax) values ('1', '@bb.zoom@', '@bb.xmin@', '@bb.ymin@', '@bb.xmax@', '@bb.ymax@');
+INSERT INTO provider_map_params (provider_id, zoom_level, bb_xmin, bb_ymin, bb_xmax, bb_ymax) values ('0', '@bb.zoom@', '@bb.xmin@', '@bb.ymin@', '@bb.xmax@', '@bb.ymax@');
 
 DELETE FROM bac_commune;
 DELETE FROM bac_departement;
