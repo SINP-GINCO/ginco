@@ -30,6 +30,7 @@ try {
 	execCustSQLFile("$sprintDir/set_jddmetadonneedeeid_not_mandatory_in_file.sql", $config);
 	execCustSQLFile("$sprintDir/update_nomcommunecalcule_dynamode.sql", $config);
 	execCustSQLFile("$sprintDir/add_metadata_check.sql", $config);
+	execCustSQLFile("$sprintDir/codemaillevalue_new.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
