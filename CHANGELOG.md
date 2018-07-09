@@ -4,6 +4,17 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.1.3 (09/07/2018)
+
+* Ajout de contrôle de conformité sur les identifiants permanents.
+* Correction sur le référentiel des mailles : ajout des mailles sur les TAAF.
+* Correction sur DLDBB : pas de déclaration d'organisme obligatoire pour les utilisateurs.
+* Correction sur DLDBB : suppression de l'export de données pour les utilisateurs anonymes.
+* Correction de bugs.
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.1.2...v2.1.3)
+
+
 ## V2.1.2 (12/06/2018)
 
 * Réorganisation des permissions par groupe
