@@ -18,10 +18,91 @@ $tableNames = $sth->fetchAll() ;
 $pdo->beginTransaction() ;
 
 try {
+
+	// Création de la fonction de recalcul de sensibilité pour la migration 
+	$pdo->exec("
+		CREATE OR REPLACE FUNCTION raw_data.sensitive_v11()
+		RETURNS trigger AS
+		\$BODY\$
+
+		DECLARE
+			rule_codage integer;
+		BEGIN					
+			-- Does the data deals with sensitive taxon for the departement and is under the sensitive duration ?
+			SELECT especesensible.codage INTO rule_codage
+			FROM referentiels.especesensible
+			LEFT JOIN referentiels.especesensiblelistes ON especesensiblelistes.cd_sl = especesensible.cd_sl
+			WHERE 
+				(CD_NOM = NEW.cdNom
+				OR CD_NOM = NEW.cdRef
+				OR CD_NOM = ANY (
+					WITH RECURSIVE node_list( code, parent_code, lb_name, vernacular_name) AS (
+						SELECT code, parent_code, lb_name, vernacular_name
+						FROM metadata.mode_taxref
+						WHERE code = NEW.cdnom
+				
+						UNION ALL
+				
+						SELECT parent.code, parent.parent_code, parent.lb_name, parent.vernacular_name
+						FROM node_list, metadata.mode_taxref parent
+						WHERE node_list.parent_code = parent.code
+						AND node_list.parent_code != '349525'
+						)
+					SELECT parent_code
+					FROM node_list
+					ORDER BY code
+					)
+				)
+				AND CD_DEPT = ANY (NEW.codedepartementcalcule)
+				AND (DUREE IS NULL OR (NEW.jourdatefin::date + DUREE * '1 year'::INTERVAL > now()))
+				AND (NEW.occstatutbiologique IS NULL OR NEW.occstatutbiologique IN ( '0', '1', '2') OR cd_occ_statut_biologique IS NULL OR NEW.occstatutbiologique = CAST(cd_occ_statut_biologique AS text))
+			
+			--  Quand on a plusieurs règles applicables il faut choisir en priorité
+			--  Les règles avec le codage le plus fort
+			--  Parmi elles, la règle sans commentaire (rule_autre is null)
+			--  Voir #579
+			ORDER BY codage DESC, autre DESC
+			--  on prend la première règle, maintenant qu'elles ont été ordonnées
+			LIMIT 1;
+				
+				
+			-- No rules found, the obs is not sensitive
+			IF NOT FOUND THEN
+				RETURN NEW;
+			End if;
+				
+			-- A rule has been found, the obs is sensitive
+			-- If sensitivity is different from previous sensitivity, we compute it again.
+			If (rule_codage IS DISTINCT FROM OLD.sensiniveau) Then
+				RETURN raw_data.sensitive_automatic();
+			Else
+				RETURN NEW;
+			End if;
+			
+		END;
+		\$BODY\$
+			LANGUAGE plpgsql VOLATILE
+			COST 100;
+	");
+
+
 	
 	foreach ($tableNames as $index => $value) {
 
 		$tableName = $value['table_name'] ;
+
+		// Désactivation temporaire des triggers de sensibilité.
+		$pdo->exec("ALTER TABLE raw_data.$tableName DISABLE TRIGGER sensitive_automatic$tableName") ;
+		$pdo->exec("ALTER TABLE raw_data.$tableName DISABLE TRIGGER sensitive_manual$tableName") ;
+
+		// Création d'un trigger temporaire pour le calcul de sensibilité lors de la migration.
+		$pdo->exec("
+			CREATE TRIGGER sensitive_v11$tableName 
+			BEFORE UPDATE OF cdnom, cdref
+			ON raw_data.$tableName 
+			FOR EACH ROW EXECUTE PROCEDURE sensitive_v11()
+		");
+
 		
 		// Cas A) Lorsque TYPE_CHANGE=MODIFICATION et CHAMP=CD_REF, il faut : trouver les données telles que cdRef valent VALEUR_INIT. Pour ces données, mettre :
 		//	¤ cdRefCalcule=VALEUR_FINAL
@@ -163,7 +244,18 @@ try {
 			}
 
 		}
+
+
+		// Suppression du trigger temporaire
+		$pdo->exec("DROP TRIGGER sensitive_v11$tableName ON raw_data.$tableName") ;
+
+		// Réactivation des triggers de sensibilité.
+		$pdo->exec("ALTER TABLE raw_data.$tableName ENABLE TRIGGER sensitive_automatic$tableName") ;
+		$pdo->exec("ALTER TABLE raw_data.$tableName ENABLE TRIGGER sensitive_manual$tableName") ;
 	}
+
+	// Suppression de la fonction de calcul de sensibilité temporaire
+	$pdo->exec("DROP FUNCTION raw_data.sensitive_v11()") ;
 	
     
 } catch (PDOException $e) {
