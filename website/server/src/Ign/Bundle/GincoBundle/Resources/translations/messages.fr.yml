@@ -50,6 +50,7 @@ Menu:
   Providers: Organismes
   Roles: Rôles et permissions
   PlatformParameters: Configuration de la plateforme
+  TaxrefMigration: Mise à jour de TAXREF
 
 # Breadcrumb
 # ---------------------------
