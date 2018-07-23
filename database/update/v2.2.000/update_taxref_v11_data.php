@@ -186,7 +186,7 @@ try {
 			WHERE cdnom = :cdNom
 		");
 
-		$file = new SplFileObject('all_changes.csv', 'r') ;
+		$file = new SplFileObject(realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'all_changes.csv'), 'r') ;
 		$file->setFlags(SplFileObject::READ_CSV) ;
 		$header = $file->fgetcsv() ;
 		while ($row = $file->fgetcsv()) {

@@ -48,6 +48,7 @@
                 {% endif %}
                 {% if (user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')) %}
                     <li><a href="{{ path('configuration_parameters') }}">{{ 'Menu.PlatformParameters'|trans }}</a></li>
+					<li><a href="{{ path('taxref_migration') }}">{{ 'Menu.TaxrefMigration'|trans }}</a></li>
                 {% endif %}
             </ul>
         </li>
