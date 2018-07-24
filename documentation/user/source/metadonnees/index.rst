@@ -31,7 +31,7 @@ Une fiche de métadonnées de DC peut être rattachée à une autre fiche de mé
 Principe fonctionnel des métadonnées dans GINCO
 ***********************************************
 
-.. note:: Les fiches de métadonnées doivent être saisies dans `l'application de métadonnées de l'INPN <http://inpn.mnhn.fr/mtd>`_.
+.. note:: Les fiches de métadonnées doivent être saisies dans :mtd_url:`l'application de métadonnées de l'INPN <>`.
 
 .. warning:: C’est l’administrateur régional qui pour l’instant saisit les métadonnées dans l’application nationale de métadonnées du SINP.
 
