@@ -4,7 +4,7 @@ Administration des utilisateurs
 ===============================
 
 Les plateformes Ginco utilisent l'annuaire de personnes du SINP, partagé avec `le site de l'INPN <https://inpn.mnhn.fr>`_
-et `l'application de Métadonnées <https://inpn.mnhn.fr/mtd>`_. Pour se connecter aux plateformes Ginco, **il faut donc disposer d'un compte sur l'INPN**.
+et l' :mtd_url:`application de Métadonnées </cadre/>`. Pour se connecter aux plateformes Ginco, **il faut donc disposer d'un compte sur l'INPN**.
 
 Vous pouvez créer un compte à l'adresse suivante : https://inpn.mnhn.fr/accueil/compte/Compte.
 

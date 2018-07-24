@@ -31,6 +31,7 @@ import os
 # ones.
 extensions = [
     'sphinx.ext.todo',
+    'sphinx.ext.extlinks'
 ]
 todo_include_todos = True
 
@@ -264,6 +265,25 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 # Keep sources (useful for search function), but don't show link to sources
+
+
+# External links
+
+if os.environ.get('SPHINXENV') == 'prod':
+    extlinks = {
+        'tps_url': ('https://www.demarches-simplifiees.fr/commencer/projets-environnement-gouv-fr%s', 'path'),
+        'mtd_url': ('https://inpn.mnhn.fr/mtd%s', 'path'),
+        'geonature_url': ('https://depot-legal-biodiversite.naturefrance.fr/saisie%s', 'path'),
+        'dlb_url': ('https://depot-legal-biodiversite.naturefrance.fr/versement%s', 'path')
+    }
+else:
+    extlinks = {
+        'tps_url': ('https://www.demarches-simplifiees.fr/commencer/formation-projets-environnement-gouv-fr%s', 'path'),
+        'mtd_url': ('https://preprod-inpn.mnhn.fr/mtd%s', 'path'),
+        'geonature_url': ('https://depot-legal-biodiversite.naturefrance.fr/pp-saisie%s', 'path'),
+        'dlb_url': ('https://depot-legal-biodiversite.naturefrance.fr/test%s', 'path')
+    }
+
 
 html_copy_source = True
 html_show_sourcelink = False
