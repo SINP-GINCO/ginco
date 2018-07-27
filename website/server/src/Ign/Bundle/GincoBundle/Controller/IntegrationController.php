@@ -291,12 +291,7 @@ class IntegrationController extends GincoController {
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
 		
-		// Check if submission is validable
-		$insertedOk = $submission->getStep() == Submission::STEP_INSERTED && $submission->getStatus() == Submission::STATUS_OK;
-		$checkedOk = $submission->getStep() == Submission::STEP_CHECKED && $submission->getStatus() == Submission::STATUS_OK;
-		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
-		
-		if ($insertedOk || $checkedOk || $warning) {
+		if ($submission->isValidable()) {
 			
 			// Send the validation request to the integration server
 			try {
@@ -399,11 +394,8 @@ class IntegrationController extends GincoController {
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
 		
-		// Check if submission is validable
-		$validateOk = $submission->getStep() == Submission::STEP_VALIDATED && $submission->getStatus() == Submission::STATUS_OK;
-		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
 		
-		if ($validateOk || $warning) {
+		if ($submission->isInvalidable()) {
 			// Send the cancel request to the integration server
 			try {
 				$this->get('ginco.integration_service')->invalidateDataSubmission($submissionId);
