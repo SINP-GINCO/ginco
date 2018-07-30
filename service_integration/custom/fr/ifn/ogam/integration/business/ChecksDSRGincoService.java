@@ -859,10 +859,10 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		// -- Calculate cdRefCalcule
 		GenericData cdRef = values.get(DSRConstants.CD_REF) ;
 		GenericData cdRefCalcule = values.get(DSRConstants.CD_REF_CALC) ;
-		if (cdRef != null && !empty(cdRef)) {
+		if (cdNom != null && !empty(cdNom)) {
+			cdRefCalcule.setValue(cdNom.getValue()) ;
+		} else if (cdRef != null && !empty(cdRef)) {
 			cdRefCalcule.setValue(cdRef.getValue()) ;
-		} else if ((cdRef == null || empty(cdRef)) && cdNom != null && !empty(cdNom)) {
-			cdRefCalcule.setValue(cdNom.getValue());
 		}
 		
 	}
