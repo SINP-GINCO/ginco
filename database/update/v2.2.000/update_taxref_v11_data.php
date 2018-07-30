@@ -109,14 +109,31 @@ try {
 		//	¤ TaxoStatut=Diffusé
 		//	¤ TaxoModif=Modification TAXREF
 		//	¤ TaxoAlerte=NON
-		//	¤ DEEDateDerniereModification=<now()>.
 		$casA = $pdo->prepare("UPDATE raw_data.$tableName SET
 				cdrefcalcule = :valeurFinal,
 				taxostatut = '0',
 				taxomodif = '0',
-				taxoalerte = '1',
-				deedatedernieremodification = now()
+				taxoalerte = '1'
 			WHERE cdref = :valeurInit
+		");
+
+		// Cas B0) (traitement par défaut du cas B, si ni B1, ni B2 et ni B3) 
+		// Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT.
+		// Pour ces données, mettre :
+		// ¤ cdNomCalcule à NULL
+		// ¤ cdRef_Calcule à NULL
+		// ¤ nomValide à NULL
+		// ¤ TaxoStatut =‘Gel’
+		// ¤ TaxoModif = ‘Gel TAXREF’
+		// ¤ taxoAlerte = OUI.
+		$casB0 = $pdo->prepare("UPDATE raw_data.$tableName SET
+				cdnomcalcule = NULL,
+				cdrefcalcule = NULL,
+				nomvalide = NULL,
+				taxostatut = '1',
+				taxomodif = '1',
+				taxoalerte = '0'
+			WHERE cdnom = :valeurInit
 		");
 
 		// Cas B1) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
@@ -126,15 +143,13 @@ try {
 		// ¤ TaxoStatut=Diffusé
 		// ¤ TaxoModif=Modification TAXREF
 		// ¤ TaxoAlerte=NON
-		// ¤ DEEDateDerniereModification=<now()>.
 		$casB1 = $pdo->prepare("UPDATE raw_data.$tableName SET
 				cdnomcalcule = :cdNomRemplacement::varchar,
 				cdrefcalcule = :cdNomRemplacement,
-				nomValide = (SELECT nom_valide FROM referentiels.taxref WHERE cd_nom = :cdNomRemplacement),
+				nomValide = (SELECT nom_complet FROM referentiels.taxref WHERE cd_nom = :cdNomRemplacement),
 				taxostatut = '0',
 				taxomodif = '0',
-				taxoalerte = '1',
-				deedatedernieremodification = now()
+				taxoalerte = '1'
 			WHERE cdnom = :valeurInit
 		");     
 
@@ -145,7 +160,6 @@ try {
 		// ¤ nomValide à NULL
 		// ¤ TaxoStatut =‘Gel’ ???
 		// ¤ TaxoModif = ‘Gel TAXREF’
-		// ¤ DEEDateDerniereModification est mis à jour
 		// ¤ taxoAlerte = OUI.
 		$casB2 = $pdo->prepare("UPDATE raw_data.$tableName SET
 				cdnomcalcule = NULL,
@@ -153,36 +167,32 @@ try {
 				nomvalide = NULL,
 				taxostatut = '1',
 				taxomodif = '1',
-				taxoalerte = '0',
-				deedatedernieremodification = now()
+				taxoalerte = '0'
 			WHERE cdnom = :valeurInit
 		");
 
-		// Cas B3) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT.
-		// Pour ces données, mettre :
+		// Cas B3) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
+		// et CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 2, auquel cas il faut mettre :
 		// ¤ cdNomCalcule à NULL
 		// ¤ cdRef_Calcule à NULL
 		// ¤ nomValide à NULL
 		// ¤ TaxoStatut =‘Gel’
-		// ¤ TaxoModif = ‘Gel TAXREF’
-		// ¤ DEEDateDerniereModification est mis à jour
+		// ¤ TaxoModif = ‘Suppression TAXREF’
 		// ¤ taxoAlerte = OUI.
 		$casB3 = $pdo->prepare("UPDATE raw_data.$tableName SET
-				cdnomcalcule = NULL,
-				cdrefcalcule = NULL,
-				nomvalide = NULL,
-				taxostatut = '1',
-				taxomodif = '1',
-				taxoalerte = '0',
-				deedatedernieremodification = now()
-			WHERE cdnom = :valeurInit
+			cdnomcalcule = NULL,
+			cdrefcalcule = NULL,
+			nomValide = NULL,
+			taxostatut = '1',
+			taxomodif = '2',
+			taxoalerte = '0'
 		");
 
 
 		// Cas C) Lorsque TYPE_CHANGE=MODIFICATION et CHAMP=LB_NOM, il faut : trouver les données telles que cdNom valent CD_NOM. Pour ces données, mettre :
 		// ¤ nomValid=VALEUR_FINAL.
 		$casC = $pdo->prepare("UPDATE raw_data.$tableName SET
-				nomvalide = :valeurFinal
+				nomvalide = (SELECT nom_complet FROM referentiels.taxref WHERE cd_nom = :cdNom)
 			WHERE cdnom = :cdNom
 		");
 
@@ -213,32 +223,31 @@ try {
 				));
 			}
 
-			// Cas B1
-			if ('RETRAIT' == $typeChange && !empty($cdRaisonSuppression) && '1' == $cdRaisonSuppression) {
-				$casB1->execute(array(
-					'cdNomRemplacement' => $cdNomRemplacement,
-					'valeurInit' => $valeurInit
-				));
-			}
+			// Cas B
+			if ('RETRAIT' == $typeChange) {
 
-			// Cas B2
-			if ('RETRAIT' == $typeChange && !empty($cdRaisonSuppression) && '3' == $cdRaisonSuppression) {
-				$casB2->execute(array(
-					'valeurInit' => $valeurInit
-				));
-			}
-
-			// Cas B3
-			if ('RETRAIT' == $typeChange && (empty($cdRaisonSuppression) || '2' == $cdRaisonSuppression)) {
-				$casB3->execute(array(
-					'valeurInit' => $valeurInit
-				));
+				if (!empty($cdRaisonSuppression) && '1' == $cdRaisonSuppression) {
+					$casB1->execute(array(
+						'cdNomRemplacement' => $cdNomRemplacement,
+						'valeurInit' => $valeurInit
+					));
+				} else if (!empty($cdRaisonSuppression) && '3' == $cdRaisonSuppression) {
+					$casB2->execute(array(
+						'valeurInit' => $valeurInit
+					));
+				} else if (!empty($cdRaisonSuppression) && '2' == $cdRaisonSuppression) {
+					$casB3->execute() ;
+				} else {
+					// Cas B0, par défaut
+					$casB0->execute(array(
+						'valeurInit' => $valeurInit
+					));
+				}
 			}
 
 			// Cas C
 			if ('MODIFICATION' == $typeChange && 'LB_NOM' == $champ) {
 				$casC->execute(array(
-					'valeurFinal' => $valeurFinal,
 					'cdNom' => $cdNom
 				));
 			}
