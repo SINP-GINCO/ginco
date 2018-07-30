@@ -98,8 +98,6 @@ Rappel des traitements effectués sur les champs taxonomiques lors de l'import
 
 * Mettre à jour la table referentiels.liste_referentiels pour taxref.
 
-* A vérifier auprès de Judith : Il n'y a pas besoin de remplacer la liste de sensibilité : la mise à jour de Taxref n'impacte pas la liste.
-
 * Ajouter les champs cdNomCalcule, cdRefCalcule (mêmes paramètres dans le métamodèle et le configurateur que codeMailleCalcule, avec comme unité TaxrefValue), et TaxoStatut, TaxoModif et TaxoAlerte (mêmes paramètres dans le métamodèle et le configurateur que sensiAlerte). Changer l'unité des champs cdNom et cdRef en characterString.
 
 * Lors des checks de l'import, remplir cdNomCalcule à partir de cdNom si fourni, et cdRefCalcule (dans tous les cas). Voir avec Judith pour le calcul de cdRefCalcule si on se base plutôt sur le cdNom ou le cdRef lorsque les 2 sont fournis. Le contrôle que cdNom ou cdRef du producteur appartiennent à Taxref est donc fait à ce moment là. En cas d'erreur on enregistre l'erreur comme d'habitude.
@@ -118,7 +116,6 @@ Rappel des traitements effectués sur les champs taxonomiques lors de l'import
 * TaxoStatut=Diffusé
 * TaxoModif=Modification TAXREF
 * TaxoAlerte=NON
-* DEEDateDerniereModification=<now()>.
 
 #### B) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNomCalcule vaut VALEUR_INIT. Pour ces données, mettre :
 
@@ -127,7 +124,6 @@ Rappel des traitements effectués sur les champs taxonomiques lors de l'import
 * nomValide à NULL
 * TaxoStatut =‘Gel’
 * TaxoModif = ‘Gel TAXREF’
-* DEEDateDerniereModification est mis à jour
 * taxoAlerte = OUI.
 
 **SAUF LORSQUE :**
@@ -138,7 +134,6 @@ Rappel des traitements effectués sur les champs taxonomiques lors de l'import
   * TaxoStatut=Diffusé
   * TaxoModif=Modification TAXREF
   * TaxoAlerte=NON
-  * DEEDateDerniereModification=<now()>.
 
 * CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 3, auquel cas il faut mettre :
   * cdNomCalcule à NULL
@@ -146,7 +141,14 @@ Rappel des traitements effectués sur les champs taxonomiques lors de l'import
   * nomValide à NULL
   * TaxoStatut =‘Gel’ ???
   * TaxoModif = ‘Gel TAXREF’
-  * DEEDateDerniereModification est mis à jour
+  * taxoAlerte = OUI.
+
+* CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 2, auquel cas il faut mettre :
+  * cdNomCalcule à NULL
+  * cdRef_Calcule à NULL
+  * nomValide à NULL
+  * TaxoStatut =‘Gel’
+  * TaxoModif = ‘Suppression TAXREF’
   * taxoAlerte = OUI.
 
 Le plus simple serait sûrement de supprimer les lignes de TAXREF_CHANGES telles que CD_NOM existe dans CDNOM_DISPARUS et CD_RAISON_SUPPRESSION = 1 ou 3, de supprimer les lignes de CDNOM_DISPARUS telles que CD_RAISON_SUPPRESSION = 2 ou Null, et de parcourir les fichiers l'un après l'autre.
