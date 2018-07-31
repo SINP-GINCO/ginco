@@ -22,7 +22,7 @@ class JddField
      * @var int
      *
 	 * @ORM\Id
-	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\GincoBundle\Entity\RawData\Jdd")
+	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\GincoBundle\Entity\RawData\Jdd", inversedBy="fields")
 	 * @ORM\JoinColumn(name="jdd_id", referencedColumnName="id")
      */
     private $jdd;

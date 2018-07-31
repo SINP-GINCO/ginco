@@ -102,6 +102,10 @@ services:
       class: Ign\Bundle\GincoBundle\Services\SubmissionService
       arguments: ["@logger", "@ginco.configuration_manager", "@ginco.generic_service","@ginco.query_service", "@doctrine.orm.raw_data_entity_manager", "@doctrine.orm.metadata_entity_manager", "@translator"]
 
+    ginco.jdd_service:
+        class: Ign\Bundle\GincoBundle\Services\JddService
+        arguments: ["@logger", "@ginco.configuration_manager", "@doctrine.orm.entity_manager", "@ginco.integration_service"]
+
     ginco.ogr2ogr:
       class: Ign\Bundle\GincoBundle\Services\Ogr2ogr
       arguments: ["@logger", "@ginco.configuration_manager"]
@@ -236,3 +240,4 @@ services:
       tags:
         - {  name: validator.constraint_validator }
       arguments: ["@doctrine.orm.entity_manager"]
+      
