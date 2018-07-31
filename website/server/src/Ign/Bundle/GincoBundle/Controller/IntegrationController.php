@@ -8,6 +8,7 @@ use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
 use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 use Ign\Bundle\GincoBundle\Entity\RawData\SubmissionFile;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
 use Ign\Bundle\GincoBundle\Form\DataSubmissionType;
 use Ign\Bundle\GincoBundle\Form\UploadDataType;
 use Ign\Bundle\GincoBundle\GincoBundle;
@@ -419,6 +420,42 @@ class IntegrationController extends GincoController {
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
+	}
+	
+	/**
+	 * Publie (partiellement ou complètement un jeu de données).
+	 * Supprime les soumissions en erreur.
+	 * 
+	 * @Route("/validate-jdd/{jdd}", name="integration_validate_jdd")
+	 */
+	public function validateJddAction(Jdd $jdd) {
+		
+		/* @var $user \Ign\Bundle\GincoBundle\Entity\Website\User */
+		$user = $this->getUser() ;
+		$userJdd = $jdd->getUser() ;
+		
+		if (!$this->isGranted('VALIDATE_JDD', $jdd)) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.notAllowed']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
+		}
+		
+		if (!$jdd->isActive()) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.deleted']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
+		}
+		
+		$jddService = $this->get('ginco.jdd_service') ;
+		try {
+			$jddService->validateJdd($jdd) ;
+		} catch (Exception $ex) {
+			$this->getLogger()->error('Error during jdd validation: ' . $e);
+				
+			return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
+				'error' => $e->getMessage()
+			));
+		}
+		
+		return $this->redirectToRoute('user_jdd_list') ;
 	}
 
 	/**

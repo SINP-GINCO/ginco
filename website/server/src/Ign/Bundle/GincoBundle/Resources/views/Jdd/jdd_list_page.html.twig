@@ -139,6 +139,13 @@
                 <td>
                     {# Delete #}
                     {% if jdd.trueDeletable %}
+						
+						{% if is_granted('VALIDATE_JDD', jdd) %}
+							<button class="btn btn-xs btn-default btn-disabled" title="{{'Confirm_validate_jdd'|trans }}">
+								 <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+							</button>
+						{% endif %}
+						
                         <button class="btn btn-xs btn-danger" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
@@ -163,6 +170,12 @@
                             </div>
                         </div>
                     {% else %}
+						{% if is_granted('VALIDATE_JDD', jdd) %}
+							<a class="btn btn-xs btn-success" href="{{ path('integration_validate_jdd',{jdd: jdd.id}) }}" title="{{ 'Confirm_validate_jdd'|trans }}"
+								onClick="return confirm('{{ 'Confirm_validate_jdd_warning'|trans }}');">
+								<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+							</a>
+						{% endif %}
                         <button class="btn btn-xs btn-default btn-disabled" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-impossible-delete-jdd-{{ jdd.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>

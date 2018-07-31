@@ -297,6 +297,8 @@ Confirm submission: Publier la soumission
 Invalidate submission: Dépublier la soumission
 Confirm_submission_warning: Une fois validées, les données seront disponibles pour la suite des traitements. Voulez-vous confirmer ?
 Confirm_invalidation_warning: Une fois invalidées, les données ne seront plus disponibles pour la suite des traitements. Voulez-vous confirmer ?
+Confirm_validate_jdd: Publier le jeu de données
+Confirm_validate_jdd_warning: Les soumissions en erreur seront supprimées.\nSi des soumissions ne sont pas publiées, alors le jeu de données ne sera que partiellement publié et ne pourra etre transmis.\nVoulez-vous confirmer ?
 
 
 Integration:
@@ -316,6 +318,10 @@ Integration:
       unpublish: Cette soumission ne peut pas être dépubliée.
       delete: Cette soumission ne peut pas être supprimée.
       report: Le rapport de cette soumission n'est pas accessible.
+  Jdd:
+    error:
+      notAllowed: Vous n'avez pas les droits suffisants pour publier ce jeu de données.
+      deleted: Vous ne pouvez pas publier ce jeu de données car il a été supprimé.
 
 import.format:
   csv: Verser des données au format csv
