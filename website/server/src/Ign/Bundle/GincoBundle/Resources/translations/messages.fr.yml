@@ -299,7 +299,7 @@ Confirm_submission_warning: Une fois validées, les données seront disponibles 
 Confirm_invalidation_warning: Une fois invalidées, les données ne seront plus disponibles pour la suite des traitements. Voulez-vous confirmer ?
 Confirm_validate_jdd: Publier le jeu de données
 Confirm_validate_jdd_warning: Les soumissions en erreur seront supprimées.\nSi des soumissions ne sont pas publiées, alors le jeu de données ne sera que partiellement publié et ne pourra etre transmis.\nVoulez-vous confirmer ?
-
+Last_validation: Dernière publication
 
 Integration:
   Field:
@@ -390,6 +390,7 @@ DEE:
   suppression: Suppression
   creation: Création
   update: Mise à jour
+  warning: La date de création de la DEE est antérieure à la dernière soumission publiée.
 
   table:
     title: Transmission INPN

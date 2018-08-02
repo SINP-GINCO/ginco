@@ -3,6 +3,9 @@ namespace Ign\Bundle\GincoBundle\Repository\RawData;
 
 use Doctrine\Common\Collections\Collection;
 
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
+
 /**
  * SubmissionRepository
  *
@@ -36,5 +39,23 @@ class SubmissionRepository extends \Doctrine\ORM\EntityRepository {
 		}
 
 		return $query->getResult();
+	}
+	
+	
+	/**
+	 * Find the last validated submission for a Jdd.
+	 * @param Jdd $jdd
+	 * @return Submission
+	 */
+	public function findLastValidatedSubmission(Jdd $jdd) {
+		
+		$qb = $this->createQueryBuilder('s')
+			->where('s.jdd = :jdd')
+			->orderBy("s.validationDate", "DESC")
+			->setMaxResults(1)
+			->setParameter('jdd', $jdd->getId())
+		;
+		
+		return $qb->getQuery()->getResult() ;
 	}
 }
