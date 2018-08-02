@@ -332,6 +332,20 @@ class Jdd {
 		};
 		return $this->getSubmissions()->filter($isValidated);
 	}
+	
+	/**
+	 * Get the last validated submission.
+	 * @return Submission
+	 */
+	public function getLastValidatedSubmission() {
+		$validatedSubmissions = $this->getValidatedSubmissions() ;
+		$iterator = $validatedSubmissions->getIterator() ;
+		$iterator->uasort(function ($a, $b) {
+			return $a->getValidationDate() < $b->getValidationDate() ? -1 : 1 ;
+		});
+		$sorted = new ArrayCollection(iterator_to_array($iterator)) ;
+		return $sorted->last() ;
+	}
 
 	/**
 	 * @ORM\PrePersist()

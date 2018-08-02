@@ -228,6 +228,7 @@
                                 {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
                             </div>
                         {% endfor %}
+						{% if jdd.validatedSubmissions | length > 0 %}<p>{{ 'Last_validation' | trans }} : {{ jdd.lastValidatedSubmission.validationDate | date('d/m/Y H\\hi:s') }}</p>{% endif %}
                     {% else %}
                     <p>-</p>
                     {% endif %}
@@ -294,6 +295,13 @@
                                 </div>
                             </div>
                             <div class="progress-cancel"></div>
+							<div class="dee-warning">
+								{% if jdd.dee is not null %}
+									{% if jdd.lastValidatedSubmission.validationDate > jdd.dee.createdAt %}
+										<span class="glyphicon glyphicon-alert text-danger" aria-hidden="true" title="{{ 'DEE.warning' | trans }}"></span>
+									{% endif %}
+								{% endif %}
+								</div>
                             <div class="dee-content"></div>
                         </div>
                     </div>
