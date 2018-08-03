@@ -26,6 +26,7 @@ $config = loadPropertiesFromArgs();
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
+	execCustSQLFile("$sprintDir/permissions.sql", $config);
 	execCustSQLFile("$sprintDir/jdd.sql", $config);
 
 
