@@ -85,7 +85,6 @@ INSERT INTO permission(permission_code, permission_label, permission_group_code,
   ('VIEW_SENSITIVE', 'Consulter toutes les données sensibles', 'DATA_MANAGEMENT', 'Outrepasser les restrictions d''accès aux informations de localisation précises lorsque les données sont sensibles, pour toutes les données.'),
   ('VIEW_PRIVATE', 'Consulter toutes les données privées', 'DATA_MANAGEMENT', 'Outrepasser les restrictions d''accès aux informations de localisation précises lorsque les données sont privées, pour toutes les données.'),
   ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer tous les jeux de données', 'JDD_MANAGEMENT', 'Voir et supprimer n''importe quel jeu de données. Modifier l''organisme de rattachement d''un jeu de données, ou créer un jeu de données pour un autre organisme. Importer des données dans n''importe quel jeu de données, supprimer n''importe quel import. Attention cette permission n''est à confier qu''aux administrateurs.'),
-  ('CONFIRM_SUBMISSION', 'Publier n''importe quelle soumission', 'JDD_MANAGEMENT', 'Publier et dépublier toutes les données. Attention cette permission n''est à confier qu''aux administrateurs.'),
   ('GENERATE_DEE_OWN_JDD', 'Gérer les DEE de ses propres jeux de données', 'JDD_MANAGEMENT', 'Générer et transmettre à l''INPN les DEE de ses propres jeux de données. Les regénérer et les supprimer (avec notification à l''INPN), les télécharger.'),
   ('GENERATE_DEE_ALL_JDD', 'Gérer les DEE de tous les jeux de données', 'JDD_MANAGEMENT', 'Générer et transmettre à l''INPN les DEE de tous les jeux de données. Les regénérer et les supprimer (avec notification à l''INPN), les télécharger.'),
   ('MANAGE_PUBLIC_REQUEST', 'Gérer les requêtes publiques', 'REGISTERED_QUERIES', 'Créer, éditer, supprimer des requêtes enregistrées publiques.'),
@@ -117,7 +116,6 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_PRI
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_OWN_JDD');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_ALL_JDD');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIRM_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_PUBLIC_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_OWNED_PRIVATE_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_WEBSITE_PARAMETERS');
@@ -146,7 +144,6 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_D
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'GENERATE_DEE_ALL_JDD');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION_OTHER_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIRM_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_PUBLIC_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_OWNED_PRIVATE_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGURE_WEBSITE_PARAMETERS');

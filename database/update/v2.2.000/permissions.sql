@@ -1,8 +1,6 @@
-
 -------------------------------------------------------------
 -- Validation (= publication) des jeux de données
 -------------------------------------------------------------
-
 
 INSERT INTO website.permission(permission_code, permission_label, permission_group_code, description) VALUES
     ('VALIDATE_JDD_OWN', 'Publier ses jeux de données', 'JDD_MANAGEMENT', 'Permet de publier ses propres jeux de données.'),
@@ -18,12 +16,6 @@ INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
     (2, 'VALIDATE_JDD_PROVIDER'),
     (2, 'VALIDATE_JDD_ALL')
 ;
-
-UPDATE website.permission SET
-    permission_label = 'Publier n''importe quelle soumission',
-    permission_group_code = 'JDD_MANAGEMENT',
-    description = 'Publier et dépublier toutes les données. Attention cette permission n''est à confier qu''aux administrateurs.'
-WHERE permission_code = 'CONFIRM_SUBMISSION' ;
 
 
 -------------------------------------------------------------
@@ -44,3 +36,6 @@ INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
     (2, 'VALIDATE_SUBMISSION_PROVIDER'),
     (2, 'VALIDATE_SUBMISSION_ALL')
 ;
+
+DELETE FROM website.permission_per_role WHERE permission_code = 'CONFIRM_SUBMISSION' ;
+DELETE FROM website.permission WHERE permission_code = 'CONFIRM_SUBMISSION' ;
