@@ -296,6 +296,14 @@ class User implements UserInterface, \Serializable {
 	public function getProvider() {
 		return $this->provider;
 	}
+	
+	/**
+	 * Test if user has a provider, ie : provider id is not 0.
+	 * @return type
+	 */
+	public function hasProvider() {
+		return $this->getProvider()->getId() != 0 ;
+	}
 
 	/**
 	 * Get roles.

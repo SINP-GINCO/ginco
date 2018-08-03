@@ -15,6 +15,8 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Zend\Http\Client;
 
+use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
+
 /**
  * This is a model allowing to access the integration service via HTTP calls.
  */
@@ -206,8 +208,8 @@ class Integration extends AbstractService {
 	 * @return true if the validation was OK
 	 * @throws Exception if a problem occured on the server side
 	 */
-	public function validateDataSubmission($submissionId) {
-		$this->logger->debug("validateDataSubmission : " . $submissionId);
+	public function validateDataSubmission(Submission $submission) {
+		$this->logger->debug("validateDataSubmission : " . $submission->getId());
 
 		$client = new Client();
 		$client->setUri($this->serviceUrl . "DataServlet?action=ValidateDataSubmission");
@@ -217,7 +219,7 @@ class Integration extends AbstractService {
 		));
 
 		$client->setParameterPost(array(
-			'SUBMISSION_ID' => $submissionId
+			'SUBMISSION_ID' => $submission->getId()
 		));
 
 		$this->logger->debug("HTTP REQUEST : " . $this->serviceUrl . "DataServlet?action=ValidateDataSubmission");
@@ -252,7 +254,10 @@ class Integration extends AbstractService {
 	 * @return true if the invalidation was OK
 	 * @throws Exception if a problem occured on the server side
 	 */
-	public function invalidateDataSubmission($submissionId) {
+	public function invalidateDataSubmission(Submission $submission) {
+		
+		$submissionId = $submission->getId() ;
+		
 		$this->logger->debug("invalidateDataSubmission : " . $submissionId);
 
 		$client = new Client();

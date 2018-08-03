@@ -1,30 +1,30 @@
 <?php
 
-namespace Ign\Bundle\GincoBundle\Security\Voter ;
+namespace Ign\Bundle\GincoBundle\Security\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 use Ign\Bundle\GincoBundle\Entity\Website\User;
 
 /**
- * Permissions sur les JDD.
+ * Description of SubmissionVoter
  *
  * @author rpas
  */
-class JddVoter extends Voter {
+class SubmissionVoter extends Voter {
 	
-	const VALIDATE_JDD = 'VALIDATE_JDD' ;
+	const VALIDATE_SUBMISSION = 'VALIDATE_SUBMISSION' ;
 	
 	
 	protected function supports($attribute, $subject) {
 		
-		if (!in_array($attribute, array(self::VALIDATE_JDD))) {
+		if (!in_array($attribute, array(self::VALIDATE_SUBMISSION))) {
 			return false ;
 		}
 		
-		if (!$subject instanceof Jdd) {
+		if (!$subject instanceof Submission) {
 			return false ;
 		}
 		
@@ -45,27 +45,26 @@ class JddVoter extends Voter {
 		
 		switch ($attribute) {
 			
-			case self::VALIDATE_JDD:
+			case self::VALIDATE_SUBMISSION:
 				return $this->canValidate($jdd, $user) ;
 		}
 	}
 
 	
-	private function canValidate(Jdd $jdd, User $user) {
+	private function canValidate(Submission $submission, User $user) {
 		
-		if ($user->isAllowed('VALIDATE_JDD_ALL')) {
+		if ($user->isAllowed('VALIDATE_SUBMISSION_ALL')) {
 			return true ;
 		}
 		
-		if ($user->isAllowed('VALIDATE_JDD_PROVIDER') && $jdd->getProvider()->getId() == $user->getProvider()->getId() && $user->hasProvider()) {
+		if ($user->isAllowed('VALIDATE_SUBMISSION_PROVIDER') && $submission->getProvider()->getId() == $user->getProvider()->getId() && $user->hasProvider()) {
 			return true ;
 		}
 		
-		if ($user->isAllowed('VALIDATE_JDD_OWN') && $jdd->getUser()->getLogin() == $user->getLogin()) {
+		if ($user->isAllowed('VALIDATE_SUBMISSION_OWN') && $submission->getUser()->getLogin() == $user->getLogin()) {
 			return true ;
 		}
 		
 		return false ;
 	}
-
 }
