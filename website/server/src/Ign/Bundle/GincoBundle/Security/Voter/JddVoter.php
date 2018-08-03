@@ -53,15 +53,15 @@ class JddVoter extends Voter {
 	
 	private function canValidate(Jdd $jdd, User $user) {
 		
-		if ($user->isAllowed('VALIDATE_ALL_JDD')) {
+		if ($user->isAllowed('VALIDATE_JDD_ALL')) {
 			return true ;
 		}
 		
-		if ($user->isAllowed('VALIDATE_PROVIDER_JDD') && $jdd->getProvider()->getId() == $user->getProvider()->getId()) {
+		if ($user->isAllowed('VALIDATE_JDD_PROVIDER') && $jdd->getProvider()->getId() == $user->getProvider()->getId()) {
 			return true ;
 		}
 		
-		if ($user->isAllowed('VALIDATE_OWN_JDD') && $jdd->getUser()->getLogin() == $user->getLogin()) {
+		if ($user->isAllowed('VALIDATE_JDD_OWN') && $jdd->getUser()->getLogin() == $user->getLogin()) {
 			return true ;
 		}
 		
