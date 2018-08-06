@@ -135,8 +135,8 @@ STATUS    			 VARCHAR(36)          null,
 PROVIDER_ID          VARCHAR(36)          not null,
 DATASET_ID           VARCHAR(36)          not null,
 USER_LOGIN           VARCHAR(50)          not null,
-_CREATIONDT          DATE                 null DEFAULT current_timestamp,
-_VALIDATIONDT        DATE                 null DEFAULT current_timestamp,
+_CREATIONDT          TIMESTAMP            null DEFAULT current_timestamp,
+_VALIDATIONDT        TIMESTAMP            null DEFAULT current_timestamp,
 constraint PK_SUBMISSION primary key (SUBMISSION_ID),
 CONSTRAINT fk_jdd_id FOREIGN KEY (jdd_id)
 REFERENCES raw_data.jdd (id) MATCH SIMPLE
