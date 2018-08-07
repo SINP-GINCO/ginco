@@ -25,6 +25,9 @@ if (count($argv) == 1)
 $config = loadPropertiesFromArgs();
 
 $isDlb = strpos($config['db.name'], 'dlb') !== FALSE ;
+if ($isDlb) {
+	echo "Database is DLB." ;
+}
 
 try {
 	/* patch code here*/
