@@ -16,11 +16,11 @@ use Ign\Bundle\GincoBundle\Entity\Website\User;
 class JddVoter extends Voter {
 	
 	const VALIDATE_JDD = 'VALIDATE_JDD' ;
-	
+	const GENERATE_DEE = 'GENERATE_DEE' ;
 	
 	protected function supports($attribute, $subject) {
 		
-		if (!in_array($attribute, array(self::VALIDATE_JDD))) {
+		if (!in_array($attribute, array(self::VALIDATE_JDD, self::GENERATE_DEE))) {
 			return false ;
 		}
 		
@@ -47,6 +47,9 @@ class JddVoter extends Voter {
 			
 			case self::VALIDATE_JDD:
 				return $this->canValidate($jdd, $user) ;
+				
+			case self::GENERATE_DEE:
+				return $this->canGenerateDEE($jdd, $user) ;
 		}
 	}
 
@@ -62,6 +65,24 @@ class JddVoter extends Voter {
 		}
 		
 		if ($user->isAllowed('VALIDATE_JDD_OWN') && $jdd->getUser()->getLogin() == $user->getLogin()) {
+			return true ;
+		}
+		
+		return false ;
+	}
+	
+	
+	private function canGenerateDEE(Jdd $jdd, User $user) {
+		
+		if ($user->isAllowed('GENERATE_DEE_ALL')) {
+			return true ;
+		}
+		
+		if ($user->isAllowed('GENERATE_DEE_PROVIDER') && $jdd->getProvider()->getId() == $user->getProvider()->getId() && $user->hasProvider()) {
+			return true ;
+		}
+		
+		if ($user->isAllowed('GENERATE_DEE_OWN') && $jdd->getUser()->getLogin() == $user->getLogin()) {
 			return true ;
 		}
 		

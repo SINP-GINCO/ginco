@@ -44,7 +44,7 @@ security:
         - { path: ^/geo-association/update-entity, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/jdd/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/submission/download-report, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
-        - { path: ^/dee/, allow_if: "user and is_authenticated() and (user.isAllowed('GENERATE_DEE_OWN_JDD') or user.isAllowed('GENERATE_DEE_ALL_JDD'))"}
+        - { path: ^/dee/, roles: "IS_AUTHENTICATED_FULLY"}
         - { path: ^/proxy/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
         - { path: ^/configuration/, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')"}
         - { path: ^/configurator/, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_METAMODEL')"}
