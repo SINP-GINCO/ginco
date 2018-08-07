@@ -39,3 +39,30 @@ INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
 
 DELETE FROM website.permission_per_role WHERE permission_code = 'CONFIRM_SUBMISSION' ;
 DELETE FROM website.permission WHERE permission_code = 'CONFIRM_SUBMISSION' ;
+
+
+-------------------------------------------------------------
+-- Génération des DEE
+-------------------------------------------------------------
+
+UPDATE website.permission SET
+    permission_code = 'GENERATE_DEE_OWN'
+    WHERE permission_code = 'GENERATE_DEE_OWN_JDD'
+;
+UPDATE website.permission_per_role SET permission_code = 'GENERATE_DEE_OWN' WHERE permission_code = 'GENERATE_DEE_OWN_JDD' ;
+
+UPDATE website.permission SET
+    permission_code = 'GENERATE_DEE_ALL'
+    WHERE permission_code = 'GENERATE_DEE_ALL_JDD'
+;
+UPDATE website.permission_per_role SET permission_code = 'GENERATE_DEE_ALL' WHERE permission_code = 'GENERATE_DEE_ALL_JDD' ;
+
+INSERT INTO website.permission(permission_code, permission_label, permission_group_code, description) VALUES 
+    ('GENERATE_DEE_PROVIDER', 'Gérer les DEE des jeux de données de son organisme', 'JDD_MANAGEMENT', 'Permet de génerer et gérer les DEE des jeux de données qui appartiennent à son propre organisme.')
+;
+
+INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
+    (1, 'GENERATE_DEE_PROVIDER'),
+    (2, 'GENERATE_DEE_PROVIDER')
+;
+

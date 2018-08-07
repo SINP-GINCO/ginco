@@ -50,9 +50,9 @@ try {
 			echo "exception: " . $e->getMessage() . "\n";
 			exit(1);
 		}
-	}
 
-	execCustSQLFile("$initDir/populate_mode_taxref_table.sql", $config) ;	
+		execCustSQLFile("$initDir/populate_mode_taxref_table.sql", $config) ;
+	}
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
@@ -65,6 +65,7 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 //system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
 system("php $sprintDir/update_taxref_v11_metadata.php $CLIParams", $returnCode1) ;
 
+$returnCode3 = 0 ;
 if (!$isDlb) {
 	system("php $sprintDir/update_taxref_v11_data.php $CLIParams", $returnCode3) ;
 }

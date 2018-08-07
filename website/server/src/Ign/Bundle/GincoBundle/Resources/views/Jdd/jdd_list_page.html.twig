@@ -282,7 +282,7 @@
                 </td>
 
                 {# DEE Column - Empty / filled by Ajax #}
-                {% set permToGenerateDEE = user.isAllowed('GENERATE_DEE_ALL_JDD') or (user.isAllowed('GENERATE_DEE_OWN_JDD') and jdd.user.login == user.login ) %}
+                {% set permToGenerateDEE = is_granted('GENERATE_DEE', jdd) %}
                 <td>
                     <div class="dee" data-jdd-id="{{ jdd.id }}" data-perm-generate="{{ permToGenerateDEE ? 1 : 0 }}">
                         <div class="dee-state">
@@ -333,7 +333,7 @@
         </tbody>
     </table>
 
-    {% if user.isAllowed('GENERATE_DEE_ALL_JDD') or user.isAllowed('GENERATE_DEE_OWN_JDD') %}
+    {% if user.isAllowed('GENERATE_DEE_ALL') or user.isAllowed('GENERATE_DEE_PROVIDER') or user.isAllowed('GENERATE_DEE_OWN') %}#}
         <!-- DEE dialog popup -->
         <div class="modal fade" id="DEEModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="dialog">
