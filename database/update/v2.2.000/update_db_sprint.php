@@ -34,6 +34,7 @@ try {
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/permissions.sql", $config);
 	execCustSQLFile("$sprintDir/jdd.sql", $config);
+	execCustSQLFile("$sprintDir/layers.sql", $config);
 
 	if (!$isDlb) {
 		execCustSQLFile("$sprintDir/update_taxref_to_v11.sql", $config) ;
