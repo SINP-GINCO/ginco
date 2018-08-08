@@ -37,7 +37,7 @@ try {
 	execCustSQLFile("$sprintDir/layers.sql", $config);
 
 	if (!$isDlb) {
-		execCustSQLFile("$sprintDir/update_taxref_to_v11.sql", $config) ;
+		execCustSQLFile("$sprintDir/migrate_taxref_to_v11.sql", $config) ;
 		
 		$connectStr ="host="     .$config['db.host'];
 		$connectStr.=" port="    .$config['db.port'];
@@ -63,17 +63,32 @@ try {
 $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch php here */
 //system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
-system("php $sprintDir/update_taxref_v11_metadata.php $CLIParams", $returnCode1) ;
 
-$returnCode3 = 0 ;
-if (!$isDlb) {
-	system("php $sprintDir/update_taxref_v11_data.php $CLIParams", $returnCode3) ;
+try {
+
+	system("php $sprintDir/migrate_taxref_v11_metadata.php $CLIParams", $returnCode1) ;
+	if ($returnCode1 != 0) {
+		echo "$sprintDir/migrate_taxref_v11_metadata.php crashed.\n" ; 
+		exit(1) ;
+	}
+
+	if (!$isDlb) {
+		system("php $sprintDir/migrate_taxref_v11_data.php $CLIParams", $returnCode3) ;
+		if ($returnCode3 != 0) {
+			echo "$sprintDir/migrate_taxref_v11_data.php crashed.\n";
+			exit(1);
+	   }
+	}
+
+} catch (Exception $e) {
+	
+	echo "$sprintDir/update_db_sprint.php : an exception has occured.\n" ;
+	echo "Exception : {$e->getMessage()}" ;
+	exit(1) ;
 }
 
-if ($returnCode1 != 0 || $returnCode3 != 0) {
- 	echo "$sprintDir/update_db_sprint.php\n";
- 	echo "exception: " . $e->getMessage() . "\n";
- 	exit(1);
-}
+
+
+
 
 
