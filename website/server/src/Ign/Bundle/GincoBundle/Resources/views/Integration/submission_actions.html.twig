@@ -40,7 +40,7 @@
         <div class="integration-cancel-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
         <a id="integration-cancel-link-{{ submission.id }}" title="{{ 'Cancel Submission'|trans }}"
             {% if remove %}
-                class="btn btn-xs btn-danger" href="{{ path('integration_cancel', {'submissionId': submission.id}) }}" onClick="return confirm('{{'Are you sure?'|trans }}')"
+                class="btn btn-xs btn-danger" href="{{ path('integration_cancel', {'submission': submission.id}) }}" onClick="return confirm('{{'Are you sure?'|trans }}')"
             {% else %}
                 class="btn btn-xs btn-default" data-toggle="modal" data-target="#modal-impossible-delete-submission-{{ submission.id }}"
             {% endif %}

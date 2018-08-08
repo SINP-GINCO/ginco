@@ -581,27 +581,12 @@ class IntegrationController extends GincoController {
 	}
 
 	/**
-	 * @Route("/cancel-data-submission", name="integration_cancel")
+	 * @Route("/cancel-data-submission/{submission}", name="integration_cancel")
 	 */
-	public function cancelDataSubmissionAction(Request $request) {
+	public function cancelDataSubmissionAction(Submission $submission, Request $request) {
 		$this->get('logger')->debug('cancelDataSubmissionAction');
 		// Desactivate the timeout
 		set_time_limit(0);
-		
-		// Get the submission Id
-		$submissionId = $request->get("submissionId");
-		
-		$em = $this->get('doctrine.orm.entity_manager');
-		$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
-		
-		// Check if submission exists
-		if ($submission == null) {
-			$this->addFlash('error', [
-				'id' => 'Integration.Submission.doesNotExist.delete'
-			]);
-			// Redirects to the jdd list page
-			return $this->redirect($this->generateUrl('user_jdd_list'));
-		}
 		
 		// Check if submission is validable
 		$user = $this->getUser();
@@ -613,7 +598,7 @@ class IntegrationController extends GincoController {
 			
 			// Send the cancel request to the integration server
 			try {
-				$this->get('ginco.integration_service')->cancelDataSubmission($submissionId);
+				$this->get('ginco.integration_service')->cancelDataSubmission($submission);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload: ' . $e);
 				
@@ -624,8 +609,7 @@ class IntegrationController extends GincoController {
 			}
 			
 			// Update "DataUpdatedAt" field for jdd
-			$em = $this->get('doctrine.orm.entity_manager');
-			$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
+			$em = $this->getDoctrine()->getManager() ;
 			$jdd = $submission->getJdd();
 			if ($jdd) {
 				$jdd->setDataUpdatedAt(new \DateTime());
