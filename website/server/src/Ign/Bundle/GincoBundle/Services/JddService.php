@@ -79,7 +79,7 @@ class JddService {
 		foreach ($submissions as $submission) {
 			
 			if ($submission->isInError()) {
-				$this->integrationService->cancelDataSubmission($submission->getId()) ;
+				$this->integrationService->cancelDataSubmission($submission) ;
 				continue ;
 			}
 			

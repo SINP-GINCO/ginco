@@ -162,8 +162,8 @@ class Integration extends AbstractService {
 	 * @return true if the cancel was OK
 	 * @throws Exception if a problem occured on the server side
 	 */
-	public function cancelDataSubmission($submissionId) {
-		$this->logger->debug("cancelDataSubmission : " . $submissionId);
+	public function cancelDataSubmission(Submission $submission) {
+		$this->logger->debug("cancelDataSubmission : " . $submission->getId());
 
 		$client = new Client();
 		$client->setUri($this->serviceUrl . "DataServlet?action=CancelDataSubmission");
@@ -173,7 +173,7 @@ class Integration extends AbstractService {
 		));
 
 		$client->setParameterPost(array(
-			'SUBMISSION_ID' => $submissionId
+			'SUBMISSION_ID' => $submission->getId()
 		));
 
 		$this->logger->debug("HTTP REQUEST : " . $this->serviceUrl . "DataServlet?action=CancelDataSubmission");
