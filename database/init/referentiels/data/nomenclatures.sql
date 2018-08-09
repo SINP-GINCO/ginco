@@ -540,14 +540,58 @@ ALTER TABLE ONLY IDCNPValue ADD CONSTRAINT IDCNPValue_pkey PRIMARY KEY (code);
 INSERT INTO IDCNPValue VALUES ('Nan','Pas de référentiel','Pas de référentiel');
 
 
+
+CREATE TABLE referentiels.taxostatutvalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT taxostatutvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.taxostatutvalue OWNER TO postgres;
+
+INSERT INTO referentiels.taxostatutvalue(code, label, definition) VALUES
+    ('0', 'Diffusé', 'Diffusé'),
+    ('1', 'Gel', 'Gel'),
+    ('2', 'Suppression', 'Suppression')
+;
+
+
+CREATE TABLE referentiels.taxomodifvalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT taxomodifvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.taxomodifvalue OWNER TO postgres;
+
+INSERT INTO referentiels.taxomodifvalue(code, label, definition) VALUES
+    ('0', 'Modification TAXREF', 'Modification TAXREF'),
+    ('1', 'Gel TAXREF', 'Gel TAXREF'),
+    ('2', 'Suppression TAXREF', 'Suppression TAXREF'),
+    ('3', 'Splittage TAXREF', 'Splittage TAXREF')	
+;
+
+
+
+CREATE TABLE referentiels.taxoalertevalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT taxoalertvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.taxoalertevalue OWNER TO postgres;
+
+INSERT INTO referentiels.taxoalertevalue(code, label, definition) VALUES
+	('0', 'Oui', 'Taxon en alerte suite au passage V11'),
+	('1', 'Non', 'Taxon sans alerte suite au passage V11')
+;
+
+
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM PUBLIC;
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM postgres;
 GRANT ALL ON ALL TABLES IN SCHEMA  referentiels TO postgres;
 GRANT ALL ON ALL TABLES IN SCHEMA  referentiels TO ogam;
-
-
-
-
-
-
 

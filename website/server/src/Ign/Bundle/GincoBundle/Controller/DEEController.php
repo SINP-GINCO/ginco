@@ -28,8 +28,7 @@ class DEEController extends GincoController {
 			throw $this->createAccessDeniedException();
 		}
 
-		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
-			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+		if ( !$this->isGranted('GENERATE_DEE', $jdd) ) {
 			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
@@ -65,13 +64,7 @@ class DEEController extends GincoController {
 			]);
 		}
 
-		// Check permissions on a per-jdd basis if necessary
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
-		}
-
-		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
-			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+		if ( !$this->isGranted('GENERATE_DEE', $jdd) ) {
 			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
@@ -118,13 +111,8 @@ class DEEController extends GincoController {
 			]);
 		}
 
-		// Check permissions on a pre-jdd basis if necessary
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
-		}
 
-		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
-			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+		if ( !$this->isGranted('GENERATE_DEE', $jdd) ) {
 			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
@@ -177,13 +165,7 @@ class DEEController extends GincoController {
 			]);
 		}
 
-		// Check permissions on a pre-jdd basis if necessary
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
-		}
-
-		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
-			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+		if ( !$this->isGranted('GENERATE_DEE', $jdd) ) {
 			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
@@ -220,14 +202,9 @@ class DEEController extends GincoController {
 	 */
 	public function downloadDEE(DEE $DEE)
 	{
-		// Check permissions on a pre-jdd basis if necessary
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
-		}
 
 		$jdd = $DEE->getJdd();
-		if ( !$this->getUser()->isAllowed('GENERATE_DEE_ALL_JDD') &&
-			!($this->getUser()->isAllowed('GENERATE_DEE_OWN_JDD') && $jdd->getUser() == $this->getUser()) ) {
+		if ( !$this->isGranted('GENERATE_DEE', $jdd) ) {
 			throw $this->createAccessDeniedException("You don't have the rights to download a DEE for this JDD.");
 		}
 

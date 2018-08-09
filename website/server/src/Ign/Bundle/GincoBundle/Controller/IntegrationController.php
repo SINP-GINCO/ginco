@@ -5,9 +5,15 @@ use Doctrine\ORM\EntityManager;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
+use Ign\Bundle\GincoBundle\Entity\RawData\SubmissionFile;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+
 use Ign\Bundle\GincoBundle\Form\GincoDataSubmissionType;
 use Ign\Bundle\GincoBundle\Form\UploadDataShapeType;
 use Ign\Bundle\GincoBundle\Form\UploadDataType;
+use Ign\Bundle\GincoBundle\Form\DataSubmissionType;
+
+use Ign\Bundle\GincoBundle\GincoBundle;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -274,38 +280,23 @@ class IntegrationController extends GincoController {
 	/**
 	 * Validate the data and send a notification mail to the connected user
 	 *
-	 * @Route("/validate-data",name="integration_validate")
+	 * @Route("/validate-data/{submission}",name="integration_validate")
 	 *
 	 * @return Response
 	 */
-	public function validateDataAction(Request $request) {
+	public function validateDataAction(Submission $submission, Request $request) {
 		$this->getLogger()->debug('validateDataAction');
 		
-		// Get the submission Id
-		$submissionId = $request->get("submissionId");
-		
-		$em = $this->get('doctrine.orm.entity_manager');
-		$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
-		
-		// Check if submission exists
-		if ($submission == null) {
-			$this->addFlash('error', [
-				'id' => 'Integration.Submission.doesNotExist.publish'
-			]);
-			// Redirects to the jdd list page
-			return $this->redirect($this->generateUrl('user_jdd_list'));
+		if (!$this->isGranted('VALIDATE_SUBMISSION', $submission)) {
+			$this->addFlash('error', ['id' => 'Integration.Submission.notAllowed']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
 		}
 		
-		// Check if submission is validable
-		$insertedOk = $submission->getStep() == Submission::STEP_INSERTED && $submission->getStatus() == Submission::STATUS_OK;
-		$checkedOk = $submission->getStep() == Submission::STEP_CHECKED && $submission->getStatus() == Submission::STATUS_OK;
-		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
-		
-		if ($insertedOk || $checkedOk || $warning) {
+		if ($submission->isValidable()) {
 			
 			// Send the validation request to the integration server
 			try {
-				$this->get('ginco.integration_service')->validateDataSubmission($submissionId);
+				$this->get('ginco.integration_service')->validateDataSubmission($submission);
 			} catch (\Exception $e) {
 				$this->getLogger()->error('Error during upload: ' . $e);
 				
@@ -336,19 +327,19 @@ class IntegrationController extends GincoController {
 			// $title .= implode($fileNames, ", ");
 			
 			// -- Attachments
-			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
+			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submission);
 			$attachements = array();
 			
 			// (Re)Generate sensibility report each time (see #815)
-			$this->get('ginco.submission_service')->generateReport($submissionId, "sensibilityReport");
+			$this->get('ginco.submission_service')->generateReport($submission, "sensibilityReport");
 			
 			// (Re)Generate permanentIdsReport report
-			$this->get('ginco.submission_service')->generateReport($submissionId, "permanentIdsReport");
+			$this->get('ginco.submission_service')->generateReport($submission, "permanentIdsReport");
 			
 			foreach ($reports as $report => $reportPath) {
 				if ($report != 'integrationReport') {
 					if (!is_file($reportPath)) {
-						$this->getLogger()->error("Report file '$report' does not exist for submission $submissionId");
+						$this->getLogger()->error("Report file '$report' does not exist for submission {$submission->getId()})");
 						return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 							'error' => $this->get('translator')
 								->trans("An unexpected error occurred.")
@@ -382,36 +373,23 @@ class IntegrationController extends GincoController {
 
 	/**
 	 * Invalidate the data.
-	 * @Route("/invalidate-data",name="integration_invalidate")
+	 * @Route("/invalidate-data/{submission}",name="integration_invalidate")
 	 *
 	 * @return Response
 	 */
-	public function invalidateDataAction(Request $request) {
+	public function invalidateDataAction(Submission $submission, Request $request) {
 		$this->getLogger()->debug('invalidateDataAction');
 		
-		// Get the submission Id
-		$submissionId = $request->get("submissionId");
-		
-		$em = $this->get('doctrine.orm.entity_manager');
-		$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
-		
-		// Check if submission exists
-		if ($submission == null) {
-			$this->addFlash('error', [
-				'id' => 'Integration.Submission.doesNotExist.unpublish'
-			]);
-			// Redirects to the jdd list page
-			return $this->redirect($this->generateUrl('user_jdd_list'));
+		if (!$this->isGranted('VALIDATE_SUBMISSION', $submission)) {
+			$this->addFlash('error', ['id' => 'Integration.Submission.notAllowed']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
 		}
 		
-		// Check if submission is validable
-		$validateOk = $submission->getStep() == Submission::STEP_VALIDATED && $submission->getStatus() == Submission::STATUS_OK;
-		$warning = $submission->getStatus() == Submission::STATUS_WARNING;
 		
-		if ($validateOk || $warning) {
+		if ($submission->isInvalidable()) {
 			// Send the cancel request to the integration server
 			try {
-				$this->get('ginco.integration_service')->invalidateDataSubmission($submissionId);
+				$this->get('ginco.integration_service')->invalidateDataSubmission($submission);
 			} catch (Exception $e) {
 				$this->getLogger()->error('Error during unvalidation: ' . $e);
 				
@@ -432,6 +410,42 @@ class IntegrationController extends GincoController {
 			// Redirects to the jdd list page
 			return $this->redirect($this->generateUrl('user_jdd_list'));
 		}
+	}
+	
+	/**
+	 * Publie (partiellement ou complètement un jeu de données).
+	 * Supprime les soumissions en erreur.
+	 * 
+	 * @Route("/validate-jdd/{jdd}", name="integration_validate_jdd")
+	 */
+	public function validateJddAction(Jdd $jdd) {
+		
+		/* @var $user \Ign\Bundle\GincoBundle\Entity\Website\User */
+		$user = $this->getUser() ;
+		$userJdd = $jdd->getUser() ;
+		
+		if (!$this->isGranted('VALIDATE_JDD', $jdd)) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.notAllowed']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
+		}
+		
+		if (!$jdd->isActive()) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.deleted']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
+		}
+		
+		$jddService = $this->get('ginco.jdd_service') ;
+		try {
+			$jddService->validateJdd($jdd) ;
+		} catch (Exception $ex) {
+			$this->getLogger()->error('Error during jdd validation: ' . $e);
+				
+			return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
+				'error' => $e->getMessage()
+			));
+		}
+		
+		return $this->redirectToRoute('user_jdd_list') ;
 	}
 
 	/**
@@ -583,27 +597,12 @@ class IntegrationController extends GincoController {
 	}
 
 	/**
-	 * @Route("/cancel-data-submission", name="integration_cancel")
+	 * @Route("/cancel-data-submission/{submission}", name="integration_cancel")
 	 */
-	public function cancelDataSubmissionAction(Request $request) {
+	public function cancelDataSubmissionAction(Submission $submission, Request $request) {
 		$this->get('logger')->debug('cancelDataSubmissionAction');
 		// Desactivate the timeout
 		set_time_limit(0);
-		
-		// Get the submission Id
-		$submissionId = $request->get("submissionId");
-		
-		$em = $this->get('doctrine.orm.entity_manager');
-		$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
-		
-		// Check if submission exists
-		if ($submission == null) {
-			$this->addFlash('error', [
-				'id' => 'Integration.Submission.doesNotExist.delete'
-			]);
-			// Redirects to the jdd list page
-			return $this->redirect($this->generateUrl('user_jdd_list'));
-		}
 		
 		// Check if submission is validable
 		$user = $this->getUser();
@@ -615,7 +614,7 @@ class IntegrationController extends GincoController {
 			
 			// Send the cancel request to the integration server
 			try {
-				$this->get('ginco.integration_service')->cancelDataSubmission($submissionId);
+				$this->get('ginco.integration_service')->cancelDataSubmission($submission);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload: ' . $e);
 				
@@ -626,8 +625,7 @@ class IntegrationController extends GincoController {
 			}
 			
 			// Update "DataUpdatedAt" field for jdd
-			$em = $this->get('doctrine.orm.entity_manager');
-			$submission = $em->getRepository('IgnGincoBundle:RawData\Submission')->findOneById($submissionId);
+			$em = $this->getDoctrine()->getManager() ;
 			$jdd = $submission->getJdd();
 			if ($jdd) {
 				$jdd->setDataUpdatedAt(new \DateTime());

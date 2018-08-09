@@ -82,7 +82,7 @@ INSERT INTO application_parameters (name, value, description) VALUES ('INPN_auth
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_authentication_password', '@inpn.auth.webservice.password@', 'Authentication for the webservice');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_account_url', '@inpn.account.url@', 'INPN "My Account" url');
 INSERT INTO application_parameters (name, value, description) VALUES ('INPN_providers_webservice', '@inpn.providers.webservice@', 'INPN Solr webservice to query the providers directory');
-
+INSERT INTO application_parameters (name, value, description) VALUES ('environment', '@instance.environment@', 'Environment type (dev, test, prod)');
 
 -- Pour utiliser le tilecache
 -- insert into application_parameters (name, value, description) values ( 'tilecache_private_url' , 'http://localhost/tilecache-ogam?' , 'The private URL used by tilecacheProxy to request a tile cache.');

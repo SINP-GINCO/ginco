@@ -33,6 +33,7 @@
                 {{ 'Submission.step.insert'|trans }}
             {% elseif submission.step in ['VALIDATE'] %}
                 {{ 'Submission.step.validate'|trans }}
+				<p>{{ submission.validationDate | date('Y-m-d H:i:s') }}</p>
             {% elseif submission.step in ['CANCEL'] %}
                 {{ 'Submission.step.cancel'|trans }}
             {% else %}

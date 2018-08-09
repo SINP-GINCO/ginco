@@ -1,0 +1,14 @@
+services:
+    
+    # Voters
+    ginco.jdd_voter:
+        class: Ign\Bundle\GincoBundle\Security\Voter\JddVoter
+        tags:
+            - { name: security.voter }
+        public: false
+            
+    ginco.submission_voter:
+        class: Ign\Bundle\GincoBundle\Security\Voter\SubmissionVoter
+        tags:
+            - { name: security.voter }
+        public: false

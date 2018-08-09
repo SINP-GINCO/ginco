@@ -1,11 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-use Doctrine\ORM\NoResultException;
-use Ign\Bundle\GincoBundle\GincoBundle;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Ign\Bundle\GincoBundle\Entity\Generic\QueryForm;
+use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 
 /**
  * The Submission Service.
@@ -91,8 +88,11 @@ class SubmissionService {
 	 *        	$submissionId
 	 * @return array
 	 */
-	public function getReportsFilenames($submissionId) {
-		$reportsDirectory = $this->getReportsDirectory($submissionId);
+	public function getReportsFilenames(Submission $submission) {
+		
+		$submissionId = $submission->getId() ;
+		
+		$reportsDirectory = $this->getReportsDirectory($submission);
 		$fileNames = array(
 			'sensibilityReport' => $reportsDirectory . '/Rapport_Sensibilite_' . $submissionId . '.csv',
 			'permanentIdsReport' => $reportsDirectory . '/ID_Permanents_' . $submissionId . '.csv',
@@ -108,9 +108,9 @@ class SubmissionService {
 	 *        	$submissionId
 	 * @return string
 	 */
-	public function getReportsDirectory($submissionId) {
+	public function getReportsDirectory(Submission $submission) {
 		$uploadDirectory = $this->configuration->getConfig('UploadDirectory', 'http://localhost:8080/OGAMRG/');
-		return $uploadDirectory . '/reports' . '/' . $submissionId;
+		return $uploadDirectory . '/reports' . '/' . $submission->getId();
 	}
 
 	/**
@@ -123,12 +123,13 @@ class SubmissionService {
 	 *        	$report
 	 * @throws Exception
 	 */
-	public function generateReport($submissionId, $report) {
-		$this->logger->debug('generateReport, submission: ' . $submissionId . ', report: ' . $report);
+	public function generateReport(Submission $submission, $report) {
+		
+		$this->logger->debug('generateReport, submission: ' . $submission->getId() . ', report: ' . $report);
 		
 		// The directory where we are going to store the reports, and the filenames
-		$reportsDirectory = $this->getReportsDirectory($submissionId);
-		$filenames = $this->getReportsFilenames($submissionId);
+		$reportsDirectory = $this->getReportsDirectory($submission);
+		$filenames = $this->getReportsFilenames($submission);
 		
 		// Create it if not exists
 		$pathExists = is_dir($reportsDirectory) || mkdir($reportsDirectory, 0755, true);
@@ -143,11 +144,11 @@ class SubmissionService {
 				break;
 			case 'sensibilityReport':
 				// generate sensibility report
-				$this->writeSensibilityReport($submissionId, $filenames['sensibilityReport']);
+				$this->writeSensibilityReport($submission, $filenames['sensibilityReport']);
 				break;
 			case 'permanentIdsReport':
 				// generate id report
-				$this->writePermanentIdsReport($submissionId, $filenames['permanentIdsReport']);
+				$this->writePermanentIdsReport($submission, $filenames['permanentIdsReport']);
 				break;
 			default:
 				break;
@@ -165,12 +166,12 @@ class SubmissionService {
 	 * @return bool
 	 * @throws Exception
 	 */
-	function writeSensibilityReport($submissionId, $outputFile) {
+	function writeSensibilityReport(Submission $submission, $outputFile) {
 		$schema = 'RAW_DATA';
 		
+		$submissionId = $submission->getId() ;
+		
 		// Get the dataset Id
-		$submissionRepo = $this->emrd->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
-		$submission = $submissionRepo->find($submissionId);
 		$modelId = $submission->getJdd()->getModel()->getId();
 		
 		// Total number of data in the submission
@@ -387,12 +388,12 @@ class SubmissionService {
 	 * @return bool
 	 * @throws Exception
 	 */
-	function writePermanentIdsReport($submissionId, $outputFile) {
+	function writePermanentIdsReport(Submission $submission, $outputFile) {
 		$schema = 'RAW_DATA';
 		
+		$submissionId = $submission->getId() ;
+		
 		// Get the dataset Id
-		$submissionRepo = $this->emrd->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
-		$submission = $submissionRepo->find($submissionId);
 		$datasetId = $submission->getDataset()->getId();
 		$modelId = $submission->getDataset()
 			->getModel()
