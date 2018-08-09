@@ -59,10 +59,6 @@ class ContactType extends AbstractType
             ->add('subject', ChoiceType::class, array(
                 'label' => 'Contact.subject.title',
                 'choices' => array(
-                    'Contact.subject.legal.title' => array(
-                        'Contact.subject.legal.questions' => 'Contact.subject.legal.questions',
-                        'Contact.subject.legal.rules' => 'Contact.subject.legal.rules',
-                    ),
                     'Contact.subject.format.title' => array(
                         'Contact.subject.format.standard' => 'Contact.subject.format.standard',
                         'Contact.subject.format.structure' => 'Contact.subject.format.structure',
@@ -78,21 +74,17 @@ class ContactType extends AbstractType
                     'Contact.subject.operation.title' => array(
                         'Contact.subject.operation.organism' => 'Contact.subject.operation.organism',
                         'Contact.subject.operation.metadata' => 'Contact.subject.operation.metadata',
-                        'Contact.subject.operation.geonature' => 'Contact.subject.operation.geonature',
-                        'Contact.subject.operation.geonatureWorkflow' => 'Contact.subject.operation.geonatureWorkflow',
                         'Contact.subject.operation.ginco' => 'Contact.subject.operation.ginco',
                         'Contact.subject.operation.import' => 'Contact.subject.operation.import',
                         'Contact.subject.operation.gincoWorkflow' => 'Contact.subject.operation.gincoWorkflow'
                     ),
                     'Contact.subject.blocking.title' => array(
                         'Contact.subject.blocking.ginco' => 'Contact.subject.blocking.ginco',
-                        'Contact.subject.blocking.geonature' => 'Contact.subject.blocking.geonature',
                         'Contact.subject.blocking.metadata' => 'Contact.subject.blocking.metadata',
                         'Contact.subject.blocking.authentication' => 'Contact.subject.blocking.authentication',
                         'Contact.subject.blocking.sinpDirectory' => 'Contact.subject.blocking.sinpDirectory'
                     ),
                     'Contact.subject.evolution.title' => array(
-                        'Contact.subject.evolution.geonature' => 'Contact.subject.evolution.geonature',
                         'Contact.subject.evolution.ginco' => 'Contact.subject.evolution.ginco',
                         'Contact.subject.evolution.dldbb' => 'Contact.subject.evolution.dldbb',
                         'Contact.subject.evolution.metadata' => 'Contact.subject.evolution.metadata',
