@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block description %}{% endblock %}
+{% block breadcrumb %}
+<ol class="breadcrumb">
+	{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}&nbsp;{% endtrans %}</a></li>{% endif %}
+	
+</ol>
+{% endblock breadcrumb %}
+{% block body %}
+	
+	<div class="row">
+		
+		<div class="col-xs-12">
+		
+			<h1 class="stick-to-top underlined">Mise à jour TAXREF v11</h1>
+		</div>
+	</div>
+	
+	{% for model, rows in report %}
+
+		<div class="row">
+			
+			<div class="col-xs-12">
+
+				<h2>Modèle {{ model }}</h2>
+				
+				<table class="table table-striped table-condensed">
+					<tbody>
+						<tr>
+							<td>Nombre de cdNom impactés</td>
+							<td>{{ rows['cdNomImpactes'][0]['count'] }}</td>
+						</tr>
+						<tr>
+							<td>Nombre de données impactées</td>
+							<td>{{ rows['donneesImpactees'][0]['count'] }}</td>
+						</tr>
+						<tr>
+							<td>Nombre de données nécessitant une vérification</td>
+							<td>{{ rows['donneesVerification'][0]['count'] }}</td>
+						</tr>
+					</tbody>
+				</table>
+						
+				{% if rows['observations'] | length > 0 %}
+				
+					<table class="table table-striped table-condensed">
+						<thead>
+							<tr>
+								<th>cdNom</th>
+								<th>cdRef</th>
+								<th>Nom complet</th>
+								<th>Nom vernaculaire</th>
+								<th>TaxoStatut</th>
+								<th>TaxoModif</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for observation in rows['observations'] %}
+								<tr>
+									<td>{{ observation['cdnom'] }}</td>
+									<td>{{ observation['cdref'] }}</td>
+									<td>{{ observation['nom_complet'] }}</td>
+									<td>{{ observation['nom_vern'] }}</td>
+									<td>{{ observation['taxostatut'] }}</td>
+									<td>{{ observation['taxomodif'] }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					
+				{% endif %}
+
+				</div>
+
+		</div>
+
+	{% endfor %}
+		
+	
+	
+	</div>
+	
+{% endblock body %}

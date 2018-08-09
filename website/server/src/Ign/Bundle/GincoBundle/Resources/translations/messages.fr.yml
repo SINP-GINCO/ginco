@@ -50,6 +50,7 @@ Menu:
   Providers: Organismes
   Roles: Rôles et permissions
   PlatformParameters: Configuration de la plateforme
+  TaxrefMigration: Mise à jour de TAXREF
 
 # Breadcrumb
 # ---------------------------
@@ -297,7 +298,9 @@ Confirm submission: Publier la soumission
 Invalidate submission: Dépublier la soumission
 Confirm_submission_warning: Une fois validées, les données seront disponibles pour la suite des traitements. Voulez-vous confirmer ?
 Confirm_invalidation_warning: Une fois invalidées, les données ne seront plus disponibles pour la suite des traitements. Voulez-vous confirmer ?
-
+Confirm_validate_jdd: Publier le jeu de données
+Confirm_validate_jdd_warning: Les soumissions en erreur seront supprimées.\nSi des soumissions ne sont pas publiées, alors le jeu de données ne sera que partiellement publié et ne pourra etre transmis.\nVoulez-vous confirmer ?
+Last_validation: Dernière publication
 
 Integration:
   Field:
@@ -306,6 +309,7 @@ Integration:
     format: Format
   Submission:
     noJdd: Il n'y a pas de jeu de données associé.
+    notAllowed: Vous n'avez pas les droits pour publier ou dépublier cette soumission.
     noDatasetsForModel: Attention ! Il n'y a pas de modèles d'import publiés pour le modèle de données choisi. Merci de contacter l'administrateur régional.
     doesNotExist:
       publish: La soumission que vous souhaitez publier n'existe pas.
@@ -317,6 +321,10 @@ Integration:
       unpublish: Cette soumission ne peut pas être dépubliée.
       delete: Cette soumission ne peut pas être supprimée.
       report: Le rapport de cette soumission n'est pas accessible.
+  Jdd:
+    error:
+      notAllowed: Vous n'avez pas les droits suffisants pour publier ce jeu de données.
+      deleted: Vous ne pouvez pas publier ce jeu de données car il a été supprimé.
 
 import.format:
   csv: Verser des données au format csv
@@ -386,6 +394,7 @@ DEE:
   suppression: Suppression
   creation: Création
   update: Mise à jour
+  warning: La date de création de la DEE est antérieure à la dernière soumission publiée.
 
   table:
     title: Transmission INPN

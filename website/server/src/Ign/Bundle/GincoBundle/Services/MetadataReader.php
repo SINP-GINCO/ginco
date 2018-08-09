@@ -108,15 +108,25 @@ class MetadataReader
 
 			// 1.3.1, used in production
 			if ($xsdVersion == "http://inpn.mnhn.fr mtd_jdd_1_3_1.xsd") {
-				$fields['metadataId'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantJeuDeDonnees')->item(0)->nodeValue;
-				$fields['title'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:nomComplet')->item(0)->nodeValue;
-				$fields['metadataCAId'] = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantCadreAcquisition')->item(0)->nodeValue;
+				
+				$metadataIdNodeList = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantJeuDeDonnees') ;
+				$titleNodeList = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:nomComplet') ;
+				$metadataCAId = $xpath->query('//mtdjdd:JeuDeDonnees/mtdjdd:identifiantCadreAcquisition') ;
+				
+				$fields['metadataId'] = $metadataIdNodeList->length > 0 ? $metadataIdNodeList->item(0)->nodeValue : null ;
+				$fields['title'] = $titleNodeList->length > 0 ? $titleNodeList->item(0)->nodeValue : null ;
+				$fields['metadataCAId'] = $metadataCAId->length > 0 ? $metadataCAId->item(0)->nodeValue : null ;
 			}
 			// > 1.3.1, new field definition
 			else {
-				$fields['metadataId'] = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantJdd')->item(0)->nodeValue;
-				$fields['title'] = $xpath->query('//jdd:JeuDeDonnees/jdd:libelle')->item(0)->nodeValue;
-				$fields['metadataCAId'] = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantCadre')->item(0)->nodeValue;
+				
+				$metadataIdNodeList = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantJdd') ;
+				$titleNodeList = $xpath->query('//jdd:JeuDeDonnees/jdd:libelle') ;
+				$metadataCAId = $xpath->query('//jdd:JeuDeDonnees/jdd:identifiantCadre') ;
+				
+				$fields['metadataId'] = $metadataIdNodeList->length > 0 ? $metadataIdNodeList->item(0)->nodeValue : null ;
+				$fields['title'] = $titleNodeList->length > 0 ? $titleNodeList->item(0)->nodeValue : null ;
+				$fields['metadataCAId'] = $metadataCAId->length > 0 ? $metadataCAId->item(0)->nodeValue : null ;
 			}
 
 		} catch (\Exception $e) {

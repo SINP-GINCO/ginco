@@ -1,0 +1,2 @@
+UPDATE metadata_work.dynamode SET sql='SELECT nom_com as code, nom_com as label, ''''::text as definition, ''''::text as position FROM referentiels.commune_carto_2017 ORDER BY nom_com' WHERE unit='NomCommuneCalculeValue';
+UPDATE metadata.dynamode SET sql='SELECT nom_com as code, nom_com as label, ''''::text as definition, ''''::text as position FROM referentiels.commune_carto_2017 ORDER BY nom_com' WHERE unit='NomCommuneCalculeValue';

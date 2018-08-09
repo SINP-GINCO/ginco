@@ -2,12 +2,9 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 
 /**
  * Custom Submission Controller for GINCO
@@ -29,24 +26,18 @@ class SubmissionController extends GincoController {
 	 * This action is called in the Integration Service (java)
 	 * No rights are checked for it in security.yml
 	 *
-	 * @Route("/generate-reports", name = "generate-reports")
+	 * @Route("/generate-reports/{submission}", name = "generate-reports")
 	 */
-	public function generateReportsAction(Request $request) {
+	public function generateReportsAction(Submission $submission, Request $request) {
 		// Configure memory and time limit because the program asks a lot of resources
 		ini_set("memory_limit", $this->get('ginco.configuration_manager')->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
-		
-		// Get the submission Id
-		$submissionId = $request->query->getInt("submissionId");
-		
-		// Get the submission
-		$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
-		$submission = $submissionRepo->find($submissionId);
-		$this->get('logger')->debug('generateReportsAction, submission: ' . $submissionId);
+
+		$this->get('logger')->debug('generateReportsAction, submission: ' . $submission->getId());
 		
 		// The directory where we are going to store the reports, and the filenames
-		$reportsDirectory = $this->get('ginco.submission_service')->getReportsDirectory($submissionId);
-		$filenames = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
+		$reportsDirectory = $this->get('ginco.submission_service')->getReportsDirectory($submission);
+		$filenames = $this->get('ginco.submission_service')->getReportsFilenames($submission);
 		
 		// Create it if not exists
 		$pathExists = is_dir($reportsDirectory) || mkdir($reportsDirectory, 0755, true);
@@ -57,14 +48,14 @@ class SubmissionController extends GincoController {
 					->trans("An unexpected error occurred.")
 			));
 		}
-			
+		
 		// only if status=OK
 		if ($submission->getStatus() == "OK") {
 			// Generate sensibility report
-			$this->get('ginco.submission_service')->writeSensibilityReport($submissionId, $filenames['sensibilityReport']);
+			$this->get('ginco.submission_service')->writeSensibilityReport($submission, $filenames['sensibilityReport']);
 			
 			// Generate id report
-			$this->get('ginco.submission_service')->writePermanentIdsReport($submissionId, $filenames['permanentIdsReport']);
+			$this->get('ginco.submission_service')->writePermanentIdsReport($submission, $filenames['permanentIdsReport']);
 		}
 		
 		return new Response();
@@ -78,9 +69,9 @@ class SubmissionController extends GincoController {
 	 *
 	 * Authorized for logged users with data_integration right (see security.yml)
 	 *
-	 * @Route("/download-report", name = "download-report")
+	 * @Route("/download-report/{submission}", name = "download-report")
 	 */
-	function downloadReportAction(Request $request) {
+	function downloadReportAction(Submission $submission, Request $request) {
 		// Configure memory and time limit because the program asks a lot of resources
 		ini_set("memory_limit", $this->get('ginco.configuration_manager')->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
@@ -88,12 +79,7 @@ class SubmissionController extends GincoController {
 		// Get the user
 		$user = $this->getUser();
 		
-		// Get the submission Id
-		$submissionId = $request->query->getInt("submissionId");
-		$this->get('logger')->debug('DownloadReport, submission: ' . $submissionId);
-		// Get the submission
-		$submissionRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
-		$submission = $submissionRepo->find($submissionId);
+		$this->get('logger')->debug('DownloadReport, submission: ' . $submission->getId());
 		
 		// Check if submission exists
 		if ($submission == null) {
@@ -106,7 +92,7 @@ class SubmissionController extends GincoController {
 		
 		// Get the report name
 		$report = $request->query->get("report");
-		$this->get('logger')->debug("downloadReportAction: submission: $submissionId, report: $report");
+		$this->get('logger')->debug("downloadReportAction: submission: {$submission->getId()}, report: $report");
 		
 		// Check if report is accessible
 		$unstableSteps = array(
@@ -140,22 +126,22 @@ class SubmissionController extends GincoController {
 		}
 		
 		// Get File Name
-		$filenames = $this->get('ginco.submission_service')->getReportsFilenames($submissionId);
+		$filenames = $this->get('ginco.submission_service')->getReportsFilenames($submission);
 		$filePath = $filenames[$report];
 		$this->get('logger')->debug("filePath: $filePath");
 		
 		// Regenerate sensibility report each time (see #815)
 		if ($report == "sensibilityReport") {
-			$this->get('ginco.submission_service')->generateReport($submissionId, $report);
+			$this->get('ginco.submission_service')->generateReport($submission, $report);
 		}
 		
 		// Test the existence of the file
 		if (!is_file($filePath)) {
 			$this->get('logger')->debug("downloadReportAction: report file $filePath does not exist, trying to generate them");
 			// We try to generate the reports, and then re-test
-			$this->get('ginco.submission_service')->generateReport($submissionId, $report);
+			$this->get('ginco.submission_service')->generateReport($submission, $report);
 			if (!is_file($filePath)) {
-				$this->get('logger')->error("Report file '$report' does not exist for submission $submissionId");
+				$this->get('logger')->error("Report file '$report' does not exist for submission {$submission->getId()}");
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 					'error' => $this->get('translator')
 						->trans("An unexpected error occurred.")
@@ -180,30 +166,24 @@ class SubmissionController extends GincoController {
 		return $response;
 	}
 
-        /**
-         * @Route("/view-error-report", name = "submission_view-error-report")
-         */
-        public function viewErrorReport(Request $request){
-                //get submission
-                $submissionId = $request->query->getInt("submissionId");
-		$submissionRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\Submission', 'raw_data');
-		$submission = $submissionRepository->find($submissionId);
-                
-                if( $submission == null || !$submission->isInError() ) {
-                    throw $this->createNotFoundException("La donnée n'existe pas");
-                }
-                               
-                $errorRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\CheckError', 'raw_data');
-                $errors = $errorRepository->findBySubmission($submission->getId(),array());
-                $errorCounts = $errorRepository->getErrorCounts($submission);
-                
-                return $this->render('IgnGincoBundle:Submission:error_report.html.twig', array(
+	/**
+	 *
+	 * @Route("/view-error-report/{submission}", name = "submission_view-error-report")
+	 */
+	public function viewErrorReport(Submission $submission, Request $request) {
+		
+		if ($submission == null || !$submission->isInError()) {
+			throw $this->createNotFoundException("La donnée n'existe pas");
+		}
+		
+		$errorRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\CheckError', 'raw_data');
+		$errors = $errorRepository->findBySubmission($submission->getId(), array());
+		$errorCounts = $errorRepository->getErrorCounts($submission);
+		
+		return $this->render('IgnGincoBundle:Submission:error_report.html.twig', array(
 			'submission' => $submission,
-                        'errors' => $errors,
-                        'errorCounts' => $errorCounts
+			'errors' => $errors,
+			'errorCounts' => $errorCounts
 		));
-                
-        }
-        
-        
+	}
 }

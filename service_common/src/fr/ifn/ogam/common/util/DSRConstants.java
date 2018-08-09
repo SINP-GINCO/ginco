@@ -44,7 +44,9 @@ public class DSRConstants {
 
 	// Sujet Observation
 	public final static String CD_NOM = "cdnom";
+	public final static String CD_NOM_CALC = "cdnomcalcule";
 	public final static String CD_REF = "cdref";
+	public final static String CD_REF_CALC = "cdrefcalcule";
 	public final static String VERSION_TAXREF = "versiontaxref";
 	public final static String NOM_CITE = "nomcite";
 	public final static String JOUR_DATE_DEBUT = "jourdatedebut";
@@ -52,6 +54,7 @@ public class DSRConstants {
 	public final static String HEURE_DATE_DEBUT = "heuredatedebut";
 	public final static String HEURE_DATE_FIN = "heuredatefin";
 	public final static String NOM_VALIDE = "nomvalide";
+	public final static String IDENTIFIANT_PERMANENT = "identifiantpermanent";
 
 	// Descriptif Sujet
 	public final static String OBS_METHODE = "obsmethode";

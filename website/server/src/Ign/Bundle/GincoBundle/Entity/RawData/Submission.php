@@ -200,7 +200,6 @@ class Submission {
 	public function isCancelledRunning() {
 		return $this->step == self::STEP_CANCELLED && $this->status == self::STATUS_RUNNING;
 	}
-        
 
 	/**
 	 * 
@@ -209,6 +208,14 @@ class Submission {
 	 */
 	public function isInError() {
 		return $this->status == self::STATUS_ERROR;
+	}
+	
+	/**
+	 * True if this submission is running.
+	 * @return bool
+	 */
+	public function isRunning() {
+		return $this->status == self::STATUS_RUNNING ;
 	}
 
 	/**
@@ -414,4 +421,27 @@ class Submission {
     {
         return $this->jdd;
     }
+	
+	
+	/**
+	 * Check if submission is validable.
+	 * @return boolean
+	 */
+	public function isValidable() {
+		
+		$insertedOk = $this->getStep() == Submission::STEP_INSERTED && $this->getStatus() == Submission::STATUS_OK;
+		$checkedOk = $this->getStep() == Submission::STEP_CHECKED && $this->getStatus() == Submission::STATUS_OK;
+		$warning = $this->getStatus() == Submission::STATUS_WARNING;
+		
+		return ($insertedOk || $checkedOk || $warning) ;
+	}
+	
+	
+	public function isInvalidable() {
+		
+		$validateOk = $this->getStep() == Submission::STEP_VALIDATED && $this->getStatus() == Submission::STATUS_OK;
+		$warning = $this->getStatus() == Submission::STATUS_WARNING;
+		
+		return ($validateOk || $warning) ;
+	}
 }

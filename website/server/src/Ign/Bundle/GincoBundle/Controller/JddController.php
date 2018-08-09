@@ -26,7 +26,7 @@ class JddController extends GincoController {
 	 */
 	public function listAllAction($allJdds = false) {
 
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+		if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
 			throw $this->createAccessDeniedException();
 		}
 

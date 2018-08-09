@@ -18,6 +18,10 @@ class Jdd {
 	const STATUS_ACTIVE = 'active';
 
 	const STATUS_DELETED = 'deleted';
+	
+	const STATUS_VALIDATED = "validated" ;
+	
+	const STATUS_PARTIALLY_VALIDATED = 'partially validated' ;
 
 	/**
 	 * The technical identifier.
@@ -88,6 +92,7 @@ class Jdd {
 	 * @var \DateTime @ORM\Column(name="data_updated_at", type="datetime", nullable=true)
 	 */
 	private $dataUpdatedAt;
+	
 
 	/**
 	 * Constructor.
@@ -276,6 +281,33 @@ class Jdd {
 	}
 	
 	/**
+	 * Test if this JDD has active submissions.
+	 * @return bool
+	 */
+	public function hasActiveSubmissions() {
+		return !$this->getActiveSubmissions()->isEmpty() ;
+	}
+	
+	/**
+	 * Get running submissions
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getRunningSubmissions() {
+		$isRunning = function (Submission $submission) {
+			return $submission->isRunning() ;
+		};
+		return $this->getSubmissions()->filter($isRunning) ;
+	}
+	
+	/**
+	 * True if this JDD has running submissions.
+	 * @return bool
+	 */
+	public function hasRunningSubmissions() {
+		return !$this->getRunningSubmissions()->isEmpty() ;
+	}
+	
+	/**
 	 * Get successful submissions
 	 * ie Submissions in 'INSERT' or 'CHECK' step and 'OK' status
 	 *
@@ -299,6 +331,20 @@ class Jdd {
 			return $submission->isValidated();
 		};
 		return $this->getSubmissions()->filter($isValidated);
+	}
+	
+	/**
+	 * Get the last validated submission.
+	 * @return Submission
+	 */
+	public function getLastValidatedSubmission() {
+		$validatedSubmissions = $this->getValidatedSubmissions() ;
+		$iterator = $validatedSubmissions->getIterator() ;
+		$iterator->uasort(function ($a, $b) {
+			return $a->getValidationDate() < $b->getValidationDate() ? -1 : 1 ;
+		});
+		$sorted = new ArrayCollection(iterator_to_array($iterator)) ;
+		return $sorted->last() ;
 	}
 
 	/**

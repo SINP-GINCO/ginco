@@ -42,26 +42,27 @@ Les rôles livrés avec les plateformes ont les permissions suivantes :
 ==========================================================  ==============  ==========  ============
 Permissions                                                 administrateur  producteur  grand_public
 ==========================================================  ==============  ==========  ============
-Administrer les utilisateurs                                 **Oui**          Non         Non
+Configurer les paramètres de la plateforme                   **Oui**          Non         Non
+Administrer les utilisateurs,rôles, et permissions           **Oui**          Non         Non
 Déclarer son propre organisme                                  Non            Non         Non
 Rattacher les utilisateurs à leur organisme                  **Oui**          Non         Non
+Configurer le méta-modèle                                    **Oui**          Non         Non
 Annuler une soumission de données d'un autre organisme       **Oui**          Non         Non
 Annuler une soumission de données validées                   **Oui**          Non         Non
-Configurer le méta-modèle                                    **Oui**          Non         Non
+Consulter les données publiées                               **Oui**        **Oui**     **Oui**
+Consutler toutes les données non publiées                    **Oui**          Non         Non
+Consulter toutes les données privées                         **Oui**          Non         Non
+Consulter toutes les données sensibles                       **Oui**          Non         Non
+Créer et gérer ses propres jeux de données                   **Oui**          Non         Non
 Editer les données                                           **Oui**          Non         Non
 Editer les données d'un autre organisme                      **Oui**          Non         Non
-Exporter les données (au format CSV, GeoJson, kml...)        **Oui**        **Oui**       Non
-Exporter les jeux de données au format DEE                   **Oui**          Non         Non
-Gérer les jeux de données de tous les utilisateurs           **Oui**          Non         Non
+Exporter les données                                         **Oui**        **Oui**       Non
+Gérer les DEE de ses propres jeux de données                 **Oui**          Non         Non
+Gérer les DEE de tous les jeux de données                    **Oui**          Non         Non
+Gérer tous les jeux de données                               **Oui**          Non         Non
+Publier n'importe quel jeux de données                       **Oui**          Non         Non
 Gérer les requêtes publiques                                 **Oui**          Non         Non
-Gérer ses requêtes privées                                   **Oui**        **Oui**       Non
-Importer des données                                         **Oui**          Non         Non
-Publier les données                                          **Oui**          Non         Non
-Vérifier la configuration technique (PHP, mémoire,...)         Non            Non         Non
-Visualiser les données non publiées d'un autre organisme     **Oui**          Non         Non
-Visualiser les données privées                               **Oui**          Non         Non
-Visualiser les données régionales publiées                   **Oui**        **Oui**     **Oui**
-Visualiser les données sensibles                             **Oui**          Non         Non
+Gérer ses requêtes privées                                   **Oui**          Non         Non
 ==========================================================  ==============  ==========  ============
 
 Modifier un rôle

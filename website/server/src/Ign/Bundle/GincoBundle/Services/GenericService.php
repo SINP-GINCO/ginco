@@ -1349,8 +1349,6 @@ class GenericService {
 			->getFormat(), null, $this->locale);
 
 		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
-		$hasConfirmSubmission = array_key_exists('CONFIRM_SUBMISSION', $userInfos) && $userInfos['CONFIRM_SUBMISSION'];
-		$hasGrandPublicRole = array_key_exists('hasGrandPublicRole', $userInfos) && $userInfos['hasGrandPublicRole'];
 		//
 		// Prepare the WHERE clause
 		//

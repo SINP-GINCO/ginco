@@ -288,8 +288,7 @@ class QueryController extends GincoController {
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
-				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
+				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 			];
 			
 			$where = $request->getSession()->get('query_SQLWhere');
@@ -386,8 +385,7 @@ class QueryController extends GincoController {
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
-				"CONFIRM_SUBMISSION" => $this->getUser() && $this->getUser()->isAllowed('CONFIRM_SUBMISSION')
+				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
 			];
 			
 			$this->get('ginco.query_service')->buildRequestGinco($queryForm, $userInfos, $maxPrecisionLevel, $requestId, $request->getSession());

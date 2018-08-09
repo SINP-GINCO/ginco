@@ -29,7 +29,7 @@ GRANT ALL ON SEQUENCE raw_data.jdd_id_seq TO ogam;
 CREATE TABLE raw_data.jdd
 (
 	id integer NOT NULL DEFAULT nextval('jdd_id_seq'::regclass), -- Technical id of the jdd
-	status character varying(16) NOT NULL, -- jdd status, can be 'active' or 'deleted' (deleted, but the row is kept)
+	status TEXT NOT NULL, -- jdd status, can be 'active' or 'deleted' (deleted, but the row is kept)
 	provider_id character varying(36), -- The data provider identifier (country code or organisation name)
 	user_login character varying(50), -- The login of the user doing the submission
 	model_id character varying(19), -- Id of the data model in which the jdd is delivered
@@ -135,8 +135,8 @@ STATUS    			 VARCHAR(36)          null,
 PROVIDER_ID          VARCHAR(36)          not null,
 DATASET_ID           VARCHAR(36)          not null,
 USER_LOGIN           VARCHAR(50)          not null,
-_CREATIONDT          DATE                 null DEFAULT current_timestamp,
-_VALIDATIONDT        DATE                 null DEFAULT current_timestamp,
+_CREATIONDT          TIMESTAMP            null DEFAULT current_timestamp,
+_VALIDATIONDT        TIMESTAMP            null DEFAULT current_timestamp,
 constraint PK_SUBMISSION primary key (SUBMISSION_ID),
 CONSTRAINT fk_jdd_id FOREIGN KEY (jdd_id)
 REFERENCES raw_data.jdd (id) MATCH SIMPLE

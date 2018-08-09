@@ -6,9 +6,13 @@ use Ign\Bundle\GincoBundle\Form\ConfigurationType;
 use Ign\Bundle\GincoBundle\Form\ContactType;
 use Ign\Bundle\GincoBundle\Form\HomepageContentType;
 use Ign\Bundle\GincoBundle\Form\PresentationContentType;
+use Ign\Bundle\GincoBundle\Query\TableFormatQueryBuilder;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template ;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class DefaultController extends GincoController {
 	
@@ -389,5 +393,80 @@ class DefaultController extends GincoController {
 		return $this->render('IgnGincoBundle:Default:configuration_presentation.html.twig', array(
 			'form' => $form->createView()
 		));
+	}
+	
+	
+	/**
+	 * @Route("/taxref-migration", name = "taxref_migration")
+	 * @Template()
+	 */
+	public function taxrefMigrationAction() {
+		
+		$entityManager = $this->getDoctrine()->getManager('metadata') ;
+		$tableFormats = $entityManager->getRepository('IgnGincoBundle:Metadata\TableFormat')->findAll() ;
+		
+		$query = $this->get('ginco.query') ;
+		
+		$report = array() ;
+		
+		foreach ($tableFormats as $tableFormat) {
+			
+			$model = $tableFormat->getModel()->getName() ;
+			$report[$model] = array() ;
+			
+			// Modification TAXREF 
+			$queryBuilder = new TableFormatQueryBuilder($tableFormat, 't') ;
+			$queryBuilder->select(array(
+					't.cdnom::int AS cdnom',
+					't.cdref::int AS cdref',
+					't.nomvalide',
+					's.label AS taxostatut',
+					'm.label AS taxomodif',
+					'm.code',
+					'x.nom_complet',
+					'x.nom_vern'
+				))
+				->distinct()
+				->join('referentiels.taxostatutvalue', 's', 's.code = t.taxostatut')
+				->join('referentiels.taxomodifvalue', 'm', 'm.code = t.taxomodif')
+				->join('referentiels.taxref', 'x', 'x.cd_nom = t.cdnom')
+				->orderBy('m.code')
+				->orderBy('cdnom')
+				->orderBy('cdref')
+			;
+		
+			$report[$model]['observations'] = $query->query($queryBuilder) ;
+			
+			$cdNomBuilder = new TableFormatQueryBuilder($tableFormat, 't') ;
+			$cdNomBuilder->select(array('t.cdnom'))
+				->count()
+				->distinct()
+				->where('taxostatut IS NOT NULL')
+			;
+			
+			$report[$model]['cdNomImpactes'] = $query->query($cdNomBuilder) ;
+			
+			$dataBuilder = new TableFormatQueryBuilder($tableFormat, 't') ;
+			$dataBuilder->select()
+				->count()
+				->where('taxostatut IS NOT NULL')
+			;
+			
+			$report[$model]['donneesImpactees'] = $query->query($dataBuilder) ;
+			
+			$verifBuilder = new TableFormatQueryBuilder($tableFormat, 't') ;
+			$verifBuilder->select()
+				->count()
+				->join('referentiels.taxoalertevalue', 'v', 'v.code = t.taxoalerte')
+				->where('v.label = :label')
+				->setParameter('label', 'OUI')
+			;
+			
+			$report[$model]['donneesVerification'] = $query->query($verifBuilder) ;
+			
+		}
+		
+		return array("report" => $report) ;
+		
 	}
 }

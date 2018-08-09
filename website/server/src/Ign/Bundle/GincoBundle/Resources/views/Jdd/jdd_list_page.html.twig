@@ -139,6 +139,13 @@
                 <td>
                     {# Delete #}
                     {% if jdd.trueDeletable %}
+						
+						{% if is_granted('VALIDATE_JDD', jdd) %}
+							<button class="btn btn-xs btn-default btn-disabled" title="{{'Confirm_validate_jdd'|trans }}">
+								 <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+							</button>
+						{% endif %}
+						
                         <button class="btn btn-xs btn-danger" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-delete-jdd-{{ jdd.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
@@ -163,6 +170,12 @@
                             </div>
                         </div>
                     {% else %}
+						{% if is_granted('VALIDATE_JDD', jdd) %}
+							<a class="btn btn-xs btn-success" href="{{ path('integration_validate_jdd',{jdd: jdd.id}) }}" title="{{ 'Confirm_validate_jdd'|trans }}"
+								onClick="return confirm('{{ 'Confirm_validate_jdd_warning'|trans }}');">
+								<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+							</a>
+						{% endif %}
                         <button class="btn btn-xs btn-default btn-disabled" title="{{ 'Delete'|trans }}" data-toggle="modal" data-target="#modal-impossible-delete-jdd-{{ jdd.id }}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </button>
@@ -215,6 +228,7 @@
                                 {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
                             </div>
                         {% endfor %}
+						{% if jdd.validatedSubmissions | length > 0 %}<p>{{ 'Last_validation' | trans }} : {{ jdd.lastValidatedSubmission.validationDate | date('d/m/Y H\\hi:s') }}</p>{% endif %}
                     {% else %}
                     <p>-</p>
                     {% endif %}
@@ -268,7 +282,7 @@
                 </td>
 
                 {# DEE Column - Empty / filled by Ajax #}
-                {% set permToGenerateDEE = user.isAllowed('GENERATE_DEE_ALL_JDD') or (user.isAllowed('GENERATE_DEE_OWN_JDD') and jdd.user.login == user.login ) %}
+                {% set permToGenerateDEE = is_granted('GENERATE_DEE', jdd) %}
                 <td>
                     <div class="dee" data-jdd-id="{{ jdd.id }}" data-perm-generate="{{ permToGenerateDEE ? 1 : 0 }}">
                         <div class="dee-state">
@@ -281,6 +295,13 @@
                                 </div>
                             </div>
                             <div class="progress-cancel"></div>
+							<div class="dee-warning">
+								{% if jdd.dee is not null %}
+									{% if jdd.lastValidatedSubmission.validationDate > jdd.dee.createdAt %}
+										<span class="glyphicon glyphicon-alert text-danger" aria-hidden="true" title="{{ 'DEE.warning' | trans }}"></span>
+									{% endif %}
+								{% endif %}
+								</div>
                             <div class="dee-content"></div>
                         </div>
                     </div>
@@ -312,7 +333,7 @@
         </tbody>
     </table>
 
-    {% if user.isAllowed('GENERATE_DEE_ALL_JDD') or user.isAllowed('GENERATE_DEE_OWN_JDD') %}
+    {% if user.isAllowed('GENERATE_DEE_ALL') or user.isAllowed('GENERATE_DEE_PROVIDER') or user.isAllowed('GENERATE_DEE_OWN') %}
         <!-- DEE dialog popup -->
         <div class="modal fade" id="DEEModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="dialog">
