@@ -40,3 +40,4 @@ TypeAttributValue;SELECT code, label || ' (' || code || ')' as label, definition
 TaxoStatutValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.TaxoStatutValue ORDER BY code
 TaxoModifValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.TaxoModifValue ORDER BY code
 TaxoAlerteValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.TaxoAlerteValue ORDER BY code
+USER_LOGIN;SELECT user_login as code, user_name as label, user_name as definition, ''::text as position FROM website.users ORDER BY user_login

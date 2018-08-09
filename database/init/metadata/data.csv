@@ -114,3 +114,4 @@ cdrefcalcule;TaxRefValue;cdRefCalcule;Code du taxon « cd_ref » calculé.;
 taxostatut;TaxoStatutValue;taxoStatut;Statut du taxon pour le passage TAXREF V11.;
 taxomodif;TaxoModifValue;taxoModif;Modification effectuée sur le taxon lors du passage TAXREF V11.;
 taxoalerte;TaxoAlerteValue;taxoAlerte;Alerte sur le taxon pour le passage TAXREF V11.;
+USER_LOGIN;USER_LOGIN;Utilisateur;Utilisateur;

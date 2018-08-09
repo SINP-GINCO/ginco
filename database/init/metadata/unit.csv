@@ -52,3 +52,4 @@ CodeMasseEauValue;ARRAY;STRING;[Liste] Code de la masse d'eau;Code de la masse d
 TaxoStatutValue;CODE;DYNAMIC;[Liste] Statut du taxon pour le passage TAXREF V11;Statut du taxon pour le passage TAXREF V11
 TaxoModifValue;CODE;DYNAMIC;[Liste] Modification effectuée lors du passage TAXREF V11;Modification effectuée sur le taxon lors du passage TAXREF V11
 TaxoAlerteValue;CODE;DYNAMIC;[Liste] Taxon en alerte ou non pour le passage TAXREF V11;Taxon en alerte ou non pour le passage TAXREF V11
+USER_LOGIN;STRING;DYNAMIC;Utilisateur;Utilisateur
