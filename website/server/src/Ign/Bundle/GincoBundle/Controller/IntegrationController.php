@@ -2,30 +2,22 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Ign\Bundle\GincoBundle\Form\GincoDataSubmissionType;
-use Ign\Bundle\GincoBundle\Form\UploadDataShapeType;
-use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
+
 use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
-use Ign\Bundle\GincoBundle\Entity\RawData\SubmissionFile;
-use Ign\Bundle\GincoBundle\Form\DataSubmissionType;
+use Ign\Bundle\GincoBundle\Form\GincoDataSubmissionType;
+use Ign\Bundle\GincoBundle\Form\UploadDataShapeType;
 use Ign\Bundle\GincoBundle\Form\UploadDataType;
-use Ign\Bundle\GincoBundle\GincoBundle;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Type;
+
 
 /**
  * @Route("/integration")
@@ -74,29 +66,37 @@ class IntegrationController extends GincoController {
 		// Find jddid if given in GET parameters
 		$jddId = intval($request->query->get('jddid', 0));
 		$jdd = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findOneById($jddId);
-		
+
 		// If the model of the jdd has no published datasets, add a flash error message
 		// And disable the whole form
 		$formDisabled = false;
-		if ($jdd != null && $jdd->getModel()
-			->getImportDatasets()
-			->count() == 0) {
+                // If no jdd, add a flash error message
+		// And disable the whole form
+                if ($jdd == null) {
+			$this->addFlash('error', 'Integration.Submission.noJdd');
+			$formDisabled = true;
+		}
+                // If the model of the jdd has no published datasets, add a flash error message
+		// And disable the whole form
+		if ($jdd != null && $jdd->getModel()->getImportDatasets()->count() == 0) {
 			$this->addFlash('error', 'Integration.Submission.noDatasetsForModel');
 			$formDisabled = true;
 		}
+                
 		$submission = new Submission();
-		$form = $this->createForm(new GincoDataSubmissionType(), $submission, array(
+
+                $form = $this->createForm(new GincoDataSubmissionType(), $submission, array(
 			'jdd' => $jdd,
-			'default_provider' => $this->getUser()
-				->getProvider(),
 			'disabled' => $formDisabled
 		));
-		
+                
 		$form->handleRequest($request);
-		
+
 		if ($form->isSubmitted() && $form->isValid()) {
+                        
 			// Add user relationship
 			$submission->setUser($this->getUser());
+                        
 			
 			// Add jdd relationship
 			// And update jdd "dataUpdatedAt"
@@ -104,16 +104,21 @@ class IntegrationController extends GincoController {
 				$jddId = $form->get('jddid')->getData();
 				$jdd = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findOneById($jddId);
 				$submission->setJdd($jdd);
+                                
 				$jdd->setDataUpdatedAt(new \DateTime());
 				$em->merge($jdd);
 			}
-			
+
+                        $submission->setProvider($jdd->getProvider());
+
 			// writes the submission to the database
 			// merge because cascade persist is not set in the entity
 			// and get the merged object to access auto-generated id
-			$attachedSubmission = $em->merge($submission);
+                        // /_ ! _\ persist & merge used
+			$em->persist($submission);
+                        $attachedSubmission = $em->merge($submission);
 			$em->flush();
-			
+                        
 			// Redirects to page 2 of the form: upload data
 			return $this->redirect($this->generateUrl('integration_upload_data', array(
 				'id' => $attachedSubmission->getId()
@@ -211,7 +216,7 @@ class IntegrationController extends GincoController {
 			}
 			try {
 				$providerId = $submission->getProvider()->getId();
-				$this->get('ginco.integration_service')->uploadData($submission->getId(), $providerId, $requestedFiles, $srid);
+				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser(), $providerId, $requestedFiles, $srid);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload:' . $e, array(
 					'exception' => $e
@@ -755,7 +760,7 @@ class IntegrationController extends GincoController {
 				$providerId = $submission->getProvider()->getId();
 				$srid = '4326';
 				$extension = ".zip";
-				$this->get('ginco.integration_service')->uploadData($submission->getId(), $providerId, $requestedFiles, $srid, $extension);
+				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser(), $providerId, $requestedFiles, $srid, $extension);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload:' . $e, array(
 					'exception' => $e

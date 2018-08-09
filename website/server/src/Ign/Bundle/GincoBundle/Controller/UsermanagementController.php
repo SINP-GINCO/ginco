@@ -1,29 +1,22 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Ign\Bundle\GincoBundle\Exception\UserUpdaterException;
-use Ign\Bundle\GincoBundle\Form\GincoRoleType;
-use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
-use Ign\Bundle\GincoBundle\GincoBundle;
-use Ign\Bundle\GincoBundle\Form\UserAddFromINPNType;
-use Ign\Bundle\GincoBundle\Form\UserRoleType;
-use Ign\Bundle\GincoBundle\Services\ProviderService;
 use Ign\Bundle\GincoBundle\Entity\Mapping\ProviderMapParameters;
-use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
-use Ign\Bundle\GincoBundle\Entity\Website\Provider;
 use Ign\Bundle\GincoBundle\Entity\Website\Role;
 use Ign\Bundle\GincoBundle\Entity\Website\User;
+use Ign\Bundle\GincoBundle\Exception\UserUpdaterException;
 use Ign\Bundle\GincoBundle\Form\ChangePasswordType;
-use Ign\Bundle\GincoBundle\Form\ProviderType;
-use Ign\Bundle\GincoBundle\Form\RoleType;
-use Ign\Bundle\GincoBundle\Form\UserType;
+use Ign\Bundle\GincoBundle\Form\GincoRoleType;
+use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
+use Ign\Bundle\GincoBundle\Form\UserAddFromINPNType;
+use Ign\Bundle\GincoBundle\Form\UserRoleType;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\Length;
+
 /**
  * @Route("/usermanagement")
  */
@@ -436,34 +429,9 @@ class UsermanagementController extends GincoController {
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
+			$provider = $form->get('label')->getData();
 
-			// Get search request
-			$search = $form->get('label')->getData();
-
-			// Test and extract the id of INPN provider - in parenthesis
-			$re = '/\((\d+)\)/';
-			preg_match($re, $search, $matches);
-
-			//Test if the selection if you have the id in ()
-			if (count($matches) == 0) {
-				$this->addFlash('error', $this->get('translator')
-					->trans('Providers.flash.error_label'));
-				return $this->render('IgnGincoBundle:UsermanagementController:add_provider.html.twig', array(
-					'form' => $form->createView()
-				));
-			}
-
-			//Check if organism exist in database
-			$idProvider = intval($matches[1]);
-
-			$findID = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website')->find($idProvider);
-			if ($findID) {
-				$this->addFlash('warning', $this->get('translator')
-					->trans('Providers.flash.exist_provider'));
-				return $this->redirectToRoute('usermanagement_showProviders');
-			}
-
-			$provider = $providerService->updateOrCreateLocalProvider($idProvider);
+			$provider = $providerService->updateOrCreateLocalProvider($provider->getId());
 
 			if ($provider) {
 				$this->addFlash('success', $this->get('translator')

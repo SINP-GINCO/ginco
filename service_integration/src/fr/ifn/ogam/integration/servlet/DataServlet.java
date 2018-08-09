@@ -316,6 +316,11 @@ public class DataServlet extends AbstractUploadServlet {
 				if (providerId == null) {
 					throw new Exception("The " + PROVIDER_ID + " parameter is mandatory");
 				}
+				
+				String userLogin = requestParameters.get(USER_LOGIN);
+				if (userLogin == null) {
+					throw new Exception("The " + USER_LOGIN + " parameter is mandatory");
+				}
 
 				String userSridStr = requestParameters.get(SRID);
 				String userExtensionStr = requestParameters.get(EXTENSION);

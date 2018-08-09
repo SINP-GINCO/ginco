@@ -1,10 +1,12 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
+use Doctrine\Common\Persistence\ObjectManager;
+
 use Ign\Bundle\GincoBundle\Entity\Website\User;
 use Ign\Bundle\GincoBundle\Form\Components\ProviderToStringTransformer;
 use Ign\Bundle\GincoBundle\Services\INPNProviderService;
-use Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -42,7 +44,10 @@ class UserRoleType extends AbstractType {
 			'expanded' => true
 		))->add('provider', TextType::class, array(
 			'label' => 'Providers.add.label',
-			'invalid_message' => 'administration.provider.inpn_error_label'
+			'invalid_message' => 'administration.provider.inpn_error_label',
+                        'attr' => array(
+                            'class' => 'inpn_provider_autocomplete'
+                        )
 		));
 		
 		$builder->add('submit', SubmitType::class, array(
