@@ -78,13 +78,18 @@ try {
 		exit(1) ;
 	}
 	
-
 	if (!$isDlb) {
 		system("php $sprintDir/migrate_taxref_v11_data.php $CLIParams", $returnCode3) ;
 		if ($returnCode3 != 0) {
 			echo "$sprintDir/migrate_taxref_v11_data.php crashed.\n";
 			exit(1);
 	   }
+	}
+	
+	system("php $sprintDir/report_userLogin_in_data.php $CLIParams", $returnCode5) ;
+	if ($returnCode5 != 0) {
+		echo "$sprintDir/report_userLogin_in_data.php crashed.\n" ; 
+		exit(1) ;
 	}
 
 } catch (Exception $e) {

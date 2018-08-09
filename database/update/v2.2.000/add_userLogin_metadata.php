@@ -19,7 +19,7 @@ try {
 
     foreach ($schemas as $schema) {
     	
-    	// Insertion des unit taxostatutvalue et taxomodifstatut
+    	// Insertion des unit USER_LOGIN
     	$sql = "INSERT INTO $schema.dynamode(unit, sql) VALUES
 			('USER_LOGIN', 'SELECT user_login as code, user_name as label, user_name as definition, ''''::text as position FROM website.users ORDER BY user_login')
 		";
@@ -36,7 +36,7 @@ try {
 		";
     	$pdo->exec($sql) ;
 		    	
-    	// Recherche des formats qui possèdent des champs cdnom et cdref.
+    	// Recherche des formats qui possèdent des champs PROVIDER_ID.
     	$sth = $pdo->query("SELECT fo.* FROM $schema.format fo
 			JOIN $schema.field fi ON fo.format = fi.format
 			WHERE fi.type = 'TABLE'
@@ -87,14 +87,14 @@ try {
 			");
     		
     			
-    		// décalage des positions pour les champs après cdnom  
+    		// décalage des positions pour les champs après PROVIDER_ID  
     		$pdo->exec("UPDATE $schema.form_field
 				SET position=position+1
 				WHERE position > (SELECT position FROM $schema.form_field WHERE data='PROVIDER_ID' AND format = '{$format['format']}')
 			");
     		
     			
-    		// insertion cdnomcalcule et cdrefcalcule
+    		// insertion USER_LOGIN
     		$pdo->exec("INSERT INTO $schema.form_field (data, format, is_criteria, is_result, input_type, position, is_default_criteria, is_default_result) VALUES
 				('USER_LOGIN', '{$format['format']}', 1, 1, 'SELECT', (SELECT position+1 FROM $schema.form_field WHERE data='PROVIDER_ID' AND format = '{$format['format']}'), 0, 0)
 			");
