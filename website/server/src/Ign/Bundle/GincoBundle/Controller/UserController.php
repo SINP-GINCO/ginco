@@ -1,9 +1,10 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Ign\Bundle\GincoBundle\Entity\Website\User;
 use Ign\Bundle\GincoBundle\Form\ProviderSearchType;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  *
  * @author SCandelier
  *        
- *         @Route("/user")
+ * @Route("/user")
  */
 class UserController extends GincoController {
 
@@ -42,42 +43,7 @@ class UserController extends GincoController {
 			$form->handleRequest($request);
 			
 			if ($form->isValid()) {
-				
-				// Get search request
-				$search = $form->get('label')->getData();
-				
-				// Test and extract the id of INPN provider - in parenthesis
-				$re = '/\((\d+)\)/';
-				preg_match($re, $search, $matches);
-				
-				// Test the selection if you have the id in ()
-				if (count($matches) == 0) {
-					$this->addFlash('error', $this->get('translator')
-						->trans('Providers.flash.error_label'));
-					
-					if ($user->getProvider()->getId() == 0) {
-						$this->addFlash('warning', $this->get('translator')
-							->trans('User.account.infos.no_provider'));
-					}
-					
-					return $this->render('IgnGincoBundle:User:index.html.twig', array(
-						'form' => $form->createView()
-					));
-				}
-				
-				// Check if organism exist in ginco database
-				$idProvider = intval($matches[1]);
-				$provider = $this->getDoctrine()
-					->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Provider', 'website')
-					->find($idProvider);
-				
-				if ($provider) {
-					$this->addFlash('warning', $this->get('translator')
-						->trans('Providers.flash.exist_provider'));
-				} else {
-					$providerService = $this->get('ginco.inpn_provider_service');
-					$provider = $providerService->updateOrCreateLocalProvider($idProvider);
-				}
+				$provider = $form->get('label')->getData();
 				
 				$user->setProvider($provider);
 				$em = $this->getDoctrine()->getManager();

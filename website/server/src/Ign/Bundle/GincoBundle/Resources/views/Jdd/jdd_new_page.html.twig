@@ -23,10 +23,19 @@
             </div>
         </div>
     </div>
-
+    {% if form.provider is defined %}
+        {{ form_row(form.provider) }}
+    {% endif %}
+        
     {{ form_end(form) }}
-
 
     {{ xml }}
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        {% include '@IgnGinco/UsermanagementController/provider_add.js.twig' %}
+    </script>
 {% endblock %}

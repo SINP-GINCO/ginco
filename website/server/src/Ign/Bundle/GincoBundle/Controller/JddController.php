@@ -2,12 +2,12 @@
 namespace Ign\Bundle\GincoBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
+use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
 use Ign\Bundle\GincoBundle\Exception\MetadataException;
 use Ign\Bundle\GincoBundle\Form\GincoJddType;
-use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
-use Ign\Bundle\GincoBundle\Form\JddType;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -102,16 +102,26 @@ class JddController extends GincoController {
 		$metadataServiceUrl = substr($metadataServiceUrl, 0, $endUrl + 6);
 
 		$jdd = new Jdd();
-		$form = $this->createForm(new GincoJddType(), $jdd, array(
-			// the entity manager used for model choices must be the same as the one used to persist the $jdd entity
-			'entity_manager' => $em
-		));
+                
+		$form = $this->createForm(
+                            new GincoJddType(
+                                $this->getDoctrine()->getEntityManager() , 
+                                $this->get('ginco.inpn_provider_service')
+                            ), 
+                            $jdd, 
+                            array(
+                                // the entity manager used for model choices must be the same as the one used to persist the $jdd entity
+                                'entity_manager' => $em,
+                                'user' => $this->getUser()
+                            ));
 
 		$form->handleRequest($request);
 
 		// Add a custom step to test validity of the metadata_id, with the metadata service
 		$formIsValid = $form->isValid();
+                
 		if ($formIsValid) {
+                        
 			$metadataId = $form->get('metadata_id')->getData();
 
 			// Test if another jdd already exists with this metadataId
@@ -138,8 +148,14 @@ class JddController extends GincoController {
 		if ($formIsValid) {
 			// Add user and provider relationship
 			$jdd->setUser($this->getUser());
-			$jdd->setProvider($this->getUser()
-				->getProvider());
+                        
+                        if ($this->getUser()->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER')){
+                            $provider = $form->get('provider')->getData();
+                        } else {
+                            $provider = $this->getUser()->getProvider();
+                        }
+                        
+			$jdd->setProvider($provider);
 
 			// writes the jdd to the database
 			// persist won't work (because user and provider are not retrieved via the same entity manager ?)

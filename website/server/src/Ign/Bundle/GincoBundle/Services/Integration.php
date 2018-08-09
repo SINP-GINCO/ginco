@@ -96,6 +96,8 @@ class Integration extends AbstractService {
 	 *
 	 * @param $submissionId String
 	 *        	the identifier of the submission
+         * @param $userLogin String
+	 *        	the username of the creator
 	 * @param $providerId String
 	 *        	the identifier of the data provider
 	 * @param $dataFiles Array[DatasetFile]
@@ -105,9 +107,10 @@ class Integration extends AbstractService {
 	 * @return true if the upload was OK
 	 * @throws Exception if a problem occured on the server side
 	 */
-	public function uploadData($submissionId, $providerId, $dataFiles, $srid, $extension = '.csv') {
-		$this->logger->debug("uploadData : " . $submissionId . " - " . $providerId . " - " . $srid);
-		$client = new Client();
+	public function uploadData($submissionId, $userLogin, $providerId, $dataFiles, $srid, $extension = '.csv') {
+		$this->logger->debug("[integrationSrevice.uploadData] submission #" . $submissionId . " from " . $providerId . " by " . $userLogin. ".(srid:" . $srid. ")");
+		
+                $client = new Client();
 		$client->setUri($this->serviceUrl . "DataServlet?action=UploadData");
 		$client->setEncType('multipart/form-data');
 		$client->setOptions(array(
@@ -116,6 +119,7 @@ class Integration extends AbstractService {
 		));
 		$postParam = array(
 			'SUBMISSION_ID' => $submissionId,
+                        'USER_LOGIN' => $userLogin,
 			'PROVIDER_ID' => $providerId,
 			'SRID' => $srid,
 			'EXTENSION' => $extension

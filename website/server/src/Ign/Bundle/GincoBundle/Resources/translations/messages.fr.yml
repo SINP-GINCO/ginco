@@ -305,6 +305,7 @@ Integration:
     definition: Définition
     format: Format
   Submission:
+    noJdd: Il n'y a pas de jeu de données associé.
     noDatasetsForModel: Attention ! Il n'y a pas de modèles d'import publiés pour le modèle de données choisi. Merci de contacter l'administrateur régional.
     doesNotExist:
       publish: La soumission que vous souhaitez publier n'existe pas.
@@ -344,6 +345,7 @@ sridDescription: "Sous la forme d'un code EPSG. Par exemple : <ul><li>WGS 84 : 4
 Jdd:
   new:
     title: Verser des données
+    provider: Organisme
     metadataIdLabel: Identifiant de métadonnées
     metadataIdDescription: L'identifiant de métadonnées renseigné doit être présent dans <a href="%metadataUrl%" target='_blank'>l'application de métadonnées de l'INPN</a>.<br/>Vous trouverez de l'aide sur les métadonnées dans la <a href="%documentationUrl%/metadonnees/index.html" target='_blank'>documentation Ginco</a>.
   delete:

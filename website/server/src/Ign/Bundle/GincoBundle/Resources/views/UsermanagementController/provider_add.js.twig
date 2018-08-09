@@ -2,10 +2,7 @@
  * Scripts for SearchOrganisme form handling with Ajax.
  ==============================================*/
 
-
-var searchOrganisme = function (searchFieldId) {
-
-	$(searchFieldId).autocomplete({
+$('.inpn_provider_autocomplete').autocomplete({
 	    minLength : 1,
 	    delay:200,
 		source: function(request,response){
@@ -23,7 +20,7 @@ var searchOrganisme = function (searchFieldId) {
 		},
 		// Don't trigger the Ajax request if not 3 characters, except if it is a number
 		search: function( event, ui ) {
-			var term = $(searchFieldId).val();
+			var term = $('.inpn_provider_autocomplete').val();
 			// If not a number and less than three chars, cancel search.
 			if (term.length < 3 && isNaN(term)) {
 				event.preventDefault();
@@ -46,5 +43,5 @@ var searchOrganisme = function (searchFieldId) {
 	                $("<div tabindex='-1' class='ui-menu-item-wrapper'>").append(label))
 	            .appendTo( ul );
 	};
-};
+
 
