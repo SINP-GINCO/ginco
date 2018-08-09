@@ -137,7 +137,7 @@ Contact:
       title: Besoin d'assistance pour comprendre les règles du SINP
       architecture: Architecture et principes du SINP
       protocol: Protocole SINP
-      relation: Relations avec la PN
+      relation: Relations avec la plateforme nationale
       validation: Règles nationales de cohérence et validation 
     operation:
       title: Besoin d'assistance sur le fonctionnement des applications
@@ -146,7 +146,7 @@ Contact:
       geonature: Assistance fonctionnelle GéoNature
       geonatureWorkflow: Calculs et processus GéoNature
       ginco: Assistance fonctionnelle GINCO
-      import: Import GINCO et DLDBB
+      import: Import de données dans GINCO
       gincoWorkflow: Calculs et processus GINCO
     blocking:
       title: Besoin d'assistance pour un blocage technique
