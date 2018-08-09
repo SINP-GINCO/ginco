@@ -279,3 +279,4 @@ cdrefcalcule;form_observation;cdrefcalcule;table_observation;FORM
 taxostatut;form_observation;taxostatut;table_observation;FORM
 taxomodif;form_observation;taxomodif;table_observation;FORM
 taxoalerte;form_observation;taxoalerte;table_observation;FORM
+USER_LOGIN;form_autres;USER_LOGIN;table_observation;FORM

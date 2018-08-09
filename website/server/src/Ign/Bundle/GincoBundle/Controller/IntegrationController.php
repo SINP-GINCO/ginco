@@ -222,7 +222,7 @@ class IntegrationController extends GincoController {
 			}
 			try {
 				$providerId = $submission->getProvider()->getId();
-				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser(), $providerId, $requestedFiles, $srid);
+				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser()->getLogin(), $providerId, $requestedFiles, $srid);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload:' . $e, array(
 					'exception' => $e

@@ -71,6 +71,13 @@ try {
 		echo "$sprintDir/migrate_taxref_v11_metadata.php crashed.\n" ; 
 		exit(1) ;
 	}
+	
+	system("php $sprintDir/add_userLogin_metadata.php $CLIParams", $returnCode4) ;
+	if ($returnCode4 != 0) {
+		echo "$sprintDir/add_userLogin_metadata.php crashed.\n" ; 
+		exit(1) ;
+	}
+	
 
 	if (!$isDlb) {
 		system("php $sprintDir/migrate_taxref_v11_data.php $CLIParams", $returnCode3) ;

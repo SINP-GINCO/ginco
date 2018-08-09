@@ -106,3 +106,4 @@ cdrefcalcule;table_observation;cdrefcalcule;1;0;1;0;105;
 taxostatut;table_observation;taxostatut;1;1;0;0;106;
 taxomodif;table_observation;taxomodif;1;1;0;0;107;
 taxoalerte;table_observation;taxoalerte;1;1;0;0;108;
+USER_LOGIN;table_observation;user_login;0;0;0;1;109;

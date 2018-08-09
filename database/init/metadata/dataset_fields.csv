@@ -106,3 +106,4 @@ dataset_2;RAW_DATA;table_observation;cdrefcalcule
 dataset_2;RAW_DATA;table_observation;taxostatut
 dataset_2;RAW_DATA;table_observation;taxomodif
 dataset_2;RAW_DATA;table_observation;taxoalerte
+dataset_2;RAW_DATA;table_observation;USER_LOGIN
