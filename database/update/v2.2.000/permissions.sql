@@ -37,6 +37,26 @@ INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
     (2, 'VALIDATE_SUBMISSION_ALL')
 ;
 
+-------------------------------------------------------------
+-- Visualisation des jeux de données
+-------------------------------------------------------------
+
+INSERT INTO website.permission(permission_code, permission_label, permission_group_code, description) VALUES
+    ('VIEW_JDD_OWN', 'Voir ses propres jeux de données', 'JDD_MANAGEMENT', 'Voir ses propres jeux de données.'),
+    ('VIEW_JDD_PROVIDER', 'Voir les jeux de données de son organisme', 'JDD_MANAGEMENT', 'Voir les jeux de données appartenant à utilisateur de son propre organisme.'),
+    ('VIEW_JDD_ALL', 'Voir tous les jeux de données', 'JDD_MANAGEMENT', 'Voir n''importe quel jeu de données.')
+;
+
+INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
+    (1, 'VIEW_JDD_OWN'),
+    (1, 'VIEW_JDD_PROVIDER'),
+    (1, 'VIEW_JDD_ALL'),
+    (2, 'VIEW_JDD_OWN'),
+    (2, 'VIEW_JDD_PROVIDER'),
+    (2, 'VIEW_JDD_ALL'),
+    (3, 'VIEW_JDD_OWN')
+;
+
 DELETE FROM website.permission_per_role WHERE permission_code = 'CONFIRM_SUBMISSION' ;
 DELETE FROM website.permission WHERE permission_code = 'CONFIRM_SUBMISSION' ;
 
