@@ -45,7 +45,7 @@
 				</thead>
 				<tbody>
 					{% for champ in tableFields %} 
-						{% if champ.fieldName[0:5] != 'OGAM_' and champ.fieldName != 'PROVIDER_ID' and champ.fieldName != 'SUBMISSION_ID' and champ.fieldName = 'USER_LOGIN' %}
+						{% if champ.fieldName[0:5] != 'OGAM_' and champ.fieldName != 'PROVIDER_ID' and champ.fieldName != 'SUBMISSION_ID' and champ.fieldName != 'USER_LOGIN' %}
 							<tr>
 								<td id="name">{{ champ.label }}</td>
 								<td id="unit">{{ champ.unitType }}</td>

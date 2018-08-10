@@ -47,7 +47,7 @@
 				</thead>
 				<tbody>
 					{% for champ in allFields %} 
-						{% if champ.dataName[0:5] != 'OGAM_' and champ.dataName != 'PROVIDER_ID' and champ.dataName !=	'SUBMISSION_ID' and champ.dataName = 'USER_LOGIN' %}
+						{% if champ.dataName[0:5] != 'OGAM_' and champ.dataName != 'PROVIDER_ID' and champ.dataName !=	'SUBMISSION_ID' and champ.dataName != 'USER_LOGIN' %}
 							<tr>
 								<td></td>
 								<td id="name" class="hidden">{{ champ.dataName }} [{{ champ.unitType }}]</td>
