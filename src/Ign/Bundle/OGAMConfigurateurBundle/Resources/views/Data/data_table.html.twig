@@ -15,7 +15,7 @@
     <tbody>
 
     {% for entity in datas %}
-        {% if entity.name[0:5] != 'OGAM_' and entity.name != 'PROVIDER_ID' and entity.name !='SUBMISSION_ID' %}
+        {% if entity.name[0:5] != 'OGAM_' and entity.name != 'PROVIDER_ID' and entity.name !='SUBMISSION_ID' and entity.name != 'USER_LOGIN' %}
             <tr>
                 <td class="name col-md-3 longtext" title="{{ entity.name }}">{{ entity.name }}</td>
                 <td class="col-md-3">{{ entity.label }}</td>

@@ -92,6 +92,7 @@ class FileController extends FileControllerBase {
 
 			// remove technical fields
 			$technicalFields = array(
+				'USER_LOGIN',
 				'PROVIDER_ID',
 				'SUBMISSION_ID'
 			);

@@ -89,7 +89,7 @@ class FieldMappingRepository extends EntityRepository {
 						WHERE fm.mappingType = :mappingType
 						AND fm.dstFormat = :tableFormat)
 					AND tf.tableFormat = :tableFormat
-					AND tf.data NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')
+					AND tf.data NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')
 					AND tf.data NOT LIKE :ogam_id
 					ORDER BY tf.data");
 

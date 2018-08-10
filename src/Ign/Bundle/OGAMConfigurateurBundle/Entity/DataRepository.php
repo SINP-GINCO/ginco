@@ -24,7 +24,7 @@ class DataRepository extends EntityRepository {
 
 	/**
 	 * Returns all the data fields related to a model which are not named
-	 * OGAM_ID%, PROVIDER_ID, SUBMISSION_ID.
+	 * OGAM_ID%, PROVIDER_ID, USER_LOGIN, SUBMISSION_ID.
 	 *
 	 * todo : remove ? because not used in project
 	 *
@@ -41,12 +41,13 @@ class DataRepository extends EntityRepository {
 			->innerJoin('IgnOGAMConfigurateurBundle:TableFormat', 'tfo', 'WITH', 'tfo.format = mt.table')
 			->innerJoin('IgnOGAMConfigurateurBundle:TableField', 'tfi', 'WITH', 'tfi.tableFormat = tfo.format')
 			->innerJoin('IgnOGAMConfigurateurBundle:Data', 'dtj', 'WITH', 'dtj.name = tfi.data')
-			->andWhere('dtj.name NOT IN (:provider_id, :submission_id)')
+			->andWhere('dtj.name NOT IN (:provider_id, :user_login, :submission_id)')
 			->andWhere('dtj.name NOT LIKE :ogam_id')
 			->setParameters(array(
 			'modelId' => $modelId,
 			'ogam_id' => TableFormat::PK_PREFIX . '%',
 			'provider_id' => 'PROVIDER_ID',
+			'user_login' => 'USER_LOGIN',
 			'submission_id' => 'SUBMISSION_ID'
 		));
 

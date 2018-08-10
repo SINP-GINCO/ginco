@@ -171,9 +171,9 @@ class ModelPublication extends DatabaseUtils {
 
 		$tablesHaveFields = true;
 		while ($row = $stmt->fetch()) {
-			// 3 is the nb of technical fields in each table: PROVIDER_ID, SUBMISSION_ID, OGAM_ID
+			// 4 is the nb of technical fields in each table: PROVIDER_ID, USER_LOGIN, SUBMISSION_ID, OGAM_ID
 			// todo : change if necessary
-			if ($row['nbfields'] <= 3) {
+			if ($row['nbfields'] <= 4) {
 				$tablesHaveFields = false;
 			}
 		}

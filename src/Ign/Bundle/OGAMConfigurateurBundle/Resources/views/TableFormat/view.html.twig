@@ -44,21 +44,20 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for champ in tableFields %} {% if champ.fieldName[0:5] !=
-					'OGAM_' and champ.fieldName != 'PROVIDER_ID' and champ.fieldName
-					!= 'SUBMISSION_ID' %}
-					<tr>
-						<td id="name">{{ champ.label }}</td>
-						<td id="unit">{{ champ.unitType }}</td>
-						<td id="mandatory" class=text-center">
-							{% if champ.isMandatory == '1' %}
-								 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans %} yes {% endtrans %}
-							{% else %}
-								{% trans %} no {% endtrans %}
-							{% endif %}
-						</td>
-					</tr>
-					{% endif %}
+					{% for champ in tableFields %} 
+						{% if champ.fieldName[0:5] != 'OGAM_' and champ.fieldName != 'PROVIDER_ID' and champ.fieldName != 'SUBMISSION_ID' and champ.fieldName = 'USER_LOGIN' %}
+							<tr>
+								<td id="name">{{ champ.label }}</td>
+								<td id="unit">{{ champ.unitType }}</td>
+								<td id="mandatory" class=text-center">
+									{% if champ.isMandatory == '1' %}
+										 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {% trans %} yes {% endtrans %}
+									{% else %}
+										{% trans %} no {% endtrans %}
+									{% endif %}
+								</td>
+							</tr>
+						{% endif %}
 					{% endfor %}
 				</tbody>
 			</table>

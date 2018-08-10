@@ -113,6 +113,11 @@ class TableFieldController extends Controller {
 					$tableField->setIsCalculated("0");
 					$tableField->setIsEditable("0");
 					$tableField->setIsInsertable("0");
+				} elseif ($dataField->getName() == "USER_LOGIN") {
+					$tableField->setIsMandatory("1");
+					$tableField->setIsCalculated("0");
+					$tableField->setIsEditable("0");
+					$tableField->setIsInsertable("0");
 				} elseif ($dataField->getName() == "SUBMISSION_ID") {
 					$tableField->setIsMandatory("0");
 					$tableField->setIsCalculated("1");

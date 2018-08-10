@@ -125,7 +125,7 @@ class TableController extends Controller {
 			$em->flush();
 
 			// add technical fields to the new table
-			$fields = "PROVIDER_ID,SUBMISSION_ID," . $table->getPkName();
+			$fields = "PROVIDER_ID,USER_LOGIN,SUBMISSION_ID," . $table->getPkName();
 			$this->forward('IgnOGAMConfigurateurBundle:TableField:addFields', array(
 				'modelId' => $model->getId(),
 				'format' => $format,

@@ -164,7 +164,7 @@ class TableFormat {
 			$this->primaryKey = $primaryKey;
 		}
 		else {
-			$this->primaryKey = $this->getPkName() . ',PROVIDER_ID';
+			$this->primaryKey = $this->getPkName() . ',PROVIDER_ID, USER_LOGIN';
 		}
 		return $this;
 	}

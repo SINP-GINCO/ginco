@@ -349,7 +349,7 @@ class FileController extends Controller {
 			$tableDatas = array_column($tableFields, 'fieldName');
 
 			// remove technical fields
-			$technicalFields = array('PROVIDER_ID', 'SUBMISSION_ID');
+			$technicalFields = array('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID');
 			$technicalFields = array_merge($technicalFields, explode(',',$table->getPrimaryKey()));
 
 			$tableDatas = array_diff($tableDatas, $technicalFields);

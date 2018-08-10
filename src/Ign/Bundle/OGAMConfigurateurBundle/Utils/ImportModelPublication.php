@@ -456,6 +456,7 @@ class ImportModelPublication extends DatabaseUtils {
 		// Don't take account of technical fields
 		$technicalFields = array(
 			'PROVIDER_ID',
+			'USER_LOGIN',
 			'SUBMISSION_ID'
 		);
 

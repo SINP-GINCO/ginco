@@ -46,15 +46,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for champ in allFields %} {% if champ.dataName[0:5] != 'OGAM_'
-					and champ.dataName != 'PROVIDER_ID' and champ.dataName !=
-					'SUBMISSION_ID' %}
-					<tr>
-						<td></td>
-						<td id="name" class="hidden">{{ champ.dataName }} [{{ champ.unitType }}]</td>
-						<td>{{ champ.label }} [{{ champ.unitType }}]</td>
-					</tr>
-					{% endif %} {% endfor %}
+					{% for champ in allFields %} 
+						{% if champ.dataName[0:5] != 'OGAM_' and champ.dataName != 'PROVIDER_ID' and champ.dataName !=	'SUBMISSION_ID' and champ.dataName = 'USER_LOGIN' %}
+							<tr>
+								<td></td>
+								<td id="name" class="hidden">{{ champ.dataName }} [{{ champ.unitType }}]</td>
+								<td>{{ champ.label }} [{{ champ.unitType }}]</td>
+							</tr>
+						{% endif %} 
+					{% endfor %}
 				</tbody>
 			</table>
 			<div>
@@ -94,26 +94,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% for champ in tableFields %} {% if champ.fieldName[0:5] !=
-					'OGAM_' and champ.fieldName != 'PROVIDER_ID' and champ.fieldName
-					!= 'SUBMISSION_ID' %}
-					<tr>
-						<td id="name" class="hidden">{{ champ.fieldName }}</td>
-						<td id="label">{{ champ.label }}</td>
-						<td id="unit">{{ champ.unitType }}</td>
-						<td id="mandatory" class=text-center">
-							{% if champ.isMandatory == '1' %}
-								<input type="checkbox" checked="checked">
-							{% else %}
-								<input type="checkbox" value="">
-							{% endif %}
-						</td>
-						<td><a
-							href="{{ path('configurateur_table_remove_field', { 'modelId' : model.id, 'field': champ.fieldName, 'format': table.format })}}"
-							class="btn btn-default btn-xs" role="button"> <span
-											class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
-					</tr>
-					{% endif %}
+					{% for champ in tableFields %} 
+						{% if champ.fieldName[0:5] != 'OGAM_' and champ.fieldName != 'PROVIDER_ID' and champ.fieldName != 'SUBMISSION_ID' and champ.fieldName != 'USER_LOGIN' %}
+							<tr>
+								<td id="name" class="hidden">{{ champ.fieldName }}</td>
+								<td id="label">{{ champ.label }}</td>
+								<td id="unit">{{ champ.unitType }}</td>
+								<td id="mandatory" class=text-center">
+									{% if champ.isMandatory == '1' %}
+										<input type="checkbox" checked="checked">
+									{% else %}
+										<input type="checkbox" value="">
+									{% endif %}
+								</td>
+								<td><a
+									href="{{ path('configurateur_table_remove_field', { 'modelId' : model.id, 'field': champ.fieldName, 'format': table.format })}}"
+									class="btn btn-default btn-xs" role="button"> <span
+													class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+							</tr>
+						{% endif %}
 					{% endfor %}
 				</tbody>
 			</table>

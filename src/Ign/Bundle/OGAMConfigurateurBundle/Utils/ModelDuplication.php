@@ -156,7 +156,7 @@ class ModelDuplication extends DatabaseUtils {
 			));
 			$tableFormat = pg_fetch_assoc($tableFormatPg);
 			// ... and insert it
-			$primaryKey = TableFormat::PK_PREFIX . $finalFormatId . ', PROVIDER_ID';
+			$primaryKey = TableFormat::PK_PREFIX . $finalFormatId . ', PROVIDER_ID, USER_LOGIN';
 			pg_execute($this->pgConn, "insert_table_format_query", array(
 				$finalFormatId,
 				$tableFormat['table_name'],

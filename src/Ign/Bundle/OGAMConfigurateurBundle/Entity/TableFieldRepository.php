@@ -49,7 +49,7 @@ class TableFieldRepository extends EntityRepository {
 		$query = $this->_em->createQuery("SELECT t
 			FROM IgnOGAMConfigurateurBundle:TableField t
 			WHERE t.tableFormat =:tableFormat
-			AND t.data NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')
+			AND t.data NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')
 			AND t.data NOT LIKE :ogam_id");
 		$query->setParameters(array(
 			'tableFormat' => $tableFormat,
@@ -129,7 +129,7 @@ class TableFieldRepository extends EntityRepository {
 	public function deleteNonTechnicalByTableFormat($tableFormat) {
 		$query = $this->_em->createQuery("DELETE FROM IgnOGAMConfigurateurBundle:TableField t
 			WHERE t.tableFormat =:tableFormat
-			AND t.data NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')
+			AND t.data NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')
 			AND t.data NOT LIKE :ogam_id
 			AND t.data NOT IN (SELECT ta.data
 			FROM IgnOGAMConfigurateurBundle:TableField ta
@@ -194,7 +194,7 @@ class TableFieldRepository extends EntityRepository {
 		$query = $qb->select('t')
 			->from('IgnOGAMConfigurateurBundle:TableField', 't')
 			->where('t.tableFormat = :tableFormat')
-			->andwhere("t.data NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')")
+			->andwhere("t.data NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')")
 			->andwhere('t.data NOT LIKE :ogam_id')
 			->andwhere($qb->expr()
 			->notIn('t.data', $qb2->select('tf.data')

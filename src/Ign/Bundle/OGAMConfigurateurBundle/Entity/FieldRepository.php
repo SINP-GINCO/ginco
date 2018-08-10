@@ -54,7 +54,7 @@ class FieldRepository extends EntityRepository {
 			->from('IgnOGAMConfigurateurBundle:Field', 'f')
 			->innerJoin('f.data', 'd')
 			->where('f.format = :format')
-			->andwhere("d.name NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')")
+			->andwhere("d.name NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')")
 			->andwhere('d.name NOT LIKE :fkCondition')
 			->setParameters(array(
 			'format' => $format,
@@ -118,7 +118,7 @@ class FieldRepository extends EntityRepository {
 			->from('IgnOGAMConfigurateurBundle:Field', 'f')
 			->innerJoin('f.data', 'd')
 			->where('f.format = :format')
-			->andwhere("d.name NOT IN ('PROVIDER_ID', 'SUBMISSION_ID')")
+			->andwhere("d.name NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')")
 			->andwhere('d.name NOT LIKE :fkCondition')
 			->andwhere($qb->expr()
 			->notIn('f.data', $qb2->select('dd.name')
