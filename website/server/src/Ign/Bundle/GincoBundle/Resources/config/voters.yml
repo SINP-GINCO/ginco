@@ -12,3 +12,9 @@ services:
         tags:
             - { name: security.voter }
         public: false
+        
+    ginco.data_voter:
+        class: Ign\Bundle\GincoBundle\Security\Voter\DataVoter
+        tags:
+            - { name: security.voter }
+        public: false

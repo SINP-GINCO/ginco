@@ -288,7 +288,9 @@ class QueryController extends GincoController {
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
+				"EDIT_DATA_OWN" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_OWN'),
+				"EDIT_DATA_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_PROVIDER'),
+				"EDIT_DATA_ALL" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_ALL')
 			];
 			
 			$where = $request->getSession()->get('query_SQLWhere');
@@ -385,7 +387,9 @@ class QueryController extends GincoController {
 				"hasGrandPublicRole" => in_array($grandPublicRole, $this->getUser()->getRoles()),
 				"DATA_QUERY" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY'),
 				"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-				"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
+				"EDIT_DATA_OWN" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_OWN'),
+				"EDIT_DATA_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_PROVIDER'),
+				"EDIT_DATA_ALL" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_ALL')
 			];
 			
 			$this->get('ginco.query_service')->buildRequestGinco($queryForm, $userInfos, $maxPrecisionLevel, $requestId, $request->getSession());
@@ -422,7 +426,9 @@ class QueryController extends GincoController {
 		// Call the service to get the definition of the columns
 		$userInfos = [
 			"DATA_QUERY_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-			"DATA_EDITION_OTHER_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION_OTHER_PROVIDER')
+			"EDIT_DATA_OWN" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_OWN'),
+			"EDIT_DATA_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_PROVIDER'),
+			"EDIT_DATA_ALL" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_ALL')
 		];
 		
 		$resultRows = $this->get('ginco.query_service')->getResultRowsGinco($start, $length, $sortObj["property"], $sortObj["direction"], $request->getSession(), $userInfos, $this->get('ginco.locale_listener')
@@ -621,10 +627,10 @@ class QueryController extends GincoController {
 		if ($schema == 'RAW_DATA' && $user->isAllowed('EXPORT_RAW_DATA')) {
 			$viewParam['hideGridCsvExportMenuItem'] = false;
 		}
-		if ($schema == 'RAW_DATA' && $user->isAllowed('DATA_EDITION')) {
+		if ($schema == 'RAW_DATA' && $this->isGranted("EDIT_DATA")) {
 			$viewParam['hideGridDataEditButton'] = false;
 		}
-		if ($user->isAllowed('DATA_EDITION_OTHER_PROVIDER')) {
+		if ($user->isAllowed('EDIT_DATA_ALL')) {
 			$viewParam['checkEditionRights'] = false;
 		}
 		
@@ -660,7 +666,9 @@ class QueryController extends GincoController {
 			
 			$userInfos = [
 				"providerId" => $this->getUser() ? $this->getUser()->getProvider() : NULL,
-				"DATA_EDITION" => $this->getUser() && $this->getUser()->isAllowed('DATA_EDITION')
+				"EDIT_DATA_OWN" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_OWN'),
+				"EDIT_DATA_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_PROVIDER'),
+				"EDIT_DATA_ALL" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_ALL')
 			];
 			
 			// Bbox key is retrieved from POST
@@ -790,7 +798,9 @@ class QueryController extends GincoController {
 			
 			$userInfos = [
 				"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-				"DATA_EDITION_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_EDITION_OTHER_PROVIDER')
+				"EDIT_DATA_OWN" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_OWN'),
+				"EDIT_DATA_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_PROVIDER'),
+				"EDIT_DATA_ALL" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_ALL')
 			];
 			
 			// Get requested data
@@ -856,7 +866,9 @@ class QueryController extends GincoController {
 						"email" => $this->getUser() ? $this->getUser()
 							->getEmail() : NULL,
 						"DATA_QUERY_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_QUERY_OTHER_PROVIDER'),
-						"DATA_EDITION_OTHER_PROVIDER" => $user && $user->isAllowed('DATA_EDITION_OTHER_PROVIDER'),
+						"EDIT_DATA_OWN" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_OWN'),
+						"EDIT_DATA_PROVIDER" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_PROVIDER'),
+						"EDIT_DATA_ALL" => $this->getUser() && $this->getUser()->isAllowed('EDIT_DATA_ALL'),
 						"EXPORT_RAW_DATA" => $user && $user->isAllowed('EXPORT_RAW_DATA')
 					]
 				]);

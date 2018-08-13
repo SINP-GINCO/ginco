@@ -582,9 +582,13 @@ class DataEditionController extends GincoController {
 	public function getparametersAction() {
 		$user = $this->getUser();
 		return $this->render('IgnGincoBundle:DataEdition:edit_parameters.js.twig', array(
-			'checkEditionRights' => ($user && $user->isAllowed('DATA_EDITION_OTHER_PROVIDER')) ? FALSE : TRUE,
-			'userProviderId' => $user->getProvider()
-				->getId()
+			'checkEditionRights' => ($user && $user->isAllowed('EDIT_DATA_ALL')) ? FALSE : TRUE,
+			'userProviderId' => $user->getProvider()->getId(),
+			'userLogin' => $user->getLogin(),
+			'userCanEditOwn' => ($user && $user->isAllowed('EDIT_DATA_OWN')) ? true : false,
+			'userCanEditProvider' => ($user && $user->isAllowed('EDIT_DATA_PROVIDER')) ? true : false,
+			'userCanEditAll' => ($user && $user->isAllowed('EDIT_DATA_ALL')) ? true : false,
+
 		));
 	}
 

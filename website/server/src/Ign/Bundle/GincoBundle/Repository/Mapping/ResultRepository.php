@@ -73,9 +73,11 @@ class ResultRepository extends \Doctrine\ORM\EntityRepository {
 	 */
 	public function insert($reqId, $tableFormat, $keys, $defaultHidingLevel, $from, $where) {
 		$em = $this->getEntityManager();
-		$sql = "INSERT INTO results (id_request, id_observation, id_provider, table_format, hiding_level)
-				SELECT DISTINCT $reqId, " . $tableFormat . "." . $keys['id_observation'] . "
-				, $tableFormat." . $keys['id_provider'] . ", ? , $defaultHidingLevel $from $where;";
+		$sql = "INSERT INTO results (id_request, id_observation, id_provider, user_login, table_format, hiding_level)
+				SELECT DISTINCT $reqId, " . $tableFormat . "." . $keys['id_observation'] . 
+				", $tableFormat." . $keys['id_provider'] . 
+				", $tableFormat." . $keys['user_login'] .
+				", ? , $defaultHidingLevel $from $where;";
 		$query = $em->createNativeQuery($sql, new ResultSetMapping());
 		$query->execute(array(
 			$tableFormat

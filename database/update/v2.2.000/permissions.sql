@@ -66,3 +66,40 @@ INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
     (2, 'GENERATE_DEE_PROVIDER')
 ;
 
+
+-------------------------------------------------------------
+-- Editer et supprimer les données
+-------------------------------------------------------------
+
+UPDATE website.permission SET
+    permission_code = 'EDIT_DATA_OWN',
+    permission_label = 'Editer et supprimer ses propres données',
+    description = 'Modifier ou supprimer ses propres données.'
+    WHERE permission_code = 'DATA_EDITION'
+;
+
+UPDATE website.permission_per_role SET permission_code = 'EDIT_DATA_OWN' WHERE permission_code = 'DATA_EDITION' ;
+
+UPDATE website.permission SET
+    permission_code = 'EDIT_DATA_PROVIDER',
+    permission_label = 'Editer et supprimer les données de son organisme',
+    description = 'Modifier ou supprimer les données déposées par un membre de son organisme.'
+    WHERE permission_code = 'DATA_EDITION_OTHER_PROVIDER'
+;
+
+INSERT INTO website.permission(permission_code, permission_label, permission_group_code, description) VALUES
+    ('EDIT_DATA_ALL', 'Editer et supprimer toutes les données', 'DATA_MANAGEMENT', 'Modifier ou supprimer toutes les données de la plateforme.')
+;
+
+INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
+    (1, 'EDIT_DATA_ALL'),
+    (2, 'EDIT_DATA_ALL')
+;
+
+-- Ajout d'une colonne user_login dans la table des résultats.
+DELETE FROM mapping.results ;
+ALTER TABLE mapping.results ADD COLUMN user_login CHARACTER VARYING NOT NULL ;
+ALTER TABLE mapping.results DROP CONSTRAINT results_pk ;
+ALTER TABLE mapping.results ADD CONSTRAINT results_pk PRIMARY KEY (id_request, id_observation, id_provider, user_login) ;
+
+

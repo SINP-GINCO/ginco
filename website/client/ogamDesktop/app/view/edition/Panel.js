@@ -477,7 +477,9 @@ Ext.define('OgamDesktop.view.edition.Panel', {
      * @param {Ext.data.Record} records The records
      */
     buildFieldForm : function(store, records) {
-		var dataProvider = '';
+	
+	var dataProvider = '';
+	var dataUserLogin = '' ;
 
         // Sorts store fields according to their label, and form_format.position
         store.sort('label');
@@ -490,18 +492,23 @@ Ext.define('OgamDesktop.view.edition.Panel', {
 		for ( var i = 0; i < records.length; i++) {
 			
 			var formItem = formItems[records[i].data.formPosition];
-	        if (!formItem) {
-                // There is not already a form with this position : we create it
-                formItems[records[i].data.formPosition] = [];
-                formItem = formItems[records[i].data.formPosition];
-	        }
-			
+			if (!formItem) {
+				// There is not already a form with this position : we create it
+				formItems[records[i].data.formPosition] = [];
+				formItem = formItems[records[i].data.formPosition];
+			}
+				
 			var item = this.getFieldConfig(records[i].data, true);
 			formItem.push(item);
 
-			if (item.name.indexOf('PROVIDER_ID') !== -1) { // detect the
-				// provider id
+			if (item.name.indexOf('PROVIDER_ID') !== -1) { 
+				// detect the provider id
 				dataProvider = item.value;
+			}
+
+			if (item.name.indexOf('USER_LOGIN') !== -1) {
+				// detect the user login
+				dataUserLogin = item.value ;
 			}
 		}
 		
@@ -537,7 +544,10 @@ Ext.define('OgamDesktop.view.edition.Panel', {
 		if (this.checkEditionRights) {
 
 			// Look for the provider of the data
-			if (OgamDesktop.userProviderId !== dataProvider) {
+			if (!(OgamDesktop.userCanEditProvider && OgamDesktop.userProviderId == dataProvider)
+				&& !(OgamDesktop.userCanEditOwn && OgamDesktop.userLogin == dataUserLogin)
+				&& !OgamDesktop.userCanEditAll
+			) {
 				this.dataEditForm.disable();
 				this.validateButton.setTooltip(this.dataEditFSValidateButtonDisabledTooltip);
 			}

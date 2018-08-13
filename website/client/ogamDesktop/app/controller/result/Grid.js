@@ -139,19 +139,30 @@ Ext.define('OgamDesktop.controller.result.Grid',{
                             iconCls: 'o-result-tools-edit-editdetails',
                             tooltip: "<b>"+gridTab.editDataButtonTitle+"</b><br/>"+gridTab.editDataButtonTip,
                             handler: function(grid, rowIndex, colIndex, item, e, record, row) {
+
+                                var redirectUrl = 'edition-edit/'+/*encodeURIComponent(*/record.data.id/*)*//*, true*/ ;
+
                                 // Redirect to edition-panel
-                                if (!OgamDesktop.checkEditionRights || (OgamDesktop.userProviderId == record.data._provider_id)) {
-                                this.redirectTo('edition-edit/'+/*encodeURIComponent(*/record.data.id/*)*//*, true*/);
-                                }
-                                else {
-                                    OgamDesktop.toast('L\'édition de cette donnée est impossible, vous n\'avez pas les droits de modifier les données d\'un autre organisme.');
+                                if (OgamDesktop.userCanEditOwn && OgamDesktop.userLogin == record.data._user_login) {
+                                    this.redirectTo(redirectUrl) ;
+                                } else if (OgamDesktop.userCanEditProvider && OgamDesktop.userProviderId == record.data._provider_id) {
+                                    this.redirectTo(redirectUrl) ;
+                                } else if (OgamDesktop.userCanEditAll) {
+                                    this.redirectTo(redirectUrl) ;
+                                } else {
+                                    OgamDesktop.toast('L\'édition de cette donnée est impossible, vous n\'avez pas les droits suffisants.');
                                 }
                             },
                             getClass: function (value, meta, record, rowIndex, colIndex, store) {
-                                if (OgamDesktop.checkEditionRights && (OgamDesktop.userProviderId != record.data._provider_id) ) {
+                                if (OgamDesktop.userLogin == record.data._user_login && OgamDesktop.userCanEditOwn) {
+                                    return 'o-result-tools-edit-editdetails';
+                                } else if (OgamDesktop.userProviderId == record.data._provider_id && OgamDesktop.userCanEditProvider) {
+                                    return 'o-result-tools-edit-editdetails';
+                                } else if (OgamDesktop.userCanEditAll){
+                                    return 'o-result-tools-edit-editdetails';
+                                } else {
                                     return 'o-result-tools-edit-editdetails disabled';
                                 }
-                                return 'o-result-tools-edit-editdetails';
                             },
                             scope:this
                         }]

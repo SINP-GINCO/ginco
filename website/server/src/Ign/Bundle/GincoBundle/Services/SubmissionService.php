@@ -255,7 +255,9 @@ class SubmissionService {
 		$userInfos = [
 			"providerId" => NULL,
 			"DATA_QUERY_OTHER_PROVIDER" => true,
-			"DATA_EDITION_OTHER_PROVIDER" => false
+			"EDIT_DATA_OWN" => false,
+			"EDIT_DATA_PROVIDER" => false,
+			"EDIT_DATA_ALL" => false
 		];
 		
 		$select = $this->genericService->generateSQLSelectRequest($schema, $queryForm->getColumns(), $mappingSet, $userInfos);
@@ -461,7 +463,9 @@ class SubmissionService {
 		$userInfos = [
 			"providerId" => NULL,
 			"DATA_QUERY_OTHER_PROVIDER" => true,
-			"DATA_EDITION_OTHER_PROVIDER" => false
+			"EDIT_DATA_OWN" => false,
+			"EDIT_DATA_PROVIDER" => false,
+			"EDIT_DATA_ALL" => false
 		];
 		
 		$select = $this->genericService->generateSQLSelectRequest($schema, $queryForm->getColumns(), $mappingSet, $userInfos);
