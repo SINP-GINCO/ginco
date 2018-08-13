@@ -88,6 +88,8 @@ class IntegrationController extends GincoController {
 			$this->addFlash('error', 'Integration.Submission.noDatasetsForModel');
 			$formDisabled = true;
 		}
+		
+		$this->denyAccessUnlessGranted('CREATE_SUBMISSION', $jdd) ;
                 
 		$submission = new Submission();
 
@@ -604,13 +606,13 @@ class IntegrationController extends GincoController {
 		// Desactivate the timeout
 		set_time_limit(0);
 		
-		// Check if submission is validable
-		$user = $this->getUser();
-		$notValidateCancel = $submission->getStep() != Submission::STEP_VALIDATED && $submission->getStep() != Submission::STEP_CANCELLED;
-		$allowedOwnCancel = $user->isAllowed('CANCEL_VALIDATED_SUBMISSION') && $submission->getProvider()->getId() == $user->getProvider()->getId();
-		$allowedOtherCancel = $user->isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION');
+		if (!$this->isGranted('DELETE_SUBMISSION', $submission)) {
+			$this->addFlash('error', ['id' => 'Integration.Submission.notAllowedDelete']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
+		}
 		
-		if ($notValidateCancel && ($allowedOwnCancel || $allowedOtherCancel)) {
+		
+		if ($submission->isCancellable()) {
 			
 			// Send the cancel request to the integration server
 			try {
@@ -654,6 +656,8 @@ class IntegrationController extends GincoController {
 	 */
 	public function importShapefileAction(Request $request, Submission $submission) {
 		$this->get('logger')->debug('importShapefileAction');
+		
+		$this->denyAccessUnlessGranted('CREATE_SUBMISSION', $submission->getJdd()) ;
 		
 		$configuration = $this->get('ginco.configuration_manager');
 		$fileMaxSize = intval($this->get('ginco.configuration_manager')->getConfig('fileMaxSize', '40'));

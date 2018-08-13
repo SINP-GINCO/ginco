@@ -11,17 +11,22 @@
         <li><a href="{{ path('query_home') }}?SCHEMA=RAW_DATA">{{ 'Menu.RegionalData'|trans }}</a><li>
     {% endif %}
 
-    {% if user.isAllowed('DATA_INTEGRATION') %}
+    {% if is_granted('LIST_JDD') %}
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'Menu.Datasets'|trans }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                {% if (user.isAllowed('MANAGE_DATASETS_OTHER_PROVIDER')) %}
+                {% if (user.isAllowed('MANAGE_JDD_SUBMISSION_ALL')) %}
                     <li><a href="{{ path('all_jdd_list') }}">{{ 'Menu.ManageAllDatasets'|trans }}</a></li>
                 {% endif %}
-                {% if (user.isAllowed('DATA_INTEGRATION')) %}
-                    <li><a href="{{ path('user_jdd_list') }}">{{ 'Menu.ManageMyDatasets'|trans }}</a></li>
-                    <li><a href="{{ path('jdd_new') }}">{{ 'Menu.ImportDataset'|trans }}</a></li>
+				{% if (user.isAllowed('MANAGE_JDD_SUBMISSION_PROVIDER')) %}
+                    <li><a href="{{ path('provider_jdd_list') }}">{{ 'Menu.ManageProviderDatasets'|trans }}</a></li>
                 {% endif %}
+                {% if (user.isAllowed('MANAGE_JDD_SUBMISSION_OWN')) %}
+                    <li><a href="{{ path('user_jdd_list') }}">{{ 'Menu.ManageMyDatasets'|trans }}</a></li>
+                {% endif %}
+				{% if is_granted('CREATE_JDD') %}
+					<li><a href="{{ path('jdd_new') }}">{{ 'Menu.ImportDataset'|trans }}</a></li>
+				{% endif %}
             </ul>
         </li>
     {% endif %}

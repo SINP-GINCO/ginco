@@ -15,7 +15,7 @@
 {% block breadcrumb %}
 <ol class="breadcrumb">
     {% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
-    <li><a href="{{ path('all_jdd_list') }}">{{ 'Breadcrumb.Integration'|trans }}</a></li>
+    <li><a href="{{ path('user_jdd_list') }}">{{ 'Breadcrumb.Integration'|trans }}</a></li>
     <li class="active">{{ 'Breadcrumb.ErrorReport'|trans }}</li>
 </ol>
 {% endblock %}

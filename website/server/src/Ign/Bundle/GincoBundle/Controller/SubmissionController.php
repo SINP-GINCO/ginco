@@ -29,6 +29,9 @@ class SubmissionController extends GincoController {
 	 * @Route("/generate-reports/{submission}", name = "generate-reports")
 	 */
 	public function generateReportsAction(Submission $submission, Request $request) {
+		
+		$this->denyAccessUnlessGranted('VALIDATE_SUBMISSION', $submission) ;
+		
 		// Configure memory and time limit because the program asks a lot of resources
 		ini_set("memory_limit", $this->get('ginco.configuration_manager')->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
@@ -72,6 +75,9 @@ class SubmissionController extends GincoController {
 	 * @Route("/download-report/{submission}", name = "download-report")
 	 */
 	function downloadReportAction(Submission $submission, Request $request) {
+		
+		$this->denyAccessUnlessGranted('VIEW_REPORT', $submission) ;
+		
 		// Configure memory and time limit because the program asks a lot of resources
 		ini_set("memory_limit", $this->get('ginco.configuration_manager')->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
@@ -107,7 +113,7 @@ class SubmissionController extends GincoController {
 			'sensibilityReport' => true
 		);
 		
-		if (!in_array($submission->getStep(), $unstableSteps) && $user->isAllowed('DATA_INTEGRATION')) {
+		if (!in_array($submission->getStep(), $unstableSteps)) {
 			$reportsDenied['integrationReport'] = false;
 			if ($submission->getStatus() == Submission::STATUS_OK) {
 				$reportsDenied['permanentIdsReport'] = false;
@@ -172,9 +178,11 @@ class SubmissionController extends GincoController {
 	 */
 	public function viewErrorReport(Submission $submission, Request $request) {
 		
-		if ($submission == null || !$submission->isInError()) {
+		if (!$submission->isInError()) {
 			throw $this->createNotFoundException("La donnée n'existe pas");
 		}
+		
+		$this->denyAccessUnlessGranted('VIEW_REPORT', $submission) ;
 		
 		$errorRepository = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\RawData\CheckError', 'raw_data');
 		$errors = $errorRepository->findBySubmission($submission->getId(), array());

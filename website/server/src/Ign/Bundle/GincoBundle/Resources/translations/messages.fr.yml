@@ -39,6 +39,7 @@ Menu:
   RegionalData.Access: Visualiser les données régionales
   Datasets: Jeux de données
   ManageAllDatasets: Gérer tous les jeux de données
+  ManageProviderDatasets: Gérer les jeux de données de mon organisme
   ManageMyDatasets: Gérer mes jeux de données
   ImportDataset: Verser des données
   Configurator: Configuration des modèles
@@ -310,6 +311,7 @@ Integration:
   Submission:
     noJdd: Il n'y a pas de jeu de données associé.
     notAllowed: Vous n'avez pas les droits pour publier ou dépublier cette soumission.
+    notAllowedDelete: Vous n'avez pas les droits pour supprimer cette soumission.
     noDatasetsForModel: Attention ! Il n'y a pas de modèles d'import publiés pour le modèle de données choisi. Merci de contacter l'administrateur régional.
     doesNotExist:
       publish: La soumission que vous souhaitez publier n'existe pas.
@@ -366,6 +368,7 @@ Jdd:
   list:
     title:
       user: Gérer mes jeux de données
+      provider: Gérer les jeux de données de mon organisme
       all: Gérer tous les jeux de données
     jdd: Jeux de données
     view: Détails du jeu de données

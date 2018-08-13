@@ -444,4 +444,8 @@ class Submission {
 		
 		return ($validateOk || $warning) ;
 	}
-}
+	
+	public function isCancellable() {
+		return ($this->getStep() != self::STEP_VALIDATED && $this->getStep() != self::STEP_CANCELLED) ;
+	}
+ }

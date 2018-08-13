@@ -23,9 +23,9 @@ class JddRepository extends EntityRepository  {
 	public function getActiveJdds(Provider $provider = null, User $user = null) {
 
 		$dql = "SELECT j FROM IgnGincoBundle:RawData\Jdd j WHERE j.status NOT IN ('deleted')";
-		$dql .= ($provider != null) ? " AND j.provider = :provider" : "";
+		$dql .= ($provider != null) ? " AND j.provider = :provider " : "";
 		$dql .= ($user != null) ? " AND j.user = :user " : "";
-		$dql .= "ORDER BY j.createdAt DESC";
+		$dql .= " ORDER BY j.createdAt DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql);
 
