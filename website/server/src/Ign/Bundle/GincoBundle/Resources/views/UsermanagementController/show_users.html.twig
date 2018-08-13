@@ -33,7 +33,7 @@
 			<tr>
 				<td>{{ user.login }}</td>
 				<td>{{ user.username }}</td>
-				<td>{{ user.provider.label }}</td>
+				<td>{% if user.provider.id is defined %}{{ user.provider.label }}{% endif %}</td>
 				<td>{{ user.email }}</td>
 				<td>
 					{% for role in user.roles %}

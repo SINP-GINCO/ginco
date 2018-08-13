@@ -160,7 +160,9 @@ class DEEGenerator {
 		$userInfos = [
 			"providerId" => NULL,
 			"DATA_QUERY_OTHER_PROVIDER" => true,
-			"DATA_EDITION_OTHER_PROVIDER" => true
+			"EDIT_DATA_OWN" => true,
+			"EDIT_DATA_PROVIDER" => true,
+			"EDIT_DATA_ALL" => true
 		];
 		
 		$select = $this->genericService->generateSQLSelectRequest('RAW_DATA', $queryForm->getColumns(), $mappingSet, $userInfos, $options);

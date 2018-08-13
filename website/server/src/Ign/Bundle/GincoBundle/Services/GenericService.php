@@ -1061,7 +1061,7 @@ class GenericService {
 		// Get the root table fields
 		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schema, $rootTable->getTableFormat()
 			->getFormat(), null, $this->locale);
-		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
+		$hasColumnProviderAndUser = array_key_exists('PROVIDER_ID', $rootTableFields) && array_key_exists('USER_LOGIN', $rootTableFields);
 	
 		// Add the id column
 		$uniqueId = "'SCHEMA/" . $schema . "/FORMAT/" . $leafTable->getTableFormat()->getFormat() . "'";
@@ -1076,9 +1076,10 @@ class GenericService {
 		$locationField = $this->metadataModel->getRepository(TableField::class)->getGeometryField($schema, array_keys($tables), $this->locale);
 		$select .= ", st_astext(st_centroid(st_transform(" . $locationField->getFormat()->getFormat() . "." . $locationField->getColumnName() . "," . $this->visualisationSRS . "))) as location_centroid ";
 	
-		// Add the provider id column
-		if (!$userInfos['DATA_EDITION_OTHER_PROVIDER'] && $hasColumnProvider) {
+		// Add the provider id and user login columns
+		if (!$userInfos['EDIT_DATA_ALL'] && $hasColumnProviderAndUser) {
 			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".provider_id as _provider_id";
+			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".user_login as _user_login";
 		}
 	
 		// Return the completed SQL request
@@ -1234,7 +1235,7 @@ class GenericService {
 		// Get the root table fields
 		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schema, $rootTable->getTableFormat()
 			->getFormat(), null, $this->locale);
-		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
+		$hasColumnProviderAndUser = array_key_exists('PROVIDER_ID', $rootTableFields) && array_key_exists('USER_LOGIN', $rootTableFields);
 
 		// Add the id column
 		$uniqueId = "'SCHEMA/" . $schema . "/FORMAT/" . $leafTable->getTableFormat()->getFormat() . "'";
@@ -1249,11 +1250,12 @@ class GenericService {
 		$locationField = $this->metadataModel->getRepository(TableField::class)->getGeometryField($schema, array_keys($tables), $this->locale);
 		$select .= ", st_astext(st_centroid(st_transform(" . $locationField->getFormat()->getFormat() . "." . $locationField->getColumnName() . "," . $this->visualisationSRS . "))) as location_centroid ";
 
-		// Add the provider id column
-		if (!$userInfos['DATA_EDITION_OTHER_PROVIDER'] && $hasColumnProvider) {
+		// Add the provider id and user login columns
+		if (!$userInfos['EDIT_DATA_PROVIDER'] && $hasColumnProviderAndUser) {
 			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".provider_id as _provider_id";
+			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".user_login as _user_login";
 		}
-
+		
 		// Add the hiding level (for filtering possible sensible results)
 		$select .= ", hiding_level";
 
@@ -1455,7 +1457,7 @@ class GenericService {
 		));
 		$geometryTableFormatKeys = $geometryTableFormat->getPrimaryKeys();
 		foreach ($geometryTableFormatKeys as $geometryKey) {
-			if (strtolower(trim($geometryKey)) != 'provider_id') {
+			if (strtolower(trim($geometryKey)) != 'provider_id' && strtolower(trim($geometryKey)) != 'user_login') {
 				$geometryTablePKeyId = trim($geometryKey);
 			}
 		}

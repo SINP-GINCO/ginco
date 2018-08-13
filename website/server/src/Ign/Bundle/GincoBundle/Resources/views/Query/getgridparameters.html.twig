@@ -10,6 +10,9 @@ OgamDesktop.view.result.MainWin.override({
 {% if app.user.provider is defined %}
 	OgamDesktop.userProviderId = '{{ app.user.provider.id }}';
 {% else %}
-	OgamDesktop.userProviderId = '1';
+	OgamDesktop.userProviderId = '0';
+{% endif %}
+{% if app.user is defined %}
+	OgamDesktop.userLogin = '{{ app.user.login }}';
 {% endif %}
 {% endautoescape %}

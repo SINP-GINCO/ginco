@@ -672,17 +672,23 @@ class GenericManager {
 		$this->logger->debug("getRawDataTablePrimaryKeys with location table $tableName");
 		$keys = array();
 		$keyNames = array_map('strtolower', $table->getPrimaryKeys());
-		if (count($keyNames) != 2) {
-			throw new \Exception("Nombre de clés primaires dans la table $tableName != 2.");
+		if (count($keyNames) != 3) {
+			throw new \Exception("Nombre de clés primaires dans la table $tableName != 3.");
 			return false;
 		}
 		if (!in_array('provider_id', $keyNames)) {
 			throw new \Exception("'provider_id' n'est pas une clé primaire dans la table $tableName.");
 			return false;
 		}
+		if (!in_array('user_login', $keyNames)) {
+			throw new \Exception("'user_login' n'est pas une clé primaire dans la table $tableName.");
+			return false;
+		}
 		$keys['id_provider'] = 'provider_id';
+		$keys['user_login'] = 'user_login' ;
 		$otherKey = array_diff($keyNames, [
-			'provider_id'
+			'provider_id',
+			'user_login'
 		]);
 		$keys['id_observation'] = $otherKey[0];
 		return $keys;

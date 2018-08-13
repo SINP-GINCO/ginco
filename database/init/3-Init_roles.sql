@@ -77,8 +77,9 @@ INSERT INTO permission(permission_code, permission_label, permission_group_code,
   ('DATA_QUERY', 'Consulter les données publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser les données publiées. L''accès aux informations de localisation plus ou moins précises dépend des éventuelles restrictions d''accès des données (sensibles, privées) et des autres permissions.'),
   ('DATA_QUERY_OTHER_PROVIDER', 'Consulter toutes les données non publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser toutes les données non publiées.'),
   ('EXPORT_RAW_DATA', 'Exporter les données', 'DATA_MANAGEMENT', 'Exporter (au format CSV, GeoJson, kml…) les données sur lesquelles on a les droits de consultation. Les limitations d''accès aux informations de localisation sont les mêmes que pour la consultation.'),
-  ('DATA_EDITION', 'Editer les données', 'DATA_MANAGEMENT', 'Editer les données.'),
-  ('DATA_EDITION_OTHER_PROVIDER', 'Editer les données d''un autre organisme', 'DATA_MANAGEMENT', 'Editer les données d''un autre organisme.'),
+  ('EDIT_DATA_OWN', 'Editer et supprimer ses propres données', 'DATA_MANAGEMENT', 'Modifier ou supprimer ses propres données.'),
+  ('EDIT_DATA_PROVIDER', 'Editer et supprimer les données de son organisme', 'DATA_MANAGEMENT', 'Modifier ou supprimer les données déposées par un membre de son organisme.'),
+  ('EDIT_DATA_ALL', 'Editer et supprimer toutes les données', 'DATA_MANAGEMENT', 'Modifier ou supprimer toutes les données de la plateforme.'),
   ('CANCEL_VALIDATED_SUBMISSION', 'Annuler une soumission de données validées', 'DATA_MANAGEMENT', 'Annuler une de ses soumissions de données pas encore publiée.'),
   ('CANCEL_OTHER_PROVIDER_SUBMISSION', 'Annuler une soumission de données d''un autre organisme', 'DATA_MANAGEMENT', 'Annuler une soumission de données d''un autre organisme pas encore publiée.'),
   ('CONFIGURE_METAMODEL', 'Configurer le méta-modèle', 'MODEL_CONFIGURATION', 'Configurer les modèles de données, les modèles d''import, et le dictionnaire de données.'),
@@ -107,8 +108,9 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_INT
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'EXPORT_RAW_DATA');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_EDITION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_EDITION_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'EDIT_DATA_OWN');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'EDIT_DATA_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'EDIT_DATA_ALL');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CANCEL_VALIDATED_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CANCEL_OTHER_PROVIDER_SUBMISSION');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_METAMODEL');
@@ -145,8 +147,9 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'GENERATE
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'GENERATE_DEE_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'GENERATE_DEE_ALL');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_DATASETS_OTHER_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_EDITION_OTHER_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EDIT_DATA_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EDIT_DATA_ALL');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EDIT_DATA_OWN');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_PUBLIC_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_OWNED_PRIVATE_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGURE_WEBSITE_PARAMETERS');

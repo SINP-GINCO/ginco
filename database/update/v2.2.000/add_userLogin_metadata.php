@@ -73,7 +73,10 @@ try {
     			$pdo->exec("INSERT INTO $schema.dataset_fields (dataset_id, schema_code, format, data) VALUES
 					('{$dataset['dataset_id']}', 'RAW_DATA', '{$format['format']}', 'USER_LOGIN')
 				");
-    		}
+			}
+			
+			// Ajout d'une primary key 
+			$pdo->exec("UPDATE $schema.table_format SET primary_key = primary_key || ', USER_LOGIN'") ;
     		
     	}
     	
@@ -106,8 +109,8 @@ try {
 				('USER_LOGIN', '{$format['format']}', 'USER_LOGIN', '{$formatTable['format']}', 'FORM')
 			");
     	}
-    }
-    
+	}
+	
     //
     // insertion des nouvelles colonnes dans les tables de raw_data.
     //

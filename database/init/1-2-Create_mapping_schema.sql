@@ -51,9 +51,10 @@ CREATE TABLE results
   id_request integer NOT NULL,
   id_observation character varying NOT NULL,
   id_provider character varying NOT NULL,
+  user_login character varying NOT NULL,
   table_format character varying NOT NULL,
   hiding_level integer,
-  CONSTRAINT results_pk PRIMARY KEY (id_request, id_observation, id_provider)
+  CONSTRAINT results_pk PRIMARY KEY (id_request, id_observation, id_provider, user_login)
 )
 WITH (
 OIDS=FALSE

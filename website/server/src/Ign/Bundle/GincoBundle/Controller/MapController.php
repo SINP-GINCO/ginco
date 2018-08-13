@@ -65,7 +65,7 @@ class MapController extends GincoController {
 		$view->featureinfo_maxfeatures = $configuration->getConfig('featureinfo_maxfeatures', 20);
 
 		// Rights parameters
-		$view->checkEditionRights = ($user->isAllowed('DATA_EDITION_OTHER_PROVIDER')) ? 0 : 1 ;
+		$view->checkEditionRights = ($user->isAllowed('EDIT_DATA_ALL')) ? 0 : 1 ;
 		return $this->render('IgnGincoBundle:Map:get_map_parameters.js.twig', $view->getArrayCopy(), (new Response())->headers->set('Content-type', 'application/javascript'));
 	}
 

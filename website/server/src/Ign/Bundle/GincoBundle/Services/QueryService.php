@@ -1118,10 +1118,12 @@ class QueryService {
 			// Add the line id
 			$resultRow[] = $line['id'];
 			
-			// Right management : add the provider id of the data if the user cannot edit all
-			if (!$userInfos['DATA_EDITION_OTHER_PROVIDER']) {
-				$resultRow[] = $line['_provider_id'];
+			// Right management : add the provider id  and the user login of the data if the user cannot edit all
+			if (!$userInfos['EDIT_DATA_ALL']) {
+				$resultRow[] = $line['provider_id'];
+				$resultRow[] = $line['user_login'] ;
 			}
+			
 			$resultRows[] = $resultRow;
 		}
 		return $resultRows;
@@ -1192,7 +1194,7 @@ class QueryService {
 				'id' => $gTable->getId(),
 				'title' => $gTable->getMetadata()->getLabel(),
 				'fields' => $this->genericService->getFormFieldsOrdered($gTable->all()),
-				'editURL' => $userInfos['DATA_EDITION'] ? $gTable->getId() : null
+				'editURL' => ($userInfos['EDIT_DATA_OWN'] ||$userInfos['EDIT_DATA_PROVIDER'] || $userInfos['EDIT_DATA_ALL']) ? $gTable->getId() : null
 			];
 		}
 		
