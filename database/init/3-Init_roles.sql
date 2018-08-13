@@ -73,7 +73,10 @@ INSERT INTO permission(permission_code, permission_label, permission_group_code,
   ('MANAGE_USERS', 'Administrer les utilisateurs, rôles et permissions', 'USER_MANAGEMENT', 'Ajouter et supprimer les utilisateurs dans la plateforme. Définir les rôles et y associer des permissions. Attribuer les rôles et permissions aux utilisateurs.'),
   ('MANAGE_OWN_PROVIDER', 'Déclarer son propre organisme', 'USER_MANAGEMENT', 'Déclarer soi-même son propre organisme lors de sa première connexion à la plateforme.'),
   ('MANAGE_USERS_PROVIDER', 'Rattacher les utilisateurs à leur organisme', 'USER_MANAGEMENT', 'Rattacher les utilisateurs à leur organisme sur la page "Editer un utilisateur", à partir de l''annuaire de l''INPN.'),
-  ('DATA_INTEGRATION', 'Créer et gérer ses propres jeux de données', 'DATA_MANAGEMENT', 'Créer des jeux de données à partir d''une fiche de métadonnées, voir et supprimer ses propres jeux de données. Importer des données dans ses propres jeux de données, supprimer ses propres imports.'),
+  ('MANAGE_JDD_SUBMISSION_OWN', 'Créer et gérer ses propres jeux de données et ses soumissions', 'JDD_MANAGEMENT', 'Créer des jeux de données à partir d''une fiche de métadonnées, voir et supprimer ses propres jeux de données. Importer des données dans ses propres jeux de données, supprimer ses propres soumissions.')
+  ('MANAGE_JDD_SUBMISSION_PROVIDER', 'Voir les jeux de données et les soumissions de son organisme', 'JDD_MANAGEMENT', 'Voir les jeux de données et les imports rattachés à son propre organisme et créés par d''autres utilisateurs.'),
+  ('MANAGE_JDD_SUBMISSION_ALL', 'Gérer tous les jeux de données et toutes les soumissions', 'JDD_MANAGEMENT', 'Voir et supprimer n''importe quel jeu de données. Modifier l''organisme de rattachement d''un jeu de données, ou créer un jeu de données pour un autre organisme. Importer des données dans n''importe quel jeu de données, supprimer n''importe quelle soumission'),
+  ('DELETE_JDD_SUBMISSION_PROVIDER', 'Supprimer les jeux de données et les soumissions de son organisme', 'JDD_MANAGEMENT', 'Supprimer les jeux de données de son organisme.')
   ('DATA_QUERY', 'Consulter les données publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser les données publiées. L''accès aux informations de localisation plus ou moins précises dépend des éventuelles restrictions d''accès des données (sensibles, privées) et des autres permissions.'),
   ('DATA_QUERY_OTHER_PROVIDER', 'Consulter toutes les données non publiées', 'DATA_MANAGEMENT', 'Requêter et visualiser toutes les données non publiées.'),
   ('EXPORT_RAW_DATA', 'Exporter les données', 'DATA_MANAGEMENT', 'Exporter (au format CSV, GeoJson, kml…) les données sur lesquelles on a les droits de consultation. Les limitations d''accès aux informations de localisation sont les mêmes que pour la consultation.'),
@@ -85,7 +88,6 @@ INSERT INTO permission(permission_code, permission_label, permission_group_code,
   ('CONFIGURE_METAMODEL', 'Configurer le méta-modèle', 'MODEL_CONFIGURATION', 'Configurer les modèles de données, les modèles d''import, et le dictionnaire de données.'),
   ('VIEW_SENSITIVE', 'Consulter toutes les données sensibles', 'DATA_MANAGEMENT', 'Outrepasser les restrictions d''accès aux informations de localisation précises lorsque les données sont sensibles, pour toutes les données.'),
   ('VIEW_PRIVATE', 'Consulter toutes les données privées', 'DATA_MANAGEMENT', 'Outrepasser les restrictions d''accès aux informations de localisation précises lorsque les données sont privées, pour toutes les données.'),
-  ('MANAGE_DATASETS_OTHER_PROVIDER', 'Gérer tous les jeux de données', 'JDD_MANAGEMENT', 'Voir et supprimer n''importe quel jeu de données. Modifier l''organisme de rattachement d''un jeu de données, ou créer un jeu de données pour un autre organisme. Importer des données dans n''importe quel jeu de données, supprimer n''importe quel import. Attention cette permission n''est à confier qu''aux administrateurs.'),
   ('GENERATE_DEE_OWN', 'Gérer les DEE de ses propres jeux de données', 'JDD_MANAGEMENT', 'Générer et transmettre à l''INPN les DEE de ses propres jeux de données. Les regénérer et les supprimer (avec notification à l''INPN), les télécharger.'),
   ('GENERATE_DEE_PROVIDER', 'Gérer les DEE des jeux de données de son organisme', 'JDD_MANAGEMENT', 'Permet de génerer et gérer les DEE des jeux de données qui appartiennent à son propre organisme.'),
   ('GENERATE_DEE_ALL', 'Gérer les DEE de tous les jeux de données', 'JDD_MANAGEMENT', 'Générer et transmettre à l''INPN les DEE de tous les jeux de données. Les regénérer et les supprimer (avec notification à l''INPN), les télécharger.'),
@@ -104,7 +106,10 @@ INSERT INTO permission(permission_code, permission_label, permission_group_code,
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_OWN_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_USERS_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_INTEGRATION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_JDD_SUBMISSION_OWN');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_JDD_SUBMISSION_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_JDD_SUBMISSION_ALL');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DELETE_JDD_SUBMISSION_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'DATA_QUERY_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'EXPORT_RAW_DATA');
@@ -119,7 +124,6 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VIEW_PRI
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_OWN');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'GENERATE_DEE_ALL');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_DATASETS_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_PUBLIC_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'MANAGE_OWNED_PRIVATE_REQUEST');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGURE_WEBSITE_PARAMETERS');
@@ -134,7 +138,10 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VALIDATE
 -- Add the permissions for role Administrateur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_USERS');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_USERS_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_INTEGRATION');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_JDD_SUBMISSION_OWN');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_JDD_SUBMISSION_PROVIDER');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_JDD_SUBMISSION_ALL');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DELETE_JDD_SUBMISSION_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'DATA_QUERY_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EXPORT_RAW_DATA');
@@ -146,7 +153,6 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VIEW_PRI
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'GENERATE_DEE_OWN');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'GENERATE_DEE_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'GENERATE_DEE_ALL');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'MANAGE_DATASETS_OTHER_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EDIT_DATA_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EDIT_DATA_ALL');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'EDIT_DATA_OWN');

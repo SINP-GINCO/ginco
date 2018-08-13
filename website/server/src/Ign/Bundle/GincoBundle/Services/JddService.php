@@ -4,6 +4,7 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
+use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Services\Integration;
 
 /**
@@ -103,5 +104,28 @@ class JddService {
 		}
 		
 		$this->entityManager->flush() ;
+	}
+	
+	
+	/**
+	 * Teste si le JDD est supprimable, en vérifiant les DEE associés.
+	 * @param Jdd $jdd
+	 * @return boolean
+	 */
+	public function isDeletable(Jdd $jdd) {
+		
+		// Basic deletability: Jdd has no active submissions
+		if (!$jdd->isDeletable()) {
+			return false;
+		}
+
+		// Do the jdd has an active DEE ?
+		$deeRepo = $this->entityManager->getRepository('IgnGincoBundle:RawData\DEE');
+		// Get last version of DEE attached to the jdd
+		$DEE = $deeRepo->findLastVersionByJdd($jdd);
+		if ($DEE && $DEE->getStatus() != DEE::STATUS_DELETED) {
+			return false;
+		}
+		return true;
 	}
 }

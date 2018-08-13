@@ -39,13 +39,13 @@ security:
         - { path: ^/query/csv-export, allow_if: "user and is_authenticated() and user.isAllowed('EXPORT_RAW_DATA')"}
         - { path: ^/query/, roles: "IS_AUTHENTICATED_ANONYMOUSLY"}
         - { path: ^/map/, roles: "IS_AUTHENTICATED_ANONYMOUSLY"}
-        - { path: ^/integration/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
-        - { path: ^/geo-association/update-jdd, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
-        - { path: ^/geo-association/update-entity, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
-        - { path: ^/jdd/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
-        - { path: ^/submission/download-report, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
+        - { path: ^/integration/, roles: "IS_AUTHENTICATED_FULLY"}
+        - { path: ^/geo-association/update-jdd, roles: "IS_AUTHENTICATED_FULLY"}
+        - { path: ^/geo-association/update-entity, roles: "IS_AUTHENTICATED_FULLY"}
+        - { path: ^/jdd/, roles: "IS_AUTHENTICATED_FULLY"}
+        - { path: ^/submission/download-report, roles: "IS_AUTHENTICATED_FULLY"}
         - { path: ^/dee/, roles: "IS_AUTHENTICATED_FULLY"}
-        - { path: ^/proxy/, allow_if: "user and is_authenticated() and user.isAllowed('DATA_INTEGRATION')"}
+        - { path: ^/proxy/, roles: "IS_AUTHENTICATED_FULLY"}
         - { path: ^/configuration/, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')"}
         - { path: ^/configurator/, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_METAMODEL')"}
         - { path: ^/taxref-migration, allow_if: "user and is_authenticated() and user.isAllowed('CONFIGURE_WEBSITE_PARAMETERS')"}

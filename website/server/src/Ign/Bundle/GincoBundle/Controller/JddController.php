@@ -21,31 +21,27 @@ class JddController extends GincoController {
 	 * Can show own user's Jdd, or all Jdds
 	 * Ginco customisation: the test for 'Jdd deletable' takes into account if the jdd has active DEEs
 	 *
-	 * @Route("/jdd/all/", name = "all_jdd_list", defaults={"allJdds": true})
-	 * @Route("/jdd/", name = "user_jdd_list", defaults={"allJdds": false})
+	 * @Route("/jdd/all/", name = "all_jdd_list", defaults={"allJdds": true, "providerJdds": false})
+	 * @Route("/jdd/provider/", name = "provider_jdd_list", defaults={"allJdds": false, "providerJdds": true})
+	 * @Route("/jdd/", name = "user_jdd_list", defaults={"allJdds": false, "providerJdds": false})
 	 */
-	public function listAllAction($allJdds = false) {
+	public function listAction(Request $request, $allJdds = false, $providerJdds = false) {
 
-		if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
-		}
-
-		if ($allJdds && (!$this->getUser()->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') || !$this->getUser()->isAllowed('DATA_INTEGRATION'))) {
-			throw $this->createAccessDeniedException();
-		}
+		$this->denyAccessUnlessGranted('LIST_JDD') ;
 
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
 
 		if ($allJdds) {
 			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds();
-		}
-		else {
+		} else if ($providerJdds) {
+			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds($this->getUser()->getProvider(), null);
+		} else {
 			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
 		}
 
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		foreach ($jddList as $jdd) {
-			$jdd->trueDeletable = $this->isJddDeletable($jdd);
+			$jdd->trueDeletable = $this->get('ginco.jdd_service')->isDeletable($jdd);
 			foreach ($jdd->getSubmissions() as $submission) {
 				foreach ($submission->getFiles() as $file) {
 					$file->filenameWithoutExtension = pathinfo($file->getFileName(), PATHINFO_FILENAME);
@@ -59,6 +55,7 @@ class JddController extends GincoController {
 		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
 			'jddList' => $jddList,
 			'allJdds' => $allJdds,
+			'providerJdds' => $providerJdds
 		));
 	}
 
@@ -68,6 +65,9 @@ class JddController extends GincoController {
 	 * @Route("/jdd/{id}/show", name = "jdd_show", requirements={"id": "\d+"})
 	 */
 	public function showAction(Jdd $jdd) {
+		
+		$this->denyAccessUnlessGranted('VIEW_JDD', $jdd) ;
+		
 		return $this->render('IgnGincoBundle:Jdd:jdd_show_page.html.twig', array(
 			'jdd' => $jdd,
 			'user' => $this->getUser()
@@ -81,10 +81,16 @@ class JddController extends GincoController {
 	 * @Route("/jdd/new", name = "jdd_new")
 	 */
 	public function newAction(Request $request) {
+		
+		$this->denyAccessUnlessGranted('CREATE_JDD') ;
 
 		// Get the referer url, to redirect to it at the end of the action
 		$refererUrl = $request->headers->get('referer');
-		if ($refererUrl && in_array($refererUrl, [$this->generateUrl('user_jdd_list', [], true), $this->generateUrl('all_jdd_list', [], true)])) {
+		if ($refererUrl && in_array($refererUrl, [
+				$this->generateUrl('user_jdd_list', [], true),
+				$this->generateUrl('provider_jdd_list', [], true),
+				$this->generateUrl('all_jdd_list', [], true)
+		])) {
 			$redirectUrl = $refererUrl;
 		} else {
 			$redirectUrl = $this->generateUrl('user_jdd_list');
@@ -149,11 +155,11 @@ class JddController extends GincoController {
 			// Add user and provider relationship
 			$jdd->setUser($this->getUser());
                         
-                        if ($this->getUser()->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER')){
-                            $provider = $form->get('provider')->getData();
-                        } else {
-                            $provider = $this->getUser()->getProvider();
-                        }
+			if ($this->getUser()->isAllowed('MANAGE_JDD_SUBMISSION_ALL')){
+				$provider = $form->get('provider')->getData();
+			} else {
+				$provider = $this->getUser()->getProvider();
+			}
                         
 			$jdd->setProvider($provider);
 
@@ -187,12 +193,14 @@ class JddController extends GincoController {
 	 * @Route("/jdd/{id}/delete", name = "jdd_delete", requirements={"id": "\d+"})
 	 */
 	public function deleteAction(Jdd $jdd, Request $request) {
+		
+		$this->denyAccessUnlessGranted('DELETE_JDD', $jdd) ;
 
 		// Get the referer url, to redirect to it at the end of the action
 		$refererUrl = $request->headers->get('referer');
 
 		// Test if jdd is deletable
-		if (!$this->isJddDeletable($jdd)) {
+		if (!$this->get('ginco.jdd_service')->isDeletable($jdd)) {
 			$this->addFlash('error', [
 				'id' => 'Jdd.delete.impossible',
 				'parameters' => [
@@ -216,7 +224,11 @@ class JddController extends GincoController {
 			->add('success', 'Jdd.delete.success');
 
 		// Redirect according to the referer
-		if ($refererUrl && in_array($refererUrl, [$this->generateUrl('user_jdd_list', [], true), $this->generateUrl('all_jdd_list', [], true)])) {
+		if ($refererUrl && in_array($refererUrl, [
+				$this->generateUrl('user_jdd_list', [], true), 
+				$this->generateUrl('provider_jdd_list', [], true), 
+				$this->generateUrl('all_jdd_list', [], true)
+		])) {
 			$redirectUrl = $refererUrl;
 		} else {
 			$redirectUrl = $this->generateUrl('integration_home');
@@ -257,30 +269,6 @@ class JddController extends GincoController {
 		return $this->redirect($redirectUrl);
 	}
 
-	/**
-	 * Test if a jdd is deletable:
-	 * - must have no active submissions
-	 * - must have no active DEE
-	 *
-	 * @param Jdd $jdd
-	 * @return bool
-	 */
-	protected function isJddDeletable(Jdd $jdd) {
-		// Basic deletability: Jdd has no active submissions
-		if (!$jdd->isDeletable()) {
-			return false;
-		}
-
-		// Do the jdd has an active DEE ?
-		$em = $this->get('doctrine.orm.entity_manager');
-		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
-		// Get last version of DEE attached to the jdd
-		$DEE = $deeRepo->findLastVersionByJdd($jdd);
-		if ($DEE && $DEE->getStatus() != DEE::STATUS_DELETED) {
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	 * Jdd view fields - test page for developers
@@ -288,13 +276,11 @@ class JddController extends GincoController {
 	 * @Route("/jdd/{id}/fields", name = "jdd_fields", requirements={"id": "\d+"})
 	 */
 	public function showFieldsAction(Jdd $jdd) {
-		if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			throw $this->createAccessDeniedException();
-		}
+		
 		$user = $this->getUser();
 		$allowed = false;
 		foreach ($user->getRoles() as $role) {
-			if ('developpeur' == $role->getCode()) {
+			if ('Développeur' == $role->getLabel()) {
 				$allowed = true;
 			}
 		}
@@ -320,6 +306,18 @@ class JddController extends GincoController {
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 */
 	public function addField($id, $key = null, $value = null) {
+		
+		$user = $this->getUser();
+		$allowed = false;
+		foreach ($user->getRoles() as $role) {
+			if ('Développeur' == $role->getLabel()) {
+				$allowed = true;
+			}
+		}
+		if (!$allowed) {
+			throw $this->createAccessDeniedException();
+		}
+		
 		$em = $this->get('doctrine.orm.entity_manager');
 		$jdd = $em->getRepository('IgnGincoBundle:RawData\Jdd')->find($id);
 		if ($jdd) {
@@ -345,6 +343,18 @@ class JddController extends GincoController {
 	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
 	 */
 	public function removeField($id, $key) {
+		
+		$user = $this->getUser();
+		$allowed = false;
+		foreach ($user->getRoles() as $role) {
+			if ('Développeur' == $role->getLabel()) {
+				$allowed = true;
+			}
+		}
+		if (!$allowed) {
+			throw $this->createAccessDeniedException();
+		}
+		
 		$em = $this->get('doctrine.orm.entity_manager');
 		$jdd = $em->getRepository('IgnGincoBundle:RawData\Jdd')->find($id);
 		if ($jdd) {
@@ -369,7 +379,7 @@ class JddController extends GincoController {
 		$user = $this->getUser();
 		$allowed = false;
 		foreach ($user->getRoles() as $role) {
-			if ('developpeur' == $role->getCode()) {
+			if ('Développeur' == $role->getCode()) {
 				$allowed = true;
 			}
 		}

@@ -34,7 +34,7 @@ class GincoJddType extends AbstractType  {
         
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		
-                $builder->add('metadata_id', TextType::class, array(
+        $builder->add('metadata_id', TextType::class, array(
 			'label' => 'Jdd.new.metadataIdLabel',
 			'mapped' => false,
 			'constraints' => array(
@@ -42,18 +42,18 @@ class GincoJddType extends AbstractType  {
                         )
 		));
                 
-                if ($options['user']->isAllowed('MANAGE_DATASETS_OTHER_PROVIDER')){
-                    $builder->add('provider', TextType::class, array(
-                        'label' => 'Jdd.new.provider',
-                        'mapped' => false,
-                        'required' => false,
-                        'attr' => array(
-                            'class' => 'inpn_provider_autocomplete'
-                        )
-                    ));
-                    
-                    $builder->get('provider')->addModelTransformer(new ProviderToStringTransformer($this->objectManager, $this->inpnProviderService));
-                }
+		if ($options['user']->isAllowed('MANAGE_JDD_SUBMISSION_ALL')){
+			$builder->add('provider', TextType::class, array(
+				'label' => 'Jdd.new.provider',
+				'mapped' => false,
+				'required' => false,
+				'attr' => array(
+					'class' => 'inpn_provider_autocomplete'
+				)
+			));
+
+			$builder->get('provider')->addModelTransformer(new ProviderToStringTransformer($this->objectManager, $this->inpnProviderService));
+		}
                 
 	}
 

@@ -5,20 +5,15 @@
 {# User is the real user if connected, or the anonymous user 'visiteur' if not - he is never 'null' #}
 {% set user = (app.user) ?: anonymous.user %}
 
-{# Set variables #}
-{% if user.isAllowed('MANAGE_DATASETS_OTHER_PROVIDER') %}
-    {% set isAllowedMDOP = true %}
-{% else %}
-    {% set isAllowedMDOP = false %}
-{% endif %}
 
-{% if allJdds is defined and allJdds == true %}
+{% if (allJdds is defined and allJdds == true) or (providerJdds is defined and providerJdds == true) %}
     {% set jddTitleIdColSize = 26 %}
     {% set submissionsActionsColSize = 24 %}
     {% set filesLinesColSize = 30 %}
     {% set submissionStatusColSize = 5 %}
 {% else %}
     {% set allJdds = false %}
+	{% set providerJdds = false %}
     {% set jddTitleIdColSize = 24 %}
     {% set submissionsActionsColSize = 14 %}
     {% set filesLinesColSize = 32 %}
@@ -27,7 +22,7 @@
 
 
 {# Size of columns array and filename max size #}
-{% if allJdds is defined and allJdds == true %}
+{% if (allJdds is defined and allJdds == true) or (providerJdds is defined and providerJdds == true) %}
     {% set colSizes = {
     jddActions: 10,
     jddTitleId: 50,
@@ -41,6 +36,7 @@
     {% set filenameMaxLength = 18 %}
 {% else %}
     {% set allJdds = false %}
+	{% set providerJdds = false %}
     {% set colSizes = {
     jddActions: 10,
     jddTitleId: 56,
@@ -56,6 +52,8 @@
 {# Title of the page #}
 {% if allJdds is defined and allJdds == true %}
 	<h1>{{ 'Jdd.list.title.all'|trans }}</h1>
+{% elseif providerJdds is defined and providerJdds == true %}
+	<h1>{{ 'Jdd.list.title.provider'|trans }}</h1>
 {% else %}
 	<h1>{{ 'Jdd.list.title.user'|trans }}</h1>
 {% endif %}
@@ -83,7 +81,7 @@
             <col style="width: {{ colSizes.jddTitleId }}%;"/>
             {# Creation date column #}
             <col style="width: {{ colSizes.creationDate }}%;"/>
-            {% if isAllowedMDOP and allJdds %}
+            {% if (allJdds or providerJdds) %}
                  {# Provider / User column #}
                 <col style="width: {{ colSizes.providerUser }}%;"/>
             {% endif %}
@@ -106,7 +104,7 @@
 
         <thead>
           <tr>
-              <th colspan="{{ allJdds ? 4:3 }}" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
+              <th colspan="{{ (allJdds or providerJdds)  ? 4:3 }}" class="text-center color1">{{ 'Jdd.list.jdd'|trans }}</th>
               <th colspan="3" class="text-center color2">{{ 'Jdd.list.submissions'|trans }}</th>
               <th colspan="2" class="text-center color1">{{ 'DEE.table.title'|trans }}</th>
               <th data-visible="false" ></th>
@@ -117,7 +115,7 @@
                <th data-searchable="false" class="color1"/>
                <th data-field="nameAndId" data-sortable="true" data-sort-name="title" class="color1">{{ 'Jdd.list.name'|trans }} / {{ 'Jdd.list.metadataId'|trans }}</th>
                <th data-field="createdOn" data-sortable="true" data-sort-name="created" class="color1">{{ 'Jdd.list.createdOn'|trans }}</th>
-               {% if isAllowedMDOP and allJdds %}
+               {% if (allJdds or providerJdds) %}
                    <th data-field="providerAndUser" data-sortable="true" class="color1">{{ 'Jdd.list.provider'|trans }} / {{ 'Jdd.list.user'|trans }}</th>
                {% endif %}
                <th data-field="actions" data-searchable="false" class="color2" data-align="center">{{ 'Actions'|trans }}</th>
@@ -212,7 +210,7 @@
                 </td>
 
                 {# Provider label and username of the jdd #}
-                {% if isAllowedMDOP and allJdds %}
+                {% if (allJdds or providerJdds) %}
                     <td>
                        <p>{{ jdd.provider.label }}</p>
                        <p>{{ jdd.user.username }}</p>

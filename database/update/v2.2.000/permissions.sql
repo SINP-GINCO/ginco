@@ -87,6 +87,8 @@ UPDATE website.permission SET
     WHERE permission_code = 'DATA_EDITION_OTHER_PROVIDER'
 ;
 
+UPDATE website.permission_per_role SET permission_code = 'EDIT_DATA_PROVIDER' WHERE permission_code = 'DATA_EDITION_OTHER_PROVIDER' ;
+
 INSERT INTO website.permission(permission_code, permission_label, permission_group_code, description) VALUES
     ('EDIT_DATA_ALL', 'Editer et supprimer toutes les données', 'DATA_MANAGEMENT', 'Modifier ou supprimer toutes les données de la plateforme.')
 ;
@@ -102,4 +104,31 @@ ALTER TABLE mapping.results ADD COLUMN user_login CHARACTER VARYING NOT NULL ;
 ALTER TABLE mapping.results DROP CONSTRAINT results_pk ;
 ALTER TABLE mapping.results ADD CONSTRAINT results_pk PRIMARY KEY (id_request, id_observation, id_provider, user_login) ;
 
+
+-------------------------------------------------------------
+-- Gestion des JDDs
+-------------------------------------------------------------
+
+INSERT INTO website.permission(permission_code, permission_label, permission_group_code, description) VALUES
+    ('MANAGE_JDD_SUBMISSION_OWN', 'Créer et gérer ses propres jeux de données et ses soumissions', 'JDD_MANAGEMENT', 'Créer des jeux de données à partir d''une fiche de métadonnées, voir et supprimer ses propres jeux de données. Importer des données dans ses propres jeux de données, supprimer ses propres soumissions.'),
+    ('MANAGE_JDD_SUBMISSION_PROVIDER', 'Voir les jeux de données et les soumissions de son organisme', 'JDD_MANAGEMENT', 'Voir les jeux de données et les imports rattachés à son propre organisme et créés par d''autres utilisateurs.'),
+    ('MANAGE_JDD_SUBMISSION_ALL', 'Gérer tous les jeux de données et toutes les soumissions', 'JDD_MANAGEMENT', 'Voir et supprimer n''importe quel jeu de données. Modifier l''organisme de rattachement d''un jeu de données, ou créer un jeu de données pour un autre organisme. Importer des données dans n''importe quel jeu de données, supprimer n''importe quelle soumission'),
+    ('DELETE_JDD_SUBMISSION_PROVIDER', 'Supprimer les jeux de données et les soumissions de son organisme', 'JDD_MANAGEMENT', 'Supprimer les jeux de données de son organisme.')
+;
+
+INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
+    (1, 'MANAGE_JDD_SUBMISSION_OWN'),
+    (2, 'MANAGE_JDD_SUBMISSION_OWN'),
+    (1, 'MANAGE_JDD_SUBMISSION_PROVIDER'),
+    (2, 'MANAGE_JDD_SUBMISSION_PROVIDER'),
+    (1, 'MANAGE_JDD_SUBMISSION_ALL'),
+    (2, 'MANAGE_JDD_SUBMISSION_ALL'),
+    (1, 'DELETE_JDD_SUBMISSION_PROVIDER'),
+    (2, 'DELETE_JDD_SUBMISSION_PROVIDER')
+;
+
+DELETE FROM website.permission_per_role WHERE permission_code = 'MANAGE_DATASETS_OTHER_PROVIDER';
+DELETE FROM website.permission WHERE permission_code = 'MANAGE_DATASETS_OTHER_PROVIDER';
+DELETE FROM website.permission_per_role WHERE permission_code = 'DATA_INTEGRATION';
+DELETE FROM website.permission WHERE permission_code = 'DATA_INTEGRATION';
 
