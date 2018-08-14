@@ -86,6 +86,10 @@ class GenericConsumer implements ConsumerInterface {
 			$messageId = $data['message_id']; // Message id in messages table
 			echo $messageId;
 			$message = $this->em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId);
+			if (!$message) {
+				echo $this->datelog() . "Received non existant message id $messageId.\n" ;
+				return false ;
+			}
 			echo $this->datelog() . "Received message $messageId with action '$action' and status " . $message->getStatus() . ".\n";
 			
 			switch ($message->getStatus()) {
