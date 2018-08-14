@@ -127,6 +127,7 @@ INSERT INTO website.permission_per_role (role_code, permission_code) VALUES
     (2, 'DELETE_JDD_SUBMISSION_PROVIDER')
 ;
 
+-- Remove old permissions
 DELETE FROM website.permission_per_role WHERE permission_code = 'MANAGE_DATASETS_OTHER_PROVIDER';
 DELETE FROM website.permission WHERE permission_code = 'MANAGE_DATASETS_OTHER_PROVIDER';
 DELETE FROM website.permission_per_role WHERE permission_code = 'DATA_INTEGRATION';
@@ -136,5 +137,10 @@ DELETE FROM website.permission_per_role WHERE permission_code = 'CANCEL_SUBMISSI
 DELETE FROM website.permission_per_role WHERE permission_code = 'CANCEL_SUBMISSION_OWN';
 DELETE FROM website.permission WHERE permission_code = 'CANCEL_SUBMISSION_ALL';
 DELETE FROM website.permission WHERE permission_code = 'CANCEL_SUBMISSION_OWN';
+
+DELETE FROM website.permission_per_role WHERE permission_code = 'CANCEL_VALIDATED_SUBMISSION';
+DELETE FROM website.permission WHERE permission_code = 'CANCEL_VALIDATED_SUBMISSION';
+DELETE FROM website.permission_per_role WHERE permission_code = 'CANCEL_OTHER_PROVIDER_SUBMISSION';
+DELETE FROM website.permission WHERE permission_code = 'CANCEL_OTHER_PROVIDER_SUBMISSION';
 
 

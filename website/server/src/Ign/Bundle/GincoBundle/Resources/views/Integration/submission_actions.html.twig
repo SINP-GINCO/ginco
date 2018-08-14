@@ -16,9 +16,7 @@
 
     {# Cancel submission #}
     {% set notValidateCancel = (submission.step != "VALIDATE" and submission.step != "CANCEL") %}
-    {% set allowedOwnCancel = user.isAllowed('CANCEL_VALIDATED_SUBMISSION') and submission.provider.id is same as (user.provider.id) %}
-    {% set allowedOtherCancel = user.isAllowed('CANCEL_OTHER_PROVIDER_SUBMISSION') %}
-    {% if notValidateCancel and (allowedOwnCancel or allowedOtherCancel) %}
+    {% if notValidateCancel and is_granted('DELETE_SUBMISSION', submission) %}
         {% set remove = true %}
     {% endif %}
     <div class = "btn-group">
