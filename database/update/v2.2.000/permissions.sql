@@ -132,3 +132,9 @@ DELETE FROM website.permission WHERE permission_code = 'MANAGE_DATASETS_OTHER_PR
 DELETE FROM website.permission_per_role WHERE permission_code = 'DATA_INTEGRATION';
 DELETE FROM website.permission WHERE permission_code = 'DATA_INTEGRATION';
 
+DELETE FROM website.permission_per_role WHERE permission_code = 'CANCEL_SUBMISSION_ALL';
+DELETE FROM website.permission_per_role WHERE permission_code = 'CANCEL_SUBMISSION_OWN';
+DELETE FROM website.permission WHERE permission_code = 'CANCEL_SUBMISSION_ALL';
+DELETE FROM website.permission WHERE permission_code = 'CANCEL_SUBMISSION_OWN';
+
+
