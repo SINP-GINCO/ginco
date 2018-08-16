@@ -32,13 +32,13 @@
 		"components/jquery" : "^1.12",
 		"components/jqueryui" : "^1.12",
 		"php-amqplib/rabbitmq-bundle" : "^1.12",
-		"phpunit/phpunit" : "5.1.*",
         "egeloen/ckeditor-bundle": "^6.0",
         "guzzlehttp/guzzle": "^6.3"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~3.0",
-		"symfony/phpunit-bridge" : "~2.7"
+		"symfony/phpunit-bridge" : "~2.7",
+		"phpunit/phpunit" : "5.7.*"
 	},
 	"scripts" : {
 		"symfony-scripts": [
