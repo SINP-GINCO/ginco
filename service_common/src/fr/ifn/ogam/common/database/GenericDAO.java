@@ -153,7 +153,7 @@ public class GenericDAO {
 									// transform imported geometry to match table srid
 									PGgeometry pggeom = new PGgeometry(((PGobject) colData.getValue()).getValue());
 
-									colValues.append("ST_Transform(ST_GeomFromText('" + pggeom.toString() + "', " + userSrid + "), " + tableSrid + ")");
+									colValues.append("ST_Transform(ST_Buffer(ST_GeomFromText('" + pggeom.toString() + "', " + userSrid + "),0), " + tableSrid + ")");
 
 								}
 
@@ -168,7 +168,7 @@ public class GenericDAO {
 									geomColValue = "ST_GeomFromText('" + colData.getValue() + "', " + tableSrid + ")";
 								} else {
 									// transform imported geometry to match table srid
-									geomColValue = "ST_Transform(ST_GeomFromText('" + colData.getValue() + "', " + userSrid + "), " + tableSrid + ")";
+									geomColValue = "ST_Transform(ST_Buffer(ST_GeomFromText('" + colData.getValue() + "', " + userSrid + "),0), " + tableSrid + ")";
 								}
 
 								if (tableSrid == 4326) {
