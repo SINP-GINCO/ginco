@@ -151,6 +151,6 @@ Erreurs de cohérence
 
 * **1208 - Plusieurs géoréférencements** ; un seul géoréférencement doit être livré ; un seul champ "typeInfoGeo" peut valoir 1.
 
-* **1209 -  Période d’observation** ; la valeur de jourdatedebut est ultérieure à celle de jourdatefin ou la valeur de jourdatefin est ultérieure à la date du jour.
+* **1209 -  Période d’observation** ; la valeur de jourdatedebut / heuredatedebut est ultérieure à celle de jourdatefin / heuredatefin ou la valeur de jourdatefin / heuredatefin est ultérieure à la date du jour.
 
 * **1211 -  L'identifiant permanent n'est pas un UUID** ; la valeur de l'identifiant permanent doit être un UUID valide, ou alors une valeur nulle (l'UUID sera alors calculé).

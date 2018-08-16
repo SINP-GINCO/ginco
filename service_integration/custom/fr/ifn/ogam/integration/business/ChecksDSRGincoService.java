@@ -4,10 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.apache.log4j.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -931,29 +937,67 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		GenericData jourDateDebutGD = values.get(DSRConstants.JOUR_DATE_DEBUT);
 		GenericData jourDateFinGD = values.get(DSRConstants.JOUR_DATE_FIN);
+		GenericData heureDateDebut = values.get(DSRConstants.HEURE_DATE_DEBUT) ;
+		GenericData heureDateFin = values.get(DSRConstants.HEURE_DATE_FIN) ;
 
-		Date jourDateDebutValue = (Date) jourDateDebutGD.getValue();
-		Date jourDateFinValue = (Date) jourDateFinGD.getValue();
-
+		Date jourDateDebutValue = (Date) jourDateDebutGD.getValue() ;
+		Date jourDateFinValue = (Date) jourDateFinGD.getValue() ;
+		Date heureDateDebutValue = (Date) heureDateDebut.getValue() ;
+		Date heureDateFinValue = (Date) heureDateFin.getValue() ;		
+		
 		if (jourDateDebutValue != null && jourDateFinValue != null) {
-
-			Date now = new Date();
-
-			if (jourDateDebutValue.after(jourDateFinValue)) {
-				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_DEBUT + " est ultérieure à celle de " + DSRConstants.JOUR_DATE_FIN + ".";
+			
+			Date debut = jourDateDebutValue ;
+			Date fin = jourDateFinValue ;
+			Date now = new Date() ;
+			
+			if (heureDateDebutValue != null && heureDateFinValue != null) {
+				debut = combineDateTime(jourDateDebutValue, heureDateDebutValue) ;
+				fin = combineDateTime(jourDateFinValue, heureDateFinValue) ;
+				
+				logger.debug("debut = " + debut.toString()) ;
+				logger.debug("fin = " + fin.toString()) ;
+			}
+			
+			if (debut.after(fin)) {
+				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_DEBUT + " / " + DSRConstants.HEURE_DATE_DEBUT + " est ultérieure à celle de " + DSRConstants.JOUR_DATE_FIN + " / " + DSRConstants.HEURE_DATE_FIN + ".";
 				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
 				// Add the exception in the array list and continue doing the checks
 				alce.add(ce);
 			}
 
-			if (jourDateFinValue.after(now)) {
-				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_FIN + " est ultérieure à la date du jour.";
+			if (fin.after(now)) {
+				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_FIN + " / " + DSRConstants.HEURE_DATE_FIN + " est ultérieure à la date du jour.";
 				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
 				// Add the exception in the array list and continue doing the checks
 				alce.add(ce);
 			}
 		}
 	}
+	
+	
+	/**
+	 * Merge to dates, with year-month-day from the first and hour-minute-second from the last.
+	 * @param Date date
+	 * @param Date time
+	 * @return Date
+	 */
+    private Date combineDateTime(Date date, Date time) {
+    	
+    	Calendar calendarA = Calendar.getInstance();
+    	calendarA.setTime(date);
+    	Calendar calendarB = Calendar.getInstance();
+    	calendarB.setTime(time);
+     
+    	calendarA.set(Calendar.HOUR_OF_DAY, calendarB.get(Calendar.HOUR_OF_DAY));
+    	calendarA.set(Calendar.MINUTE, calendarB.get(Calendar.MINUTE));
+    	calendarA.set(Calendar.SECOND, calendarB.get(Calendar.SECOND));
+    	calendarA.set(Calendar.MILLISECOND, calendarB.get(Calendar.MILLISECOND));
+     
+    	Date result = calendarA.getTime();
+    	return result;
+    }
+	
 
 	/**
 	 * Checks that heureDateDebut and heureDateFin are not empty. If so, fill with default values: heureDateDebut: 00:00:00 heureDateFin: 23:59:59
