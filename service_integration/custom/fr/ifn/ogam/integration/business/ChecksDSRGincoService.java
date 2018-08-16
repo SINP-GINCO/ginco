@@ -954,9 +954,6 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			if (heureDateDebutValue != null && heureDateFinValue != null) {
 				debut = combineDateTime(jourDateDebutValue, heureDateDebutValue) ;
 				fin = combineDateTime(jourDateFinValue, heureDateFinValue) ;
-				
-				logger.debug("debut = " + debut.toString()) ;
-				logger.debug("fin = " + fin.toString()) ;
 			}
 			
 			if (debut.after(fin)) {
