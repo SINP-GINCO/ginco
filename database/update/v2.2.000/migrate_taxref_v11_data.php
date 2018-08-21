@@ -180,12 +180,13 @@ try {
 		// ¤ TaxoModif = ‘Suppression TAXREF’
 		// ¤ taxoAlerte = OUI.
 		$casB3 = $pdo->prepare("UPDATE raw_data.$tableName SET
-			cdnomcalcule = NULL,
-			cdrefcalcule = NULL,
-			nomValide = NULL,
-			taxostatut = '1',
-			taxomodif = '2',
-			taxoalerte = '0'
+				cdnomcalcule = NULL,
+				cdrefcalcule = NULL,
+				nomValide = NULL,
+				taxostatut = '1',
+				taxomodif = '2',
+				taxoalerte = '0'
+			WHERE cdnom = :valeurInit
 		");
 
 
@@ -236,7 +237,9 @@ try {
 						'valeurInit' => $valeurInit
 					));
 				} else if (!empty($cdRaisonSuppression) && '2' == $cdRaisonSuppression) {
-					$casB3->execute() ;
+					$casB3->execute(array(
+						'valeurInit' => $valeurInit
+					)) ;
 				} else {
 					// Cas B0, par défaut
 					$casB0->execute(array(
