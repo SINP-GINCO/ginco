@@ -32,7 +32,7 @@ if ($isDlb) {
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
-
+    execCustSQLFile("$sprintDir/add_developers.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
@@ -46,6 +46,7 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 try {
 
 	//system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
+	
 
 } catch (Exception $e) {
 	
