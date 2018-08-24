@@ -74,11 +74,11 @@ try {
 					('{$dataset['dataset_id']}', 'RAW_DATA', '{$format['format']}', 'USER_LOGIN')
 				");
 			}
-			
-			// Ajout d'une primary key 
-			$pdo->exec("UPDATE $schema.table_format SET primary_key = primary_key || ', USER_LOGIN'") ;
-    		
+			    		
     	}
+    	
+    	// Ajout d'une primary key 
+		$pdo->exec("UPDATE $schema.table_format SET primary_key = primary_key || ', USER_LOGIN'") ;
     	
     	
     	// Formats FORM
