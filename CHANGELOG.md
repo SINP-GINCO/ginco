@@ -4,6 +4,18 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.2.0 (21/08/2018)
+
+* Migration du référentiel TAXREF de v10 vers v11.
+* Reprise des occurences insérées en TAXREF v10 pour les migrer en TAXREF v11.
+* Refonte du système de permissions
+* Possibilité de soumettre des données pour le compte d'un autre organisme.
+* Ajout de la notion de propriété des données (utilisateur qui a créé la soumission)
+* Correction de bugs.
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.1.3...v2.2.0)
+
+
 ## V2.1.3 (09/07/2018)
 
 * Ajout de contrôle de conformité sur les identifiants permanents.
