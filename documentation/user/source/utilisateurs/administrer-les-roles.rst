@@ -39,31 +39,37 @@ Enfin, cliquez sur "Valider".
 
 Les rôles livrés avec les plateformes ont les permissions suivantes :
 
-==========================================================  ==============  ==========  ============
-Permissions                                                 administrateur  producteur  grand_public
-==========================================================  ==============  ==========  ============
-Configurer les paramètres de la plateforme                   **Oui**          Non         Non
-Administrer les utilisateurs,rôles, et permissions           **Oui**          Non         Non
-Déclarer son propre organisme                                  Non            Non         Non
-Rattacher les utilisateurs à leur organisme                  **Oui**          Non         Non
-Configurer le méta-modèle                                    **Oui**          Non         Non
-Annuler une soumission de données d'un autre organisme       **Oui**          Non         Non
-Annuler une soumission de données validées                   **Oui**          Non         Non
-Consulter les données publiées                               **Oui**        **Oui**     **Oui**
-Consutler toutes les données non publiées                    **Oui**          Non         Non
-Consulter toutes les données privées                         **Oui**          Non         Non
-Consulter toutes les données sensibles                       **Oui**          Non         Non
-Créer et gérer ses propres jeux de données                   **Oui**          Non         Non
-Editer les données                                           **Oui**          Non         Non
-Editer les données d'un autre organisme                      **Oui**          Non         Non
-Exporter les données                                         **Oui**        **Oui**       Non
-Gérer les DEE de ses propres jeux de données                 **Oui**          Non         Non
-Gérer les DEE de tous les jeux de données                    **Oui**          Non         Non
-Gérer tous les jeux de données                               **Oui**          Non         Non
-Publier n'importe quel jeux de données                       **Oui**          Non         Non
-Gérer les requêtes publiques                                 **Oui**          Non         Non
-Gérer ses requêtes privées                                   **Oui**          Non         Non
-==========================================================  ==============  ==========  ============
+=================================================================   ==============  ==========  ============
+Permissions                                                         administrateur  producteur  grand_public
+=================================================================   ==============  ==========  ============
+Configurer les paramètres de la plateforme                           **Oui**           Non         Non
+Administrer les utilisateurs,rôles, et permissions                   **Oui**           Non         Non
+Modifier son organisme à partir du compte INPN                         Non             Non         Non
+Rattacher les utilisateurs à leur organisme                          **Oui**           Non         Non
+Configurer le méta-modèle                                            **Oui**           Non         Non
+Consulter les données publiées                                       **Oui**         **Oui**     **Oui**
+Consutler toutes les données non publiées                            **Oui**           Non         Non
+Consulter toutes les données privées                                 **Oui**           Non         Non
+Consulter toutes les données sensibles                               **Oui**           Non         Non
+Editer et supprimer les données de son organisme                     **Oui**           Non         Non
+Editer et supprimer ses propres données                              **Oui**         **Oui**       Non
+Editer et supprimer toutes les données                               **Oui**           Non         Non
+Exporter les données                                                 **Oui**         **Oui**       Non
+Publier les soumissions du même organisme                            **Oui**           Non         Non
+Publier ses soumissions                                              **Oui**           Non         Non
+Publier toutes les soumissions                                       **Oui**           Non         Non
+Gérer les DEE de ses propres jeux de données                         **Oui**           Non         Non
+Gérer les DEE des jeux de données de son organisme                   **Oui**           Non         Non
+Gérer les DEE de tous les jeux de données                            **Oui**           Non         Non
+Gérer tous les jeux de données et toutes les soumissions             **Oui**           Non         Non
+Publier les jeux de données du même organisme                        **Oui**           Non         Non
+Publier ses jeux de données                                          **Oui**           Non         Non
+Publier tous les jeux de données                                     **Oui**           Non         Non
+Supprimer les jeux de données et les soumissions de son organisme    **Oui**           Non         Non
+Voir les jeux de données et les soumissions de son organisme         **Oui**           Non         Non  
+Gérer les requêtes publiques                                         **Oui**           Non         Non 
+Gérer ses requêtes privées                                           **Oui**         **Oui**       Non   
+=================================================================   ==============  ==========  ============
 
 Modifier un rôle
 ----------------
