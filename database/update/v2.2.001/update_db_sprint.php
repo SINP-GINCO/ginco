@@ -33,6 +33,7 @@ try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
     execCustSQLFile("$sprintDir/add_developers.sql", $config);
+    execCustSQLFile("$sprintDir/permissions_change_intitule.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
