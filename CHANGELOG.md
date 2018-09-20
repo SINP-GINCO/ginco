@@ -4,6 +4,15 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.2.1 (20/09/2018)
+
+* Correction de la migration du métamodèle pour les instances possédant plusieurs modèles.
+* Correction du bug permettant d'ajouter des nouvelles soumissions sur un JDD déposé.
+* Correction de bugs divers.
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.0...v2.2.1)
+
+
 ## V2.2.0 (21/08/2018)
 
 * Migration du référentiel TAXREF de v10 vers v11.
