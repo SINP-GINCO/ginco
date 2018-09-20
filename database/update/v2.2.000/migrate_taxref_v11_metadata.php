@@ -203,18 +203,20 @@ try {
 				('taxomodif',   '{$format['format']}', 1, 1, 'SELECT', (SELECT max(position) + 1 FROM $schema.form_field WHERE format = '{$format['format']}'), 0, 0),
 				('taxoalerte',  '{$format['format']}', 1, 1, 'SELECT', (SELECT max(position) + 1 FROM $schema.form_field WHERE format = '{$format['format']}'), 0, 0)
 			");
-    		
-    		$formatTable = $formatsTable[0] ; // normalement, il n'y en a qu'un.
-    		
-    		// field_mapping
-    		$pdo->exec("INSERT INTO $schema.field_mapping(src_data, src_format, dst_data, dst_format, mapping_type) VALUES
-				('cdnomcalcule', '{$format['format']}', 'cdnomcalcule', '{$formatTable['format']}', 'FORM'),
-				('cdrefcalcule', '{$format['format']}', 'cdrefcalcule', '{$formatTable['format']}', 'FORM'),
-				('taxostatut',   '{$format['format']}', 'taxostatut',   '{$formatTable['format']}', 'FORM'),
-				('taxomodif',    '{$format['format']}', 'taxomodif',    '{$formatTable['format']}', 'FORM'),
-				('taxoalerte',   '{$format['format']}', 'taxoalerte',   '{$formatTable['format']}', 'FORM')
+		}
+		
+		// Field mapping
+		$sth = $pdo->query("SELECT * FROM $schema.field_mapping WHERE src_data = 'cdnom'") ;
+		$fieldMappings = $sth->fetchAll() ;
+		foreach ($fieldMappings as $fieldMapping) {
+			$pdo->exec("INSERT INTO $schema.field_mapping(src_data, src_format, dst_data, dst_format, mapping_type) VALUES
+				('cdnomcalcule', '{$fieldMapping['src_format']}', 'cdnomcalcule', '{$fieldMapping['dst_format']}', 'FORM'),
+				('cdrefcalcule', '{$fieldMapping['src_format']}', 'cdrefcalcule', '{$fieldMapping['dst_format']}', 'FORM'),
+				('taxostatut',   '{$fieldMapping['src_format']}', 'taxostatut',   '{$fieldMapping['dst_format']}', 'FORM'),
+				('taxomodif',    '{$fieldMapping['src_format']}', 'taxomodif',    '{$fieldMapping['dst_format']}', 'FORM'),
+				('taxoalerte',   '{$fieldMapping['src_format']}', 'taxoalerte',   '{$fieldMapping['dst_format']}', 'FORM')
 			");
-    	}
+		}
     }
     
     //
