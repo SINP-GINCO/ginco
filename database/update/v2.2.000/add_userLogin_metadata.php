@@ -104,7 +104,7 @@ try {
 		}
 		
 		// Field mapping
-		$sth = $pdo->query("SELECT * FROM $schema.field_mapping WHERE src_data = 'PROVIDER_ID' WHERE mapping_type = 'FORM'") ;
+		$sth = $pdo->query("SELECT * FROM $schema.field_mapping WHERE src_data = 'PROVIDER_ID' AND mapping_type = 'FORM'") ;
 		$fieldMappings = $sth->fetchAll() ;
 		foreach ($fieldMappings as $fieldMapping) {
 			$pdo->exec("INSERT INTO $schema.field_mapping(src_data, src_format, dst_data, dst_format, mapping_type) VALUES
