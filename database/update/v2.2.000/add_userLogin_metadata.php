@@ -101,14 +101,16 @@ try {
     		$pdo->exec("INSERT INTO $schema.form_field (data, format, is_criteria, is_result, input_type, position, is_default_criteria, is_default_result) VALUES
 				('USER_LOGIN', '{$format['format']}', 1, 1, 'SELECT', (SELECT position+1 FROM $schema.form_field WHERE data='PROVIDER_ID' AND format = '{$format['format']}'), 0, 0)
 			");
-    		
-    		$formatTable = $formatsTable[0] ; // normalement, il n'y en a qu'un.
-    		
-    		// field_mapping
-    		$pdo->exec("INSERT INTO $schema.field_mapping(src_data, src_format, dst_data, dst_format, mapping_type) VALUES
-				('USER_LOGIN', '{$format['format']}', 'USER_LOGIN', '{$formatTable['format']}', 'FORM')
+		}
+		
+		// Field mapping
+		$sth = $pdo->query("SELECT * FROM $schema.field_mapping WHERE src_data = 'PROVIDER_ID") ;
+		$fieldMappings = $sth->fetchAll() ;
+		foreach ($fieldMappings as $fieldMapping) {
+			$pdo->exec("INSERT INTO $schema.field_mapping(src_data, src_format, dst_data, dst_format, mapping_type) VALUES
+				('USER_LOGIN', '{$fieldMapping['src_format']}', 'USER_LOGIN', '{$fieldMapping['dst_format']}', 'FORM')
 			");
-    	}
+		}
 	}
 	
     //
