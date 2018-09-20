@@ -154,7 +154,7 @@ try {
 			");
     		
     		// Insertion dans dataset_fields, ce qui permet d'afficher les champs dans le requêteur.
-    		$sth = $pdo->query("SELECT dataset_id FROM $schema.dataset_fields WHERE data='cdnom'") ;
+    		$sth = $pdo->query("SELECT dataset_id FROM $schema.dataset_fields WHERE data='cdnom' AND format='{$format['format']}'") ;
     		$datasets = $sth->fetchAll() ;
     		
     		foreach ($datasets as $dataset) {
