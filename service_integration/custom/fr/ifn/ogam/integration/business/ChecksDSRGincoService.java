@@ -956,14 +956,15 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 				fin = combineDateTime(jourDateFinValue, heureDateFinValue) ;
 			}
 			
-			if (debut.after(fin)) {
+			if (debut.compareTo(fin) > 0) {
+			
 				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_DEBUT + " / " + DSRConstants.HEURE_DATE_DEBUT + " est ultérieure à celle de " + DSRConstants.JOUR_DATE_FIN + " / " + DSRConstants.HEURE_DATE_FIN + ".";
 				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
 				// Add the exception in the array list and continue doing the checks
 				alce.add(ce);
 			}
 
-			if (fin.after(now)) {
+			if (fin.compareTo(now) >0) {
 				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_FIN + " / " + DSRConstants.HEURE_DATE_FIN + " est ultérieure à la date du jour.";
 				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
 				// Add the exception in the array list and continue doing the checks
