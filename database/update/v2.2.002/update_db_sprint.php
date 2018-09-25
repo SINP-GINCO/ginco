@@ -8,7 +8,7 @@ require_once "$sprintDir/../../../lib/share.php";
 // ------------------------------------------------
 function usage($mess = NULL) {
 	echo "------------------------------------------------------------------------\n";
-	echo ("\nUpdate DB from v2.2.0 to v2.2.1\n");
+	echo ("\nUpdate DB from v2.2.1 to v2.2.2\n");
 	echo ("> php update_db_sprint.php -f <configFile> [{-D<propertiesName>=<Value>}]\n\n");
 	echo "o <configFile>: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
@@ -32,9 +32,6 @@ if ($isDlb) {
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
-  execCustSQLFile("$sprintDir/add_developers.sql", $config);
-  execCustSQLFile("$sprintDir/update_ordre_couche.sql", $config);
-  execCustSQLFile("$sprintDir/permissions_change_intitule.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";

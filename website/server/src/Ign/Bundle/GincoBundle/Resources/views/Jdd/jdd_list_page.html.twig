@@ -243,11 +243,13 @@
                         </div>
                     {% endfor %}
                     {# Add a new submission to dataset #}
-                    <div class="submission-line">
+					{% if jdd.dee is null or jdd.dee.status != 'OK' %}
+                    <div class="submission-line" id="submission-{{ jdd.id }}">
                         <a href="{{ path("integration_creation", { 'jddid': jdd.id }) }}">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  {{ 'Jdd.submission.add'|trans }}
                         </a>
                     </div>
+					{% endif %}
                 </td>
                 {# Status -- see integration-progress-bars.js.twig #}
                 <td>

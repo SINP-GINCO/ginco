@@ -75,7 +75,7 @@ INSERT INTO website.permission_group VALUES
 -- List the permissions of the web site
 INSERT INTO permission(permission_code, permission_label, permission_group_code, description) VALUES 
   ('MANAGE_USERS', 'Administrer les utilisateurs, rôles et permissions', 'USER_MANAGEMENT', 'Ajouter et supprimer les utilisateurs dans la plateforme. Définir les rôles et y associer des permissions. Attribuer les rôles et permissions aux utilisateurs.'),
-  ('MANAGE_OWN_PROVIDER', 'Déclarer son propre organisme', 'USER_MANAGEMENT', 'Déclarer soi-même son propre organisme lors de sa première connexion à la plateforme.'),
+  ('MANAGE_OWN_PROVIDER', 'Modifier son organisme à partir du compte INPN', 'USER_MANAGEMENT', 'Modifier son organisme sur le compte INPN.'),
   ('MANAGE_USERS_PROVIDER', 'Rattacher les utilisateurs à leur organisme', 'USER_MANAGEMENT', 'Rattacher les utilisateurs à leur organisme sur la page "Editer un utilisateur", à partir de l''annuaire de l''INPN.'),
   ('MANAGE_JDD_SUBMISSION_OWN', 'Créer et gérer ses propres jeux de données et ses soumissions', 'JDD_MANAGEMENT', 'Créer des jeux de données à partir d''une fiche de métadonnées, voir et supprimer ses propres jeux de données. Importer des données dans ses propres jeux de données, supprimer ses propres soumissions.'),
   ('MANAGE_JDD_SUBMISSION_PROVIDER', 'Voir les jeux de données et les soumissions de son organisme', 'JDD_MANAGEMENT', 'Voir les jeux de données et les imports rattachés à son propre organisme et créés par d''autres utilisateurs.'),
