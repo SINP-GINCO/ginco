@@ -7,6 +7,7 @@ use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 use Ign\Bundle\GincoBundle\Entity\RawData\SubmissionFile;
 use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 
 use Ign\Bundle\GincoBundle\Form\GincoDataSubmissionType;
 use Ign\Bundle\GincoBundle\Form\UploadDataShapeType;
@@ -90,6 +91,13 @@ class IntegrationController extends GincoController {
 		}
 		
 		$this->denyAccessUnlessGranted('CREATE_SUBMISSION', $jdd) ;
+		
+		$deeRepository = $this->getDoctrine()->getManager()->getRepository('IgnGincoBundle:RawData\DEE') ;
+		$dee = $deeRepository->findLastVersionByJdd($jdd) ;
+		if ($dee && DEE::STATUS_OK == $dee->getStatus()) {
+			$this->addFlash('error', 'Integration.Jdd.error.addSubmission') ;
+			$formDisabled = true ;
+		}
                 
 		$submission = new Submission();
 
@@ -762,7 +770,7 @@ class IntegrationController extends GincoController {
 				$providerId = $submission->getProvider()->getId();
 				$srid = '4326';
 				$extension = ".zip";
-				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser(), $providerId, $requestedFiles, $srid, $extension);
+				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser()->getLogin(), $providerId, $requestedFiles, $srid, $extension);
 			} catch (\Exception $e) {
 				$this->get('logger')->error('Error during upload:' . $e, array(
 					'exception' => $e

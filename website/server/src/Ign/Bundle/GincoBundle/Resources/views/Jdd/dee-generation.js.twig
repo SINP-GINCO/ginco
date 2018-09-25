@@ -325,13 +325,14 @@ function updateDEEContent(jddId) {
  */
 function generateDEE(jddId, comment) {
     $.getJSON( "{{ path('dee_generate') }}", {
-        jddId: jddId,
-        comment: comment
+			jddId: jddId,
+			comment: comment
     },function( data ) {
-        if (data.success) {
-            updateDEEDataAndContent(jddId, data);
-        }
-    });
+			if (data.success) {
+				$('#submission-' + jddId).remove() ;
+				updateDEEDataAndContent(jddId, data);
+			}
+	});
 }
 
 /**
