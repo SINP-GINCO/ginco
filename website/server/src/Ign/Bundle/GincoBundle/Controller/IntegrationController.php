@@ -289,6 +289,8 @@ class IntegrationController extends GincoController {
 
 	/**
 	 * Validate the data and send a notification mail to the connected user
+	 * 
+	 * DEPRECATED La publication se fait maintenant au niveau du jeu de données. La route est conservée pour débugage éventuel.
 	 *
 	 * @Route("/validate-data/{submission}",name="integration_validate")
 	 *
@@ -297,7 +299,7 @@ class IntegrationController extends GincoController {
 	public function validateDataAction(Submission $submission, Request $request) {
 		$this->getLogger()->debug('validateDataAction');
 		
-		if (!$this->isGranted('VALIDATE_SUBMISSION', $submission)) {
+		if (!$this->isGranted('VALIDATE_JDD', $submission->getJdd())) {
 			$this->addFlash('error', ['id' => 'Integration.Submission.notAllowed']) ;
 			return $this->redirectToRoute('user_jdd_list') ;
 		}
@@ -315,57 +317,6 @@ class IntegrationController extends GincoController {
 						->trans("An unexpected error occurred.")
 				));
 			}
-			// Get the JDD Metadata Id
-			$jddMetadataId = $submission->getJdd()->getField('metadataId');
-			
-			// -- Send the email
-			$siteName = $this->get('ginco.configuration_manager')->getConfig('site_name');
-			
-			// Files of the submission
-			$submissionFiles = $submission->getFiles();
-			$fileNames = array();
-			foreach ($submissionFiles as $submissionFile) {
-				$fileName = basename($submissionFile->getFileName());
-				$fileNames[] = $fileName;
-			}
-			
-			// Get recipient, the connected user.
-			$user = $this->getUser();
-			
-			// Title and body:
-			// $title = (count($fileNames) > 1) ? "Intégration des fichiers " : "Intégration du fichier ";
-			// $title .= implode($fileNames, ", ");
-			
-			// -- Attachments
-			$reports = $this->get('ginco.submission_service')->getReportsFilenames($submission);
-			$attachements = array();
-			
-			// (Re)Generate sensibility report each time (see #815)
-			$this->get('ginco.submission_service')->generateReport($submission, "sensibilityReport");
-			
-			// (Re)Generate permanentIdsReport report
-			$this->get('ginco.submission_service')->generateReport($submission, "permanentIdsReport");
-			
-			foreach ($reports as $report => $reportPath) {
-				if ($report != 'integrationReport') {
-					if (!is_file($reportPath)) {
-						$this->getLogger()->error("Report file '$report' does not exist for submission {$submission->getId()})");
-						return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
-							'error' => $this->get('translator')
-								->trans("An unexpected error occurred.")
-						));
-					}
-					$attachements[] = $reportPath;
-				}
-			}
-			
-			$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:publication-notification-to-user.html.twig', array(
-				'metadata_uuid' => $jddMetadataId,
-				'user' => $user,
-				'region' => $siteName,
-				'filename' => implode($fileNames, ", "),
-				'file_number' => count($fileNames)
-			), $user->getEmail(), $attachements);
 			
 			// Get the referer url
 			$refererUrl = $request->headers->get('referer');
@@ -383,6 +334,9 @@ class IntegrationController extends GincoController {
 
 	/**
 	 * Invalidate the data.
+	 * 
+	 * DEPRECATED La publication se fait maintenant au niveau du jeu de données. La route est conservée pour débugage éventuel.
+	 * 
 	 * @Route("/invalidate-data/{submission}",name="integration_invalidate")
 	 *
 	 * @return Response
@@ -390,7 +344,7 @@ class IntegrationController extends GincoController {
 	public function invalidateDataAction(Submission $submission, Request $request) {
 		$this->getLogger()->debug('invalidateDataAction');
 		
-		if (!$this->isGranted('VALIDATE_SUBMISSION', $submission)) {
+		if (!$this->isGranted('VALIDATE_JDD', $submission->getJdd())) {
 			$this->addFlash('error', ['id' => 'Integration.Submission.notAllowed']) ;
 			return $this->redirectToRoute('user_jdd_list') ;
 		}
@@ -423,12 +377,12 @@ class IntegrationController extends GincoController {
 	}
 	
 	/**
-	 * Publie (partiellement ou complètement un jeu de données).
+	 * Publie un jeu de données.
 	 * Supprime les soumissions en erreur.
 	 * 
 	 * @Route("/validate-jdd/{jdd}", name="integration_validate_jdd")
 	 */
-	public function validateJddAction(Jdd $jdd) {
+	public function validateJddAction(Jdd $jdd, Request $request) {
 		
 		/* @var $user \Ign\Bundle\GincoBundle\Entity\Website\User */
 		$user = $this->getUser() ;
@@ -455,9 +409,56 @@ class IntegrationController extends GincoController {
 			));
 		}
 		
-		return $this->redirectToRoute('user_jdd_list') ;
+		$this->get('app.mail_manager')->sendEmail('IgnGincoBundle:Emails:publication-notification-to-user.html.twig', array(
+				'metadata_uuid' => $jdd->getField('metadataId'),
+				'user' => $this->getUser(),
+				'region' => $this->get('ginco.configuration_manager')->getConfig('site_name')
+			), $user->getEmail());
+		
+		
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		return $this->redirect($redirectUrl);
 	}
 
+	/**
+	 * Dépublie un jeu de données
+	 * @param Jdd $jdd
+	 * 
+	 * @Route("/invalidate-jdd/{jdd}", name="integration_invalidate_jdd")
+	 */
+	public function invalidateJddAction(Jdd $jdd, Request $request) {
+		
+		if (!$this->isGranted('VALIDATE_JDD', $jdd)) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.notAllowed']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
+		}
+		
+		if (!$jdd->isActive()) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.deleted']) ;
+			return $this->redirectToRoute('user_jdd_list') ;
+		}
+		
+		$jddService = $this->get('ginco.jdd_service') ;
+		try {
+			$jddService->invalidateJdd($jdd) ;
+		} catch (Exception $ex) {
+			$this->getLogger()->error('Error during jdd invalidation: ' . $e);
+				
+			return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
+				'error' => $e->getMessage()
+			));
+		}
+		
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		return $this->redirect($redirectUrl);
+		
+	}
+	
 	/**
 	 * Gets the integration status.
 	 *

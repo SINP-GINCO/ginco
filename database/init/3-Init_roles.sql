@@ -98,10 +98,7 @@ INSERT INTO permission(permission_code, permission_label, permission_group_code,
   ('CONFIGURE_WEBSITE_PARAMETERS', 'Configurer les paramètres de la plateforme', 'PLATFORM_ADMINISTRATION', 'Configurer les paramètres de la plateforme ainsi que la page d''accueil et la page de présentation.'),
   ('VALIDATE_JDD_OWN', 'Publier ses jeux de données', 'JDD_MANAGEMENT', 'Permet de publier ses propres jeux de données.'),
   ('VALIDATE_JDD_PROVIDER', 'Publier les jeux de données du même organisme', 'JDD_MANAGEMENT', 'Permet de publier les jeux de données d''utilisateurs appartenant au même organisme que soi.'),
-  ('VALIDATE_JDD_ALL', 'Publier tous les jeux de données', 'JDD_MANAGEMENT', 'Permet de publier n''importe quel jeu de données.'),
-  ('VALIDATE_SUBMISSION_OWN', 'Publier ses soumissions', 'DATA_MANAGEMENT', 'Publier ses soumissions dans un jeu de données.'),
-  ('VALIDATE_SUBMISSION_PROVIDER', 'Publier les soumissions du même organisme', 'DATA_MANAGEMENT', 'Publier des soumissions dans un jeu de données appartenant à son propre organisme.'),
-  ('VALIDATE_SUBMISSION_ALL', 'Publier toutes les soumissions', 'DATA_MANAGEMENT', 'Publier n''importe quelle soumission de n''importe quel jeu de données.')
+  ('VALIDATE_JDD_ALL', 'Publier tous les jeux de données', 'JDD_MANAGEMENT', 'Permet de publier n''importe quel jeu de données.')
 ;
 
 -- Add the permissions for role Développeur
@@ -130,9 +127,6 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'CONFIGUR
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VALIDATE_JDD_OWN');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VALIDATE_JDD_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VALIDATE_JDD_ALL');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VALIDATE_SUBMISSION_OWN');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VALIDATE_SUBMISSION_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (1, 'VALIDATE_SUBMISSION_ALL');
 
 
 -- Add the permissions for role Administrateur
@@ -160,9 +154,6 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'CONFIGUR
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VALIDATE_JDD_OWN');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VALIDATE_JDD_PROVIDER');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VALIDATE_JDD_ALL');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VALIDATE_SUBMISSION_OWN');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VALIDATE_SUBMISSION_PROVIDER');
-INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VALIDATE_SUBMISSION_ALL');
 
 -- Add the permissions for role Producteur
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'DATA_QUERY');

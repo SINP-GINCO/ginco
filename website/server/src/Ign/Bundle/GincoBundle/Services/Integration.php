@@ -16,6 +16,7 @@ namespace Ign\Bundle\GincoBundle\Services;
 use Zend\Http\Client;
 
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
+use Ign\Bundle\GincoBundle\Services\SubmissionService;
 
 /**
  * This is a model allowing to access the integration service via HTTP calls.
@@ -28,14 +29,21 @@ class Integration extends AbstractService {
 	 * @var String
 	 */
 	private $serviceUrl;
+	
+	/**
+	 *
+	 * @var SubmissionService
+	 */
+	private $submissionService ;
 
 	/**
 	 * Class constructor
 	 */
-	function __construct($url) {
+	function __construct($url, SubmissionService $submissionService) {
 
 		// Initialise the service URL
 		$this->serviceUrl = $url;
+		$this->submissionService = $submissionService ;
 	}
 
 	/**
@@ -213,7 +221,7 @@ class Integration extends AbstractService {
 	 * @throws Exception if a problem occured on the server side
 	 */
 	public function validateDataSubmission(Submission $submission) {
-		$this->logger->debug("validateDataSubmission : " . $submission->getId());
+		$this->logger->info("validateDataSubmission : " . $submission->getId());
 
 		$client = new Client();
 		$client->setUri($this->serviceUrl . "DataServlet?action=ValidateDataSubmission");
@@ -232,7 +240,7 @@ class Integration extends AbstractService {
 
 		// Check the result status
 		if (!$response->isSuccess()) {
-			$this->logger->debug("Error while validating the data submission : " . $response->getReasonPhrase());
+			$this->logger->info("Error while validating the data submission : " . $response->getReasonPhrase());
 			throw new \Exception("Error while validating the data submission : " . $response->getReasonPhrase());
 		}
 
@@ -245,9 +253,16 @@ class Integration extends AbstractService {
 			// Parse an error message
 			$error = $this->parseErrorMessage($body);
 			throw new \Exception("Error while validating the data submission : " . $error->errorMessage);
-		} else {
-			return true;
 		}
+		
+		// (Re)Generate sensibility report each time (see #815)
+		$this->submissionService->generateReport($submission, "sensibilityReport");
+
+		// (Re)Generate permanentIdsReport report
+		$this->submissionService->generateReport($submission, "permanentIdsReport");
+		
+		return true;
+		
 	}
 
 	/**
@@ -262,7 +277,7 @@ class Integration extends AbstractService {
 		
 		$submissionId = $submission->getId() ;
 		
-		$this->logger->debug("invalidateDataSubmission : " . $submissionId);
+		$this->logger->info("invalidateDataSubmission : " . $submissionId);
 
 		$client = new Client();
 		$client->setUri($this->serviceUrl . "DataServlet?action=InvalidateDataSubmission");
@@ -281,7 +296,7 @@ class Integration extends AbstractService {
 
 		// Check the result status
 		if (!$response->isSuccess()) {
-			$this->logger->debug("Error while invalidating the data submission : " . $response->getReasonPhrase());
+			$this->logger->info("Error while invalidating the data submission : " . $response->getReasonPhrase());
 			throw new \Exception("Error while invalidating the data submission : " . $response->getReasonPhrase());
 		}
 
