@@ -300,7 +300,9 @@ Invalidate submission: Dépublier la soumission
 Confirm_submission_warning: Une fois validées, les données seront disponibles pour la suite des traitements. Voulez-vous confirmer ?
 Confirm_invalidation_warning: Une fois invalidées, les données ne seront plus disponibles pour la suite des traitements. Voulez-vous confirmer ?
 Confirm_validate_jdd: Publier le jeu de données
-Confirm_validate_jdd_warning: Les soumissions en erreur seront supprimées.\nSi des soumissions ne sont pas publiées, alors le jeu de données ne sera que partiellement publié et ne pourra etre transmis.\nVoulez-vous confirmer ?
+Confirm_validate_jdd_warning: Les soumissions en erreur seront supprimées.\nConfirmez-vous la publication du jeu de données ?
+Confirm_invalidate_jdd: Dépublier le jeu de données
+Confirm_invalidate_jdd_warning: Confirmez-vous la dépublication du jeu de données ?
 Last_validation: Dernière publication
 
 Integration:
@@ -325,7 +327,7 @@ Integration:
       report: Le rapport de cette soumission n'est pas accessible.
   Jdd:
     error:
-      notAllowed: Vous n'avez pas les droits suffisants pour publier ce jeu de données.
+      notAllowed: Vous n'avez pas les droits suffisants pour publier ou dépublier ce jeu de données.
       deleted: Vous ne pouvez pas publier ce jeu de données car il a été supprimé.
       addSubmission: Ce jeu de données a été publié, vous ne pouvez lui ajouter de nouvelles soumissions.
 
@@ -393,6 +395,9 @@ Jdd:
     metadataUpdate: Mettre à jour les métadonnées depuis l'INPN
     metadataUpdateOK: Les métadonnées du jeu de données sont à jour par rapport à l'INPN.
     metadataUpdateError: La mise à jour des métadonnées a échouée. Merci de vérifier que la fiche de métadonnées est toujours accessible dans l'INPN.
+    
+  publish:
+      impossible: La publication de ce jeu de données est impossible.
 
 DEE:
   suppression: Suppression

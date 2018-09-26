@@ -9,7 +9,7 @@ parameters:
 services:
     ginco.integration_service:
         class: Ign\Bundle\GincoBundle\Services\Integration
-        arguments: ["@=service('ginco.configuration_manager').getConfig('integrationService_url', 'http://localhost:8080/GincoIntegrationService/')"]
+        arguments: ["@=service('ginco.configuration_manager').getConfig('integrationService_url', 'http://localhost:8080/GincoIntegrationService/')", "@ginco.submission_service"]
         calls:
           - [setLogger, ['@logger']]
 

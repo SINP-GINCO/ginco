@@ -20,8 +20,6 @@ class Jdd {
 	const STATUS_DELETED = 'deleted';
 	
 	const STATUS_VALIDATED = "validated" ;
-	
-	const STATUS_PARTIALLY_VALIDATED = 'partially validated' ;
 
 	/**
 	 * The technical identifier.
@@ -384,7 +382,7 @@ class Jdd {
 	public function getDataUpdatedAt() {
 		return $this->dataUpdatedAt;
 	}
-
+	
 	/*
 	 * ====================================================================
 	 * /* Functions for manipulating JddFields,
@@ -502,4 +500,7 @@ class Jdd {
 			}
 		}
 	}
+	
+	
+	
 }

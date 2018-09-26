@@ -30,7 +30,7 @@ class SubmissionController extends GincoController {
 	 */
 	public function generateReportsAction(Submission $submission, Request $request) {
 		
-		$this->denyAccessUnlessGranted('VALIDATE_SUBMISSION', $submission) ;
+		$this->denyAccessUnlessGranted('VALIDATE_JDD', $submission->getJdd()) ;
 		
 		// Configure memory and time limit because the program asks a lot of resources
 		ini_set("memory_limit", $this->get('ginco.configuration_manager')->getConfig('memory_limit', '1024M'));

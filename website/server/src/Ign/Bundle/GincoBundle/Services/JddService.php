@@ -61,13 +61,13 @@ class JddService {
 	/**
 	 * Valide un JDD :
 	 *   - supprime les soumissions en erreur
-	 *   - prend le statut "Publié" ou "Partiellement publié" en fonction du statut des soumissions.
+	 *   - prend le statut "Publié"
 	 * @param Jdd $jdd
 	 * @throws \Exception
 	 */
 	public function validateJdd(Jdd $jdd) {
 		
-		$this->logger->debug("Validating jdd {$jdd->getId()}") ;
+		$this->logger->info("Validating jdd {$jdd->getId()}") ;
 		
 		$submissions = $jdd->getSubmissions() ;
 		
@@ -76,7 +76,6 @@ class JddService {
 		}
 		
 		$validatedSubmissions = 0 ;
-		$notValidatedSubmissons = 0 ;
 		foreach ($submissions as $submission) {
 			
 			if ($submission->isInError()) {
@@ -88,22 +87,45 @@ class JddService {
 				continue ;
 			}
 			
-			if ($submission->isValidated()) {
+			if ($submission->isSuccessful()) {
+				$this->integrationService->validateDataSubmission($submission) ;
 				$validatedSubmissions++ ;
-			} else {
-				$notValidatedSubmissons++ ;
 			}
 		}
 		
-		if ($validatedSubmissions > 0 && $notValidatedSubmissons == 0) {
+		if ($validatedSubmissions > 0) {
 			$jdd->setStatus(Jdd::STATUS_VALIDATED) ;
-		} else if ($validatedSubmissions > 0 && $notValidatedSubmissons > 0) {
-			$jdd->setStatus(Jdd::STATUS_PARTIALLY_VALIDATED) ;
-		} else {
-			$jdd->setValidationStatus(Jdd::VALIDATION_STATUS_NOT_VALIDATED) ;
 		}
 		
 		$this->entityManager->flush() ;
+	}
+	
+	
+	/**
+	 * Invalide un JDD
+	 * @param Jdd $jdd
+	 */
+	public function invalidateJdd(Jdd $jdd) {
+		
+		$this->logger->info("Invalidating jdd {$jdd->getId()}") ;
+		
+		$submissions = $jdd->getSubmissions() ;
+		
+		if ($jdd->hasRunningSubmissions()) {
+			throw new \Exception("Can't publish JDD because of running submissions.") ;
+		}
+		
+		foreach ($submissions as $submission) {
+			
+			if ($submission->isValidated()) {
+				$this->integrationService->invalidateDataSubmission($submission) ;
+			}	
+		}
+		
+		$jdd->setStatus(Jdd::STATUS_ACTIVE) ;
+		
+		$this->entityManager->flush() ;		
+		
 	}
 	
 	

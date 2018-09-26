@@ -2,17 +2,7 @@
 {# Variables : submission #}
 {% if submission is defined %}
 
-    {# Publish (Validate) or Unpublish (invalidate) submission #}
-    {% set publish = false %}
-    {% set unpublish = false %}
     {% set remove = false %}
-    {% if ((submission.step is constant('STEP_INSERTED', submission) and submission.status is constant('STATUS_OK', submission))
-    or (submission.step is same as('CHECK') and (submission.status is same as("OK") or submission.status is same as('WARNING')))) %}
-        {% set publish = true %}
-    {% endif %}
-    {% if (submission.step is same as('VALIDATE') and (submission.status is same as("OK") or submission.status is same as('WARNING'))) %}
-        {% set unpublish = true %}
-    {% endif %}
 
     {# Cancel submission #}
     {% set notValidateCancel = (submission.step != "VALIDATE" and submission.step != "CANCEL") %}
@@ -20,21 +10,7 @@
         {% set remove = true %}
     {% endif %}
     <div class = "btn-group">
-        {% if publish %}
-            <a class="btn btn-xs btn-success" href="{{ path('integration_validate',{'submission': submission.id}) }}" title="{{ 'Confirm submission'|trans }}"
-               onClick="return confirm('{{ 'Confirm_submission_warning'|trans }}');">
-                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-             </a>
-        {% elseif unpublish %}
-             <a class="btn btn-xs btn-warning" href="{{ path('integration_invalidate',{'submission': submission.id}) }}" title=" {{ 'Invalidate submission'|trans }}"
-                onClick="return confirm('{{ 'Confirm_invalidation_warning'|trans }}');">
-                 <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
-             </a>
-        {% else %}
-             <a class="btn btn-xs btn-default" title="{{ 'Submission.publish.impossible'|trans }}">
-                <span class="glyphicon glyphicon-play" data-toggle="modal" data-target="#modal-impossible-publish-submission-{{ submission.id }}" aria-hidden="true"></span>
-             </a>
-        {% endif %}
+
         <div class="integration-cancel-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
         <a id="integration-cancel-link-{{ submission.id }}" title="{{ 'Cancel Submission'|trans }}"
             {% if remove %}
