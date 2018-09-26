@@ -941,9 +941,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		GenericData heureDateFin = values.get(DSRConstants.HEURE_DATE_FIN) ;
 
 		Date jourDateDebutValue = (Date) jourDateDebutGD.getValue() ;
-		Date jourDateFinValue = (Date) jourDateFinGD.getValue() ;
-		Date heureDateDebutValue = (Date) heureDateDebut.getValue() ;
-		Date heureDateFinValue = (Date) heureDateFin.getValue() ;		
+		Date jourDateFinValue = (Date) jourDateFinGD.getValue() ;	
 		
 		if (jourDateDebutValue != null && jourDateFinValue != null) {
 			
@@ -951,7 +949,10 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			Date fin = jourDateFinValue ;
 			Date now = new Date() ;
 			
-			if (heureDateDebutValue != null && heureDateFinValue != null) {
+			if (heureDateDebut != null && heureDateFin != null) {
+				
+				Date heureDateDebutValue = (Date) heureDateDebut.getValue() ;
+				Date heureDateFinValue = (Date) heureDateFin.getValue() ;	
 				debut = combineDateTime(jourDateDebutValue, heureDateDebutValue) ;
 				fin = combineDateTime(jourDateFinValue, heureDateFinValue) ;
 			}
@@ -964,7 +965,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 				alce.add(ce);
 			}
 
-			if (fin.compareTo(now) >0) {
+			if (fin.compareTo(now) > 0) {
 				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_FIN + " / " + DSRConstants.HEURE_DATE_FIN + " est ultérieure à la date du jour.";
 				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
 				// Add the exception in the array list and continue doing the checks
