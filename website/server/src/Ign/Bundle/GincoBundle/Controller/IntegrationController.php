@@ -122,22 +122,17 @@ class IntegrationController extends GincoController {
 				$submission->setJdd($jdd);
                                 
 				$jdd->setDataUpdatedAt(new \DateTime());
-				$em->merge($jdd);
 			}
 
-                        $submission->setProvider($jdd->getProvider());
+            $submission->setProvider($jdd->getProvider());
 
-			// writes the submission to the database
-			// merge because cascade persist is not set in the entity
-			// and get the merged object to access auto-generated id
-                        // /_ ! _\ persist & merge used
 			$em->persist($submission);
-                        $attachedSubmission = $em->merge($submission);
 			$em->flush();
+			$em->refresh($submission);
                         
 			// Redirects to page 2 of the form: upload data
 			return $this->redirect($this->generateUrl('integration_upload_data', array(
-				'id' => $attachedSubmission->getId()
+				'id' => $submission->getId()
 			)));
 		}
 		
