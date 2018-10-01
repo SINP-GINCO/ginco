@@ -55,9 +55,6 @@ Editer et supprimer les données de son organisme                     **Oui**   
 Editer et supprimer ses propres données                              **Oui**         **Oui**       Non
 Editer et supprimer toutes les données                               **Oui**           Non         Non
 Exporter les données                                                 **Oui**         **Oui**       Non
-Publier les soumissions du même organisme                            **Oui**           Non         Non
-Publier ses soumissions                                              **Oui**           Non         Non
-Publier toutes les soumissions                                       **Oui**           Non         Non
 Gérer les DEE de ses propres jeux de données                         **Oui**           Non         Non
 Gérer les DEE des jeux de données de son organisme                   **Oui**           Non         Non
 Gérer les DEE de tous les jeux de données                            **Oui**           Non         Non
@@ -65,6 +62,7 @@ Gérer tous les jeux de données et toutes les soumissions             **Oui**  
 Publier les jeux de données du même organisme                        **Oui**           Non         Non
 Publier ses jeux de données                                          **Oui**           Non         Non
 Publier tous les jeux de données                                     **Oui**           Non         Non
+Créer et gérer ses propres jeux de données et ses soumissions        **Oui**         **Oui**       Non
 Supprimer les jeux de données et les soumissions de son organisme    **Oui**           Non         Non
 Voir les jeux de données et les soumissions de son organisme         **Oui**           Non         Non  
 Gérer les requêtes publiques                                         **Oui**           Non         Non 

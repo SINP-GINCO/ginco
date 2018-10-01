@@ -159,6 +159,8 @@ INSERT INTO permission_per_role(role_code, permission_code) VALUES (2, 'VALIDATE
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'DATA_QUERY');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'EXPORT_RAW_DATA');
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'MANAGE_OWNED_PRIVATE_REQUEST');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'EDIT_DATA_OWN');
+INSERT INTO permission_per_role(role_code, permission_code) VALUES (3, 'MANAGE_JDD_SUBMISSION_OWN');
 
 -- Add the permissions for role Grand public
 INSERT INTO permission_per_role(role_code, permission_code) VALUES (4, 'DATA_QUERY');
