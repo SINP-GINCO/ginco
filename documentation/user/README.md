@@ -36,6 +36,14 @@ Et installer l'outil latexpdf (pour compiler la doc en PDF) :
 apt-get install texlive-latex-base
 ```
 
+Et installer l'outil textlive-lang-french pour avoir les textes en français(pour la doc PDF en français) : 
+
+
+```bash
+apt-get install texlive-lang-french
+```
+
+
 ## Organisation du projet
 
 `ginco/documentation/user/` contient le projet de documentation utilisateur.
