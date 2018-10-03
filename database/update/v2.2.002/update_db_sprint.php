@@ -36,6 +36,9 @@ try {
 		execCustSQLFile("$sprintDir/remove_permissions.sql", $config);
 	}
 
+	execCustSQLFile("$sprintDir/add_metadata_check.sql", $config);
+
+
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
 	echo "exception: " . $e->getMessage() . "\n";

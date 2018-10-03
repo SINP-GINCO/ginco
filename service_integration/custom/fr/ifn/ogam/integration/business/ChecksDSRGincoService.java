@@ -84,6 +84,9 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 
 		// ----- SUJET OBSERVATION ------
 
+		// Check existence of cdNom and cdRef
+		cdNomCdRef(values) ;
+		
 		// jourDateDebut < jourDateFin < today
 		observationDatesAreCoherent(values);
 		identifiantPermanentIsUUID(values) ;
@@ -555,6 +558,42 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		}
 	}
 
+	
+	
+	/**
+	 * Checks if given cdNom and/or cdRef exist in TAXREF
+	 * @param values
+	 * @throws CheckException
+	 */
+	private void cdNomCdRef(Map<String, GenericData> values) throws Exception {
+		
+		GenericData cdNomGD = values.get(DSRConstants.CD_NOM) ;
+		GenericData cdRefGD = values.get(DSRConstants.CD_REF) ;
+		
+		if (cdNomGD != null && !empty(cdNomGD)) {			
+			List<String> names = metadataDAO.getNameFromTaxrefCode(cdNomGD.getValue().toString()) ;
+			if (names.isEmpty()) {
+				String error = "Le cdNom indiqué n'existe pas dans le référentiel TAXREF v11." ;
+				CheckException ce = new CheckException(CDNOM_NOT_FOUND, error) ;
+				ce.setFoundValue(cdNomGD.getValue().toString()) ;
+				ce.setSourceData("cdNom") ;
+				alce.add(ce) ;
+			}
+		}
+		
+		if (cdRefGD != null && !empty(cdRefGD)) {			
+			List<String> names = metadataDAO.getNameFromTaxrefCode(cdRefGD.getValue().toString()) ;
+			if (names.isEmpty()) {
+				String error = "Le cdRef indiqué n'existe pas dans le référentiel TAXREF v11." ;
+				CheckException ce = new CheckException(CDREF_NOT_FOUND, error) ;
+				ce.setFoundValue(cdRefGD.getValue().toString()) ;
+				ce.setSourceData("cdRef") ;
+				alce.add(ce) ;
+			}
+		}
+	}
+	
+	
 	/**
 	 * If taxrefVersion is empty and if cdNom or cdRef are present, fill it with default version
 	 *
@@ -835,8 +874,10 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 				if (cdRefGD != null && !empty(cdRefGD)) {
 					try {
 						List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdRefGD.getValue().toString());
-						String nomValide = codeNames.get(0);
-						nomValideGD.setValue(nomValide);
+						if (!codeNames.isEmpty()) {
+							String nomValide = codeNames.get(0);
+							nomValideGD.setValue(nomValide);
+						}
 					} catch (Exception e) {
 						throw e;
 					}
@@ -845,8 +886,10 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 					if (cdNomGD != null && !empty(cdNomGD)) {
 						try {
 							List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdNomGD.getValue().toString());
-							String nomValide = codeNames.get(0);
-							nomValideGD.setValue(nomValide);
+							if (!codeNames.isEmpty()) {
+								String nomValide = codeNames.get(0);
+								nomValideGD.setValue(nomValide);
+							}
 						} catch (Exception e) {
 							throw e;
 						}
