@@ -71,5 +71,15 @@ public interface CheckCodesGinco {
 	 * identifiantpermenent must be an UUID
 	 */
 	Integer IDENTIFIANT_PERMANENT_NOT_UUID = 1211;
+	
+	/**
+	 * cdnom does not exist
+	 */
+	Integer CDNOM_NOT_FOUND = 1212 ;
+	
+	/**
+	 * cdref does not exist
+	 */
+	Integer CDREF_NOT_FOUND = 1213 ;
 
 }
