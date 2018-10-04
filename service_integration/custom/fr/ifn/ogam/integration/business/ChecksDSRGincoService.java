@@ -1079,15 +1079,17 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		}
 		//Test complémentaire pour UUID ne marchant pas correctement pour les versions < Java9
 		String identifiantPermanent = identifiantPermanentGeneric.getValue().toString() ;
-		if((StringUtils.countMatches(identifiantPermanent, "-") !=4) || (identifiantPermanent.length() != 36)) {
-			String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID valide, ou une valeur vide." ;
-			CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UUID, errorMessage) ;
-			ce.setFoundValue(identifiantPermanent) ;
-			alce.add(ce) ;
-		} 
+		
 		
 		try {
 			UUID uuid = UUID.fromString(identifiantPermanent) ;
+			if((StringUtils.countMatches(identifiantPermanent, "-") !=4) || (identifiantPermanent.length() != 36)) {
+				String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID valide, ou une valeur vide." ;
+				CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UUID, errorMessage) ;
+				ce.setFoundValue(identifiantPermanent) ;
+				alce.add(ce) ;
+			
+			} 
 		} catch (IllegalArgumentException e) {
 			String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID, ou une valeur vide." ;
 			CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UUID, errorMessage) ;
