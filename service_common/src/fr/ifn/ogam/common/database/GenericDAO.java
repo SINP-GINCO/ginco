@@ -148,12 +148,12 @@ public class GenericDAO {
 
 								if (tableSrid.equals(userSrid)) {
 									// copy directly the binary blob
-									colValues.append("'" + colData.getValue().toString() + "'");
+									colValues.append("ST_MakeValid('" + colData.getValue().toString() + "')");
 								} else {
 									// transform imported geometry to match table srid
 									PGgeometry pggeom = new PGgeometry(((PGobject) colData.getValue()).getValue());
 
-									colValues.append("ST_Transform(ST_Buffer(ST_GeomFromText('" + pggeom.toString() + "', " + userSrid + "),0), " + tableSrid + ")");
+									colValues.append("ST_Transform(ST_MakeValid(ST_GeomFromText('" + pggeom.toString() + "', " + userSrid + ")), " + tableSrid + ")");
 
 								}
 
@@ -168,7 +168,7 @@ public class GenericDAO {
 									geomColValue = "ST_GeomFromText('" + colData.getValue() + "', " + tableSrid + ")";
 								} else {
 									// transform imported geometry to match table srid
-									geomColValue = "ST_Transform(ST_Buffer(ST_GeomFromText('" + colData.getValue() + "', " + userSrid + "),0), " + tableSrid + ")";
+									geomColValue = "ST_Transform(ST_MakeValid(ST_GeomFromText('" + colData.getValue() + "', " + userSrid + ")), " + tableSrid + ")";
 								}
 
 								if (tableSrid == 4326) {
