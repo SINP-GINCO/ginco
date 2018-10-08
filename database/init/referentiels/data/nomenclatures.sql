@@ -552,8 +552,7 @@ ALTER TABLE referentiels.taxostatutvalue OWNER TO postgres;
 
 INSERT INTO referentiels.taxostatutvalue(code, label, definition) VALUES
     ('0', 'Diffusé', 'Diffusé'),
-    ('1', 'Gel', 'Gel'),
-    ('2', 'Suppression', 'Suppression')
+    ('1', 'Retrait', 'Retrait')
 ;
 
 
