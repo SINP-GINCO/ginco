@@ -158,15 +158,15 @@ try {
 		// ¤ cdNomCalcule à NULL
 		// ¤ cdRef_Calcule à NULL
 		// ¤ nomValide à NULL
-		// ¤ TaxoStatut =‘Gel’ ???
-		// ¤ TaxoModif = ‘Gel TAXREF’
+		// ¤ TaxoStatut =‘Retrait’ ???
+		// ¤ TaxoModif = ‘Suppression TAXREF’
 		// ¤ taxoAlerte = OUI.
 		$casB2 = $pdo->prepare("UPDATE raw_data.$tableName SET
 				cdnomcalcule = NULL,
 				cdrefcalcule = NULL,
 				nomvalide = NULL,
 				taxostatut = '1',
-				taxomodif = '1',
+				taxomodif = '2',
 				taxoalerte = '0'
 			WHERE cdnom = :valeurInit
 		");
@@ -176,15 +176,15 @@ try {
 		// ¤ cdNomCalcule à NULL
 		// ¤ cdRef_Calcule à NULL
 		// ¤ nomValide à NULL
-		// ¤ TaxoStatut =‘Gel’
-		// ¤ TaxoModif = ‘Suppression TAXREF’
+		// ¤ TaxoStatut =‘Retrait’
+		// ¤ TaxoModif = 'Gel TAXREF’
 		// ¤ taxoAlerte = OUI.
 		$casB3 = $pdo->prepare("UPDATE raw_data.$tableName SET
 				cdnomcalcule = NULL,
 				cdrefcalcule = NULL,
 				nomValide = NULL,
 				taxostatut = '1',
-				taxomodif = '2',
+				taxomodif = '1',
 				taxoalerte = '0'
 			WHERE cdnom = :valeurInit
 		");
@@ -251,7 +251,7 @@ try {
 			// Cas C
 			if ('MODIFICATION' == $typeChange && 'LB_NOM' == $champ) {
 				$casC->execute(array(
-					'cdNom' => $cdNom
+					'cdNom' => $valeurFinal
 				));
 			}
 
