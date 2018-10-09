@@ -466,7 +466,16 @@ class DefaultController extends GincoController {
 			
 		}
 		
-		return array("report" => $report) ;
+		$referentielRepository = $entityManager->getRepository('IgnGincoBundle:Referentiel\ListeReferentiel') ;
+		$taxrefReferentiel = $referentielRepository->find('taxref') ;
+		if (!$taxrefReferentiel) {
+			$this->createNotFoundException("TAXREF referentiel not found.") ;
+		}
+		
+		return array(
+			"taxrefReferentiel" => $taxrefReferentiel,
+			"report" => $report
+		) ;
 		
 	}
 }
