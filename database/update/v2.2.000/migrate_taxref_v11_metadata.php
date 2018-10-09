@@ -45,7 +45,7 @@ try {
     
     $pdo->exec("INSERT INTO referentiels.taxostatutvalue(code, label, definition) VALUES
 		('0', 'Diffusé', 'Diffusé'),
-		('1', 'Retrait', 'Retrait')
+		('1', 'Gel', 'Gel')
 	");
     
     $pdo->exec("CREATE TABLE referentiels.taxomodifvalue(
