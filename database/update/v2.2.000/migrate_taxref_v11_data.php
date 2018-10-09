@@ -91,6 +91,9 @@ try {
 
 		$tableName = $value['table_name'] ;
 
+		// Création d'un index sur cdNom pour accélerer les traitements.
+		$pdo->exec("CREATE INDEX IF NOT EXISTS idx_$tableName_cdnom ON $tableName(cdnom)") ;
+
 		// Désactivation temporaire des triggers de sensibilité.
 		$pdo->exec("ALTER TABLE raw_data.$tableName DISABLE TRIGGER sensitive_automatic$tableName") ;
 		$pdo->exec("ALTER TABLE raw_data.$tableName DISABLE TRIGGER sensitive_manual$tableName") ;
@@ -118,7 +121,17 @@ try {
 				taxostatut = '0',
 				taxomodif = '0',
 				taxoalerte = '1'
+			WHERE cdnom = :cdNom
+		");
+
+		// Même chose quand seul le cdRef est fourni et le cdnom absent.
+		$casAbis = $pdo->prepare("UPDATE raw_data.$tableName SET
+				cdrefcalcule = :valeurFinal,
+				taxostatut = '0',
+				taxomodif = '0',
+				taxoalerte = '1'
 			WHERE cdref = :valeurInit
+			AND cdnom IS NULL
 		");
 
 		// Cas B0) (traitement par défaut du cas B, si ni B1, ni B2 et ni B3) 
@@ -224,6 +237,9 @@ try {
 			if ('MODIFICATION' == $typeChange && 'CD_REF' == $champ) {	
 				$casA->execute(array(
 					'cdNom' => $cdNom,
+					'valeurFinal' => $valeurFinal
+				));
+				$casAbis->execute(array(
 					'valeurInit' => $valeurInit,
 					'valeurFinal' => $valeurFinal
 				));
