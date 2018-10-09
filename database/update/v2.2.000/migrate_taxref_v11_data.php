@@ -105,12 +105,16 @@ try {
 
 		
 		// Cas A) Lorsque TYPE_CHANGE=MODIFICATION et CHAMP=CD_REF, il faut : trouver les données telles que cdRef valent VALEUR_INIT. Pour ces données, mettre :
-		//	¤ cdRefCalcule=VALEUR_FINAL
+		//	¤ cdNomCalcule mis à jour
+		//  ¤ cdRefCalcule=VALEUR_FINAL
 		//	¤ TaxoStatut=Diffusé
 		//	¤ TaxoModif=Modification TAXREF
 		//	¤ TaxoAlerte=NON
+		//  ¤ nomValide mis à jour
 		$casA = $pdo->prepare("UPDATE raw_data.$tableName SET
+				cdnomcalcule = :cdNom::varchar,
 				cdrefcalcule = :valeurFinal,
+				nomvalide = (SELECT nom_complet FROM referentiels.taxref WHERE cd_nom = :cdNom),
 				taxostatut = '0',
 				taxomodif = '0',
 				taxoalerte = '1'
@@ -219,6 +223,7 @@ try {
 			// Cas A		
 			if ('MODIFICATION' == $typeChange && 'CD_REF' == $champ) {	
 				$casA->execute(array(
+					'cdNom' => $cdNom,
 					'valeurInit' => $valeurInit,
 					'valeurFinal' => $valeurFinal
 				));
