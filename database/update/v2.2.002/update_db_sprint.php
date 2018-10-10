@@ -38,6 +38,7 @@ try {
 
 	execCustSQLFile("$sprintDir/add_metadata_check.sql", $config);
 	execCustSQLFile("$sprintDir/change_taxostatut.sql", $config);
+	execCustSQLFile("$sprintDir/update_ordre_couche.sql", $config);
 
 
 } catch (Exception $e) {
