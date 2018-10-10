@@ -99,7 +99,7 @@ try {
 		$pdo->exec("UPDATE raw_data.$tableName SET versiontaxref = 'v11'") ;
 
 		// Création d'un index sur cdNom pour accélerer les traitements.
-		$pdo->exec("CREATE INDEX IF NOT EXISTS idx_$tableName_cdnom ON $tableName(cdnom)") ;
+		$pdo->exec("CREATE INDEX IF NOT EXISTS idx_{$tableName}_cdnom ON $tableName(cdnom)") ;
 
 		// Création d'un trigger temporaire pour le calcul de sensibilité lors de la migration.
 		$pdo->exec("
