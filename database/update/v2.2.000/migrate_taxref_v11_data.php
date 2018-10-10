@@ -91,12 +91,15 @@ try {
 
 		$tableName = $value['table_name'] ;
 
-		// Création d'un index sur cdNom pour accélerer les traitements.
-		$pdo->exec("CREATE INDEX IF NOT EXISTS idx_$tableName_cdnom ON $tableName(cdnom)") ;
-
 		// Désactivation temporaire des triggers de sensibilité.
 		$pdo->exec("ALTER TABLE raw_data.$tableName DISABLE TRIGGER sensitive_automatic$tableName") ;
 		$pdo->exec("ALTER TABLE raw_data.$tableName DISABLE TRIGGER sensitive_manual$tableName") ;
+
+		// Mise à jour de la version Taxref dans les tables
+		$pdo->exec("UPDATE raw_data.$tableName SET versiontaxref = 'v11'") ;
+
+		// Création d'un index sur cdNom pour accélerer les traitements.
+		$pdo->exec("CREATE INDEX IF NOT EXISTS idx_$tableName_cdnom ON $tableName(cdnom)") ;
 
 		// Création d'un trigger temporaire pour le calcul de sensibilité lors de la migration.
 		$pdo->exec("
