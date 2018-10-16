@@ -10,6 +10,9 @@ $pdo = new PDO($dsn, $config['db.adminuser'], $config['db.adminuser.pw']) ;
 
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION) ;
 
+// Application name
+$pdo->exec("SET application_name = 'migration_taxref_data'") ;
+
 // On récupère le nom de la table des observations.
 $sth = $pdo->query("SELECT table_name FROM metadata.table_format") ;
 $tableNames = $sth->fetchAll() ;
@@ -18,6 +21,48 @@ $tableNames = $sth->fetchAll() ;
 $pdo->beginTransaction() ;
 
 try {
+
+	// Création table contenant tous les changements.
+	$pdo->exec("CREATE TABLE all_changes(
+		cd_nom VARCHAR,
+		num_version_init VARCHAR,
+		num_version_final VARCHAR,
+		champ VARCHAR,
+		valeur_init VARCHAR,
+		valeur_final VARCHAR,
+		type_change VARCHAR,
+		cd_nom_remplacement VARCHAR,
+		cd_raison_suppression VARCHAR
+		)
+	");
+
+	$file = new SplFileObject(realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'all_changes.csv'), 'r') ;
+	$file->setFlags(SplFileObject::READ_CSV) ;
+	$header = $file->fgetcsv() ;
+	$insert = $pdo->prepare("INSERT INTO all_changes VALUES 
+		(:cdnom, :numversioninit, :numversionfinal, :champ, :valeurinit, :valeurfinal, :typechange, :cdnomremplacement, :cdraisonsuppression)
+	");
+	while ($row = $file->fgetcsv()) {
+		
+		if (empty($row) || count($row) != count($header)) {
+			continue ;
+		}
+
+		$data = array_combine($header, $row) ;
+
+		$insert->execute(array(
+			'cdnom' => $data['cd_nom'],
+			'numversioninit' => $data['num_version_init'],
+			'numversionfinal' => $data['num_version_final'],
+			'champ' => $data['champ'],
+			'valeurinit' => $data['valeur_init'],
+			'valeurfinal' => $data['valeur_final'],
+			'typechange' => $data['type_change'],
+			'cdnomremplacement' => $data['cd_nom_remplacement'],
+			'cdraisonsuppression' => $data['cd_raison_suppression']
+		)); 
+	}
+
 
 	// Création de la fonction de recalcul de sensibilité pour la migration 
 	$pdo->exec("
@@ -117,24 +162,92 @@ try {
 		//	¤ TaxoModif=Modification TAXREF
 		//	¤ TaxoAlerte=NON
 		//  ¤ nomValide mis à jour
-		$casA = $pdo->prepare("UPDATE raw_data.$tableName SET
-				cdnomcalcule = :cdNom::varchar,
-				cdrefcalcule = :valeurFinal,
-				nomvalide = (SELECT nom_complet FROM referentiels.taxref WHERE cd_nom = :cdNom),
+		$casA = $pdo->exec("UPDATE raw_data.$tableName SET
+				cdnomcalcule = ac.cd_nom::varchar,
+				cdrefcalcule = ac.valeur_final,
+				nomvalide = (SELECT nom_complet FROM referentiels.taxref t WHERE t.cd_nom = ac.cd_nom),
 				taxostatut = '0',
 				taxomodif = '0',
 				taxoalerte = '1'
-			WHERE cdnom = :cdNom
+			FROM all_changes ac
+			WHERE cdnom = ac.cd_nom
+			AND ac.type_change = 'MODIFICATION'
+			AND ac.champ = 'CD_REF'
 		");
 
 		// Même chose quand seul le cdRef est fourni et le cdnom absent.
-		$casAbis = $pdo->prepare("UPDATE raw_data.$tableName SET
-				cdrefcalcule = :valeurFinal,
+		$casAbis = $pdo->exec("UPDATE raw_data.$tableName SET
+				cdrefcalcule = ac.valeur_final,
 				taxostatut = '0',
 				taxomodif = '0',
 				taxoalerte = '1'
-			WHERE cdref = :valeurInit
+			FROM all_changes ac
+			WHERE cdref = ac.valeur_init
 			AND cdnom IS NULL
+			AND ac.type_change = 'MODIFICATION'
+			AND ac.champ = 'CD_REF'
+		");
+
+		// Cas B1) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
+		// et CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 1, auquel cas il faut mettre :
+		// ¤ cdNomCalcule=CD_NOM_REMPLACEMENT
+		// ¤ mettre à jour cdRefCalcule et nomValide à partir du nouveau cdNomCalcule.
+		// ¤ TaxoStatut=Diffusé
+		// ¤ TaxoModif=Modification TAXREF
+		// ¤ TaxoAlerte=NON
+		$casB1 = $pdo->exec("UPDATE raw_data.$tableName SET
+				cdnomcalcule = ac.cd_nom_remplacement::varchar,
+				cdrefcalcule = (SELECT cd_ref FROM referentiels.taxref t WHERE t.cd_nom = ac.cd_nom_remplacement),
+				nomValide = (SELECT nom_complet FROM referentiels.taxref t WHERE t.cd_nom = ac.cd_nom_remplacement),
+				taxostatut = '0',
+				taxomodif = '0',
+				taxoalerte = '1'
+			FROM all_changes ac
+			WHERE cdnom = ac.valeur_init
+			AND ac.type_change = 'RETRAIT'
+			AND ac.cd_raison_suppression = '1'
+		");     
+
+		// Cas B2) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
+		// et CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 3, auquel cas il faut mettre :
+		// ¤ cdNomCalcule à NULL
+		// ¤ cdRef_Calcule à NULL
+		// ¤ nomValide à NULL
+		// ¤ TaxoStatut =‘Gel’
+		// ¤ TaxoModif = ‘Suppression TAXREF’
+		// ¤ taxoAlerte = OUI.
+		$casB2 = $pdo->exec("UPDATE raw_data.$tableName SET
+				cdnomcalcule = NULL,
+				cdrefcalcule = NULL,
+				nomvalide = NULL,
+				taxostatut = '1',
+				taxomodif = '2',
+				taxoalerte = '0'
+			FROM all_changes ac
+			WHERE cdnom = ac.valeur_init
+			AND ac.type_change = 'RETRAIT'
+			AND ac.cd_raison_suppression = '3'
+		");
+
+		// Cas B3) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
+		// et CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 2, auquel cas il faut mettre :
+		// ¤ cdNomCalcule à NULL
+		// ¤ cdRef_Calcule à NULL
+		// ¤ nomValide à NULL
+		// ¤ TaxoStatut =‘Gel’
+		// ¤ TaxoModif = 'Gel TAXREF’
+		// ¤ taxoAlerte = OUI.
+		$casB3 = $pdo->exec("UPDATE raw_data.$tableName SET
+				cdnomcalcule = NULL,
+				cdrefcalcule = NULL,
+				nomValide = NULL,
+				taxostatut = '1',
+				taxomodif = '1',
+				taxoalerte = '0'
+			FROM all_changes ac
+			WHERE cdnom = ac.valeur_init
+			AND ac.type_change = 'RETRAIT'
+			AND ac.cd_raison_suppression = '2'
 		");
 
 		// Cas B0) (traitement par défaut du cas B, si ni B1, ni B2 et ni B3) 
@@ -146,141 +259,30 @@ try {
 		// ¤ TaxoStatut =‘Gel’
 		// ¤ TaxoModif = ‘Gel TAXREF’
 		// ¤ taxoAlerte = OUI.
-		$casB0 = $pdo->prepare("UPDATE raw_data.$tableName SET
+		$casB0 = $pdo->exec("UPDATE raw_data.$tableName SET
 				cdnomcalcule = NULL,
 				cdrefcalcule = NULL,
 				nomvalide = NULL,
 				taxostatut = '1',
 				taxomodif = '1',
 				taxoalerte = '0'
-			WHERE cdnom = :valeurInit
+			FROM all_changes ac
+			WHERE cdnom = ac.valeur_init
+			AND ac.type_change = 'RETRAIT'
+			AND taxostatut IS NULL
 		");
-
-		// Cas B1) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
-		// et CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 1, auquel cas il faut mettre :
-		// ¤ cdNomCalcule=CD_NOM_REMPLACEMENT
-		// ¤ mettre à jour cdRefCalcule et nomValide à partir du nouveau cdNomCalcule.
-		// ¤ TaxoStatut=Diffusé
-		// ¤ TaxoModif=Modification TAXREF
-		// ¤ TaxoAlerte=NON
-		$casB1 = $pdo->prepare("UPDATE raw_data.$tableName SET
-				cdnomcalcule = :cdNomRemplacement::varchar,
-				cdrefcalcule = :cdNomRemplacement,
-				nomValide = (SELECT nom_complet FROM referentiels.taxref WHERE cd_nom = :cdNomRemplacement),
-				taxostatut = '0',
-				taxomodif = '0',
-				taxoalerte = '1'
-			WHERE cdnom = :valeurInit
-		");     
-
-		// Cas B2) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
-		// et CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 3, auquel cas il faut mettre :
-		// ¤ cdNomCalcule à NULL
-		// ¤ cdRef_Calcule à NULL
-		// ¤ nomValide à NULL
-		// ¤ TaxoStatut =‘Retrait’ ???
-		// ¤ TaxoModif = ‘Suppression TAXREF’
-		// ¤ taxoAlerte = OUI.
-		$casB2 = $pdo->prepare("UPDATE raw_data.$tableName SET
-				cdnomcalcule = NULL,
-				cdrefcalcule = NULL,
-				nomvalide = NULL,
-				taxostatut = '1',
-				taxomodif = '2',
-				taxoalerte = '0'
-			WHERE cdnom = :valeurInit
-		");
-
-		// Cas B3) Lorsque TYPE_CHANGE=RETRAIT (on a alors que des CHAMP=CD_NOM), il faut : trouver les données telles que cdNom vaut VALEUR_INIT
-		// et CD_NOM correspond à un CD_NOM de CDNOM_DISPARUS et que CD_RAISON_SUPPRESSION = 2, auquel cas il faut mettre :
-		// ¤ cdNomCalcule à NULL
-		// ¤ cdRef_Calcule à NULL
-		// ¤ nomValide à NULL
-		// ¤ TaxoStatut =‘Retrait’
-		// ¤ TaxoModif = 'Gel TAXREF’
-		// ¤ taxoAlerte = OUI.
-		$casB3 = $pdo->prepare("UPDATE raw_data.$tableName SET
-				cdnomcalcule = NULL,
-				cdrefcalcule = NULL,
-				nomValide = NULL,
-				taxostatut = '1',
-				taxomodif = '1',
-				taxoalerte = '0'
-			WHERE cdnom = :valeurInit
-		");
+		// taxostatut NULL permet de filtrer ce qui n'a pas été traité par B1, B2 ou B3 (à mon avis, il ne reste plus rien).
 
 
 		// Cas C) Lorsque TYPE_CHANGE=MODIFICATION et CHAMP=LB_NOM, il faut : trouver les données telles que cdNom valent CD_NOM. Pour ces données, mettre :
 		// ¤ nomValid=VALEUR_FINAL.
-		$casC = $pdo->prepare("UPDATE raw_data.$tableName SET
-				nomvalide = (SELECT nom_complet FROM referentiels.taxref WHERE cd_nom = :cdNom)
-			WHERE cdnom = :cdNom
+		$casC = $pdo->exec("UPDATE raw_data.$tableName SET
+				nomvalide = (SELECT nom_complet FROM referentiels.taxref t WHERE t.cd_nom = ac.cd_nom)
+			FROM all_changes ac
+			WHERE cdnom = ac.cd_nom
+			AND ac.type_change = 'MODIFICATION'
+			AND ac.champ = 'LB_NOM'
 		");
-
-		$file = new SplFileObject(realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'all_changes.csv'), 'r') ;
-		$file->setFlags(SplFileObject::READ_CSV) ;
-		$header = $file->fgetcsv() ;
-		while ($row = $file->fgetcsv()) {
-
-			if (empty($row) || count($row) != count($header)) {
-				continue ;
-			}
-
-			$data = array_combine($header, $row) ;
-
-			$cdNom = $data['cd_nom'] ;
-			$typeChange = $data['type_change'] ;
-			$champ = $data['champ'] ;
-			$cdRaisonSuppression = $data['cd_raison_suppression'] ;
-			$valeurInit = $data['valeur_init'] ;
-			$valeurFinal = $data['valeur_final'] ;
-			$cdNomRemplacement = $data['cd_nom_remplacement'] ;
-
-			// Cas A		
-			if ('MODIFICATION' == $typeChange && 'CD_REF' == $champ) {	
-				$casA->execute(array(
-					'cdNom' => $cdNom,
-					'valeurFinal' => $valeurFinal
-				));
-				$casAbis->execute(array(
-					'valeurInit' => $valeurInit,
-					'valeurFinal' => $valeurFinal
-				));
-			}
-
-			// Cas B
-			if ('RETRAIT' == $typeChange) {
-
-				if (!empty($cdRaisonSuppression) && '1' == $cdRaisonSuppression) {
-					$casB1->execute(array(
-						'cdNomRemplacement' => $cdNomRemplacement,
-						'valeurInit' => $valeurInit
-					));
-				} else if (!empty($cdRaisonSuppression) && '3' == $cdRaisonSuppression) {
-					$casB2->execute(array(
-						'valeurInit' => $valeurInit
-					));
-				} else if (!empty($cdRaisonSuppression) && '2' == $cdRaisonSuppression) {
-					$casB3->execute(array(
-						'valeurInit' => $valeurInit
-					)) ;
-				} else {
-					// Cas B0, par défaut
-					$casB0->execute(array(
-						'valeurInit' => $valeurInit
-					));
-				}
-			}
-
-			// Cas C
-			if ('MODIFICATION' == $typeChange && 'LB_NOM' == $champ) {
-				$casC->execute(array(
-					'cdNom' => $valeurFinal
-				));
-			}
-
-		}
-
 
 		// Suppression du trigger temporaire
 		$pdo->exec("DROP TRIGGER sensitive_v11$tableName ON raw_data.$tableName") ;
@@ -292,6 +294,9 @@ try {
 
 	// Suppression de la fonction de calcul de sensibilité temporaire
 	$pdo->exec("DROP FUNCTION raw_data.sensitive_v11()") ;
+
+	// Suppression de la table temporaire
+	$pdo->exec("DROP TABLE all_changes") ;
 	
     
 } catch (PDOException $e) {
