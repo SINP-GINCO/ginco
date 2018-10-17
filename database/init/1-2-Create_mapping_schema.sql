@@ -382,6 +382,9 @@ CREATE TABLE observation_geometrie
   CONSTRAINT observation_geometrie_pk PRIMARY KEY (id_observation, id_provider, table_format, id_geom)
 );
 
+CREATE INDEX idx_observation_geometrie_id_observation ON mapping.observation_geometrie(id_observation) ;
+CREATE INDEX idx_observation_geometrie_id_geom ON mapping.observation_geometrie(id_geom) ;
+
 COMMENT ON TABLE observation_geometrie IS 'The association table between an observation and its most precise geometry';
 COMMENT ON COLUMN observation_geometrie.id_observation IS 'The foreign key id of the observation (part of the primary key for an observation)';
 COMMENT ON COLUMN observation_geometrie.id_provider IS 'The foreign key id of the provider (part of the primary key for an observation)';
@@ -400,6 +403,9 @@ CREATE TABLE observation_commune
   percentage numeric(4,3) NOT NULL,
   CONSTRAINT observation_commune_pk PRIMARY KEY (id_observation, id_provider, table_format, id_commune)
 );
+
+CREATE INDEX idx_observation_commune_id_observation ON mapping.observation_commune(id_observation) ;
+CREATE INDEX idx_observation_commune_id_commune ON mapping.observation_commune(id_commune) ;
 
 COMMENT ON TABLE observation_commune IS 'The association table between an observation and its calculated commune';
 COMMENT ON COLUMN observation_commune.id_observation IS 'The foreign key id of the observation (part of the primary key for an observation)';
@@ -421,6 +427,9 @@ CREATE TABLE observation_maille
   CONSTRAINT observation_maille_pk PRIMARY KEY (id_observation, id_provider, table_format, id_maille)
 );
 
+CREATE INDEX idx_observation_maille_id_observation ON mapping.observation_maille(id_observation) ;
+CREATE INDEX idx_observation_maille_id_maille ON mapping.observation_maille(id_maille) ;
+
 COMMENT ON TABLE observation_maille IS 'The association table between an observation and its calculated maille';
 COMMENT ON COLUMN observation_maille.id_observation IS 'The foreign key id of the observation (part of the primary key for an observation)';
 COMMENT ON COLUMN observation_maille.id_provider IS 'The foreign key id of the provider (part of the primary key for an observation)';
@@ -440,6 +449,9 @@ CREATE TABLE observation_departement
   percentage numeric(4,3) NOT NULL,
   CONSTRAINT observation_departement_pk PRIMARY KEY (id_observation, id_provider, table_format, id_departement)
 );
+
+CREATE INDEX idx_observation_departement_id_observation ON mapping.observation_departement(id_observation) ;
+CREATE INDEX idx_observation_departement_id_departement ON mapping.observation_departement(id_departement) ;
 
 COMMENT ON TABLE observation_departement IS 'The association table between an observation and its calculated departement';
 COMMENT ON COLUMN observation_departement.id_observation IS 'The foreign key id of the observation (part of the primary key for an observation)';
