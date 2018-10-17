@@ -63,6 +63,10 @@ try {
 		)); 
 	}
 
+	$pdo->exec("CREATE INDEX idx_all_changes_type_change ON all_changes(type_change)") ;
+	$pdo->exec("CREATE INDEX idx_all_changes_cdnom ON all_changes(cd_nom)") ;
+	$pdo->exec("CREATE INDEX idx_all_changes_champ ON all_changes(champ)") ;
+
 
 	// Création de la fonction de recalcul de sensibilité pour la migration 
 	$pdo->exec("
