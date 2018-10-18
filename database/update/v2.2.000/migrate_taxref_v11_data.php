@@ -291,6 +291,15 @@ try {
 		// Suppression du trigger temporaire
 		$pdo->exec("DROP TRIGGER sensitive_v11$tableName ON raw_data.$tableName") ;
 
+		// Calcul de cdnomcalcule et cdrefcalcule pour toutes les autres données (non impactées par la migration v11)
+		$pdo->exec("UPDATE raw_data.$tableName SET
+			cdnomcalcule = cdnom,
+			cdrefcalcule = (SELECT cd_ref FROM referentiels.taxref t WHERE t.cd_nom = raw_data.$tableName.cdnom)
+			WHERE cdnom IS NOT NULL
+			AND cdnomcalcule IS NULL
+			AND taxostatut IS NULL
+		");
+
 		// Réactivation des triggers de sensibilité.
 		$pdo->exec("ALTER TABLE raw_data.$tableName ENABLE TRIGGER sensitive_automatic$tableName") ;
 		$pdo->exec("ALTER TABLE raw_data.$tableName ENABLE TRIGGER sensitive_manual$tableName") ;

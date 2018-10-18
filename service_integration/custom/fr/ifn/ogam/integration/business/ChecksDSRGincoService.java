@@ -909,7 +909,8 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		GenericData cdRef = values.get(DSRConstants.CD_REF) ;
 		GenericData cdRefCalcule = values.get(DSRConstants.CD_REF_CALC) ;
 		if (cdNom != null && !empty(cdNom)) {
-			cdRefCalcule.setValue(cdNom.getValue()) ;
+			String cdRefFromCdNom = metadataDAO.getCdrefFromCdnom(cdNom.getValue().toString()) ;
+			cdRefCalcule.setValue(cdRefFromCdNom) ;
 		} else if (cdRef != null && !empty(cdRef)) {
 			cdRefCalcule.setValue(cdRef.getValue()) ;
 		}
