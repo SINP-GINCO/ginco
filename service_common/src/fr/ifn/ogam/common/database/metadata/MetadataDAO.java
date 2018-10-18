@@ -267,6 +267,12 @@ public class MetadataDAO {
 			" AND schema_code = ?";
 
 	/**
+	 * Get the cdref value from given cdnom.
+	 */
+	private static final String GET_CDREF_FROM_CDNOM = "SELECT cd_ref FROM referentiels.taxref WHERE cd_nom = ?" ;
+	
+	
+	/**
 	 * Get a connexion to the database.
 	 * 
 	 * @return The <code>Connection</code>
@@ -1984,6 +1990,61 @@ public class MetadataDAO {
 	}
 
 	/**
+	 * Get the cdref associated to the cdnom.
+	 * 
+	 * @param cdnom the cd_nom
+	 * @return String the cd_ref
+	 */
+	public String getCdrefFromCdnom(String cdnom) throws Exception {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			String result = new String() ;
+
+			con = getConnection();
+
+			// Execute the statement
+			ps = con.prepareStatement(GET_CDREF_FROM_CDNOM);
+			ps.setString(1, cdnom);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getString("cd_ref") ;
+			}
+
+			return result;
+
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing resultset : " + e.getMessage());
+			}
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing statement : " + e.getMessage());
+			}
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing connexion : " + e.getMessage());
+			}
+		}
+	}
+
+	
+	
+	/**
 	 * Get the name associated with the code given in mode_taxref table.
 	 * 
 	 * @param code
@@ -2036,7 +2097,9 @@ public class MetadataDAO {
 			}
 		}
 	}
-
+	
+	
+	
 	/**
 	 * Clear the local caches, to reset the metadata.
 	 */
