@@ -133,6 +133,12 @@ function restoreSql($sqlDumpFile, $config){
 	$conStr.=" password=".$config['db.adminuser.pw'];
 	$conStr.=" dbname=postgres";
 
+	// stop all process 
+	system("psql \"$conStr\" -c \"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='{$config['db.name']}'\"", $returnCodeStop) ;
+	if ($returnCodeStop != 0) {
+		exitOnError("Can't terminate process for db {$config['db.name']}\n");
+	}
+
 	// restore database from the dump file
 	system("psql \"$conStr\" --set ON_ERROR_STOP=on -f $sqlDumpFile", $returnCode);
 
