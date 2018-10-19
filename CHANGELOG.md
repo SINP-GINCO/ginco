@@ -4,6 +4,16 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.2.2 (19/10/2018)
+
+* Correction des formulaires cassés sur le requêteur.
+* Correction de l'impossibilité de verser des données sur test-dlb.
+* Corrections d'erreurs sur la migration TAXREF v11.
+* Correction du test sur la validité des identifiants permanents.
+* Corrections de bugs divers.
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.1...v2.2.2)
+
 ## V2.2.1 (20/09/2018)
 
 * Correction de la migration du métamodèle pour les instances possédant plusieurs modèles.
