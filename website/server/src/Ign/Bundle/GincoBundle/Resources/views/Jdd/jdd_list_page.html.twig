@@ -169,12 +169,12 @@
                         </div>
                     {% else %}
 						{% if is_granted('VALIDATE_JDD', jdd) %}
-							{% if jdd.status == 'active' and (jdd.dee is null or jdd.dee.status != 'OK') %}
+							{% if jdd.status == 'active' %}
 								<a class="btn btn-xs btn-success" href="{{ path('integration_validate_jdd',{jdd: jdd.id}) }}" title="{{ 'Confirm_validate_jdd'|trans }}"
 									onClick="return confirm('{{ 'Confirm_validate_jdd_warning'|trans }}');">
 									<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 								</a>
-							{% elseif jdd.status == 'validated' and (jdd.dee is null or jdd.dee.status != 'OK') %}
+							{% elseif jdd.status == 'validated' %}
 								<a class="btn btn-xs btn-warning" href="{{ path('integration_invalidate_jdd',{jdd: jdd.id}) }}" title="{{ 'Confirm_invalidate_jdd'|trans }}"
 									onClick="return confirm('{{ 'Confirm_invalidate_jdd_warning'|trans }}');">
 									<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>

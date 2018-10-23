@@ -92,9 +92,7 @@ class IntegrationController extends GincoController {
 		
 		$this->denyAccessUnlessGranted('CREATE_SUBMISSION', $jdd) ;
 		
-		$deeRepository = $this->getDoctrine()->getManager()->getRepository('IgnGincoBundle:RawData\DEE') ;
-		$dee = $deeRepository->findLastVersionByJdd($jdd) ;
-		if ($dee && DEE::STATUS_OK == $dee->getStatus()) {
+		if (Jdd::STATUS_VALIDATED == $jdd->getStatus()) {
 			$this->addFlash('error', 'Integration.Jdd.error.addSubmission') ;
 			$formDisabled = true ;
 		}
