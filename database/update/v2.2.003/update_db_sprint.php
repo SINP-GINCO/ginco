@@ -4,11 +4,11 @@ $initDir = realpath(dirname(__FILE__)."/../../init/") ;
 require_once "$sprintDir/../../../lib/share.php";
 
 // ------------------------------------------------
-// Synopsis: migrate DB GINCO from v2.2.2 to v2.3.0
+// Synopsis: migrate DB GINCO from v2.2.2 to v2.2.3
 // ------------------------------------------------
 function usage($mess = NULL) {
 	echo "------------------------------------------------------------------------\n";
-	echo ("\nUpdate DB from v2.2.2 to v2.3.0\n");
+	echo ("\nUpdate DB from v2.2.2 to v2.2.3\n");
 	echo ("> php update_db_sprint.php -f <configFile> [{-D<propertiesName>=<Value>}]\n\n");
 	echo "o <configFile>: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
