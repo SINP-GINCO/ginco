@@ -25,7 +25,7 @@ class ProxyController extends GincoController {
 	 * @Route("/show-report", name = "proxy_show-report")
 	 */
 	function showReportAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('showreportAction');
 
 		// Get the configuration parameters
@@ -78,7 +78,7 @@ class ProxyController extends GincoController {
 	 * @throws Exception
 	 */
 	protected function sendGET($url) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('sendGET : ' . $url);
 
 		$result = "";
@@ -102,7 +102,7 @@ class ProxyController extends GincoController {
 	 * @throws Exception
 	 */
 	protected function sendPOST($url, $data) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('sendPOST : ' . $url . " data : " . $data);
 
 		$contentType = "application/xml";

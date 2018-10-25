@@ -44,7 +44,7 @@ class QueryController extends GincoController {
 	 * @Route("/show-query-form", name = "query_show-query-form")
 	 */
 	public function showQueryFormAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('showQueryFormAction');
 		
 		// Clean previous results
@@ -85,7 +85,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetdatasets")
 	 */
 	public function ajaxgetdatasetsAction(Request $request) {
-		$this->get('logger')->debug('ajaxgetdatasetsAction');
+		$this->get('monolog.logger.ginco')->debug('ajaxgetdatasetsAction');
 		return new JsonResponse($this->get('ginco.manager.query')->getDatasets($this->getUser()));
 	}
 
@@ -93,7 +93,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxresetresult")
 	 */
 	public function ajaxresetresultAction() {
-		$this->get('logger')->debug('ajaxresetresultAction');
+		$this->get('monolog.logger.ginco')->debug('ajaxresetresultAction');
 		
 		$sessionId = session_id();
 		
@@ -111,7 +111,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetqueryform")
 	 */
 	public function ajaxgetqueryformAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetqueryformAction');
 		
 		$filters = json_decode($request->query->get('filter'));
@@ -151,7 +151,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetqueryformfields")
 	 */
 	public function ajaxgetqueryformfieldsAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetqueryformfieldsAction');
 		
 		$filters = json_decode($request->query->get('filter'));
@@ -203,7 +203,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxbuildrequest", name="query_build_request")
 	 */
 	public function ajaxbuildrequestAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxbuildrequestAction');
 		
 		// Check the validity of the POST
@@ -267,7 +267,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetresultsbbox", name="query_get_results_bbox")
 	 */
 	public function ajaxgetresultsbboxAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetresultsbboxAction');
 		
 		$configuration = $this->get('ginco.configuration_manager');
@@ -336,7 +336,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetobservationbbox", name="query_get_observation_bbox")
 	 */
 	public function ajaxgetobservationbboxAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$observationId = $request->request->get('observationId');
 		$logger->debug('ajaxgetobservationbboxAction : ' . $observationId);
 		$locale = $this->get('ginco.locale_listener')->getLocale();
@@ -362,7 +362,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetresultcolumns", name="query_get_result_columns")
 	 */
 	public function ajaxgetresultcolumnsAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetresultcolumns');
 		
 		try {
@@ -414,7 +414,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetresultrows", name="query_get_result_rows")
 	 */
 	public function ajaxgetresultrowsAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetresultrows');
 		
 		// Get the datatable parameters
@@ -449,7 +449,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetlocationinfo", name="query_get_location_info")
 	 */
 	public function ajaxgetlocationinfoAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetlocationinfoAction');
 		try {
 			$lon = $request->query->get('LON');
@@ -645,7 +645,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetdetails", name="query_get_details")
 	 */
 	public function ajaxgetdetailsAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('getDetailsAction');
 		
 		try {
@@ -726,7 +726,7 @@ class QueryController extends GincoController {
 	 * @Route("/csv-export", name="query_csv_export")
 	 */
 	public function csvExportAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('csvExportAction');
 		
 		$user = $this->getUser();
@@ -844,7 +844,7 @@ class QueryController extends GincoController {
 	 * @Route("/csv-asyn-export", name="query_csv_asyn_export")
 	 */
 	public function csvAsynchronousExportAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('csvAsynchronousExportAction');
 		
 		try {
@@ -927,7 +927,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgettreenodes", name="query_get_treenodes")
 	 */
 	public function ajaxgettreenodesAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgettreenodesAction');
 		try {
 			$unitCode = $request->get('unit');
@@ -959,7 +959,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgettaxrefnodes", name="query_get_taxref_nodes")
 	 */
 	public function ajaxgettaxrefnodesAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgettaxrefnodesAction');
 		try {
 			$unitCode = $request->get('unit');
@@ -991,7 +991,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetdynamiccodes", name="query_get_dynamic_codes")
 	 */
 	public function ajaxgetdynamiccodesAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetdynamiccodesAction');
 		try {
 			$unitCode = $request->query->get('unit');
@@ -1029,7 +1029,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgetcodes", name="query_get_codes")
 	 */
 	public function ajaxgetcodesAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetcodesAction');
 		try {
 			$unitCode = $request->query->get('unit');
@@ -1068,7 +1068,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgettreecodes", name="query_get_tree_codes")
 	 */
 	public function ajaxgettreecodesAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgettreecodesAction');
 		try {
 			$unitCode = $request->query->get('unit');
@@ -1111,7 +1111,7 @@ class QueryController extends GincoController {
 	 * @Route("/ajaxgettaxrefcodes", name="query_get_taxref_codes")
 	 */
 	public function ajaxgettaxrefcodesAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgettaxrefcodesAction');
 		try {
 			$unitCode = $request->query->get('unit');

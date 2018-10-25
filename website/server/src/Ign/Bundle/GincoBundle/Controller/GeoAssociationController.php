@@ -17,7 +17,7 @@ class GeoAssociationController extends GincoController  {
 	 * @Route("/compute", name="compute")
 	 */
 	public function computeGeoAssociationAction(Request $request) {
-		$this->get('logger')->debug('computeGeoAssociationAction');
+		$this->get('monolog.logger.ginco')->debug('computeGeoAssociationAction');
 		
 		set_time_limit(1000);
 		
@@ -28,7 +28,7 @@ class GeoAssociationController extends GincoController  {
 			->getManager('website')
 			->getRepository('IgnGincoBundle:RawData\Submission')
 			->find($submissionId);
-		$this->get('logger')->debug('submission: ' . $submissionId);
+		$this->get('monolog.logger.ginco')->debug('submission: ' . $submissionId);
 		
 		$entity = null;
 		$providerId = null;
@@ -45,7 +45,7 @@ class GeoAssociationController extends GincoController  {
 	 * @Route("/update-jdd", name="update-jdd")
 	 */
 	public function updateJddGeoAssociationAction(Request $request) {
-		$this->get('logger')->debug('createGeoAssociationAction');
+		$this->get('monolog.logger.ginco')->debug('createGeoAssociationAction');
 	
 		// Get the submission Id
 		$jddId = $request->query->getInt("jddId");
@@ -70,7 +70,7 @@ class GeoAssociationController extends GincoController  {
 	 * @Route("/update-entity", name="update-entity")
 	 */
 	public function updateEntityGeoAssociationAction(Request $request) {
-		$this->get('logger')->debug('createGeoAssociationAction');
+		$this->get('monolog.logger.ginco')->debug('createGeoAssociationAction');
 	
 		// Get the submission Id
 		$entity = $request->query->get("entity");

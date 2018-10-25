@@ -12,15 +12,21 @@ services:
         arguments: ["@=service('ginco.configuration_manager').getConfig('integrationService_url', 'http://localhost:8080/GincoIntegrationService/')", "@ginco.submission_service"]
         calls:
           - [setLogger, ['@logger']]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # CAS authenticator
     ginco.cas_authenticator:
       class: Ign\Bundle\GincoBundle\Security\CasAuthenticator
       arguments: ["@doctrine", "@ginco.configuration_manager", "@ginco.inpn_user_updater", "@logger"]
+      tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.inpn_user_updater:
       class: Ign\Bundle\GincoBundle\Services\INPNUserUpdater
       arguments: ["@doctrine", "@ginco.configuration_manager", "@ginco.inpn_provider_service", "@logger"]
+      tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Get anonymous user
     app.anonymous_user:
@@ -33,6 +39,8 @@ services:
         arguments:
             session: "@session"
             logger: "@logger"
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Service used to read the application parameters from the database
     ginco.configuration_manager:
@@ -40,6 +48,8 @@ services:
         arguments:
             em: "@doctrine.orm.entity_manager"
             logger: "@logger"
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Service used to read the breadcrumbs config
     ginco.breadcrumb_config_service:
@@ -82,41 +92,59 @@ services:
         arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ginco.generic_service", "@ginco.configuration_manager"]
         calls:
           - [setLogger, ['@logger']]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.manager.query:
         class: Ign\Bundle\GincoBundle\Manager\QueryManager
         arguments: ["@doctrine.orm.metadata_entity_manager","@doctrine.orm.raw_data_entity_manager","@ginco.query_service","@ginco.configuration_manager"]
         calls:
           - [setLogger, ['@logger']]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Services
     ginco.generic_service:
         class: Ign\Bundle\GincoBundle\Services\GenericService
         arguments: ["@doctrine.orm.metadata_entity_manager","@ginco.configuration_manager", "@logger", "%locale%"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.query_service:
         class: Ign\Bundle\GincoBundle\Services\QueryService
         arguments: ["@doctrine", "@ginco.generic_service" ,"@ginco.configuration_manager", "@logger", "%locale%", "RAW_DATA", "@ginco.manager.generic", "@ginco.repository.mapping.map"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.submission_service:
       class: Ign\Bundle\GincoBundle\Services\SubmissionService
       arguments: ["@logger", "@ginco.configuration_manager", "@ginco.generic_service","@ginco.query_service", "@doctrine.orm.raw_data_entity_manager", "@doctrine.orm.metadata_entity_manager", "@translator"]
+      tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.jdd_service:
         class: Ign\Bundle\GincoBundle\Services\JddService
         arguments: ["@logger", "@ginco.configuration_manager", "@doctrine.orm.entity_manager", "@ginco.integration_service"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.ogr2ogr:
       class: Ign\Bundle\GincoBundle\Services\Ogr2ogr
       arguments: ["@logger", "@ginco.configuration_manager"]
+      tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.inpn_provider_service:
       class: Ign\Bundle\GincoBundle\Services\INPNProviderService
       arguments: ["@doctrine", "@ginco.configuration_manager", "@logger"]
+      tags:
+          - { name: monolog.logger, channel: ginco }
 
     ginco.geo_association_service:
         class: Ign\Bundle\GincoBundle\Services\GeoAssociationService
         arguments: ["@doctrine", "@logger"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
         
     # Query service
     ginco.query:
@@ -137,6 +165,8 @@ services:
         calls:
           - [setDEEProcess, ['@ginco.dee_process']]
           - [setExportCSV, ['@ginco.export_csv']]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     #templatehelper
     ginco.helper.AddLink:
@@ -200,26 +230,36 @@ services:
     app.mail_manager:
         class: Ign\Bundle\GincoBundle\Services\MailManager
         arguments: ["@mailer", "@twig", "@logger", "noreply@ign.fr", "@=service('ginco.configuration_manager').getConfig('site_name', 'Plateforme GINCO')"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Service reading and parsing the xml metadata files from INPN metadata application
     ginco.metadata_reader:
         class: Ign\Bundle\GincoBundle\Services\MetadataReader
         arguments: ["@ginco.configuration_manager","@logger"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Service generating DEE
     ginco.dee_generator:
         class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGenerator
         arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.generic_service", "@ginco.query_service","@logger"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Service doing the whole process of generating and sending the DEE file
     ginco.dee_process:
         class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess
         arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.dee_generator", "@app.mail_manager","@logger"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
         
     # Service doing the whole process of generating and sending the export file
     ginco.export_csv:
         class: Ign\Bundle\GincoBundle\Services\ExportCSV
         arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@app.mail_manager", "@ginco.query_service", "@logger", "@=service('ginco.locale_listener').getLocale()", "@translator"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     # Forms
     form.type.link_file:

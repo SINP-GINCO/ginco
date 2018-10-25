@@ -75,7 +75,7 @@ class MapController extends GincoController {
 	 * @Route("/ajaxgetlayertreenodes")
 	 */
 	public function ajaxgetlayertreenodesAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetlayertreenodes');
 
 		$response = new Response();

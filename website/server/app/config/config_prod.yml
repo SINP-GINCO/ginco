@@ -18,10 +18,22 @@ monolog:
         main:
             type:         fingers_crossed
             action_level: error
+            channels: [!ginco]
             handler:      nested
+        ginco:
+            type: fingers_crossed
+            action_level: error
+            channels: ginco
+            handler: nested_ginco
         nested:
-            type:  stream
+            type:  rotating_file
             path:  "%kernel.logs_dir%/symfony_%kernel.environment%.log"
-            level: debug
+            level: info
+            max_files: 30
+        nested_ginco:
+            type:  rotating_file
+            path:  "%kernel.logs_dir%/ginco_%kernel.environment%.log"
+            level: info
+            max_files: 30
         console:
-            type:  console
+            type:  consolee

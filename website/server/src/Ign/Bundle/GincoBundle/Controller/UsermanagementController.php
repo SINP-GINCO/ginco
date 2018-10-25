@@ -120,7 +120,7 @@ class UsermanagementController extends GincoController {
 	 * @Route("/changePassword/{login}", name="usermanagement_changePassword")
 	 */
 	public function changePasswordAction(Request $request, $login) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('changePasswordAction');
 	
 		// Load the user
@@ -172,7 +172,7 @@ class UsermanagementController extends GincoController {
 	 * @Route("/addUser", name="usermanagement_addUser")
 	 */
 	public function addUserAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('addUserAction');
 
 		// Get the "Add User from INPN" form
@@ -232,7 +232,7 @@ class UsermanagementController extends GincoController {
 	public function editUserAction(Request $request, $login = null) {
 		$user = new User();
 
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('editUserAction');
 
 		if ($login != null) {
@@ -272,7 +272,7 @@ class UsermanagementController extends GincoController {
 	 */
 	public function editRoleAction(Request $request, $code = null) {
 		$role = new Role();
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('editRoleAction');
 
 		if ($code != null) {
@@ -325,7 +325,7 @@ class UsermanagementController extends GincoController {
 	 * @Route("/showUsers", name="usermanagement_showUsers")
 	 */
 	public function showUsersAction() {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->info('showUsersAction');
 
 		// Get the list of roles
@@ -358,7 +358,7 @@ class UsermanagementController extends GincoController {
 	 * @Route("/showRoles", name="usermanagement_showRoles")
 	 */
 	public function showRolesAction() {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->info('showRolesAction');
 
 		// Get the list of roles
@@ -420,7 +420,7 @@ class UsermanagementController extends GincoController {
 	 */
 	public function addProviderAction(Request $request,$id = null) {
 
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('addProviderAction');
 		$providerService = $this->get('ginco.inpn_provider_service');
 
@@ -490,7 +490,7 @@ class UsermanagementController extends GincoController {
 	 * @Route("/showProviders", name="usermanagement_showProviders")
 	 */
 	public function showProvidersAction() {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->info('showProvidersAction');
 	
 		// Get the list of providers
@@ -535,7 +535,7 @@ class UsermanagementController extends GincoController {
 	 *        	the id of a provider
 	 */
 	public function showProviderContentAction($id) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->info('showProviderContentAction');
 		
 		$logger->info('id : ' . $id);

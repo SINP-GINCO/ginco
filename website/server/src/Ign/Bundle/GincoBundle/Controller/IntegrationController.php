@@ -41,7 +41,7 @@ class IntegrationController extends GincoController {
 	}
 
 	function getLogger() {
-		return $this->get('logger');
+		return $this->get('monolog.logger.ginco');
 	}
 
 	/**
@@ -150,8 +150,8 @@ class IntegrationController extends GincoController {
 		$showDetail = $configuration->getConfig('showUploadFileDetail', true) == 1;
 		$showModel = $configuration->getConfig('showUploadFileModel', true) == 1;
 		$dataset = $submission->getDataset();
-		$this->get('logger')->debug('$showDetail : ' . $showDetail);
-		$this->get('logger')->debug('$showModel : ' . $showModel);
+		$this->get('monolog.logger.ginco')->debug('$showDetail : ' . $showDetail);
+		$this->get('monolog.logger.ginco')->debug('$showModel : ' . $showModel);
 		
 		$geomFieldInFile = false;
 		
@@ -227,7 +227,7 @@ class IntegrationController extends GincoController {
 				$providerId = $submission->getProvider()->getId();
 				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser()->getLogin(), $providerId, $requestedFiles, $srid);
 			} catch (\Exception $e) {
-				$this->get('logger')->error('Error during upload:' . $e, array(
+				$this->get('monolog.logger.ginco')->error('Error during upload:' . $e, array(
 					'exception' => $e
 				));
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
@@ -604,7 +604,7 @@ class IntegrationController extends GincoController {
 	 * @Route("/cancel-data-submission/{submission}", name="integration_cancel")
 	 */
 	public function cancelDataSubmissionAction(Submission $submission, Request $request) {
-		$this->get('logger')->debug('cancelDataSubmissionAction');
+		$this->get('monolog.logger.ginco')->debug('cancelDataSubmissionAction');
 		// Desactivate the timeout
 		set_time_limit(0);
 		
@@ -620,7 +620,7 @@ class IntegrationController extends GincoController {
 			try {
 				$this->get('ginco.integration_service')->cancelDataSubmission($submission);
 			} catch (\Exception $e) {
-				$this->get('logger')->error('Error during upload: ' . $e);
+				$this->get('monolog.logger.ginco')->error('Error during upload: ' . $e);
 				
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 					'error' => $this->get('translator')
@@ -657,7 +657,7 @@ class IntegrationController extends GincoController {
 	 * @Route("/import-shapefile/{id}", name="import_shapefile")
 	 */
 	public function importShapefileAction(Request $request, Submission $submission) {
-		$this->get('logger')->debug('importShapefileAction');
+		$this->get('monolog.logger.ginco')->debug('importShapefileAction');
 		
 		$this->denyAccessUnlessGranted('CREATE_SUBMISSION', $submission->getJdd()) ;
 		
@@ -766,7 +766,7 @@ class IntegrationController extends GincoController {
 				$extension = ".zip";
 				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser()->getLogin(), $providerId, $requestedFiles, $srid, $extension);
 			} catch (\Exception $e) {
-				$this->get('logger')->error('Error during upload:' . $e, array(
+				$this->get('monolog.logger.ginco')->error('Error during upload:' . $e, array(
 					'exception' => $e
 				));
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(

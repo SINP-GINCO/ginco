@@ -23,7 +23,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Route("/ajaxgetpredefinedrequestlist", name="query_get_predefined_request_list")
 	 */
 	public function ajaxgetpredefinedrequestlistAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetpredefinedrequestlist');
 		
 		$sort = $request->query->get('sort');
@@ -47,7 +47,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Route("/ajaxgetpredefinedrequestcriteria", name="query_get_predefined_request_criteria")
 	 */
 	public function ajaxgetpredefinedrequestcriteriaAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetpredefinedrequestcriteria');
 		
 		$requestName = $request->query->get('request_name');
@@ -65,7 +65,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Route("/ajaxgeteditablepredefinedrequestlist")
 	 */
 	public function ajaxgeteditablepredefinedrequestlistAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgeteditablepredefinedrequestlist');
 		
 		$sort = $request->query->get('sort');
@@ -89,7 +89,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Route("/ajaxgetpredefinedgrouplist")
 	 */
 	public function ajaxgetpredefinedgrouplistAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('ajaxgetpredefinedgrouplist');
 		
 		// Get the predefined values for the forms
@@ -110,7 +110,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Method("POST")
 	 */
 	public function createPredefinedrequestAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('createPredefinedrequestAction');
 		
 		try {
@@ -165,7 +165,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Method("GET")
 	 */
 	public function getPredefinedRequestAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('getPredefinedRequestAction');
 		
 		try {
@@ -218,7 +218,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Method("PUT")
 	 */
 	public function editPredefinedrequestAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('editPredefinedrequestAction');
 		
 		try {
@@ -281,7 +281,7 @@ class PredefinedRequestController extends GincoController {
 	 * @Method("DELETE")
 	 */
 	public function deletePredefinedrequestAction(Request $request) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('deletePredefinedrequestAction');
 		
 		try {

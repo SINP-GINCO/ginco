@@ -161,8 +161,8 @@ class DataEditionController extends GincoController {
 			try {
 				$genericModel->deleteData($data);
 			} catch (\Exception $e) {
-				if ($this->has('logger')) {
-					$this->get('logger')->error($e->getMessage());
+				if ($this->has('monolog.logger.ginco')) {
+					$this->get('monolog.logger.ginco')->error($e->getMessage());
 				}
 				$result = [
 					'success' => false,
@@ -505,8 +505,8 @@ class DataEditionController extends GincoController {
 				$view['message'] = $this->get('translator')->trans("Data saved");
 				return $this->json($view);
 			} catch (\Exception $e) {
-				if ($this->has('logger')) {
-					$this->get('logger')->error($e->getMessage());
+				if ($this->has('monolog.logger.ginco')) {
+					$this->get('monolog.logger.ginco')->error($e->getMessage());
 				}
 				
 				if (stripos($e->getMessage(), 'SQLSTATE[23505]') !== false) {

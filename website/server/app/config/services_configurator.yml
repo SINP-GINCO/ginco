@@ -17,14 +17,20 @@ services:
         calls:
               - [setRequest, ["@request_stack"]]
               - [setPredefinedRequestGeneration, ['@app.predefinedrequestgeneration']]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     app.copyutils:
         class: Ign\Bundle\GincoConfigurateurBundle\Utils\CopyUtils
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
         
     app.predefinedrequestgeneration:
         class: Ign\Bundle\GincoConfigurateurBundle\Utils\PredefinedRequestGeneration
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     app.modelpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication
@@ -32,22 +38,32 @@ services:
         calls:
               - [setTablesGeneration, ['@app.tablesgeneration']]
               - [setCopyUtils, ['@app.copyutils']]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     app.modelunpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
         
     app.importmodelpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
         
     app.importmodelunpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnpublication
         arguments: ["@database_connection", "@logger"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
         
     app.modelduplication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelDuplication
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     app.permissions:
         class: Ign\Bundle\GincoConfigurateurBundle\Utils\Permissions
@@ -55,10 +71,14 @@ services:
         calls:
               - [setModelPublication, ['@app.modelpublication']]
               - [setImportModelPublication, ['@app.importmodelpublication']]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     app.resettomcatcaches:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ResetTomcatCaches
         arguments: ["@database_connection", "@logger"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
 
     ign_ogamconfigurateur.validator.caseinsensitive:                               # Le nom du service
         class: Ign\Bundle\OGAMConfigurateurBundle\Validator\CaseInsensitiveValidator     # La classe du service, ici le validateur

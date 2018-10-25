@@ -30,7 +30,7 @@ class UserController extends GincoController {
 		// It is because this route is not protected in security.yml)
 		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 		
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('see my account page');
 		
 		// If user has permission to manage his own provider, add the provider form
@@ -144,7 +144,7 @@ class UserController extends GincoController {
 	 * @Route("/currentuser", name="current_user")
 	 */
 	public function getCurrentUserAction() {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$logger->debug('getCurrentUserAction');
 		
 		$response = new Response();

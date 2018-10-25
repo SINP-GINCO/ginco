@@ -36,7 +36,7 @@ class SubmissionController extends GincoController {
 		ini_set("memory_limit", $this->get('ginco.configuration_manager')->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
 
-		$this->get('logger')->debug('generateReportsAction, submission: ' . $submission->getId());
+		$this->get('monolog.logger.ginco')->debug('generateReportsAction, submission: ' . $submission->getId());
 		
 		// The directory where we are going to store the reports, and the filenames
 		$reportsDirectory = $this->get('ginco.submission_service')->getReportsDirectory($submission);
@@ -85,7 +85,7 @@ class SubmissionController extends GincoController {
 		// Get the user
 		$user = $this->getUser();
 		
-		$this->get('logger')->debug('DownloadReport, submission: ' . $submission->getId());
+		$this->get('monolog.logger.ginco')->debug('DownloadReport, submission: ' . $submission->getId());
 		
 		// Check if submission exists
 		if ($submission == null) {
@@ -98,7 +98,7 @@ class SubmissionController extends GincoController {
 		
 		// Get the report name
 		$report = $request->query->get("report");
-		$this->get('logger')->debug("downloadReportAction: submission: {$submission->getId()}, report: $report");
+		$this->get('monolog.logger.ginco')->debug("downloadReportAction: submission: {$submission->getId()}, report: $report");
 		
 		// Check if report is accessible
 		$unstableSteps = array(
@@ -134,7 +134,7 @@ class SubmissionController extends GincoController {
 		// Get File Name
 		$filenames = $this->get('ginco.submission_service')->getReportsFilenames($submission);
 		$filePath = $filenames[$report];
-		$this->get('logger')->debug("filePath: $filePath");
+		$this->get('monolog.logger.ginco')->debug("filePath: $filePath");
 		
 		// Regenerate sensibility report each time (see #815)
 		if ($report == "sensibilityReport") {
@@ -143,11 +143,11 @@ class SubmissionController extends GincoController {
 		
 		// Test the existence of the file
 		if (!is_file($filePath)) {
-			$this->get('logger')->debug("downloadReportAction: report file $filePath does not exist, trying to generate them");
+			$this->get('monolog.logger.ginco')->debug("downloadReportAction: report file $filePath does not exist, trying to generate them");
 			// We try to generate the reports, and then re-test
 			$this->get('ginco.submission_service')->generateReport($submission, $report);
 			if (!is_file($filePath)) {
-				$this->get('logger')->error("Report file '$report' does not exist for submission {$submission->getId()}");
+				$this->get('monolog.logger.ginco')->error("Report file '$report' does not exist for submission {$submission->getId()}");
 				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
 					'error' => $this->get('translator')
 						->trans("An unexpected error occurred.")

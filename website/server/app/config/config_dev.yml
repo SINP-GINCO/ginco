@@ -14,10 +14,17 @@ web_profiler:
 monolog:
     handlers:
         main:
-            type: stream
+            type: rotating_file
             path: "%kernel.logs_dir%/symfony_%kernel.environment%.log"
             level: debug
-            channels: [!event]
+            channels: [!event, !ginco]
+            max_files: 5
+        ginco:
+            type: rotating_file
+            path: "%kernel.logs_dir%/ginco_%kernel.environment%.log"
+            level: debug
+            channels: ginco
+            max_files: 5
         console:
             type:   console
             channels: [!event, !doctrine]
