@@ -47,7 +47,7 @@ class CopyUtilsTest extends ConfiguratorTest {
 		$container = static::$kernel->getContainer();
 
 		$conn = $container->get('database_connection');
-		$logger = $container->get('logger');
+		$logger = $container->get('monolog.logger.ginco');
 
 		$adminName = $container->getParameter('database_admin_user');
 		$adminPassword = $container->getParameter('database_admin_password');

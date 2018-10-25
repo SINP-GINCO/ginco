@@ -236,7 +236,7 @@ class ModelController extends Controller {
 	 *        	@Template()
 	 */
 	public function unpublishAction($modelId, $redirectToEdit = false) {
-		$logger = $this->get('logger');
+		$logger = $this->get('monolog.logger.ginco');
 		$model = $this->getDoctrine()
 			->getManager('metadata_work')
 			->getRepository('IgnOGAMConfigurateurBundle:Model')

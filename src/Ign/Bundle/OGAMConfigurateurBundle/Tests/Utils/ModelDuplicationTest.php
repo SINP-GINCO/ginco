@@ -36,7 +36,7 @@ class ModelDuplicationTest extends ConfiguratorTest {
 		$this->container = static::$kernel->getContainer();
 
 		$conn = $this->container->get('database_connection');
-		$logger = $this->container->get('logger');
+		$logger = $this->container->get('monolog.logger.ginco');
 
 		$adminName = $this->container->getParameter('database_admin_user');
 		$adminPassword = $this->container->getParameter('database_admin_password');

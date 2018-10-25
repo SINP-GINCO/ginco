@@ -229,7 +229,7 @@ class FileFieldController extends Controller {
 	 * @return string : the report to show to the user
 	 */
 	public function doAutoMapping($tableFormat, $fileFormat) {
-		$this->get('logger')->debug('doAutoMapping');
+		$this->get('monolog.logger.ginco')->debug('doAutoMapping');
 		$em = $this->getDoctrine()->getManager('metadata_work');
 
 		$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);

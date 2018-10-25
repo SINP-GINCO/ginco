@@ -46,7 +46,7 @@ class ImportModelUnpublicationTest extends ConfiguratorTest {
 		$container = static::$kernel->getContainer();
 
 		$conn = $container->get('database_connection');
-		$logger = $container->get('logger');
+		$logger = $container->get('monolog.logger.ginco');
 
 		$this->imu = new ImportModelUnpublication($conn, $logger);
 	}
