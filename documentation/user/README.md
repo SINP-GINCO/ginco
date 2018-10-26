@@ -77,8 +77,10 @@ Se placer dans `ginco/documentation/user/` et exécuter :
 
 ```bash
 make clean
-make html
+make html SPHINXENV=[test|prod] (défaut = prod)
 ```
+La variable d'environnement **SPHINXENV** permet de générer dans la documentation des liens vers les instances de préproduction ou vers les instances de production.
+
 Les fichiers html sont générés dans `build/html`. Pour voir le résultat, ouvrir `build/html/index.html`
 dans un navigateur. 
 
@@ -92,7 +94,7 @@ Le fichier généré est `build/latex/Ginco.pdf`.
 Et pour les deux en même temps (le PDF est ainsi téléchargeable directement depuis le site de doc) :
 
 ```bash
-make htmlandpdf
+make htmlandpdf SPHINWENV=[test|prod] (défaut=prod)
 ```
 
 ## Captures d'écran
@@ -106,21 +108,19 @@ Afin de builder les documentations indépendamment des instances, des nouveaux d
 
 Il contiennent la version de la documentation à déployer (qui correspond à une version Ginco/DLB).
 
-Doc dailybuild :
+### Doc dailybuild :
 Elle est déployée automatiquement par jenkins après le déploiement du dailybuild.
 Le projet jenkins ginco-dailybuild déploie la doc ginco, le projet jenkins Ginco-DLB déploie la doc DLB. Par contre, les deux builds sont déployés sur la VM du dailybuild ginco. Dans /var/www/ginco/doc pour ginco et /var/www/dlb/doc pour DLB.
 
-Doc test et prod :
-Les commandes pour déployer les versions de test et de prod de la documentation sont commentées dans jenkins.
+### Doc test et prod :
+Il faut lancer les commandes à la main à partir du dépôt de l'installeur.
 
-Pour mettre à jour une version (déployer), il faut :
- - mettre à jour le fichier de config de documentation correspondant et le pusher sur le serveur.
- - décommenter les commandes correspondantes dans Jenkins, et préciser dans la commande getPackage la version (branche) que l'on souhaite déployer. 
+Pour mettre à jour une version (déployer), il faut mettre à jour le fichier de config de documentation correspondant et le pusher sur le serveur.
 
-Par exemple, pour déployer la documentation ginco de test en version 2.0.3, les commandes que doit réaliser jenkins sont :
+Par exemple, pour déployer la documentation ginco de test en version 2.0.3, les commandes sont :
 ```bash
-./getPackage.sh -p ginco -v v2.0.3 -d ./build
-./deploy_doc.sh -i doc-ginco-test
+./getPackage.sh -p ginco -v v2.0.3 -d ./build/ginco
+./deploy_doc.sh -i doc-ginco-test -e test
 ```
 et le fichier doc-ginco-dailybuild.properties doit contenir :
 ```bash
@@ -128,8 +128,19 @@ doc.version=ginco-test
 doc.basepath=v2.0.3
 doc.branch=v2.0.3
 ```
-remarque : Pour effectuer cette opération sans passer par Jenkins, il faut avoir builder l'application auparavant (pour récupérer le code source de la doc dans la bonne version via le git clone Ginco).
 
- - changer l'alias dans la conf apache ginco.naturefrance.fr.conf
+En production, il faut faire :
+```bash
+./getPackage.sh -p ginco -v v2.0.3 -d ./build/ginco
+./deploy_doc.sh -i doc-ginco-prod -e prod
+```
+et le fichier doc-ginco-prod.properties doit contenir :
+```bash
+doc.version=ginco-test
+doc.basepath=v2.0.3-prod
+doc.branch=v2.0.3
+```
+
+**Ne pas oublier de changer l'alias dans la conf apache ginco.naturefrance.fr.conf**
 
 
