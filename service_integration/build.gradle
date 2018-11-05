@@ -17,10 +17,10 @@ apply plugin: 'com.bmuschko.cargo'
 
 // New version : Use cargo to automatically deploy the war
 cargo {
-    def tomcatHome = project.hasProperty('tomcatHome') ? project.getProperty('tomcatHome') : 'C:/Apache/tomcat-7'
+    def tomcatHome = project.hasProperty('tomcatHome') ? project.getProperty('tomcatHome') : 'C:/Apache/tomcat-8'
     def applicationName = project.hasProperty('applicationName') ? project.getProperty('applicationName') : 'OGAM'
     
-    containerId = 'tomcat7x'
+    containerId = 'tomcat8x'
     port = 8080
    
    

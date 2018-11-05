@@ -1,20 +1,20 @@
 # OGAM - Serveur Tomcat sur Linux
 
 ## Installation via APT
-`sudo apt-get install tomcat7`
+`sudo apt-get install tomcat8`
 
-L'installation crée un nouvel utilisateur **tomcat7**
+L'installation crée un nouvel utilisateur **tomcat8**
 
 Le redémarrage du serveur peut se faire comme un deamon classique :  
-`/etc/init.d/tomcat7 restart`
+`/etc/init.d/tomcat8 restart`
 
 ## Installation de la console d'admininistration
 
 Installation de la console d'administration : 
 
-`sudo apt-get install tomcat7-admin tomcat7-docs tomcat7-examples`
+`sudo apt-get install tomcat8-admin tomcat8-docs tomcat8-examples`
 
-Les consoles d'administration _manager_ et _host-manager_ nécessitent l'installation du paquet _tomcat7-admin_.
+Les consoles d'administration _manager_ et _host-manager_ nécessitent l'installation du paquet _tomcat8-admin_.
 
 Les URL des consoles sont:
 
@@ -25,7 +25,7 @@ Les URL des consoles sont:
 
 Pour pouvoir utiliser les consoles d'admnistration il faut éditer le fichier de configuration suivant : 
 
-`/etc/tomcat7/tomcat-users.xml`
+`/etc/tomcat8/tomcat-users.xml`
 
 et définir les rôles d'administration de Tomcat : 
 
@@ -38,7 +38,7 @@ et définir les rôles d'administration de Tomcat :
 </tomcat-users>
 ```
 
-Avec Tomcat7, les rôles d'administration ont été découpé plus finement:  
+Avec Tomcat8, les rôles d'administration ont été découpé plus finement:  
 Il faut créer les rôles:
 
 *    **manager-gui** - allows access to the HTML GUI and the status pages
@@ -65,7 +65,7 @@ Installation de la librairie d'envoie d'email :
 Création des liens symboliques :
 
 ```
-cd    /usr/share/tomcat7/lib
+cd    /usr/share/tomcat8/lib
 sudo ln -s ../../java/gnumail.jar javax.mail.jar
 sudo ln -s ../../java/postgresql.jar postgresql.jar
 ```

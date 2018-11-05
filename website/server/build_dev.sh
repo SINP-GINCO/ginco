@@ -11,7 +11,7 @@ sudo setfacl -R -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs app/s
 sudo setfacl -dR -m u:"$HTTPDUSER":rwX -m u:`whoami`:rwX app/cache app/logs app/sessions
 
 # Set permissions on logs to tomcat user
-TOMCATUSER=tomcat7
+TOMCATUSER=tomcat8
 
 sudo setfacl -R -m u:"$TOMCATUSER":rwX app/logs
 sudo setfacl -dR -m u:"$TOMCATUSER":rwX app/logs

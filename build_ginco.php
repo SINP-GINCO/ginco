@@ -73,11 +73,11 @@ function buildJavaServices($config, $buildMode)
 	if ($buildMode == 'dev') {
 		$postBuildInstructions[] = "Java service war file has been built: $servicesBuildDir/webapps/$ISFilename.war\n";
 		$postBuildInstructions[] = "To install, do:\n\n";
-		$postBuildInstructions[] = "sudo service tomcat7 stop\n";
-		$postBuildInstructions[] = "sudo rm -rf /var/lib/tomcat7/webapps/$ISFilename\n";
-		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/webapps/$ISFilename.war /var/lib/tomcat7/webapps/\n";
-		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/conf/$ISFilename.xml /etc/tomcat7/Catalina/localhost/\n";
-		$postBuildInstructions[] = "sudo service tomcat7 start\n\n";
+		$postBuildInstructions[] = "sudo service tomcat8 stop\n";
+		$postBuildInstructions[] = "sudo rm -rf /var/lib/tomcat8/webapps/$ISFilename\n";
+		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/webapps/$ISFilename.war /var/lib/tomcat8/webapps/\n";
+		$postBuildInstructions[] = "sudo cp -f $servicesBuildDir/conf/$ISFilename.xml /etc/tomcat8/Catalina/localhost/\n";
+		$postBuildInstructions[] = "sudo service tomcat8 start\n\n";
 	}
 
 	echo("Done building java services.\n\n");

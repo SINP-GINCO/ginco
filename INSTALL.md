@@ -27,8 +27,8 @@ ln /usr/lib/cgi-bin/mapserv /usr/lib/cgi-bin/mapserv.fcgi
 a2enmod fcgid
 
 # Tomcat et drivers postgres
-apt-get install -y  tomcat7 libpostgresql-jdbc-java
-ln -fs  /usr/share/java/postgresql-jdbc4.jar /usr/share/tomcat7/lib/postgresql-jdbc4.jar
+apt-get install -y  tomcat8 libpostgresql-jdbc-java
+ln -fs  /usr/share/java/postgresql-jdbc4.jar /usr/share/tomcat8/lib/postgresql-jdbc4.jar
 
 # RabbitMQ
 apt-get install -y rabbitmq-server
@@ -130,7 +130,7 @@ Redémarrez tous les services :
 
 ```bash
 sudo service apache restart 
-sudo service tomcat7 restart 
+sudo service tomcat8 restart 
 sudo service supervisor force-stop; sudo service supervisor restart
 ```
 Si tout s'est bien passé, votre instance Ginco est up sur l'url que vous avez indiqué dans la configuration 
