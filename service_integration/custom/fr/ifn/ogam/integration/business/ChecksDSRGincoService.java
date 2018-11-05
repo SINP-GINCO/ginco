@@ -1092,7 +1092,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			
 			} 
 		} catch (IllegalArgumentException e) {
-			String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID, ou une valeur vide." ;
+			String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID valide, ou une valeur vide." ;
 			CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UUID, errorMessage) ;
 			ce.setFoundValue(identifiantPermanent) ;
 			alce.add(ce) ;
