@@ -1,0 +1,28 @@
+{
+  "name": "ginco",
+  "version": "2.2.3",
+  "description": "## Description",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build-dev": "webpack --mode=development",
+    "watch": "webpack --mode=development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:SINP-GINCO/ginco.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "bootstrap": "3.3.*",
+    "bootstrap-table": "1.11.*",
+    "copy-webpack-plugin": "^4.5.2",
+    "jquery": "^1.12",
+    "components-jqueryui": "^1.12",
+    "grunt": "^1.0.3",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-less": "^2.0.0"
+  }
+}

@@ -14,11 +14,10 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
     {% block stylesheets %}
-        {% stylesheets
-        '@bootstrap_css'
-        filter='cssrewrite, yui_css' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+        <link rel="stylesheet" href="{{ asset('vendor/bootstrap-table/dist/bootstrap-table.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/roboto-condensed.css') }}" />
+        <link rel="stylesheet" href="{{ asset('vendor/components-jqueryui/themes/base/jquery-ui.min.css') }}" />
     {% endblock %}
 </head>
 
@@ -229,10 +228,21 @@
 </div>
 
 {% block javascripts %}
-    {% javascripts
-    '@jquery_and_bootstrap'
-     %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+    
+    <script type="text/javascript" src={{ asset('vendor/jquery/dist/jquery.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('vendor/components-jqueryui/jquery-ui.min.js') }}></script>
+
+    <script type="text/javascript" src={{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('vendor/bootstrap-table/dist/bootstrap-table.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('vendor/bootstrap-table/dist/locale/bootstrap-table-fr-FR.min.js') }}></script>
+    <script type="text/javascript" src={{ asset('vendor/bootstrap-table/dist/extensions/export/bootstrap-table-export.js') }}></script>
+    <script type="text/javascript" src={{ asset('vendor/bootstrap-table/dist/extensions/toolbar/bootstrap-table-toolbar.min.js') }}></script>
+
+    <script type="text/javascript" src={{ asset('js/hover-dropdown.js') }}></script>
+    <script type="text/javascript" src={{ asset('bundles/ignogamconfigurateur/js/data-toggle-tooltip.js') }}></script>
+
+    <script type="text/javascript" src={{ asset('bundles/fosjsrouting/js/router.js') }}></script>
+
     
     {% if app.environment == 'prod' %}
 		<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes.js') }}"></script>
@@ -282,7 +292,6 @@
 		});
 
 	</script>
-	{% endjavascripts %}
 {% endblock %}
 
 	{% block specificjavascripts %}
