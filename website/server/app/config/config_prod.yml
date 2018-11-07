@@ -36,4 +36,4 @@ monolog:
             level: info
             max_files: 30
         console:
-            type:  consolee
+            type:  console
