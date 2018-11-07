@@ -44,6 +44,8 @@ apt-get install -y gdal-bin
 # Divers
 apt-get install -y zip
 apt-get install -y libxml2-utils
+# node sert à compiler les fichiers less. Le résultat de la compilation est commité, donc node n'est pas utile ailleurs que sur les machines de dev.
+apt-get install nodejs 
 ```
 
 L'application Sencha Command doit aussi être installée pour exécuter le build du client ExtJS.
