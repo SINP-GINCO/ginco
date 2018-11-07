@@ -1,9 +1,7 @@
 /web/bundles/
 /web/assetic/
-/web/css/
 /web/fonts/
 /web/images/
-/web/js/
 !web/dee/.gitkeep
 /web/dee/
 /web/export/
