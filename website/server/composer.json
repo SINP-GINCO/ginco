@@ -26,11 +26,7 @@
 		"incenteev/composer-parameter-handler" : "~2.0",
 		"whiteoctober/breadcrumbs-bundle" : "^1.2",
 		"zendframework/zend-http" : "^2.5",
-		"twbs/bootstrap" : "3.3.*",
 		"friendsofsymfony/jsrouting-bundle" : "~1.6",
-		"wenzhixin/bootstrap-table" : "^1.11",
-		"components/jquery" : "^1.12",
-		"components/jqueryui" : "^1.12",
 		"php-amqplib/rabbitmq-bundle" : "^1.12",
         "egeloen/ckeditor-bundle": "^6.0",
         "guzzlehttp/guzzle": "^6.3"
