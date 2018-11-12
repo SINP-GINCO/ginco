@@ -7,6 +7,7 @@ ogamDesktop/app.json
 ogamDesktop/index.html
 ogamDesktop/sencha-error-*.log
 ogamDesktop/bootstrap.json
+ogamDesktop/bootstrap.jsonp
 ogamDesktop/bootstrap.css
 ogamDesktop/bootstrap.js
 ogamDesktop/sass/example/example.css

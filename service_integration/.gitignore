@@ -3,3 +3,4 @@
 /.gradle/
 /test_result/
 /bin/
+/config/log4j.properties.save
