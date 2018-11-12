@@ -330,6 +330,7 @@ Integration:
       notAllowed: Vous n'avez pas les droits suffisants pour publier ou dépublier ce jeu de données.
       deleted: Vous ne pouvez pas publier ce jeu de données car il a été supprimé.
       addSubmission: Ce jeu de données a été publié, vous ne pouvez lui ajouter de nouvelles soumissions.
+      runningSubmissions: Vous ne pouvez pas publier ou dépublier ce jeu de données, car des opérations sur les soumissions sont en cours.
 
 import.format:
   csv: Verser des données au format csv

@@ -377,18 +377,28 @@ class IntegrationController extends GincoController {
 	 */
 	public function validateJddAction(Jdd $jdd, Request $request) {
 		
+		// Get the referer url
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		
 		/* @var $user \Ign\Bundle\GincoBundle\Entity\Website\User */
 		$user = $this->getUser() ;
 		$userJdd = $jdd->getUser() ;
 		
 		if (!$this->isGranted('VALIDATE_JDD', $jdd)) {
 			$this->addFlash('error', ['id' => 'Integration.Jdd.error.notAllowed']) ;
-			return $this->redirectToRoute('user_jdd_list') ;
+			return $this->redirect($redirectUrl) ;
 		}
 		
 		if (!$jdd->isActive()) {
 			$this->addFlash('error', ['id' => 'Integration.Jdd.error.deleted']) ;
-			return $this->redirectToRoute('user_jdd_list') ;
+			return $this->redirect($redirectUrl) ;
+		}
+		
+		if ($jdd->hasRunningSubmissions()) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.runningSubmissions']) ;
+			return $this->redirect($redirectUrl) ;
 		}
 		
 		$jddService = $this->get('ginco.jdd_service') ;
@@ -409,10 +419,6 @@ class IntegrationController extends GincoController {
 			), $user->getEmail());
 		
 		
-		// Get the referer url
-		$refererUrl = $request->headers->get('referer');
-		// returns to the page where the action comes from
-		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
 		return $this->redirect($redirectUrl);
 	}
 
@@ -424,14 +430,23 @@ class IntegrationController extends GincoController {
 	 */
 	public function invalidateJddAction(Jdd $jdd, Request $request) {
 		
+		$refererUrl = $request->headers->get('referer');
+		// returns to the page where the action comes from
+		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
+		
 		if (!$this->isGranted('VALIDATE_JDD', $jdd)) {
 			$this->addFlash('error', ['id' => 'Integration.Jdd.error.notAllowed']) ;
-			return $this->redirectToRoute('user_jdd_list') ;
+			return $this->redirect($redirectUrl) ;
 		}
 		
 		if (!$jdd->isActive()) {
 			$this->addFlash('error', ['id' => 'Integration.Jdd.error.deleted']) ;
-			return $this->redirectToRoute('user_jdd_list') ;
+			return $this->redirect($redirectUrl) ;
+		}
+		
+		if ($jdd->hasRunningSubmissions()) {
+			$this->addFlash('error', ['id' => 'Integration.Jdd.error.runningSubmissions']) ;
+			return $this->redirect($redirectUrl) ;
 		}
 		
 		$jddService = $this->get('ginco.jdd_service') ;
@@ -445,9 +460,6 @@ class IntegrationController extends GincoController {
 			));
 		}
 		
-		$refererUrl = $request->headers->get('referer');
-		// returns to the page where the action comes from
-		$redirectUrl = ($refererUrl) ? $refererUrl : $this->generateUrl('integration_home');
 		return $this->redirect($redirectUrl);
 		
 	}
