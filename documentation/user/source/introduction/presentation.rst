@@ -22,7 +22,7 @@ Guadeloupe                              			https://ginco.naturefrance.fr/test-gu
 Guyane                                  			https://ginco.naturefrance.fr/test-guyane
 Hauts-de-France                                     https://ginco.naturefrance.fr/test-hautsdefrance
 Ile de France                           			https://ginco.naturefrance.fr/test-idf
-Normandie                               			https://ginco.naturefrance.fr/test-normandie
+TAAF                               			        https://ginco.naturefrance.fr/test-taaf
 Nouvelle-Aquitaine     			                    https://ginco.naturefrance.fr/test-nouvelleaquitaine
 Occitanie                                 			https://ginco.naturefrance.fr/test-occitanie
 Pays de la Loire                           			https://ginco.naturefrance.fr/test-paysdelaloire
