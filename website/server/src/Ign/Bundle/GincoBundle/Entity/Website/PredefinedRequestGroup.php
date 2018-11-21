@@ -15,26 +15,26 @@ class PredefinedRequestGroup {
 	 *
 	 * @var integer
 	 * @ORM\Id
-	 * @ORM\Column(name="group_id", type="integer", unique=true)
+	 * @ORM\Column(name="group_id", type="integer", unique=true, options={"comment": "The group identifier"})
 	 * @ORM\GeneratedValue
 	 */
 	private $groupId;
 
 	/**
 	 *
-	 * @var string @ORM\Column(name="label", type="string", length=128, nullable=true)
+	 * @var string @ORM\Column(name="label", type="string", length=128, options={"comment": "The label of the group"})
 	 */
 	private $label;
 
 	/**
 	 *
-	 * @var string @ORM\Column(name="definition", type="string", length=1024, nullable=true)
+	 * @var string @ORM\Column(name="definition", type="string", length=1024, nullable=true, options={"comment": "The definition of the group"})
 	 */
 	private $definition;
 
 	/**
 	 *
-	 * @var int @ORM\Column(name="position", type="integer", nullable=true)
+	 * @var int @ORM\Column(name="position", type="smallint", nullable=true, options={"comment": "The position of the group"})
 	 */
 	private $position;
 

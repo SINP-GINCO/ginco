@@ -56,7 +56,7 @@ class Role implements RoleInterface, \Serializable {
 	 * A list of codes corresponding to authorised actions.
 	 *
 	 * @var array[String] @ORM\ManyToMany(targetEntity="Permission", fetch="EAGER")
-	 *      @ORM\JoinTable(name="permission_per_role",
+	 *      @ORM\JoinTable(name="website.permission_per_role",
 	 *      joinColumns={@ORM\JoinColumn(name="role_code", referencedColumnName="role_code")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="permission_code", referencedColumnName="permission_code")}
 	 *      )
@@ -69,7 +69,7 @@ class Role implements RoleInterface, \Serializable {
 	 * A list of schemas names.
 	 *
 	 * @var array[String] @ORM\ManyToMany(targetEntity="Ign\Bundle\GincoBundle\Entity\Metadata\TableSchema")
-	 *      @ORM\JoinTable(name="role_to_schema",
+	 *      @ORM\JoinTable(name="website.role_to_schema",
 	 *      joinColumns={@ORM\JoinColumn(name="role_code", referencedColumnName="role_code")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="schema_code", referencedColumnName="schema_code")}
 	 *      )
@@ -82,7 +82,7 @@ class Role implements RoleInterface, \Serializable {
 	 * A list of codes corresponding to non-authorised datasets.
 	 *
 	 * @var array[String] @ORM\ManyToMany(targetEntity="Ign\Bundle\GincoBundle\Entity\Metadata\Dataset")
-	 *      @ORM\JoinTable(name="dataset_role_restriction",
+	 *      @ORM\JoinTable(name="website.dataset_role_restriction",
 	 *      joinColumns={@ORM\JoinColumn(name="role_code", referencedColumnName="role_code")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="dataset_id", referencedColumnName="dataset_id")}
 	 *      )

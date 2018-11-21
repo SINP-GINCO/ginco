@@ -83,7 +83,7 @@ class User implements UserInterface, \Serializable {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Role")
-	 * @ORM\JoinTable(name="role_to_user",
+	 * @ORM\JoinTable(name="website.role_to_user",
 	 * joinColumns={@ORM\JoinColumn(name="user_login", referencedColumnName="user_login")},
 	 * inverseJoinColumns={@ORM\JoinColumn(name="role_code", referencedColumnName="role_code")}
 	 * )

@@ -15,7 +15,7 @@ class Data implements \JsonSerializable {
 
 	/**
 	 *
-	 * @var string @ORM\Column(name="data", type="string", length=174, nullable=false)
+	 * @var string @ORM\Column(name="data", type="string", length=277, nullable=false)
 	 *      @ORM\Id
 	 *      @Assert\NotBlank(message="data.name.notBlank")
 	 *      @Assert\Length(max="174", maxMessage="data.name.maxLength")

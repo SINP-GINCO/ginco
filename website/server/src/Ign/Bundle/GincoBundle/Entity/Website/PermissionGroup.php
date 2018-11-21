@@ -19,7 +19,7 @@ class PermissionGroup {
 	 * 
 	 * @var string
 	 * 
-	 * @ORM\Column(name="code", type="text")
+	 * @ORM\Column(name="code", type="text", options={"comment": "Code of the group"})
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="NONE")
 	 */
@@ -29,7 +29,7 @@ class PermissionGroup {
 	 * 
 	 * @var string
 	 * 
-	 * @ORM\Column(name="label", type="text")
+	 * @ORM\Column(name="label", type="text", nullable=true, options={"comment": "Group description"})
 	 */
 	private $label ;
 	
