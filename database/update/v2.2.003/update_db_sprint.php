@@ -33,6 +33,23 @@ try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 
+	execCustSQLFile("$sprintDir/especesensible.sql", $config) ;
+	execCustSQLFile("$sprintDir/migrate_taxref_to_v12.sql", $config) ;
+		
+	$connectStr ="host="     .$config['db.host'];
+	$connectStr.=" port="    .$config['db.port'];
+	$connectStr.=" user="    .$config['db.adminuser'];
+	$connectStr.=" password=".$config['db.adminuser.pw'];
+	$connectStr.=" dbname="  .$config['db.name'];
+	system("$sprintDir/populateTaxref.sh $connectStr", $returnCode2) ;
+	if ($returnCode2 != 0) {
+		echo "$sprintDir/update_db_sprint.php\n";
+		echo "exception: " . $e->getMessage() . "\n";
+		exit(1);
+	}
+
+	execCustSQLFile("$initDir/populate_mode_taxref_table.sql", $config) ;
+
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
@@ -46,6 +63,12 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 try {
 
 	//system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
+
+	system("php $sprintDir/migrate_taxref_v12_data.php $CLIParams", $returnCode3) ;
+	if ($returnCode3 != 0) {
+		echo "$sprintDir/migrate_taxref_v12_data.php crashed.\n";
+		exit(1);
+	}
 	
 
 } catch (Exception $e) {

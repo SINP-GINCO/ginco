@@ -1,5 +1,5 @@
 -- --------------------------------------------------
--- 1/ Création des tables du référentiel TAXREF (V10)
+-- 1/ Création des tables du référentiel TAXREF (V12)
 -- --------------------------------------------------
 
 set search_path = referentiels;
@@ -11,6 +11,8 @@ PHYLUM				VARCHAR(100)	null,
 CLASSE				VARCHAR(100)	null,
 ORDRE				VARCHAR(100)	null,
 FAMILLE				VARCHAR(100)	null,
+SOUS_FAMILLE		VARCHAR(100)	null,
+TRIBU				VARCHAR(100)	null,
 GROUP1_INPN			VARCHAR(100)	null,
 GROUP2_INPN			VARCHAR(100)	null,
 CD_NOM				VARCHAR(100)	not null, -- identifiant unique du taxon
@@ -52,6 +54,8 @@ COMMENT ON COLUMN taxref.PHYLUM IS 'Embranchement auquel le taxon appartient (ch
 COMMENT ON COLUMN taxref.CLASSE IS 'Classe à laquelle le taxon appartient (champ calculé à partir du CD_TAXSUP)';
 COMMENT ON COLUMN taxref.ORDRE IS 'Ordre auquel le taxon appartient (champ calculé à partir du CD_TAXSUP)';
 COMMENT ON COLUMN taxref.FAMILLE IS 'Famille à laquelle le taxon appartient (champ calculé à partir du CD_TAXSUP)';
+COMMENT ON COLUMN taxref.SOUS_FAMILLE IS 'Sous-famille à laquelle le taxon appartient';
+COMMENT ON COLUMN taxref.TRIBU IS 'Tribu à laquelle le taxon appartient';
 COMMENT ON COLUMN taxref.CD_NOM IS 'Identifiant unique du nom scientifique';
 COMMENT ON COLUMN taxref.CD_TAXSUP IS 'Identifiant (CD_NOM) du taxon supérieur';
 COMMENT ON COLUMN taxref.CD_SUP IS 'Identifiant (CD_NOM) du taxon supérieur';
