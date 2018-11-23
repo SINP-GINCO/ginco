@@ -30,7 +30,7 @@ dataLocalDir=$rootDir/data
 
 refurl=https://ginco.naturefrance.fr/ref
 
-taxref=$dataDir/download/taxrefv11.txt
+taxref=$dataDir/download/taxrefv12.txt
 communes=$dataDir/download/commune_carto_2017.sql
 departements=$dataDir/download/departement_carto_2017.sql
 regions=$dataDir/download/region_carto_2017.sql
@@ -43,17 +43,17 @@ if [ -f "$taxref" ]
 then
 	echo "$taxref a été trouvé localement..."
 else
-	echo "téléchargement de taxref v11..."
-	wget "$refurl/TAXREFv11.0/TAXREFv11.0.txt" -O $taxref --no-verbose
+	echo "téléchargement de taxref v12..."
+	wget "$refurl/TAXREFv12.0/TAXREFv12.0.txt" -O $taxref --no-verbose
 fi
 echo "Intégration des données taxref dans la base..."
-psql "$connectionStr" -f $rootDir/create_taxref11_tables.sql
+psql "$connectionStr" -f $rootDir/create_taxref_tables.sql
 copyOptions="NULL '', FORMAT 'csv', HEADER, DELIMITER E'\t', ENCODING 'UTF-8'"
 psql "$connectionStr" -c "\COPY referentiels.taxref FROM '$taxref' WITH ($copyOptions);"
 echo "Intégration de TAXREF terminée."
 
 echo "Intégration du référentiel de sensiblité et de sa table de métadonnées"
-#FIXME: ajouter le téléchargement du référentiel de sensibilité compatible avec le taxref 11!
+#FIXME: ajouter le téléchargement du référentiel de sensibilité compatible avec le taxref 12!
 psql "$connectionStr" -f $dataLocalDir/especesensible.sql
 psql "$connectionStr" -f $dataLocalDir/especesensiblelistes.sql
 

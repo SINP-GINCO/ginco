@@ -20,57 +20,8 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
---
--- TOC entry 223 (class 1259 OID 6461751)
--- Name: especesensible; Type: TABLE; Schema: referentiels; Owner: admin
---
 
-CREATE TABLE especesensible (
-    cd_dept character varying,
-    id integer NOT NULL,
-    cd_nom character varying(500),
-    duree integer,
-    codage integer,
-    autre character varying(500),
-    cd_sl integer,
-    cd_occ_statut_biologique integer,
-    nom_cite character varying(225)
-);
-
-
-ALTER TABLE especesensible OWNER TO admin;
-
---
--- TOC entry 224 (class 1259 OID 6461757)
--- Name: especesensible_id_seq; Type: SEQUENCE; Schema: referentiels; Owner: admin
---
-
-CREATE SEQUENCE especesensible_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE especesensible_id_seq OWNER TO admin;
-
---
--- TOC entry 4202 (class 0 OID 0)
--- Dependencies: 224
--- Name: especesensible_id_seq; Type: SEQUENCE OWNED BY; Schema: referentiels; Owner: admin
---
-
-ALTER SEQUENCE especesensible_id_seq OWNED BY especesensible.id;
-
-
---
--- TOC entry 4067 (class 2604 OID 6461759)
--- Name: especesensible id; Type: DEFAULT; Schema: referentiels; Owner: admin
---
-
-ALTER TABLE ONLY especesensible ALTER COLUMN id SET DEFAULT nextval('especesensible_id_seq'::regclass);
-
+TRUNCATE TABLE especesensible RESTART IDENTITY ;
 
 --
 -- TOC entry 4194 (class 0 OID 6461751)
@@ -14119,15 +14070,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 --
 
 SELECT pg_catalog.setval('especesensible_id_seq', 14030, true);
-
-
---
--- TOC entry 4069 (class 2606 OID 6461761)
--- Name: especesensible pk; Type: CONSTRAINT; Schema: referentiels; Owner: admin
---
-
-ALTER TABLE ONLY especesensible
-    ADD CONSTRAINT pk PRIMARY KEY (id);
 
 
 --
