@@ -3,8 +3,6 @@
 DELETE FROM metadata.mode_taxref;
 
 DROP TABLE IF EXISTS referentiels.taxref;
-DELETE FROM referentiels.taxref_rang;
-DELETE FROM referentiels.taxref_statut;
 
 set search_path = referentiels, public;
 
