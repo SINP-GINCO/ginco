@@ -1820,16 +1820,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
                 "shasum": ""
             },
             "require": {
@@ -1863,7 +1863,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2018-11-20T15:27:04+00:00"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -2852,16 +2852,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.47",
+            "version": "v2.8.48",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0a7bd0db8682f51ea63c34ac0be31bd7f715344a"
+                "reference": "6d1b296403b56046e991e22ce936d391030aacb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0a7bd0db8682f51ea63c34ac0be31bd7f715344a",
-                "reference": "0a7bd0db8682f51ea63c34ac0be31bd7f715344a",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/6d1b296403b56046e991e22ce936d391030aacb2",
+                "reference": "6d1b296403b56046e991e22ce936d391030aacb2",
                 "shasum": ""
             },
             "require": {
@@ -2988,7 +2988,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-11-03T09:54:14+00:00"
+            "time": "2018-11-26T13:21:00+00:00"
         },
         {
             "name": "twig/extensions",
