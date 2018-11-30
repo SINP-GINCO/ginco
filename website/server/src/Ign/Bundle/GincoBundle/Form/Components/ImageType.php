@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
+
 /**
  * Class ImageType
  * A custom form type for images (uploaded as files)
@@ -17,9 +19,9 @@ class ImageType extends AbstractType
 {
 	private $uploadDirectory;
 
-	public function __construct($uploadDir)
+	public function __construct(ConfigurationManager $configurationManager)
 	{
-		$this->uploadDirectory = $uploadDir;
+		$this->uploadDirectory = $configurationManager->getConfig('UploadDirectory') ;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options)

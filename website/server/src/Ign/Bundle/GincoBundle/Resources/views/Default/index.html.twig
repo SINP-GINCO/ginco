@@ -10,13 +10,17 @@
 {% block body %}
 <div class="homepage">
     <div class="row homepage-intro">
-        <div class="{{ content.image is empty ? 'col-sm-12' : 'col-sm-8' }}">
+        <div class='col-sm-8'">
             <h1 class="stick-to-top underlined">{{ content.title|raw }}</h1>
             {{ content.intro|raw }}
         </div>
         {% if content.image is not empty %}
             <div class="col-sm-4">
-                <img src="{{ asset('upload/' ~ content.image) }}">
+                <img src="{{ path('file_show', {file: content.image}) }}" />
+            </div>
+		{% else %}
+			<div class="col-sm-4">
+                <img src="{{ asset('bundles/ignginco/img/marais.jpg') }}" />
             </div>
         {% endif %}
     </div>
@@ -42,7 +46,7 @@
                 {% endfor %}
 
                 {% for doc in content.docs if ( doc.file is not empty and doc.anchor is not empty) %}
-                    <li><a href="{{ asset('upload/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
+                    <li><a href="{{ path('file_show', {file: doc.file}) }}" target="_blank">{{ doc.anchor|raw }}
                         </a></li>
                 {% endfor %}
                 </ul>
@@ -59,7 +63,7 @@
                     {% endfor %}
 
                     {% for doc in content.privateDocs if ( doc.file is not empty and doc.anchor is not empty) %}
-                        <li><a href="{{ asset('upload/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
+                        <li><a href="{{ path('file_show', {file: doc.file}) }}" target="_blank">{{ doc.anchor|raw }}
                             </a></li>
                     {% endfor %}
                     </ul>

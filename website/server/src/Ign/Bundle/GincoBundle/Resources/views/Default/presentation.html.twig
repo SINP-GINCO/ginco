@@ -17,7 +17,9 @@
 
         <div class="col-sm-4">
             {% if content.image is not empty %}
-                <img src="{{ asset('upload/' ~ content.image) }}">
+                <img src="{{ path('file_show', { file: content.image}) }}" />
+			{% else %}
+				<img src="{{ asset('bundles/ignginco/montagne.jpg') }}" />
             {% endif %}
 
             <div class="v-spacer"></div>
@@ -31,7 +33,7 @@
                     {% endfor %}
 
                     {% for doc in content.docs if ( doc.file is not empty and doc.anchor is not empty) %}
-                        <li><a href="{{ asset('upload/' ~ doc.file) }}" target="_blank">{{ doc.anchor|raw }}
+                        <li><a href="{{ path('file_show', {file: doc.file}) }}" target="_blank">{{ doc.anchor|raw }}
                             </a></li>
                     {% endfor %}
                 </ul>

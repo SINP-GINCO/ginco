@@ -12,7 +12,7 @@ Elle s&rsquo;adresse &agrave; tous les publics et aux professionnels souhaitant 
 <p>En dehors du cadre l&eacute;gal d&#39;acquisition et de versement de donn&eacute;es brutes de biodiversit&eacute; mentionn&eacute; &agrave; l&#39;article L. 122-4 du Code de l&#39;environnement et des projets d&#39;am&eacute;nagement soumis &agrave; l&#39;approbation de l&#39;autorit&eacute; administrative, l&rsquo;ensemble des producteurs de donn&eacute;es r&eacute;gionales signataires de la charte r&eacute;gionale du SINP, qu&rsquo;ils soient publics ou priv&eacute;s, peuvent fournir leurs donn&eacute;es r&eacute;gionales sur la faune, la flore, et la fonge.</p>
 </div>
 ','Texte d''introduction sur la page d''accueil'),
-  ('homepage.image','marais.jpg','Image d''illustration sur la page d''accueil'),
+  ('homepage.image',NULL,'Image d''illustration sur la page d''accueil'),
   ('homepage.links.title','Plus d''informations','Titre du bloc de liens publics sur la page d''accueil'),
   ('homepage.link.1','{"anchor":"Pr\u00e9sentation du SINP","href":"http:\/\/www.naturefrance.fr","target":"_blank"}','Lien public sur page accueil'),
   ('homepage.link.2','{"anchor":"INPN - Inventaire National du Patrimoine Naturel","href":"https:\/\/inpn.mnhn.fr","target":"_blank"}','Lien public sur page accueil'),
@@ -51,7 +51,7 @@ Elle s&rsquo;adresse &agrave; tous les publics et aux professionnels souhaitant 
 
 <p>In condimentum eu erat in gravida. Vestibulum efficitur vehicula lorem. Quisque quis tincidunt justo. Ut sit amet nibh fringilla, venenatis leo nec, elementum lorem. Donec nisi dolor, egestas a augue non, porta sagittis lorem. Vestibulum vel pretium nisl. Nulla ut efficitur magna, in ultrices quam. Nullam mollis tellus in ante fermentum pellentesque. Nulla at aliquam dui. Nam ac nunc tempus, condimentum mi sit amet, gravida odio. Quisque a dignissim enim. Suspendisse consequat gravida neque, in venenatis nibh hendrerit dictum. Sed sagittis facilisis ipsum vitae tincidunt. Nulla et dolor vitae eros aliquet cursus a ut lorem. Sed vitae ante tempus, efficitur nisl quis, blandit lacus. Pellentesque iaculis lorem lorem.</p>
 </div>','Texte d''introduction sur la page de presentation'),
-  ('presentation.image','montagne.jpg','Image d''illustration sur la page de presentation'),
+  ('presentation.image',NULL,'Image d''illustration sur la page de presentation'),
   ('presentation.links.title','Sites et documents de référence','Titre du bloc de liens publics sur la page de presentation'),
   ('presentation.link.1','{"anchor":null,"href":null,"target":"_blank"}','Lien public sur page de presentation'),
   ('presentation.link.2','{"anchor":null,"href":null,"target":"_self"}','Lien public sur page de presentation'),
