@@ -30,8 +30,8 @@ class ModelController extends Controller {
 		$modelsPermissions = array();
 		foreach ($models as $model) {
 			$modelId = $model->getId();
-			$modelsPubState[$modelId] = $this->get('app.modelPublication')->isPublished($modelId);
-			$modelsPublishable[$modelId] = $this->get('app.modelPublication')->isPublishable($modelId);
+			$modelsPubState[$modelId] = $this->get('app.modelpublication')->isPublished($modelId);
+			$modelsPublishable[$modelId] = $this->get('app.modelpublication')->isPublishable($modelId);
 			$modelsUnpublishable[$modelId] = $this->get('app.modelunpublication')->isUnpublishable($modelId);
 			$modelsPermissions[$modelId] = array();
 			$modelsPermissions[$modelId]['editable'] = $this->get('app.permissions')->isModelEditable($modelId);

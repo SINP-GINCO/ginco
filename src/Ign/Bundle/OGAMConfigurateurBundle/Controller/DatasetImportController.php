@@ -23,7 +23,7 @@ class DatasetImportController extends Controller {
 		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$datasets = $repository->findByTypeAndOrderedByName('IMPORT');
 
-		$mpService = $this->get('app.importmodelPublication');
+		$mpService = $this->get('app.importmodelpublication');
 
 		// Check if import models are published and/or publishable
 		$importModelsPubState = array();
@@ -110,7 +110,7 @@ class DatasetImportController extends Controller {
 		// Save initial target model to check if it is changed on validation
 		$initialTargetDataModel = $dataset->getModel()->getId();
 
-		$mpService = $this->get('app.importmodelPublication');
+		$mpService = $this->get('app.importmodelpublication');
 
 		$pubState = $mpService->isPublished($id);
 		$modelPubState = $mpService->isImportModelDataModelPublished($id);
@@ -177,7 +177,7 @@ class DatasetImportController extends Controller {
 		$dataset = $repository->find($id);
 
 		// Check if import model is published
-		$mpService = $this->get('app.importmodelPublication');
+		$mpService = $this->get('app.importmodelpublication');
 		$published = $mpService->isPublished($id);
 
 		if (!$this->get('app.permissions')->isImportModelDeletable($id)) {
@@ -221,7 +221,7 @@ class DatasetImportController extends Controller {
 			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 			->find($importModelId);
 		if ($importModel) {
-			$mpService = $this->get('app.importmodelPublication');
+			$mpService = $this->get('app.importmodelpublication');
 			$importModelName = $importModel->getLabel();
 			if ($mpService->isPublishable($importModel) == true) {
 
@@ -233,7 +233,7 @@ class DatasetImportController extends Controller {
 						->trans('importmodel.resetCaches.fail'));
 				} else {
 
-					$successStatus = $this->get('app.importModelPublication')->publishImportModel($importModel);
+					$successStatus = $this->get('app.importmodelpublication')->publishImportModel($importModel);
 
 					if ($successStatus == true) {
 						$this->addFlash('notice', $this->get('translator')
@@ -286,7 +286,7 @@ class DatasetImportController extends Controller {
 			->find($importModelId);
 		if ($importModel) {
 			// Check if a file is being uploaded
-			$muService = $this->get('app.importmodelUnpublication');
+			$muService = $this->get('app.importmodelunpublication');
 			if ($muService->hasRunningFileUpload($importModelId)) {
 				$this->addFlash('error', $this->get('translator')
 					->trans('importmodel.unpublish.uploadrunning', array(
@@ -300,7 +300,7 @@ class DatasetImportController extends Controller {
 			}
 
 			// Unpublish the import model
-			$successStatus = $this->get('app.importModelUnpublication')->unpublishImportModel($importModelId);
+			$successStatus = $this->get('app.importmodelunpublication')->unpublishImportModel($importModelId);
 
 			// Send a flash message depending on the result of the unpublication
 			$importModelName = $importModel->getLabel();
