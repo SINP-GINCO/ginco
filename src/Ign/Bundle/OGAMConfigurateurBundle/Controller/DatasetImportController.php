@@ -169,7 +169,6 @@ class DatasetImportController extends Controller {
 
 	/**
 	 * @Route("/datasetsimport/{id}/delete/", name="configurateur_dataset_import_delete")
-	 * @Template()
 	 */
 	public function deleteAction($id) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -213,7 +212,6 @@ class DatasetImportController extends Controller {
 	 * Adds flash messages to notice user about success or fail of action.
 	 * Redirects to index.
 	 * @Route("/datasetsimport/{importModelId}/publish/", name="configurateur_dataset_import_publish")
-	 * @Template()
 	 */
 	public function publishAction($importModelId) {
 		$importModel = $this->getDoctrine()
@@ -269,7 +267,6 @@ class DatasetImportController extends Controller {
 	 * Changes state of button 'unpublish' to 'publish'.
 	 * This action is also called when a data model unpublication is called.
 	 * @Route("/datasetsimport/{importModelId}/unpublish/{redirectToEdit}", name="configurateur_dataset_import_unpublish")
-	 * @Template()
 	 *
 	 * @param boolean $unpublishFromModel
 	 *        	if the unpublication call comes from the data model unpublication action call

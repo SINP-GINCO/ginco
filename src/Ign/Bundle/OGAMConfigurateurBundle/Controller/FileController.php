@@ -190,7 +190,6 @@ class FileController extends Controller {
 	 * It will also delete all the FileField and Field (technical and non-technical) linked to the FileFormat,
 	 * and also the Format. Redirects to file edition page.
 	 * @Route("/datasetsimport/{datasetId}/files/{fileFormat}/delete/", name="configurateur_file_delete")
-	 * @Template()
 	 */
 	public function deleteAction($datasetId, $fileFormat) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -249,7 +248,6 @@ class FileController extends Controller {
 	/**
 	 * Methode de visualisation d'une File.
 	 * @Route("datasetsimport/{datasetId}/files/{format}/view/", name="configurateur_file_view")
-	 * @Template()
 	 */
 	public function viewAction($datasetId, $format) {
 		$em = $this->getDoctrine()->getManager('metadata_work');

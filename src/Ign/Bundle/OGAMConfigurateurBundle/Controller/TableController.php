@@ -304,7 +304,6 @@ class TableController extends Controller {
 	 * Data field created to be the primary key of the table is deleted in data table.
 	 * Redirects to table edition page.
 	 * @Route("/models/{model_id}/tables/{id}/delete/", name="configurateur_table_delete")
-	 * @Template()
 	 */
 	public function deleteAction($model_id, $id, $fromDeleteModel = false) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -360,7 +359,6 @@ class TableController extends Controller {
 
 	/**
 	 * @Route("models/{modelId}/tables/{format}/view/", name="configurateur_table_view")
-	 * @Template()
 	 */
 	public function viewAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager('metadata_work');

@@ -19,7 +19,6 @@ class TableFieldController extends Controller {
 	 * Add one field to the table.
 	 * Redirects to table edition page.
 	 * @Route("models/{modelId}/tables/{format}/fields/add/{data}", name="configurateur_table_add_field")
-	 * @Template()
 	 */
 	public function addFieldAction($modelId, $format, $data) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -60,7 +59,6 @@ class TableFieldController extends Controller {
 	 * Adds the fields given as argument to the table.
 	 * Redirects to table edition page.
 	 * @Route("models/{modelId}/tables/{format}/fields/add/", name="configurateur_table_add_fields", options={"expose"=true})
-	 * @Template()
 	 */
 	public function addFieldsAction($modelId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -147,7 +145,6 @@ class TableFieldController extends Controller {
 	 * Updates the fields given as argument to the table.
 	 * Redirects to model edition page.
 	 * @Route("models/{modelId}/tables/{format}/fields/update/", name="configurateur_table_update_fields", options={"expose"=true})
-	 * @Template()
 	 */
 	public function updateFieldsAction($modelId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -212,7 +209,6 @@ class TableFieldController extends Controller {
 	 * Removes all the non-technical fields of a table.
 	 * (including from TableField and Field). Redirects to table edition page.
 	 * @Route("/models/{modelId}/tables/{format}/fields/removeall/", name="configurateur_table_remove_all_fields")
-	 * @Template()
 	 */
 	public function removeAllFieldsAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -237,7 +233,6 @@ class TableFieldController extends Controller {
 	 * Removes a field from a table.
 	 * (including from TableField and Field). Redirects to table edition page.
 	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field_and_update", options={"expose"=true})
-	 * @Template()
 	 */
 	public function removeFieldAction($modelId, $field, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
