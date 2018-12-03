@@ -4,7 +4,7 @@ namespace Ign\Bundle\GincoBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
+use Symfony\Component\Debug\Exception\FlattenException;
 
 class ExceptionController extends \Symfony\Bundle\TwigBundle\Controller\ExceptionController {
 

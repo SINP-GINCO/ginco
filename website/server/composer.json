@@ -13,12 +13,11 @@
 	},
 	"require" : {
 		"php" : "^5.6",
-		"symfony/symfony" : "^2.8",
+		"symfony/symfony" : "^3.4",
 		"twig/twig" : "^1.28",
 		"twig/extensions" : "~1.0",
 		"doctrine/orm" : "^2.4.8",
 		"doctrine/doctrine-bundle" : "~1.4",
-		"symfony/assetic-bundle" : "^2.8",
 		"symfony/swiftmailer-bundle" : "~2.3",
 		"symfony/monolog-bundle" : "~2.11.3",
 		"sensio/distribution-bundle" : "~5.0",
@@ -26,7 +25,7 @@
 		"incenteev/composer-parameter-handler" : "~2.0",
 		"whiteoctober/breadcrumbs-bundle" : "^1.2",
 		"zendframework/zend-http" : "^2.5",
-		"friendsofsymfony/jsrouting-bundle" : "~1.6",
+		"friendsofsymfony/jsrouting-bundle" : "^2.2",
 		"php-amqplib/rabbitmq-bundle" : "^1.12",
         "egeloen/ckeditor-bundle": "^6.0",
         "guzzlehttp/guzzle": "^6.3"

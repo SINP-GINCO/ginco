@@ -32,14 +32,10 @@
                 <div class="col-xs-5">
                     <div id="header-logo">
                         <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
-                            {% image 'img/logo-ginco.png' %}
-                            <img src="{{ asset_url }}" alt="{{ configurationManager.getConfig('site_name', 'GINCO') }}"/>
-                            {% endimage %}
+                            <img src="{{ asset('bundles/ignginco/img/logo-ginco.png') }}" alt="{{ configurationManager.getConfig('site_name', 'GINCO') }}"/>
                         </a>
                         <a href="{{ path('homepage') }}"  title="{% trans %}Home{% endtrans %}">
-                            {% image 'img/logo-sinp.png' %}
-                            <img src="{{ asset_url }}" alt="{% trans %}SINP - Système d'Information Nature et Paysages{% endtrans %}"/>
-                            {% endimage %}
+                            <img src="{{ asset('bundles/ignginco/img/logo-sinp.png') }}" alt="{% trans %}SINP - Système d'Information Nature et Paysages{% endtrans %}"/>
                         </a>
                     </div>
                 </div>
@@ -200,15 +196,9 @@
                     </ul>
                 </div>
                 <div class="col-xs-6 text-right">
-                    {% image 'img/logo-ign.jpg' %}
-                        <img src="{{ asset_url }}" alt="IGN - Institut National de l'Information Géographique et forestière" class="logo ign"/>
-                    {% endimage %}
-                    {% image 'img/logo-mnhn.jpg' %}
-                        <img src="{{ asset_url }}" alt="MNHN - Museum National d'Histoire Naturelle"  class="logo mnhn"/>
-                    {% endimage %}
-                    {% image 'img/logo-mtes.jpg' %}
-                        <img src="{{ asset_url }}" alt="MTES - Ministère de la Transition, écologique et solidaire"  class="logo meem"/>
-                    {% endimage %}
+                        <img src="{{ asset('bundles/ignginco/img/logo-ign.jpg') }}" alt="IGN - Institut National de l'Information Géographique et forestière" class="logo ign"/>
+                        <img src="{{ asset('bundles/ignginco/img/logo-mnhn.jpg') }}" alt="MNHN - Museum National d'Histoire Naturelle"  class="logo mnhn"/>
+                        <img src="{{ asset('bundles/ignginco/img/logo-mtes.jpg') }}" alt="MTES - Ministère de la Transition, écologique et solidaire"  class="logo meem"/>
                 </div>
             </div>
             <p class="footer-version">Version : @build.version@</p>
@@ -241,14 +231,8 @@
     <script type="text/javascript" src={{ asset('js/hover-dropdown.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/ignogamconfigurateur/js/data-toggle-tooltip.js') }}></script>
 
-    <script type="text/javascript" src={{ asset('bundles/fosjsrouting/js/router.js') }}></script>
-
-    
-    {% if app.environment == 'prod' %}
-		<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes.js') }}"></script>
-	{% else %}
-		<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes_dev.js') }}"></script>
-	{% endif %}
+    <script type="text/javascript" src={{ asset('bundles/fosjsrouting/js/router.min.js') }}></script>
+	<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 		
 	<script>
 

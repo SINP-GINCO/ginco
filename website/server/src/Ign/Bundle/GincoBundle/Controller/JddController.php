@@ -109,17 +109,11 @@ class JddController extends GincoController {
 
 		$jdd = new Jdd();
                 
-		$form = $this->createForm(
-                            new GincoJddType(
-                                $this->getDoctrine()->getEntityManager() , 
-                                $this->get('ginco.inpn_provider_service')
-                            ), 
-                            $jdd, 
-                            array(
-                                // the entity manager used for model choices must be the same as the one used to persist the $jdd entity
-                                'entity_manager' => $em,
-                                'user' => $this->getUser()
-                            ));
+		$form = $this->createForm(GincoJddType::class, $jdd, array(
+			// the entity manager used for model choices must be the same as the one used to persist the $jdd entity
+			'entity_manager' => $em,
+			'user' => $this->getUser()
+		));
 
 		$form->handleRequest($request);
 

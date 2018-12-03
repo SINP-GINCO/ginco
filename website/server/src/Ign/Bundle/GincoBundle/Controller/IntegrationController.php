@@ -99,7 +99,7 @@ class IntegrationController extends GincoController {
                 
 		$submission = new Submission();
 
-                $form = $this->createForm(new GincoDataSubmissionType(), $submission, array(
+                $form = $this->createForm(GincoDataSubmissionType::class, $submission, array(
 			'jdd' => $jdd,
 			'disabled' => $formDisabled
 		));

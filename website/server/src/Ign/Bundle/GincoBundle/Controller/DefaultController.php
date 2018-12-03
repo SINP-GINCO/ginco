@@ -97,7 +97,7 @@ class DefaultController extends GincoController {
 	 * @Route("/contact", _name="contact")
 	 */
 	public function contactAction(Request $request) {
-		$form = $this->createForm(new ContactType(), null, array(
+		$form = $this->createForm(ContactType::class, null, array(
 			'action' => $this->generateUrl('contact'),
 			'method' => 'POST'
 		));
@@ -160,7 +160,7 @@ class DefaultController extends GincoController {
 		$roleRepo = $this->getDoctrine()->getRepository('Ign\Bundle\GincoBundle\Entity\Website\Role', 'website');
 		$defaultRole = $roleRepo->findOneByIsDefault(true);
 		
-		$form = $this->createForm(new ConfigurationType(), null, array(
+		$form = $this->createForm(ConfigurationType::class, null, array(
 			'action' => $this->generateUrl('configuration_parameters'),
 			'method' => 'POST',
 			'defaultRole' => $defaultRole
@@ -268,7 +268,7 @@ class DefaultController extends GincoController {
 			'homepagePrivateLinks' => $homepagePrivateLinkValue,
 			'homepagePrivateDocs' => $homepagePrivateDocValue
 		);
-		$form = $this->createForm(new HomepageContentType(), $data, array(
+		$form = $this->createForm(HomepageContentType::class, $data, array(
 			'action' => $this->generateUrl('configuration_homepage'),
 			'method' => 'POST'
 		));
@@ -354,7 +354,7 @@ class DefaultController extends GincoController {
 			'presentationLinks' => $presentationLinkValue,
 			'presentationDocs' => $presentationDocValue
 		);
-		$form = $this->createForm(new PresentationContentType(), $data, array(
+		$form = $this->createForm(PresentationContentType::class, $data, array(
 			'action' => $this->generateUrl('configuration_presentation'),
 			'method' => 'POST'
 		));

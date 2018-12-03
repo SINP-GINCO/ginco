@@ -33,21 +33,12 @@ services:
       class: Ign\Bundle\GincoBundle\Services\AnonymousUser
       arguments: ["@doctrine", "visiteur"]
 
-    # Service used to encode a challenge for the user login
-    ginco.challenge_response_encoder:
-        class: Ign\Bundle\GincoBundle\Services\ChallengeResponseEncoder
-        arguments:
-            session: "@session"
-            logger: "@logger"
-        tags:
-          - { name: monolog.logger, channel: ginco }
-
     # Service used to read the application parameters from the database
     ginco.configuration_manager:
         class: Ign\Bundle\GincoBundle\Services\ConfigurationManager
         arguments:
-            em: "@doctrine.orm.entity_manager"
-            logger: "@logger"
+            - "@doctrine.orm.entity_manager"
+            - "@logger"
         tags:
           - { name: monolog.logger, channel: ginco }
 
@@ -188,6 +179,8 @@ services:
     ginco.kernel_listener.user_redirect:
         class: Ign\Bundle\GincoBundle\EventListener\UserRedirectListener
         arguments: ["@security.token_storage", "@router" ]
+        calls:
+            - [setContainer, ['@service_container']]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
@@ -282,6 +275,12 @@ services:
 
     form.type.provider_search:
         class: Ign\Bundle\GincoBundle\Form\ProviderSearchType
+        arguments: ["@doctrine.orm.entity_manager", "@ginco.inpn_provider_service"]
+        tags:
+            - { name: form.type }
+            
+    form.type.ginco_jdd: 
+        class: Ign\Bundle\GincoBundle\Form\GincoJddType
         arguments: ["@doctrine.orm.entity_manager", "@ginco.inpn_provider_service"]
         tags:
             - { name: form.type }

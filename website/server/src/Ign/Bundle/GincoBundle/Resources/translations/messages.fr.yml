@@ -107,11 +107,11 @@ Contact:
   link: Contact
   page:
     title: Contact
-  name: Votre nom :
-  sender: Votre nom :
-  job: Votre fonction :
-  email: Votre email :
-  message: Votre message :
+  name: "Votre nom :"
+  sender: "Votre nom :"
+  job: "Votre fonction :"
+  email: "Votre email :"
+  message: "Votre message :"
   send:
     button: Envoyer
     success: Votre message a bien été envoyé à l'administrateur de la plateforme. Il y répondra au plus vite.
@@ -126,7 +126,7 @@ Contact:
     title: Sujet
     legal:
       title: Besoin d'aide pour comprendre la réglementation
-      questions: Questions juridiques : droits données, applications décret DBB, info personnelles, loi cada
+      questions: "Questions juridiques : droits données, applications décret DBB, info personnelles, loi cada"
       rules: Règlementation de la procédure Etude d'impact
     format:
       title: Besoin d'aide pour formater des données de biodiversité
@@ -479,7 +479,7 @@ Providers:
     link_add: Ajouter un organisme
   delete:
     prompt: Voulez-vous vraiment supprimer l'organisme '%providerLabel%' ?
-    impossible: Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés.
+    impossible: "Impossible de supprimer l'organisme '%providerLabel%' : celui-ci a des utilisateurs et/ou des données rattachés."
   no_providers: Pas encore d'organismes.
   add:
     provider: Ajout d'un organisme
@@ -507,7 +507,7 @@ Providers:
 Role:
   delete:
     prompt: Voulez-vous vraiment supprimer le rôle '%roleLabel%' ?
-    impossible: Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés.
+    impossible: "Impossible de supprimer le rôle '%roleLabel%' : celui-ci a des utilisateurs rattachés."
     grand_public: Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle technique par défaut
     isDefault: Impossible de supprimer le rôle '%roleLabel%' car c'est le rôle utilisateur par défaut
   edit:
@@ -526,8 +526,8 @@ User:
       refreshLink: Actualiser vos données depuis l'INPN
     permissions:
       title: Rôles et permissions
-      role: Vous avez le(s) rôle(s) suivant(s) :
-      permissions: Cela correspond aux permissions :
+      role: "Vous avez le(s) rôle(s) suivant(s) :"
+      permissions: "Cela correspond aux permissions :"
       more: Pour obtenir plus de permissions, contactez <a href="%href%">les administrateurs de la plateforme</a>.
   add:
     title: Ajouter un utilisateur depuis l'annuaire INPN
@@ -562,7 +562,7 @@ Edit Role: Edition d'un rôle
 Edit Role forbidden: Edition du rôle Grand Public (Les modifications ne sont pas permises)
 Edit User: Edition d'un utilisateur
 View related users and content: Voir les données et les utilisateurs
-Users and content for provider:: Utilisateurs et données pour l'organisme :
+Users and content for provider: "Utilisateurs et données pour l'organisme :"
 This provider doesn't have any users.: Cet organisme n'a pas d'utilisateurs.
 Datas: Données
 Nb of datas: Nombre de lignes de données
