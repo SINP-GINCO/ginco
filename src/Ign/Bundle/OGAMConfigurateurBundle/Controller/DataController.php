@@ -67,9 +67,9 @@ class DataController extends Controller {
 				$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($formatSubmitted);
 				if ($tableFormat) {
 					// Do you have the right to modify the tableFormat object ?
-					$modelsPubState = $this->get('app.modelPublication')->isPublished($tableFormat->getModel()
+					$modelsPubState = $this->get('app.modelpublication')->isPublished($tableFormat->getModel()
 						->getId());
-					$modelsHasData = $this->get('app.modelUnpublication')->modelHasData($tableFormat->getModel()
+					$modelsHasData = $this->get('app.modelunpublication')->modelHasData($tableFormat->getModel()
 						->getId());
 					if (!$modelsPubState && !$modelsHasData) {
 						$attachField = true;
@@ -137,9 +137,9 @@ class DataController extends Controller {
 					$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
 					if ($tableFormat) {
 						// Do you have the right to modify the tableFormat object ?
-						$modelsPubState = $this->get('app.modelPublication')->isPublished($tableFormat->getModel()
+						$modelsPubState = $this->get('app.modelpublication')->isPublished($tableFormat->getModel()
 							->getId());
-						$modelsHasData = $this->get('app.modelUnpublication')->modelHasData($tableFormat->getModel()
+						$modelsHasData = $this->get('app.modelunpublication')->modelHasData($tableFormat->getModel()
 							->getId());
 						if (!$modelsPubState && !$modelsHasData) {
 
@@ -155,7 +155,7 @@ class DataController extends Controller {
 					$fileFormat = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
 					if ($fileFormat) {
 						// Do you have the right to modify the tableFormat object ?
-						$importModelPubState = $this->get('app.importmodelPublication')->isPublished($fileFormat->getDataset()
+						$importModelPubState = $this->get('app.importmodelpublication')->isPublished($fileFormat->getDataset()
 							->getId());
 						if (!$importModelPubState) {
 
@@ -202,9 +202,9 @@ class DataController extends Controller {
 				$tables[$index]['table'] = $tableFormat;
 				$tables[$index]['model'] = $tableFormat->getModel();
 				// Do you have the right to modify the tableFormat object ?
-				$modelsPubState = $this->get('app.modelPublication')->isPublished($tableFormat->getModel()
+				$modelsPubState = $this->get('app.modelpublication')->isPublished($tableFormat->getModel()
 					->getId());
-				$modelsHasData = $this->get('app.modelUnpublication')->modelHasData($tableFormat->getModel()
+				$modelsHasData = $this->get('app.modelunpublication')->modelHasData($tableFormat->getModel()
 					->getId());
 				$tables[$index]['editable'] = (!$modelsPubState && !$modelsHasData);
 			}
@@ -214,7 +214,7 @@ class DataController extends Controller {
 				$files[$index]['file'] = $fileFormat;
 				$files[$index]['dataset'] = $fileFormat->getDataset();
 				// Do you have the right to modify the FileFormat object ?
-				$importModelPubState = $this->get('app.importmodelPublication')->isPublished($fileFormat->getDataset()
+				$importModelPubState = $this->get('app.importmodelpublication')->isPublished($fileFormat->getDataset()
 					->getId());
 				$files[$index]['editable'] = (!$importModelPubState);
 			}

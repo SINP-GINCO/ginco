@@ -20,7 +20,6 @@ class FileFieldController extends Controller {
 	 * Redirects to file fields page.
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/addAndUpdate/", name="configurateur_file_add_fields_and_update", options={"expose"=true})
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/add/", name="configurateur_file_add_fields", options={"expose"=true})
-	 * @Template()
 	 */
 	public function addFieldsAction($datasetId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -105,7 +104,6 @@ class FileFieldController extends Controller {
 	 * Updates the fields given as argument to the file.
 	 * Redirects to import model edition page.
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/update/", name="configurateur_file_update_fields", options={"expose"=true})
-	 * @Template()
 	 */
 	public function updateFieldsAction($datasetId, $format, $toMapping = false, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -275,7 +273,6 @@ class FileFieldController extends Controller {
 	 * Removes all the fields of a file.
 	 * (including from FileField and Field). Redirects to file fields page.
 	 * @Route("/datasetsimport/{datasetId}/files/{format}/fields/removeall/", name="configurateur_file_remove_all_fields")
-	 * @Template()
 	 */
 	public function removeAllFieldsAction($datasetId, $format) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -300,7 +297,6 @@ class FileFieldController extends Controller {
 	 * Removes a field from a file and updates also the file fields.
 	 * (including from FileField and Field).
 	 * @Route("/datasetsimport/{datasetId}/files/{format}/fields/remove/{field}/", name="configurateur_file_remove_field_and_update", options={"expose"=true})
-	 * @Template()
 	 */
 	public function removeFieldAction($datasetId, $field, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');

@@ -23,7 +23,7 @@ class DatasetImportController extends Controller {
 		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
 		$datasets = $repository->findByTypeAndOrderedByName('IMPORT');
 
-		$mpService = $this->get('app.importmodelPublication');
+		$mpService = $this->get('app.importmodelpublication');
 
 		// Check if import models are published and/or publishable
 		$importModelsPubState = array();
@@ -110,7 +110,7 @@ class DatasetImportController extends Controller {
 		// Save initial target model to check if it is changed on validation
 		$initialTargetDataModel = $dataset->getModel()->getId();
 
-		$mpService = $this->get('app.importmodelPublication');
+		$mpService = $this->get('app.importmodelpublication');
 
 		$pubState = $mpService->isPublished($id);
 		$modelPubState = $mpService->isImportModelDataModelPublished($id);
@@ -169,7 +169,6 @@ class DatasetImportController extends Controller {
 
 	/**
 	 * @Route("/datasetsimport/{id}/delete/", name="configurateur_dataset_import_delete")
-	 * @Template()
 	 */
 	public function deleteAction($id) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -177,7 +176,7 @@ class DatasetImportController extends Controller {
 		$dataset = $repository->find($id);
 
 		// Check if import model is published
-		$mpService = $this->get('app.importmodelPublication');
+		$mpService = $this->get('app.importmodelpublication');
 		$published = $mpService->isPublished($id);
 
 		if (!$this->get('app.permissions')->isImportModelDeletable($id)) {
@@ -213,7 +212,6 @@ class DatasetImportController extends Controller {
 	 * Adds flash messages to notice user about success or fail of action.
 	 * Redirects to index.
 	 * @Route("/datasetsimport/{importModelId}/publish/", name="configurateur_dataset_import_publish")
-	 * @Template()
 	 */
 	public function publishAction($importModelId) {
 		$importModel = $this->getDoctrine()
@@ -221,7 +219,7 @@ class DatasetImportController extends Controller {
 			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
 			->find($importModelId);
 		if ($importModel) {
-			$mpService = $this->get('app.importmodelPublication');
+			$mpService = $this->get('app.importmodelpublication');
 			$importModelName = $importModel->getLabel();
 			if ($mpService->isPublishable($importModel) == true) {
 
@@ -233,7 +231,7 @@ class DatasetImportController extends Controller {
 						->trans('importmodel.resetCaches.fail'));
 				} else {
 
-					$successStatus = $this->get('app.importModelPublication')->publishImportModel($importModel);
+					$successStatus = $this->get('app.importmodelpublication')->publishImportModel($importModel);
 
 					if ($successStatus == true) {
 						$this->addFlash('notice', $this->get('translator')
@@ -269,7 +267,6 @@ class DatasetImportController extends Controller {
 	 * Changes state of button 'unpublish' to 'publish'.
 	 * This action is also called when a data model unpublication is called.
 	 * @Route("/datasetsimport/{importModelId}/unpublish/{redirectToEdit}", name="configurateur_dataset_import_unpublish")
-	 * @Template()
 	 *
 	 * @param boolean $unpublishFromModel
 	 *        	if the unpublication call comes from the data model unpublication action call
@@ -286,7 +283,7 @@ class DatasetImportController extends Controller {
 			->find($importModelId);
 		if ($importModel) {
 			// Check if a file is being uploaded
-			$muService = $this->get('app.importmodelUnpublication');
+			$muService = $this->get('app.importmodelunpublication');
 			if ($muService->hasRunningFileUpload($importModelId)) {
 				$this->addFlash('error', $this->get('translator')
 					->trans('importmodel.unpublish.uploadrunning', array(
@@ -300,7 +297,7 @@ class DatasetImportController extends Controller {
 			}
 
 			// Unpublish the import model
-			$successStatus = $this->get('app.importModelUnpublication')->unpublishImportModel($importModelId);
+			$successStatus = $this->get('app.importmodelunpublication')->unpublishImportModel($importModelId);
 
 			// Send a flash message depending on the result of the unpublication
 			$importModelName = $importModel->getLabel();

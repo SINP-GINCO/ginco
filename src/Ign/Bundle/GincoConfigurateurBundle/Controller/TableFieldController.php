@@ -12,7 +12,6 @@ class TableFieldController extends TableFieldControllerBase {
 	 * Removes all the non-technical fields of a table.
 	 * (including from TableField and Field). Redirects to table edition page.
 	 * @Route("/models/{modelId}/tables/{format}/fields/removeall/", name="configurateur_table_remove_all_fields")
-	 * @Template()
 	 */
 	public function removeAllFieldsAction($modelId, $format) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
@@ -37,7 +36,6 @@ class TableFieldController extends TableFieldControllerBase {
 	 * Removes a field from a table.
 	 * (including from TableField and Field). Redirects to table edition page.
 	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field_and_update", options={"expose"=true})
-	 * @Template()
 	 */
 	public function removeFieldAction($modelId, $field, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata_work');

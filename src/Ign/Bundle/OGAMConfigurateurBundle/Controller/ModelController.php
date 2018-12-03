@@ -30,8 +30,8 @@ class ModelController extends Controller {
 		$modelsPermissions = array();
 		foreach ($models as $model) {
 			$modelId = $model->getId();
-			$modelsPubState[$modelId] = $this->get('app.modelPublication')->isPublished($modelId);
-			$modelsPublishable[$modelId] = $this->get('app.modelPublication')->isPublishable($modelId);
+			$modelsPubState[$modelId] = $this->get('app.modelpublication')->isPublished($modelId);
+			$modelsPublishable[$modelId] = $this->get('app.modelpublication')->isPublishable($modelId);
 			$modelsUnpublishable[$modelId] = $this->get('app.modelunpublication')->isUnpublishable($modelId);
 			$modelsPermissions[$modelId] = array();
 			$modelsPermissions[$modelId]['editable'] = $this->get('app.permissions')->isModelEditable($modelId);
@@ -166,7 +166,6 @@ class ModelController extends Controller {
 	 * Adds flash messages to notice user about success or fail of action.
 	 * Redirects to index.
 	 * @Route("/models/{modelId}/publish/", name="configurateur_model_publish")
-	 * @Template()
 	 */
 	public function publishAction($modelId) {
 		$model = $this->getDoctrine()
@@ -232,8 +231,8 @@ class ModelController extends Controller {
 	 *        	optional
 	 *        	parameter. if true, will redirect to edit page after unpublication
 	 *
-	 *        	@Route("/models/{modelId}/unpublish/{redirectToEdit}", name="configurateur_model_unpublish")
-	 *        	@Template()
+	 * @Route("/models/{modelId}/unpublish/{redirectToEdit}", name="configurateur_model_unpublish")
+	 *        	
 	 */
 	public function unpublishAction($modelId, $redirectToEdit = false) {
 		$logger = $this->get('monolog.logger.ginco');
@@ -328,7 +327,6 @@ class ModelController extends Controller {
 	 * Deletes all the tables from a model, then the model.
 	 * Returns to the model index page.
 	 * @Route("/models/{id}/delete/", name="configurateur_model_delete")
-	 * @Template()
 	 */
 	public function deleteAction($id) {
 		$em = $this->getDoctrine()->getManager('metadata_work');
