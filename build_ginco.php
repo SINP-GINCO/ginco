@@ -182,14 +182,13 @@ function buildWebsite($config, $buildMode)
 
 	// Installing assets and clear cache:
 	// --> Ok in dev mode
-	// --> Not done in prod mode because app/console assets:install and assetic:dump need a connection
+	// --> Not done in prod mode because app/console assets:install need a connection
 	// to the database, which is not accessible from local ign or jenkins.
 	// --> done by the installer in switch_version.sh, on the target server.
 	if ($buildMode == 'dev') {
         echo("Installing assets...\n");
         system('php app/console fos:js-routing:dump --env=dev --target="./src/Ign/Bundle/OGAMConfigurateurBundle/Resources/public/js/fos_js_routes_dev.js"');
         system("php app/console assets:install --symlink");
-		system("php app/console assetic:dump --env=dev");
     }
 
     // Directories used in application:
