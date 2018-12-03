@@ -278,6 +278,12 @@ services:
         arguments: ["@doctrine.orm.entity_manager", "@ginco.inpn_provider_service"]
         tags:
             - { name: form.type }
+            
+    form.type.ginco_jdd: 
+        class: Ign\Bundle\GincoBundle\Form\GincoJddType
+        arguments: ["@doctrine.orm.entity_manager", "@ginco.inpn_provider_service"]
+        tags:
+            - { name: form.type }
                         
     validator.unique.epsg_code:
       class: Ign\Bundle\GincoBundle\Validator\Constraints\EPSGCodeValidator
