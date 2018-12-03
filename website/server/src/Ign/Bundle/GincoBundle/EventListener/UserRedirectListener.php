@@ -5,7 +5,8 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -13,15 +14,21 @@ use Symfony\Component\Routing\RouterInterface;
  * Listen kernel requests.
  * Redirect users without provider and with permision to declare it to user_home page.
  */
-class UserRedirectListener extends ContainerAware {
+class UserRedirectListener implements ContainerAwareInterface {
 
 	protected $tokenStorage;
 
 	protected $router;
+	
+	protected $container ;
 
 	public function __construct(TokenStorageInterface $t, RouterInterface $r) {
 		$this->tokenStorage = $t;
 		$this->router = $r;
+	}
+	
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
 	}
 
 	/**
