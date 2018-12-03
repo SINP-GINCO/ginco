@@ -231,14 +231,8 @@
     <script type="text/javascript" src={{ asset('js/hover-dropdown.js') }}></script>
     <script type="text/javascript" src={{ asset('bundles/ignogamconfigurateur/js/data-toggle-tooltip.js') }}></script>
 
-    <script type="text/javascript" src={{ asset('bundles/fosjsrouting/js/router.js') }}></script>
-
-    
-    {% if app.environment == 'prod' %}
-		<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes.js') }}"></script>
-	{% else %}
-		<script src="{{ asset('bundles/ignogamconfigurateur/js/fos_js_routes_dev.js') }}"></script>
-	{% endif %}
+    <script type="text/javascript" src={{ asset('bundles/fosjsrouting/js/router.min.js') }}></script>
+	<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 		
 	<script>
 
