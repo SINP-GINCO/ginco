@@ -45,11 +45,9 @@
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
 		],
 		"post-install-cmd" : [
-			"php app/console ckeditor:install",
 			"@symfony-scripts"
 		],
 		"post-update-cmd" : [
-			"php app/console ckeditor:install",
 			"@symfony-scripts"
 		]
 	},

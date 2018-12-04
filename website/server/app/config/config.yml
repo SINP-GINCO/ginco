@@ -194,6 +194,8 @@ old_sound_rabbit_mq:
 
 # FOS CKEditor
 fos_ck_editor:
+    base_path: "vendor/ckeditor"
+    js_path: "vendor/ckeditor/ckeditor.js"
     default_config: my_config
     configs:
         my_config:

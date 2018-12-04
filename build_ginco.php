@@ -176,10 +176,6 @@ function buildWebsite($config, $buildMode)
 	echo "Installing project vendors...\n";
 	system("./composer.phar install --no-scripts");
 
-	// Download and install CKEditor
-	echo "Installing CKEditor...\n";
-	system("./install_ckeditor.sh");
-
 	// Installing assets and clear cache:
 	// --> Ok in dev mode
 	// --> Not done in prod mode because app/console assets:install need a connection

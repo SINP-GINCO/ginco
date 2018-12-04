@@ -54,6 +54,14 @@ module.exports = function (grunt) {
                         dest: 'web/vendor/bootstrap-table'
                     }]
             },
+			ckeditor: {
+				files: [{
+					expand: true,
+					cwd: 'node_modules/ckeditor',
+					src: ['**', '!**/samples/**', '!**/plugins/**'],
+					dest: 'web/vendor/ckeditor'
+				}],
+			},
             ginco: {
                 files: [{
                     expand: true,
