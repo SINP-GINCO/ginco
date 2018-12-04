@@ -38,7 +38,7 @@ INSERT INTO website.users(user_login, provider_id, email) VALUES
 ;
 
 -- Create visiteur special user
-INSERT INTO users(user_login, user_name, provider_id, email) VALUES ('visiteur', 'visiteur', '1', 'sinp-dev@ign.fr');
+INSERT INTO users(user_login, user_name, provider_id, email) VALUES ('visiteur', 'visiteur', '0', 'sinp-dev@ign.fr');
 
 -- Link the users to their roles
 INSERT INTO website.role_to_user(user_login, role_code) VALUES
