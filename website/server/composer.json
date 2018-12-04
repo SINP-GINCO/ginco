@@ -27,8 +27,8 @@
 		"zendframework/zend-http" : "^2.5",
 		"friendsofsymfony/jsrouting-bundle" : "^2.2",
 		"php-amqplib/rabbitmq-bundle" : "^1.12",
-        "egeloen/ckeditor-bundle": "^6.0",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+		"friendsofsymfony/ckeditor-bundle": "^1.2"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~3.0",
@@ -45,9 +45,11 @@
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
 		],
 		"post-install-cmd" : [
+			"php app/console ckeditor:install",
 			"@symfony-scripts"
 		],
 		"post-update-cmd" : [
+			"php app/console ckeditor:install",
 			"@symfony-scripts"
 		]
 	},

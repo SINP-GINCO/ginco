@@ -4,7 +4,7 @@ namespace Ign\Bundle\GincoBundle\Form;
 use Ign\Bundle\GincoBundle\Form\Components\ImageType;
 use Ign\Bundle\GincoBundle\Form\Components\LinkFileType;
 use Ign\Bundle\GincoBundle\Form\Components\LinkType;
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

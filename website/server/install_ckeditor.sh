@@ -9,10 +9,11 @@
 curl -Ls https://github.com/ckeditor/ckeditor-releases/archive/full/latest.zip > ckeditor.zip
 
 # extract in the ckeditor bundle directory
-unzip -q -d vendor/egeloen/ckeditor-bundle/Resources ckeditor.zip
-rm -rf vendor/egeloen/ckeditor-bundle/Resources/public
-mv -f vendor/egeloen/ckeditor-bundle/Resources/ckeditor-releases-full-latest vendor/egeloen/ckeditor-bundle/Resources/public
-rm -rf vendor/egeloen/ckeditor-bundle/Resources/public/samples
+unzip -q -d vendor/friendsofsymfony/ckeditor-bundle/src/Resources ckeditor.zip
+rm -rf vendor/friendsofsymfony/ckeditor-bundle/src/Resources/public
+mv -f vendor/friendsofsymfony/ckeditor-bundle/src/Resources/ckeditor-releases-full-latest vendor/friendsofsymfony/ckeditor-bundle/src/Resources/public
+rm -rf vendor/friendsofsymfony/ckeditor-bundle/src/Resources/public/samples
 
 # Cleaning
 rm ckeditor.zip
+

@@ -192,8 +192,8 @@ old_sound_rabbit_mq:
                 timeout: 3600 # 1 hour
                 exit_code: 10 # default is 0
 
-# Ivory CKEditor
-ivory_ck_editor:
+# FOS CKEditor
+fos_ck_editor:
     default_config: my_config
     configs:
         my_config:
