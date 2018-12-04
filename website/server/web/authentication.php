@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 
-$storage = new NativeSessionStorage(array(), new NativeFileSessionHandler("../app/sessions/"));
+$storage = new NativeSessionStorage(array(), new NativeFileSessionHandler("../var/sessions/"));
 $session = new Session($storage);
 $session->start();
 

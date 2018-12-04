@@ -206,8 +206,8 @@ function buildWebsite($config, $buildMode)
 
 		$postBuildInstructions[] = "Set permissions on application directories, execute:\n";
 		$postBuildInstructions[] = " cd $buildServerDir\n";
-		$postBuildInstructions[] = " sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs app/sessions\n";
-		$postBuildInstructions[] = " sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX app/cache app/logs app/sessions\n\n";
+		$postBuildInstructions[] = " sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/logs var/sessions\n";
+		$postBuildInstructions[] = " sudo setfacl -dR -m u:www-data:rwX -m u:`whoami`:rwX var/cache var/logs var/sessions\n\n";
 	}
 
     echo("Done building server (symfony).\n\n");

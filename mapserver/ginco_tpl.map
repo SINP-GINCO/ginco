@@ -12,7 +12,7 @@ UNITS meters
 FONTSET "@deploy.dir@/mapserver/data/fonts/fonts.txt"
 SYMBOLSET "@deploy.dir@/mapserver/data/fonts/symbols.sym"
 
-CONFIG  "MS_ERRORFILE" "@deploy.dir@/website/server/app/logs/mapserver_errors.log"
+CONFIG  "MS_ERRORFILE" "@deploy.dir@/website/server/var/logs/mapserver_errors.log"
 DEBUG 0
 # Erreurs seulement
 # Mode verbeux
