@@ -17,8 +17,7 @@ monolog:
             type: rotating_file
             path: "%kernel.logs_dir%/symfony_%kernel.environment%.log"
             level: debug
-            # put back php channel to get depreciations messages.
-            channels: [!event, !ginco, !php]
+            channels: [!event, !ginco]
             max_files: 5
         ginco:
             type: rotating_file
