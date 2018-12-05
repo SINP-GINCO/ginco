@@ -30,6 +30,29 @@ try {
 		WHERE table_name = 'taxref' ;"
 	);
 
+	// Suppression des références à TAXREF v11
+	$pdo->exec("UPDATE referentiels.taxoalertevalue SET definition = 'Taxon en alerte suite à la migration TAXREF' WHERE code = '0'") ;
+	$pdo->exec("UPDATE referentiels.taxoalertevalue SET definition = 'Taxon sans alerte suite à la migration TAXREF' WHERE code = '1'") ;
+	$pdo->exec("UPDATE metadata.unit SET 
+			label = '[Liste] Statut du taxon pour la migration TAXREF',
+			definition = 'Statut du taxon pour la migration TAXREF'
+		WHERE unit = 'TaxoStatutValue'
+	");
+	$pdo->exec("UPDATE metadata.unit SET 
+			label = '[Liste] Modification effectuée lors de la migration TAXREF',
+			definition = 'Modification effectuée sur le taxon lors de la migration TAXREF'
+		WHERE unit = 'TaxoModifValue'
+	");
+	$pdo->exec("UPDATE metadata.unit SET 
+			label = '[Liste] Taxon en alerte ou non pour la migration TAXREF',
+			definition = 'Taxon en alerte ou non pour la migration TAXREF'
+		WHERE unit = 'TaxoAlerteValue'
+	");
+	$pdo->exec("UPDATE metadata.data SET definition = 'Statut du taxon pour la migration TAXREF.' WHERE data = 'taxostatut'") ;
+	$pdo->exec("UPDATE metadata.data SET definition = 'Modification effectuée sur le taxon lors de la migration TAXREF.' WHERE data = 'taxomodif'") ;
+	$pdo->exec("UPDATE metadata.data SET definition = 'Alerte sur le taxon pour la migration TAXREF.' WHERE data = 'taxoalerte'") ;
+
+
 
 	// Création table contenant tous les changements.
 	$pdo->exec("CREATE TABLE all_changes(

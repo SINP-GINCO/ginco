@@ -49,7 +49,7 @@ NomCommuneCalculeValue;ARRAY;DYNAMIC;[Liste] Nom de la commune calculé;Nom de l
 CodeDepartementCalculeValue;ARRAY;DYNAMIC;[Liste] Code du département calculé;Code du département calculé
 TypeAttributValue;CODE;DYNAMIC;Type de l'attribut additionnel;Type de l'attribut additionnel (quantitatif ou qualitatif)
 CodeMasseEauValue;ARRAY;STRING;[Liste] Code de la masse d'eau;Code de la masse d'eau
-TaxoStatutValue;CODE;DYNAMIC;[Liste] Statut du taxon pour le passage TAXREF V11;Statut du taxon pour le passage TAXREF V11
-TaxoModifValue;CODE;DYNAMIC;[Liste] Modification effectuée lors du passage TAXREF V11;Modification effectuée sur le taxon lors du passage TAXREF V11
-TaxoAlerteValue;CODE;DYNAMIC;[Liste] Taxon en alerte ou non pour le passage TAXREF V11;Taxon en alerte ou non pour le passage TAXREF V11
+TaxoStatutValue;CODE;DYNAMIC;[Liste] Statut du taxon pour la migration TAXREF;Statut du taxon pour la migration TAXREF
+TaxoModifValue;CODE;DYNAMIC;[Liste] Modification effectuée lors de la migration TAXREF;Modification effectuée sur le taxon lors de la migration TAXREF
+TaxoAlerteValue;CODE;DYNAMIC;[Liste] Taxon en alerte ou non pour la migration TAXREF;Taxon en alerte ou non pour la migration TAXREF
 USER_LOGIN;STRING;DYNAMIC;Utilisateur;Utilisateur

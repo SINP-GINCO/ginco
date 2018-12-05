@@ -111,7 +111,7 @@ heuredatefin;Time;heureDateFin;Heure du jour, dans le système local de l’obse
 nomvalide;CharacterString;nomValide;Le nomValide est le nom du taxon correspondant au cd_ref;
 cdnomcalcule;TaxRefValue;cdNomCalcule;Code du taxon « cd_nom » calculé.;
 cdrefcalcule;TaxRefValue;cdRefCalcule;Code du taxon « cd_ref » calculé.;
-taxostatut;TaxoStatutValue;taxoStatut;Statut du taxon pour le passage TAXREF V11.;
-taxomodif;TaxoModifValue;taxoModif;Modification effectuée sur le taxon lors du passage TAXREF V11.;
-taxoalerte;TaxoAlerteValue;taxoAlerte;Alerte sur le taxon pour le passage TAXREF V11.;
+taxostatut;TaxoStatutValue;taxoStatut;Statut du taxon pour la migration TAXREF.;
+taxomodif;TaxoModifValue;taxoModif;Modification effectuée sur le taxon lors de la migration TAXREF.;
+taxoalerte;TaxoAlerteValue;taxoAlerte;Alerte sur le taxon pour la migration TAXREF.;
 USER_LOGIN;USER_LOGIN;Utilisateur;Utilisateur;

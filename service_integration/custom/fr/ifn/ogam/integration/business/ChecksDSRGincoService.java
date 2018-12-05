@@ -573,7 +573,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		if (cdNomGD != null && !empty(cdNomGD)) {			
 			List<String> names = metadataDAO.getNameFromTaxrefCode(cdNomGD.getValue().toString()) ;
 			if (names.isEmpty()) {
-				String error = "Le cdNom indiqué n'existe pas dans le référentiel TAXREF v11." ;
+				String error = "Le cdNom indiqué n'existe pas dans le référentiel TAXREF." ;
 				CheckException ce = new CheckException(CDNOM_NOT_FOUND, error) ;
 				ce.setFoundValue(cdNomGD.getValue().toString()) ;
 				ce.setSourceData("cdNom") ;
@@ -584,7 +584,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		if (cdRefGD != null && !empty(cdRefGD)) {			
 			List<String> names = metadataDAO.getNameFromTaxrefCode(cdRefGD.getValue().toString()) ;
 			if (names.isEmpty()) {
-				String error = "Le cdRef indiqué n'existe pas dans le référentiel TAXREF v11." ;
+				String error = "Le cdRef indiqué n'existe pas dans le référentiel TAXREF." ;
 				CheckException ce = new CheckException(CDREF_NOT_FOUND, error) ;
 				ce.setFoundValue(cdRefGD.getValue().toString()) ;
 				ce.setSourceData("cdRef") ;

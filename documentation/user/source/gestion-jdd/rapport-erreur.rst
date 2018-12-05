@@ -155,6 +155,6 @@ Erreurs de cohérence
 
 * **1211 -  L'identifiant permanent n'est pas un UUID** ; la valeur de l'identifiant permanent doit être un UUID valide, ou alors une valeur nulle (l'UUID sera alors calculé).
 
-* **1212 -  Le cdNom indiqué n'est pas dans le référentiel TAXREF v11** ; la valeur de cdNom n'a pu être trouvée dans la version 11 du référentiel.
+* **1212 -  Le cdNom indiqué n'est pas dans le référentiel TAXREF** ; la valeur de cdNom n'a pu être trouvée dans la version courante du référentiel.
 
-* **1213 -  Le cdRef indiqué n'est pas dans le référentiel TAXREF v11** ; la valeur de cdRef n'a pu être trouvée dans la version 11 du référentiel.
+* **1213 -  Le cdRef indiqué n'est pas dans le référentiel TAXREF** ; la valeur de cdRef n'a pu être trouvée dans la version courante du référentiel.
