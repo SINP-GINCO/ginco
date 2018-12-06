@@ -4,6 +4,16 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.2.3 (6/12/2018)
+
+* Migration de TAXREF vers la version 12.
+* Migration des environnements : passage à PHP 7.2, Java 8, Tomcat 8.
+* Migration du framework Symfony en 3.4.
+* Correctifs de sécurités divers
+* Corrections de bugs divers
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.2...v2.2.3)
+
 ## V2.2.2 (19/10/2018)
 
 * Correction des formulaires cassés sur le requêteur.
