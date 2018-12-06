@@ -180,7 +180,8 @@ try {
 		$pdo->exec("UPDATE raw_data.$tableName SET versiontaxref = 'v12'") ;
 
 		// Création d'un index sur cdref pour accélerer les traitements (celui sur cdnom a été fait lors du passage v11).
-		$pdo->exec("CREATE INDEX idx_{$tableName}_cdref ON $tableName(cdref)") ;
+		$indexName = substring("idx_cdref_{$tableName}", 0, 64) ;
+		$pdo->exec("CREATE INDEX $indexName ON $tableName(cdref)") ;
 
 		// Création d'un trigger temporaire pour le calcul de sensibilité lors de la migration.
 		$pdo->exec("
