@@ -62,12 +62,6 @@ class QueryController extends GincoController {
 			$defaultTab = 'edition-add';
 		}
 		
-		// Add the configuration parameters to the session for the map proxies (mapserverProxy and tilecacheProxy)
-		if (!$request->getSession()->has('proxy_ConfigurationParameters')) {
-			$configuration = $this->get('ginco.configuration_manager');
-			$request->getSession()->set('proxy_ConfigurationParameters', $configuration->getParameters());
-		}
-		
 		// Forward the user to the next step
 		$visuUrl = ($this->container->getParameter('kernel.environment') == 'dev') ? '/odd' : '/odp';
 		$visuUrl = $request->getBasePath() . $visuUrl;
