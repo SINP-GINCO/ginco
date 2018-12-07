@@ -69,7 +69,7 @@ Pour voir le diff entre deux versions, aller à (par exemple) : https://github.c
 [Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.1.1...v2.1.2)
 
 
-## V2.1.1 (07/05/2018)
+## V2.1.1 (07/05/2018)
 
 * Amélioration des performances pour le calcul des rattachements administratifs
 * Rapport d'erreur pour l'import de jeux de données formatté en page HTML (précédemment PDF)
