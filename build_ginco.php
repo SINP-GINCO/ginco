@@ -160,7 +160,8 @@ function buildWebsite($config, $buildMode)
 		// https://github.com/composer/composer/issues/6538#issuecomment-328311429
 		for ($i=1; $i<=5; $i++) {
 			echo "Try $i...\n";
-			system("https_proxy=http://proxy.ign.fr:3128 curl -sS https://getcomposer.org/installer | php");
+			$proxy = getenv('https_proxy') ? "https_proxy=".getenv('https_proxy') : "" ;
+			system("$proxy curl -sS https://getcomposer.org/installer | php");
 			if (is_file("composer.phar")){
 				break;
 			}
