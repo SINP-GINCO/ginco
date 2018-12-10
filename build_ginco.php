@@ -104,19 +104,6 @@ function buildWebsite($config, $buildMode)
         system("cp -r $projectDir/website/server/* $buildServerDir/");
     }
 
-	// Copy or symlink configurator bundles
-	$configuratorDir = realpath($config['configurator.path']);
-	if ($buildMode == 'prod') {
-		echo("Copying configurator bundles to $buildServerDir/src/Ign/Bundle/...\n");
-		system("rm -rf $buildServerDir/src/Ign/Bundle/*ConfigurateurBundle");
-		system("cp -r $configuratorDir/src/Ign/Bundle/*ConfigurateurBundle $buildServerDir/src/Ign/Bundle/");
-	} else {
-		echo("Creating symlinks to OGAM/GincoConfigurateurBundle in $buildServerDir/src/Ign/Bundle/...\n");
-		system("rm -rf $buildServerDir/src/Ign/Bundle/*ConfigurateurBundle");
-		system("ln -s $configuratorDir/src/Ign/Bundle/OGAMConfigurateurBundle $buildServerDir/src/Ign/Bundle/OGAMConfigurateurBundle");
-		system("ln -s $configuratorDir/src/Ign/Bundle/GincoConfigurateurBundle $buildServerDir/src/Ign/Bundle/GincoConfigurateurBundle");
-	}
-
 	// ajout de la version du build dans le template du site
 	if ($buildMode == 'prod') {
 		$currentBranch = system("git rev-parse --abbrev-ref HEAD");
