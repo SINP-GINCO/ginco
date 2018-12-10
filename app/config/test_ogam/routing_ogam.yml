@@ -1,7 +1,0 @@
-ign_ogam_configurateur:
-    resource: "../../src/Ign/Bundle/OGAMConfigurateurBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
