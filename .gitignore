@@ -12,9 +12,6 @@
 .classpath
 .metadata/
 
-# Composer
-/composer.phar
-
 # Conf PHPStorm
 .idea/
 
