@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Website.predefinedRequestCriteria" table="website.predefined_request_criteria">
+    <indexes>
+      <index name="IDX_3057F4C9218459FC" columns="request_name"/>
+    </indexes>
+    <id name="format" type="string" column="format" length="36"/>
+    <id name="data" type="string" column="data" length="36"/>
+    <id name="requestName" association-key="true"/>
+    <field name="value" type="string" column="value" length="500" nullable="false"/>
+    <field name="fixed" type="boolean" column="fixed" nullable="true"/>
+    <one-to-one field="requestName" target-entity="PredefinedRequest">
+      <join-columns>
+        <join-column name="request_name" referenced-column-name="request_name"/>
+      </join-columns>
+    </one-to-one>
+  </entity>
+</doctrine-mapping>

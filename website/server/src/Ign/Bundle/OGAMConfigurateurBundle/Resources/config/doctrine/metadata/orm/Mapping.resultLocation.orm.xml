@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Mapping.resultLocation" table="mapping.result_location">
+    <indexes>
+      <index name="ix_result_location_spatial_index" columns="the_geom"/>
+      <index name="result_location_session_idx" columns="session_id"/>
+    </indexes>
+    <id name="sessionId" type="string" column="session_id" length="50"/>
+    <id name="pk" type="string" column="pk" length="100"/>
+    <field name="format" type="string" column="format" length="36" nullable="false"/>
+    <field name="creationdt" type="date" column="_creationdt" nullable="true"/>
+    <field name="theGeom" type="geometry" column="the_geom" nullable="true"/>
+  </entity>
+</doctrine-mapping>

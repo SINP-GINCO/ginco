@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.mode" table="metadata.mode">
+    <id name="unit" type="string" column="unit" length="36"/>
+    <id name="code" type="string" column="code" length="36"/>
+    <field name="position" type="integer" column="position" nullable="true"/>
+    <field name="label" type="string" column="label" length="255" nullable="true"/>
+    <field name="definition" type="string" column="definition" length="255" nullable="true"/>
+  </entity>
+</doctrine-mapping>

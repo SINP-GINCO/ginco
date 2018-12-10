@@ -1,0 +1,48 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% form_theme fileForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}
+	{% trans %}breadcrumb.file.new{% endtrans%}
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans%}breadcrumb.importmodel.index{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">{%trans with {'%modelName%' : dataset.label} %}breadcrumb.importmodel.edit{% endtrans %}</a></li>
+		<li class="active">{% trans %}breadcrumb.file.new{% endtrans%}</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+	{% if fileForm is defined %}
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 id="panel-title" class="panel-title">
+			{% trans with {'%dataset.label%': dataset.label} %}file.new.title{% endtrans %}
+			</h3>
+		</div>
+		<div class="panel-body">
+			{{ form_start(fileForm) }}
+			{{ form_errors(fileForm) }}
+
+			{{ form_row(fileForm.label) }}
+			{{ form_row(fileForm.description) }}
+
+			<div class="row"><div class="col-sm-10 col-sm-push-2">
+				{{ form_widget(fileForm.save) }}
+				{{ form_widget(fileForm.saveAndFields) }}
+			</div>
+		</div>
+			{{ form_end(fileForm) }} <br />
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('IgnOGAMConfigurateurBundle::preventclosing.html.twig') }}
+{% endblock %}

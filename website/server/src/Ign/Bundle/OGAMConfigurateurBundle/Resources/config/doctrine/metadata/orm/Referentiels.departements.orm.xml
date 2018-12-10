@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Referentiels.departements" table="referentiels.departements">
+    <id name="gid" type="integer" column="gid">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="dp" type="string" column="dp" length="2" nullable="true"/>
+    <field name="nomDepart" type="string" column="nom_depart" length="30" nullable="true"/>
+    <field name="firstNom1" type="string" column="first_nom1" length="30" nullable="true"/>
+    <field name="firstInse" type="string" column="first_inse" length="2" nullable="true"/>
+    <field name="theGeom" type="geometry" column="the_geom" nullable="true"/>
+  </entity>
+</doctrine-mapping>

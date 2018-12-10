@@ -1,0 +1,48 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% form_theme tableForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}
+	{% trans %}breadcrumb.table.new{% endtrans %}
+{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+	{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+	<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+	<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
+	<li><a href="{{ path('configurateur_model_edit', {'id' : model.id}) }}">{%trans with {'%modelName%' : model.name} %}breadcrumb.datamodel.edit{% endtrans %}</a></li>
+	<li class="active">{% trans %}breadcrumb.table.new{% endtrans %}</li>
+</ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 id="panel-title" class="panel-title">
+			{% trans with {'%model.name%': model.name}%}table.new.title{% endtrans %}
+		</h3>
+	</div>
+	<div class="panel-body">
+		{{ form_start(tableForm) }}
+		{{ form_errors(tableForm) }}
+
+		{{ form_row(tableForm.label) }}
+		{{ form_row(tableForm.description) }}
+		{{ form_row(tableForm.parent) }}
+
+		<div class="row"><div class="col-sm-10 col-sm-push-2">
+			{{ form_widget(tableForm.save) }}
+			{{ form_widget(tableForm.saveAndFields) }}
+		</div></div>
+
+
+		{{ form_end(tableForm) }} <br />
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('IgnOGAMConfigurateurBundle::preventclosing.html.twig') }}
+{% endblock %}

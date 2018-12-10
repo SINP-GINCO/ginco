@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.translation" table="metadata.translation">
+    <id name="tableFormat" type="string" column="table_format" length="36"/>
+    <id name="rowPk" type="string" column="row_pk" length="255"/>
+    <id name="lang" type="string" column="lang" length="36"/>
+    <field name="label" type="string" column="label" length="255" nullable="true"/>
+    <field name="definition" type="string" column="definition" length="255" nullable="true"/>
+  </entity>
+</doctrine-mapping>

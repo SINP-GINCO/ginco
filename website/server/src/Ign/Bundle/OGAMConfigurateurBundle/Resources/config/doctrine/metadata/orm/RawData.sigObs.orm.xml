@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RawData.sigObs" table="raw_data.sig_obs">
+    <id name="submissionId" type="integer" column="submission_id"/>
+    <id name="providerId" type="string" column="provider_id" length="50"/>
+    <id name="cleObjet" type="integer" column="cle_objet"/>
+    <field name="cleObs" type="integer" column="cle_obs" nullable="true"/>
+    <field name="wkt" type="text" column="wkt" nullable="false"/>
+    <field name="theGeom" type="geometry" column="the_geom" nullable="true"/>
+  </entity>
+</doctrine-mapping>

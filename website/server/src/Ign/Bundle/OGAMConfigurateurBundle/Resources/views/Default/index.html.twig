@@ -1,0 +1,20 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% block title %}
+	{% trans %}breadcrumb.configurator{% endtrans %}
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+		<li class="active">{%trans %}breadcrumb.configurator{% endtrans %}</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+	<ul>
+		<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans %}breadcrumb.importmodel.index{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_data_index') }}">{%trans %}breadcrumb.data.index{% endtrans %}</a></li>
+	</ul>
+{% endblock %}

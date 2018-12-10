@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.fileField" table="metadata.file_field">
+    <id name="data" type="string" column="data" length="36"/>
+    <id name="format" type="string" column="format" length="36"/>
+    <field name="isMandatory" type="string" column="is_mandatory" length="1" nullable="true"/>
+    <field name="mask" type="string" column="mask" length="100" nullable="true"/>
+    <field name="position" type="integer" column="position" nullable="true"/>
+  </entity>
+</doctrine-mapping>

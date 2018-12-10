@@ -1,0 +1,19 @@
+dee:
+  readOnly: Le modèle d'exemple est en lecture seule.
+datamodel:
+  new:
+    forbidden: Vous ne pouvez créer un modèle qu'à partir de la duplication d'un autre modèle.
+  unpublish:
+    hasDataOrJdd: Le modèle '%modelName%' ne peut être dépublié car il est soit lié à un jeu de données, soit il contient des données en production.
+table:
+  new:
+    forbidden: Vous ne pouvez pas ajouter de nouvelle table à un modèle.
+  delete:
+    forbidden: Vous ne pouvez pas supprimer les tables d'un modèle.
+data:
+  delete:
+    ref:
+      forbidden: Le champ %dataName% ne peut être supprimé car il dérive d'un champ appartenant à un modèle de données standard.
+  compulsory_state_change:
+    ref:
+      forbidden: Le caractère obligatoire du champ %dataName% ne peut être modifié car il dérive d'un champ appartenant à un modèle de données standard.

@@ -1,0 +1,75 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% block title %}
+	{% trans with {'%fileName%': file.label}%}breadcrumb.file.view{% endtrans %}
+{% endblock %}
+
+{% block extracss %}
+	{{ parent() }}
+	<link rel="stylesheet"
+		href="{{ asset('bundles/ingconfigurateur/css/draggable.css') }}"
+		type="text/css" />
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans%}breadcrumb.importmodel.index{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_view', {'id' : datasetId}) }}">{%trans with {'%modelName%': datasetLabel}%}breadcrumb.importmodel.view{% endtrans %}</a></li>
+		<li class="active">{% trans with {'%fileName%': file.label}%}breadcrumb.file.view{% endtrans %}</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 id="panel-title" class="panel-title">{% trans with
+			{'%file.label%': file.label, '%dataset.label%' : datasetLabel}
+			%}file.view.title{% endtrans %}</h3>
+	</div>
+	<div class="panel-body">
+		<div class="panel-body">
+			<br>
+			<p><b>Description : </b> {{ file.description }}</p>
+		</div>
+		<div id="file-div" class="col-xs-8">
+			<!-- file at the right (fields of the file) -->
+			<table id="selected-data-table" data-toggle="table"
+				data-height="299"
+				class="table table-hover table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th data-field="name">{% trans %}Field name{% endtrans %}</th>
+						<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
+						<th data-field="labelCSV">{% trans %}Nom de colonne dans le fichier{% endtrans %}</th>
+						<th data-field="mandatory">{% trans %}Mandatory{% endtrans %}</th>
+						<th data-field="mask">{% trans %}fileField.mask{% endtrans %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for champ in fileFields %}
+					<tr>
+						<td id="name">{{ champ.label
+								}}</td>
+						<td id="unit">{{ champ.unitType }}</td>
+						<td id="unit">{{ champ.labelCSV }}</td>
+						<td id="mandatory" class=text-center">{% if champ.isMandatory ==
+							'1' %}
+						 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% trans %} yes{% endtrans %}
+						 {% else %}
+						 {% trans %}no{% endtrans %}
+						 {% endif %}
+						</td>
+						<td>{{ champ.mask}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

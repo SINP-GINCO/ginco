@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Referentiels.communes" table="referentiels.communes">
+    <id name="oid" type="integer" column="oid">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="code" type="string" column="code" length="5" nullable="true"/>
+    <field name="nom" type="string" column="nom" length="50" nullable="true"/>
+    <field name="theGeom" type="geometry" column="the_geom" nullable="true"/>
+  </entity>
+</doctrine-mapping>

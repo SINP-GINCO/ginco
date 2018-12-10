@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Referentiels.regions" table="referentiels.regions">
+    <indexes>
+      <index name="regions_the_geom_gist" columns="the_geom"/>
+    </indexes>
+    <id name="gid" type="integer" column="gid">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="code" type="string" column="code" length="2" nullable="true"/>
+    <field name="nom" type="string" column="nom" length="27" nullable="true"/>
+    <field name="theGeom" type="geometry" column="the_geom" nullable="true"/>
+  </entity>
+</doctrine-mapping>

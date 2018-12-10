@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Mapping.layer" table="mapping.layer">
+    <id name="layerName" type="string" column="layer_name" length="50">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="layerLabel" type="string" column="layer_label" length="100" nullable="true"/>
+    <field name="serviceLayerName" type="string" column="service_layer_name" length="500" nullable="true"/>
+    <field name="istransparent" type="integer" column="istransparent" nullable="true"/>
+    <field name="defaultOpacity" type="integer" column="default_opacity" nullable="true"/>
+    <field name="isbaselayer" type="integer" column="isbaselayer" nullable="true"/>
+    <field name="isuntiled" type="integer" column="isuntiled" nullable="true"/>
+    <field name="maxscale" type="integer" column="maxscale" nullable="true"/>
+    <field name="minscale" type="integer" column="minscale" nullable="true"/>
+    <field name="hasLegend" type="integer" column="has_legend" nullable="true"/>
+    <field name="transitioneffect" type="string" column="transitioneffect" length="50" nullable="true"/>
+    <field name="imageformat" type="string" column="imageformat" length="10" nullable="true"/>
+    <field name="providerId" type="string" column="provider_id" length="36" nullable="true"/>
+    <field name="hasSld" type="integer" column="has_sld" nullable="true"/>
+    <field name="activateType" type="string" column="activate_type" length="36" nullable="true"/>
+    <field name="viewServiceName" type="string" column="view_service_name" length="50" nullable="true"/>
+    <field name="legendServiceName" type="string" column="legend_service_name" length="50" nullable="true"/>
+    <field name="printServiceName" type="string" column="print_service_name" length="50" nullable="true"/>
+    <field name="detailServiceName" type="string" column="detail_service_name" length="50" nullable="true"/>
+    <field name="featureServiceName" type="string" column="feature_service_name" length="50" nullable="true"/>
+  </entity>
+</doctrine-mapping>

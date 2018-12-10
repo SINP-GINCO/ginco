@@ -1,0 +1,30 @@
+model:
+  name:
+    notBlank: Enter a model name.
+    caseinsensitive: This model name is already use, please input an other one.
+    maxLength: The model name cannot be longer than 128 characters.
+  description:
+    maxLength: The model description cannot be longer than 1024 characters.
+dataset:
+  label:
+    notBlank: Please input a model name.
+    caseinsensitive: This import model name is already use, please input an other one.
+    maxLength: The import model name cannot be longer than 255 characters.
+  definition:
+    maxLength: The import model description cannot be longer than 512 characters.
+tableFormat:
+  label:
+    notBlank: Please input a table name.
+    maxLength: The table name cannot be longer than 100 characters.
+    regex: Authorized characters are lower letter, numbers and _.
+  description:
+    notBlank: Please input a table description.
+    maxLength: The table description cannot be longer than 255 characters.
+fileFormat:
+  label:
+    notBlank: Please input a file name.
+    maxLength: The file name cannot be longer than 36 characters.
+  description:
+    notBlank: Please input a file description.
+    maxLength: The file description cannot be longer than 255 characters.
+ 

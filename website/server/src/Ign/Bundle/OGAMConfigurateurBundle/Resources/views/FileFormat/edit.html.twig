@@ -1,0 +1,55 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% form_theme fileForm 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}
+	{% trans with {'%fileName%': file.label}%}breadcrumb.file.edit{% endtrans %}
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans%}breadcrumb.importmodel.index{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">{%trans	with {'%modelName%': dataset.label}%}breadcrumb.importmodel.edit{% endtrans %}</a></li>
+		<li class="active">{% trans with {'%fileName%': file.label}%}breadcrumb.file.edit{% endtrans %}</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+<div class="panel panel-primary with-nav-tabs">
+	<div class="panel-heading clearfix">
+		<div class="pull-left">
+			{# Title #}
+			<h3 id="panel-title" class="panel-title">
+				{% trans with {'%file.label%': file.label, '%dataset.label%' : dataset.label} %}file.edit.title{% endtrans %}
+			</h3>
+		</div>
+		<div class="pull-right">
+			{# Navigation Tabs #}
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">{% trans %}Edit{% endtrans %}</a></li>
+				<li ><a href="{{ path('configurateur_file_fields',{ 'datasetId' : dataset.id, 'format': file.format} ) }}">{% trans %}Gérer les Champs{% endtrans %}</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel-body">
+		{{ form(fileForm) }}
+	</div>
+</div>
+
+<!-- General page buttons -->
+<p>
+	<a type="button" class="btn btn-default"
+		href="{{ path('configurateur_dataset_import_edit', {'id' : dataset.id}) }}">
+		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+		{% trans %}importmodel.back.button{% endtrans %}
+	</a>
+</p>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('IgnOGAMConfigurateurBundle::preventclosing.html.twig') }}
+{% endblock %}
+

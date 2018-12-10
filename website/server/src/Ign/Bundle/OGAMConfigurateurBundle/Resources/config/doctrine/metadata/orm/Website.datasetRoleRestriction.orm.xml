@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Website.datasetRoleRestriction" table="website.dataset_role_restriction">
+    <indexes>
+      <index name="IDX_7200D5FFC9AA420C" columns="role_code"/>
+    </indexes>
+    <id name="datasetId" type="string" column="dataset_id" length="36"/>
+    <id name="roleCode" association-key="true"/>
+    <one-to-one field="roleCode" target-entity="Role">
+      <join-columns>
+        <join-column name="role_code" referenced-column-name="role_code"/>
+      </join-columns>
+    </one-to-one>
+  </entity>
+</doctrine-mapping>

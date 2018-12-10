@@ -1,0 +1,78 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% block title %}
+    {% trans %}Dictionnaire de données{% endtrans %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        {% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+        <li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+        <li class="active">{%trans %}breadcrumb.data.index{% endtrans %}</li>
+    </ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+ <div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 id="panel-title" class="panel-title">
+            {% trans %}data.title{% endtrans %}
+        </h3>
+    </div>
+    <div class="panel-body">
+
+        {# Add data entry button #}
+        <a href="{{ path('configurateur_data_new') }}"
+           class="btn btn-default" role="button"> <span
+                    class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            {% trans %}data.add.button{% endtrans %}
+        </a>
+    </div>
+    <div class="panel-body">
+       {# Editable Data entities (non related to a Field) #}
+        <h4>{% trans %}data.list.title.1{% endtrans %}</h4>
+
+        {% set datas = editable %}
+        {% set table_name = 'editable' %}
+        {% include "IgnOGAMConfigurateurBundle:Data:data_table.html.twig" %}
+    </div>
+    <div class="panel-body">
+        {# Non editable Data entities (related to at least one Field) #}
+        <h4>{% trans %}data.list.title.2{% endtrans %}</h4>
+
+        {% set datas = not_editable %}
+        {% set table_name = 'not_editable' %}
+        {% include "IgnOGAMConfigurateurBundle:Data:data_table.html.twig" %}
+    </div>
+</div>
+
+<!-- The "show data" modal -->
+<div class="modal fade" id="show-modal" tabindex="-1" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<!-- /.modal -->
+{% endblock body %}
+
+
+{% block specificjavascripts %}
+    {{ parent() }}
+
+    <script>
+  		// Add event each time the table move (pagination / search ...)
+		$("table[data-id-table='advancedTable']").on('all.bs.table', function (e, name, args) {
+            //  Load content into the "show" modal
+            $('[data-load-remote]').on('click',function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                var remote = $this.data('load-remote');
+                if(remote) {
+                    $($this.data('remote-target')).load(remote);
+                }
+            });
+		});
+    </script>
+
+{%  endblock specificjavascripts %}
+

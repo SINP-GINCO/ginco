@@ -1,0 +1,41 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}
+	{% if method == 'Creation' %}
+		{% trans %}breadcrumb.datamodel.new{% endtrans %}
+	{% elseif method == 'Duplication' %}
+		{% trans %}breadcrumb.datamodel.duplicate{% endtrans %}
+	{% endif %}
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		<li><a href="{{ path('configurateur_model_index') }}">{%trans %}breadcrumb.datamodel.index{% endtrans %}</a></li>
+		{% if method == 'Creation' %}
+			<li class="active">{% trans %}breadcrumb.datamodel.new{% endtrans %}</li>
+		{% elseif method == 'Duplication' %}
+			<li class="active">{% trans %}breadcrumb.datamodel.duplicate{% endtrans %}</li>
+		{% endif %}
+	</ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 id="panel-title" class="panel-title">{% trans %}datamodel.new.title{% endtrans %}</h3>
+	</div>
+	<div class="panel-body">
+			{{ form(form) }}
+	</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ include('IgnOGAMConfigurateurBundle::preventclosing.html.twig') }}
+{% endblock %}
+
+{% block specificjavascripts %} {% endblock %}

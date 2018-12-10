@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.formField" table="metadata.form_field">
+    <id name="data" type="string" column="data" length="36"/>
+    <id name="format" type="string" column="format" length="36"/>
+    <field name="isCriteria" type="string" column="is_criteria" length="1" nullable="true"/>
+    <field name="isResult" type="string" column="is_result" length="1" nullable="true"/>
+    <field name="inputType" type="string" column="input_type" length="128" nullable="true"/>
+    <field name="position" type="integer" column="position" nullable="true"/>
+    <field name="isDefaultCriteria" type="string" column="is_default_criteria" length="1" nullable="true"/>
+    <field name="isDefaultResult" type="string" column="is_default_result" length="1" nullable="true"/>
+    <field name="defaultValue" type="string" column="default_value" length="255" nullable="true"/>
+    <field name="decimals" type="integer" column="decimals" nullable="true"/>
+    <field name="mask" type="string" column="mask" length="100" nullable="true"/>
+  </entity>
+</doctrine-mapping>

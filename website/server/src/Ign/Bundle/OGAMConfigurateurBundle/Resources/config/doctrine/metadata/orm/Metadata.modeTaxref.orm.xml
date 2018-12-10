@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.modeTaxref" table="metadata.mode_taxref">
+    <indexes>
+      <index name="mode_taxref_parent_code_idx" columns="parent_code"/>
+    </indexes>
+    <id name="unit" type="string" column="unit" length="36"/>
+    <id name="code" type="string" column="code" length="36"/>
+    <field name="parentCode" type="string" column="parent_code" length="36" nullable="true"/>
+    <field name="name" type="string" column="name" length="500" nullable="true"/>
+    <field name="completeName" type="string" column="complete_name" length="500" nullable="true"/>
+    <field name="vernacularName" type="string" column="vernacular_name" length="1000" nullable="true"/>
+    <field name="isLeaf" type="string" column="is_leaf" length="1" nullable="true"/>
+    <field name="isReference" type="string" column="is_reference" length="1" nullable="true"/>
+  </entity>
+</doctrine-mapping>

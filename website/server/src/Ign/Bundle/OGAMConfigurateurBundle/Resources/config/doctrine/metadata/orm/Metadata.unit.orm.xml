@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.unit" table="metadata.unit">
+    <id name="unit" type="string" column="unit" length="36">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="type" type="string" column="type" length="36" nullable="true"/>
+    <field name="subtype" type="string" column="subtype" length="36" nullable="true"/>
+    <field name="label" type="string" column="label" length="60" nullable="true"/>
+    <field name="definition" type="string" column="definition" length="255" nullable="true"/>
+  </entity>
+</doctrine-mapping>

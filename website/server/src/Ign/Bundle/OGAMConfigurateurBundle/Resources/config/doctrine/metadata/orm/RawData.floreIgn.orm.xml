@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RawData.floreIgn" table="raw_data.flore_ign">
+    <indexes>
+      <index name="ix_flore_ign_spatial_index" columns="the_geom"/>
+    </indexes>
+    <id name="idObservation" type="integer" column="id_observation">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="submissionId" type="integer" column="submission_id" nullable="true"/>
+    <field name="providerId" type="string" column="provider_id" length="50" nullable="false"/>
+    <field name="statutSource" type="string" column="statut_source" length="10" nullable="true"/>
+    <field name="identifiantOrigine" type="string" column="identifiant_origine" length="36" nullable="true"/>
+    <field name="jddid" type="string" column="jddid" length="36" nullable="true"/>
+    <field name="jddcode" type="string" column="jddcode" length="36" nullable="true"/>
+    <field name="identifiantPermanent" type="string" column="identifiant_permanent" length="50" nullable="true"/>
+    <field name="dsPublic" type="string" column="ds_public" length="36" nullable="true"/>
+    <field name="codeIdcnpDispositif" type="string" column="code_idcnp_dispositif" length="100" nullable="true"/>
+    <field name="statutObservation" type="string" column="statut_observation" length="200" nullable="true"/>
+    <field name="nomCite" type="string" column="nom_cite" length="500" nullable="true"/>
+    <field name="cdNom" type="string" column="cd_nom" length="20" nullable="true"/>
+    <field name="sensible" type="string" column="sensible" length="5" nullable="true"/>
+    <field name="observateurIdentite" type="string" column="observateur_identite" length="200" nullable="false"/>
+    <field name="observateurOrganisme" type="string" column="observateur_organisme" length="500" nullable="false"/>
+    <field name="organismeGestionnaireDonnee" type="string" column="organisme_gestionnaire_donnee" length="500" nullable="false"/>
+    <field name="dateDebut" type="date" column="date_debut" nullable="true"/>
+    <field name="dateFin" type="date" column="date_fin" nullable="true"/>
+    <field name="theGeom" type="geometry" column="the_geom" nullable="true"/>
+  </entity>
+</doctrine-mapping>

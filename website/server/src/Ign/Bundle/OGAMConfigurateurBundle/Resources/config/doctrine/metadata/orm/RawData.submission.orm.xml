@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="RawData.submission" table="raw_data.submission">
+    <id name="submissionId" type="integer" column="submission_id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="step" type="string" column="step" length="36" nullable="true"/>
+    <field name="status" type="string" column="status" length="36" nullable="true"/>
+    <field name="providerId" type="string" column="provider_id" length="36" nullable="false"/>
+    <field name="datasetId" type="string" column="dataset_id" length="36" nullable="false"/>
+    <field name="userLogin" type="string" column="user_login" length="50" nullable="false"/>
+    <field name="creationdt" type="date" column="_creationdt" nullable="true"/>
+    <field name="validationdt" type="date" column="_validationdt" nullable="true"/>
+  </entity>
+</doctrine-mapping>

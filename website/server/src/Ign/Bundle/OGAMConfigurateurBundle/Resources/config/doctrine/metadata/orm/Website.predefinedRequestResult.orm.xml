@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Website.predefinedRequestResult" table="website.predefined_request_result">
+    <indexes>
+      <index name="IDX_CA34A1D3218459FC" columns="request_name"/>
+    </indexes>
+    <id name="format" type="string" column="format" length="36"/>
+    <id name="data" type="string" column="data" length="36"/>
+    <id name="requestName" association-key="true"/>
+    <one-to-one field="requestName" target-entity="PredefinedRequest">
+      <join-columns>
+        <join-column name="request_name" referenced-column-name="request_name"/>
+      </join-columns>
+    </one-to-one>
+  </entity>
+</doctrine-mapping>

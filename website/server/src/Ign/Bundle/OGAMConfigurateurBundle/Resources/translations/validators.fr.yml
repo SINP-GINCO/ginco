@@ -1,0 +1,50 @@
+model:
+  name:
+    notBlank: Veuillez saisir un nom de modèle.
+    caseinsensitive: Ce nom de modèle est déjà utilisé, veuillez en spécifier un autre.
+    maxLength: Le nom du modèle ne peut dépasser 128 caractères.
+    regex: Le nom du modèle ne doit pas contenir de > ou <.
+  description:
+    maxLength: La description du modèle ne peut dépasser 1024 caractères.
+dataset:
+  label:
+    caseinsensitive: Ce nom de modèle d'import est déjà utilisé, veuillez en spécifier un autre.
+    notBlank: Veuillez saisir un nom de modèle.
+    maxLength: Le nom du modèle d'import ne peut dépasser 255 caractères.
+  definition:
+    maxLength: La description du modèle d'import ne peut dépasser 512 caractères.
+tableFormat:
+  label:
+    notBlank: Veuillez saisir un nom de table.
+    maxLength: Le nom de la table ne peut dépasser 100 caractères.
+    regex: Les caractères autorisés sont les lettres minuscules, chiffres et _.
+  description:
+    notBlank: Veuillez saisir une description de la table.
+    maxLength: La description de la table ne peut dépasser 255 caractères.
+fileFormat:
+  label:
+    notBlank: Veuillez saisir un nom de format de fichier.
+    maxLength: Le nom du format de fichier ne peut dépasser 36 caractères.
+  description:
+    notBlank: Veuillez saisir une description pour le format de fichier.
+    maxLength: La description du format de fichier ne peut dépasser 255 caractères.
+
+data:
+  name:
+    notBlank: Veuillez saisir un nom pour le champ du dictionnaire de données.
+    unique: Ce nom de champ est déjà utilisé dans le dictionnaire de données, veuillez en spécifier un autre.
+    maxLength: Le nom du champ ne peut dépasser 174 caractères.
+    regex: Les caractères autorisés sont les lettres minuscules, chiffres et _. Le premier caractère doit être une lettre.
+  unit:
+    notNull: Veuillez choisir une unité.
+  label:
+    notBlank: Veuillez saisir un label pour le champ du dictionnaire de données.
+    maxLength: Le label du champ ne peut dépasser 100 caractères.
+  definition:
+    maxLength: La description du champ ne peut dépasser 255 caractères.
+    regex: La description du champ ne peut contenir de retour à la ligne.
+  comment:
+    maxLength: Le commentaire ne peut dépasser 255 caractères.
+
+    
+        

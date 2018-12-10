@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.tableTree" table="metadata.table_tree">
+    <id name="schemaCode" type="string" column="schema_code" length="36"/>
+    <id name="childTable" type="string" column="child_table" length="36"/>
+    <field name="parentTable" type="string" column="parent_table" length="36" nullable="false"/>
+    <field name="joinKey" type="string" column="join_key" length="255" nullable="true"/>
+    <field name="comment" type="string" column="comment" length="255" nullable="true"/>
+  </entity>
+</doctrine-mapping>

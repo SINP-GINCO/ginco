@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Metadata.tableField" table="metadata.table_field">
+    <id name="data" type="string" column="data" length="36"/>
+    <id name="format" type="string" column="format" length="36"/>
+    <field name="columnName" type="string" column="column_name" length="36" nullable="true"/>
+    <field name="isCalculated" type="string" column="is_calculated" length="1" nullable="true"/>
+    <field name="isEditable" type="string" column="is_editable" length="1" nullable="true"/>
+    <field name="isInsertable" type="string" column="is_insertable" length="1" nullable="true"/>
+    <field name="isMandatory" type="string" column="is_mandatory" length="1" nullable="true"/>
+    <field name="position" type="integer" column="position" nullable="true"/>
+    <field name="comment" type="string" column="comment" length="255" nullable="true"/>
+  </entity>
+</doctrine-mapping>

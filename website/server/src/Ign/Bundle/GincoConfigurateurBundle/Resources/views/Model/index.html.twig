@@ -1,0 +1,316 @@
+{% extends "IgnOGAMConfigurateurBundle::layout.html.twig" %}
+
+{% block title %}
+	{% trans %}breadcrumb.datamodel.index{% endtrans %}
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
+		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
+		<li class="active">{%trans %}breadcrumb.datamodel.index{% endtrans %}</li>
+	</ol>
+{% endblock breadcrumb %}
+
+{% block body %}
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 id="panel-title" class="panel-title">
+		{% trans %}datamodel.list.title{% endtrans %}
+		</h3>
+	</div>
+	<div class="panel-body">
+		<table id="list-models" data-toggle="table"
+		data-click-to-select="true" data-search="true" data-search-align="right"
+		data-maintain-selected = "true" data-classes="table table-hover table-condensed"
+		data-locale="fr-FR" data-pagination="true" data-advanced-search="true" data-id-table="advancedTable">
+			 <thead>
+				<tr>
+					<th class="col-md-2" data-field="name" data-sortable="true" data-valign="left" >{% trans %}datamodel.name{% endtrans %}</th>
+					<th class="col-md-2" data-field="description" data-sortable="true" data-valign="left" >{% trans %}datamodel.description{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}View{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Edit{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Duplicate{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Delete{% endtrans %}</th>
+					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Un-Publish{% endtrans %}</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for model in models %}
+			<tr>
+				{# Name of the model  #}
+				<td>
+					<div>
+						<h4 class="longtext" title="{{ model.name }}">
+							{{ model.name }}
+						</h4>
+					</div>
+				</td>
+
+				{# Description of the model  #}
+				<td>
+					<div>
+						<h4 class="longtext" title="{{ model.description }}">
+							{{ model.description }}
+						</h4>
+					</div>
+				</td>
+
+				{# View model #}
+				<td>
+					<a id="view-button-{{ model.id }}" role="button" class="btn btn-default"
+						href="{{ path('configurateur_model_view', { id: model.id } ) }}">
+						<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+					</a>
+				</td>
+
+				{# Edit button #}
+				{% if permissions[model.id].editable %}
+					<td>
+						<a 	id="edit-button-{{ model.id }}" role="button" class="btn btn-default"
+							data-toggle="modal" data-target="#modal-edit-file-fields-{{ model.id }}" }}">
+							<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						</a>
+					</td>
+				{% else %}
+					<td>
+						<a class="btn btn-default glyphicon glyphicon-pencil" disabled="disabled"></a>
+						<a	class="btn btn-default glyphicon glyphicon-question-sign" id="edit-button-{{ model.id }}"
+							  data-toggle="modal" data-target="#modal-confirm-edit-{{ model.id }}"></a>
+						<!-- Edit prompt modal -->
+						<div class="modal fade" id="modal-confirm-edit-{{ model.id }}"
+							 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+							 aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-body">
+										{{ permissions[model.id].editableMessage }}
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+										{% if  permissions[model.id].editableCode == 'published' %}
+											<a type="button" class="btn btn-primary"
+											   href="{{ path('configurateur_model_unpublish', { 'modelId': model.id, 'redirectToEdit': true } ) }}">
+												{% trans %} ConfirmAndContinue{% endtrans %} </a>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+				{% endif %}
+				{# Duplicate button #}
+					<td>
+						<a	id="view-button-{{ model.id }}" role="button" class="btn btn-default"
+							href="{{ path('configurateur_model_duplicate', { id: model.id } ) }}">
+						<span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
+					</a>
+					</td>
+				{# Delete button #}
+				{% if permissions[model.id].deletable %}
+					<td>
+						<a	id="delete-button-{{ model.id }}" role="button" class="btn btn-default"
+							  data-toggle="modal" data-target="#modal-confirm-delete-{{ model.id }}">
+							<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+						</a>
+					</td>
+				{% else %}
+					<td>
+						<button class="btn btn-default glyphicon glyphicon-trash" disabled="disabled">
+							{# 										{%trans %}Delete{% endtrans %}#}
+						</button>
+						<button	id="delete-button-{{ model.id }}" class="btn btn-default glyphicon glyphicon-question-sign"
+								   data-toggle="modal" data-target="#modal-delete-unpublishfirst-{{ model.id }}"></button>
+						<!-- Delete not possible modal -->
+						<div class="modal fade" id="modal-delete-unpublishfirst-{{ model.id }}"
+							 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+							 aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-body">
+										{{ permissions[model.id].deletableMessage }}
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+				{% endif %}
+
+						{# Publish / Unpublish button #}
+						{# If the model is unpublished #}
+						{% if pubStates[model.id] == false %}
+							{# Publish button #}
+							{# If the model is publishable (not empty) #}
+							{% if publishable[model.id] %}
+								<td>
+									<a	id="publish-button-{{ model.id }}" role="button" class="btn btn-default"
+										href="{{ path('configurateur_model_publish', { modelId: model.id } ) }}"> <span
+										class="glyphicon glyphicon-play" aria-hidden="true"></span>
+									</a>
+								</td>
+							{# Not publishable : disable button and add an explanation modal #}
+							{% else %}
+								<td>
+									<button class="btn btn-default glyphicon glyphicon-play" disabled="disabled" >
+									</button>
+								<a	class="btn btn-default glyphicon glyphicon-question-sign" id="publish-button-{{ model.id }}"
+									data-toggle="modal" data-target="#modal-info-not-publishable-{{ model.id }}"></a>
+								</td>
+								<!-- Info modal - model not publishable -->
+								<div class="modal fade" id="modal-info-not-publishable-{{ model.id }}"
+									 tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+									 aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-body">
+												{% trans with {'%modelName%': model.name} %} datamodel.publish.impossible {% endtrans %}
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-primary"
+														data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						<!-- Edit prompt modal -->
+							<div class="modal fade" id="modal-edit-file-fields-{{ model.id }}"
+								tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											{% trans with {'%modelName%': model.name} %} datamodel.edit.files {% endtrans %}
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+											<a type="button" class="btn btn-primary"
+												href="{{ path('configurateur_model_edit', { id: model.id } ) }}">
+												{% trans %}Continue{% endtrans %} </a>
+										</div>
+									</div>
+								</div>
+							</div>
+						{# If the model is published #}
+						{% else %}
+							{# Unpublish button with confirmation modal #}
+							{% if unpublishable[model.id] %}
+								<td>
+									{# Unpublish button with confirmation modal #}
+									<a	id="unpublish-button-{{ model.id }}" role="button" class="btn btn-default"
+										data-toggle="modal" data-target="#modal-unpublish-confirm-{{ model.id }}">
+										<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+									</a>
+								</td>
+							{% else %}
+								<td>
+									{# Unpublish button disabled with not allowed modal explanation #}
+									<button	class="btn btn-default glyphicon glyphicon-stop" disabled="disabled">
+									</button>
+									<button	id="unpublish-button-{{ model.id }}" class="btn btn-default glyphicon glyphicon-question-sign"
+										data-toggle="modal" data-target="#modal-unpublish-impossible-{{ model.id }}">
+										</button>
+								</td>
+							{% endif %}
+							<!-- Edit prompt modal -->
+							<div class="modal fade" id="modal-confirm-edit-{{ model.id }}"
+								tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											{% trans with {'%modelName%': model.name} %} datamodel.edit.warning {% endtrans %}
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+											<a type="button" class="btn btn-primary"
+												href="{{ path('configurateur_model_unpublish', { 'modelId': model.id, 'redirectToEdit': true } ) }}">
+												{% trans %} ConfirmAndContinue{% endtrans %} </a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+					<!-- Unpublish confirm modal -->
+					<div class="modal fade" id="modal-unpublish-confirm-{{ model.id }}"
+						tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-body">
+									{% trans with {'%modelName%': model.name} %} datamodel.unpublish.confirm {% endtrans %}
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+									<a type="button" class="btn btn-primary"
+										href="{{ path('configurateur_model_unpublish', { modelId: model.id } ) }}">
+										{% trans %} Confirm {% endtrans %} </a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+							<!-- Unpublish impossible info modal -->
+							<div class="modal fade" id="modal-unpublish-impossible-{{ model.id }}"
+								tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+								aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-body">
+											{% trans with {'%modelName%': model.name} %} datamodel.unpublish.hasDataOrJdd {% endtrans %}
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+
+				<!-- Delete prompt modal -->
+				<div class="modal fade" id="modal-confirm-delete-{{ model.id }}"
+					tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-body">
+								{{ 'datamodel.delete.warning.1' |trans({'%model.name%':
+									model.name})|raw }}
+								{% if model.datasets|length == 0 %}
+									{% trans %}datamodel.delete.warning.2.without.importmodels{%endtrans %}
+								{% else %}
+									{% trans %}datamodel.delete.warning.2.with.importmodels{% endtrans %}
+									{% for modelImport in model.datasets %}
+										- {{ modelImport.label }}<br />
+									{% endfor %}
+									<br />
+								{% endif %}
+								{% trans %}datamodel.delete.warning.3{%endtrans %}
+								{% trans with {'%model.name%': model.name} %}datamodel.delete.warning.4{%endtrans %}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+								<a type="button" class="btn btn-primary"
+									href="{{ path('configurateur_model_delete',{ id: model.id } ) }}">
+									{% trans %} Confirm {% endtrans %} </a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock body %}
