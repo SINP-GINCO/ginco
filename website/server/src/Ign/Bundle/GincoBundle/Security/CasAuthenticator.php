@@ -65,6 +65,14 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 		}
 
 	}
+	
+	public function supports(Request $request) {
+		
+		if ($request->get($this->query_ticket_parameter)) {
+			return true ;
+		}
+		return false ;
+	}
 
 	/**
 	 * Called on every request. Return whatever credentials you want,
@@ -72,36 +80,33 @@ class CasAuthenticator extends AbstractGuardAuthenticator
 	 */
 	public function getCredentials(Request $request)
 	{
-		if ($request->get($this->query_ticket_parameter)) {
-			// Validate ticket
-			$client = new Client($this->options);
-			$response = $client->request('GET', $this->server_validation_url, [
-				'query' => [
-					$this->query_ticket_parameter => $request->get($this->query_ticket_parameter),
-					$this->query_service_parameter => $this->removeCasTicket($request->getUri())
-				]
-			]);
+		// Validate ticket
+		$client = new Client($this->options);
+		$response = $client->request('GET', $this->server_validation_url, [
+			'query' => [
+				$this->query_ticket_parameter => $request->get($this->query_ticket_parameter),
+				$this->query_service_parameter => $this->removeCasTicket($request->getUri())
+			]
+		]);
 
-			if (!$response) {
-				$this->logger->addError("INPN CAS validation service is not accessible, URL : " . $this->server_validation_url);
-				throw new CASException("INPN CAS validation service is not accessible.");
-			}
-			$code = $response->getStatusCode();
-			if ($code !== 200) {
-				$this->logger->addError("INPN CAS validation service returned a HTTP code: $code, URL : " . $this->server_validation_url);
-				throw new CASException("INPN CAS validation service returned a HTTP code: $code");
-			}
-
-			$string = $response->getBody()->getContents();
-			$xml = new \SimpleXMLElement($string, 0, false, $this->xml_namespace, true);
-			if (isset($xml->authenticationSuccess)) {
-				return (array)$xml->authenticationSuccess;
-			} else {
-				$this->logger->addError("INPN CAS denied authentication: $string");
-				throw new CASException("INPN CAS denied authentication: $string");
-			}
+		if (!$response) {
+			$this->logger->addError("INPN CAS validation service is not accessible, URL : " . $this->server_validation_url);
+			throw new CASException("INPN CAS validation service is not accessible.");
 		}
-		return null;
+		$code = $response->getStatusCode();
+		if ($code !== 200) {
+			$this->logger->addError("INPN CAS validation service returned a HTTP code: $code, URL : " . $this->server_validation_url);
+			throw new CASException("INPN CAS validation service returned a HTTP code: $code");
+		}
+
+		$string = $response->getBody()->getContents();
+		$xml = new \SimpleXMLElement($string, 0, false, $this->xml_namespace, true);
+		if (isset($xml->authenticationSuccess)) {
+			return (array)$xml->authenticationSuccess;
+		} else {
+			$this->logger->addError("INPN CAS denied authentication: $string");
+			throw new CASException("INPN CAS denied authentication: $string");
+		}
 	}
 
 	/**
