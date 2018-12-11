@@ -84,8 +84,7 @@ class MailManager
         $fromName = ($fromName) ? $fromName : $this->fromName;
         $from = ($from) ? $from : $this->fromEmail;
 
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
+        $message = (new \Swift_Message($subject))
             ->setFrom($from, $fromName)
             ->setTo($to)
             ->setBody($bodyHtml, 'text/html')
