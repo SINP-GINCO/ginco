@@ -14,7 +14,7 @@
 	"require" : {
 		"php" : "^7.2",
 		"symfony/symfony" : "^3.4",
-		"twig/twig" : "^1.28",
+		"twig/twig" : "^2.4.4",
 		"twig/extensions" : "~1.0",
 		"doctrine/orm" : "^2.4.8",
 		"doctrine/doctrine-bundle" : "~1.4",
@@ -28,7 +28,7 @@
 		"friendsofsymfony/jsrouting-bundle" : "^2.2",
 		"php-amqplib/rabbitmq-bundle" : "^1.12",
         "guzzlehttp/guzzle": "^6.3",
-		"friendsofsymfony/ckeditor-bundle": "^1.2"
+		"friendsofsymfony/ckeditor-bundle": "^2.0"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~3.0",
