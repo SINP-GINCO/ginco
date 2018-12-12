@@ -18,12 +18,12 @@ monolog:
         main:
             type:         fingers_crossed
             action_level: error
-            channels: [!ginco]
+            channels: ['!ginco']
             handler:      nested
         ginco:
             type: fingers_crossed
             action_level: error
-            channels: ginco
+            channels: 'ginco'
             handler: nested_ginco
         nested:
             type:  rotating_file
