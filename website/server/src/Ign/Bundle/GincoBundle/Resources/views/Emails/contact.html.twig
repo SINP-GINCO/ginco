@@ -5,7 +5,7 @@
 {% endblock -%}
 
 {%- block email_body_text %}
-    {% autoescape true %}
+    {% autoescape %}
         {{ site_name }}
         ---------------------------------------------
         Message envoyé via le formulaire de contact :

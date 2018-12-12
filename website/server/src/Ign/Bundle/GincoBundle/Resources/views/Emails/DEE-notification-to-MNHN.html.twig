@@ -5,7 +5,7 @@
 {% endblock -%}
 
 {%- block email_body_text %}
-    {% autoescape true %}
+    {% autoescape %}
         {{ site_name }} - {{ action|trans }} du jeu de données {{ metadata_uuid }}
         ----------------------------------------------------------------------
         Identifiant de métadonnées du jeu de données : {{ metadata_uuid }}

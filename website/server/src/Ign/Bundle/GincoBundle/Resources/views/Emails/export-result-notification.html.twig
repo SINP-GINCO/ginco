@@ -5,7 +5,7 @@
 {% endblock -%}
 
 {%- block email_body_text %}
-    {% autoescape true %}
+    {% autoescape %}
         Bonjour,
 
         L'export que vous avez demandé le {{ created|date("d/m/Y H:i:s") }} sur la plateforme {{ region }} a été réalisé.
