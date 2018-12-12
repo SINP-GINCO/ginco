@@ -420,9 +420,15 @@ class DEEModel {
 					$lists = array();
 					foreach ($fields as $fieldLabel => $attributes) {
 						$fieldRequired = (is_array($attributes) && isset($attributes['required'])) ? $attributes['required'] : true; // default value for required
+						if (!is_array($fields[$fieldLabel])) {
+							$fields[$fieldLabel] = array() ;
+						}
 						$fields[$fieldLabel]['required'] = $fieldRequired;
 						$fieldList = (is_array($attributes) && isset($attributes['list'])) ? $attributes['list'] : false; // default value for list
 						if ($fieldList) {
+							if (!is_array($fields[$fieldLabel])) {
+								$fields[$fieldLabel] = array() ;
+							}
 							$fields[$fieldLabel]['list'] = explode(",", $observation[$fieldLabel]);
 							$lists[] = $fieldLabel;
 						}
@@ -444,7 +450,7 @@ class DEEModel {
 								$subChild[$fieldLabel] = $value;
 							} else if (in_array($fieldLabel, $lists)) {
 								$subChild[$fieldLabel] = isset($fields[$fieldLabel]['list'][$index]) ? $fields[$fieldLabel]['list'][$index] : '';
-							} else if ($fields[$fieldLabel]['required']) {
+							} else if (isset($fields[$fieldLabel]['required']) && $fields[$fieldLabel]['required']) {
 								$subChild[$fieldLabel] = (isset($observation[$fieldLabel])) ? $observation[$fieldLabel] : '';
 							} else if (isset($observation[$fieldLabel]) && !empty($observation[$fieldLabel])) {
 								$subChild[$fieldLabel] = $observation[$fieldLabel];
