@@ -5,7 +5,7 @@
 {% endblock -%}
 
 {%- block email_body_text %}
-    {% autoescape true %}
+    {% autoescape %}
         Bonjour,
 
         Le jeu de données {{ jdd_title }}, dont l'identifiant est {{ metadata_uuid }}, et comportant le(s) fichier(s)
