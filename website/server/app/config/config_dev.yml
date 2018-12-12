@@ -17,17 +17,17 @@ monolog:
             type: rotating_file
             path: "%kernel.logs_dir%/symfony_%kernel.environment%.log"
             level: debug
-            channels: [!event, !ginco]
+            channels: ['!event', '!ginco']
             max_files: 5
         ginco:
             type: rotating_file
             path: "%kernel.logs_dir%/ginco_%kernel.environment%.log"
             level: debug
-            channels: ginco
+            channels: 'ginco'
             max_files: 5
         console:
             type:   console
-            channels: [!event, !doctrine]
+            channels: ['!event', '!doctrine']
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:
