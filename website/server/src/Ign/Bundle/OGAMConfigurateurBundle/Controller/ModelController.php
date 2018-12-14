@@ -156,7 +156,7 @@ class ModelController extends Controller {
 			'model' => $model,
 			'tables' => $tables,
 			'id' => $id,
-			'publishable' => $this->get('app.modelPublication')
+			'publishable' => $this->get('app.modelpublication')
 				->isPublishable($id)
 		));
 	}
