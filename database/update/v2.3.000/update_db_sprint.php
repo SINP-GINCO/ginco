@@ -50,7 +50,7 @@ try {
 	
     system("php $sprintDir/update_model_nomvalide.php $CLIParams", $returnCode1) ;
     if ($returnCode1 != 0) {
-        echo "$sprintDir/update_model_nomvalide.php crashed.\n";
+        echo "$sprintDir/change_model_nomvalide.php crashed.\n";
         exit(1);
     }
 } catch (Exception $e) {
