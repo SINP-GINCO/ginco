@@ -45,10 +45,14 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 /* patch php here */
 
 try {
-
+    
 	//system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
 	
-
+    system("php $sprintDir/update_model_nomvalide.php $CLIParams", $returnCode1) ;
+    if ($returnCode1 != 0) {
+        echo "$sprintDir/change_model_nomvalide.php crashed.\n";
+        exit(1);
+    }
 } catch (Exception $e) {
 	
 	echo "$sprintDir/update_db_sprint.php : an exception has occured.\n" ;
