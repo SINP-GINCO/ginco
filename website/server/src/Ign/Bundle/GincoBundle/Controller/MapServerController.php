@@ -65,7 +65,9 @@ class MapServerController extends Controller
 		} else {
 			$queriesArg['REQUEST'] = 'GetFeature';
 		}
-
+		
+		$queriesArg['SESSION_ID'] = $request->cookies->get('PHPSESSID') ;
+		
 		$headers = array('Access-Control-Allow-Origin' => '*') ;
 		
 		// force la valeur de SERVICE
