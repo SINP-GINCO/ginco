@@ -42,6 +42,7 @@ twig:
     # Use Boostrap forms - horizontal and overriden 4 + 4 columns
     form_themes:
         - form.html.twig
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
 
 # Doctrine Configuration
 doctrine:

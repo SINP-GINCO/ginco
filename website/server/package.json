@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "bootstrap": "3.3.*",
+    "bootstrap": "^3.4.0",
     "bootstrap-table": "1.11.*",
     "ckeditor": "^4.11.1",
     "components-jqueryui": "^1.12",
