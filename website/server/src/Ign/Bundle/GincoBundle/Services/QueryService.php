@@ -1422,7 +1422,7 @@ class QueryService {
 		$pkscols = '';
 		foreach ($locationTableInfo->getPrimaryKeys() as $primaryKey) {
 			$pkscols .= "l." . $primaryKey . "::varchar || '__' || ";
-			$cols .= "'" . strtoupper($primaryKey) . "/' || " . $primaryKey . " || '/' || ";
+			$cols .= "'" . strtoupper($primaryKey) . "/' || raw." . $primaryKey . " || '/' || ";
 		}
 		if ($pkscols != '') {
 			$pkscols = substr($pkscols, 0, -11);
