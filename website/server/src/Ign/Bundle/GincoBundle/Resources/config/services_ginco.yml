@@ -115,7 +115,7 @@ services:
 
     ginco.jdd_service:
         class: Ign\Bundle\GincoBundle\Services\JddService
-        arguments: ["@logger", "@ginco.configuration_manager", "@doctrine.orm.entity_manager", "@ginco.integration_service"]
+        arguments: ["@logger", "@ginco.configuration_manager", "@doctrine.orm.entity_manager", "@ginco.integration_service", "@ginco.metadata_reader"]
         tags:
           - { name: monolog.logger, channel: ginco }
 

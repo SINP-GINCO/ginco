@@ -2,10 +2,15 @@
 
 namespace Ign\Bundle\GincoBundle\Services;
 
+use Monolog\Logger;
+
+use Doctrine\ORM\EntityManager;
+
 use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
-use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Services\Integration;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Services\MetadataReader;
 
 /**
  * Description of JddManager
@@ -14,7 +19,7 @@ use Ign\Bundle\GincoBundle\Services\Integration;
  */
 class JddService {
 	
-		/**
+	/**
 	 * The logger.
 	 *
 	 * @var Logger
@@ -22,12 +27,13 @@ class JddService {
 	protected $logger;
 
 	/**
+	 * @var ConfigurationManager
 	 */
 	protected $configuration;
 
 	/**
 	 *
-	 * @var Doctrine entity manager 
+	 * @var EntityManager 
 	 */
 	protected $entityManager;
 	
@@ -36,6 +42,12 @@ class JddService {
 	 * @var Integration
 	 */
 	protected $integrationService ;
+	
+	/**
+	 *
+	 * @var MetadataReader 
+	 */
+	protected $metadataReader ;
 
 
 	/**
@@ -44,7 +56,13 @@ class JddService {
 	 */
 	protected $translator;
 
-	function __construct($logger, $configuration, $entityManager, $integrationService) {
+	function __construct(
+		Logger $logger, 
+		ConfigurationManager $configuration, 
+		EntityManager $entityManager, 
+		Integration $integrationService,
+		MetadataReader $metadataReader
+	) {
 		// Initialise the logger
 		$this->logger = $logger;
 		
@@ -55,6 +73,8 @@ class JddService {
 		$this->entityManager = $entityManager;
 		
 		$this->integrationService = $integrationService ;
+		
+		$this->metadataReader = $metadataReader ;
 	}
 	
 	
@@ -149,5 +169,25 @@ class JddService {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	/**
+	 * Met à jour les champs associés au JDD.
+	 * @param Jdd $jdd
+	 */
+	public function updateMetadataFields(Jdd $jdd) {
+		
+		$metadataId = $jdd->getField('metadataId') ;
+		if (!$metadataId) {
+			return ;
+		}
+		
+		$fields = $this->metadataReader->getMetadata($metadataId) ;
+		foreach ($fields as $key => $value) {
+			$jdd->setField($key, $value);
+		}
+		
+		$this->entityManager->flush() ;
 	}
 }

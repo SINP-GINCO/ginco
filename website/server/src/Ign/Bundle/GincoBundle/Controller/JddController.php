@@ -236,21 +236,13 @@ class JddController extends GincoController {
 	 * returns JsonResponse true or false
 	 * Checks, via a service, the xml file on metadata platform, and fills jdd fields with metadata fields
 	 *
-	 * @Route("/jdd/{id}/update-metadatas", name = "jdd_update_metadatas", requirements={"id": "\d+"})
+	 * @Route("/jdd/{id}/update-metadata", name = "jdd_update_metadata", requirements={"id": "\d+"})
 	 */
-	public function updateMetadatas(Request $request, Jdd $jdd) {
-		$metadataId = $jdd->getField('metadataId');
-		$em = $this->get('doctrine.orm.entity_manager');
-		$mr = $this->get('ginco.metadata_reader');
+	public function updateMetadata(Request $request, Jdd $jdd) {
+		
+		$jddService = $this->get('ginco.jdd_service') ;
 		try {
-			// Read the metadata XML file
-			$fields = $mr->getMetadata($metadataId);
-			$attachedJdd = $em->merge($jdd);
-			// Ceate the fields for the attched Jdd
-			foreach ($fields as $key => $value) {
-				$attachedJdd->setField($key, $value);
-			}
-			$em->flush();
+			$jddService->updateMetadataFields($jdd) ;
 			$this->addFlash('notice', 'Jdd.page.metadataUpdateOK');
 		} catch (MetadataException $e) {
 			$this->addFlash('error', 'Jdd.page.metadataUpdateError');

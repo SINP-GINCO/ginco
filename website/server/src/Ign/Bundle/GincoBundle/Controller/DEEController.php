@@ -32,6 +32,8 @@ class DEEController extends GincoController {
 			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
+		$this->get('ginco.jdd_service')->updateMetadataFields($jdd) ;
+		
 		$deeProcess = $this->get('ginco.dee_process');
 
 		// Create a line in the DEE table
@@ -68,6 +70,8 @@ class DEEController extends GincoController {
 			throw $this->createAccessDeniedException("You don't have the rights to generate a DEE for this JDD.");
 		}
 
+		$this->get('ginco.jdd_service')->updateMetadataFields($jdd) ;
+		
 		// Get comment in GET parameters
 		$comment = $request->query->get('comment', '');
 
