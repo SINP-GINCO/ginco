@@ -1,0 +1,51 @@
+{% if numJdds % jddQuery.limit == 0 %}
+	{% set maxPage = numJdds // jddQuery.limit %}
+{% else %}
+	{% set maxPage = numJdds // jddQuery.limit + 1 %}
+{% endif %}
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+	  
+	<li>
+	  <a href="{{ path(route, {page: max(jddQuery.page-1, 1), limit: jddQuery.limit, search: jddQuery.search}) }}" aria-label="Previous">
+		<span aria-hidden="true">&laquo;</span>
+	  </a>
+	</li>
+	
+	<li {% if jddQuery.page == 1 %}class="active"{% endif %}>
+		<a href="{{ path(route, {page:1, limit: jddQuery.limit, search: jddQuery.search}) }}">1</a>
+	</li>
+	
+	{% if maxPage > 2 %}
+		{% for p in range(max(jddQuery.page-1, 2), min(jddQuery.page+1, maxPage-1)) %}
+
+			{% if loop.first and p > 2 %}
+				<li class="disabled"><a href="#">...</a></li>
+			{% endif %}
+
+			<li {% if jddQuery.page == p %}class="active"{% endif %}>
+				<a href="{{ path(route, {page:p, limit: jddQuery.limit, search: jddQuery.search}) }}">{{ p }}</a>
+			</li>
+
+			{% if loop.last and p < maxPage -1 %}
+				<li class="disabled"><a href="#">...</a></li>
+			{% endif %}
+
+		{% endfor %}
+	{% endif %}
+	
+	{% if maxPage > 1 %}
+		<li {% if jddQuery.page == maxPage %}class="active"{% endif %}>
+			<a href="{{ path(route, {page:maxPage, limit: jddQuery.limit, search: jddQuery.search}) }}">{{ maxPage }}</a>
+		</li>
+	{% endif %}
+	
+	<li>
+	  <a href="{{ path(route, {page: min(jddQuery.page+1, maxPage), limit: jddQuery.limit, search: jddQuery.search}) }}" aria-label="Next">
+		<span aria-hidden="true">&raquo;</span>
+	  </a>
+	</li>
+	
+  </ul>
+</nav>

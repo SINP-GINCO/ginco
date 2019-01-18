@@ -2,9 +2,12 @@
 namespace Ign\Bundle\GincoBundle\Repository\RawData;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
+
 use Ign\Bundle\GincoBundle\Entity\Website\Provider;
 use Ign\Bundle\GincoBundle\Entity\Website\User;
 use Ign\Bundle\GincoBundle\Entity\RawData\JddField;
+use Ign\Bundle\GincoBundle\Query\JddQuery;
 
 /**
  * JddRepository
@@ -20,23 +23,83 @@ class JddRepository extends EntityRepository  {
 	 * @param User|null $user
 	 * @return array
 	 */
-	public function getActiveJdds(Provider $provider = null, User $user = null) {
+	public function findActiveJdds(JddQuery $jddQuery) {
 
-		$dql = "SELECT j FROM IgnGincoBundle:RawData\Jdd j WHERE j.status NOT IN ('deleted')";
-		$dql .= ($provider != null) ? " AND j.provider = :provider " : "";
-		$dql .= ($user != null) ? " AND j.user = :user " : "";
-		$dql .= " ORDER BY j.createdAt DESC";
-
-		$query = $this->getEntityManager()->createQuery($dql);
-
-		if ($provider != null) {
-			$query->setParameter('provider', $provider);
-		}
-		if ($user != null) {
-			$query->setParameter('user', $user);
-		}
-		return $query->getResult();
+		return $this->createActiveJddsQueryBuilder($jddQuery)
+			->orderBy('j.createdAt', 'DESC')
+			->setMaxResults($jddQuery->getLimit())
+			->setFirstResult($jddQuery->getOffset())
+			->getQuery()
+			->getResult()
+		;
 	}
+	
+	/**
+	 * Compte les Jdds actifs
+	 * @param JddQuery $jddQuery
+	 * @return integer
+	 */
+	public function countActiveJdds(JddQuery $jddQuery) {
+		
+		return $this->createActiveJddsQueryBuilder($jddQuery)
+			->select('COUNT(DISTINCT(j.id))')
+			->getQuery()
+			->getSingleScalarResult() 
+		;
+	}
+	
+	/**
+	 * Créé un query builder pour compter les jdds actifs.
+	 * @param JddQuery $jddQuery
+	 * @return type
+	 */
+	private function createActiveJddsQueryBuilder(JddQuery $jddQuery) {
+		
+		$queryBuilder = $this->createQueryBuilder('j')
+			->distinct()
+			->where("j.status NOT IN ('deleted')")
+		;
+		
+		if (!is_null($jddQuery->getUser())) {
+			$queryBuilder->andWhere('j.user = :user')->setParameter('user', $jddQuery->getUser()) ;
+		}
+		
+		if (!is_null($jddQuery->getProvider())) {
+			$queryBuilder->andWhere('j.provider = :provider')->setParameter('provider', $jddQuery->getProvider()) ;
+		}
+		
+		if (!is_null($jddQuery->getSearch())) {
+			
+			$andWhere = "UPPER(f.valueString) LIKE UPPER(:searchText)"
+				. " OR UPPER(f.valueText) LIKE UPPER(:searchText)"
+				. " OR UPPER(sf.fileName) LIKE UPPER(:searchText)"
+				. " OR UPPER(p.label) LIKE UPPER(:searchText)"
+				. " OR UPPER(u.login) LIKE UPPER(:searchText)"
+				. " OR UPPER(u.username) LIKE UPPER(:searchText)"
+			;
+			if ( is_numeric($jddQuery->getSearch()) ) {
+				$andWhere .= " OR f.valueInteger = :searchNum"
+					. " OR f.valueFloat = :searchNum" ;
+			}
+			
+			$queryBuilder
+				->join('j.fields', 'f')
+				->leftJoin('j.submissions', 's', Expr\Join::WITH, "s.step != 'CANCEL'")
+				->leftJoin('s.files', 'sf')
+				->join('j.user', 'u')
+				->join('j.provider', 'p')
+				->andWhere($andWhere)
+				->setParameter('searchText', "%{$jddQuery->getSearch()}%")
+			;
+				
+			if ( is_numeric($jddQuery->getSearch()) ) {
+				$queryBuilder->setParameter('searchNum', $jddQuery->getSearch()) ;
+			}
+		}
+
+		return $queryBuilder ;
+	}
+	
 
 	/**
 	 * Find Jdd by Field value

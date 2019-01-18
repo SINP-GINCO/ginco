@@ -1,8 +1,8 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Controller;
 
-use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
+use Ign\Bundle\GincoBundle\Query\JddQuery;
 use Ign\Bundle\GincoBundle\Exception\MetadataException;
 use Ign\Bundle\GincoBundle\Form\GincoJddType;
 
@@ -30,14 +30,23 @@ class JddController extends GincoController {
 		$this->denyAccessUnlessGranted('LIST_JDD') ;
 
 		$em = $this->get('doctrine.orm.raw_data_entity_manager');
-
-		if ($allJdds) {
-			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds();
-		} else if ($providerJdds) {
-			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds($this->getUser()->getProvider(), null);
-		} else {
-			$jddList = $em->getRepository('IgnGincoBundle:RawData\Jdd')->getActiveJdds(null, $this->getUser());
+		
+		$limit = $request->get('limit', JddQuery::DEFAULT_LIMIT) ;
+		$page = max($request->get('page', 1), 1) ;
+		$search = $request->get('search', null) ;
+		$jddQuery = new JddQuery($page, $limit) ;
+		$jddQuery->setSearch($search) ;
+			
+		if (!$allJdds && $providerJdds) {
+			$jddQuery->setProvider($this->getUser()->getProvider()) ;
 		}
+		if (!$allJdds && !$providerJdds) {
+			$jddQuery->setUser($this->getUser()) ;
+		}
+		
+		$jddRepository = $em->getRepository('IgnGincoBundle:RawData\Jdd') ;
+		$jddList = $jddRepository->findActiveJdds($jddQuery) ;
+		$numJdds = $jddRepository->countActiveJdds($jddQuery) ;
 
 		$deeRepo = $em->getRepository('IgnGincoBundle:RawData\DEE');
 		foreach ($jddList as $jdd) {
@@ -55,7 +64,10 @@ class JddController extends GincoController {
 		return $this->render('IgnGincoBundle:Jdd:jdd_list_page.html.twig', array(
 			'jddList' => $jddList,
 			'allJdds' => $allJdds,
-			'providerJdds' => $providerJdds
+			'providerJdds' => $providerJdds, 
+			'jddQuery' => $jddQuery,
+			'numJdds' => $numJdds, 
+			'route' => $request->attributes->get('_route')
 		));
 	}
 
