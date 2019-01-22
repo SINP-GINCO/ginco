@@ -417,8 +417,8 @@ class DefaultController extends GincoController {
 			// Modification TAXREF 
 			$queryBuilder = new TableFormatQueryBuilder($tableFormat, 't') ;
 			$queryBuilder->select(array(
-					't.cdnom::int AS cdnom',
-					't.cdref::int AS cdref',
+					't.cdnom AS cdnom',
+					't.cdref AS cdref',
 					't.nomvalide',
 					's.label AS taxostatut',
 					'm.label AS taxomodif',
