@@ -51,9 +51,9 @@ class TableTreeRepository extends \Doctrine\ORM\EntityRepository {
 		$ancestors[] = $parent = $result[0];
 		
 		// Recursively call the function if needed
-		$grandParent = $parent->getParentTableFormat()->getFormat();
-		if ($grandParent != "*") {
-			$ancestors = array_merge($ancestors, $this->getAncestors($grandParent, $schemaCode));
+		$grandParent = $parent->getParentTable() ;
+		if ($grandParent != null) {
+			$ancestors = array_merge($ancestors, $this->getAncestors($grandParent->getFormat(), $schemaCode));
 		}
 		
 		return $ancestors;
@@ -93,11 +93,16 @@ class TableTreeRepository extends \Doctrine\ORM\EntityRepository {
 		 * $childrenLabels[$format] = $label;
 		 * }
 		 */
-		$dql = "SELECT ct.format AS format, ct.label AS label FROM $this->_entityName t JOIN t.tableFormat ct WHERE t.parentTableFormat = :format AND t.schema = :schema";
+		$dql = "SELECT f.format AS format, ct.label AS label "
+			. "FROM $this->_entityName t "
+			. "JOIN t.childTable ct "
+			. "JOIN ct.format f "
+			. "WHERE t.parentTable = :format AND t.schema = :schema";
 		$childrenLabels = $this->_em->createQuery($dql)
 			->setParameters($parameters)
 			->getScalarResult();
 		
 		return array_column($childrenLabels, 'label', 'format');
 	}
+	
 }

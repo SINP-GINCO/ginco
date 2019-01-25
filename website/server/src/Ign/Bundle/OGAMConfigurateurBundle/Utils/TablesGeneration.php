@@ -184,7 +184,7 @@ class TablesGeneration extends DatabaseUtils {
 				INNER JOIN metadata.table_format parent ON tree.parent_table = parent.format
 				INNER JOIN metadata.model_tables mt ON mt.table_id = parent.format
 				WHERE mt.model_id = $1
-				AND tree.parent_table != '*'";
+				AND tree.parent_table IS NOT NULL";
 		pg_prepare($dbconn, "", $sql);
 		$results = pg_execute($dbconn, "", array(
 			$modelId

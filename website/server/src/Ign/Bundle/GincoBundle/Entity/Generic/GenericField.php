@@ -2,6 +2,7 @@
 namespace Ign\Bundle\GincoBundle\Entity\Generic;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Field;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FieldInterface;
 
 /**
  * A generic field is a GincoBundle\Entity\Metadata\Field with some additional information
@@ -46,7 +47,7 @@ class GenericField {
 	/**
 	 * The field metadata
 	 *
-	 * @var Field
+	 * @var FieldInterface
 	 */
 	private $metadata;
 
@@ -120,13 +121,13 @@ class GenericField {
 
 	/**
 	 *
-	 * @return Field
+	 * @return FieldInterface
 	 */
 	public function getMetadata() {
 		return $this->metadata;
 	}
 
-	public function setMetadata(Field $metadata, $locale) {
+	public function setMetadata(FieldInterface $metadata, $locale) {
 		$this->locale = $locale;
 		$this->metadata = $metadata;
 	}

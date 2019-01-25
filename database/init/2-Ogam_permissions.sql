@@ -31,9 +31,6 @@ GRANT ALL ON ALL SEQUENCES IN SCHEMA raw_data TO ogam;
 GRANT ALL ON SCHEMA metadata TO ogam;
 GRANT ALL ON ALL TABLES IN SCHEMA metadata TO ogam;
 
-GRANT ALL ON SCHEMA metadata_work TO ogam;
-GRANT ALL ON ALL TABLES IN SCHEMA metadata_work TO ogam;
-
 -- mapping
 GRANT ALL ON SCHEMA "mapping" TO ogam;
 GRANT SELECT ON TABLE "mapping".provider_map_params TO ogam;

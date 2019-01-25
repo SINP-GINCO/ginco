@@ -2,6 +2,7 @@
 namespace Ign\Bundle\GincoBundle\Entity\Generic;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Format;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FormatInterface;
 
 /**
  * A generic format is a GincoBundle\Entity\Metadata\Format with some additional information.
@@ -23,7 +24,7 @@ class GenericFormat {
 	/**
 	 * The format metadata
 	 *
-	 * @var Format
+	 * @var FormatInterface
 	 */
 	private $metadata;
 
@@ -46,10 +47,10 @@ class GenericFormat {
 	 *
 	 * @param string $datasetId
 	 *        	The identifier of the dataset
-	 * @param Format $metadata
+	 * @param FormatInterface $metadata
 	 *        	The format metadata
 	 */
-	function __construct($datasetId, Format $metadata) {
+	function __construct($datasetId, $metadata) {
 		$this->datasetId = $datasetId;
 		$this->metadata = $metadata;
 		$this->format = $metadata->getFormat();
@@ -91,7 +92,7 @@ class GenericFormat {
 	/**
 	 * Return the format metadata.
 	 *
-	 * @return Format
+	 * @return FormatInterface
 	 */
 	public function getMetadata() {
 		return $this->metadata;

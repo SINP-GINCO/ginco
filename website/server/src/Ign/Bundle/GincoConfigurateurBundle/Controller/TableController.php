@@ -37,22 +37,22 @@ class TableController extends TableControllerBase {
 	 * @Route("models/{modelId}/tables/{format}/fields/", name="configurateur_table_fields")
 	 */
 	public function manageFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
-		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
+		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
+		$model = $em->getRepository('IgnGincoBundle:Metadata\Model')->find($modelId);
 
 		if (!$table) {
 			$errMsg = "Aucune TABLE ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
 
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 		// Get data dictionnary
 		$allFields = $dataRepository->findAllFields();
 		$fieldsForm = $this->createForm(TableUpdateFieldsType::class, null);
 		// Get table fields
-		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 		// Check if these fields are derived from a reference model
 		$referenceFields = $tableFieldRepository->findReferenceFields();

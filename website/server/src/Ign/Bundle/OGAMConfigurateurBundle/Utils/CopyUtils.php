@@ -2,8 +2,11 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\Connection;
+
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+
 use Monolog\Logger;
 
 /**
@@ -19,7 +22,7 @@ class CopyUtils extends DatabaseUtils {
 	}
 
 	/**
-	 * Copies the data located in metadata_work.data table, which belongs directly to the model
+	 * Copies the data located in data table, which belongs directly to the model
 	 * specified by its id.
 	 * Note : Use of pg_query function, without preparing the statement, is allowed here as the only
 	 * parameter here is the model id, which is generated on the server side.
@@ -42,11 +45,11 @@ class CopyUtils extends DatabaseUtils {
 				unit varchar(36), label varchar(60), definition varchar(255),
 				comment varchar(255)) ON COMMIT DROP;
 				INSERT INTO data_temp(data, unit, label, definition, comment)
-				SELECT DISTINCT dtj.data, dtj.unit, dtj.label, dtj.definition, dtj.comment FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = \'' . $modelId . '\'
-				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
-				INNER JOIN metadata_work.table_field as tfi ON tfi.format = tfo.format
-				INNER JOIN metadata_work.data as dtj ON dtj.data = tfi.data;
+				SELECT DISTINCT dtj.data, dtj.unit, dtj.label, dtj.definition, dtj.comment FROM metadata.model m
+				INNER JOIN metadata.model_tables as mt ON mt.model_id = \'' . $modelId . '\'
+				INNER JOIN metadata.table_format as tfo ON tfo.format = mt.table_id
+				INNER JOIN metadata.table_field as tfi ON tfi.format = tfo.format
+				INNER JOIN metadata.data as dtj ON dtj.data = tfi.data;
 				LOCK TABLE metadata.data IN EXCLUSIVE MODE;
 				UPDATE metadata.data
 				SET data = data_temp.data, unit = data_temp.unit,
@@ -69,12 +72,12 @@ class CopyUtils extends DatabaseUtils {
 
 	/**
 	 * Copies the data located which belongs directly to the model specified by its id,
-	 * from 'metadata_work.format' table to 'metadata.format' table, which belongs directly to the model.
+	 * from 'metadata.format' table to 'metadata.format' table, which belongs directly to the model.
 	 *
 	 * @param string $modelId
 	 *        	the id of the model
 	 * @param $destSchema string
-	 *        	the destination schema of the data (metadata or metadata_work)
+	 *        	the destination schema of the data (metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
 	 */
@@ -83,9 +86,9 @@ class CopyUtils extends DatabaseUtils {
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT fo.format, fo.type
-				FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = m.id
-				INNER JOIN metadata_work.format as fo ON fo.format = mt.table_id
+				FROM metadata.model m
+				INNER JOIN metadata.model_tables as mt ON mt.model_id = m.id
+				INNER JOIN metadata.format as fo ON fo.format = mt.table_id
 				WHERE m.id = $1 AND fo.type = 'TABLE'";
 
 		pg_prepare($this->pgConn, "", $selectQuery);
@@ -113,13 +116,13 @@ class CopyUtils extends DatabaseUtils {
 	}
 
 	/**
-	 * Copies the data located in metadata_work.table_format table, which belongs directly to the model
+	 * Copies the data located in metadata.table_format table, which belongs directly to the model
 	 * specified by its id.
 	 *
 	 * @param $modelId string
 	 *        	the id of the model
 	 * @param $destSchema string
-	 *        	the destination schema of the data (metadata or metadata_work)
+	 *        	the destination schema of the data (metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
 	 * @param $copiedModelId string
@@ -130,9 +133,9 @@ class CopyUtils extends DatabaseUtils {
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT tfo.format, tfo.table_name, tfo.schema_code, tfo.primary_key, tfo.label , tfo.definition
-				FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = m.id
-				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
+				FROM metadata.model m
+				INNER JOIN metadata.model_tables as mt ON mt.model_id = m.id
+				INNER JOIN metadata.table_format as tfo ON tfo.format = mt.table_id
 				WHERE m.id = $1";
 
 		pg_prepare($this->pgConn, "", $selectQuery);
@@ -169,13 +172,13 @@ class CopyUtils extends DatabaseUtils {
 	}
 
 	/**
-	 * Copies the data located in metadata_work.table_tree table, which belongs directly to the model
+	 * Copies the data located in metadata.table_tree table, which belongs directly to the model
 	 * specified by its id.
 	 *
 	 * @param $modelId string
 	 *        	the id of the model
 	 * @param $destSchema string
-	 *        	the destination schema of the data (metadata or metadata_work)
+	 *        	the destination schema of the data (metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
 	 */
@@ -184,11 +187,11 @@ class CopyUtils extends DatabaseUtils {
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT ttr.schema_code, ttr.child_table, ttr.parent_table, ttr.join_key, ttr.comment
-				FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
-				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
-				INNER JOIN metadata_work.table_schema as tsc ON tsc.schema_code = tfo.schema_code
-				INNER JOIN metadata_work.table_tree as ttr ON ttr.schema_code = tsc.schema_code AND ttr.child_table = tfo.format";
+				FROM metadata.model m
+				INNER JOIN metadata.model_tables as mt ON mt.model_id = $1
+				INNER JOIN metadata.table_format as tfo ON tfo.format = mt.table_id
+				INNER JOIN metadata.table_schema as tsc ON tsc.schema_code = tfo.schema_code
+				INNER JOIN metadata.table_tree as ttr ON ttr.schema_code = tsc.schema_code AND ttr.child_table = tfo.format";
 
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
@@ -202,8 +205,8 @@ class CopyUtils extends DatabaseUtils {
 
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
-				if ($row['parent_table'] == '*') {
-					$parentTable = '*';
+				if ($row['parent_table'] == null) {
+					$parentTable = null;
 				} else {
 					$parentTable = $row['parent_table'] . '_copy';
 				}
@@ -227,13 +230,13 @@ class CopyUtils extends DatabaseUtils {
 	}
 
 	/**
-	 * Copies the data located in metadata_work.field table, which belongs directly to the model
+	 * Copies the data located in metadata.field table, which belongs directly to the model
 	 * specified by its id.
 	 *
 	 * @param $modelId string
 	 *        	the id of the model
 	 * @param $destSchema string
-	 *        	the destination schema of the data (metadata or metadata_work)
+	 *        	the destination schema of the data (metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
 	 */
@@ -242,10 +245,10 @@ class CopyUtils extends DatabaseUtils {
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT f.data, f.format, f.type
-				FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
-				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
-				INNER JOIN metadata_work.field as f ON f.format = tfo.format";
+				FROM metadata.model m
+				INNER JOIN metadata.model_tables as mt ON mt.model_id = $1
+				INNER JOIN metadata.table_format as tfo ON tfo.format = mt.table_id
+				INNER JOIN metadata.field as f ON f.format = tfo.format";
 
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
@@ -286,13 +289,13 @@ class CopyUtils extends DatabaseUtils {
 	}
 
 	/**
-	 * Copies the data located in metadata_work.table_field table, which belongs directly to the model
+	 * Copies the data located in metadata.table_field table, which belongs directly to the model
 	 * specified by its id.
 	 *
 	 * @param $modelId string
 	 *        	the id of the model
 	 * @param $destSchema string
-	 *        	the destination schema of the data (metadata or metadata_work)
+	 *        	the destination schema of the data (metadata or metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
 	 */
@@ -301,10 +304,10 @@ class CopyUtils extends DatabaseUtils {
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT tfi.data, tfi.format, tfi.column_name, tfi.is_calculated, tfi.is_editable, tfi.is_insertable, tfi.is_mandatory, tfi.position, tfi.comment
-				FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1
-				INNER JOIN metadata_work.table_format as tfo ON tfo.format = mt.table_id
-				INNER JOIN metadata_work.table_field as tfi ON tfi.format = tfo.format";
+				FROM metadata.model m
+				INNER JOIN metadata.model_tables as mt ON mt.model_id = $1
+				INNER JOIN metadata.table_format as tfo ON tfo.format = mt.table_id
+				INNER JOIN metadata.table_field as tfi ON tfi.format = tfo.format";
 
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
@@ -345,12 +348,12 @@ class CopyUtils extends DatabaseUtils {
 	}
 
 	/**
-	 * Copies the model located in metadata_work.model table, specified by the model id.
+	 * Copies the model located in metadata.model table, specified by the model id.
 	 *
 	 * @param $modelId string
 	 *        	the id of the model
 	 * @param $destSchema string
-	 *        	the destination schema of the data (metadata or metadata_work)
+	 *        	the destination schema of the data (metadata or metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
 	 * @param $copyModelName string
@@ -363,8 +366,8 @@ class CopyUtils extends DatabaseUtils {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
-		$selectQuery = "SELECT DISTINCT m.id, m.name, m.description, m.schema_code
-				FROM metadata_work.model m
+		$selectQuery = "SELECT DISTINCT m.id, m.name, m.description, m.schema_code, m.status
+				FROM metadata.model m
 				WHERE m.id = $1";
 
 		pg_prepare($this->pgConn, "", $selectQuery);
@@ -373,7 +376,7 @@ class CopyUtils extends DatabaseUtils {
 		));
 
 		// Prepare insert statement for each value
-		$insertQuery = "INSERT INTO " . $destSchema . ".model(id, name, description, schema_code) VALUES ($1, $2, $3, $4);";
+		$insertQuery = "INSERT INTO " . $destSchema . ".model(id, name, description, schema_code, status) VALUES ($1, $2, $3, $4, $5);";
 		pg_prepare($this->pgConn, "", $insertQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
@@ -383,7 +386,8 @@ class CopyUtils extends DatabaseUtils {
 					$copiedModelId,
 					$copyModelName,
 					$copyModelDescription,
-					$row['schema_code']
+					$row['schema_code'],
+					Model::UNPUBLISHED
 				));
 				return $copiedModelId;
 			} else {
@@ -391,19 +395,20 @@ class CopyUtils extends DatabaseUtils {
 					$row['id'],
 					$row['name'],
 					$row['description'],
-					$row['schema_code']
+					$row['schema_code'],
+					$row['status']
 				));
 			}
 		}
 	}
 
 	/**
-	 * Copies the data located in metadata_work.model_tables table, specified by the model id.
+	 * Copies the data located in metadata.model_tables table, specified by the model id.
 	 *
 	 * @param $modelId string
 	 *        	the id of the model
 	 * @param $destSchema string
-	 *        	the destination schema of the data (metadata or metadata_work)
+	 *        	the destination schema of the data (metadata or metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
 	 * @param $copiedModelId string
@@ -414,8 +419,8 @@ class CopyUtils extends DatabaseUtils {
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT mt.model_id, mt.table_id
-				FROM metadata_work.model m
-				INNER JOIN metadata_work.model_tables as mt ON mt.model_id = $1";
+				FROM metadata.model m
+				INNER JOIN metadata.model_tables as mt ON mt.model_id = $1";
 
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
@@ -454,12 +459,13 @@ class CopyUtils extends DatabaseUtils {
 
 		// Don't create a query dataset if a dataset linked to the model
 		// already have entries in dataset_fields
-		if ($this->hasQueryDataset($modelId)) {
-			return;
+		$datasetId = $this->hasQueryDataset($modelId) ;
+		if ($datasetId) {
+			return $datasetId;
 		}
 
 		// Get model attributes
-		$sql = "SELECT name, schema_code FROM metadata_work.model
+		$sql = "SELECT name, schema_code FROM metadata.model
 				WHERE id = $1";
 		pg_prepare($dbconn, "", $sql);
 		$result = pg_execute($dbconn, "", array(
@@ -496,9 +502,9 @@ class CopyUtils extends DatabaseUtils {
 
 		// Creates all Datasets_Fields from tableFields linked to the model
 		$sql = "SELECT tfo.schema_code, tfo.format, tfi.data
-				FROM metadata_work.table_format tfo
-				INNER JOIN metadata_work.model_tables mt ON mt.table_id = tfo.format
-				INNER JOIN metadata_work.table_field as tfi ON tfi.format = tfo.format
+				FROM metadata.table_format tfo
+				INNER JOIN metadata.model_tables mt ON mt.table_id = tfo.format
+				INNER JOIN metadata.table_field as tfi ON tfi.format = tfo.format
 				WHERE mt.model_id = $1";
 		pg_prepare($dbconn, "", $sql);
 		$result = pg_execute($dbconn, "", array(
@@ -533,8 +539,8 @@ class CopyUtils extends DatabaseUtils {
 		// Create a form_format entry for each table_format of the model.
 		// Order results by format because format is like their time of creation
 		$sql = "SELECT tfo.format, tfo.label
-				FROM metadata_work.table_format tfo
-				INNER JOIN metadata_work.model_tables mt ON mt.table_id = tfo.format
+				FROM metadata.table_format tfo
+				INNER JOIN metadata.model_tables mt ON mt.table_id = tfo.format
 				WHERE mt.model_id = $1
 				ORDER BY tfo.format";
 		pg_prepare($dbconn, "", $sql);
@@ -584,11 +590,11 @@ class CopyUtils extends DatabaseUtils {
 
 		// Insert form_field entries for each table_field
 		$sql = "SELECT tfo.schema_code, tfo.format, tfi.data, u.type, u.subtype
-				FROM metadata_work.table_format tfo
-				INNER JOIN metadata_work.model_tables mt ON mt.table_id = tfo.format
-				INNER JOIN metadata_work.table_field tfi ON tfi.format = tfo.format
-				INNER JOIN metadata_work.data d ON d.data = tfi.data
-				INNER JOIN metadata_work.unit u ON d.unit = u.unit
+				FROM metadata.table_format tfo
+				INNER JOIN metadata.model_tables mt ON mt.table_id = tfo.format
+				INNER JOIN metadata.table_field tfi ON tfi.format = tfo.format
+				INNER JOIN metadata.data d ON d.data = tfi.data
+				INNER JOIN metadata.unit u ON d.unit = u.unit
 				WHERE mt.model_id = $1";
 		pg_prepare($dbconn, "", $sql);
 		$results = pg_execute($dbconn, "", array(
@@ -638,26 +644,6 @@ class CopyUtils extends DatabaseUtils {
 	}
 
 	/**
-	 * Checks if a model exists in the metatada_work schema.
-	 *
-	 * @param string $modelId
-	 *        	the id of the model
-	 * @return boolean
-	 */
-	public function isModelPresentInWorkSchema($modelId) {
-		$sql = "SELECT DISTINCT count(*)
-				FROM metadata_work.model AS m
-				WHERE m.id = :modelId";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bindParam(':modelId', $modelId);
-		$stmt->execute();
-		if ($stmt->fetchColumn(0) == 0) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
 	 * Tests if there is already in metadata schema, one or several datasets related to the model,
 	 * and with entries in 'dataset_fields' which refer to these datasets.
 	 *
@@ -691,7 +677,7 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function modelHasCopy($modelName) {
 		$sql = "SELECT DISTINCT count(*)
-				FROM metadata_work.model AS m
+				FROM metadata.model AS m
 				WHERE m.name = :modelName";
 		$stmt = $this->conn->prepare($sql);
 		$copyName = $modelName . '_copy';

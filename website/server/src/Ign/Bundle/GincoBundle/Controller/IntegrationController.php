@@ -178,7 +178,7 @@ class IntegrationController extends GincoController {
 		$files = [];
 		
 		foreach ($submissionFiles as $file) {
-			$files[$file->getFormat()] = $file;
+			$files[$file->getFormat()->getFormat()] = $file;
 		}
 		$optionsForm['submission'] = $submission;
 		$optionsForm['geomFieldInFile'] = $geomFieldInFile;
@@ -198,7 +198,7 @@ class IntegrationController extends GincoController {
 			
 			$requestedFiles = $submission->getDataset()->getFiles();
 			foreach ($requestedFiles as $key => $requestedFile) {
-				$file = $form[$requestedFile->getFormat()]->getData();
+				$file = $form[$requestedFile->getFormat()->getFormat()]->getData();
 				// Get the uploaded filename
 				
 				$filename = $file->getClientOriginalName();
@@ -688,7 +688,7 @@ class IntegrationController extends GincoController {
 		$files = [];
 		
 		foreach ($submissionFiles as $file) {
-			$files[$file->getFormat()] = $file;
+			$files[$file->getFormat()->getFormat()] = $file;
 		}
 
 		$optionsForm['submission'] = $submission;
@@ -703,7 +703,7 @@ class IntegrationController extends GincoController {
 			// For each requested file
 			$requestedFiles = $submission->getDataset()->getFiles();
 			foreach ($requestedFiles as $key => $requestedFile) {
-				$file = $form[$requestedFile->getFormat()]->getData();
+				$file = $form[$requestedFile->getFormat()->getFormat()]->getData();
 				// Get the uploaded filename
 				
 				$filename = $file->getClientOriginalName();

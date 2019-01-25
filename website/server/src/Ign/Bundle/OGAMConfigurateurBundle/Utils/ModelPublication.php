@@ -5,8 +5,13 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
 use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+
 use Monolog\Logger;
+
 use Symfony\Component\Debug\Exception\ContextErrorException;
+
+use Doctrine\ORM\EntityManager;
 
 /**
  * Utility class for publication of a model into a database.
@@ -23,9 +28,16 @@ class ModelPublication extends DatabaseUtils {
 	protected $tablesGeneration;
 
 	protected $copyUtils;
+	
+	/**
+	 *
+	 * @var EntityManager
+	 */
+	protected $entityManager ;
 
-	public function __construct(Connection $conn, Logger $logger, $adminName, $adminPassword) {
-		parent::__construct($conn, $logger, $adminName, $adminPassword);
+	public function __construct(EntityManager $entityManager, Logger $logger, $adminName, $adminPassword) {
+		$this->entityManager = $entityManager ;
+		parent::__construct($entityManager->getConnection(), $logger, $adminName, $adminPassword);
 	}
 
 	public function setTablesGeneration($tablesGeneration) {
@@ -44,36 +56,36 @@ class ModelPublication extends DatabaseUtils {
 	 *        	id of the model
 	 * @return true if publication succeded, false otherwise
 	 */
-	public function publishModel($modelId) {
+	public function publishModel(Model $model) {
+		
 		try {
-			if ($this->copyUtils->isModelPresentInWorkSchema($modelId) && $this->isPublishable($modelId)) {
+			if ($this->isPublishable($model)) {
 				$dbconn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+				
 				pg_query($dbconn, "BEGIN");
-				if (!$this->copyUtils->copyData($modelId, $dbconn)) {
-					pg_query($dbconn, "ROLLBACK");
-					return false;
+				
+				// on ne crée le query dataset et les formulaires qu'à la première publication.
+				if ($model->getQueryDatasets()->isEmpty()) {
+				
+					$datasetId = $this->copyUtils->createQueryDataset($model->getId(), $dbconn);
+					$this->copyUtils->createFormFields($model->getId(), $datasetId, $dbconn);
 				}
-
-				$destSchema = 'metadata';
-				$this->copyUtils->copyFormat($modelId, $destSchema, false);
-				$this->copyUtils->copyTableFormat($modelId, $destSchema, false);
-				$this->copyUtils->copyTableTree($modelId, $destSchema, false);
-				$this->copyUtils->copyField($modelId, $destSchema, false);
-				$this->copyUtils->copyTableField($modelId, $destSchema, false);
-				$this->copyUtils->copyModel($modelId, $destSchema, false);
-				$this->copyUtils->copyModelTables($modelId, $destSchema, false);
-				$datasetId = $this->copyUtils->createQueryDataset($modelId, $dbconn);
-				$this->copyUtils->createFormFields($modelId, $datasetId, $dbconn);
-
+				
 				// Generate the tables
-				if ($this->tablesGeneration) {
-					$result = $this->tablesGeneration->createTables($modelId, $dbconn);
+				if ($this->tablesGeneration && $model->getPublishedAt() == null) {
+					$result = $this->tablesGeneration->createTables($model->getId(), $dbconn);
 					if (!$result) {
 						pg_query($dbconn, "ROLLBACK");
 						return false;
 					}
 				}
+				
 				pg_query($dbconn, "COMMIT");
+				
+				$model->setStatus(Model::PUBLISHED) ;
+				$model->setPublishedAt(new \DateTime()) ;
+				$this->entityManager->flush() ;
+				
 				return true;
 			} else {
 				return false;
@@ -93,65 +105,7 @@ class ModelPublication extends DatabaseUtils {
 		}
 	}
 
-	/**
-	 * Returns true if a model is published.
-	 *
-	 * @param $modelid the
-	 *        	id of the model
-	 *
-	 * @return boolean
-	 */
-	public function isPublished($modelId) {
-		$published = false;
-
-		$sql = "SELECT count(*) from metadata.model WHERE id = ?";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bindValue(1, $modelId);
-		$stmt->execute();
-
-		if ($stmt->fetchColumn(0) === 1) {
-			$published = true;
-		}
-
-		$this->conn->close();
-		return $published;
-	}
-
-	/**
-	 * Returns true if it is possible to publish a model.
-	 * The model :
-	 * - must NOT be published
-	 * - must have at least one table
-	 * - must have at least on field in all its tables.
-	 *
-	 * @param $modelId: the
-	 *        	of the model
-	 * @return boolean
-	 */
-	public function isPublishable($modelId) {
-		$publishable = (!$this->isPublished($modelId) && $this->modelHasTables($modelId) && $this->modelTablesHaveFields($modelId) && $this->modelHasGeometricalField($modelId));
-		return $publishable;
-	}
-
-	/**
-	 * Checks if, for a given model, the model has at least one table
-	 *
-	 * @param $modelId :
-	 *        	the id of the model
-	 * @return bool
-	 */
-	public function modelHasTables($modelId) {
-		$sql = "SELECT count(*) from metadata_work.model_tables WHERE model_id = ?";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bindValue(1, $modelId);
-		$stmt->execute();
-
-		$hasTables = ($stmt->fetchColumn(0) >= 1);
-
-		$this->conn->close();
-		return $hasTables;
-	}
-
+	
 	/**
 	 * Checks if, for a given model, every table has at least one non-technical field
 	 *
@@ -159,16 +113,15 @@ class ModelPublication extends DatabaseUtils {
 	 *        	the id of the model
 	 * @return bool
 	 */
-	public function modelTablesHaveFields($modelId) {
+	private function modelTablesHaveFields(Model $model) {
 		$sql = "SELECT mt.table_id AS tableformat, COUNT(tfi.data) AS nbfields
-				FROM metadata_work.model_tables mt
-				LEFT JOIN metadata_work.table_field tfi ON mt.table_id = tfi.format
+				FROM metadata.model_tables mt
+				LEFT JOIN metadata.table_field tfi ON mt.table_id = tfi.format
 				WHERE mt.model_id = ?
 				GROUP BY mt.table_id;";
 		$stmt = $this->conn->prepare($sql);
-		$stmt->bindValue(1, $modelId);
+		$stmt->bindValue(1, $model->getId());
 		$stmt->execute();
-
 		$tablesHaveFields = true;
 		while ($row = $stmt->fetch()) {
 			// 4 is the nb of technical fields in each table: PROVIDER_ID, USER_LOGIN, SUBMISSION_ID, OGAM_ID
@@ -179,7 +132,6 @@ class ModelPublication extends DatabaseUtils {
 		}
 		return $tablesHaveFields;
 	}
-
 	/**
 	 * Checks if, for a given model, at least one of its tables has a geometrical field
 	 *
@@ -187,17 +139,16 @@ class ModelPublication extends DatabaseUtils {
 	 *        	the id of the model
 	 * @return bool
 	 */
-	public function modelHasGeometricalField($modelId) {
+	private function modelHasGeometricalField(Model $model) {
 		$sql = "SELECT COUNT(data.unit) AS nbgeomfield
-				FROM metadata_work.model_tables mt
-				LEFT JOIN metadata_work.field f ON mt.table_id = f.format
-				LEFT JOIN metadata_work.data data ON f.data = data.data
+				FROM metadata.model_tables mt
+				LEFT JOIN metadata.field f ON mt.table_id = f.format
+				LEFT JOIN metadata.data data ON f.data = data.data
 				WHERE mt.model_id = ?
 				AND data.unit = 'GEOM';";
 		$stmt = $this->conn->prepare($sql);
-		$stmt->bindValue(1, $modelId);
+		$stmt->bindValue(1, $model->getId());
 		$stmt->execute();
-
 		$modelHasGeometricalField = true;
 		$row = $stmt->fetch();
 		if ($row['nbgeomfield'] < 1) {
@@ -205,8 +156,8 @@ class ModelPublication extends DatabaseUtils {
 		}
 		return $modelHasGeometricalField;
 	}
-
-	/**
+	
+		/**
 	 * Returns the names of the import models related to the model that are not yet published.
 	 *
 	 * @param string $modelId
@@ -215,9 +166,9 @@ class ModelPublication extends DatabaseUtils {
 	 */
 	public function getUnpublishedImportModelsNames($modelId) {
 		$sql = "SELECT d.label
-				FROM metadata_work.dataset d
-				INNER JOIN metadata_work.model_datasets as md ON md.dataset_id = d.dataset_id
-				INNER JOIN metadata_work.model as m ON m.id = md.model_id
+				FROM metadata.dataset d
+				INNER JOIN metadata.model_datasets as md ON md.dataset_id = d.dataset_id
+				INNER JOIN metadata.model as m ON m.id = md.model_id
 				WHERE m.id = ?
 				AND d.dataset_id NOT IN (
 					SELECT d.dataset_id
@@ -230,12 +181,32 @@ class ModelPublication extends DatabaseUtils {
 		$stmt->bindValue(1, $modelId);
 		$stmt->bindValue(2, $modelId);
 		$stmt->execute();
-
 		$importModelNames = array();
 		while ($row = $stmt->fetch()) {
 			array_push($importModelNames, $row['label']);
 		}
-
 		return $importModelNames;
 	}
+	
+	
+
+	/**
+	 * Returns true if it is possible to publish a model.
+	 * The model :
+	 * - must NOT be published
+	 * - must have at least one table
+	 * - must have at least on field in all its tables.
+	 *
+	 * @param $modelId: the
+	 *        	of the model
+	 * @return boolean
+	 */
+	public function isPublishable(Model $model) {
+		
+		$publishable = (!$model->isPublished() && $model->hasTables() && $this->modelTablesHaveFields($model) && $this->modelHasGeometricalField($model));
+		return $publishable;
+	}
+
+
+
 }

@@ -2,7 +2,10 @@
 namespace Ign\Bundle\GincoConfigurateurBundle\Form\Extension;
 
 use Doctrine\ORM\EntityRepository;
+
 use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -30,7 +33,7 @@ class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 		$modelId = $formOptions['modelId'];
 
 		$builder->add('table_format', EntityType::class, array(
-			'class' => 'IgnOGAMConfigurateurBundle:TableFormat',
+			'class' => TableFormat::class,
 			'choice_label' => 'label',
 			'placeholder' => 'fileField.selectTable',
 			'label' => 'fileField.auto.label',
@@ -39,15 +42,12 @@ class FileFieldAutoTypeExtension extends AbstractTypeExtension {
 				new NotNull()
 			), // validation message is directly in FieldMappingController->autoAction
 			'query_builder' => function (EntityRepository $er) use($modelId) {
-				$qb = $er->createQueryBuilder('t')
-					->select('t')
-					->from('IgnOGAMConfigurateurBundle:ModelTables', 'mt')
-					->where('mt.model=:modelId')
-					->andWhere('mt.table = t.format')
+				return $er->createQueryBuilder('t')
+					->leftJoin('t.models', 'm')
+					->where('m.id = :modelId')
 					->orderBy('t.label', 'ASC')
-					->setParameters(array(
-					'modelId' => $modelId
-				));
+					->setParameter('modelId', $modelId)
+				;
 				return $qb;
 			}
 		))

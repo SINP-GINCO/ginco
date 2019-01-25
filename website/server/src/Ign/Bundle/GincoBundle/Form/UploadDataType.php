@@ -34,7 +34,7 @@ class UploadDataType extends AbstractType {
 		foreach ($requestedFiles as $requestedFile) {
 			// Checks if geom unit field is present in the file
 			$fileLabel = $requestedFile->getLabel();
-			$builder->add($requestedFile->getFormat(), FileType::class, array(
+			$builder->add($requestedFile->getFormat()->getFormat(), FileType::class, array(
 				'data_class' => null,
 				'label' => $fileLabel,
 				'empty_data' => 'Veuillez sélectionner un fichier',

@@ -14,11 +14,11 @@ class TableFieldController extends TableFieldControllerBase {
 	 * @Route("/models/{modelId}/tables/{format}/fields/removeall/", name="configurateur_table_remove_all_fields")
 	 */
 	public function removeAllFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
-		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
-		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
+		$fieldRepository = $em->getRepository('IgnGincoBundle:Metadata\Field');
+		$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
 
 		$mappingRepository->removeAllExceptRefMappingsByTableFormat($format);
 		$tableFieldRepository->deleteNonTechnicalAndNonRefByTableFormat($format);
@@ -38,10 +38,10 @@ class TableFieldController extends TableFieldControllerBase {
 	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field_and_update", options={"expose"=true})
 	 */
 	public function removeFieldAction($modelId, $field, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
 		// Check if the field is not derived from a field included in a reference model
-		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
 		$referenceFields = $tableFieldRepository->findReferenceFields();
 		if (in_array($field, array_column($referenceFields, 'data'))) {
 			$this->addFlash('error', $this->get('translator')
@@ -50,17 +50,17 @@ class TableFieldController extends TableFieldControllerBase {
 			)));
 		} else {
 			// remove mapping relations first
-			$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+			$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
 			$mappingRepository->removeAllByTableField($format, $field);
 
-			$tableFieldToRemove = $em->find("IgnOGAMConfigurateurBundle:TableField", array(
+			$tableFieldToRemove = $em->find("IgnGincoBundle:Metadata\TableField", array(
 				"data" => $field,
-				"tableFormat" => $format
+				"format" => $format
 			));
 			$em->remove($tableFieldToRemove);
 			$em->flush();
 
-			$fieldToRemove = $em->find("IgnOGAMConfigurateurBundle:Field", array(
+			$fieldToRemove = $em->find("IgnGincoBundle:Metadata\Field", array(
 				"data" => $field,
 				"format" => $format
 			));

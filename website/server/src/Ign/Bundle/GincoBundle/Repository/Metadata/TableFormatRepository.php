@@ -3,6 +3,8 @@ namespace Ign\Bundle\GincoBundle\Repository\Metadata;
 
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+
 /**
  * TableFormatRepository
  *
@@ -58,5 +60,37 @@ class TableFormatRepository extends \Doctrine\ORM\EntityRepository {
 		$query = $this->_em->createNativeQuery($sql, $rsm);
 		
 		return $query->getResult();
+	}
+	
+	
+	/**
+	 * Trouve toutes les tables qui ne sont ni enfant de la table en entrée, ni la table elle-meme.
+	 * @param TableFormat $tableFormat
+	 * @return TableFormat[]
+	 */
+	public function findNotChildTables(TableFormat $tableFormat) {
+		
+		$sql = "WITH RECURSIVE child_table AS (
+					SELECT tf.* 
+					FROM metadata.table_format tf 
+					JOIN metadata.table_tree tt ON tt.child_table = tf.format
+					WHERE tt.parent_table = :parentTable
+					UNION
+					SELECT tf.* 
+					FROM metadata.table_format tf 
+					JOIN metadata.table_tree tt ON tt.child_table = tf.format
+					JOIN child_table ct ON tt.parent_table = ct.format
+				)
+				SELECT tf.* FROM metadata.table_format tf 
+				LEFT JOIN child_table ct ON ct.format = tf.format
+				WHERE ct.format IS NULL
+				AND tf.format IS DISTINCT FROM :parentTable" ;
+		
+		$rsm = new ResultSetMappingBuilder($this->getEntityManager()) ;
+		$rsm->addRootEntityFromClassMetadata($this->getClassName(), 'tf') ;
+		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm) ;
+		$query->setParameter('parentTable', $tableFormat->getFormat()) ;
+		
+		return $query->getResult() ;
 	}
 }

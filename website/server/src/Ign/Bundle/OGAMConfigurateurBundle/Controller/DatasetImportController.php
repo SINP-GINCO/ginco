@@ -1,14 +1,12 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportType;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\DatasetImportUploadType;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,8 +17,8 @@ class DatasetImportController extends Controller {
 	 */
 	public function indexAction($datasets = null) {
 		// get import models list
-		$em = $this->getDoctrine()->getManager('metadata_work');
-		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
+		$em = $this->getDoctrine()->getManager('metadata');
+		$repository = $em->getRepository('IgnGincoBundle:Metadata\Dataset');
 		$datasets = $repository->findByTypeAndOrderedByName('IMPORT');
 
 		$mpService = $this->get('app.importmodelpublication');
@@ -32,14 +30,7 @@ class DatasetImportController extends Controller {
 
 		foreach ($datasets as $importModel) {
 			$importModelId = $importModel->getId();
-			$importModelsPubState[$importModelId] = $mpService->isPublished($importModelId);
 			$importModelsPublishable[$importModelId] = $mpService->isPublishable($importModel);
-			$modelsPermissions[$importModelId]['editable'] = $this->get('app.permissions')->isImportModelEditable($importModelId);
-			$modelsPermissions[$importModelId]['editableMessage'] = $this->get('app.permissions')->getMessage();
-			$modelsPermissions[$importModelId]['editableCode'] = $this->get('app.permissions')->getCode();
-			$modelsPermissions[$importModelId]['deletable'] = $this->get('app.permissions')->isImportModelDeletable($importModelId);
-			$modelsPermissions[$importModelId]['deletableMessage'] = $this->get('app.permissions')->getMessage();
-			$modelsPermissions[$importModelId]['deletableCode'] = $this->get('app.permissions')->getCode();
 		}
 
 		// form for file upload
@@ -47,9 +38,7 @@ class DatasetImportController extends Controller {
 
 		return $this->render('IgnOGAMConfigurateurBundle:DatasetImport:index.html.twig', array(
 			'datasets' => $datasets,
-			'pubStates' => $importModelsPubState,
 			'publishable' => $importModelsPublishable,
-			'permissions' => $modelsPermissions,
 			'upload_form' => $uploadForm->createView()
 		));
 	}
@@ -62,7 +51,7 @@ class DatasetImportController extends Controller {
 		// empty import model initialization
 		$dataset = new Dataset();
 
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
 		$form = $this->createForm(DatasetImportType::class, $dataset, array(
 			'isNew' => true
@@ -75,7 +64,7 @@ class DatasetImportController extends Controller {
 			$dataset->setType('IMPORT');
 			$dataset->setIsDefault(0);
 
-			$em->persist($dataset);
+			$em->persist($dataset);			
 			$em->flush();
 			$id = $dataset->getId();
 
@@ -93,17 +82,17 @@ class DatasetImportController extends Controller {
 	 * @Route("/datasetsimport/{id}/edit/", name="configurateur_dataset_import_edit")
 	 */
 	public function editAction($id, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
+		$datasetRepository = $em->getRepository('IgnGincoBundle:Metadata\Dataset');
 		$dataset = $datasetRepository->find($id);
 		if (!$dataset) {
 			throw $this->createNotFoundException('Aucun modèle d\'import trouvé pour cet id : ' . $id);
 		}
 
-		if (!$this->get('app.permissions')->isImportModelEditable($id)) {
-			$this->addFlash('error', $this->get('app.permissions')
-				->getMessage());
+		if ($dataset->isPublished()) {
+			$this->addFlash('error', 'importmodel.edit.warning');
 			return $this->redirectToRoute('configurateur_dataset_import_index');
 		}
 
@@ -111,9 +100,6 @@ class DatasetImportController extends Controller {
 		$initialTargetDataModel = $dataset->getModel()->getId();
 
 		$mpService = $this->get('app.importmodelpublication');
-
-		$pubState = $mpService->isPublished($id);
-		$modelPubState = $mpService->isImportModelDataModelPublished($id);
 
 		$datasetLabel = $dataset->getLabel();
 		$form = $this->createForm(DatasetImportType::class, $dataset);
@@ -126,8 +112,8 @@ class DatasetImportController extends Controller {
 			if ($initialTargetDataModel != $finalTargetDataModel) {
 				// Delete the mappings of this model
 				$fieldsRemoved = false;
-				$fmRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
-				$ffRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FileField");
+				$fmRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
+				$ffRepository = $em->getRepository("IgnGincoBundle:Metadata\FileField");
 
 				foreach ($dataset->getFiles() as $file) {
 					// Check if there are fields in the file
@@ -156,13 +142,8 @@ class DatasetImportController extends Controller {
 
 		return $this->render('IgnOGAMConfigurateurBundle:DatasetImport:edit.html.twig', array(
 			'datasetForm' => $form->createView(),
-			'datasetLabel' => $datasetLabel,
 			'dataset' => $dataset,
-			'files' => $files,
-			'pubState' => $pubState,
-			'modelPubState' => $modelPubState,
 			'publishable' => $mpService->isPublishable($dataset),
-			'id' => $id,
 			'initialTargetDataModel' => $initialTargetDataModel
 		));
 	}
@@ -171,17 +152,12 @@ class DatasetImportController extends Controller {
 	 * @Route("/datasetsimport/{id}/delete/", name="configurateur_dataset_import_delete")
 	 */
 	public function deleteAction($id) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
-		$repository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
+		$em = $this->getDoctrine()->getManager('metadata');
+		$repository = $em->getRepository('IgnGincoBundle:Metadata\Dataset');
 		$dataset = $repository->find($id);
 
-		// Check if import model is published
-		$mpService = $this->get('app.importmodelpublication');
-		$published = $mpService->isPublished($id);
-
-		if (!$this->get('app.permissions')->isImportModelDeletable($id)) {
-			$this->addFlash('error', $this->get('app.permissions')
-				->getMessage());
+		if ($dataset->isPublished()) {
+			$this->addFlash('error', 'importmodel.delete.forbidden');
 		} else {
 			$datasetName = $dataset->getLabel();
 
@@ -194,7 +170,7 @@ class DatasetImportController extends Controller {
 
 			$dataset->getFiles()->clear();
 
-			$em->remove($dataset);
+			$this->get('app.importmodelunpublication')->deleteImportModel($dataset) ;
 			$em->flush();
 
 			$this->addFlash('notice', $this->get('translator')
@@ -215,20 +191,19 @@ class DatasetImportController extends Controller {
 	 */
 	public function publishAction($importModelId) {
 		$importModel = $this->getDoctrine()
-			->getManager('metadata_work')
-			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
+			->getManager('metadata')
+			->getRepository('IgnGincoBundle:Metadata\Dataset')
 			->find($importModelId);
 		if ($importModel) {
 			$mpService = $this->get('app.importmodelpublication');
 			$importModelName = $importModel->getLabel();
-			if ($mpService->isPublishable($importModel) == true) {
+			if ($mpService->isPublishable($importModel)) {
 
 				// Reset tomcat caches
 				$cachesCleared = $this->get('app.resettomcatcaches')->performRequest();
 
 				if ($cachesCleared == false) {
-					$this->addFlash('error', $this->get('translator')
-						->trans('importmodel.resetCaches.fail'));
+					$this->addFlash('error', $this->get('translator')->trans('importmodel.resetCaches.fail'));
 				} else {
 
 					$successStatus = $this->get('app.importmodelpublication')->publishImportModel($importModel);
@@ -278,8 +253,8 @@ class DatasetImportController extends Controller {
 	public function unpublishAction($importModelId, $unpublishFromModel = false, $redirectToEdit = false) {
 		// Get the model to check if it exists
 		$importModel = $this->getDoctrine()
-			->getManager('metadata_work')
-			->getRepository('IgnOGAMConfigurateurBundle:Dataset')
+			->getManager('metadata')
+			->getRepository('IgnGincoBundle:Metadata\Dataset')
 			->find($importModelId);
 		if ($importModel) {
 			// Check if a file is being uploaded
@@ -287,8 +262,8 @@ class DatasetImportController extends Controller {
 			if ($muService->hasRunningFileUpload($importModelId)) {
 				$this->addFlash('error', $this->get('translator')
 					->trans('importmodel.unpublish.uploadrunning', array(
-					'%importModelId%' => $importModelId
-				)));
+						'%importModelId%' => $importModelId
+					)));
 				if ($unpublishFromModel) {
 					return $this->redirectToRoute('configurateur_model_index');
 				} else {
@@ -297,7 +272,7 @@ class DatasetImportController extends Controller {
 			}
 
 			// Unpublish the import model
-			$successStatus = $this->get('app.importmodelunpublication')->unpublishImportModel($importModelId);
+			$successStatus = $this->get('app.importmodelunpublication')->unpublishImportModel($importModel);
 
 			// Send a flash message depending on the result of the unpublication
 			$importModelName = $importModel->getLabel();
@@ -331,9 +306,9 @@ class DatasetImportController extends Controller {
 	 * @Route("/datasetsimport/{id}/view/", name="configurateur_dataset_import_view")
 	 */
 	public function viewAction($id) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
+		$datasetRepository = $em->getRepository('IgnGincoBundle:Metadata\Dataset');
 		$dataset = $datasetRepository->find($id);
 		if (!$dataset) {
 			throw $this->createNotFoundException('Aucun modèle d\'import trouvé pour cet id : ' . $id);
@@ -355,9 +330,9 @@ class DatasetImportController extends Controller {
 	 * @Route("/datasetsimport/{id}/edit/fields/update/{formats}", name="configurateur_dataset_import_update_file_order", options={"expose"=true})
 	 */
 	public function updateFileOrderAction($id, $formats) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$datasetRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset');
+		$datasetRepository = $em->getRepository('IgnGincoBundle:Metadata\Dataset');
 		$dataset = $datasetRepository->find($id);
 		if (!$dataset) {
 			throw $this->createNotFoundException('Aucun modèle d\'import trouvé pour cet id : ' . $id);
@@ -369,7 +344,7 @@ class DatasetImportController extends Controller {
 			$format = $data[$i];
 			$order = $i + 1;
 
-			$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+			$file = $em->getRepository('IgnGincoBundle:Metadata\FileFormat')->find($format);
 
 			try {
 				if ($file !== null) {

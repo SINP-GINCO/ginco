@@ -9,12 +9,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Dataset (is renamed in the application as 'Import model')
  *
- * @ORM\Table(name="metadata_work.dataset")
+ * @ORM\Table(name="metadata.dataset")
  * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\DatasetRepository")
  * @ORM\HasLifecycleCallbacks()
  * @CaseInsensitive(message = "dataset.label.caseinsensitive")
  */
 class Dataset {
+
+	CONST PUBLISHED = 'published';
+	CONST UNPUBLISHED = 'unpublished';
 
 	/**
 	 *
@@ -54,7 +57,7 @@ class Dataset {
 	/**
 	 * @ORM\ManyToMany(targetEntity="FileFormat", cascade={"all"}, inversedBy="datasets")
 	 * @ORM\OrderBy({"position" = "ASC"})
-	 * @ORM\JoinTable(name="metadata_work.dataset_files",
+	 * @ORM\JoinTable(name="metadata.dataset_files",
 	 * joinColumns={@ORM\JoinColumn(name="dataset_id", referencedColumnName="dataset_id")},
 	 * inverseJoinColumns={@ORM\JoinColumn(name="format", referencedColumnName="format", unique=true)})
 	 */
@@ -62,7 +65,7 @@ class Dataset {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Model")
-	 * @ORM\JoinTable(name="metadata_work.model_datasets",
+	 * @ORM\JoinTable(name="metadata.model_datasets",
 	 * joinColumns={@ORM\JoinColumn(name="dataset_id", referencedColumnName="dataset_id", unique=true)},
 	 * inverseJoinColumns={@ORM\JoinColumn(name="model_id", referencedColumnName="id")}
 	 * )
@@ -71,6 +74,12 @@ class Dataset {
 	 * and the getter and setter which deals with a table. Only the first Object of the Array is useful.
 	 */
 	private $model;
+
+	/**
+	 *
+	 * @var string @ORM\Column(name="status", type="string", length=12, nullable=false)
+	 */
+	private $status;
 
 	/**
 	 * Set id
@@ -248,4 +257,34 @@ class Dataset {
 	public function getFiles() {
 		return $this->files;
 	}
+
+	/**
+	 * 
+	 */
+	public function getStatus(){
+		return $this->status;
+	}
+
+	/**
+	 * 
+	 */
+	public function setStatus($status){
+		$this->status = $status;
+		return $this;
+	}
+
+	/**
+	 * 
+	 */
+	public function isPublished(){
+		return $this->getStatus() == self::PUBLISHED;
+	}
+
+	/**
+	 * 
+	 */
+	public function isUnpublished(){
+		return $this->getStatus() == self::UNPUBLISHED;
+	}
+
 }

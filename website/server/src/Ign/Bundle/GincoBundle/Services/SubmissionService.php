@@ -409,9 +409,6 @@ class SubmissionService {
 		$queryForm = new QueryForm();
 		$queryForm->setDatasetId($datasetId);
 		
-		$tableFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableField', 'metadata');
-		$tableFields = $tableFieldRepo->getTableFieldsForModel($modelId);
-		
 		$formFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\FormField', 'metadata');
 		$formFields = $formFieldRepo->getFormFieldsFromModel($modelId);
 		

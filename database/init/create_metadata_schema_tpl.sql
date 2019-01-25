@@ -369,6 +369,7 @@ LABEL                VARCHAR(255)         null,
 IS_DEFAULT           CHAR(1)              null,
 DEFINITION           VARCHAR(512)         null,
 TYPE                 VARCHAR(36)          null,
+STATUS				 VARCHAR(12)		  null,
 constraint PK_DATASET primary key (DATASET_ID)
 );
 
@@ -442,8 +443,8 @@ COMMENT ON COLUMN TABLE_SCHEMA.DESCRIPTION IS 'The description of the schema';
 /*==============================================================*/
 create table TABLE_TREE (
 SCHEMA_CODE          VARCHAR(36)             not null,
-CHILD_TABLE          VARCHAR(255)             not null,
-PARENT_TABLE         VARCHAR(255)             not null,
+CHILD_TABLE          VARCHAR(255)            not null,
+PARENT_TABLE         VARCHAR(255)            null,
 JOIN_KEY             VARCHAR(255)            null,
 COMMENT              VARCHAR(255)            null,
 constraint PK_TABLE_TREE primary key (SCHEMA_CODE, CHILD_TABLE)
@@ -568,6 +569,8 @@ NAME			     VARCHAR(128)			not null,
 DESCRIPTION		     VARCHAR(1024)			null,	
 SCHEMA_CODE			 VARCHAR(36)			not null,
 IS_REF				 BOOLEAN				null,
+STATUS				 VARCHAR(12)			null,
+PUBLISHED_AT		 TIMESTAMP				null,
 CONSTRAINT PK_MODEL PRIMARY KEY (ID)
 );
 COMMENT ON TABLE MODEL IS 'A data model represents a list of tables';
@@ -701,6 +704,9 @@ ALTER TABLE TABLE_TREE ADD CONSTRAINT FK_TABLE_TREE_SCHEMA
 ALTER TABLE TABLE_TREE ADD CONSTRAINT FK_TABLE_TREE_CHILD_TABLE
 	FOREIGN KEY (CHILD_TABLE) REFERENCES TABLE_FORMAT (FORMAT)
 	ON DELETE RESTRICT ON UPDATE RESTRICT DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE metadata.table_tree ADD CONSTRAINT fk_table_tree_parent_table 
+	FOREIGN KEY (parent_table) REFERENCES table_format(format) ;
 
 ALTER TABLE DATASET_FIELDS ADD CONSTRAINT FK_DATASET_FIELDS_DATASET
 	FOREIGN KEY (DATASET_ID) REFERENCES DATASET (DATASET_ID)

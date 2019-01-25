@@ -131,7 +131,7 @@
 
 				{# Publish / Unpublish button #}
 				{# If the model is unpublished #}
-				{% if pubStates[model.id] == false %}
+				{% if not model.published %}
 					{# Publish button #}
 					{# If the model is publishable (not empty) #}
 					{% if publishable[model.id] %}
@@ -302,20 +302,4 @@
 	</div>
 
 </div>
-<div class="panel panel-primary">
-		<div class="panel-heading">
-			<h3 id="panel-title" class="panel-title">
-			{% trans %}datamodel.add.title{% endtrans %}
-			</h3>
-		</div>
-		<div class="panel-body">
-
-			<a href="{{ path('configurateur_model_new') }}"
-				class="btn btn-default" role="button"> <span
-				class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				{% trans %}datamodel.add.button{% endtrans %}
-			</a>
-		</div>
-
-	</div>
 {% endblock %}

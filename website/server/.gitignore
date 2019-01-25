@@ -17,8 +17,6 @@
 !bin/console
 
 /composer.phar
-OGAMConfigurateurBundle
-GincoConfigurateurBundle
 /nbproject/
 /node_modules/
 

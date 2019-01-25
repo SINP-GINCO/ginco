@@ -1,15 +1,11 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableField;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Field;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableField;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,12 +17,12 @@ class TableFieldController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/fields/add/{data}", name="configurateur_table_add_field")
 	 */
 	public function addFieldAction($modelId, $format, $data) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 
-		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
-		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
+		$format = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
 
 		$tableField = new TableField();
 		$field = new Field();
@@ -44,7 +40,7 @@ class TableFieldController extends Controller {
 			$tableField->setTableFormat($table->getFormat());
 			$tableField->setColumnName($dataField->getName());
 
-			$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findAll();
+			$em->getRepository('IgnGincoBundle:Metadata\TableField')->findAll();
 			$em->merge($tableField);
 		}
 		$em->flush();
@@ -61,12 +57,12 @@ class TableFieldController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/fields/add/", name="configurateur_table_add_fields", options={"expose"=true})
 	 */
 	public function addFieldsAction($modelId, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 
-		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
-		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
+		$format = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
 		$fields = $request->get('addedNames');
 
 		// Handle the name of the fields
@@ -84,16 +80,16 @@ class TableFieldController extends Controller {
 			$em->flush();
 
 			if ($dataField !== null) {
-				$tableField->setData($dataField->getName());
-				$tableField->setTableFormat($table->getFormat());
-				$tableField->setColumnName($dataField->getName());
+				$tableField->setData($dataField);
+				$tableField->setFormat($table->getFormat());
+				$tableField->setColumnName($dataField->getData());
 
-				$dataFieldPrefix = substr($dataField->getName(), 0, 8);
-				$dataFieldSuffix = substr($dataField->getName(), 8, strlen($dataField->getName())-8);
+				$dataFieldPrefix = substr($dataField->getData(), 0, 8);
+				$dataFieldSuffix = substr($dataField->getData(), 8, strlen($dataField->getData())-8);
 
 				// todo : move to input form model when he will exist
 				if ($dataFieldPrefix == "OGAM_ID_") {
-					if ($dataFieldSuffix == $table->getFormat()){
+					if ($dataFieldSuffix == $table->getFormat()->getFormat()){
 						// primary key
 						$tableField->setIsMandatory("1");
 						$tableField->setIsCalculated("1");
@@ -106,17 +102,17 @@ class TableFieldController extends Controller {
 						$tableField->setIsEditable("0");
 						$tableField->setIsInsertable("0");
 					}
-				} elseif ($dataField->getName() == "PROVIDER_ID") {
+				} elseif ($dataField->getData() == "PROVIDER_ID") {
 					$tableField->setIsMandatory("1");
 					$tableField->setIsCalculated("0");
 					$tableField->setIsEditable("0");
 					$tableField->setIsInsertable("0");
-				} elseif ($dataField->getName() == "USER_LOGIN") {
+				} elseif ($dataField->getData() == "USER_LOGIN") {
 					$tableField->setIsMandatory("1");
 					$tableField->setIsCalculated("0");
 					$tableField->setIsEditable("0");
 					$tableField->setIsInsertable("0");
-				} elseif ($dataField->getName() == "SUBMISSION_ID") {
+				} elseif ($dataField->getData() == "SUBMISSION_ID") {
 					$tableField->setIsMandatory("0");
 					$tableField->setIsCalculated("1");
 					$tableField->setIsEditable("0");
@@ -128,7 +124,7 @@ class TableFieldController extends Controller {
 					$tableField->setIsInsertable("1");
 				}
 
-				$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findAll();
+				$em->getRepository('IgnGincoBundle:Metadata\TableField')->findAll();
 				$em->merge($tableField);
 			}
 			$em->flush();
@@ -147,11 +143,14 @@ class TableFieldController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/fields/update/", name="configurateur_table_update_fields", options={"expose"=true})
 	 */
 	public function updateFieldsAction($modelId, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
-		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
-		$tableName = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format)->getLabel();
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
+		$format = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
+		$tableFormat = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
+		
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField') ;
+		$fieldRepository = $em->getRepository('IgnGincoBundle:Metadata\Field') ;
 
 		$fields = $request->get('fields');
 		$mandatorys = $request->get('mandatorys');
@@ -167,37 +166,36 @@ class TableFieldController extends Controller {
 			} else {
 				$mandatory = '0';
 			}
-			$tableField = new TableField();
-			$field = new Field();
-			$dataField = $dataRepository->find($name);
 
+			$dataField = $dataRepository->find($name);
+			
 			if ($dataField !== null) {
+				
+				$field = $fieldRepository->find(array(
+					'data' => $dataField,
+					'format' => $format
+				));
+
 				$field->setData($dataField);
 				$field->setFormat($format);
 				$field->setType('TABLE');
-				$em->merge($field);
-			}
+				
+				$tableField = $tableFieldRepository->find(array(
+					'data' => $dataField,
+					'format' => $format
+				));
 
-			$em->flush();
-
-			if ($dataField !== null) {
-
-				$tableField->setData($name);
-				$tableField->setTableFormat($format->getFormat());
-				$tableField->setColumnName($dataField->getName());
+				$tableField->setData($dataField);
+				$tableField->setFormat($tableFormat);
+				$tableField->setColumnName($dataField->getData());
 				$tableField->setIsMandatory($mandatory);
-				$tableField->setIsCalculated("0");
-				$tableField->setIsEditable("1");
-				$tableField->setIsInsertable("1");
-
-				$em->merge($tableField);
 			}
 
 			$em->flush();
 		}
 
 		$this->addFlash('notice', $this->get('translator')
-			->trans('table.edit.fields.success', array('%tableName%' => $tableName)));
+			->trans('table.edit.fields.success', array('%tableName%' => $tableFormat->getLabel())));
 
 		return $this->redirectToRoute('configurateur_table_fields', array(
 			'modelId' => $modelId,
@@ -211,11 +209,11 @@ class TableFieldController extends Controller {
 	 * @Route("/models/{modelId}/tables/{format}/fields/removeall/", name="configurateur_table_remove_all_fields")
 	 */
 	public function removeAllFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
-		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
-		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
+		$fieldRepository = $em->getRepository('IgnGincoBundle:Metadata\Field');
+		$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
 
 		$mappingRepository->removeAllByTableFormat($format);
 		$tableFieldRepository->deleteNonTechnicalByTableFormat($format);
@@ -235,20 +233,20 @@ class TableFieldController extends Controller {
 	 * @Route("/models/{modelId}/tables/{format}/fields/remove/{field}", name="configurateur_table_remove_field_and_update", options={"expose"=true})
 	 */
 	public function removeFieldAction($modelId, $field, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
 		// remove mapping relations first
-		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+		$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
 		$mappingRepository->removeAllByTableField($format, $field);
 
-		$tableFieldToRemove = $em->find("IgnOGAMConfigurateurBundle:TableField", array(
+		$tableFieldToRemove = $em->find("IgnGincoBundle:Metadata\TableField", array(
 			"data" => $field,
 			"tableFormat" => $format
 		));
 		$em->remove($tableFieldToRemove);
 		$em->flush();
 
-		$fieldToRemove = $em->find("IgnOGAMConfigurateurBundle:Field", array(
+		$fieldToRemove = $em->find("IgnGincoBundle:Metadata\Field", array(
 			"data" => $field,
 			"format" => $format
 		));

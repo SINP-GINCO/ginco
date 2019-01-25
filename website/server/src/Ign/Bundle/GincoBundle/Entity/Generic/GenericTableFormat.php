@@ -18,7 +18,7 @@ class GenericTableFormat extends GenericFormat {
 	 * @param Format $metadata
 	 *        	The format metadata
 	 */
-	function __construct($datasetId, Format $metadata) {
+	function __construct($datasetId, $metadata) {
 		if (is_a($metadata, TableFormat::class)) {
 			parent::__construct($datasetId, $metadata);
 		} else {

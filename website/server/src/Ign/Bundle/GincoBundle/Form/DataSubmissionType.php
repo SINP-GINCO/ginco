@@ -10,6 +10,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
+
 class DataSubmissionType extends AbstractType {
 
 	/**
@@ -30,21 +32,23 @@ class DataSubmissionType extends AbstractType {
 						return $er->createQueryBuilder('d')
 							->leftJoin('d.files', 'f')
 							->where('f.format IS NOT NULL')
+							->where('d.status = :status')
+							->setParameter('status', Dataset::PUBLISHED)
 							->orderBy('d.label', 'ASC');
-					},
+					}
 				)
 			);
 		}
 		// If a jdd is provided, filter datasets by the model of the jdd
 		// And add jdd id as hidden field
 		else {
-			$datasets = $options['jdd']->getModel()->getImportDatasets();
+			$datasets = $options['jdd']->getModel()->getPublishedImportDatasets();
 			$builder
 				->add('dataset', EntityType::class, array(
 						'label' => 'Dataset',
 						'class' => 'IgnGincoBundle:Metadata\Dataset',
 						'choice_label' => 'label',
-						'choices' => $datasets,
+						'choices' => $datasets
 					))
 				->add('jddid', HiddenType::class, array(
 					'data' => $options['jdd']->getId(),

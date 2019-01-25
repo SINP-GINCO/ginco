@@ -5,21 +5,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\FormatInterface;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Format;
+
 /**
  * FormFormat
  *
  * @ORM\Table(name="metadata.form_format")
  * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\Metadata\FormFormatRepository")
  */
-class FormFormat extends Format implements \JsonSerializable {
+class FormFormat implements \JsonSerializable {
+
+
 
 	/**
-	 * Constructor
+	 *
+	 * @var Format
+	 * 
+	 * @ORM\Id
+	 * @ORM\OneToOne(targetEntity="Format")
+	 * @ORM\JoinColumn(name="format", referencedColumnName="format")
 	 */
-	public function __construct() {
-		$this->fields = new ArrayCollection();
-	}
-
+	private $format; 
+	
 	/**
 	 * The label of the form.
 	 *
@@ -45,7 +53,51 @@ class FormFormat extends Format implements \JsonSerializable {
 	 * @var bool @ORM\Column(name="is_opened", type="boolean", nullable=true)
 	 */
 	private $isOpened;
+	
+	
+	/**
+	 *
+	 * @var FormField[]
+	 * 
+	 * @ORM\OneToMany(targetEntity="FormField", mappedBy="format")
+	 */
+	private $fields ;
+	
+	
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		$this->fields = new ArrayCollection();
+	}
+	
 
+	/**
+	 * Get format
+	 * @return Format
+	 */
+	public function getFormat() {
+		return $this->format ;
+	}
+	
+	/**
+	 * 
+	 * @param Format $format
+	 * @return $this
+	 */
+	public function setFormat(Format $format) {
+		$this->format = $format ;
+		return $this ;
+	}
+	
+	/**
+	 * Get format type (toujours FORM ici)
+	 * @return string
+	 */
+	public function getType() {
+		return $this->format->getType() ;
+	}
+	
 	/**
 	 * Set label
 	 *
@@ -160,13 +212,38 @@ class FormFormat extends Format implements \JsonSerializable {
 	 * @return string JSON string
 	 */
 	public function jsonSerialize() {
-		return [
-			'id' => $this->getFormat(),
-			'format' => $this->getFormat(),
+		$json = [
+			'id' => $this->getFormat()->getFormat(),
+			'format' => $this->getFormat()->getFormat(),
 			'label' => $this->label,
 			'definition' => $this->definition,
 			'position' => $this->position,
 			'is_opened' => $this->isOpened
 		];
+		
+		return $json ;
+	}
+	
+	/**
+	 *
+	 * @return mixed
+	 */
+	public function getFields() {
+		return $this->fields;
+	}
+
+	/**
+	 *
+	 * @param mixed $fields
+	 */
+	public function setFields($fields) {
+		if ($fields instanceof ArrayCollection) {
+			$this->fields = $fields;
+		} elseif (is_array($fields)) {
+			$this->fields = new ArrayCollection($fields);
+		} else {
+			throw new \InvalidArgumentException('Arguments must be of type Array or ArrayCollection');
+		}
+		return $this;
 	}
 }

@@ -1,15 +1,12 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\DataRepository;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FieldMapping;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Field;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FieldMapping;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FileField;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,12 +19,12 @@ class FileFieldController extends Controller {
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/add/", name="configurateur_file_add_fields", options={"expose"=true})
 	 */
 	public function addFieldsAction($datasetId, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 
-		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
-		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+		$file = $em->getRepository('IgnGincoBundle:Metadata\FileFormat')->find($format);
+		$format = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
 
 		// Retrieve data from form
 		$addedFields = $request->get('addedFields');
@@ -52,18 +49,18 @@ class FileFieldController extends Controller {
 			$em->flush();
 
 			if ($dataField !== null) {
-				$fileField->setData($dataField->getName());
-				$fileField->setFileFormat($file->getFormat());
+				$fileField->setData($dataField);
+				$fileField->setFormat($file);
 				$fileField->setLabelCSV($dataField->getLabel());
 
-				if ($dataField->getUnit()->getName() == 'Date') {
+				if ($dataField->getUnit()->getUnit() == 'Date') {
 					$fileField->setMask('yyyy-MM-dd');
-				} elseif ($dataField->getUnit()->getName() == 'DateTime') {
+				} elseif ($dataField->getUnit()->getUnit() == 'DateTime') {
 					$fileField->setMask("yyyy-MM-dd'T'HH:mmZ");
-				} elseif ($dataField->getUnit()->getName() == 'Time') {
+				} elseif ($dataField->getUnit()->getUnit() == 'Time') {
 					$fileField->setMask("HH:mm");
 				} else {
-					$fileField->setMask('');
+					$fileField->setMask(null);
 				}
 
 				$fileField->setIsMandatory("0");
@@ -75,7 +72,7 @@ class FileFieldController extends Controller {
 
 		if ($fields === null) {
 
-			$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
+			$dataset = $em->getRepository('IgnGincoBundle:Metadata\Dataset')->find($datasetId);
 			$tables = $dataset->getModel()->getTables();
 			foreach ($tables as $table) {
 				$this->doAutoMapping($table->getFormat(), $format->getFormat());
@@ -106,12 +103,12 @@ class FileFieldController extends Controller {
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/update/", name="configurateur_file_update_fields", options={"expose"=true})
 	 */
 	public function updateFieldsAction($datasetId, $format, $toMapping = false, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 
-		$file = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
-		$format = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+		$file = $em->getRepository('IgnGincoBundle:Metadata\FileFormat')->find($format);
+		$format = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
 
 		// Retrieve data from form
 		$fields = $request->get('fields');
@@ -137,12 +134,12 @@ class FileFieldController extends Controller {
 
 			// Custom validator to check unicity of labelCSV in the file
 			// Entity constraint is impossible to use as labelCSV is set after form is valid.
-			$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
+			$fileFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\FileField');
 			$existingLabelCSVFileField = $fileFieldRepository->findOneBy(array(
 				'labelCSV' => $labelCSV,
-				'fileFormat' => $format->getFormat()
+				'format' => $format->getFormat()
 			));
-			if ($existingLabelCSVFileField and $existingLabelCSVFileField->getData() != $name) {
+			if ($existingLabelCSVFileField && $existingLabelCSVFileField->getData()->getData() != $name) {
 				// labelCSV already exists : we add a flash error
 				$this->addFlash('error', $this->get('translator')
 					->trans('fileField.labelCSV.unique', array(
@@ -161,7 +158,7 @@ class FileFieldController extends Controller {
 			}
 
 			if ($masks[$i] == 'null') {
-				$mask = '';
+				$mask = null;
 			} else {
 				$mask = $masks[$i];
 			}
@@ -178,12 +175,10 @@ class FileFieldController extends Controller {
 				$em->merge($field);
 			}
 
-			$em->flush();
-
 			if ($dataField !== null) {
-				$fileField->setData($name);
+				$fileField->setData($dataField);
 				$fileField->setLabelCSV($labelCSV);
-				$fileField->setFileFormat($file->getFormat());
+				$fileField->setFormat($file);
 				$fileField->setMask($mask);
 				$fileField->setIsMandatory($mandatory);
 
@@ -198,7 +193,7 @@ class FileFieldController extends Controller {
 			'%file.label%' => $file->getLabel()
 		)));
 
-		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
+		$dataset = $em->getRepository('IgnGincoBundle:Metadata\Dataset')->find($datasetId);
 		$tables = $dataset->getModel()->getTables();
 		foreach ($tables as $table) {
 			$this->doAutoMapping($table->getFormat(), $format->getFormat());
@@ -228,12 +223,12 @@ class FileFieldController extends Controller {
 	 */
 	public function doAutoMapping($tableFormat, $fileFormat) {
 		$this->get('monolog.logger.ginco')->debug('doAutoMapping');
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
+		$tableFields = $em->getRepository('IgnGincoBundle:Metadata\TableField')->findFieldsByTableFormat($tableFormat);
 
-		$fieldMappings = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findMappings($fileFormat, 'FILE');
-		$notMappedFields = $em->getRepository('IgnOGAMConfigurateurBundle:FieldMapping')->findNotMappedFields($fileFormat, 'FILE');
+		$fieldMappings = $em->getRepository('IgnGincoBundle:Metadata\FieldMapping')->findMappings($fileFormat, 'FILE');
+		$notMappedFields = $em->getRepository('IgnGincoBundle:Metadata\FieldMapping')->findNotMappedFields($fileFormat, 'FILE');
 
 		// We try to auto-map the notMappedFields
 		foreach ($notMappedFields as $fileField) {
@@ -275,11 +270,11 @@ class FileFieldController extends Controller {
 	 * @Route("/datasetsimport/{datasetId}/files/{format}/fields/removeall/", name="configurateur_file_remove_all_fields")
 	 */
 	public function removeAllFieldsAction($datasetId, $format) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$fileFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:FileField');
-		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
-		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+		$fileFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\FileField');
+		$fieldRepository = $em->getRepository('IgnGincoBundle:Metadata\Field');
+		$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
 
 		$mappingRepository->removeAllByFileFormat($format);
 		$fileFieldRepository->deleteAllByFileFormat($format);
@@ -299,14 +294,14 @@ class FileFieldController extends Controller {
 	 * @Route("/datasetsimport/{datasetId}/files/{format}/fields/remove/{field}/", name="configurateur_file_remove_field_and_update", options={"expose"=true})
 	 */
 	public function removeFieldAction($datasetId, $field, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$fileFieldToRemove = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
+		$fileFieldToRemove = $em->getRepository('IgnGincoBundle:Metadata\FileField')->findOneBy(array(
 			"data" => $field,
-			"fileFormat" => $format
+			"format" => $format
 		));
 
-		$fieldToRemove = $em->find("IgnOGAMConfigurateurBundle:Field", array(
+		$fieldToRemove = $em->find("IgnGincoBundle:Metadata\Field", array(
 			"data" => $field,
 			"format" => $format
 		));
@@ -329,7 +324,7 @@ class FileFieldController extends Controller {
 		$masks = explode(',', $masks);
 
 		// Delete mapping relations first
-		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+		$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
 		$mappingRepository->removeAllByFileField($format, $field);
 
 		// Remove from FileField

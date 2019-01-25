@@ -7,12 +7,16 @@ use Ign\Bundle\OGAMConfigurateurBundle\Validator\CaseInsensitive;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="metadata_work.model")
+ * @ORM\Table(name="metadata.model")
  * @ORM\Entity(repositoryClass="Ign\Bundle\OGAMConfigurateurBundle\Entity\ModelRepository")
  * @ORM\HasLifecycleCallbacks()
  * @CaseInsensitive(message = "model.name.caseinsensitive")
  */
 class Model {
+
+	CONST PUBLISHED = 'published';
+	CONST UNPUBLISHED = 'unpublished';
+	CONST SOFT_DELETED = 'soft-deleted';
 
 	/**
 	 *
@@ -45,7 +49,7 @@ class Model {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="TableFormat", inversedBy="models", cascade={"all"})
-	 * @ORM\JoinTable(name="metadata_work.model_tables",
+	 * @ORM\JoinTable(name="metadata.model_tables",
 	 * joinColumns={@ORM\JoinColumn(name="model_id", referencedColumnName="id")},
 	 * inverseJoinColumns={@ORM\JoinColumn(name="table_id", referencedColumnName="format", unique=true)})
 	 */
@@ -53,7 +57,7 @@ class Model {
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="Dataset")
-	 * @ORM\JoinTable(name="metadata_work.model_datasets",
+	 * @ORM\JoinTable(name="metadata.model_datasets",
 	 * joinColumns={@ORM\JoinColumn(name="model_id", referencedColumnName="id")},
 	 * inverseJoinColumns={@ORM\JoinColumn(name="dataset_id", referencedColumnName="dataset_id", unique=true)})
 	 */
@@ -65,9 +69,16 @@ class Model {
 	 */
 	private $schema;
 
+	/**
+	 *
+	 * @var string @ORM\Column(name="status", type="string", length=12, nullable=false)
+	 */
+	private $status;
+
 	public function __construct() {
 		$this->tables = new ArrayCollection();
 		$this->datasets = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->status = self::UNPUBLISHED;
 	}
 
 	/**
@@ -232,5 +243,41 @@ class Model {
 	 */
 	public function getDatasets() {
 		return $this->datasets;
+	}
+
+	/**
+	 * 
+	 */
+	public function getStatus(){
+		return $this->status;
+	}
+
+	/**
+	 * 
+	 */
+	public function setStatus($status){
+		$this->status = $status;
+		return $this;
+	}
+
+	/**
+	 * 
+	 */
+	public function isPublished(){
+		return $this->getStatus() == self::PUBLISHED;
+	}
+
+		/**
+	 * 
+	 */
+	public function isUnpublished(){
+		return $this->getStatus() == self::UNPUBLISHED;
+	}
+
+	/**
+	 * 
+	 */
+	public function isSoftDeleted(){
+		return $this->getStatus() == self::SOFT_DELETED;
 	}
 }

@@ -552,7 +552,7 @@ class QueryController extends GincoController {
 								// Set the column model and the location fields
 								$dataIndex = $tableField->getName();
 								// Adds the column header to prevent it from being truncated too and 2 for the header margins
-								$columnsMaxLength[$columnName][] = strlen($tableField->getLabel()) + 2;
+								$columnsMaxLength[$columnName][] = strlen($tableField->getData()->getLabel()) + 2;
 								$column = array(
 									'header' => $tableField->getData()->getLabel(),
 									'dataIndex' => $dataIndex,

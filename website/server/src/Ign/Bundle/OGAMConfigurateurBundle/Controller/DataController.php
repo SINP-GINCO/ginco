@@ -25,11 +25,11 @@ class DataController extends Controller {
 	 * @Route("", name="configurateur_data_index")
 	 */
 	public function indexAction() {
-		$em = $this->getDoctrine()->getManager('metadata_work');
-		$entities = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAll();
+		$em = $this->getDoctrine()->getManager('metadata');
+		$entities = $em->getRepository('IgnGincoBundle:Metadata\Data')->findAll();
 
-		$editableDatas = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAllNotRelatedToFields();
-		$notEditableDatas = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->findAllRelatedToFields();
+		$editableDatas = $em->getRepository('IgnGincoBundle:Metadata\Data')->findAllNotRelatedToFields();
+		$notEditableDatas = $em->getRepository('IgnGincoBundle:Metadata\Data')->findAllRelatedToFields();
 
 		return $this->render('IgnOGAMConfigurateurBundle:Data:index.html.twig', array(
 			'datas' => $entities,
@@ -52,7 +52,7 @@ class DataController extends Controller {
 		$form->handleRequest($request);
 
 		if ($form->isValid()) {
-			$em = $this->getDoctrine()->getManager('metadata_work');
+			$em = $this->getDoctrine()->getManager('metadata');
 			$em->persist($entity);
 			$em->flush();
 
@@ -62,13 +62,12 @@ class DataController extends Controller {
 			if ($form->has('add_to_format')) {
 				// Checks if the table exists and is editable
 				$formatSubmitted = $form->get('add_to_format')->getData();
-				$theFormat = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($formatSubmitted);
+				$theFormat = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($formatSubmitted);
 				$type = ($theFormat) ? $theFormat->getType() : "";
-				$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($formatSubmitted);
+				$tableFormat = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($formatSubmitted);
 				if ($tableFormat) {
 					// Do you have the right to modify the tableFormat object ?
-					$modelsPubState = $this->get('app.modelpublication')->isPublished($tableFormat->getModel()
-						->getId());
+					$modelsPubState = $tableFormat->getModel()->isPublished() ;
 					$modelsHasData = $this->get('app.modelunpublication')->modelHasData($tableFormat->getModel()
 						->getId());
 					if (!$modelsPubState && !$modelsHasData) {
@@ -129,16 +128,15 @@ class DataController extends Controller {
 		// A hidden field to add the new Data entity to a table
 		if ($format) {
 			// Checks if the table/file exists and is editable
-			$em = $this->getDoctrine()->getManager('metadata_work');
-			$theFormat = $em->getRepository('IgnOGAMConfigurateurBundle:Format')->find($format);
+			$em = $this->getDoctrine()->getManager('metadata');
+			$theFormat = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
 			$type = ($theFormat) ? $theFormat->getType() : "";
 			switch ($type) {
 				case 'TABLE':
-					$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
+					$tableFormat = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
 					if ($tableFormat) {
 						// Do you have the right to modify the tableFormat object ?
-						$modelsPubState = $this->get('app.modelpublication')->isPublished($tableFormat->getModel()
-							->getId());
+						$modelsPubState = $tableFormat->getModel()->isPublished();
 						$modelsHasData = $this->get('app.modelunpublication')->modelHasData($tableFormat->getModel()
 							->getId());
 						if (!$modelsPubState && !$modelsHasData) {
@@ -152,11 +150,10 @@ class DataController extends Controller {
 					}
 					break;
 				case 'FILE':
-					$fileFormat = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($format);
+					$fileFormat = $em->getRepository('IgnGincoBundle:Metadata\FileFormat')->find($format);
 					if ($fileFormat) {
 						// Do you have the right to modify the tableFormat object ?
-						$importModelPubState = $this->get('app.importmodelpublication')->isPublished($fileFormat->getDataset()
-							->getId());
+						$importModelPubState = $fileFormat->getDataset()->isPublished();
 						if (!$importModelPubState) {
 
 							$form->add('add_to_format', HiddenType::class, array(
@@ -182,8 +179,8 @@ class DataController extends Controller {
 	 * @Route("/{id}", name="configurateur_data_show")
 	 */
 	public function showAction($id) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
-		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
+		$em = $this->getDoctrine()->getManager('metadata');
+		$entity = $em->getRepository('IgnGincoBundle:Metadata\Data')->find($id);
 
 		if (!$entity) {
 			throw $this->createNotFoundException('Aucun champ du dictionnaire de données trouvé pour cet id : ' . $id);
@@ -197,25 +194,23 @@ class DataController extends Controller {
 			// Gets the logical name of the format from Format obj
 			$formatName = $field->getFormat()->getFormat();
 			// Now gets the TableFormat object of the same logical name
-			$tableFormat = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($formatName);
+			$tableFormat = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($formatName);
 			if ($tableFormat) {
 				$tables[$index]['table'] = $tableFormat;
 				$tables[$index]['model'] = $tableFormat->getModel();
 				// Do you have the right to modify the tableFormat object ?
-				$modelsPubState = $this->get('app.modelpublication')->isPublished($tableFormat->getModel()
-					->getId());
+				$modelsPubState = $tableFormat->getModel()->isPublished();
 				$modelsHasData = $this->get('app.modelunpublication')->modelHasData($tableFormat->getModel()
 					->getId());
 				$tables[$index]['editable'] = (!$modelsPubState && !$modelsHasData);
 			}
 			// And/or the FileFormat object of the same logical name
-			$fileFormat = $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')->find($formatName);
+			$fileFormat = $em->getRepository('IgnGincoBundle:Metadata\FileFormat')->find($formatName);
 			if ($fileFormat) {
 				$files[$index]['file'] = $fileFormat;
 				$files[$index]['dataset'] = $fileFormat->getDataset();
 				// Do you have the right to modify the FileFormat object ?
-				$importModelPubState = $this->get('app.importmodelpublication')->isPublished($fileFormat->getDataset()
-					->getId());
+				$importModelPubState = $fileFormat->getDataset()->isPublished();
 				$files[$index]['editable'] = (!$importModelPubState);
 			}
 		}
@@ -236,9 +231,9 @@ class DataController extends Controller {
 	 * @Route("/{id}/edit", name="configurateur_data_edit")
 	 */
 	public function editAction($id, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
+		$entity = $em->getRepository('IgnGincoBundle:Metadata\Data')->find($id);
 
 		if (!$entity) {
 			throw $this->createNotFoundException('Aucun champ du dictionnaire de données trouvé pour cet id : ' . $id);
@@ -304,9 +299,9 @@ class DataController extends Controller {
 	 * @Route("/{id}/delete", name="configurateur_data_delete")
 	 */
 	public function deleteAction($id) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$entity = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($id);
+		$entity = $em->getRepository('IgnGincoBundle:Metadata\Data')->find($id);
 		if (!$entity) {
 			throw $this->createNotFoundException('Aucun champ du dictionnaire de données trouvé pour cet id : ' . $id);
 		}

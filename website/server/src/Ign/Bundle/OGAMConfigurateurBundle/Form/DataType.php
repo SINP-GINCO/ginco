@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\Data;
+
 class DataType extends AbstractType {
 
 	/**
@@ -64,7 +66,7 @@ class DataType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ign\Bundle\OGAMConfigurateurBundle\Entity\Data'
+			'data_class' => Data::class
 		));
 	}
 

@@ -97,32 +97,6 @@ try {
 
 $csv_list = array_map("basename", glob( $metadataDir . '/*.csv'));
 
-// Exclude metadata model and datasets tables if needed:
-if (isset($config['empty_models']) && $config['empty_models']=='true') {
-	$modelFiles = array(
-		"dataset",
-		"dataset_fields",
-		"dataset_files",
-		"dataset_forms",
-		"field",
-		"field_mapping",
-		"file_field",
-		"file_format",
-		"form_field",
-		"form_format",
-		"format",
-		"model",
-		"model_datasets",
-		"model_tables",
-		"table_field",
-		"table_format",
-		"table_tree",
-		"translation",
-	);
-	$modelFiles = array_map(function($str) { return $str.".csv"; }, $modelFiles);
-	$csv_list = array_diff($csv_list, $modelFiles);
-}
-
 $tplFile = fopen($templateFilePath, 'r');
 $sqlFile = fopen($sqlFilePath, 'w');
 
