@@ -42,7 +42,9 @@ class UploadDataShapeType extends AbstractType {
 				'required' => true,
 				'constraints' => array(
 					new File(array(
-						'maxSize' => "${fileMaxSize}Mi"
+						'maxSize' => "${fileMaxSize}Mi",
+						'mimeTypes' => 'application/zip',
+						'mimeTypesMessage' => 'import.format.shp'
 					))
 				)
 			));
@@ -56,6 +58,9 @@ class UploadDataShapeType extends AbstractType {
 	 * @param OptionsResolver $resolver
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
-
+		
+		$resolver->setDefaults([
+			'translation_domain' => 'messages'
+		]);
 	}
 }

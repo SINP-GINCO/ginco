@@ -34,6 +34,7 @@ class LinkFileToJsonTransformer implements DataTransformerInterface
 		// $file stores the uploaded PDF file
 		/** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 		$file = $data['uploadedFile'];
+		$previousFile = $this->uploadDirectory . '/' . $data['file'] ;
 		// Upload new file
 		if ($file instanceof UploadedFile) {
 
@@ -53,7 +54,9 @@ class LinkFileToJsonTransformer implements DataTransformerInterface
 			$fileName =  filter_var ( $fileNameWithoutSpaces, FILTER_SANITIZE_ENCODED );
 
 			// If there is a previous file, we remove it
-			@unlink($this->uploadDirectory . '/' . $data['file']);
+			if (file_exists($previousFile) && is_file($previousFile)) {
+				unlink($previousFile) ;
+			}
 
 			// Move the file to the directory where brochures are stored
 			$file->move(
@@ -64,7 +67,9 @@ class LinkFileToJsonTransformer implements DataTransformerInterface
 		}
 		// Don't upload, and suppress file
 		else if ($data['suppressFile']) {
-			@unlink($this->uploadDirectory . '/' . $data['file']);
+			if (file_exists($previousFile) && is_file($previousFile)) {
+				unlink($previousFile) ;
+			}
 			$data['file'] = '';
 		}
 

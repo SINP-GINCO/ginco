@@ -43,7 +43,9 @@ class UploadDataType extends AbstractType {
 				'required' => true,
 				'constraints' => array(
 					new File(array(
-						'maxSize' => "${fileMaxSize}Mi"
+						'maxSize' => "${fileMaxSize}Mi",
+						'mimeTypes' => 'text/csv',
+						'mimeTypesMessage' => 'import.format.csv'
 					))
 				)
 			));

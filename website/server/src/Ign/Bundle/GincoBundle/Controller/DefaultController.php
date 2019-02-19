@@ -268,10 +268,7 @@ class DefaultController extends GincoController {
 			'homepagePrivateLinks' => $homepagePrivateLinkValue,
 			'homepagePrivateDocs' => $homepagePrivateDocValue
 		);
-		$form = $this->createForm(HomepageContentType::class, $data, array(
-			'action' => $this->generateUrl('configuration_homepage'),
-			'method' => 'POST'
-		));
+		$form = $this->createForm(HomepageContentType::class, $data);
 		
 		$form->handleRequest($request);
 		

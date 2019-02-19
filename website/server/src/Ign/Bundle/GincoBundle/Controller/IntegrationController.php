@@ -99,7 +99,7 @@ class IntegrationController extends GincoController {
                 
 		$submission = new Submission();
 
-                $form = $this->createForm(GincoDataSubmissionType::class, $submission, array(
+        $form = $this->createForm(GincoDataSubmissionType::class, $submission, array(
 			'jdd' => $jdd,
 			'disabled' => $formDisabled
 		));
@@ -707,23 +707,6 @@ class IntegrationController extends GincoController {
 				// Get the uploaded filename
 				
 				$filename = $file->getClientOriginalName();
-				
-				// Custom validator to check uploaded file extension
-				if (substr($filename, -4) != '.zip') {
-					// We add an error to the form
-					$errorMessage = $this->get('translator')->trans('import.format.shp.extension');
-					$form->get($requestedFile->getFormat())
-						->addError(new FormError($errorMessage));
-					
-					// And print the form again with an error
-					return $this->render('IgnGincoBundle:Integration:import_shapefile.html.twig', array(
-						'id' => $submission->getId(),
-						'dataset' => $dataset,
-						'form' => $form->createView(),
-						'files' => $files,
-						'showModel' => $showModel
-					));
-				}
 				
 				// Check that the file is present
 				if (empty($file) || !$file->isValid()) {

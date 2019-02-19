@@ -6,7 +6,10 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 
 use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 
@@ -29,16 +32,25 @@ class ImageType extends AbstractType
 		$builder
 			->add('file', HiddenType::class, array())
 			->add('uploadedFile', FileType::class, array(
-				'label' => 'New image',
+				'label' => 'New image'
 			))
 			->add('suppressFile', CheckboxType::class, array(
 				'label' => 'Suppress'
 			))
 			->addModelTransformer(new ImageTransformer($this->uploadDirectory))
 		;
+		
+		$builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+			
+			$data = $event->getData() ;
+			$form = $event->getForm() ;
+			
+			/* @var $uploadedFile \Symfony\Component\HttpFoundation\File\UploadedFile */
+			$uploadedFile = $data['uploadedFile'] ;
+			if ($uploadedFile && !in_array($uploadedFile->getMimeType(), ['image/jpg', 'image/jpeg', 'image/png'])) {
+				$form->get('uploadedFile')->addError(new FormError("Seuls les fichiers JPEG et PNG sont autorisés.")) ;
+			}
+		});
 	}
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-	}
 }
