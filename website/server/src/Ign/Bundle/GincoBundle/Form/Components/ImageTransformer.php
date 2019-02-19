@@ -3,6 +3,8 @@ namespace Ign\Bundle\GincoBundle\Form\Components;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+
 
 class ImageTransformer implements DataTransformerInterface
 {
@@ -35,6 +37,7 @@ class ImageTransformer implements DataTransformerInterface
 		// $file stores the uploaded file
 		/** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 		$file = $data['uploadedFile'];
+		$previousFile = $this->uploadDirectory . '/' . $data['file'] ;
 		// Upload new file
 		if ($file instanceof UploadedFile) {
 
@@ -54,7 +57,9 @@ class ImageTransformer implements DataTransformerInterface
 			$fileName =  filter_var ( $fileNameWithoutSpaces, FILTER_SANITIZE_ENCODED );
 
 			// If there is a previous file, we remove it
-			@unlink($this->uploadDirectory . '/' . $data['file']);
+			if (file_exists($previousFile) && is_file($previousFile)) {
+				unlink($previousFile) ;
+			}
 
 			// Move the file to the directory where images are stored
 			$file->move(
@@ -65,7 +70,9 @@ class ImageTransformer implements DataTransformerInterface
 		}
 		// Don't upload, and suppress file
 		else if ($data['suppressFile']) {
-			@unlink($this->uploadDirectory . '/' . $data['file']);
+			if (file_exists($previousFile) && is_file($previousFile)) {
+				unlink($previousFile) ;
+			}
 			$data['file'] = '';
 		}
 

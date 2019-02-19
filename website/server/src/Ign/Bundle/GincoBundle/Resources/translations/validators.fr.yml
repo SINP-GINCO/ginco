@@ -24,3 +24,7 @@ administration:
     label: Ce label pour un rôle est déjà utilisé
 
 permissions.savedRequest.invalid: Pour attribuer la permission "Gérer les requêtes publiques", il faut également attribuer la permission "Gérer les requêtes privées".
+
+import.format:
+  csv: Verser des données au format csv
+  shp: Les fichiers shapefile doivent être transmis sous forme d'une archive zip.
