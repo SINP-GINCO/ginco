@@ -4,6 +4,11 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.2.4 (25/02/2018)
+
+* Correctif de sécurité : contrôle du type de fichier uploadé.
+* Correctif dans la procédure de déploiement pour le téléchargement des DEE et des exports.
+
 ## V2.2.3 (6/12/2018)
 
 * Migration de TAXREF vers la version 12.
