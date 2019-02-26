@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+
 class JddType extends AbstractType {
 
 	/**
@@ -30,6 +32,8 @@ class JddType extends AbstractType {
 						->where('d.id IS NOT NULL')
 						->leftJoin('d.files', 'f')
 						->where('f.format IS NOT NULL')
+						->andWhere("m.status = :status")
+						->setParameter('status', Model::PUBLISHED)
 						->orderBy('m.name', 'ASC');
 				},
 			))

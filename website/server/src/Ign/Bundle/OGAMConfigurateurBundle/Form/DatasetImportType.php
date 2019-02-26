@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Form;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -9,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
 
 class DatasetImportType extends AbstractType {
 
@@ -31,14 +32,16 @@ class DatasetImportType extends AbstractType {
 			));
 		if($options['isNew'] == true){
 			$builder->add('model', EntityType::class, array(
-				'class' => 'IgnOGAMConfigurateurBundle:Model',
+				'class' => 'IgnGincoBundle:Metadata\Model',
+				'em' => 'metadata',
 				'choice_label' => 'name',
 				'label' => 'importmodel.DataModelTarget'
 			));
 		} else {
 			// Add a tooltip to make user aware about mappings being dropped
 			$builder->add('model', EntityType::class, array(
-				'class' => 'IgnOGAMConfigurateurBundle:Model',
+				'class' => 'IgnGincoBundle:Metadata\Model',
+				'em' => 'metadata',
 				'choice_label' => 'name',
 				'label' => 'importmodel.DataModelTarget',
 				'attr' => array(
@@ -62,7 +65,7 @@ class DatasetImportType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset',
+			'data_class' => Dataset::class,
 			'isNew' => false
 		));
 	}

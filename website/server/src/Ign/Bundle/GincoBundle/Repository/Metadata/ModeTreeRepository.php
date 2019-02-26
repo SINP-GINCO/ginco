@@ -203,11 +203,11 @@ class ModeTreeRepository extends \Doctrine\ORM\EntityRepository {
 	 *        	The locale
 	 * @return Array[ModeTree]
 	 */
-	public function getTreeChildrenModes($unit, $code = '*', $levels = 1, $locale) {
+	public function getTreeChildrenModes($unit, $code = null, $levels = 1, $locale) {
 		$rsm = new ResultSetMappingBuilder($this->_em);
 		$rsm->addRootEntityFromClassMetadata($this->_entityName, 'mt');
 		
-		if ($code === '*') { // fakeroot
+		if (!$code) { // fakeroot
 			$firstNode = " SELECT '*'::character varying, 1 ";
 		} else {
 			$firstNode = " SELECT code, 1 ";

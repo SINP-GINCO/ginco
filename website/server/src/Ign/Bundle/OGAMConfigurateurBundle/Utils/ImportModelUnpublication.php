@@ -3,7 +3,11 @@ namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\EntityManager;
+
 use Monolog\Logger;
+
+use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
 
 /**
  * Utility class for unpublication of an import model from the database.
@@ -18,41 +22,59 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @var PDO connection with user 'ogam' rights.
 	 */
 	private $pgConn;
+	
+	
+	/**
+	 *
+	 * @var EntityManager
+	 */
+	private $entityManager ;
 
-	public function __construct(Connection $conn, Logger $logger) {
+	public function __construct(EntityManager $entityManager, Logger $logger) {
+		
+		$this->entityManager = $entityManager ;
+		$conn = $entityManager->getConnection() ;
 		parent::__construct($conn, $logger);
 		$this->pgConn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 	}
 
 	/**
-	 * Unpublishes an import model by deleting all the data related to a specific import model.
+	 * Unpublishes an import model.
 	 *
 	 * @param $importModelId the
 	 *        	id of the importmodel
 	 * @return string SUCCESS if unpublication succeded, FAIL otherwise, NOTHING_TO_DO if import model exists but is not published
 	 */
-	public function unpublishImportModel($importModelId) {
-		if ($this->isImportModelPresentInTableDataset($importModelId)) {
-			$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-
-			$this->conn->beginTransaction();
-			$this->deleteFieldMappingData($importModelId);
-			$this->deleteDatasetFieldsData($importModelId);
-			$this->deleteDatasetFilesData($importModelId);
-			$this->deleteModelDatasetsData($importModelId);
-			$this->deleteFileFieldData($importModelId);
-			$this->deleteFieldData($importModelId);
-			$this->deleteFileFormatData($importModelId);
-			$this->deleteFormatData($importModelId);
-			$this->deleteImportModelData($importModelId);
-			$this->deleteDataData($importModelId);
-		} else {
-			if ($this->isImportModelPresentInWorkSchema($importModelId)) {
-				return 'NOTHING_TO_DO';
-			} else {
-				return 'FAIL';
-			}
+	public function unpublishImportModel(Dataset $importModel) {
+		
+		if (Dataset::UNPUBLISHED == $importModel->getStatus()) {
+			return 'NOTHING_TO_DO' ;
 		}
+		
+		$importModel->setStatus(Dataset::UNPUBLISHED) ;
+		$this->entityManager->flush() ;
+		
+		return 'SUCCESS' ;
+	}
+
+	
+	/**
+	 * Deletes all data related to an import model.
+	 * @param Dataset $dataset
+	 */
+	public function deleteImportModel(Dataset $importModel) {
+
+		$this->conn->beginTransaction();
+		$this->deleteFieldMappingData($importModel);
+		$this->deleteDatasetFieldsData($importModel);
+		$this->deleteDatasetFilesData($importModel);
+		$this->deleteModelDatasetsData($importModel);
+		$this->deleteFileFieldData($importModel);
+		$this->deleteFieldData($importModel);
+		$this->deleteFileFormatData($importModel);
+		$this->deleteFormatData($importModel);
+		$this->deleteImportModelData($importModel);
+		$this->deleteDataData($importModel);
 
 		try {
 			$this->conn->commit();
@@ -64,7 +86,8 @@ class ImportModelUnpublication extends DatabaseUtils {
 		}
 		return 'SUCCESS';
 	}
-
+	
+	
 	/**
 	 * Deletes the data located in metadata.data table, which belongs directly to the import model
 	 * specified by its id.
@@ -72,13 +95,13 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteDataData($importModelId) {
+	private function deleteDataData(Dataset $importModel) {
 		// Select all data values
 		$sql = "SELECT DISTINCT dtj.data, dtj.unit, dtj.label, dtj.definition, dtj.comment FROM metadata.dataset as d
-				INNER JOIN metadata_work.dataset_files as mt ON mt.dataset_id = '" . $importModelId . "'
-				INNER JOIN metadata_work.file_format as tfo ON tfo.format = mt.format
-				INNER JOIN metadata_work.file_field as tfi ON tfi.format = tfo.format
-				INNER JOIN metadata_work.data as dtj ON dtj.data = tfi.data
+				INNER JOIN metadata.dataset_files as mt ON mt.dataset_id = '" . $importModel->getId() . "'
+				INNER JOIN metadata.file_format as tfo ON tfo.format = mt.format
+				INNER JOIN metadata.file_field as tfi ON tfi.format = tfo.format
+				INNER JOIN metadata.data as dtj ON dtj.data = tfi.data
 				WHERE d.type = 'IMPORT'";
 		$results = pg_query($this->pgConn, $sql);
 
@@ -109,16 +132,16 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteFormatData($importModelId) {
+	private function deleteFormatData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT ffo.format
-						FROM metadata_work.dataset d
-						INNER JOIN metadata_work.dataset_files as df ON df.dataset_id = d.dataset_id
-						INNER JOIN metadata_work.format as ffo ON ffo.format = df.format
+						FROM metadata.dataset d
+						INNER JOIN metadata.dataset_files as df ON df.dataset_id = d.dataset_id
+						INNER JOIN metadata.format as ffo ON ffo.format = df.format
 						WHERE ffo.type = 'FILE' AND d.dataset_id = $1";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -148,16 +171,16 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	to the import model
 	 */
-	public function deleteFileFormatData($importModelId) {
+	private function deleteFileFormatData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT ffo.format
-						FROM metadata_work.dataset d
-						INNER JOIN metadata_work.dataset_files as df ON df.dataset_id = d.dataset_id
-						INNER JOIN metadata_work.file_format as ffo ON ffo.format = df.format
+						FROM metadata.dataset d
+						INNER JOIN metadata.dataset_files as df ON df.dataset_id = d.dataset_id
+						INNER JOIN metadata.file_format as ffo ON ffo.format = df.format
 						WHERE d.dataset_id = $1";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -178,17 +201,17 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the model
 	 */
-	public function deleteFieldData($importModelId) {
+	private function deleteFieldData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT f.data, f.format
-						FROM metadata_work.dataset d
-						INNER JOIN metadata_work.dataset_files as df ON df.dataset_id = d.dataset_id
-						INNER JOIN metadata_work.file_format as ffo ON ffo.format = df.format
-						INNER JOIN metadata_work.field as f ON f.format = ffo.format
+						FROM metadata.dataset d
+						INNER JOIN metadata.dataset_files as df ON df.dataset_id = d.dataset_id
+						INNER JOIN metadata.file_format as ffo ON ffo.format = df.format
+						INNER JOIN metadata.field as f ON f.format = ffo.format
 						WHERE d.dataset_id = $1 AND f.type = 'FILE'";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -221,17 +244,17 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteFileFieldData($importModelId) {
+	private function deleteFileFieldData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT ffi.data, ffi.format
-				FROM metadata_work.dataset d
-				INNER JOIN metadata_work.dataset_files as df ON df.dataset_id = d.dataset_id
-				INNER JOIN metadata_work.file_format as ffo ON ffo.format = df.format
-				INNER JOIN metadata_work.file_field as ffi ON ffi.format = ffo.format
+				FROM metadata.dataset d
+				INNER JOIN metadata.dataset_files as df ON df.dataset_id = d.dataset_id
+				INNER JOIN metadata.file_format as ffo ON ffo.format = df.format
+				INNER JOIN metadata.file_field as ffi ON ffi.format = ffo.format
 				WHERE d.dataset_id = $1";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -253,14 +276,14 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteDatasetFieldsData($importModelId) {
+	private function deleteDatasetFieldsData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT dataset_id, schema_code, format, data
-						FROM metadata_work.dataset_fields
+						FROM metadata.dataset_fields
 						WHERE dataset_id = $1";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -285,17 +308,17 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteFieldMappingData($importModelId) {
+	private function deleteFieldMappingData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT fim.src_data, fim.src_format, fim.dst_data, fim.dst_format
-						FROM metadata_work.dataset d
-						INNER JOIN metadata_work.dataset_files as df ON df.dataset_id = d.dataset_id
-						INNER JOIN metadata_work.format as fo ON fo.format = df.format
-						INNER JOIN metadata_work.field_mapping as fim ON fim.src_format = df.format
+						FROM metadata.dataset d
+						INNER JOIN metadata.dataset_files as df ON df.dataset_id = d.dataset_id
+						INNER JOIN metadata.format as fo ON fo.format = df.format
+						INNER JOIN metadata.field_mapping as fim ON fim.src_format = df.format
 						WHERE d.dataset_id = $1";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 		// Prepare delete statement for each value
 		$deleteQuery = "DELETE FROM metadata.field_mapping
@@ -318,14 +341,14 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteImportModelData($importModelId) {
+	private function deleteImportModelData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT d.dataset_id
-						FROM metadata_work.dataset d
+						FROM metadata.dataset d
 						WHERE d.dataset_id = $1 AND d.type = 'IMPORT'";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -345,14 +368,14 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteModelDatasetsData($importModelId) {
+	public function deleteModelDatasetsData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT md.model_id, md.dataset_id
-						FROM metadata_work.dataset d
-						INNER JOIN metadata_work.model_datasets as md ON md.dataset_id = $1";
+						FROM metadata.dataset d
+						INNER JOIN metadata.model_datasets as md ON md.dataset_id = $1";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -373,15 +396,15 @@ class ImportModelUnpublication extends DatabaseUtils {
 	 * @param $importModelId the
 	 *        	id of the import model
 	 */
-	public function deleteDatasetFilesData($importModelId) {
+	private function deleteDatasetFilesData(Dataset $importModel) {
 		// Select all values
 		$selectQuery = "SELECT DISTINCT df.dataset_id, df.format
-						FROM metadata_work.dataset d
-						INNER JOIN metadata_work.dataset_files as df ON df.dataset_id = d.dataset_id
+						FROM metadata.dataset d
+						INNER JOIN metadata.dataset_files as df ON df.dataset_id = d.dataset_id
 						WHERE d.dataset_id = $1";
 		pg_prepare($this->pgConn, "", $selectQuery);
 		$results = pg_execute($this->pgConn, "", array(
-			$importModelId
+			$importModel->getId()
 		));
 
 		// Prepare delete statement for each value
@@ -396,25 +419,6 @@ class ImportModelUnpublication extends DatabaseUtils {
 		}
 	}
 
-	/**
-	 * Checks if an import model exists in the metatada schema.
-	 *
-	 * @param string $importModelId
-	 *        	the id of the import model
-	 * @return boolean
-	 */
-	public function isImportModelPresentInTableDataset($importModelId) {
-		$sql = "SELECT DISTINCT count(*)
-				FROM metadata.dataset AS d
-				WHERE d.dataset_id = :importModelId";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bindParam(':importModelId', $importModelId);
-		$stmt->execute();
-		if ($stmt->fetchColumn(0) == 0) {
-			return false;
-		}
-		return true;
-	}
 
 	/**
 	 * Returns true if at least one file related to the import model is being uploaded.
@@ -443,23 +447,4 @@ class ImportModelUnpublication extends DatabaseUtils {
 		return $hasRunningFile;
 	}
 
-	/**
-	 * Checks if an import model exists in the metatada_work schema.
-	 *
-	 * @param string $importModelId
-	 *        	the id of the import model
-	 * @return boolean
-	 */
-	public function isImportModelPresentInWorkSchema($importModelId) {
-		$sql = "SELECT DISTINCT count(*)
-				FROM metadata_work.dataset AS d
-				WHERE d.dataset_id = :importModelId";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bindParam(':importModelId', $importModelId);
-		$stmt->execute();
-		if ($stmt->fetchColumn(0) == 0) {
-			return false;
-		}
-		return true;
-	}
 }

@@ -72,7 +72,7 @@
 				</td>
 
 				{# Edit Button #}
-				{% if permissions[dataset.id].editable %}
+				{% if not dataset.published %}
 					<td>
 						<a  href="{{ path('configurateur_dataset_import_edit',{ id: dataset.id } ) }}"
 							class="btn btn-default" role="button">
@@ -95,16 +95,11 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-body">
-									{{  permissions[dataset.id].editableMessage }}
+									{{ 'importmodel.edit.warning' | trans }}
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default"
-											data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
-									{% if  permissions[dataset.id].editableCode == 'published' %}
-										<a type="button" class="btn btn-primary"
-									   href="{{ path('configurateur_dataset_import_unpublish', { 'importModelId' : dataset.id, 'redirectToEdit': true } ) }}">
-										{% trans %} ConfirmAndContinue{% endtrans %} </a>
-									{% endif %}
+											data-dismiss="modal">{% trans %}Ok{% endtrans %}</button>
 								</div>
 							</div>
 						</div>
@@ -113,7 +108,7 @@
 
 
 				{# Delete Button #}
-				{% if permissions[dataset.id].deletable %}
+				{% if not dataset.published %}
 					<td>
 						<a class="btn btn-default" role="button" data-toggle="modal"
 						   data-target="#modal-confirm-delete-{{ dataset.id }}"> <span
@@ -154,11 +149,11 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-body">
-									{{ permissions[dataset.id].deletableMessage }}
+									{{ 'importmodel.delete.forbidden' | trans }}
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default"
-											data-dismiss="modal">{% trans %}ok{% endtrans %}</button>
+											data-dismiss="modal">{% trans %}Ok{% endtrans %}</button>
 								</div>
 							</div>
 						</div>
@@ -166,7 +161,7 @@
 				{% endif %}
 
 
-				{% if pubStates[dataset.id] == false %}
+				{% if not dataset.published %}
 					{# Publish button #}
 					{# If the model is publishable #}
 					{% if publishable[dataset.id] %}

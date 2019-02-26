@@ -30,7 +30,7 @@ class TableController extends Controller {
 	 * @return @Route("models/{id}/tables/new/", name="configurateur_table_index", defaults={"id":0})
 	 */
 	public function newAction(Model $model, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
 		$table = new TableFormat();
 
@@ -52,7 +52,7 @@ class TableController extends Controller {
 
 		// Custom validator to check unicity of tableName in the model
 		// is impossible as tableName is set after form is valid.
-		$tableFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
+		$tableFormatRepository = $em->getRepository('IgnGincoBundle:Metadata\TableFormat');
 		$newTableName = $model->getId() . '_' . $table->getLabel();
 		$existingTable = $tableFormatRepository->findByTableName($newTableName);
 		if ($existingTable) {
@@ -86,19 +86,18 @@ class TableController extends Controller {
 			// save an occurrence of table_tree
 
 			$parent = $table->getParent();
-			$parent = (empty($parent)) ? '*' : $parent;
 			$tableTree = new TableTree();
-			if ($parent == '*') {
+			if (!$parent) {
 				$tableTree->setChildTable($table->getFormat())
-					->setParentTable('*')
-					->setSchemaCode($em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')
+					->setParentTable(null)
+					->setSchemaCode($em->getRepository('IgnGincoBundle:Metadata\TableSchema')
 					->find($table->getSchemaCode()));
 				$em->persist($tableTree);
 			} else {
 				$parent = $tableFormatRepository->find($parent);
 				$tableTree->setChildTable($table->getFormat())
 					->setParentTable($parent->getFormat())
-					->setSchemaCode($em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')
+					->setSchemaCode($em->getRepository('IgnGincoBundle:Metadata\TableSchema')
 					->find($table->getSchemaCode()))
 					->setJoinKey($parent->getPrimaryKey());
 				$em->persist($tableTree);
@@ -113,7 +112,7 @@ class TableController extends Controller {
 
 			// Create a new DATA entry for primary key
 			$data = new Data();
-			$textValue = $em->getRepository('IgnOGAMConfigurateurBundle:Unit')->find('IDString');
+			$textValue = $em->getRepository('IgnGincoBundle:Metadata\Unit')->find('IDString');
 			$label = $this->get('Translator')->trans('data.primary_key', array(
 				'%tableLabel%' => $table->getLabel()
 			));
@@ -150,11 +149,11 @@ class TableController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/edit/", name="configurateur_table_edit")
 	 */
 	public function editAction($modelId, $format, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
-		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
-		$tableTree = $em->getRepository('IgnOGAMConfigurateurBundle:TableTree')->findOneByChildTable($table->getFormat());
+		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
+		$model = $em->getRepository('IgnGincoBundle:Metadata\Model')->find($modelId);
+		$tableTree = $em->getRepository('IgnGincoBundle:Metadata\TableTree')->findOneByChildTable($table->getFormat());
 		if ($tableTree == null) {
 			$tableTree = new TableTree();
 		}
@@ -163,23 +162,16 @@ class TableController extends Controller {
 			throw $this->createNotFoundException($errMsg);
 		}
 		// Set parent manually cause not persisted in TableFormat
-		if ($tableTree->getParentTable() != '*') {
+		if ($tableTree->getParentTable() != null) {
 			$table->setParent($tableTree->getParentTable());
 		}
 
-		// create table form
-		$formOptions = array(
-			'model' => $model,
-			'tableFormat' => $format,
-			'conn' => $conn = $this->getDoctrine()->getConnection(),
-			'em' => $em
-		);
-		$form = $this->createForm(TableFormatType::class, $table, $formOptions);
+		$form = $this->createForm(TableFormatType::class, $table);
 
 		$form->handleRequest($request);
 
 		// Check unicity of tableName in the model
-		$tableFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
+		$tableFormatRepository = $em->getRepository('IgnGincoBundle:Metadata\TableFormat');
 		$newTableName = $modelId . '_' . $table->getLabel();
 		$existingTable = $tableFormatRepository->findByTableName($newTableName);
 
@@ -196,9 +188,9 @@ class TableController extends Controller {
 			$table->setTableName($newTableName);
 
 			// Change PK label with new table name
-			$data = $em->getRepository('IgnOGAMConfigurateurBundle:Data')->find($table->getPKName());
+			$data = $em->getRepository('IgnGincoBundle:Metadata\Data')->find($table->getPKName());
 			if ($data) {
-				$label = $this->get('Translator')->trans('data.primary_key', array(
+				$label = $this->get('translator')->trans('data.primary_key', array(
 					'%tableLabel%' => $table->getLabel()
 				));
 				$data->setLabel($label)->setDefinition($label);
@@ -209,27 +201,27 @@ class TableController extends Controller {
 			// Save relation between parent and child table in table_tree
 			if (empty($parent)) {
 				// Remove all references to possible former relation with former parent table, except in table data
-				$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->deleteForeignKeysByTableFormat($format);
-				$em->getRepository('IgnOGAMConfigurateurBundle:Field')->deleteForeignKeysByFormat($format);
+				$em->getRepository('IgnGincoBundle:Metadata\TableField')->deleteForeignKeysByTableFormat($format);
+				$em->getRepository('IgnGincoBundle:Metadata\Field')->deleteForeignKeysByFormat($format);
 				$em->flush();
 
 				// Remove entry from table_tree
 				if ($em->contains($tableTree)) {
-					$tableTree->setParentTable('*')->setJoinKey(null);
+					$tableTree->setParentTable(null)->setJoinKey(null);
 					$em->flush();
 				}
 			} else {
-				$parent = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($parent);
-				$tableTree->setChildTable($table->getFormat())
-					->setParentTable($parent->getFormat())
-					->setSchemaCode($em->getRepository('IgnOGAMConfigurateurBundle:TableSchema')
+				$parent = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($parent);
+				$tableTree->setChildTable($table)
+					->setParentTable($parent)
+					->setSchema($em->getRepository('IgnGincoBundle:Metadata\TableSchema')
 					->find($table->getSchemaCode()))
-					->setJoinKey($parent->getPrimaryKey());
+					->setJoinKey($parent->getPrimaryKeys()[0]);
 				$em->persist($tableTree);
 
 				// Remove all references to possible former relation with former parent table, except in table data
-				$em->getRepository('IgnOGAMConfigurateurBundle:TableField')->deleteForeignKeysByTableFormat($format);
-				$em->getRepository('IgnOGAMConfigurateurBundle:Field')->deleteForeignKeysByFormat($format);
+				$em->getRepository('IgnGincoBundle:Metadata\TableField')->deleteForeignKeysByTableFormat($format);
+				$em->getRepository('IgnGincoBundle:Metadata\Field')->deleteForeignKeysByFormat($format);
 				$em->flush();
 
 				// Add foreign key (parent table primary key)
@@ -270,22 +262,22 @@ class TableController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/fields/", name="configurateur_table_fields")
 	 */
 	public function manageFieldsAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
-		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
+		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
+		$model = $em->getRepository('IgnGincoBundle:Metadata\Model')->find($modelId);
 
 		if (!$table) {
 			$errMsg = "Aucune TABLE ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
 
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 		// Get data dictionnary
 		$allFields = $dataRepository->findAllFields();
 		$fieldsForm = $this->createForm(TableUpdateFieldsType::class, null);
 		// Get table fields
-		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 
 		return $this->render('IgnOGAMConfigurateurBundle:TableFormat:fields.html.twig', array(
@@ -306,17 +298,17 @@ class TableController extends Controller {
 	 * @Route("/models/{model_id}/tables/{id}/delete/", name="configurateur_table_delete")
 	 */
 	public function deleteAction($model_id, $id, $fromDeleteModel = false) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$formatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Format');
-		$tableFormatRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat');
-		$modelRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Model');
-		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
-		$fieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Field');
-		$tableTreeRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableTree');
-		$dataRepository = $em->getRepository('IgnOGAMConfigurateurBundle:Data');
+		$formatRepository = $em->getRepository('IgnGincoBundle:Metadata\Format');
+		$tableFormatRepository = $em->getRepository('IgnGincoBundle:Metadata\TableFormat');
+		$modelRepository = $em->getRepository('IgnGincoBundle:Metadata\Model');
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
+		$fieldRepository = $em->getRepository('IgnGincoBundle:Metadata\Field');
+		$tableTreeRepository = $em->getRepository('IgnGincoBundle:Metadata\TableTree');
+		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 
-		$mappingRepository = $em->getRepository("IgnOGAMConfigurateurBundle:FieldMapping");
+		$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
 		$mappingRepository->removeAllByTableFormat($id);
 		$model = $modelRepository->find($model_id);
 		$format = $formatRepository->find($id);
@@ -361,33 +353,33 @@ class TableController extends Controller {
 	 * @Route("models/{modelId}/tables/{format}/view/", name="configurateur_table_view")
 	 */
 	public function viewAction($modelId, $format) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($format);
+		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
 		if (!$table) {
 			$errMsg = "Aucune TABLE ne correspond à : " . $format;
 			throw $this->createNotFoundException($errMsg);
 		}
 
-		$model = $em->getRepository('IgnOGAMConfigurateurBundle:Model')->find($modelId);
+		$model = $em->getRepository('IgnGincoBundle:Metadata\Model')->find($modelId);
 
-		$tableTree = $em->getRepository('IgnOGAMConfigurateurBundle:TableTree')->findOneByChildTable($table->getFormat());
+		$tableTree = $em->getRepository('IgnGincoBundle:Metadata\TableTree')->findOneByChildTable($table->getFormat());
 		if ($tableTree == null) {
 			$tableTree = new TableTree();
 			$parentTableName = null;
 		} else {
 			$parentTableFormat = $tableTree->getParentTable();
 
-			if ($parentTableFormat == '*') {
+			if (!$parentTableFormat) {
 				$parentTableName = null;
 			} else {
-				$parentTable = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($parentTableFormat);
+				$parentTable = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($parentTableFormat);
 				$parentTableName = $parentTable->getLabel();
 			}
 		}
 
 		// Get table fields
-		$tableFieldRepository = $em->getRepository('IgnOGAMConfigurateurBundle:TableField');
+		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 
 		return $this->render('IgnOGAMConfigurateurBundle:TableFormat:view.html.twig', array(

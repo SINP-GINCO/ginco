@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
+
 class FileFormatType extends AbstractType {
 
 	/**
@@ -40,7 +42,7 @@ class FileFormatType extends AbstractType {
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
-			'data_class' => 'Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat'
+			'data_class' => FileFormat::class
 		));
 	}
 

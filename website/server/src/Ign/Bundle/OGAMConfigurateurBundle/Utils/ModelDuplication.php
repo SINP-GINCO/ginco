@@ -41,14 +41,11 @@ class ModelDuplication extends DatabaseUtils {
 		$copyUtils = new CopyUtils($this->conn, $this->logger, $this->adminName, $this->adminPassword);
 		$modelId = $model->getId();
 
-		if (!$copyUtils->isModelPresentInWorkSchema($modelId)) {
-			return 'datamodel.duplicate.badid';
-		}
 		if ($copyUtils->modelHasCopy($model->getName())) {
 			return 'datamodel.duplicate.hasCopy';
 		}
 
-		$destSchema = 'metadata_work';
+		$destSchema = 'metadata';
 
 		// Copy data without modifying primary keys
 		$copiedModelId = $copyUtils->copyModel($modelId, $destSchema, true, $copyModelName, $copyModelDescription);
@@ -88,7 +85,7 @@ class ModelDuplication extends DatabaseUtils {
 		pg_query($this->pgConn, "DEALLOCATE ALL");
 		// Select all values from format
 		$selectFormatQuery = "SELECT DISTINCT mt.table_id as format
-				FROM metadata_work.model_tables mt
+				FROM metadata.model_tables mt
 				WHERE mt.model_id = $1";
 		pg_prepare($this->pgConn, "select_format_query", $selectFormatQuery);
 		$formatResults = pg_execute($this->pgConn, "select_format_query", array(
@@ -97,48 +94,48 @@ class ModelDuplication extends DatabaseUtils {
 
 		// Select values from table_format (but execute in while statement).
 		$selectTableFormatQuery = "SELECT DISTINCT tfo.format, tfo.table_name, tfo.schema_code, tfo.primary_key, tfo.label , tfo.definition
-				FROM metadata_work.table_format tfo
+				FROM metadata.table_format tfo
 				WHERE tfo.format = $1";
 		pg_prepare($this->pgConn, "select_table_format_query", $selectTableFormatQuery);
 
 		// Select values from field (but execute in while statement).
 		$selectFieldQuery = "SELECT DISTINCT f.data, f.format, f.type
-				FROM metadata_work.field f
+				FROM metadata.field f
 				WHERE f.format = $1";
 		pg_prepare($this->pgConn, "select_field_query", $selectFieldQuery);
 
 		// Prepare insert statement for format row
-		$insertFormatQuery = "INSERT INTO metadata_work.format(format, type) VALUES ($1, $2)";
+		$insertFormatQuery = "INSERT INTO metadata.format(format, type) VALUES ($1, $2)";
 		pg_prepare($this->pgConn, "insert_format_query", $insertFormatQuery);
 		// Prepare insert statement for table_format row
-		$insertFormatQuery = "INSERT INTO metadata_work.table_format(format, table_name, schema_code, primary_key, label, definition)
+		$insertFormatQuery = "INSERT INTO metadata.table_format(format, table_name, schema_code, primary_key, label, definition)
 						VALUES ($1, $2, $3, $4, $5, $6)";
 		pg_prepare($this->pgConn, "insert_table_format_query", $insertFormatQuery);
 		// Prepare insert statement for field row
-		$insertFormatQuery = "INSERT INTO metadata_work.field(data, format, type) VALUES ($1, $2, $3)";
+		$insertFormatQuery = "INSERT INTO metadata.field(data, format, type) VALUES ($1, $2, $3)";
 		pg_prepare($this->pgConn, "insert_field_query", $insertFormatQuery);
 
 		// Prepare update statement for table_tree parent_table column
-		$insertTableTreeParentQuery = "UPDATE metadata_work.table_tree SET parent_table = $1 WHERE parent_table = $2";
+		$insertTableTreeParentQuery = "UPDATE metadata.table_tree SET parent_table = $1 WHERE parent_table = $2";
 		pg_prepare($this->pgConn, "update_table_tree_parent_query", $insertTableTreeParentQuery);
 		// Prepare update statement for table_tree child_table column
-		$insertTableTreeParentQuery = "UPDATE metadata_work.table_tree SET child_table = $1 WHERE child_table = $2";
+		$insertTableTreeParentQuery = "UPDATE metadata.table_tree SET child_table = $1 WHERE child_table = $2";
 		pg_prepare($this->pgConn, "update_table_tree_child_query", $insertTableTreeParentQuery);
 		// Prepare update statement for table_field row
-		$insertTableFieldQuery = "UPDATE metadata_work.table_field SET format = $1 WHERE format = $2";
+		$insertTableFieldQuery = "UPDATE metadata.table_field SET format = $1 WHERE format = $2";
 		pg_prepare($this->pgConn, "update_table_field_query", $insertTableFieldQuery);
 		// Prepare update statement for model_tables row
-		$insertModelTablesQuery = "UPDATE metadata_work.model_tables SET table_id = $1 WHERE table_id = $2";
+		$insertModelTablesQuery = "UPDATE metadata.model_tables SET table_id = $1 WHERE table_id = $2";
 		pg_prepare($this->pgConn, "update_model_tables_query", $insertModelTablesQuery);
 
 		// Prepare delete statement for field rows
-		$deleteFieldQuery = "DELETE FROM metadata_work.field WHERE format = $1";
+		$deleteFieldQuery = "DELETE FROM metadata.field WHERE format = $1";
 		pg_prepare($this->pgConn, "delete_field_query", $deleteFieldQuery);
 		// Prepare delete statement for table_format row
-		$deleteTableFormatQuery = "DELETE FROM metadata_work.table_format WHERE format = $1";
+		$deleteTableFormatQuery = "DELETE FROM metadata.table_format WHERE format = $1";
 		pg_prepare($this->pgConn, "delete_table_format_query", $deleteTableFormatQuery);
 		// Prepare delete statement for format row
-		$deleteFormatQuery = "DELETE FROM metadata_work.format WHERE format = $1";
+		$deleteFormatQuery = "DELETE FROM metadata.format WHERE format = $1";
 		pg_prepare($this->pgConn, "delete_format_query", $deleteFormatQuery);
 
 		// For each table format
@@ -230,7 +227,7 @@ class ModelDuplication extends DatabaseUtils {
 	 */
 	public function addPrimaryKeyToDataTable($originalPK, $duplicatedPK, $tableFormat) {
 		// Get values of original PK
-		$selectOGPKQuery = "SELECT * FROM metadata_work.data WHERE data = $1";
+		$selectOGPKQuery = "SELECT * FROM metadata.data WHERE data = $1";
 		pg_prepare($this->pgConn, "select_og_pk_query", $selectOGPKQuery);
 		$results = pg_execute($this->pgConn, "select_og_pk_query", array(
 			$originalPK
@@ -238,7 +235,7 @@ class ModelDuplication extends DatabaseUtils {
 		$originalPKRow = pg_fetch_assoc($results);
 
 		// Get label of the table
-		$selectTableLabel = "SELECT label FROM metadata_work.table_format WHERE format = $1";
+		$selectTableLabel = "SELECT label FROM metadata.table_format WHERE format = $1";
 		pg_prepare($this->pgConn, "select_table_label_query", $selectTableLabel);
 		$labelRes = pg_execute($this->pgConn, "select_table_label_query", array(
 			$tableFormat
@@ -246,7 +243,7 @@ class ModelDuplication extends DatabaseUtils {
 		$tableLabel = pg_fetch_result($labelRes, 'label');
 
 		// Insert data field of PK in data table
-		$insertPKDataFieldQuery = "INSERT INTO metadata_work.data(data, unit, label, definition) VALUES($1, $2, $3, $4)";
+		$insertPKDataFieldQuery = "INSERT INTO metadata.data(data, unit, label, definition) VALUES($1, $2, $3, $4)";
 		pg_prepare($this->pgConn, "insert_pk_data_query", $insertPKDataFieldQuery);
 		pg_execute($this->pgConn, "insert_pk_data_query", array(
 			$duplicatedPK,
@@ -256,7 +253,7 @@ class ModelDuplication extends DatabaseUtils {
 		));
 
 		// update field row for primary key (and via cascade table_field also)
-		$insertFieldQuery = "UPDATE metadata_work.field SET data = $1 WHERE format = $2 AND data = $3";
+		$insertFieldQuery = "UPDATE metadata.field SET data = $1 WHERE format = $2 AND data = $3";
 		pg_prepare($this->pgConn, "update_field_pk_query", $insertFieldQuery);
 		pg_execute($this->pgConn, "update_field_pk_query", array(
 			$duplicatedPK,
@@ -265,7 +262,7 @@ class ModelDuplication extends DatabaseUtils {
 		));
 
 		// update tablefield row column name for primary key
-		$insertTableFieldQuery = "UPDATE metadata_work.table_field SET column_name = $1 WHERE format = $2 AND data = $3";
+		$insertTableFieldQuery = "UPDATE metadata.table_field SET column_name = $1 WHERE format = $2 AND data = $3";
 		pg_prepare($this->pgConn, "update_table_field_column_name_query", $insertTableFieldQuery);
 		pg_execute($this->pgConn, "update_table_field_column_name_query", array(
 			strtolower($duplicatedPK),

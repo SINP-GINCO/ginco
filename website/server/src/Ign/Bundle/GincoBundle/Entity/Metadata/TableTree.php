@@ -3,6 +3,9 @@ namespace Ign\Bundle\GincoBundle\Entity\Metadata;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableSchema;
+
 /**
  * TableTreeData
  *
@@ -23,19 +26,19 @@ class TableTree {
 	 * @ORM\JoinColumn(name="child_table", referencedColumnName="format")
 	 * @ORM\Id
 	 */
-	private $tableFormat;
+	private $childTable;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="TableFormat")
-	 * @ORM\JoinColumn(name="parent_table", referencedColumnName="format")
+	 * @ORM\JoinColumn(name="parent_table", referencedColumnName="format", nullable=true)
 	 */
-	private $parentTableFormat;
+	private $parentTable;
 
 	/**
 	 *
 	 * @var string @ORM\Column(name="join_key", type="string", length=255)
 	 */
-	private $joinKeys;
+	private $joinKey;
 
 	/**
 	 *
@@ -43,48 +46,68 @@ class TableTree {
 	 */
 	private $comment;
 
+	
+	/**
+	 * Get schema
+	 * @return TableSchema
+	 */
+	public function getSchema() {
+		return $this->schema ;
+	}
+	
+	
+	/**
+	 * Set schema
+	 * @param TableSchema $schema
+	 * @return $this
+	 */
+	public function setSchema(TableSchema $schema) {
+		$this->schema = $schema ;
+		return $this ;
+	}
+	
 	/**
 	 * Set tableFormat
 	 *
-	 * @param string $tableFormat        	
+	 * @param TableFormat $tableFormat        	
 	 *
 	 * @return TableTree
 	 */
-	public function setTableFormat($tableFormat) {
-		$this->tableFormat = $tableFormat;
+	public function setChildTable(TableFormat $tableFormat) {
+		$this->childTable = $tableFormat;
 		
 		return $this;
 	}
 
 	/**
-	 * Get tableFormat
+	 * Get child table
 	 *
-	 * @return string
+	 * @return TableFormat
 	 */
-	public function getTableFormat() {
-		return $this->tableFormat;
+	public function getChildTable() {
+		return $this->childTable;
 	}
 
 	/**
 	 * Set parentTableFormat
 	 *
-	 * @param string $parentTableFormat        	
+	 * @param TableFormat $parentTableFormat        	
 	 *
 	 * @return TableTree
 	 */
-	public function setParentTableFormat($parentTableFormat) {
-		$this->parentTableFormat = $parentTableFormat;
+	public function setParentTable($parentTableFormat) {
+		$this->parentTable = $parentTableFormat;
 		
 		return $this;
 	}
 
 	/**
-	 * Get parentTableFormat
+	 * Get parent table
 	 *
-	 * @return string
+	 * @return TableFormat
 	 */
-	public function getParentTableFormat() {
-		return $this->parentTableFormat;
+	public function getParentTable() {
+		return $this->parentTable;
 	}
 
 	/**
@@ -94,8 +117,8 @@ class TableTree {
 	 *
 	 * @return TableTree
 	 */
-	public function setJoinKeys($joinKeys) {
-		$this->joinKeys = implode(",", $joinKeys);
+	public function setJoinKey($joinKey) {
+		$this->joinKey = $joinKey;
 		
 		return $this;
 	}
@@ -105,14 +128,8 @@ class TableTree {
 	 *
 	 * @return array
 	 */
-	public function getJoinKeys() {
-		$joinKeys = array();
-		$pks = explode(",", $this->joinKeys);
-		foreach ($pks as $pk) {
-			$joinKeys[] = trim($pk); // we need to trim all the values
-		}
-		
-		return $joinKeys;
+	public function getJoinKey() {
+		return $this->joinKey ;
 	}
 
 	/**

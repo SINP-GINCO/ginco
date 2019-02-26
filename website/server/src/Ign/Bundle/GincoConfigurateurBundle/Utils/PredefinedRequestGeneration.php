@@ -45,10 +45,10 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		$sqlPRGroupIdNextval = "SELECT nextval('predefined_request_group_group_id_seq');";
 		pg_prepare($dbconn, "", $sqlPRGroupIdNextval);
 		$stmtPRGroupIdNextval = pg_execute($dbconn, "", array());
-		$groupId = pg_fetch_row($stmtPRGroupIdNextval)[0] + 1;
+		$groupId = pg_fetch_row($stmtPRGroupIdNextval)[0] ;
 		
 		// Add a group for the predefined request of the dataset
-		$this->addPredefinedRequestGroup($datasetLabel, $datasetLabel, '1', $dbconn);
+		$this->addPredefinedRequestGroup($groupId, $datasetLabel, $datasetLabel, '1', $dbconn);
 		
 		// Describe custom requests
 		// REQUEST 1 : group request
@@ -223,11 +223,16 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	 * @param string $position
 	 *        	always 1
 	 */
-	public function addPredefinedRequestGroup($label, $definition, $position, $dbconn) {
+	public function addPredefinedRequestGroup($groupId, $label, $definition, $position, $dbconn) {
 		// Add predefined request group (the dataset)
-		$sql = "INSERT INTO website.predefined_request_group(label, definition, position) VALUES ('" . $label . "','" . $definition . "', '" . $position . "');";
+		$sql = "INSERT INTO website.predefined_request_group(group_id, label, definition, position) VALUES ($1, $2, $3, $4);";
 		pg_prepare($dbconn, "", $sql);
-		pg_execute($dbconn, "", array());
+		pg_execute($dbconn, "", array(
+			$groupId,
+			$label,
+			$definition,
+			$position
+		));
 	}
 
 	/**

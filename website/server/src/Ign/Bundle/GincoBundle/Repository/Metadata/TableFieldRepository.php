@@ -3,7 +3,10 @@ namespace Ign\Bundle\GincoBundle\Repository\Metadata;
 
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
+
 use Ign\Bundle\GincoBundle\Entity\Generic\GenericField;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
 
 /**
  * TableFieldRepository
@@ -13,6 +16,79 @@ use Ign\Bundle\GincoBundle\Entity\Generic\GenericField;
  */
 class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 	
+	
+	/**
+	 * Get the fields of the table.
+	 *
+	 * @param
+	 *        	tableFormat the name of the table format
+	 *
+	 * @return list of TableField
+	 */
+	public function findFieldsByTableFormat($tableFormat) {
+		$em = $this->getEntityManager();
+		$query = $em->createQuery(
+			'SELECT DISTINCT dt.data as fieldName,
+					dt.label as label,
+					u.type as unitType, 
+					tfi.isMandatory, 
+					tfi.isCalculated
+			FROM IgnGincoBundle:Metadata\TableField tfi
+			LEFT JOIN IgnGincoBundle:Metadata\TableFormat tfo WITH tfo.format = tfi.format
+			LEFT JOIN IgnGincoBundle:Metadata\Data dt WITH tfi.data = dt.data
+			LEFT JOIN IgnGincoBundle:Metadata\Unit u WITH dt.unit = u.unit
+			WHERE tfi.format = :tableFormat
+			ORDER BY fieldName'
+		);
+
+		$query->setParameters(array(
+			'tableFormat' => $tableFormat
+		));
+
+		return $query->getResult();
+	}
+
+	/**
+	 * Get the non-technical fields of the table.
+	 *
+	 * @param
+	 *        	tableFormat the name of the table
+	 *
+	 * @return result of the delete query
+	 */
+	public function findNonTechnicalByTableFormat($tableFormat) {
+		
+		return $this->createQueryBuilder('t')
+			->leftJoin('t.data', 'd')
+			->where('t.format = :tableFormat')
+			->andWhere("d.data NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')")
+			->andWhere("d.data NOT LIKE :ogamId")
+			->setParameter('tableFormat', $tableFormat)
+			->setParameter('ogamId', TableFormat::PK_PREFIX . '%')
+			->getQuery()
+			->getResult()
+		;
+	}
+
+	/**
+	 * Get the fields corresponding to keys (primary and foreigns) of the table
+	 *
+	 * @param
+	 *        	$tableFormat
+	 * @return array
+	 */
+	public function findKeysByTableFormat($tableFormat) {
+		$query = $this->_em->createQuery("SELECT t
+			FROM IgnGincoBundle:Metadata\TableField t
+			WHERE t.format =:tableFormat
+			AND t.data LIKE :ogam_id");
+		$query->setParameters(array(
+			'tableFormat' => $tableFormat,
+			'ogam_id' => TableFormat::PK_PREFIX . '%'
+		));
+		return $query->getResult();
+	}
+	
 	/**
 	 * Get all table_fields for a given model
 	 *
@@ -20,8 +96,8 @@ class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 	 *        	$modelId
 	 * @return Array[TableField]
 	 */
-	public function getTableFieldsForModel($modelId) {
-		$binds = array('modelId' => $modelId);
+	public function getTableFieldsForModel(Model $model) {
+		$binds = array('modelId' => $model->getId());
 		//TODO : simplify select : only data, format, value are needed
 		$sql = "SELECT tfi.*, d.label as label, d.unit, u.type, u.subtype, d.definition
 				FROM metadata.table_field tfi
@@ -215,5 +291,128 @@ class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 			// No GEOM column found
 			throw new \Exception("No geographical information detected");
 		}
+	}
+	
+	/**
+	 * Deletes all the fields of the table.
+	 *
+	 * @param
+	 *        	tableFormat the name of the table f
+	 *
+	 * @return result of the delete query
+	 */
+	public function deleteAllByTableFormat($tableFormat) {
+		$query = $this->_em->createQuery('DELETE FROM IgnGincoBundle:Metadata\TableField t
+			WHERE t.format =:tableFormat');
+		$query->setParameters(array(
+			'tableFormat' => $tableFormat
+		));
+
+		return $query->getResult();
+	}
+
+	/**
+	 * Deletes all non-technical fields of the table.
+	 *
+	 * @param
+	 *        	tableFormat the name of the table
+	 *
+	 * @return result of the delete query
+	 */
+	public function deleteNonTechnicalByTableFormat($tableFormat) {
+		$query = $this->_em->createQuery("DELETE FROM IgnGincoBundle:Metadata\TableField t
+			WHERE t.format =:tableFormat
+			AND t.data NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')
+			AND t.data NOT LIKE :ogam_id
+			AND t.data NOT IN (SELECT ta.data
+			FROM IgnGincoBundle:Metadata\TableField ta
+			INNER JOIN IgnGincoBundle:Metadata\ModelTables mt WITH mt.table = ta.tableFormat
+			INNER JOIN IgnGincoBundle:Metadata\Model m WITH m.id = mt.model
+			WHERE m.ref = true)");
+		$query->setParameters(array(
+			'tableFormat' => $tableFormat,
+			'ogam_id' => TableFormat::PK_PREFIX . '%'
+		));
+
+		return $query->getResult();
+	}
+
+	/**
+	 * Deletes the foreign key towards a parent table.
+	 *
+	 * @param
+	 *        	format the name of the table
+	 * @return result of the delete query
+	 */
+	public function deleteForeignKeysByTableFormat($format) {
+		
+		$sql = "DELETE FROM metadata.table_field f
+			WHERE f.format =:format
+			AND f.data LIKE :fkCondition
+			AND f.data != :pkCondition";
+		
+		$conn = $this->getEntityManager()->getConnection() ;
+		$sth = $conn->prepare($sql) ;
+		$sth->execute(array(
+			'format' => $format,
+			'fkCondition' => TableFormat::PK_PREFIX . '%',
+			'pkCondition' => TableFormat::PK_PREFIX . $format
+		));
+	}
+
+	/**
+	 * Get the fields listed in tables in model that are marked as reference models.
+	 *
+	 * @return array
+	 */
+	public function findReferenceFields() {
+		$query = $this->_em->createQuery("SELECT dt.data
+			FROM IgnGincoBundle:Metadata\TableField t
+			INNER JOIN IgnGincoBundle:Metadata\Data dt WITH dt.data = t.data
+			INNER JOIN IgnGincoBundle:Metadata\ModelTables mt WITH mt.table = t.format
+			INNER JOIN IgnGincoBundle:Metadata\Model m WITH m.id = mt.model
+			WHERE m.ref = true");
+		return $query->getResult();
+	}
+
+	/**
+	 * Deletes all non-technical and non-reference fields of the table.
+	 *
+	 * @param
+	 *        	tableFormat the name of the table
+	 *
+	 * @return result of the delete query
+	 */
+	public function deleteNonTechnicalAndNonRefByTableFormat($tableFormat) {
+		$qb = $this->_em->createQueryBuilder();
+		$qb2 = $this->_em->createQueryBuilder();
+
+		$query = $qb->select('t')
+			->from('IgnGincoBundle:Metadata\TableField', 't')
+			->where('t.tableFormat = :tableFormat')
+			->andwhere("t.data NOT IN ('PROVIDER_ID', 'USER_LOGIN', 'SUBMISSION_ID')")
+			->andwhere('t.data NOT LIKE :ogam_id')
+			->andwhere($qb->expr()
+			->notIn('t.data', $qb2->select('tf.data')
+			->from('IgnGincoBundle:Metadata\TableField', 'tf')
+			->join('IgnGincoBundle:Metadata\ModelTables', 'mt', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->eq(' mt.table', 'tf.tableFormat'))
+			->join('IgnGincoBundle:Metadata\Model', 'm', \Doctrine\ORM\Query\Expr\Join::WITH, $qb2->expr()
+			->eq(' m.id', 'mt.model'))
+			->where('m.ref = true')
+			->getDQL()))
+			->setParameters(array(
+			'tableFormat' => $tableFormat,
+			'ogam_id' => TableFormat::PK_PREFIX . '%'
+		))
+			->getQuery();
+		$results = $query->execute();
+
+		// Delete the results
+		foreach ($results as $result) {
+			$this->_em->remove($result);
+		}
+		// Don't forget to flush in the controller
+		return true;
 	}
 }

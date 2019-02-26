@@ -5,11 +5,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\Unit;
+
 /**
  * Data
  *
  * @ORM\Table(name="metadata.data")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\Metadata\DataRepository")
  */
 class Data implements \JsonSerializable {
 
@@ -25,9 +27,11 @@ class Data implements \JsonSerializable {
 
 	/**
 	 *
-	 * @var string @ORM\JoinColumn(name="unit", referencedColumnName="unit", nullable=false)
-	 *      @ORM\ManyToOne(targetEntity="Unit")
-	 *      @Assert\NotNull(message="data.unit.notNull")
+	 * @var Unit 
+	 * 
+	 * @ORM\JoinColumn(name="unit", referencedColumnName="unit", nullable=false)
+	 * @ORM\ManyToOne(targetEntity="Unit")
+	 * @Assert\NotNull(message="data.unit.notNull")
 	 */
 	private $unit;
 
@@ -53,7 +57,10 @@ class Data implements \JsonSerializable {
 	 */
 	private $comment;
 
-	private $fields;
+	/**
+	 * @ORM\OneToMany(targetEntity="Field", mappedBy="data")
+	 */
+	private $fields = array();
 
 	/**
 	 * Constructor
@@ -161,10 +168,59 @@ class Data implements \JsonSerializable {
 	/**
 	 * Get unit
 	 *
-	 * @return string
+	 * @return Unit
 	 */
 	public function getUnit() {
 		return $this->unit;
+	}
+	
+		/**
+	 * Add fields
+	 *
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields        	
+	 * @return Data
+	 */
+	public function addField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields) {
+		$this->fields[] = $fields;
+		
+		return $this;
+	}
+
+	/**
+	 * Remove fields
+	 *
+	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields        	
+	 */
+	public function removeField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields) {
+		$this->fields->removeElement($fields);
+	}
+
+	/**
+	 * Get fields
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getFields() {
+		return $this->fields;
+	}
+
+	/**
+	 * Return whether current Data object is used as a field in the model;
+	 * if not, it can be safely deleted.
+	 *
+	 * @return bool
+	 */
+	public function isDeletable() {
+		return ($this->fields->count() == 0);
+	}
+
+	/**
+	 * Same criteria as isDeletable
+	 *
+	 * @return bool
+	 */
+	public function isEditable() {
+		return $this->isDeletable();
 	}
 
 	/**

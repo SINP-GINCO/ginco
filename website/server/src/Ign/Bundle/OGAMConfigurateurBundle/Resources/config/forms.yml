@@ -1,0 +1,7 @@
+## YAML Template.
+
+services:
+    
+    Ign\Bundle\OGAMConfigurateurBundle\Form\TableFormatType:
+        arguments: ['@doctrine.orm.metadata_entity_manager']
+        tags: ['form.type']

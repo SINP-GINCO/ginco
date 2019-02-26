@@ -99,17 +99,11 @@ $connectStr.=" password=".$config['db.adminuser.pw'];
 $connectStr.=" dbname="  .$config['db.name'];
 system("$refDir/init_referentiels.sh $connectStr");
 
-# setting metadata and metadata_work schema
+# setting metadata schema
 execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata']);
 # note: populate_mode_taxref_table need an initialized referentiel schema.
 execSQLFile("$initDir/populate_mode_taxref_table.sql",$config);
-# Metadata models are empty, they must be published from metadata_work before use (-Dempty_models)
-system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata -Dempty_models=true");
-
-execCustSQLFile("$initDir/create_metadata_schema_tpl.sql", $config + ['schema' => 'metadata_work']);
-# mode_taxref is not useful in metadata_work.
-# execCustSQLFile("$initDir/populate_mode_taxref_table_tpl.sql", $config + ['schema' => 'metadata_work']);
-system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata_work");
+system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata");
 
 
 execSQLFile("$initDir/1-2-Create_mapping_schema.sql",$config);

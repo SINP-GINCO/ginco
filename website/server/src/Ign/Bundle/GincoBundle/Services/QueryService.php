@@ -604,7 +604,7 @@ class QueryService {
 		$field->insertable = $tableField->getIsInsertable() ? '1' : '0';
 		$field->required = $field->isPK ? !($tableField->getIsCalculated()) : $tableField->getIsMandatory();
 		$field->data = $tableField->getData()->getData(); // The name of the data is the table one
-		$field->format = $tableField->getFormat()->getFormat();
+		$field->format = $tableField->getFormat()->getFormat()->getFormat();
 		
 		if ($field->value === null) {
 			if ($field->defaultValue === '%LOGIN%' && $user !== null) {
@@ -721,7 +721,7 @@ class QueryService {
 		// Then copy references in the "results" table
 		
 		// The name of the table holding the geometric information
-		$tableFormat = $locationTable->getFormat();
+		$tableFormat = $locationTable->getFormat()->getFormat();
 		
 		// Map the varying two keys in results to the keys in the raw_data table
 		$keys = $this->genericModel->getRawDataTablePrimaryKeys($locationTable);
@@ -921,8 +921,8 @@ class QueryService {
 		$tableFormatRepository = $this->metadataModel->getRepository('IgnGincoBundle:Metadata\TableFormat');
 		$locationField = $tableFieldRepository->getGeometryField($this->schema, array_keys($tables), $this->locale);
 		$locationTableInfo = $tableFormatRepository->getTableFormat($this->schema, $locationField->getFormat(), $this->locale);
-		$geometryTablePKeyIdWithTable = $locationTableInfo->getFormat() . "." . $locationTableInfo->getPrimaryKeys()[0];
-		$geometryTablePKeyProviderIdWithTable = $locationTableInfo->getFormat() . "." . $locationTableInfo->getPrimaryKeys()[1];
+		$geometryTablePKeyIdWithTable = $locationTableInfo->getFormat()->getFormat() . "." . $locationTableInfo->getPrimaryKeys()[0];
+		$geometryTablePKeyProviderIdWithTable = $locationTableInfo->getFormat()->getFormat() . "." . $locationTableInfo->getPrimaryKeys()[1];
 		
 		// The not customised $from clause contains table_tree joins. Here we add joins with submission table, or submission and results tables.
 		$fromJoinSubmission = $this->genericService->generateGincoSQLFromRequest($this->schema, $mappingSet, self::$submissionJoin);

@@ -282,7 +282,7 @@ class GenericManager {
 		$parentTable = $select->fetchColumn(0);
 	
 		// Check if we are not the root table
-		if ($parentTable != "*") {
+		if ($parentTable != null) {
 				
 			// Build an empty parent object
 			$parent = $this->genericService->buildGenericTableFormat($tableFormat->getSchemaCode(), $parentTable, null);
@@ -710,8 +710,8 @@ class GenericManager {
 	 *        	the WHERE part of the SQL request
 	 */
 	public function getHidingLevelParameters($geometryTable, $ogamIdColumn, $providerIdColumn, $reqId, $from, $where) {
-		$req = "SELECT " . $geometryTable->getFormat() . " . $ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
-		INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = " . $geometryTable->getFormat() . " . $ogamIdColumn
+		$req = "SELECT " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
+		INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn
 		$where AND res.id_request = ?
 		ORDER BY res.id_provider, res.id_observation;";
 

@@ -254,7 +254,7 @@ class GenericService {
 		);
 		$options = array_replace($defaults, $options);
 	
-		$fieldName = $field->getFormat()->getFormat() . '.' . $field->getColumnName();
+		$fieldName = $field->getFormat()->getFormat()->getFormat() . '.' . $field->getColumnName();
 		$unit = $field->getData()->getUnit();
 		if ($unit->getType() === "DATE") {
 			if ($unit->getUnit() === "DateTime") {
@@ -936,17 +936,20 @@ class GenericService {
 				AND fm.srcFormat = ff.format
 				AND fm.dstFormat = :format
 				AND fm.dstData = :data";
-		$formField = $this->metadataModel->createQuery($req)
+		
+		$formField = $this->metadataModel
+			->createQuery($req)
 			->setParameters(array(
-			'format' => $tableField->getFormat()
-				->getFormat(),
-			'data' => $tableField->getData()
-				->getData()
-		))
-			->getOneOrNullResult();
-		foreach($formField as $row){
-			if(is_string($row)){
-				$this->logger->debug($row);
+				'format' => $tableField->getFormat()->getFormat(),
+				'data' => $tableField->getData()->getData()
+			))
+			->getOneOrNullResult()
+		;
+		if ($formField) {
+			foreach($formField as $row){
+				if(is_string($row)){
+					$this->logger->debug($row);
+				}
 			}
 		}
 
@@ -1008,7 +1011,7 @@ class GenericService {
 		// Prepare the list of needed tables
 		$tables = array();
 		foreach ($fieldsMappings as $fieldMapping) {
-			$TableFormat = $fieldMapping->getDstField()->getFormat();
+			$TableFormat = $fieldMapping->getDstField()->getFormat()->getFormat();
 			if (!array_key_exists($TableFormat, $tables)) {
 	
 				// Get the ancestors of the table
@@ -1018,7 +1021,7 @@ class GenericService {
 				// The root table (LOCATION) should appear first
 				$ancestors = array_reverse($ancestors);
 				foreach ($ancestors as $ancestor) {
-					$tables[$ancestor->getTableFormat()->getFormat()] = $ancestor;
+					$tables[$ancestor->getChildTable()->getFormat()->getFormat()] = $ancestor;
 				}
 			}
 		}
@@ -1059,16 +1062,16 @@ class GenericService {
 		$leafTable = array_shift($reversedTable);
 	
 		// Get the root table fields
-		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schema, $rootTable->getTableFormat()
+		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schema, $rootTable->getChildTable()
 			->getFormat(), null, $this->locale);
 		$hasColumnProviderAndUser = array_key_exists('PROVIDER_ID', $rootTableFields) && array_key_exists('USER_LOGIN', $rootTableFields);
 	
 		// Add the id column
-		$uniqueId = "'SCHEMA/" . $schema . "/FORMAT/" . $leafTable->getTableFormat()->getFormat() . "'";
-		$keys = $leafTable->getTableFormat()->getPrimaryKeys();
+		$uniqueId = "'SCHEMA/" . $schema . "/FORMAT/" . $leafTable->getChildTable()->getFormat() . "'";
+		$keys = $leafTable->getChildTable()->getPrimaryKeys();
 		foreach ($keys as $key) {
 			// Concatenate the column to create a unique Id
-			$uniqueId .= " || '/' || '" . $key . "/' ||" . $leafTable->getTableFormat()->getFormat() . "." . $key;
+			$uniqueId .= " || '/' || '" . $key . "/' ||" . $leafTable->getChildTable()->getFormat() . "." . $key;
 		}
 		$select .= ", " . $uniqueId . " as id";
 	
@@ -1078,8 +1081,8 @@ class GenericService {
 	
 		// Add the provider id and user login columns
 		if (!$userInfos['EDIT_DATA_ALL'] && $hasColumnProviderAndUser) {
-			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".provider_id as _provider_id";
-			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".user_login as _user_login";
+			$select .= ", " . $leafTable->getChildTable()->getFormat() . ".provider_id as _provider_id";
+			$select .= ", " . $leafTable->getChildTable()->getFormat() . ".user_login as _user_login";
 		}
 	
 		// Return the completed SQL request
@@ -1107,7 +1110,7 @@ class GenericService {
 	
 		// Add the root table;
 		$rootTable = array_shift($tables);
-		$from = " FROM " . $rootTable->getTableFormat()->getTableName() . " " . $rootTable->getTableFormat()->getFormat();
+		$from = " FROM " . $rootTable->getChildTable()->getTableName() . " " . $rootTable->getChildTable()->getFormat();
 	
 		// Add the joined tables
 		$i = 0;
@@ -1115,12 +1118,12 @@ class GenericService {
 			$i ++;
 				
 			// Join the table
-			$from .= " JOIN " . $tableTreeData->getTableFormat()->getTableName() . " " . $tableTreeData->getTableFormat()->getFormat() . " on (";
+			$from .= " JOIN " . $tableTreeData->getChildTable()->getTableName() . " " . $tableTreeData->getChildTable()->getFormat() . " on (";
 				
 			// Add the join keys
 			$keys = $tableTreeData->getJoinKeys();
 			foreach ($keys as $key) {
-				$from .= $tableTreeData->getTableFormat()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTableFormat()->getFormat() . "." . trim($key) . " AND ";
+				$from .= $tableTreeData->getChildTable()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTable()->getFormat() . "." . trim($key) . " AND ";
 			}
 			$from = substr($from, 0, -5);
 			$from .= ") ";
@@ -1150,7 +1153,7 @@ class GenericService {
 		$rootTable = array_shift($tables);
 	
 		// Get the root table fields
-		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schemaCode, $rootTable->getTableFormat()
+		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schemaCode, $rootTable->getChildTable()
 			->getFormat(), null, $this->locale);
 		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
 	
@@ -1166,7 +1169,7 @@ class GenericService {
 		// Right management
 		// Check the provider id of the logged user
 		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider) {
-			$where .= " AND " . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId']->getId() . "'";
+			$where .= " AND " . $rootTable->getChildTable()->getFormat() . ".provider_id = '" . $userInfos['providerId']->getId() . "'";
 		}
 	
 		// Return the completed SQL request
@@ -1190,9 +1193,9 @@ class GenericService {
 		$tables = $this->getAllFormats($schema, $mappingSet->getFieldMappingArray());
 		$leafTable = array_pop($tables);
 	
-		$keys = $leafTable->getTableFormat()->getPrimaryKeys();
+		$keys = $leafTable->getChildTable()->getPrimaryKeys();
 		foreach ($keys as $index => $key) {
-			$keys[$index] = $leafTable->getTableFormat()->getFormat() . "." . $key;
+			$keys[$index] = $leafTable->getChildTable()->getFormat() . "." . $key;
 		}
 	
 		return implode(',', $keys);
@@ -1233,16 +1236,16 @@ class GenericService {
 		$leafTable = array_shift($reversedTable);
 
 		// Get the root table fields
-		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schema, $rootTable->getTableFormat()
+		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schema, $rootTable->getChildTable()
 			->getFormat(), null, $this->locale);
 		$hasColumnProviderAndUser = array_key_exists('PROVIDER_ID', $rootTableFields) && array_key_exists('USER_LOGIN', $rootTableFields);
 
 		// Add the id column
-		$uniqueId = "'SCHEMA/" . $schema . "/FORMAT/" . $leafTable->getTableFormat()->getFormat() . "'";
-		$keys = $leafTable->getTableFormat()->getPrimaryKeys();
+		$uniqueId = "'SCHEMA/" . $schema . "/FORMAT/" . $leafTable->getChildTable()->getFormat() . "'";
+		$keys = $leafTable->getChildTable()->getPrimaryKeys();
 		foreach ($keys as $key) {
 			// Concatenate the column to create a unique Id
-			$uniqueId .= " || '/' || '" . $key . "/' ||" . $leafTable->getTableFormat()->getFormat() . "." . $key;
+			$uniqueId .= " || '/' || '" . $key . "/' ||" . $leafTable->getChildTable()->getFormat() . "." . $key;
 		}
 		$select .= ", " . $uniqueId . " as id";
 
@@ -1252,8 +1255,8 @@ class GenericService {
 
 		// Add the provider id and user login columns
 		if (!$userInfos['EDIT_DATA_PROVIDER'] && $hasColumnProviderAndUser) {
-			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".provider_id as _provider_id";
-			$select .= ", " . $leafTable->getTableFormat()->getFormat() . ".user_login as _user_login";
+			$select .= ", " . $leafTable->getChildTable()->getFormat() . ".provider_id as _provider_id";
+			$select .= ", " . $leafTable->getChildTable()->getFormat() . ".user_login as _user_login";
 		}
 		
 		// Add the hiding level (for filtering possible sensible results)
@@ -1292,8 +1295,8 @@ class GenericService {
 
 		// Add the root table;
 		$rootTable = array_shift($tables);
-		$rootTableName = $rootTable->getTableFormat()->getTableName();
-		$rootTableFormat = $rootTable->getTableFormat()->getFormat();
+		$rootTableName = $rootTable->getChildTable()->getTableName();
+		$rootTableFormat = $rootTable->getChildTable()->getFormat()->getFormat();
 		$from = " FROM " . $rootTableName . " " . $rootTableFormat;
 
 		// Add results table
@@ -1313,12 +1316,12 @@ class GenericService {
 			$i ++;
 
 			// Join the table
-			$from .= " JOIN " . $tableTreeData->getTableFormat()->getTableName() . " " . $tableTreeData->getTableFormat()->getFormat() . " on (";
+			$from .= " JOIN " . $tableTreeData->getChildTable()->getTableName() . " " . $tableTreeData->getChildTable()->getFormat() . " on (";
 
 			// Add the join keys
 			$keys = $tableTreeData->getJoinKeys();
 			foreach ($keys as $key) {
-				$from .= $tableTreeData->getTableFormat()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTableFormat()->getFormat() . "." . trim($key) . " AND ";
+				$from .= $tableTreeData->getChildTable()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTable()->getFormat() . "." . trim($key) . " AND ";
 			}
 			$from = substr($from, 0, -5);
 			$from .= ") ";
@@ -1347,7 +1350,7 @@ class GenericService {
 		$rootTable = array_shift($tables);
 
 		// Get the root table fields
-		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schemaCode, $rootTable->getTableFormat()
+		$rootTableFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schemaCode, $rootTable->getChildTable()
 			->getFormat(), null, $this->locale);
 
 		$hasColumnProvider = array_key_exists('PROVIDER_ID', $rootTableFields);
@@ -1373,7 +1376,7 @@ class GenericService {
 		// If the user role has not the permission to see unpublished data of other provider (ie has not DATA_QUERY_OTHER_PROVIDER), he can see his own datas or other providers published datas
 		// Users under Defaut organism are considered under different organisms (warning: provider.id for Defaut organism must be 1 in database)
 		if (!$userInfos['DATA_QUERY_OTHER_PROVIDER'] && $hasColumnProvider) {
-			$where .= " AND ((" . $rootTable->getTableFormat()->getFormat() . ".provider_id = '" . $userInfos['providerId']->getId() . "' AND '" . $userInfos['providerId']->getId() . "' != '1') OR submission.step='VALIDATE')";
+			$where .= " AND ((" . $rootTable->getChildTable()->getFormat() . ".provider_id = '" . $userInfos['providerId']->getId() . "' AND '" . $userInfos['providerId']->getId() . "' != '1') OR submission.step='VALIDATE')";
 		}
 
 		// Return the completed SQL request
@@ -1428,19 +1431,19 @@ class GenericService {
 		$ancestorsValue = array_values($ancestorsToGeometry);
 		$requestedTable = array_shift($ancestorsValue);
 
-		$logicalName = $requestedTable->getTableFormat()->getFormat();
+		$logicalName = $requestedTable->getChildTable()->getFormat();
 
-		$from = " FROM " . $requestedTable->getTableFormat()->getTableName() . " " . $logicalName;
+		$from = " FROM " . $requestedTable->getChildTable()->getTableName() . " " . $logicalName;
 
 		// Add the joined tables (when there is ancestors)
 		foreach ($ancestorsToGeometry as $tableTreeData) {
-			if ($tableTreeData->getParentTableFormat()->getFormat() != '*') {
-				$parentTableName = $ancestorsToGeometry[$tableTreeData->getParentTableFormat()]->getTableName();
-				$from .= " JOIN " . $parentTableName . " " . $tableTreeData->getParentTableFormat()->getFormat() . " on (";
+			if ($tableTreeData->getParentTable() != null) {
+				$parentTableName = $ancestorsToGeometry[$tableTreeData->getParentTable()]->getTableName();
+				$from .= " JOIN " . $parentTableName . " " . $tableTreeData->getParentTable()->getFormat() . " on (";
 				// Add the join keys
-				$keys = explode(',', $tableTreeData->getTableFormat()->getPrimaryKeys());
+				$keys = explode(',', $tableTreeData->getChildTable()->getPrimaryKeys());
 				foreach ($keys as $key) {
-					$from .= $tableTreeData->getTableFormat()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTableFormat()->getFormat() . "." . trim($key) . " AND ";
+					$from .= $tableTreeData->getChildTable()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTable()->getFormat() . "." . trim($key) . " AND ";
 				}
 				$from = substr($from, 0, -5);
 				$from .= ") ";
@@ -1452,7 +1455,7 @@ class GenericService {
 		$geometryTable = array_pop($ancestorsValue);
 
 		$geometryTableFormat = $tableFormatRepo->findOneBy(array(
-			'format' => $geometryTable->getTableFormat()
+			'format' => $geometryTable->getChildTable()
 				->getFormat()
 		));
 		$geometryTableFormatKeys = $geometryTableFormat->getPrimaryKeys();
@@ -1461,7 +1464,7 @@ class GenericService {
 				$geometryTablePKeyId = trim($geometryKey);
 			}
 		}
-		$from .= " LEFT JOIN mapping.results ON results.id_observation = " . $geometryTable->getTableFormat()->getFormat() . "." . $geometryTablePKeyId . " AND results.id_provider = " . $geometryTable->getTableFormat()->getFormat() . ".provider_id";
+		$from .= " LEFT JOIN mapping.results ON results.id_observation = " . $geometryTable->getChildTable()->getFormat() . "." . $geometryTablePKeyId . " AND results.id_provider = " . $geometryTable->getChildTable()->getFormat() . ".provider_id";
 
 		$this->logger->debug('getJoinToGeometryTable :' . $from);
 		return $from;
@@ -1482,7 +1485,7 @@ class GenericService {
 
 		while ($ĥasGeometryColumn != 1) {
 			$ancestor = array_shift($ancestors);
-			$ancestorsToGeometry[$ancestor->getTableFormat()->getTableName()] = $ancestor;
+			$ancestorsToGeometry[$ancestor->getChildTable()->getTableName()] = $ancestor;
 
 			$req = " SELECT 1 as has_geometry ";
 			$req .= " FROM INFORMATION_SCHEMA.COLUMNS ";
@@ -1494,7 +1497,7 @@ class GenericService {
 
 			$conn = $this->metadataModel->getConnection();
 			$results = $conn->fetchAll($req, array(
-				$ancestor->getTableFormat()->getTableName(),
+				$ancestor->getChildTable()->getTableName(),
 				strtolower($schema)
 			));
 
@@ -1607,7 +1610,7 @@ class GenericService {
 			// Add the colums description
 			foreach ($formFields as $field) {
 				// Set the column model and the location fields
-				$dataIndex = $firstData->getTableFormat()->getFormat() . '__' . $field->getData();
+				$dataIndex = $firstData->getChildTable()->getFormat() . '__' . $field->getData();
 	
 				$column = array(
 					'header' => $field->getMetadata()
@@ -1630,13 +1633,13 @@ class GenericService {
 				
 			// Check if the table has a child table
 			$hasChild = false;
-			$children = $this->metadataModel->getRepository(TableTree::class)->getChildrenTableLabels($firstData->getTableFormat());
+			$children = $this->metadataModel->getRepository(TableTree::class)->getChildrenTableLabels($firstData->getChildTable());
 			if (!empty($children)) {
 				$hasChild = true;
 			}
 			$out = Array();
 			$out['id'] = $id;
-			$out['title'] = $firstData->getTableFormat()->getLabel() . ' (' . count($locationsData) . ')';
+			$out['title'] = $firstData->getChildTable()->getLabel() . ' (' . count($locationsData) . ')';
 			$out['hasChild'] = $hasChild;
 			$out['columns'] = array_values($columns);
 			$out['fields'] = array_values($locationFields);

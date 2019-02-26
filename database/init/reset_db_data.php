@@ -41,7 +41,6 @@ $initDir = dirname(__FILE__);
 echo ("Réinitialisation des schémas metadata (_work) et website à jour de la base de données\n");
 
 system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata");
-system("php $initDir/metadata/import_metadata_from_csv.php $paramStr -Dschema=metadata_work");
 
 execCustSQLFile("$initDir/3-Update_application_parameters_tpl.sql", $config);
 execCustSQLFile("$initDir/3-Update_predefined_requests.sql", $config);

@@ -1758,7 +1758,7 @@ public class MetadataDAO {
 					String childTable = rs.getString("child_table");
 					table.setTable(getTableFormat(childTable));
 					String parentTable = rs.getString("parent_table");
-					if (!parentTable.equals("*")) {
+					if (parentTable != null) {
 						table.setParentTable(getTableFormat(parentTable));
 					}
 					String keys = rs.getString("join_key");

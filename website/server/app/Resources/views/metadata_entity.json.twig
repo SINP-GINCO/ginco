@@ -2,8 +2,8 @@
 {%- block form_format -%}
 {% autoescape false %}
 {
-"id":{{ form.format|json_encode }},
-"format":{{ form.format|json_encode }},
+"id":{{ form.format.format|json_encode }},
+"format":{{ form.format.format|json_encode }},
 "label":{{ form.label|json_encode }},
 "definition":{{ form.definition|json_encode }},
 "position":{{ form.position|json_encode }},
@@ -28,7 +28,7 @@
 {% autoescape false %}
 {
 "id":{{ field.id|json_encode }},
-"format":{{ field.format.format|json_encode }},
+"format":{{ field.format.format.format|json_encode }},
 "is_criteria":{{ field.isCriteria|json_encode }},
 "is_result":{{ field.isResult|json_encode }},
 "input_type":{{ field.inputType|json_encode }},

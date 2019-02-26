@@ -34,7 +34,7 @@ services:
 
     app.modelpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication
-        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        arguments: ["@doctrine.orm.metadata_entity_manager", "@logger", "%database_admin_user%", "%database_admin_password%"]
         calls:
               - [setTablesGeneration, ['@app.tablesgeneration']]
               - [setCopyUtils, ['@app.copyutils']]
@@ -43,19 +43,19 @@ services:
 
     app.modelunpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelUnpublication
-        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        arguments: ["@doctrine.orm.metadata_entity_manager", "@logger", "%database_admin_user%", "%database_admin_password%"]
         tags:
           - { name: monolog.logger, channel: ginco }
         
     app.importmodelpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication
-        arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        arguments: ["@doctrine.orm.metadata_entity_manager", "@logger", "%database_admin_user%", "%database_admin_password%"]
         tags:
           - { name: monolog.logger, channel: ginco }
         
     app.importmodelunpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelUnpublication
-        arguments: ["@database_connection", "@logger"]
+        arguments: ["@doctrine.orm.metadata_entity_manager", "@logger"]
         tags:
           - { name: monolog.logger, channel: ginco }
         

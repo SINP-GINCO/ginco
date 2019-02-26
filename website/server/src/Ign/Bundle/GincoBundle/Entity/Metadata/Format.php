@@ -4,21 +4,34 @@ namespace Ign\Bundle\GincoBundle\Entity\Metadata;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\FormatInterface;
+
 /**
  * Represent an abstract Format.
  *
- * @ORM\MappedSuperclass
+ * @ORM\Table(name="metadata.format")
+ * @ORM\Entity
  */
-class Format {
+class Format implements FormatInterface {
 
 	/**
 	 * The format identifier.
 	 * (Must stay private to pass the entity validation)
 	 * 
-	 * @var string @ORM\Id
-	 *      @ORM\Column(name="format", type="string", length=36, unique=true)
+	 * @var string 
+	 * 
+	 * @ORM\Id
+	 * @ORM\Column(name="format", type="string", length=36, unique=true)
 	 */
-	private $format;
+	protected $format;
+	
+	/**
+	 *
+	 * @var string 
+	 * 
+	 * @ORM\Column(name="type",type="string", length=36, nullable=false)
+	 */
+	protected $type;
 
 	protected $fields;
 
@@ -29,6 +42,10 @@ class Format {
 		$this->fields = new ArrayCollection();
 	}
 
+	public function __toString() {
+		return $this->format;
+	}
+	
 	/**
 	 * Set format
 	 *
@@ -49,6 +66,27 @@ class Format {
 	 */
 	public function getFormat() {
 		return $this->format;
+	}
+	
+		/**
+	 * Set type
+	 *
+	 * @param string $type
+	 * @return Format
+	 */
+	public function setType($type) {
+		$this->type = $type;
+
+		return $this;
+	}
+
+	/**
+	 * Get type
+	 *
+	 * @return string
+	 */
+	public function getType() {
+		return $this->type;
 	}
 
 	/**

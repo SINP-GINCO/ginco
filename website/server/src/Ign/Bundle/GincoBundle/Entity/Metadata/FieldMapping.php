@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * FieldMapping
  *
  * @ORM\Table(name="metadata.field_mapping")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\Metadata\FieldMappingRepository")
  * @UniqueEntity(fields = {"dstData", "dstFormat", "srcFormat"}, message = "fieldMapping.unique")
  */
 class FieldMapping {

@@ -224,11 +224,11 @@ class CopyUtils extends CopyUtilsBase {
 	public function createFormFields($modelId, $datasetId, $dbconn) {
 		// Find all table_field of the model
 		$sql = "SELECT tfo.schema_code, tfo.format, tfi.data, d.label, u.type, u.subtype
-				FROM metadata_work.table_format tfo
-				INNER JOIN metadata_work.model_tables mt ON mt.table_id = tfo.format
-				INNER JOIN metadata_work.table_field tfi ON tfi.format = tfo.format
-				INNER JOIN metadata_work.data d ON d.data = tfi.data
-				INNER JOIN metadata_work.unit u ON d.unit = u.unit
+				FROM metadata.table_format tfo
+				INNER JOIN metadata.model_tables mt ON mt.table_id = tfo.format
+				INNER JOIN metadata.table_field tfi ON tfi.format = tfo.format
+				INNER JOIN metadata.data d ON d.data = tfi.data
+				INNER JOIN metadata.unit u ON d.unit = u.unit
 				WHERE mt.model_id = $1
 				ORDER BY d.label"; // order by : fields will appear in alphabetical order in ogam
 		pg_prepare($dbconn, "", $sql);
@@ -239,8 +239,8 @@ class CopyUtils extends CopyUtilsBase {
 
 		// Find all table_format of the model.
 		$sql = "SELECT tfo.format, tfo.label
-				FROM metadata_work.table_format tfo
-				INNER JOIN metadata_work.model_tables mt ON mt.table_id = tfo.format
+				FROM metadata.table_format tfo
+				INNER JOIN metadata.model_tables mt ON mt.table_id = tfo.format
 				WHERE mt.model_id = $1
 				ORDER BY tfo.format";
 		pg_prepare($dbconn, "", $sql);

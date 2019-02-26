@@ -3,13 +3,18 @@ namespace Ign\Bundle\GincoBundle\Entity\Metadata;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\Data;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Field;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FieldInterface;
+
 /**
  * TableField
  *
  * @ORM\Table(name="metadata.table_field")
  * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\Metadata\TableFieldRepository")
  */
-class TableField extends Field {
+class TableField implements FieldInterface {
 
 	/**
 	 *
@@ -19,25 +24,25 @@ class TableField extends Field {
 
 	/**
 	 *
-	 * @var bool @ORM\Column(name="is_calculated", type="boolean", nullable=true)
+	 * @var bool @ORM\Column(name="is_calculated", type="string", length=1, nullable=true)
 	 */
 	private $isCalculated;
 
 	/**
 	 *
-	 * @var bool @ORM\Column(name="is_editable", type="boolean", nullable=true)
+	 * @var bool @ORM\Column(name="is_editable", type="string", length=1, nullable=true)
 	 */
 	private $isEditable;
 
 	/**
 	 *
-	 * @var bool @ORM\Column(name="is_insertable", type="boolean", nullable=true)
+	 * @var bool @ORM\Column(name="is_insertable", type="string", length=1, nullable=true)
 	 */
 	private $isInsertable;
 
 	/**
 	 *
-	 * @var bool @ORM\Column(name="is_mandatory", type="boolean", nullable=true)
+	 * @var bool @ORM\Column(name="is_mandatory", type="string", length=1, nullable=true)
 	 */
 	private $isMandatory;
 
@@ -52,15 +57,28 @@ class TableField extends Field {
 	 * @var integer @ORM\Column(name="comment", type="text", nullable=true)
 	 */
 	private $comment;
-
+	
 	/**
 	 *
-	 * @var Format @ORM\Id
-	 *      @ORM\ManyToOne(targetEntity="TableFormat")
-	 *      @ORM\JoinColumns({@ORM\JoinColumn(name="format", referencedColumnName="format")})
+	 * @var Data
+	 * 
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="Data")
+	 * @ORM\JoinColumn(name="data", referencedColumnName="data")
+	 */
+	protected $data;
+	
+	
+	/**
+	 *
+	 * @var TableFormat
+	 * 
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="TableFormat", inversedBy="fields")
+	 * @ORM\JoinColumn(name="format", referencedColumnName="format")
 	 */
 	protected $format;
-
+	
 	/**
 	 * Set columnName
 	 *
@@ -102,7 +120,7 @@ class TableField extends Field {
 	 * @return bool
 	 */
 	public function getIsCalculated() {
-		return $this->isCalculated;
+		return boolval($this->isCalculated);
 	}
 
 	/**
@@ -124,7 +142,7 @@ class TableField extends Field {
 	 * @return bool
 	 */
 	public function getIsEditable() {
-		return $this->isEditable;
+		return boolval($this->isEditable);
 	}
 
 	/**
@@ -146,7 +164,7 @@ class TableField extends Field {
 	 * @return bool
 	 */
 	public function getIsInsertable() {
-		return $this->isInsertable;
+		return boolval($this->isInsertable);
 	}
 
 	/**
@@ -168,7 +186,7 @@ class TableField extends Field {
 	 * @return bool
 	 */
 	public function getIsMandatory() {
-		return $this->isMandatory;
+		return boolval($this->isMandatory);
 	}
 
 	/**
@@ -203,6 +221,75 @@ class TableField extends Field {
 	public function setComment($comment) {
 		$this->comment = $comment;
 		return $this;
+	}
+
+	
+	/**
+	 * Set data
+	 * @param \Ign\Bundle\GincoBundle\Entity\Metadata\Data $data
+	 * @return $this
+	 */
+	public function setData(Data $data) {
+		$this->data = $data ;
+		return $this ;
+	}
+
+	/**
+	 * Get data
+	 *
+	 * @return Data
+	 */
+	public function getData() {
+		return $this->data;
+	}
+	
+	
+	/**
+	 * Set data
+	 * @param $format
+	 * @return $this
+	 */
+	public function setFormat($format) {
+		$this->format = $format ;
+		return $this ;
+	}
+	
+	/**
+	 * Get format
+	 * @return TableFormat
+	 */
+	public function getFormat() {
+		return $this->format ;
+	}
+	
+
+	
+	public function getType() {
+		return $this->data->getUnit()->getType() ;
+	}
+
+	
+	/**
+	 * Return the unique identifier of the field.
+	 * ATTENTION : DUPLIQUE DEPUIS ENTITE Field
+	 *
+	 * @return String the identifier of the field
+	 */
+	function getName() {
+		return $this->getFormat()->getFormat()->getFormat() . '__' . $this->getData()->getData();
+	}
+	
+	/**
+	 * Return the label.
+	 *
+	 * @return String the label
+	 */
+	function getLabel() {
+		if (isset($this->label)) {
+			return $this->label;
+		} else {
+			return $this->getData()->getLabel();
+		}
 	}
 }
 

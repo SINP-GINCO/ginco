@@ -105,7 +105,7 @@ datamodel:
       4: <p>Souhaitez-vous vraiment supprimer le modèle de données %model.name% ?</p>
   edit:
     title: Edition du modèle %name%
-    warning: Pour modifier le modèle, il doit d'abord être dépublié. Pour valider vos modifications en production, vous devrez donc le publier à nouveau en production. Souhaitez-vous dépublier le modèle ?
+    warning: Pour modifier le modèle, il doit d'abord être dépublié. Pour valider vos modifications en production, vous devrez donc le publier à nouveau en production.
     published: Le modèle %modelName% ne peut être modifié car il est publié.
     impossible: Le modèle ne peut être modifié car il contient des données en production.
     files: Attention, la modification du modèle %modelName% entraînera la suppression d'éventuels champs des fichiers d'import liés à ce modèle.

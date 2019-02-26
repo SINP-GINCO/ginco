@@ -118,7 +118,7 @@ class DEEGenerator {
 		$queryForm = new QueryForm();
 
 		// Get all table fields for model
-		$tableFields = $this->em->getRepository('IgnGincoBundle:Metadata\TableField')->getTableFieldsForModel($model->getId());
+		$tableFields = $this->em->getRepository('IgnGincoBundle:Metadata\TableField')->getTableFieldsForModel($model);
 		// Get all Form Fields for Model
 		$formFields = $this->em->getRepository('IgnGincoBundle:Metadata\FormField')->getFormFieldsFromModel($model->getId());
 

@@ -3,13 +3,36 @@ namespace Ign\Bundle\GincoBundle\Entity\Metadata;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\Data;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FieldInterface;
+
 /**
  * FormField
  *
  * @ORM\Table(name="metadata.form_field")
  * @ORM\Entity(repositoryClass="Ign\Bundle\GincoBundle\Repository\Metadata\FormFieldRepository")
  */
-class FormField extends Field implements \JsonSerializable {
+class FormField implements \JsonSerializable, FieldInterface {
+	
+	/**
+	 *
+	 * @var Data 
+	 * 
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="Data", inversedBy="fields")
+	 * @ORM\JoinColumn(name="data", referencedColumnName="data")
+	 */
+	protected $data;
+
+	/**
+	 *
+	 * @var FormFormat 
+	 * 
+	 * @ORM\Id
+	 * @ORM\ManyToOne(targetEntity="FormFormat", inversedBy="fields")
+	 * @ORM\JoinColumn(name="format", referencedColumnName="format")
+	 */
+	protected $format;
 
 	/**
 	 *
@@ -65,6 +88,43 @@ class FormField extends Field implements \JsonSerializable {
 	 */
 	private $mask;
 
+	
+	/**
+	 * Get data
+	 * @return Data
+	 */
+	public function getData() {
+		return $this->data ;
+	}
+	
+	/**
+	 * Set Data
+	 * @param Data $data
+	 * @return $this
+	 */
+	public function setData(Data $data) {
+		$this->data = $data ;
+		return $this ;
+	}
+	
+	/**
+	 * Get format
+	 * @return FormFormat
+	 */
+	public function getFormat() {
+		return $this->format;
+	}
+	
+	/**
+	 * Set format
+	 * @param FormFormat $format
+	 * @return $this
+	 */
+	public function setFormat($format) {
+		$this->format = $format;
+		return $this ;
+	}
+	
 	/**
 	 * Set isCriteria
 	 *
@@ -282,7 +342,30 @@ class FormField extends Field implements \JsonSerializable {
 	 * @return string
 	 */
 	public function getId() {
-		return $this->format->getFormat() . '__' . $this->data->getData();
+		$id = $this->format->getFormat()->getFormat() . '__' . $this->data->getData();
+		return $id ;
+	}
+	
+	/**
+	 * Return the unique identifier of the field.
+	 *
+	 * @return String the identifier of the field
+	 */
+	function getName() {
+		return $this->getId() ;
+	}
+	
+	/**
+	 * Return the label.
+	 *
+	 * @return String the label
+	 */
+	function getLabel() {
+		if (isset($this->label)) {
+			return $this->label;
+		} else {
+			return $this->getData()->getLabel();
+		}
 	}
 
 	/**
@@ -294,7 +377,7 @@ class FormField extends Field implements \JsonSerializable {
 		return [
 			'id' => $this->getId(),
 			'data' => $this->data->getData(),
-			'format' => $this->format->getFormat(),
+			'format' => $this->format->getFormat()->getFormat(),
 			'is_criteria' => $this->isCriteria,
 			'is_result' => $this->isResult,
 			'input_type' => $this->inputType,

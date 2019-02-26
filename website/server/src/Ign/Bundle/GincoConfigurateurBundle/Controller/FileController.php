@@ -2,13 +2,6 @@
 namespace Ign\Bundle\GincoConfigurateurBundle\Controller;
 
 use Ign\Bundle\OGAMConfigurateurBundle\Controller\FileController as FileControllerBase;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Field;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileField;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\FileFormat;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Format;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\FileFieldAutoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,9 +21,9 @@ class FileController extends FileControllerBase {
 	 *         Automatically adds fields to the file (same fields as the ones in the chosen table)
 	 */
 	public function autoAction($datasetId, $fileFormat, Request $request) {
-		$em = $this->getDoctrine()->getManager('metadata_work');
+		$em = $this->getDoctrine()->getManager('metadata');
 
-		$dataset = $em->getRepository('IgnOGAMConfigurateurBundle:Dataset')->find($datasetId);
+		$dataset = $em->getRepository('IgnGincoBundle:Metadata\Dataset')->find($datasetId);
 
 		// Create Auto-Add-Fieldform
 		$formOptions = array(
@@ -45,8 +38,8 @@ class FileController extends FileControllerBase {
 
 		if ($autoAddFieldsForm->isValid()) {
 			$tableFormat = $autoAddFieldsForm->get('table_format')->getData()->getFormat();
-			$table = $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')->find($tableFormat);
-			$tableFields = $em->getRepository('IgnOGAMConfigurateurBundle:TableField')->findFieldsByTableFormat($tableFormat);
+			$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($tableFormat);
+			$tableFields = $em->getRepository('IgnGincoBundle:Metadata\TableField')->findFieldsByTableFormat($tableFormat);
 
 			// Get mandatory AND not calculated fields in table fields
 			$isMandatoryOnImport = function ($field) {
@@ -55,7 +48,7 @@ class FileController extends FileControllerBase {
 			$mandatoryOnImportFields = array_filter($tableFields, $isMandatoryOnImport);
 
 			
-			$fileFields = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findFieldsByFileFormat($fileFormat);
+			$fileFields = $em->getRepository('IgnGincoBundle:Metadata\FileField')->findFieldsByFileFormat($fileFormat);
 
 			// Add only mandatory fields ?
 			$mandatoryOnly = $autoAddFieldsForm->get('only_mandatory')->getData();
@@ -96,23 +89,23 @@ class FileController extends FileControllerBase {
 				'PROVIDER_ID',
 				'SUBMISSION_ID'
 			);
-			$technicalFields = array_merge($technicalFields, explode(',', $table->getPrimaryKey()));
+			$technicalFields = array_merge($technicalFields, $table->getPrimaryKeys());
 
 			$tableDatas = array_diff($tableDatas, $technicalFields);
 
 			$overwritedFieldsLabels = array();
 			foreach ($overwritedFields as $data) {
-				$overwritedFieldsLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
+				$overwritedFieldsLabels[] = $em->getRepository('IgnGincoBundle:Metadata\Data')
 					->find($data)
 					->getLabel();
 			}
 
 			// Generate a report
 			$report = array(
-				'fileLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:FileFormat')
+				'fileLabel' => $em->getRepository('IgnGincoBundle:Metadata\FileFormat')
 					->find($fileFormat)
 					->getLabel(),
-				'tableLabel' => $em->getRepository('IgnOGAMConfigurateurBundle:TableFormat')
+				'tableLabel' => $em->getRepository('IgnGincoBundle:Metadata\TableFormat')
 					->find($tableFormat)
 					->getLabel(),
 				'mandatoryOnly' => $mandatoryOnly,
@@ -125,7 +118,7 @@ class FileController extends FileControllerBase {
 
 			$fieldsToAddLabels = array();
 			foreach ($fieldsToAdd as $data) {
-				$fieldsToAddLabels[] = $em->getRepository('IgnOGAMConfigurateurBundle:Data')
+				$fieldsToAddLabels[] = $em->getRepository('IgnGincoBundle:Metadata\Data')
 					->find($data)
 					->getLabel();
 			}
@@ -148,9 +141,9 @@ class FileController extends FileControllerBase {
 			$mFields = array_intersect($fieldsToAdd, $mFields);
 
 			foreach ($mFields as $mfield) {
-				$fileField = $em->getRepository('IgnOGAMConfigurateurBundle:FileField')->findOneBy(array(
+				$fileField = $em->getRepository('IgnGincoBundle:Metadata\FileField')->findOneBy(array(
 					'data' => $mfield,
-					'fileFormat' => $fileFormat
+					'format' => $fileFormat
 				));
 				$fileField->setIsMandatory('1');
 			}

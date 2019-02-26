@@ -2,7 +2,7 @@
 {% form_theme datasetForm 'bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block title%}
-	{% trans with {'%modelName%': datasetLabel}%}breadcrumb.importmodel.edit{% endtrans %}
+	{% trans with {'%modelName%': dataset.label}%}breadcrumb.importmodel.edit{% endtrans %}
 {% endblock %}
 
 {% block breadcrumb %}
@@ -10,7 +10,7 @@
 		{% if route_exists('homepage') %}<li><a href="{{ path('homepage') }}">{%trans %}breadcrumb.home{% endtrans %}</a></li>{% endif %}
 		<li><a href="{{ path('configurateur_homepage') }}">{%trans %}breadcrumb.configurator{% endtrans %}</a></li>
 		<li><a href="{{ path('configurateur_dataset_import_index') }}">{%trans %}breadcrumb.importmodel.index{% endtrans %}</a></li>
-		<li class="active">{% trans with {'%modelName%': datasetLabel}%}breadcrumb.importmodel.edit{% endtrans %}</li>
+		<li class="active">{% trans with {'%modelName%': dataset.label}%}breadcrumb.importmodel.edit{% endtrans %}</li>
 	</ol>
 {% endblock breadcrumb %}
 
@@ -18,7 +18,7 @@
 <div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 id="panel-title" class="panel-title">{{
-			'importmodel.edit.title'|trans({'%labelDataset%': datasetLabel}) }}</h3>
+			'importmodel.edit.title'|trans({'%labelDataset%': dataset.label}) }}</h3>
 	</div>
 	<div class="panel-body">
 		{{ form(datasetForm) }}
@@ -33,7 +33,7 @@
 	</div>
 
 	<div class="panel-body">
-		{% if files|length != 0 %}
+		{% if dataset.files|length != 0 %}
 			<!-- File list table -->
 			<div id="file-div" class="panel-body col-md-12">
 				<table id="import-model-file-list-table" data-toggle="table"
@@ -51,7 +51,7 @@
 						</tr>
 					</thead>
 					<tbody class="sortable-table-body">
-						{% for file in files %}
+						{% for file in dataset.files %}
 							<tr>
 								<td data-format="{{ file.format }}" id="name">{{ file.label }} </td>
 								<td id="order" class="priority text-center">{{ file.position }}</td>
@@ -84,7 +84,7 @@
 									<div class="modal-dialog">
 										<div class="modal-content">
 											<div class="modal-body">
-												{% trans with {'%file.label%': file.label, '%datasetLabel%': datasetLabel} %}
+												{% trans with {'%file.label%': file.label, '%datasetLabel%': dataset.label} %}
 												file.delete.warning
 												{% endtrans %}
 											</div>

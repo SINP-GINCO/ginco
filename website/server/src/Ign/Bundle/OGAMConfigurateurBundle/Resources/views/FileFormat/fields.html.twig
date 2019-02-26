@@ -48,12 +48,11 @@
 				</thead>
 				<tbody>
 					{% for table in tableFields %}
-						{% if table.data[0:5] != 'OGAM_' and table.data != 'PROVIDER_ID'
-						and table.data != 'SUBMISSION_ID' %}
+						{% if table.data.data[0:5] != 'OGAM_' and table.data.data != 'PROVIDER_ID' and table.data.data != 'SUBMISSION_ID' %}
 							<tr>
 								<td></td>
-								<td id="name" class="hidden">{{ table.data }} [{{ table.type }}]</td>
-								<td id="label">{{ table.label }} [{{ table.type }}]</td>
+								<td id="name" class="hidden">{{ table.data.data }} [{{ table.type }}]</td>
+								<td id="label">{{ table.data.label }} [{{ table.type }}]</td>
 							</tr>
 						{% endif %}
 					{% endfor %}
