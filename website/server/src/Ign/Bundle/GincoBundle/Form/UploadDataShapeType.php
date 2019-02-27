@@ -43,7 +43,7 @@ class UploadDataShapeType extends AbstractType {
 				'constraints' => array(
 					new File(array(
 						'maxSize' => "${fileMaxSize}Mi",
-						'mimeTypes' => 'application/zip',
+						'mimeTypes' => ['application/zip'],
 						'mimeTypesMessage' => 'import.format.shp'
 					))
 				)
