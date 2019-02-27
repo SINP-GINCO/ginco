@@ -3,7 +3,7 @@ ALTER TABLE metadata.model ADD status varchar(12);
 ALTER TABLE metadata.model ADD published_at TIMESTAMP;
 ALTER TABLE metadata.dataset ADD status VARCHAR(12);
 
-UPDATE metadata.model SET status = 'published' ;
+UPDATE metadata.model SET status = 'published', published_at = now() ;
 UPDATE metadata.dataset SET status = 'published' WHERE "type" = 'IMPORT' ;
 
 -- Création d'un lien entre table_tree et table_format
