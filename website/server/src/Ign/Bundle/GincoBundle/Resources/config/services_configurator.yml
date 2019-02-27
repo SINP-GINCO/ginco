@@ -82,7 +82,7 @@ services:
 
     ign_ogamconfigurateur.validator.caseinsensitive:                               # Le nom du service
         class: Ign\Bundle\OGAMConfigurateurBundle\Validator\CaseInsensitiveValidator     # La classe du service, ici le validateur
-        arguments: ["@doctrine.orm.metadata_work_entity_manager"]              # Les données qu'on injecte au service : l'EntityManager
+        arguments: ["@doctrine.orm.metadata_entity_manager"]              # Les données qu'on injecte au service : l'EntityManager
         tags:
             - { name: validator.constraint_validator, alias: ign_ogamconfigurateur_caseinsensitive }  # C'est avec l'alias qu'on retrouve le service
 

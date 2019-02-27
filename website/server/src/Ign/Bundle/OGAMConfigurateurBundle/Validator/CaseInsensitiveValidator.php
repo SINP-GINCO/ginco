@@ -33,7 +33,7 @@ class CaseInsensitiveValidator extends ConstraintValidator {
 	 */
 	public function validate($entity, Constraint $constraint) {
 		$class = (new \ReflectionClass($entity))->getShortName();
-		$repository = $this->em->getRepository("IgnOGAMConfigurateurBundle:" . $class);
+		$repository = $this->em->getRepository("IgnGincoBundle:Metadata\\" . $class);
 
 		switch ($class) {
 			case 'Dataset':
