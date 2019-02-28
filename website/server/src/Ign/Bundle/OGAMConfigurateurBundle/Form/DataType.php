@@ -27,7 +27,7 @@ class DataType extends AbstractType {
 				'title' => 'data.label.tooltip'
 			)
 		))
-			->add('name', TextType::class, array(
+			->add('data', TextType::class, array(
 			'label' => 'ColumnName',
 			'attr' => array(
 				'data-toggle' => 'tooltip',
@@ -36,11 +36,12 @@ class DataType extends AbstractType {
 			)
 		))
 			->add('unit', EntityType::class, array(
-			'class' => 'IgnOGAMConfigurateurBundle:Unit',
+			'class' => 'IgnGincoBundle:Metadata\Unit',
+			'em' => 'metadata',
 			'placeholder' => 'Choose',
 			'query_builder' => function (EntityRepository $er) {
-				return $er->createQueryBuilder('d')
-					->orderBy('d.name', 'ASC');
+				return $er->createQueryBuilder('u')
+					->orderBy('u.unit', 'ASC');
 			},
 			'label' => 'Unit'
 		))

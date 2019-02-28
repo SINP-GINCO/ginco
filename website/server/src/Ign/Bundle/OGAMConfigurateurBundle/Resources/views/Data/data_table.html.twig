@@ -15,18 +15,18 @@
     <tbody>
 
     {% for entity in datas %}
-        {% if entity.name[0:5] != 'OGAM_' and entity.name != 'PROVIDER_ID' and entity.name !='SUBMISSION_ID' and entity.name != 'USER_LOGIN' %}
+        {% if entity.data[0:5] != 'OGAM_' and entity.data != 'PROVIDER_ID' and entity.data !='SUBMISSION_ID' and entity.data != 'USER_LOGIN' %}
             <tr>
-                <td class="name col-md-3 longtext" title="{{ entity.name }}">{{ entity.name }}</td>
+                <td class="name col-md-3 longtext" title="{{ entity.data }}">{{ entity.data }}</td>
                 <td class="col-md-3">{{ entity.label }}</td>
-                <td class="unit col-md-3 longtext" title="{{ entity.unit.name }}">{{ entity.unit.name }}</td>
+                <td class="unit col-md-3 longtext" title="{{ entity.unit.unit }}">{{ entity.unit.unit }}</td>
                 <td class="col-md-3">
                     {# Show Button #}
                     <a id="action-button" type="button" class="btn btn-default"
                        title="{% trans %}View{% endtrans %}"
                        data-toggle="modal" data-target="#show-modal"
                        href="#show-modal"
-                       data-load-remote="{{ path('configurateur_data_show', { 'id': entity.name }) }}"
+                       data-load-remote="{{ path('configurateur_data_show', { 'id': entity.data }) }}"
                         data-remote-target="#show-modal .modal-content">
                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                     </a>
@@ -35,12 +35,12 @@
                     {% if entity.editable %}
                         <a id="action-button" type="button" class="btn btn-default edit-button"
                            title="{% trans %}Edit{% endtrans %}"
-                           href="{{ path('configurateur_data_edit', { 'id': entity.name }) }}">
+                           href="{{ path('configurateur_data_edit', { 'id': entity.data }) }}">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                         </a>
                     {% else %}
                         <span class="badge"
-                              data-toggle="tooltip" title="{% trans with {'%dataName%':entity.name}%}data.edit.forbidden{% endtrans %}">
+                              data-toggle="tooltip" title="{% trans with {'%dataName%':entity.data}%}data.edit.forbidden{% endtrans %}">
                             ?
                         </span>
                     {% endif %}
@@ -62,7 +62,7 @@
                             <div class="modal-content">
 
                                 <div class="modal-body">
-                                    {% trans with {'%dataName%':entity.name}%}
+                                    {% trans with {'%dataName%':entity.data}%}
                                     data.delete.warning
                                     {% endtrans %}
                                 </div>
@@ -71,7 +71,7 @@
                                     <button type="button" class="btn btn-default"
                                             data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
                                     <a type="button" class="btn btn-primary"
-                                       href="{{ path('configurateur_data_delete', { 'id': entity.name }) }}">
+                                       href="{{ path('configurateur_data_delete', { 'id': entity.data }) }}">
                                         {% trans %}Confirm{% endtrans %} </a>
                                 </div>
                             </div>

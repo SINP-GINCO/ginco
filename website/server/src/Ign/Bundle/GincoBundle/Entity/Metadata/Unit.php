@@ -173,7 +173,7 @@ class Unit implements \JsonSerializable {
 	 * @return string
 	 */
 	public function __toString() {
-		return ($this->label) ? $this->name . ': ' . $this->label : $this->name;
+		return ($this->label) ? $this->unit . ': ' . $this->label : $this->unit;
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Data;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\DataType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -80,20 +80,20 @@ class DataController extends Controller {
 			if ($attachField) {
 				$this->addFlash('notice', $this->get('translator')
 					->trans('data.add.attachsuccess.table', array(
-					'%dataName%' => $entity->getName()
+					'%dataName%' => $entity->getData()
 				)));
 
 				return $this->redirectToRoute('configurateur_table_add_field', array(
 					'modelId' => $tableFormat->getModel()
 						->getId(),
 					'format' => $formatSubmitted,
-					'data'=> $entity->getName()
+					'data'=> $entity->getData()
 				));
 			} else			// Redirects to the Data Dictionnary index
 			{
 				$this->addFlash('notice', $this->get('translator')
 					->trans('data.add.success', array(
-					'%dataName%' => $entity->getName()
+					'%dataName%' => $entity->getData()
 				)));
 
 				return $this->redirectToRoute('configurateur_data_index');
@@ -218,7 +218,7 @@ class DataController extends Controller {
 		return $this->render('IgnOGAMConfigurateurBundle:Data:show.html.twig', array(
 			'title' => $this->get('translator')
 				->trans('data.show.title', array(
-				'%dataName%' => $entity->getName()
+				'%dataName%' => $entity->getData()
 			)),
 			'data' => $entity,
 			'tables' => $tables,
@@ -249,7 +249,7 @@ class DataController extends Controller {
 
 				$this->addFlash('notice', $this->get('translator')
 					->trans('data.edit.success', array(
-					'%dataName%' => $entity->getName()
+					'%dataName%' => $entity->getData()
 				)));
 
 				return $this->redirect($this->generateUrl('configurateur_data_index'));
@@ -257,7 +257,7 @@ class DataController extends Controller {
 		} else {
 			$this->addFlash('error', $this->get('translator')
 				->trans('data.edit.forbidden', array(
-				'%dataName%' => $entity->getName()
+				'%dataName%' => $entity->getData()
 			)));
 
 			return $this->redirectToRoute('configurateur_data_index');
@@ -281,9 +281,7 @@ class DataController extends Controller {
 	 */
 	private function createEditForm(Data $entity) {
 		$form = $this->createForm(DataType::class, $entity, array(
-			'action' => $this->generateUrl('configurateur_data_edit', array(
-				'id' => $entity->getId()
-			))
+			'action' => $this->generateUrl('configurateur_data_edit', array('id' => $entity->getData()))
 		));
 
 		$form->add('submit', SubmitType::class, array(
@@ -312,7 +310,7 @@ class DataController extends Controller {
 
 			$this->addFlash('notice', $this->get('translator')
 				->trans('data.delete.success', array(
-				'%dataName%' => $entity->getName()
+				'%dataName%' => $entity->getData()
 			)));
 
 			return $this->redirectToRoute('configurateur_data_index');
@@ -327,7 +325,7 @@ class DataController extends Controller {
 
 			$this->addFlash('error', $this->get('translator')
 				->trans('data.delete.forbidden', array(
-				'%dataName%' => $entity->getName(),
+				'%dataName%' => $entity->getData(),
 				'%fieldsFormat%' => implode(',', $fields_format)
 			)));
 
