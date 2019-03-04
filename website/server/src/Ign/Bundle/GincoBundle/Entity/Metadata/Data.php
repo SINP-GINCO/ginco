@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Unit;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Field;
 
 /**
  * Data
@@ -177,11 +178,11 @@ class Data implements \JsonSerializable {
 		/**
 	 * Add fields
 	 *
-	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields        	
+	 * @param Field $fields        	
 	 * @return Data
 	 */
-	public function addField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields) {
-		$this->fields[] = $fields;
+	public function addField(Field $field) {
+		$this->fields[] = $field;
 		
 		return $this;
 	}
@@ -189,10 +190,10 @@ class Data implements \JsonSerializable {
 	/**
 	 * Remove fields
 	 *
-	 * @param \Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields        	
+	 * @param Field $fields        	
 	 */
-	public function removeField(\Ign\Bundle\OGAMConfigurateurBundle\Entity\Field $fields) {
-		$this->fields->removeElement($fields);
+	public function removeField(Field $field) {
+		$this->fields->removeElement($field);
 	}
 
 	/**

@@ -33,7 +33,7 @@ class DEE
     /**
      * @var Jdd
 	 *
-	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\GincoBundle\Entity\RawData\Jdd")
+	 * @ORM\ManyToOne(targetEntity="Ign\Bundle\GincoBundle\Entity\RawData\Jdd", inversedBy="dees")
 	 * @ORM\JoinColumn(name="jdd_id", referencedColumnName="id")
 	 */
     private $jdd;
