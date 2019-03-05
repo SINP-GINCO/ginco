@@ -91,6 +91,14 @@ class Jdd {
 	 */
 	private $dataUpdatedAt;
 	
+	/**
+	 *
+	 * @var ArrayCollection
+	 * 
+	 * @ORM\OneToMany(targetEntity="DEE", mappedBy="jdd")
+	 */
+	private $dees ;
+	
 
 	/**
 	 * Constructor.
@@ -98,6 +106,7 @@ class Jdd {
 	public function __construct() {
 		$this->submissions = new ArrayCollection();
 		$this->fields = new ArrayCollection();
+		$this->dees = new ArrayCollection() ;
 	}
 
 	/**
@@ -382,6 +391,15 @@ class Jdd {
 	public function getDataUpdatedAt() {
 		return $this->dataUpdatedAt;
 	}
+	
+	/**
+	 * Get DEEs associated to this JDD
+	 * @return DEE[]
+	 */
+	public function getDees() {
+		return $this->dees ;
+	}
+	
 	
 	/*
 	 * ====================================================================
