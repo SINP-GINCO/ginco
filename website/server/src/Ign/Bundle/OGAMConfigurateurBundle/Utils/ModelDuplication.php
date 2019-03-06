@@ -3,9 +3,10 @@ namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Model;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+
+use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+
 use Monolog\Logger;
 
 /**
