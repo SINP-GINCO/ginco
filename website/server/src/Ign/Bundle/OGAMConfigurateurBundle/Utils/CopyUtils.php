@@ -3,8 +3,7 @@ namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\Connection;
 
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Data;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
 use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
 
 use Monolog\Logger;

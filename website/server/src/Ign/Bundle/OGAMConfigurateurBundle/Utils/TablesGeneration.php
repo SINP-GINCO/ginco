@@ -2,7 +2,7 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
+
 use Monolog\Logger;
 
 /**

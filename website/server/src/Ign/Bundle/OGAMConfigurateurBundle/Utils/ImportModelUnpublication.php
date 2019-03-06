@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\EntityManager;
 

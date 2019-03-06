@@ -1,7 +1,6 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface ;
 

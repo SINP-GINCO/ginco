@@ -1,17 +1,18 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\Dataset;
-use Ign\Bundle\OGAMConfigurateurBundle\Entity\TableFormat;
+use Doctrine\ORM\EntityManager;
+
+use Symfony\Component\Debug\Exception\ContextErrorException;
+
 use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
 
 use Monolog\Logger;
 
-use Symfony\Component\Debug\Exception\ContextErrorException;
 
-use Doctrine\ORM\EntityManager;
+
+
 
 /**
  * Utility class for publication of a model into a database.

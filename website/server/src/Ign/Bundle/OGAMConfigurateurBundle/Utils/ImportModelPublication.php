@@ -1,13 +1,10 @@
 <?php
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\EntityManager;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\GincoBundle\Entity\Metadata\FileField;
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableField;
 
 /**
