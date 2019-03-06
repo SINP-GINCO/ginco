@@ -477,7 +477,7 @@ class CopyUtils extends DatabaseUtils {
 		$modelName = $row['name'];
 
 		// Generates an id for the dataset with the same method as for other datasets (uniqid())
-		$datasetId = (new Dataset())->addId()->getId();
+		$datasetId = (new Dataset())->getId();
 
 		// Create a query Dataset in metadata ;
 		$definition = "Dataset de visualisation pour le modèle '$modelName '";
