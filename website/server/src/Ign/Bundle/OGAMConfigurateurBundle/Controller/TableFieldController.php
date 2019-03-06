@@ -36,9 +36,9 @@ class TableFieldController extends Controller {
 		$em->flush();
 
 		if ($dataField !== null) {
-			$tableField->setData($dataField->getName());
-			$tableField->setTableFormat($table->getFormat());
-			$tableField->setColumnName($dataField->getName());
+			$tableField->setData($dataField);
+			$tableField->setFormat($table->getFormat());
+			$tableField->setColumnName($dataField->getData());
 
 			$em->getRepository('IgnGincoBundle:Metadata\TableField')->findAll();
 			$em->merge($tableField);
