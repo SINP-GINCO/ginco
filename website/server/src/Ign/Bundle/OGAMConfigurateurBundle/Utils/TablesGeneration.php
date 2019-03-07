@@ -5,6 +5,8 @@ use Doctrine\DBAL\Connection;
 
 use Monolog\Logger;
 
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableField;
+
 /**
  * Utility class for table generation service.
  *
@@ -207,6 +209,26 @@ class TablesGeneration extends DatabaseUtils {
 		}
 	}
 
+	
+	/**
+	 * Ajoute une colonne à une table de modèle.
+	 * @param TableField $tableField
+	 */
+	public function addColumn(TableField $tableField) {
+		
+		$tableFormat = $tableField->getFormat() ;
+		$model = $tableFormat->getModel() ;
+		$unit = $tableField->getData()->getUnit() ;
+		
+		$schemaName = $model->getSchema()->getName() ;
+		$tableName = $tableFormat->getTableName() ;
+		$columnName = $tableField->getColumnName() ;
+		$columnType = $this->getPostgresTypeFromOgamType($unit->getType(), $unit->getUnit(), $columnName) ;
+		
+		$sql = "ALTER TABLE $schemaName.$tableName ADD COLUMN $columnName $columnType" ;
+		$this->conn->query($sql) ;
+	}
+	
 	/**
 	 *
 	 * Creates a geometry column if the table requires it.

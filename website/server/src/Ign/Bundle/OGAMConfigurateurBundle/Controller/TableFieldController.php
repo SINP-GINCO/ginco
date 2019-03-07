@@ -3,6 +3,7 @@ namespace Ign\Bundle\OGAMConfigurateurBundle\Controller;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Field;
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableField;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -27,23 +28,30 @@ class TableFieldController extends Controller {
 		$tableField = new TableField();
 		$field = new Field();
 		$dataField = $dataRepository->find($data);
+		
 		if ($dataField !== null) {
+			
 			$field->setData($dataField);
 			$field->setFormat($format);
 			$field->setType('TABLE');
-			$em->merge($field);
-		}
-		$em->flush();
+			$em->persist($field);
 
-		if ($dataField !== null) {
 			$tableField->setData($dataField);
-			$tableField->setFormat($table->getFormat());
+			$tableField->setFormat($table);
 			$tableField->setColumnName($dataField->getData());
 
 			$em->getRepository('IgnGincoBundle:Metadata\TableField')->findAll();
-			$em->merge($tableField);
+			$em->persist($tableField);
 		}
 		$em->flush();
+		
+		/* @var $model Model */
+		$model = $table->getModel() ;
+		if ($model->getPublishedAt() != null) {
+			// Le modèle a déjà été publié auparavant, la colone doit etre ajoutée à la table.
+			$tablesGeneration = $this->get('app.tablesgeneration') ;
+			$tablesGeneration->addColumn($tableField) ;
+		}
 
 		return $this->redirectToRoute('configurateur_table_fields', array(
 			'modelId' => $modelId,
@@ -62,26 +70,26 @@ class TableFieldController extends Controller {
 		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 
 		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
-		$format = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
+		$model = $table->getModel() ;
+		$tableFormat = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format) ;
 		$fields = $request->get('addedNames');
 
 		// Handle the name of the fields
 		$names = explode(",", $fields);
 		foreach ($names as $value) {
+			
 			$tableField = new TableField();
 			$field = new Field();
 			$dataField = $dataRepository->find($value);
+			
 			if ($dataField !== null) {
 				$field->setData($dataField);
-				$field->setFormat($format);
+				$field->setFormat($tableFormat->getFormat());
 				$field->setType('TABLE');
-				$em->merge($field);
-			}
-			$em->flush();
+				$em->persist($field);
 
-			if ($dataField !== null) {
 				$tableField->setData($dataField);
-				$tableField->setFormat($table->getFormat());
+				$tableField->setFormat($tableFormat);
 				$tableField->setColumnName($dataField->getData());
 
 				$dataFieldPrefix = substr($dataField->getData(), 0, 8);
@@ -128,11 +136,17 @@ class TableFieldController extends Controller {
 				$em->merge($tableField);
 			}
 			$em->flush();
+			
+			if ($model->getPublishedAt() != null) {
+				// Le modèle a déjà été publié auparavant, la colone doit etre ajoutée à la table.
+				$tablesGeneration = $this->get('app.tablesgeneration') ;
+				$tablesGeneration->addColumn($tableField) ;
+			}
 		}
 
 		return $this->redirectToRoute('configurateur_table_update_fields', array(
 			'modelId' => $modelId,
-			'format' => $format->getFormat(),
+			'format' => $tableFormat->getFormat()->getFormat(),
 			'request' => $request
 		), 307);
 	}
