@@ -57,8 +57,14 @@ class TableFieldController extends TableFieldControllerBase {
 				"data" => $field,
 				"format" => $format
 			));
+			
+			// suppression de la contrainte NOT NULL.
+			if ($tableFieldToRemove->getIsMandatory()) {
+				$tableGeneration = $this->get('app.tablesgeneration') ;
+				$tableGeneration->dropNotNull($tableFieldToRemove) ;
+			}
+			
 			$em->remove($tableFieldToRemove);
-			$em->flush();
 
 			$fieldToRemove = $em->find("IgnGincoBundle:Metadata\Field", array(
 				"data" => $field,
