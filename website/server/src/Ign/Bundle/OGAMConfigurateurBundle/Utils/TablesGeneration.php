@@ -237,6 +237,10 @@ class TablesGeneration extends DatabaseUtils {
 	 */
 	public function dropNotNull(TableField $tableField) {
 		
+		if (!$tableField->getIsMandatory()) {
+			return ;
+		}
+		
 		$tableFormat = $tableField->getFormat() ;
 		$model = $tableFormat->getModel() ;
 		$unit = $tableField->getData()->getUnit() ;
@@ -246,6 +250,30 @@ class TablesGeneration extends DatabaseUtils {
 		$columnName = $tableField->getColumnName() ;
 		
 		$sql = "ALTER TABLE $schemaName.$tableName ALTER COLUMN $columnName DROP NOT NULL" ;
+		$this->conn->query($sql) ;
+	}
+	
+	
+	/**
+	 * Ajoute une contrainte NOT NULL sur une colonne.
+	 * @param TableField $tableField
+	 * @return type
+	 */
+	public function addNotNull(TableField $tableField) {
+		
+		if ($tableField->getIsMandatory()) {
+			return ;
+		}
+		
+		$tableFormat = $tableField->getFormat() ;
+		$model = $tableFormat->getModel() ;
+		$unit = $tableField->getData()->getUnit() ;
+		
+		$schemaName = $model->getSchema()->getName() ;
+		$tableName = $tableFormat->getTableName() ;
+		$columnName = $tableField->getColumnName() ;
+		
+		$sql = "ALTER TABLE $schemaName.$tableName ALTER COLUMN $columnName SET NOT NULL" ;
 		$this->conn->query($sql) ;
 	}
 	

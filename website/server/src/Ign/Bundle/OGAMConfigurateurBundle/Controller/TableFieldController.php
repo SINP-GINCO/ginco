@@ -158,6 +158,8 @@ class TableFieldController extends Controller {
 	 */
 	public function updateFieldsAction($modelId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata');
+		
+		$tablesGeneration = $this->get('app.tablesgeneration') ;
 
 		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 		$format = $em->getRepository('IgnGincoBundle:Metadata\Format')->find($format);
@@ -202,6 +204,12 @@ class TableFieldController extends Controller {
 				$tableField->setData($dataField);
 				$tableField->setFormat($tableFormat);
 				$tableField->setColumnName($dataField->getData());
+				if (boolval($mandatory) && !$tableField->getIsMandatory()) {
+					$tablesGeneration->addNotNull($tableField) ;
+				}
+				if (!boolval($mandatory) && $tableField->getIsMandatory()) {
+					$tablesGeneration->dropNotNull($tableField) ;
+				}
 				$tableField->setIsMandatory($mandatory);
 			}
 
