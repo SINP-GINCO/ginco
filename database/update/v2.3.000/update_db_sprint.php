@@ -51,7 +51,14 @@ try {
     if ($returnCode1 != 0) {
         echo "$sprintDir/change_model_nomvalide.php crashed.\n";
         exit(1);
+	}
+	
+	system("php $sprintDir/add_index_observations.php $CLIParams", $returnCode2) ;
+    if ($returnCode2 != 0) {
+		echo "$sprintDir/add_index_observations.php crashed.\n";
+		// pas besoin d'exit -> on ne plante pas le processus si la création de l'index a échoué.
     }
+
 } catch (Exception $e) {
 	
 	echo "$sprintDir/update_db_sprint.php : an exception has occured.\n" ;

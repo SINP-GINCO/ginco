@@ -52,6 +52,7 @@ class TablesGeneration extends TablesGenerationBase {
 			}
 			try {
 				$this->createTable($tableFormat, $tableName, $tableSchema, $tablePrimaryKey, $dbconn);
+				$this->createOgamIndex($tableSchema, $OGAM_ID, $tableName, $dbconn) ;
 				$this->createPrimaryKeyTrigger($tableSchema, $OGAM_ID, $tableName, $dbconn);
 				$this->createGeometryColumn($tableName, $tableSchema, $tableFormat, $dbconn);
 				$this->createIdentifierTrigger($tableSchema, $tableFormat, $tableName, $dbconn); // Ginco specific

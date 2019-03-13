@@ -59,6 +59,7 @@ class TablesGeneration extends DatabaseUtils {
 				}
 			}
 			$this->createTable($tableFormat, $tableName, $tableSchema, $tablePrimaryKey, $dbconn);
+			$this->createOgamIndex($tableSchema, $OGAM_ID, $tableName, $dbconn) ;
 			$this->createPrimaryKeyTrigger($tableSchema, $OGAM_ID, $tableName);
 			$this->createGeometryColumn($tableName, $tableSchema, $tableFormat);
 			$this->grantAllRights($tableSchema);
@@ -116,6 +117,20 @@ class TablesGeneration extends DatabaseUtils {
 				EXECUTE PROCEDURE " . $tableSchema . ".pkgenerate" . $tableName . "();";
 		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
+	}
+	
+	
+	/**
+	 * Crée un index sur la colonne OGAM_ID_*
+	 * @param type $tableSchema
+	 * @param type $OGAM_ID
+	 * @param type $tableName
+	 * @param type $dbconn
+	 */
+	public function createOgamIndex($tableSchema, $OGAM_ID, $tableName, $dbconn) {
+		
+		$sql = "CREATE INDEX idx_{$OGAM_ID} ON $tableSchema.$tableName({$OGAM_ID})" ;
+		pg_query($dbconn, $sql) ;
 	}
 
 	/**
