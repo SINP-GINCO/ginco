@@ -559,6 +559,18 @@ COMMENT ON COLUMN VERSION.NUM_VERSION_METADATA IS 'Numéro de version du métamo
 COMMENT ON COLUMN VERSION.DATE_MAJ IS 'Date de l''application de la mise à jour';
 COMMENT ON COLUMN VERSION.ETAT IS 'Etat de la mise à jour :  INIT, SUCCESS, FAIL';
 
+
+/*==============================================================*/
+/* Table : STANDARD                                               */
+/*==============================================================*/
+  
+CREATE TABLE STANDARD (
+    NAME 	TEXT PRIMARY KEY,
+    LABEL 	TEXT,
+    VERSION TEXT
+);
+
+
 /*==============================================================*/
 /* Table : MODEL                                               */
 /*==============================================================*/
@@ -571,6 +583,7 @@ SCHEMA_CODE			 VARCHAR(36)			not null,
 IS_REF				 BOOLEAN				null,
 STATUS				 VARCHAR(12)			null,
 PUBLISHED_AT		 TIMESTAMP				null,
+STANDARD			 TEXT					not null,
 CONSTRAINT PK_MODEL PRIMARY KEY (ID)
 );
 COMMENT ON TABLE MODEL IS 'A data model represents a list of tables';
@@ -726,6 +739,10 @@ ALTER TABLE DATASET_FORMS ADD CONSTRAINT FK_DATASET_FORM_FORMAT
 
 ALTER TABLE MODEL ADD CONSTRAINT FK_MODEL_SCHEMA_CODE
 	FOREIGN KEY (SCHEMA_CODE) REFERENCES TABLE_SCHEMA (SCHEMA_CODE) 
+	ON DELETE RESTRICT ON UPDATE RESTRICT DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE MODEL ADD CONSTRAINT FK_MODEL_STANDARD
+	FOREIGN KEY (STANDARD) REFERENCES STANDARD (NAME) 
 	ON DELETE RESTRICT ON UPDATE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE MODEL_DATASETS ADD CONSTRAINT FK_MODEL_DATASETS_MODEL

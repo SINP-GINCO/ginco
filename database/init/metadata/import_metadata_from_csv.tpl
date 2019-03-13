@@ -48,6 +48,7 @@ delete from range;
 delete from data;
 delete from unit;
 delete from model;
+delete from standard;
 delete from dataset;
 delete from table_schema;
 
@@ -61,6 +62,7 @@ delete from table_schema;
 @INSERT@ dynamode.csv
 @INSERT@ form_format.csv
 @INSERT@ table_schema.csv
+@INSERT@ standard.csv
 @INSERT@ model.csv
 @INSERT@ table_format.csv
 @INSERT@ model_tables.csv

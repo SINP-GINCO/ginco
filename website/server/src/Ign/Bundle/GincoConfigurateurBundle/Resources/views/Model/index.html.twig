@@ -28,9 +28,9 @@
 				<tr>
 					<th class="col-md-2" data-field="name" data-sortable="true" data-valign="left" >{% trans %}datamodel.name{% endtrans %}</th>
 					<th class="col-md-2" data-field="description" data-sortable="true" data-valign="left" >{% trans %}datamodel.description{% endtrans %}</th>
+					<th class="col-md-2" data-field="standard" data-sortable="true" data-valign="left" >{% trans %}datamodel.standard{% endtrans %}</th>
 					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}View{% endtrans %}</th>
 					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Edit{% endtrans %}</th>
-					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Duplicate{% endtrans %}</th>
 					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Delete{% endtrans %}</th>
 					<th class="col-md-1" data-valign="center" data-searchable="false">{% trans %}Un-Publish{% endtrans %}</th>
 				</tr>
@@ -52,6 +52,15 @@
 					<div>
 						<h4 class="longtext" title="{{ model.description }}">
 							{{ model.description }}
+						</h4>
+					</div>
+				</td>
+				
+				{# Standard of the model #}
+				<td>
+					<div>
+						<h4 class="longtext" title="{{ model.standard.label }}">
+							{{ model.standard.label }} - {{ model.standard.version }}
 						</h4>
 					</div>
 				</td>
@@ -114,14 +123,6 @@
 						</div>
 					</td>
 				{% endif %}
-				
-				{# Duplicate button #}
-				<td>
-					<a	id="view-button-{{ model.id }}" role="button" class="btn btn-default"
-						href="{{ path('configurateur_model_duplicate', { id: model.id } ) }}">
-						<span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>
-					</a>
-				</td>
 
 				{# Delete button #}
 				{% if not model.isPublished %}
@@ -233,4 +234,24 @@
 		</table>
 	</div>
 </div>
+				
+				
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 id="panel-title" class="panel-title">
+			{% trans %}datamodel.add.title{% endtrans %}
+		</h3>
+	</div>
+	<div class="panel-body">
+
+		<a href="{{ path('configurateur_model_new') }}"
+			class="btn btn-default" role="button"> <span
+			class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			{% trans %}datamodel.add.button{% endtrans %}
+		</a>
+	</div>
+
+</div>
+				
+				
 {% endblock body %}

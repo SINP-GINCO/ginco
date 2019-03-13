@@ -33,6 +33,7 @@ try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_status_fields.sql", $config);
+	execCustSQLFile("$sprintDir/add_standard.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";

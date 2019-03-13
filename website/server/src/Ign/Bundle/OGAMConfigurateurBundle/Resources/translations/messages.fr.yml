@@ -87,6 +87,7 @@ navbar:
 datamodel:
   name: Modèle de données
   description: Description
+  standard: Standard
   list.title: Liste des modèles
   copy: -copie
   add:

@@ -50,7 +50,9 @@ class Model {
 
 	/**
 	 *
-	 * @var string @ORM\Column(name="is_ref", type="boolean", nullable=true)
+	 * @var boolean 
+	 * 
+	 * @ORM\Column(name="is_ref", type="boolean", nullable=true)
 	 */
 	private $ref;
 
@@ -93,6 +95,16 @@ class Model {
 	 * @ORM\Column(name="published_at", type="datetime", nullable=true)
 	 */
 	private $publishedAt;
+	
+	
+	/**
+	 *
+	 * @var Standard
+	 * 
+	 * @ORM\ManyToOne(targetEntity="Standard", inversedBy="models")
+	 * @ORM\JoinColumn(name="standard", referencedColumnName="name")
+	 */
+	private $standard ;
 
 	
 	
@@ -168,7 +180,7 @@ class Model {
 	/**
 	 * Get ref
 	 *
-	 * @return string
+	 * @return boolean
 	 */
 	public function getRef() {
 		return $this->ref;
@@ -358,4 +370,23 @@ class Model {
 		$this->publishedAt = $publishedAt ;
 		return $this ;
 	}
+	
+	
+	/**
+	 * Get standard
+	 * @return Standard
+	 */
+	public function getStandard() {
+		return $this->standard ;
+	}
+	
+	/**
+	 * Set standard
+	 * @param \Ign\Bundle\GincoBundle\Entity\Metadata\Standard $standard
+	 * @return $this
+	 */
+	public function setStandard(Standard $standard) {
+		$this->standard = $standard ;
+		return $this ;
+	} 
 }
