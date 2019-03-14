@@ -109,6 +109,7 @@ class Model {
 	
 	
 	public function __construct() {
+		$this->id = uniqid('model_') ;
 		$this->tables = new ArrayCollection();
 		$this->datasets = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->ref = false;

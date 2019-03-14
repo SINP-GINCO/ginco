@@ -31,6 +31,11 @@ services:
         arguments: ["@database_connection", "@logger", "%database_admin_user%", "%database_admin_password%"]
         tags:
           - { name: monolog.logger, channel: ginco }
+          
+    Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelManager:
+        autowire: true
+        tags:
+            - { name: monolog.logger, channel: ginco }
 
     app.modelpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication
@@ -46,6 +51,11 @@ services:
         arguments: ["@doctrine.orm.metadata_entity_manager", "@logger", "%database_admin_user%", "%database_admin_password%"]
         tags:
           - { name: monolog.logger, channel: ginco }
+          
+    Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelManager:
+        autowire: true
+        tags:
+            - { name: monolog.logger, channel: ginco }
         
     app.importmodelpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ImportModelPublication

@@ -5,6 +5,7 @@ use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelUploadType;
 use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelManager;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -41,15 +42,23 @@ class ModelController extends Controller {
 		
 		if ($form->isValid()) {
 			
+			$entityManager = $this->getDoctrine()->getManager() ;
+			$entityManager->persist($model) ;
+			
 			$modelDuplication = $this->get('app.modelduplication') ;
 			$defaultModel = $model->getStandard()->getDefaultModel() ;
-			$successStatus = $modelDuplication->duplicateModel($defaultModel, $model->getName(), $model->getDescription()) ;
+			$successStatus = $modelDuplication->duplicateModel($defaultModel, $model) ;
 			
 			if ($successStatus == 'datamodel.duplicate.success') {
 				$this->addFlash('notice', $this->get('translator')
 					->trans($successStatus, array(
 					'%modelName%' => $model->getName()
 				)));
+				
+				$modelManager = $this->get(ModelManager::class) ;
+				$entityManager->refresh($model) ;
+				$modelManager->initModel($model) ;
+				
 			} else if ($successStatus == 'datamodel.duplicate.fail') {
 				$this->addFlash('error', $this->get('translator')
 					->trans($successStatus, array(
@@ -61,6 +70,7 @@ class ModelController extends Controller {
 					'%modelName%' => $model->getName()
 				)));
 			}
+			
 			// Redirect to list of models
 			return $this->redirectToRoute('configurateur_model_index');
 		}
