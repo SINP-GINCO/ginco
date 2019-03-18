@@ -34,6 +34,8 @@ try {
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_status_fields.sql", $config);
 	execCustSQLFile("$sprintDir/add_standard.sql", $config);
+	execCustSQLFile("$sprintDir/change_mapping_observation_provider.sql", $config);
+
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";
