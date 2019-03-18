@@ -125,9 +125,7 @@ class JddController extends GincoController {
 			$metadataId = $form->get('metadata_id')->getData();
 
 			// Test if another jdd already exists with this metadataId
-			$jddWithSameMetadataId = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findByField(array(
-				'metadataId' => $metadataId
-			));
+			$jddWithSameMetadataId = $em->getRepository('IgnGincoBundle:RawData\Jdd')->findByMetadataId($metadataId);
 			if (count($jddWithSameMetadataId) > 0) {
 				$error = new FormError($this->get('translator')->trans('Metadata.Unique', array(), 'validators'));
 				$form->get('metadata_id')->addError($error);
