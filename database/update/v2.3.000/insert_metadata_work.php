@@ -78,7 +78,7 @@ try {
             FROM metadata_work.table_tree WHERE (schema_code, child_table) IN (
                 SELECT (schema_code, child_table) FROM metadata_work.table_tree
                 EXCEPT
-                SELECT d(schema_code, child_table) FROM metadata.table_tree
+                SELECT (schema_code, child_table) FROM metadata.table_tree
             )
         )
     ";
