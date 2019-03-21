@@ -112,6 +112,9 @@ class ModelManager {
 			}
 
 			pg_query($dbconn, "COMMIT");
+			
+			$model->setCreatedAt(new \DateTime()) ;
+			$this->entityManager->flush() ;
 
 			return true;
 

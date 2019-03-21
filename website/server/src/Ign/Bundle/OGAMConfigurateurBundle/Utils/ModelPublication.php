@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelManager;
 
 use Monolog\Logger;
 
@@ -35,9 +36,19 @@ class ModelPublication extends DatabaseUtils {
 	 * @var EntityManager
 	 */
 	protected $entityManager ;
+	
+	
+	/**
+	 *
+	 * @var ModelManager
+	 */
+	protected $modelManager ;
 
-	public function __construct(EntityManager $entityManager, Logger $logger, $adminName, $adminPassword) {
+
+
+	public function __construct(EntityManager $entityManager, ModelManager $modelManager, Logger $logger, $adminName, $adminPassword) {
 		$this->entityManager = $entityManager ;
+		$this->modelManager = $modelManager ;
 		parent::__construct($entityManager->getConnection(), $logger, $adminName, $adminPassword);
 	}
 
@@ -58,8 +69,12 @@ class ModelPublication extends DatabaseUtils {
 	public function publishModel(Model $model) {
 			
 		if ($this->isPublishable($model)) {
+			
+			if ($model->getCreatedAt() == null) {
+				$this->modelManager->initModel($model) ;
+			}
+			
 			$model->setStatus(Model::PUBLISHED) ;
-			$model->setPublishedAt(new \DateTime()) ;
 			$this->entityManager->flush() ;
 			return true ;
 		}
