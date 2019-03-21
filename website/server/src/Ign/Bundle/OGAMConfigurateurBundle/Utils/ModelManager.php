@@ -3,6 +3,7 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\ORM\EntityManagerInterface ;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Psr\Log\LoggerInterface;
 
@@ -66,7 +67,7 @@ class ModelManager {
 	
 	
 	public function __construct(
-		EntityManagerInterface $entityManager, 
+		ManagerRegistry $managerRegistry, 
 		ImportModelManager $importModelManager,
 		TablesGeneration $tablesGeneration,
 		ModelDuplication $modelDuplication,
@@ -74,7 +75,7 @@ class ModelManager {
 		LoggerInterface $logger
 	) {
 		
-		$this->entityManager = $entityManager ;
+		$this->entityManager = $managerRegistry->getManager('metadata') ;
 		$this->importModelManager = $importModelManager ;
 		$this->tablesGeneration = $tablesGeneration ;
 		$this->modelDuplication = $modelDuplication ;
@@ -152,6 +153,46 @@ class ModelManager {
 			$tableField->setData($data);
 			$tableField->setFormat($tableFormat);
 			$tableField->setColumnName($data->getData());
+			
+			$dataFieldPrefix = substr($data->getData(), 0, 8);
+				$dataFieldSuffix = substr($data->getData(), 8, strlen($data->getData())-8);
+
+				// todo : move to input form model when he will exist
+				if ($dataFieldPrefix == "OGAM_ID_") {
+					if ($dataFieldSuffix == $tableFormat->getFormat()->getFormat()){
+						// primary key
+						$tableField->setIsMandatory("1");
+						$tableField->setIsCalculated("1");
+						$tableField->setIsEditable("0");
+						$tableField->setIsInsertable("0");
+					} else {
+						// foreign key
+						$tableField->setIsMandatory("1");
+						$tableField->setIsCalculated("0");
+						$tableField->setIsEditable("0");
+						$tableField->setIsInsertable("0");
+					}
+				} elseif ($data->getData() == "PROVIDER_ID") {
+					$tableField->setIsMandatory("1");
+					$tableField->setIsCalculated("0");
+					$tableField->setIsEditable("0");
+					$tableField->setIsInsertable("0");
+				} elseif ($data->getData() == "USER_LOGIN") {
+					$tableField->setIsMandatory("1");
+					$tableField->setIsCalculated("0");
+					$tableField->setIsEditable("0");
+					$tableField->setIsInsertable("0");
+				} elseif ($data->getData() == "SUBMISSION_ID") {
+					$tableField->setIsMandatory("0");
+					$tableField->setIsCalculated("1");
+					$tableField->setIsEditable("0");
+					$tableField->setIsInsertable("0");
+				} else {
+					$tableField->setIsMandatory("0");
+					$tableField->setIsCalculated("0");
+					$tableField->setIsEditable("1");
+					$tableField->setIsInsertable("1");
+				}
 
 			$this->entityManager->persist($tableField);
 		}

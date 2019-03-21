@@ -29,7 +29,7 @@ class TableFieldController extends Controller {
 
 		return $this->redirectToRoute('configurateur_table_fields', array(
 			'modelId' => $modelId,
-			'format' => $format->getFormat()
+			'format' => $table->getFormat()->getFormat()
 		));
 	}
 
@@ -41,86 +41,22 @@ class TableFieldController extends Controller {
 	public function addFieldsAction($modelId, $format, Request $request) {
 		$em = $this->getDoctrine()->getManager('metadata');
 
+		$modelManager = $this->get(ModelManager::class) ;
 		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
-
 		$table = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format);
-		$model = $table->getModel() ;
-		$tableFormat = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($format) ;
 		$fields = $request->get('addedNames');
 
 		// Handle the name of the fields
 		$names = explode(",", $fields);
 		foreach ($names as $value) {
 			
-			$tableField = new TableField();
-			$field = new Field();
 			$dataField = $dataRepository->find($value);
-			
-			if ($dataField !== null) {
-				$field->setData($dataField);
-				$field->setFormat($tableFormat->getFormat());
-				$field->setType('TABLE');
-				$em->persist($field);
-
-				$tableField->setData($dataField);
-				$tableField->setFormat($tableFormat);
-				$tableField->setColumnName($dataField->getData());
-
-				$dataFieldPrefix = substr($dataField->getData(), 0, 8);
-				$dataFieldSuffix = substr($dataField->getData(), 8, strlen($dataField->getData())-8);
-
-				// todo : move to input form model when he will exist
-				if ($dataFieldPrefix == "OGAM_ID_") {
-					if ($dataFieldSuffix == $table->getFormat()->getFormat()){
-						// primary key
-						$tableField->setIsMandatory("1");
-						$tableField->setIsCalculated("1");
-						$tableField->setIsEditable("0");
-						$tableField->setIsInsertable("0");
-					} else {
-						// foreign key
-						$tableField->setIsMandatory("1");
-						$tableField->setIsCalculated("0");
-						$tableField->setIsEditable("0");
-						$tableField->setIsInsertable("0");
-					}
-				} elseif ($dataField->getData() == "PROVIDER_ID") {
-					$tableField->setIsMandatory("1");
-					$tableField->setIsCalculated("0");
-					$tableField->setIsEditable("0");
-					$tableField->setIsInsertable("0");
-				} elseif ($dataField->getData() == "USER_LOGIN") {
-					$tableField->setIsMandatory("1");
-					$tableField->setIsCalculated("0");
-					$tableField->setIsEditable("0");
-					$tableField->setIsInsertable("0");
-				} elseif ($dataField->getData() == "SUBMISSION_ID") {
-					$tableField->setIsMandatory("0");
-					$tableField->setIsCalculated("1");
-					$tableField->setIsEditable("0");
-					$tableField->setIsInsertable("0");
-				} else {
-					$tableField->setIsMandatory("0");
-					$tableField->setIsCalculated("0");
-					$tableField->setIsEditable("1");
-					$tableField->setIsInsertable("1");
-				}
-
-				$em->getRepository('IgnGincoBundle:Metadata\TableField')->findAll();
-				$em->merge($tableField);
-			}
-			$em->flush();
-			
-			if ($model->getPublishedAt() != null) {
-				// Le modèle a déjà été publié auparavant, la colone doit etre ajoutée à la table.
-				$tablesGeneration = $this->get('app.tablesgeneration') ;
-				$tablesGeneration->addColumn($tableField) ;
-			}
+			$modelManager->addField($dataField, $table) ;
 		}
 
 		return $this->redirectToRoute('configurateur_table_update_fields', array(
 			'modelId' => $modelId,
-			'format' => $tableFormat->getFormat()->getFormat(),
+			'format' => $table->getFormat()->getFormat(),
 			'request' => $request
 		), 307);
 	}

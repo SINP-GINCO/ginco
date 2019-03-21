@@ -3,6 +3,7 @@
 namespace Ign\Bundle\OGAMConfigurateurBundle\Utils;
 
 use Doctrine\ORM\EntityManagerInterface ;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Psr\Log\LoggerInterface;
 
@@ -42,12 +43,12 @@ class ImportModelManager {
 	
 	
 	public function __construct(
-		EntityManagerInterface $entityManager, 
+		ManagerRegistry $managerRegistry, 
 		TablesGeneration $tablesGeneration,
 		LoggerInterface $logger
 	) {
 		
-		$this->entityManager = $entityManager ;
+		$this->entityManager = $managerRegistry->getManager('metadata') ;
 		$this->tablesGeneration = $tablesGeneration ;
 		$this->logger = $logger ;
 	}
