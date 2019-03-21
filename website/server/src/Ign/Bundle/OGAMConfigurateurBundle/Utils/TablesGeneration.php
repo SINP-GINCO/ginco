@@ -245,6 +245,24 @@ class TablesGeneration extends DatabaseUtils {
 	}
 	
 	/**
+	 * Retire une colonne de la table.
+	 * @param TableField $tableField
+	 */
+	public function removeColumn(TableField $tableField) {
+		
+		$tableFormat = $tableField->getFormat() ;
+		$model = $tableFormat->getModel() ;
+		$unit = $tableField->getData()->getUnit() ;
+		
+		$schemaName = $model->getSchema()->getName() ;
+		$tableName = $tableFormat->getTableName() ;
+		$columnName = $tableField->getColumnName() ;
+		
+		$sql = "ALTER TABLE $schemaName.$tableName DROP COLUMN $columnName" ;
+		$this->conn->query($sql) ;
+	}
+	
+	/**
 	 * Retire la contrainte NOT NULL d'une colonne.
 	 * Utilisé dans le cas de la suppression d'un champ d'un modèle de données : la colonne n'est pas retirée (pour conservation)
 	 * mais on s'assure que la valeur nulle est acceptée pour les futures lignes.

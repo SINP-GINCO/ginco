@@ -92,9 +92,9 @@ class Model {
 	 *
 	 * @var DateTime
 	 * 
-	 * @ORM\Column(name="published_at", type="datetime", nullable=true)
+	 * @ORM\Column(name="created_at", type="datetime", nullable=true)
 	 */
-	private $publishedAt;
+	private $createdAt;
 	
 	
 	/**
@@ -109,6 +109,7 @@ class Model {
 	
 	
 	public function __construct() {
+		$this->id = uniqid('model_') ;
 		$this->tables = new ArrayCollection();
 		$this->datasets = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->ref = false;
@@ -354,20 +355,20 @@ class Model {
 
 	
 	/**
-	 * Get publication date
+	 * Get creation date
 	 * @return DateTime
 	 */
-	public function getPublishedAt() {
-		return $this->publishedAt ;
+	public function getCreatedAt() {
+		return $this->createdAt ;
 	}
 	
 	/**
-	 * Set publication date
-	 * @param type $publishedAt
+	 * Set creation date
+	 * @param type $createdAt
 	 * @return $this
 	 */
-	public function setPublishedAt($publishedAt) {
-		$this->publishedAt = $publishedAt ;
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt ;
 		return $this ;
 	}
 	

@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelManager;
+
 class TableFieldController extends TableFieldControllerBase {
 
 	/**
@@ -42,6 +44,7 @@ class TableFieldController extends TableFieldControllerBase {
 
 		// Check if the field is not derived from a field included in a reference model
 		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
+		
 		$referenceFields = $tableFieldRepository->findReferenceFields();
 		if (in_array($field, array_column($referenceFields, 'data'))) {
 			$this->addFlash('error', $this->get('translator')
@@ -49,29 +52,15 @@ class TableFieldController extends TableFieldControllerBase {
 				'%dataName%' => $field
 			)));
 		} else {
-			// remove mapping relations first
-			$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
-			$mappingRepository->removeAllByTableField($format, $field);
-
+			
 			$tableFieldToRemove = $em->find("IgnGincoBundle:Metadata\TableField", array(
 				"data" => $field,
 				"format" => $format
 			));
-			
-			// suppression de la contrainte NOT NULL.
-			if ($tableFieldToRemove->getIsMandatory()) {
-				$tableGeneration = $this->get('app.tablesgeneration') ;
-				$tableGeneration->dropNotNull($tableFieldToRemove) ;
+			if ($tableFieldToRemove) {
+				$modelManager = $this->get(ModelManager::class) ;
+				$modelManager->removeField($tableFieldToRemove) ;
 			}
-			
-			$em->remove($tableFieldToRemove);
-
-			$fieldToRemove = $em->find("IgnGincoBundle:Metadata\Field", array(
-				"data" => $field,
-				"format" => $format
-			));
-			$em->remove($fieldToRemove);
-			$em->flush();
 		}
 
 		return $this->redirectToRoute('configurateur_table_update_fields', array(
