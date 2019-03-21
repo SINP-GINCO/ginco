@@ -186,6 +186,7 @@ Field name: Nom du champ dans la table
 Unit: Unité
 Mandatory: Obligatoire
 LabelCSV: Nom du champ dans le fichier
+DefaultValue: Valeur par défaut
 
 Parent table: Table parente
 HierarchicalRelationsTitle: Définition des relations hiérarchiques

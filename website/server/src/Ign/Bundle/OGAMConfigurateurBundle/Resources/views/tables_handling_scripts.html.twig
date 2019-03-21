@@ -29,6 +29,7 @@ $transferButton.click(function() {
 	var labelCSVs = "";
 	var mandatorys = "";
 	var masks = "";
+	var defaultValues = "";
 
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
@@ -36,6 +37,7 @@ $transferButton.click(function() {
 		console.log($labelCSV);
 		var $mandatory = $(this).find('input:checked').is(':checked');
 		var $mask = $(this).find('#mask').val();
+		var $defaultValue = $(this).find('#defaultValue').val();
 		if($name != ""){
 			names = names + $name + ",";
 			labelCSVs = labelCSVs + $labelCSV + ",";
@@ -43,6 +45,10 @@ $transferButton.click(function() {
 			if($mask === ""){
 				$mask = "null";
 			}
+			if ($defaultValue === "") {
+				$defaultValue = "null";
+			}
+			defaultValues = defaultValues + $defaultValue + ",";
 			masks = masks + encodeURIComponent($mask) + ",";
 		}
 	});
@@ -75,6 +81,7 @@ $transferButton.click(function() {
 					  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
 					  '<input type="text" name="masks" value="' + masks + '" />' +
 					  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
+					  '<input type="text" name="defaultValues" value="' + defaultValues + '" />' +
 					  '</form>');
 			} else {
 				var url = Routing.generate('configurateur_file_add_fields', {
@@ -128,12 +135,14 @@ function addClickEventOnRemoveFields() {
 		var labelCSVs = "";
 		var mandatorys = "";
 		var masks = "";
+		var defaultValues = "";
 
 		$('#selected-data-table > tbody > tr').each(function(){
 			var $name = $(this).find('#name').text();
 			var $labelCSV = $(this).find('#labelCSV').val();
 			var $mandatory = $(this).find('input:checked').is(':checked');
 			var $mask = $(this).find('#mask').val();
+			var $defaultValue = $(this).find('#defaultValue').val();
 
 			if($name !== fieldToRemove){
 				names = names + $name + ",";
@@ -143,6 +152,13 @@ function addClickEventOnRemoveFields() {
 					$mask = "null";
 				}
 				masks = masks + encodeURIComponent($mask) + ",";
+				if ($defaultValue === "") {
+					$defaultValue = "null";
+				}
+				if ($defaultValue === "") {
+					$defaultValue = "null";
+				}
+				defaultValues = defaultValues + $defaultValue + ",";
 			}
 		});
 
@@ -158,6 +174,7 @@ function addClickEventOnRemoveFields() {
 			  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
 			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
 			  '<input type="text" name="masks" value="' + masks + '" />' +
+			  '<input type="text" name="defaultValues" value="' + defaultValues + '" />' +
 			  '</form>');
 		{% elseif table.format is defined %}
 			var url = Routing.generate('configurateur_table_remove_field_and_update', {
@@ -171,6 +188,7 @@ function addClickEventOnRemoveFields() {
 			  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
 			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
 			  '<input type="text" name="masks" value="' + masks + '" />' +
+			  '<input type="text" name="defaultValues" value="' + defaultValues + '" />' +
 			  '</form>');
 		{% endif %}
 		$('body').append(form);
@@ -287,20 +305,26 @@ function getFormFromFileTable(){
 	var labelCSVs = "";
 	var mandatorys = "";
 	var masks = "";
+	var defaultValues = "";
 	
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
 		var $labelCSV = $(this).find('#labelCSV').val();
 		var $mandatory = $(this).find('input:checked').is(':checked');
 		var $mask = $(this).find('#mask').val();
-
+        var $defaultValue = $(this).find('#defaultValue').val();
+        
 		names = names + $name + ",";
 		labelCSVs = labelCSVs + $labelCSV + ",";
 		mandatorys = mandatorys + $mandatory + ",";
 		if($mask === ""){
 			$mask = "null";
 		}
+		if ($defaultValue === "") {
+			$defaultValue = "null";
+		}
 		masks = masks + encodeURIComponent($mask) + ",";
+		defaultValues = defaultValues + $defaultValue + ",";
 	});
 
 	// Remove trailing coma
@@ -308,6 +332,7 @@ function getFormFromFileTable(){
 	labelCSVs = labelCSVs.slice(0, -1);
 	mandatorys = mandatorys.slice(0, -1);
 	masks = masks.slice(0, -1);
+	defaultValues = defaultValues.slice(0,-1);
 
 	if(names !== ""){
 		{% if file.format is defined %}
@@ -320,6 +345,7 @@ function getFormFromFileTable(){
 			  '<input type="text" name="labelCSVs" value="' + labelCSVs + '" />' +
 			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
 			  '<input type="text" name="masks" value="' + masks + '" />' +
+			  '<input type="text" name="defaultValues" value="' + defaultValues + '" />' +
 			  '</form>');
 			return form;
 		{% endif %}

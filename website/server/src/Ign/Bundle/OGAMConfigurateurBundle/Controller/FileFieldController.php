@@ -115,11 +115,13 @@ class FileFieldController extends Controller {
 		$labelCSVs = $request->get('labelCSVs');
 		$mandatorys = $request->get('mandatorys');
 		$masks = $request->get('masks');
+		$defaultValues = $request->get('defaultValues');
 
 		// Handle the name of the fields
 		$data = explode(",", $fields);
 		$labelCSVs = explode(",", $labelCSVs);
 		$mandatorys = explode(",", $mandatorys);
+		$defaultValues = explode(",", $defaultValues);
 		$masks = explode(",", $masks);
 		$masks = array_map("urldecode", $masks);
 
@@ -162,10 +164,16 @@ class FileFieldController extends Controller {
 			} else {
 				$mask = $masks[$i];
 			}
-
+			
+			if ($defaultValues[$i] == 'null') {
+			    $defaultValue = null;
+			} else {
+			    $defaultValue = $defaultValues[$i];
+			}
+			
 			$fileField = new FileField();
 			$field = new Field();
-
+    
 			$dataField = $dataRepository->find($name);
 
 			if ($dataField !== null) {
@@ -181,6 +189,7 @@ class FileFieldController extends Controller {
 				$fileField->setFormat($file);
 				$fileField->setMask($mask);
 				$fileField->setIsMandatory($mandatory);
+				$fileField->setDefaultValue($defaultValue);
 
 				$em->merge($fileField);
 			}
@@ -310,11 +319,13 @@ class FileFieldController extends Controller {
 		$labelCSVs = $request->get('labelCSVs');
 		$mandatorys = $request->get('mandatorys');
 		$masks = $request->get('masks');
+		$defaultValues =$request->get('defaultValues');
 
 		// Remove trailing comas of fields to update
 		$fields = rtrim($fields, ",");
 		$labelCSVs = rtrim($labelCSVs, ",");
 		$mandatorys = rtrim($mandatorys, ",");
+		$defaultValues = rtrim($defaultValues, ",");
 		$masks = substr($masks, 0, -1);
 
 		// Convert fields to update to arrays
@@ -322,6 +333,7 @@ class FileFieldController extends Controller {
 		$labelCSVs = explode(',', $labelCSVs);
 		$mandatorys = explode(',', $mandatorys);
 		$masks = explode(',', $masks);
+		$defaultValues = explode(',',$defaultValues);
 
 		// Delete mapping relations first
 		$mappingRepository = $em->getRepository("IgnGincoBundle:Metadata\FieldMapping");
@@ -343,12 +355,14 @@ class FileFieldController extends Controller {
 		unset($mandatorys[$fileFieldToRemovePosition]);
 		unset($masks[$fileFieldToRemovePosition]);
 		unset($fields[$fileFieldToRemovePosition]);
+		unset($defaultValues[$fileFieldToRemovePosition]);
 
 		// Re-index the update arrays
 		$labelCSVs = array_values($labelCSVs);
 		$mandatorys = array_values($mandatorys);
 		$masks = array_values($masks);
 		$fields = array_values($fields);
+		$defaultValues = array_values($defaultValues);
 
 		if (count($fields) == 0) {
 			return $this->redirectToRoute('configurateur_file_fields', array(

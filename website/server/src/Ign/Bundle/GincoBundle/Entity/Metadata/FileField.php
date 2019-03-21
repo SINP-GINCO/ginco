@@ -55,6 +55,12 @@ class FileField implements FieldInterface {
 	private $format;
 
 	/**
+	 *
+	 * @var string @ORM\Column(name="default_value", type="string", length=255, nullable=true)
+	 */
+	private $defaultValue;
+	
+	/**
 	 * Set isMandatory
 	 *
 	 * @param integer $isMandatory        	
@@ -166,6 +172,29 @@ class FileField implements FieldInterface {
 	}
 	
 	/**
+	 * Set defaultValue
+	 *
+	 * @param string $defaultValue
+	 *
+	 * @return FileField
+	 */
+	public function setDefaultValue($defaultValue) {
+	    $this->defaultValue = $defaultValue;
+	    
+	    return $this;
+	}
+	
+	/**
+	 * Get defaultValue
+	 *
+	 * @return string
+	 */
+	public function getDefaultValue() {
+	    return $this->defaultValue;
+	}
+	
+	
+	/**
 	 * Return the unique identifier of the field.
 	 *
 	 * @return String the identifier of the field
@@ -188,6 +217,7 @@ class FileField implements FieldInterface {
 		$json .= ',"isMandatory":' . json_encode($this->isMandatory);
 		$json .= ',"definition":' . json_encode($this->definition);
 		$json .= ',"mask":' . json_encode($this->mask);
+		$json .= ',"defaultValue":' . json_encode($this->defaultValue);
 		
 		return $json;
 	}
