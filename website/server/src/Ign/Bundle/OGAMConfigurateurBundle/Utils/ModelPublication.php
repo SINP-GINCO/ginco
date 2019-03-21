@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
-use Ign\Bundle\GincoConfigurateurBundle\Utils\TablesGeneration;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelManager;
 
 use Monolog\Logger;
 
@@ -35,15 +35,15 @@ class ModelPublication extends DatabaseUtils {
 	
 	/**
 	 *
-	 * @var TablesGeneration
+	 * @var ModelManager
 	 */
-	protected $tablesGeneration ;
+	protected $modelManager;
 
 
 
-	public function __construct(EntityManager $entityManager, TablesGeneration $tablesGeneration, Logger $logger, $adminName, $adminPassword) {
+	public function __construct(EntityManager $entityManager, ModelManager $modelManager, Logger $logger, $adminName, $adminPassword) {
 		$this->entityManager = $entityManager ;
-		$this->tablesGeneration = $tablesGeneration ;
+		$this->modelManager = $modelManager ;
 		parent::__construct($entityManager->getConnection(), $logger, $adminName, $adminPassword);
 	}
 
@@ -68,8 +68,7 @@ class ModelPublication extends DatabaseUtils {
 			// Le premier modèle (par défaut) est déjà présent dans le métamodèle,
 			// mais ses tables ne sont pas générées.
 			if ($model->getCreatedAt() == null) {
-				$dbconn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-				$this->tablesGeneration->createTables($model->getId(), $dbconn) ;
+				$this->modelManager->initModel($model) ;
 			}
 			
 			$model->setStatus(Model::PUBLISHED) ;

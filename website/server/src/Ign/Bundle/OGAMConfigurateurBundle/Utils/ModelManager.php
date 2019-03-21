@@ -66,13 +66,20 @@ class ModelManager {
 	private $logger ;
 	
 	
+	private $adminUser ;
+	
+	private $adminPassword ;
+	
+	
 	public function __construct(
 		ManagerRegistry $managerRegistry, 
 		ImportModelManager $importModelManager,
 		TablesGeneration $tablesGeneration,
 		ModelDuplication $modelDuplication,
 		CopyUtils $copyUtils,
-		LoggerInterface $logger
+		LoggerInterface $logger,
+		$adminUser,
+		$adminPassword
 	) {
 		
 		$this->entityManager = $managerRegistry->getManager('metadata') ;
@@ -81,6 +88,8 @@ class ModelManager {
 		$this->modelDuplication = $modelDuplication ;
 		$this->copyUtils = $copyUtils ;
 		$this->logger = $logger ;
+		$this->adminUser = $adminUser ;
+		$this->adminPassword = $adminPassword ;
 	}
 	
 	
@@ -96,13 +105,15 @@ class ModelManager {
 		try {
 			
 			$conn = $this->entityManager->getConnection() ;
-			$dbconn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+			$dbconn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $this->adminUser . " password=" . $this->adminPassword) or die('Connection is impossible : ' . pg_last_error());
 
 			pg_query($dbconn, "BEGIN");
 
 			// generate query dataset (formulaires)
-			$datasetId = $this->copyUtils->createQueryDataset($model->getId(), $dbconn);
-			$this->copyUtils->createFormFields($model->getId(), $datasetId, $dbconn);
+			if ($model->getQueryDatasets()->isEmpty()) {
+				$datasetId = $this->copyUtils->createQueryDataset($model->getId(), $dbconn);
+				$this->copyUtils->createFormFields($model->getId(), $datasetId, $dbconn);
+			}
 
 			// Generate the tables
 			$result = $this->tablesGeneration->createTables($model->getId(), $dbconn);
