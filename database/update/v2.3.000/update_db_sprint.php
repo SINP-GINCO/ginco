@@ -34,6 +34,7 @@ try {
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_status_fields.sql", $config);
 	execCustSQLFile("$sprintDir/add_standard.sql", $config);
+	execCustSQLFile("$sprintDir/insert_metadata_work.sql", $config);
 	execCustSQLFile("$sprintDir/change_mapping_observation_provider.sql", $config);
 
 
