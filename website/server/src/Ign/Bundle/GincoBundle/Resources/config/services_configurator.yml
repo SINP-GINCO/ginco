@@ -39,7 +39,7 @@ services:
 
     app.modelpublication:
         class: Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelPublication
-        arguments: ["@doctrine.orm.metadata_entity_manager", "@Ign\\Bundle\\OGAMConfigurateurBundle\\Utils\\ModelManager", "@logger", "%database_admin_user%", "%database_admin_password%"]
+        arguments: ["@doctrine.orm.metadata_entity_manager", "@app.tablesgeneration", "@logger", "%database_admin_user%", "%database_admin_password%"]
         calls:
               - [setTablesGeneration, ['@app.tablesgeneration']]
               - [setCopyUtils, ['@app.copyutils']]
