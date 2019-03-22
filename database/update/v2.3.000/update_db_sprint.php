@@ -34,7 +34,6 @@ try {
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_status_fields.sql", $config);
 	execCustSQLFile("$sprintDir/add_standard.sql", $config);
-	execCustSQLFile("$sprintDir/insert_metadata_work.sql", $config);
 	execCustSQLFile("$sprintDir/change_mapping_observation_provider.sql", $config);
 
 
@@ -51,17 +50,23 @@ try {
     
 	//system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
 	
-    system("php $sprintDir/change_model_nomvalide.php $CLIParams", $returnCode1) ;
-    if ($returnCode1 != 0) {
-        echo "$sprintDir/change_model_nomvalide.php crashed.\n";
-        exit(1);
+	system("php $sprintDir/change_model_nomvalide.php $CLIParams", $returnCode1) ;
+	if ($returnCode1 != 0) {
+		echo "$sprintDir/change_model_nomvalide.php crashed.\n";
+		exit(1);
 	}
-	
+
 	system("php $sprintDir/add_index_observations.php $CLIParams", $returnCode2) ;
-    if ($returnCode2 != 0) {
+	if ($returnCode2 != 0) {
 		echo "$sprintDir/add_index_observations.php crashed.\n";
 		// pas besoin d'exit -> on ne plante pas le processus si la création de l'index a échoué.
-    }
+	}
+
+	system("php $sprintDir/insert_metadata_work.php $CLIParams", $returnCode3) ;
+	if ($returnCode3 != 0) {
+			echo "$sprintDir/insert_metadata_work.php crashed.\n";
+			exit(1);
+	}
 
 } catch (Exception $e) {
 	
