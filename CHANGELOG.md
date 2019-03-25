@@ -15,14 +15,14 @@ Pour voir le diff entre deux versions, aller à (par exemple) : https://github.c
 * Re-calcul du nom valide conformément au standard.
 * Corrections de bugs divers
 
-[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.3...v2.3.0)
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.3..v2.3.0)
 
 ## V2.2.4 (25/02/2019)
 
 * Correctif de sécurité : contrôle du type de fichier uploadé.
 * Correctif dans la procédure de déploiement pour le téléchargement des DEE et des exports.
 
-[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.3...v2.2.4)
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.3..v2.2.4)
 
 ## V2.2.3 (6/12/2018)
 
@@ -32,7 +32,7 @@ Pour voir le diff entre deux versions, aller à (par exemple) : https://github.c
 * Correctifs de sécurités divers
 * Corrections de bugs divers
 
-[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.2...v2.2.3)
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.2..v2.2.3)
 
 ## V2.2.2 (19/10/2018)
 
