@@ -24,9 +24,15 @@ import fr.ifn.ogam.common.database.referentiels.ListReferentielsDAO;
 import fr.ifn.ogam.common.util.DSRConstants;
 import fr.ifn.ogam.common.business.checks.CheckException;
 import fr.ifn.ogam.common.business.checks.CheckExceptionArrayList;
+import static fr.ifn.ogam.common.business.checks.CheckCodes.*;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.*;
 import static fr.ifn.ogam.common.business.UnitTypes.*;
 import static fr.ifn.ogam.common.business.Data.*;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.operation.valid.*;
 
 /**
  * 
@@ -90,6 +96,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		// jourDateDebut < jourDateFin < today
 		observationDatesAreCoherent(values);
 		identifiantPermanentIsUUID(values) ;
+		geometryIsValid(values) ;
 
 		// ----- SOURCE ------
 
@@ -507,6 +514,40 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			}
 		}
 	}
+	
+	
+	/**
+	 * Tests if geometry is valid
+	 * @param values
+	 */
+	private void geometryIsValid(Map < String, GenericData > values) throws CheckException {
+		
+		GenericData genericGeometry = values.get(DSRConstants.GEOMETRIE) ;
+		if (genericGeometry != null && !empty(genericGeometry)) {
+			String wkt = genericGeometry.getValue().toString() ;
+			WKTReader reader = new WKTReader() ;
+			String error = "La géométrie n'est pas valide : " ;
+			try {
+				Geometry geometry = reader.read(wkt) ;
+				IsValidOp validOp = new IsValidOp(geometry) ;
+				if (validOp.isValid()) {
+					return ;
+				}
+				TopologyValidationError topoError = validOp.getValidationError() ;
+				error += topoError.toString() ;
+				CheckException ce = new CheckException(INVALID_GEOMETRY, error) ;
+				ce.setSourceData(DSRConstants.GEOMETRIE) ;
+				alce.add(ce) ;
+			} catch (Exception e) {
+				error += e.getMessage() ;
+				CheckException ce = new CheckException(INVALID_GEOMETRY, error) ;
+				ce.setSourceData(DSRConstants.GEOMETRIE) ;
+				alce.add(ce) ;
+			}
+		}
+	}
+	
+	
 
 	/**
 	 * Tests if all values for given list of fields (list), if they are array and not empty, have the same number of elements
