@@ -185,6 +185,10 @@ class TablesGeneration extends DatabaseUtils {
 		$sqlPK = "ALTER TABLE " . $tableSchema . "." . $tableName . "
   				  ADD PRIMARY KEY (" . $tablePrimaryKey . ");";
 		pg_query($dbconn, $sqlPK);
+			
+		pg_query($dbconn, "ALTER TABLE $tableSchema.$tableName OWNER TO ogam");
+		pg_query($dbconn, "GRANT ALL ON TABLE $tableSchema.$tableName TO ogam");
+		pg_query($dbconn, "GRANT ALL ON TABLE $tableSchema.$tableName TO {$this->adminName}");
 	}
 
 	/**
