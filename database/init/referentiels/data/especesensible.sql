@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.9
 -- Dumped by pg_dump version 9.6.9
 
--- Started on 2018-11-23 13:38:41 CET
+-- Started on 2019-03-28 11:43:50 CET
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- TOC entry 223 (class 1259 OID 6461751)
+-- TOC entry 218 (class 1259 OID 9344220)
 -- Name: especesensible; Type: TABLE; Schema: referentiels; Owner: admin
 --
 
@@ -41,7 +41,7 @@ CREATE TABLE especesensible (
 ALTER TABLE especesensible OWNER TO admin;
 
 --
--- TOC entry 224 (class 1259 OID 6461757)
+-- TOC entry 219 (class 1259 OID 9344226)
 -- Name: especesensible_id_seq; Type: SEQUENCE; Schema: referentiels; Owner: admin
 --
 
@@ -56,8 +56,8 @@ CREATE SEQUENCE especesensible_id_seq
 ALTER TABLE especesensible_id_seq OWNER TO admin;
 
 --
--- TOC entry 4202 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 4086 (class 0 OID 0)
+-- Dependencies: 219
 -- Name: especesensible_id_seq; Type: SEQUENCE OWNED BY; Schema: referentiels; Owner: admin
 --
 
@@ -65,7 +65,7 @@ ALTER SEQUENCE especesensible_id_seq OWNED BY especesensible.id;
 
 
 --
--- TOC entry 4067 (class 2604 OID 6461759)
+-- TOC entry 3951 (class 2604 OID 9344228)
 -- Name: especesensible id; Type: DEFAULT; Schema: referentiels; Owner: admin
 --
 
@@ -73,8 +73,8 @@ ALTER TABLE ONLY especesensible ALTER COLUMN id SET DEFAULT nextval('especesensi
 
 
 --
--- TOC entry 4194 (class 0 OID 6461751)
--- Dependencies: 223
+-- TOC entry 4078 (class 0 OID 9344220)
+-- Dependencies: 218
 -- Data for Name: especesensible; Type: TABLE DATA; Schema: referentiels; Owner: admin
 --
 
@@ -352,98 +352,7 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 35	271	53631	20	2	\N	9	\N	Coenonympha tullia
 35	272	18437	20	2	\N	9	\N	Austropotamobius pallipes
 35	273	240	20	1	\N	9	\N	Pelobates fuscus
-8	274	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
-8	275	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
-8	276	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
-8	277	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
-8	278	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
-8	279	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
-8	280	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
-8	281	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
-8	282	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
-8	283	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
-8	284	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
-8	285	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
-8	286	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
-8	287	78164	\N	1	\N	9	\N	Vipera ursinii
-8	288	159453	20	2	\N	9	\N	Cottus petiti
-8	289	67534	20	2	\N	9	\N	Misgurnus fossilis
-8	290	94041	\N	1	\N	9	\N	Cypripedium calceolus
-8	291	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
-8	292	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
-8	293	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
-8	294	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
-8	295	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
-8	296	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
-8	297	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
-8	298	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
-8	299	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-8	300	64437	20	2	\N	9	\N	Margaritifera auricularia
-8	301	64435	20	2	\N	9	\N	Margaritifera margaritifera
-8	302	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
-8	303	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
-8	304	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
-8	305	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
-8	306	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
-8	307	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
-8	308	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
-8	309	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
-8	310	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
-8	311	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
-8	312	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
-8	313	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
-8	314	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
-8	315	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
-8	316	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
-8	317	701819	\N	1	\N	9	\N	Salamandra atra
-8	318	699127	\N	1	\N	9	\N	Salamandra lanzai
-8	319	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
-8	320	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
 56	481	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-8	321	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
-8	322	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
-8	323	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
-8	324	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
-8	325	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
-8	326	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
-8	327	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
-8	328	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
-8	329	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
-8	330	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
-8	331	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
-8	332	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
-8	333	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
-8	334	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
-8	335	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
-8	336	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
-8	337	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
-8	338	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
-8	339	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
-8	340	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
-8	341	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
-8	342	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-8	343	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
-8	344	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
-8	345	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
-8	346	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
-8	347	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
-8	348	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
-8	349	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-8	350	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
-8	351	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
-8	352	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
-8	353	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
-8	354	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
-8	355	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
-8	356	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
-8	357	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
-8	358	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
-8	359	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
-8	360	53856	20	1	\N	9	\N	Euphydryas maturna
-8	361	53651	20	2	\N	9	\N	Coenonympha hero
-8	362	53631	20	2	\N	9	\N	Coenonympha tullia
-8	363	18437	20	2	\N	9	\N	Austropotamobius pallipes
-8	364	240	20	1	\N	9	\N	Pelobates fuscus
 90	365	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
 90	366	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
 90	367	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
@@ -989,98 +898,7 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 23	908	53631	20	2	\N	9	\N	Coenonympha tullia
 23	909	18437	20	2	\N	9	\N	Austropotamobius pallipes
 23	910	240	20	1	\N	9	\N	Pelobates fuscus
-5	911	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
-5	912	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
-5	913	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
-5	914	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
-5	915	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
-5	916	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
-5	917	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
-5	918	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
-5	919	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
-5	920	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
-5	921	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
-5	922	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
-5	923	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
-5	924	78164	\N	1	\N	9	\N	Vipera ursinii
-5	925	159453	20	2	\N	9	\N	Cottus petiti
-5	926	67534	20	2	\N	9	\N	Misgurnus fossilis
-5	927	94041	\N	1	\N	9	\N	Cypripedium calceolus
-5	928	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
-5	929	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
-5	930	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
-5	931	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
-5	932	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
-5	933	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
-5	934	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
-5	935	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
-5	936	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-5	937	64437	20	2	\N	9	\N	Margaritifera auricularia
-5	938	64435	20	2	\N	9	\N	Margaritifera margaritifera
-5	939	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
-5	940	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
-5	941	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
-5	942	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
-5	943	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
-5	944	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
-5	945	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
-5	946	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
-5	947	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
-5	948	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
-5	949	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
-5	950	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
-5	951	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
-5	952	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
-5	953	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
-5	954	701819	\N	1	\N	9	\N	Salamandra atra
-5	955	699127	\N	1	\N	9	\N	Salamandra lanzai
-5	956	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
-5	957	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
-5	958	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
 17	1120	64435	20	2	\N	9	\N	Margaritifera margaritifera
-5	959	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
-5	960	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
-5	961	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
-5	962	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
-5	963	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
-5	964	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
-5	965	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
-5	966	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
-5	967	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
-5	968	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
-5	969	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
-5	970	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
-5	971	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
-5	972	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
-5	973	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
-5	974	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
-5	975	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
-5	976	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
-5	977	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
-5	978	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
-5	979	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-5	980	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
-5	981	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
-5	982	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
-5	983	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
-5	984	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
-5	985	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
-5	986	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-5	987	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
-5	988	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
-5	989	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
-5	990	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
-5	991	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
-5	992	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
-5	993	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
-5	994	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
-5	995	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
-5	996	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
-5	997	53856	20	1	\N	9	\N	Euphydryas maturna
-5	998	53651	20	2	\N	9	\N	Coenonympha hero
-5	999	53631	20	2	\N	9	\N	Coenonympha tullia
-5	1000	18437	20	2	\N	9	\N	Austropotamobius pallipes
-5	1001	240	20	1	\N	9	\N	Pelobates fuscus
 67	1002	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
 67	1003	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
 67	1004	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
@@ -1247,7 +1065,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 17	1166	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
 17	1167	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
 17	1168	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-7	1757	64435	20	2	\N	9	\N	Margaritifera margaritifera
 17	1169	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
 17	1170	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
 17	1171	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
@@ -1514,7 +1331,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 91	1432	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
 91	1433	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
 91	1434	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-1	2021	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
 91	1435	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
 91	1436	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
 91	1437	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
@@ -1676,7 +1492,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 52	1593	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
 52	1594	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
 52	1595	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
-1	2022	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
 52	1596	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
 52	1597	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
 52	1598	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
@@ -1811,97 +1626,7 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 55	1727	53631	20	2	\N	9	\N	Coenonympha tullia
 55	1728	18437	20	2	\N	9	\N	Austropotamobius pallipes
 55	1729	240	20	1	\N	9	\N	Pelobates fuscus
-7	1730	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
-7	1731	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
-7	1732	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
-7	1733	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
-7	1734	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
-7	1735	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
-7	1736	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
-7	1737	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
-7	1738	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
-7	1739	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
-7	1740	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
-7	1741	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
-7	1742	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
-7	1743	78164	\N	1	\N	9	\N	Vipera ursinii
-7	1744	159453	20	2	\N	9	\N	Cottus petiti
-7	1745	67534	20	2	\N	9	\N	Misgurnus fossilis
-7	1746	94041	\N	1	\N	9	\N	Cypripedium calceolus
-7	1747	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
-7	1748	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
-7	1749	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
-7	1750	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
-7	1751	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
-7	1752	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
-7	1753	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
-7	1754	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
-7	1755	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-7	1756	64437	20	2	\N	9	\N	Margaritifera auricularia
-7	1758	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
-7	1759	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
-7	1760	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
-7	1761	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
-7	1762	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
-7	1763	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
-7	1764	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
-7	1765	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
-7	1766	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
-7	1767	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
-7	1768	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
-7	1769	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
-7	1770	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
-7	1771	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
-7	1772	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
-7	1773	701819	\N	1	\N	9	\N	Salamandra atra
-7	1774	699127	\N	1	\N	9	\N	Salamandra lanzai
-7	1775	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
-7	1776	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
-7	1777	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
-7	1778	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
-7	1779	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
-7	1780	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
-7	1781	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
-7	1782	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
-7	1783	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
-7	1784	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
-7	1785	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
-7	1786	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
-7	1787	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
-7	1788	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
-7	1789	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
-7	1790	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
-7	1791	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
-7	1792	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
-7	1793	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
-7	1794	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
-7	1795	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
-7	1796	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
-7	1797	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
-7	1798	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-7	1799	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
-7	1800	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
-7	1801	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
-7	1802	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
-7	1803	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
-7	1804	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
-7	1805	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
 94	2502	699127	\N	1	\N	9	\N	Salamandra lanzai
-7	1806	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
-7	1807	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
-7	1808	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
-7	1809	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
-7	1810	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
-7	1811	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
-7	1812	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
-7	1813	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
-7	1814	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
-7	1815	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
-7	1816	53856	20	1	\N	9	\N	Euphydryas maturna
-7	1817	53651	20	2	\N	9	\N	Coenonympha hero
-7	1818	53631	20	2	\N	9	\N	Coenonympha tullia
-7	1819	18437	20	2	\N	9	\N	Austropotamobius pallipes
-7	1820	240	20	1	\N	9	\N	Pelobates fuscus
 87	1821	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
 87	1822	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
 87	1823	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
@@ -1943,6 +1668,7 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 87	1859	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
 87	1860	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
 87	1861	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+07	1816	53856	20	1	\N	9	\N	Euphydryas maturna
 87	1862	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
 87	1863	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
 87	1864	701819	\N	1	\N	9	\N	Salamandra atra
@@ -2084,95 +1810,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 70	2000	53631	20	2	\N	9	\N	Coenonympha tullia
 70	2001	18437	20	2	\N	9	\N	Austropotamobius pallipes
 70	2002	240	20	1	\N	9	\N	Pelobates fuscus
-1	2003	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
-1	2004	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
-1	2005	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
-1	2006	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
-1	2007	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
-1	2008	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
-1	2009	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
-1	2010	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
-1	2011	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
-1	2012	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
-1	2013	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
-1	2014	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
-1	2015	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
-1	2016	78164	\N	1	\N	9	\N	Vipera ursinii
-1	2017	159453	20	2	\N	9	\N	Cottus petiti
-1	2018	67534	20	2	\N	9	\N	Misgurnus fossilis
-1	2019	94041	\N	1	\N	9	\N	Cypripedium calceolus
-1	2020	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
-1	2023	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
-1	2024	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
-1	2025	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
-1	2026	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
-1	2027	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
-1	2028	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-1	2029	64437	20	2	\N	9	\N	Margaritifera auricularia
-1	2030	64435	20	2	\N	9	\N	Margaritifera margaritifera
-1	2031	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
-1	2032	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
-1	2033	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
-1	2034	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
-1	2035	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
-1	2036	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
-1	2037	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
-1	2038	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
-1	2039	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
-1	2040	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
-1	2041	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
-1	2042	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
-1	2043	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
-1	2044	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
-1	2045	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
-1	2046	701819	\N	1	\N	9	\N	Salamandra atra
-1	2047	699127	\N	1	\N	9	\N	Salamandra lanzai
-1	2048	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
-1	2049	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
-1	2050	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
-1	2051	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
-1	2052	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
-1	2053	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
-1	2054	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
-1	2055	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
-1	2056	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
-1	2057	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
-1	2058	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
-1	2059	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
-1	2060	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
-1	2061	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
-1	2062	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
-1	2063	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
-1	2064	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
-1	2065	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
-1	2066	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
-1	2067	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
-1	2068	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
-1	2069	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
-1	2070	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
-1	2071	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-1	2072	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
-1	2073	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
-1	2074	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
-1	2075	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
-1	2076	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
-1	2077	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
-1	2078	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-1	2079	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
-1	2080	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
-1	2081	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
-1	2082	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
-1	2083	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
-1	2084	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
-1	2085	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
-1	2086	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
-1	2087	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
-1	2088	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
-1	2089	53856	20	1	\N	9	\N	Euphydryas maturna
-1	2090	53651	20	2	\N	9	\N	Coenonympha hero
-1	2091	53631	20	2	\N	9	\N	Coenonympha tullia
-1	2092	18437	20	2	\N	9	\N	Austropotamobius pallipes
-1	2093	240	20	1	\N	9	\N	Pelobates fuscus
 16	2094	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
 16	2095	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
 16	2096	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
@@ -2209,6 +1846,7 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 16	2127	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
 16	2128	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
 16	2129	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+01	2089	53856	20	1	\N	9	\N	Euphydryas maturna
 16	2130	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
 16	2131	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
 16	2132	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
@@ -2264,188 +1902,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 16	2182	53631	20	2	\N	9	\N	Coenonympha tullia
 16	2183	18437	20	2	\N	9	\N	Austropotamobius pallipes
 16	2184	240	20	1	\N	9	\N	Pelobates fuscus
-2	2185	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
-2	2186	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
-2	2187	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
-2	2188	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
-2	2189	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
-2	2190	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
-2	2191	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
-2	2192	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
-2	2193	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
-2	2194	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
-2	2195	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
-2	2196	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
-2	2197	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
-2	2198	78164	\N	1	\N	9	\N	Vipera ursinii
-2	2199	159453	20	2	\N	9	\N	Cottus petiti
-2	2200	67534	20	2	\N	9	\N	Misgurnus fossilis
-2	2201	94041	\N	1	\N	9	\N	Cypripedium calceolus
-2	2202	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
-2	2203	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
-2	2204	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
-2	2205	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
-2	2206	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
-2	2207	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
-2	2208	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
-2	2209	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
-2	2210	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-2	2211	64437	20	2	\N	9	\N	Margaritifera auricularia
-2	2212	64435	20	2	\N	9	\N	Margaritifera margaritifera
-2	2213	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
-2	2214	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
-2	2215	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
-2	2216	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
-2	2217	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
-2	2218	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
-2	2219	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
-2	2220	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
-2	2221	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
-2	2222	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
-2	2223	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
-2	2224	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
-2	2225	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
-2	2226	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
-2	2227	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
-2	2228	701819	\N	1	\N	9	\N	Salamandra atra
-2	2229	699127	\N	1	\N	9	\N	Salamandra lanzai
-2	2230	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
-2	2231	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
-2	2232	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
-2	2233	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
-2	2234	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
-2	2235	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
-2	2236	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
-2	2237	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
-2	2238	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
-2	2239	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
-2	2240	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
-2	2241	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
-2	2242	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
-2	2243	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
-2	2244	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
-2	2245	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
-2	2246	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
-2	2247	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
-2	2248	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
-2	2249	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
-2	2250	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
-2	2251	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
-2	2252	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
-2	2253	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-2	2254	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
-2	2255	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
-2	2256	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
-2	2257	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
-2	2258	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
-2	2259	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
-2	2260	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-2	2261	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
-2	2262	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
-2	2263	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
-2	2264	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
-2	2265	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
-2	2266	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
-2	2267	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
-2	2268	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
-2	2269	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
-2	2270	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
-2	2271	53856	20	1	\N	9	\N	Euphydryas maturna
-2	2272	53651	20	2	\N	9	\N	Coenonympha hero
-2	2273	53631	20	2	\N	9	\N	Coenonympha tullia
-2	2274	18437	20	2	\N	9	\N	Austropotamobius pallipes
-2	2275	240	20	1	\N	9	\N	Pelobates fuscus
-6	2276	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
-6	2277	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
-6	2278	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
-6	2279	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
-6	2280	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
-6	2281	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
-6	2282	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
-6	2283	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
-6	2284	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
-6	2285	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
-6	2286	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
-6	2287	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
-6	2288	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
-6	2289	78164	\N	1	\N	9	\N	Vipera ursinii
-6	2290	159453	20	2	\N	9	\N	Cottus petiti
-6	2291	67534	20	2	\N	9	\N	Misgurnus fossilis
-6	2292	94041	\N	1	\N	9	\N	Cypripedium calceolus
-6	2293	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
-6	2294	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
-6	2295	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
-6	2296	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
-6	2297	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
-6	2298	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
-6	2299	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
-6	2300	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
-6	2301	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-6	2302	64437	20	2	\N	9	\N	Margaritifera auricularia
-6	2303	64435	20	2	\N	9	\N	Margaritifera margaritifera
-6	2304	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
-6	2305	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
-6	2306	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
-6	2307	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
-6	2308	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
-6	2309	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
-6	2310	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
-6	2311	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
-6	2312	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
-6	2313	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
-6	2314	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
-6	2315	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
-6	2316	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
-6	2317	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
-6	2318	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
-6	2319	701819	\N	1	\N	9	\N	Salamandra atra
-6	2320	699127	\N	1	\N	9	\N	Salamandra lanzai
-6	2321	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
-6	2322	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
-6	2323	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
-6	2324	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
-6	2325	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
-6	2326	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
-6	2327	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
-6	2328	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
-6	2329	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
-6	2330	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
-6	2331	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
-6	2332	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
-6	2333	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
-6	2334	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
-6	2335	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
-6	2336	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
-6	2337	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
-6	2338	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
-6	2339	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
-6	2340	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
-6	2341	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
-6	2342	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
-6	2343	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
-6	2344	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-6	2345	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
-6	2346	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
-6	2347	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
-6	2348	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
-6	2349	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
-6	2350	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
-6	2351	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-6	2352	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
-6	2353	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
-6	2354	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
-6	2355	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
-6	2356	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
-6	2357	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
-6	2358	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
-6	2359	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
-6	2360	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
-6	2361	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
-6	2362	53856	20	1	\N	9	\N	Euphydryas maturna
-6	2363	53651	20	2	\N	9	\N	Coenonympha hero
-6	2364	53631	20	2	\N	9	\N	Coenonympha tullia
-6	2365	18437	20	2	\N	9	\N	Austropotamobius pallipes
-6	2366	240	20	1	\N	9	\N	Pelobates fuscus
 10	2367	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
 10	2368	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
 10	2369	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
@@ -4174,97 +3630,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 2B	4091	53856	20	1	\N	9	\N	Euphydryas maturna
 2B	4092	53651	20	2	\N	9	\N	Coenonympha hero
 2B	4095	240	20	1	\N	9	\N	Pelobates fuscus
-4	4096	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
-4	4097	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
-4	4098	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
-4	4099	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
-4	4100	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
-4	4101	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
-4	4102	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
-4	4103	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
-4	4104	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
-4	4105	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
-4	4106	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
-4	4107	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
-4	4108	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
-4	4109	78164	\N	1	\N	9	\N	Vipera ursinii
-4	4110	159453	20	2	\N	9	\N	Cottus petiti
-4	4111	67534	20	2	\N	9	\N	Misgurnus fossilis
-4	4112	94041	\N	1	\N	9	\N	Cypripedium calceolus
-4	4113	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
-4	4114	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
-4	4115	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
-4	4116	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
-4	4117	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
-4	4118	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
-4	4119	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
-4	4120	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
-4	4121	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
-4	4122	64437	20	2	\N	9	\N	Margaritifera auricularia
-4	4123	64435	20	2	\N	9	\N	Margaritifera margaritifera
-4	4124	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
-4	4125	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
-4	4126	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
-4	4127	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
-4	4128	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
-4	4129	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
-4	4130	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
-4	4131	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
-4	4132	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
-4	4133	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
-4	4134	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
-4	4135	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
-4	4136	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
-4	4137	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
-4	4138	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
-4	4139	701819	\N	1	\N	9	\N	Salamandra atra
-4	4140	699127	\N	1	\N	9	\N	Salamandra lanzai
-4	4141	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
-4	4142	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
-4	4143	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
-4	4144	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
-4	4145	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
-4	4146	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
-4	4147	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
-4	4148	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
-4	4149	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
-4	4150	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
-4	4151	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
-4	4152	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
-4	4153	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
-4	4154	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
-4	4155	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
-4	4156	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
-4	4157	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
-4	4158	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
-4	4159	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
-4	4160	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
-4	4161	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
-4	4162	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
-4	4163	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
-4	4164	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
-4	4165	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
-4	4166	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
-4	4167	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
-4	4168	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
-4	4169	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
-4	4170	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
-4	4171	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-4	4172	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
-4	4173	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
-4	4174	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
-4	4175	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
-4	4176	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
-4	4177	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
-4	4178	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
-4	4179	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
-4	4180	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
-4	4181	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
-4	4182	53856	20	1	\N	9	\N	Euphydryas maturna
-4	4183	53651	20	2	\N	9	\N	Coenonympha hero
-4	4184	53631	20	2	\N	9	\N	Coenonympha tullia
-4	4185	18437	20	2	\N	9	\N	Austropotamobius pallipes
-4	4186	240	20	1	\N	9	\N	Pelobates fuscus
 39	4187	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
 39	4188	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
 39	4189	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
@@ -5342,7 +4707,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 79	5261	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
 79	5262	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
 79	5263	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
-3	5858	160269	\N	1	\N	8	\N	Trifolium squamosum L., 1759
 79	5264	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
 79	5265	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
 79	5266	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
@@ -5907,1828 +5271,1377 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 68	5823	18437	20	2	\N	9	\N	Austropotamobius pallipes
 68	5824	240	20	1	\N	9	\N	Pelobates fuscus
 63	5825	134096	\N	1	\N	8	\N	Empetrum nigrum L. subsp. nigrum
-3	5826	134096	\N	1	\N	8	\N	Empetrum nigrum L. subsp. nigrum
 43	5827	134096	\N	1	\N	8	\N	Empetrum nigrum L. subsp. nigrum
 15	5828	134096	\N	1	\N	8	\N	Empetrum nigrum L. subsp. nigrum
 63	5829	136883	\N	1	\N	8	\N	Jasione crispa subsp. arvernensis Tutin, 1973
-3	5830	136883	\N	1	\N	8	\N	Jasione crispa subsp. arvernensis Tutin, 1973
 43	5831	136883	\N	1	\N	8	\N	Jasione crispa subsp. arvernensis Tutin, 1973
 15	5832	136883	\N	1	\N	8	\N	Jasione crispa subsp. arvernensis Tutin, 1973
 63	5833	138067	\N	1	\N	8	\N	Neslia paniculata subsp. thracica (Velen.) Bornm., 1894
-3	5834	138067	\N	1	\N	8	\N	Neslia paniculata subsp. thracica (Velen.) Bornm., 1894
 43	5835	138067	\N	1	\N	8	\N	Neslia paniculata subsp. thracica (Velen.) Bornm., 1894
 15	5836	138067	\N	1	\N	8	\N	Neslia paniculata subsp. thracica (Velen.) Bornm., 1894
 63	5837	138865	\N	1	\N	8	\N	Pisum sativum subsp. biflorum (Raf.) Soldano, 1992
-3	5838	138865	\N	1	\N	8	\N	Pisum sativum subsp. biflorum (Raf.) Soldano, 1992
 43	5839	138865	\N	1	\N	8	\N	Pisum sativum subsp. biflorum (Raf.) Soldano, 1992
 15	5840	138865	\N	1	\N	8	\N	Pisum sativum subsp. biflorum (Raf.) Soldano, 1992
 63	5841	143985	\N	1	\N	8	\N	Asplenium adiantum-nigrum var. silesiacum (Milde) Milde, 1867
-3	5842	143985	\N	1	\N	8	\N	Asplenium adiantum-nigrum var. silesiacum (Milde) Milde, 1867
 43	5843	143985	\N	1	\N	8	\N	Asplenium adiantum-nigrum var. silesiacum (Milde) Milde, 1867
 15	5844	143985	\N	1	\N	8	\N	Asplenium adiantum-nigrum var. silesiacum (Milde) Milde, 1867
 63	5845	155051	\N	1	\N	8	\N	Spiraea hypericifolia subsp. obovata (Waldst. & Kit. ex Willd.) H.Huber, 1964
-3	5846	155051	\N	1	\N	8	\N	Spiraea hypericifolia subsp. obovata (Waldst. & Kit. ex Willd.) H.Huber, 1964
 43	5847	155051	\N	1	\N	8	\N	Spiraea hypericifolia subsp. obovata (Waldst. & Kit. ex Willd.) H.Huber, 1964
 15	5848	155051	\N	1	\N	8	\N	Spiraea hypericifolia subsp. obovata (Waldst. & Kit. ex Willd.) H.Huber, 1964
 63	5849	159441	\N	1	\N	8	\N	Limoniscus violaceus (P. W. J. Müller, 1821)
-3	5850	159441	\N	1	\N	8	\N	Limoniscus violaceus (P. W. J. Müller, 1821)
 43	5851	159441	\N	1	\N	8	\N	Limoniscus violaceus (P. W. J. Müller, 1821)
 15	5852	159441	\N	1	\N	8	\N	Limoniscus violaceus (P. W. J. Müller, 1821)
 63	5853	159574	\N	1	\N	8	\N	Calamagrostis neglecta G.Gaertn., B.Mey. & Scherb., 1799
-3	5854	159574	\N	1	\N	8	\N	Calamagrostis neglecta G.Gaertn., B.Mey. & Scherb., 1799
 43	5855	159574	\N	1	\N	8	\N	Calamagrostis neglecta G.Gaertn., B.Mey. & Scherb., 1799
 43	5859	160269	\N	1	\N	8	\N	Trifolium squamosum L., 1759
 15	5860	160269	\N	1	\N	8	\N	Trifolium squamosum L., 1759
 63	5861	64460	\N	1	\N	8	\N	Pseudanodonta complanata subsp ligerica Bourguignat, 1880
-3	5862	64460	\N	1	\N	8	\N	Pseudanodonta complanata subsp ligerica Bourguignat, 1880
 43	5863	64460	\N	1	\N	8	\N	Pseudanodonta complanata subsp ligerica Bourguignat, 1880
 15	5864	64460	\N	1	\N	8	\N	Pseudanodonta complanata subsp ligerica Bourguignat, 1880
 63	5865	199294	\N	3	\N	8	\N	Bonasa bonasia (Linnaeus, 1758)
-3	5866	199294	\N	3	\N	8	\N	Bonasa bonasia (Linnaeus, 1758)
 43	5867	199294	\N	3	\N	8	\N	Bonasa bonasia (Linnaeus, 1758)
 15	5868	199294	\N	3	\N	8	\N	Bonasa bonasia (Linnaeus, 1758)
 63	5869	200118	\N	2	\N	8	\N	Myotis daubentonii
-3	5870	200118	\N	2	\N	8	\N	Myotis daubentonii
 43	5871	200118	\N	2	\N	8	\N	Myotis daubentonii
 15	5872	200118	\N	2	\N	8	\N	Myotis daubentonii
 63	5873	200406	\N	3	\N	8	\N	Ceruchus chrysomelinus (Hochenwart, 1785)
-3	5874	200406	\N	3	\N	8	\N	Ceruchus chrysomelinus (Hochenwart, 1785)
 43	5875	200406	\N	3	\N	8	\N	Ceruchus chrysomelinus (Hochenwart, 1785)
 15	5876	200406	\N	3	\N	8	\N	Ceruchus chrysomelinus (Hochenwart, 1785)
 63	5877	222951	\N	3	\N	8	\N	Rhysodes sulcatus (Fabricius, 1787)
-3	5878	222951	\N	3	\N	8	\N	Rhysodes sulcatus (Fabricius, 1787)
 43	5879	222951	\N	3	\N	8	\N	Rhysodes sulcatus (Fabricius, 1787)
 15	5880	222951	\N	3	\N	8	\N	Rhysodes sulcatus (Fabricius, 1787)
 63	5881	235422	\N	3	\N	8	\N	Peltis grossa (Linnaeus, 1758)
-3	5882	235422	\N	3	\N	8	\N	Peltis grossa (Linnaeus, 1758)
 43	5883	235422	\N	3	\N	8	\N	Peltis grossa (Linnaeus, 1758)
 15	5884	235422	\N	3	\N	8	\N	Peltis grossa (Linnaeus, 1758)
 63	5885	235425	\N	3	\N	8	\N	Grynocharis oblonga (Linnaeus, 1758)
-3	5886	235425	\N	3	\N	8	\N	Grynocharis oblonga (Linnaeus, 1758)
 43	5887	235425	\N	3	\N	8	\N	Grynocharis oblonga (Linnaeus, 1758)
 15	5888	235425	\N	3	\N	8	\N	Grynocharis oblonga (Linnaeus, 1758)
 63	5889	244664	\N	3	\N	8	\N	Neatus picipes (Herbst, 1797)
-3	5890	244664	\N	3	\N	8	\N	Neatus picipes (Herbst, 1797)
 43	5891	244664	\N	3	\N	8	\N	Neatus picipes (Herbst, 1797)
 15	5892	244664	\N	3	\N	8	\N	Neatus picipes (Herbst, 1797)
 63	5893	244672	\N	1	\N	8	\N	Tribolium madens (Charpentier, 1825)
-3	5894	244672	\N	1	\N	8	\N	Tribolium madens (Charpentier, 1825)
 43	5895	244672	\N	1	\N	8	\N	Tribolium madens (Charpentier, 1825)
 15	5896	244672	\N	1	\N	8	\N	Tribolium madens (Charpentier, 1825)
 63	5897	306611	\N	3	\N	8	\N	Benibotarus taygetanus (Pic, 1905)
-3	5898	306611	\N	3	\N	8	\N	Benibotarus taygetanus (Pic, 1905)
 43	5899	306611	\N	3	\N	8	\N	Benibotarus taygetanus (Pic, 1905)
 15	5900	306611	\N	3	\N	8	\N	Benibotarus taygetanus (Pic, 1905)
 63	5901	416838	\N	3	\N	8	\N	Corticeus bicoloroides (Roubal, 1933)
-3	5902	416838	\N	3	\N	8	\N	Corticeus bicoloroides (Roubal, 1933)
 43	5903	416838	\N	3	\N	8	\N	Corticeus bicoloroides (Roubal, 1933)
 15	5904	416838	\N	3	\N	8	\N	Corticeus bicoloroides (Roubal, 1933)
 63	5905	432710	\N	2	site de nidification	8	\N	Falco peregrinus nesiotes Mayr, 1941
-3	5906	432710	\N	2	site de nidification	8	\N	Falco peregrinus nesiotes Mayr, 1941
 43	5907	432710	\N	2	site de nidification	8	\N	Falco peregrinus nesiotes Mayr, 1941
 15	5908	432710	\N	2	site de nidification	8	\N	Falco peregrinus nesiotes Mayr, 1941
 63	5909	433999	\N	1	\N	8	\N	Entosthodon muhlenbergii (Turner) Fife
-3	5910	433999	\N	1	\N	8	\N	Entosthodon muhlenbergii (Turner) Fife
 43	5911	433999	\N	1	\N	8	\N	Entosthodon muhlenbergii (Turner) Fife
 15	5912	433999	\N	1	\N	8	\N	Entosthodon muhlenbergii (Turner) Fife
 63	5913	434000	\N	1	\N	8	\N	Entosthodon pulchellus (H.Philib.) Brugués
-3	5914	434000	\N	1	\N	8	\N	Entosthodon pulchellus (H.Philib.) Brugués
 43	5915	434000	\N	1	\N	8	\N	Entosthodon pulchellus (H.Philib.) Brugués
 15	5916	434000	\N	1	\N	8	\N	Entosthodon pulchellus (H.Philib.) Brugués
 63	5917	434128	\N	1	\N	8	\N	Dicranum spadiceum J.E.Zetterst.
-3	5918	434128	\N	1	\N	8	\N	Dicranum spadiceum J.E.Zetterst.
 43	5919	434128	\N	1	\N	8	\N	Dicranum spadiceum J.E.Zetterst.
 15	5920	434128	\N	1	\N	8	\N	Dicranum spadiceum J.E.Zetterst.
 63	5921	434157	\N	1	\N	8	\N	Pottiopsis caespitosa (Brid.) Blockeel & A.J.E.Sm.
-3	5922	434157	\N	1	\N	8	\N	Pottiopsis caespitosa (Brid.) Blockeel & A.J.E.Sm.
 43	5923	434157	\N	1	\N	8	\N	Pottiopsis caespitosa (Brid.) Blockeel & A.J.E.Sm.
 15	5924	434157	\N	1	\N	8	\N	Pottiopsis caespitosa (Brid.) Blockeel & A.J.E.Sm.
 63	5925	902013	\N	1	\N	8	\N	Microbryum curvicollum (Hedw.) R.H.Zander
-3	5926	902013	\N	1	\N	8	\N	Microbryum curvicollum (Hedw.) R.H.Zander
 43	5927	902013	\N	1	\N	8	\N	Microbryum curvicollum (Hedw.) R.H.Zander
 15	5928	902013	\N	1	\N	8	\N	Microbryum curvicollum (Hedw.) R.H.Zander
 63	5929	434209	\N	1	\N	8	\N	Microbryum davallianum (Sm.) R.H.Zander
-3	5930	434209	\N	1	\N	8	\N	Microbryum davallianum (Sm.) R.H.Zander
 43	5931	434209	\N	1	\N	8	\N	Microbryum davallianum (Sm.) R.H.Zander
 15	5932	434209	\N	1	\N	8	\N	Microbryum davallianum (Sm.) R.H.Zander
 63	5933	434213	\N	1	\N	8	\N	Microbryum rectum (With.) R.H.Zander
-3	5934	434213	\N	1	\N	8	\N	Microbryum rectum (With.) R.H.Zander
 43	5935	434213	\N	1	\N	8	\N	Microbryum rectum (With.) R.H.Zander
 15	5936	434213	\N	1	\N	8	\N	Microbryum rectum (With.) R.H.Zander
 63	5937	434214	\N	1	\N	8	\N	Microbryum starckeanum (Hedw.) R.H.Zander
-3	5938	434214	\N	1	\N	8	\N	Microbryum starckeanum (Hedw.) R.H.Zander
+03	5870	200118	\N	2	\N	8	\N	Myotis daubentonii
 43	5939	434214	\N	1	\N	8	\N	Microbryum starckeanum (Hedw.) R.H.Zander
 15	5940	434214	\N	1	\N	8	\N	Microbryum starckeanum (Hedw.) R.H.Zander
 63	5941	435867	\N	1	\N	8	\N	Protobryum bryoides (Dicks.) J.Guerra & M.J.Cano
-3	5942	435867	\N	1	\N	8	\N	Protobryum bryoides (Dicks.) J.Guerra & M.J.Cano
 43	5943	435867	\N	1	\N	8	\N	Protobryum bryoides (Dicks.) J.Guerra & M.J.Cano
 15	5944	435867	\N	1	\N	8	\N	Protobryum bryoides (Dicks.) J.Guerra & M.J.Cano
 63	5945	434251	\N	1	\N	8	\N	Tortula hoppeana (Schultz) Ochyra
-3	5946	434251	\N	1	\N	8	\N	Tortula hoppeana (Schultz) Ochyra
 43	5947	434251	\N	1	\N	8	\N	Tortula hoppeana (Schultz) Ochyra
 15	5948	434251	\N	1	\N	8	\N	Tortula hoppeana (Schultz) Ochyra
 63	5949	434342	\N	1	\N	8	\N	Pohlia sphagnicola (Bruch & Schimp.) Broth.
-3	5950	434342	\N	1	\N	8	\N	Pohlia sphagnicola (Bruch & Schimp.) Broth.
 43	5951	434342	\N	1	\N	8	\N	Pohlia sphagnicola (Bruch & Schimp.) Broth.
 15	5952	434342	\N	1	\N	8	\N	Pohlia sphagnicola (Bruch & Schimp.) Broth.
 63	5953	434378	\N	1	\N	8	\N	Campyliadelphus elodes (Lindb.) Kanda
-3	5954	434378	\N	1	\N	8	\N	Campyliadelphus elodes (Lindb.) Kanda
 43	5955	434378	\N	1	\N	8	\N	Campyliadelphus elodes (Lindb.) Kanda
 15	5956	434378	\N	1	\N	8	\N	Campyliadelphus elodes (Lindb.) Kanda
 63	5957	5516	\N	1	\N	8	\N	Pseudocalliergon lycopodioides (Brid.) Hedenäs
-3	5958	5516	\N	1	\N	8	\N	Pseudocalliergon lycopodioides (Brid.) Hedenäs
 43	5959	5516	\N	1	\N	8	\N	Pseudocalliergon lycopodioides (Brid.) Hedenäs
 15	5960	5516	\N	1	\N	8	\N	Pseudocalliergon lycopodioides (Brid.) Hedenäs
 63	5961	770790	\N	1	\N	8	\N	Pseudocalliergon trifarium (F.Weber & D.Mohr) Loeske
-3	5962	770790	\N	1	\N	8	\N	Pseudocalliergon trifarium (F.Weber & D.Mohr) Loeske
 43	5963	770790	\N	1	\N	8	\N	Pseudocalliergon trifarium (F.Weber & D.Mohr) Loeske
 15	5964	770790	\N	1	\N	8	\N	Pseudocalliergon trifarium (F.Weber & D.Mohr) Loeske
 63	5965	434420	\N	1	\N	8	\N	Helodium blandowii (F.Weber & D.Mohr) Warnst.
-3	5966	434420	\N	1	\N	8	\N	Helodium blandowii (F.Weber & D.Mohr) Warnst.
 43	5967	434420	\N	1	\N	8	\N	Helodium blandowii (F.Weber & D.Mohr) Warnst.
 15	5968	434420	\N	1	\N	8	\N	Helodium blandowii (F.Weber & D.Mohr) Warnst.
 63	5969	434441	\N	1	\N	8	\N	Oxyrrhynchium schleicheri (R.Hedw.) Röll
-3	5970	434441	\N	1	\N	8	\N	Oxyrrhynchium schleicheri (R.Hedw.) Röll
 43	5971	434441	\N	1	\N	8	\N	Oxyrrhynchium schleicheri (R.Hedw.) Röll
 15	5972	434441	\N	1	\N	8	\N	Oxyrrhynchium schleicheri (R.Hedw.) Röll
 63	5973	434458	\N	1	\N	8	\N	Brachythecium tommasinii (Sendtn. ex Boulay) Ignatov & Huttunen
-3	5974	434458	\N	1	\N	8	\N	Brachythecium tommasinii (Sendtn. ex Boulay) Ignatov & Huttunen
 43	5975	434458	\N	1	\N	8	\N	Brachythecium tommasinii (Sendtn. ex Boulay) Ignatov & Huttunen
 15	5976	434458	\N	1	\N	8	\N	Brachythecium tommasinii (Sendtn. ex Boulay) Ignatov & Huttunen
 63	5977	434468	\N	1	\N	8	\N	Calliergonella lindbergii (Mitt.) Hedenäs
-3	5978	434468	\N	1	\N	8	\N	Calliergonella lindbergii (Mitt.) Hedenäs
 43	5979	434468	\N	1	\N	8	\N	Calliergonella lindbergii (Mitt.) Hedenäs
 15	5980	434468	\N	1	\N	8	\N	Calliergonella lindbergii (Mitt.) Hedenäs
 63	5981	436220	\N	1	\N	8	\N	Campylophyllum calcareum (Crundw. & Nyholm) Hedenäs
-3	5982	436220	\N	1	\N	8	\N	Campylophyllum calcareum (Crundw. & Nyholm) Hedenäs
 43	5983	436220	\N	1	\N	8	\N	Campylophyllum calcareum (Crundw. & Nyholm) Hedenäs
 15	5984	436220	\N	1	\N	8	\N	Campylophyllum calcareum (Crundw. & Nyholm) Hedenäs
 63	5985	434483	\N	1	\N	8	\N	Isopterygiopsis pulchella (Hedw.) Z.Iwats.
-3	5986	434483	\N	1	\N	8	\N	Isopterygiopsis pulchella (Hedw.) Z.Iwats.
 43	5987	434483	\N	1	\N	8	\N	Isopterygiopsis pulchella (Hedw.) Z.Iwats.
 15	5988	434483	\N	1	\N	8	\N	Isopterygiopsis pulchella (Hedw.) Z.Iwats.
 63	5989	436534	\N	1	\N	8	\N	Oxymitra incrassata (Brot.) Sergio et Sim-Sim
-3	5990	436534	\N	1	\N	8	\N	Oxymitra incrassata (Brot.) Sergio et Sim-Sim
 43	5991	436534	\N	1	\N	8	\N	Oxymitra incrassata (Brot.) Sergio et Sim-Sim
 15	5992	436534	\N	1	\N	8	\N	Oxymitra incrassata (Brot.) Sergio et Sim-Sim
 63	5993	444430	\N	1	\N	8	\N	Ichthyosaura alpestris (Laurenti, 1768)
-3	5994	444430	\N	1	\N	8	\N	Ichthyosaura alpestris (Laurenti, 1768)
 43	5995	444430	\N	1	\N	8	\N	Ichthyosaura alpestris (Laurenti, 1768)
 15	5996	444430	\N	1	\N	8	\N	Ichthyosaura alpestris (Laurenti, 1768)
 63	5997	444431	\N	2	\N	8	\N	Lissotriton vulgaris (Linnaeus, 1758)
-3	5998	444431	\N	2	\N	8	\N	Lissotriton vulgaris (Linnaeus, 1758)
 43	5999	444431	\N	2	\N	8	\N	Lissotriton vulgaris (Linnaeus, 1758)
 15	6000	444431	\N	2	\N	8	\N	Lissotriton vulgaris (Linnaeus, 1758)
 63	6001	444440	\N	1	\N	8	\N	Pelophylax kl. esculentus (Linnaeus, 1758)
-3	6002	444440	\N	1	\N	8	\N	Pelophylax kl. esculentus (Linnaeus, 1758)
 43	6003	444440	\N	1	\N	8	\N	Pelophylax kl. esculentus (Linnaeus, 1758)
 15	6004	444440	\N	1	\N	8	\N	Pelophylax kl. esculentus (Linnaeus, 1758)
 63	6005	444441	\N	1	\N	8	\N	Pelophylax lessonae (Camerano, 1882)
-3	6006	444441	\N	1	\N	8	\N	Pelophylax lessonae (Camerano, 1882)
 43	6007	444441	\N	1	\N	8	\N	Pelophylax lessonae (Camerano, 1882)
 15	6008	444441	\N	1	\N	8	\N	Pelophylax lessonae (Camerano, 1882)
 63	6009	444443	\N	1	\N	8	\N	Pelophylax ridibundus (Pallas, 1771)
-3	6010	444443	\N	1	\N	8	\N	Pelophylax ridibundus (Pallas, 1771)
 43	6011	444443	\N	1	\N	8	\N	Pelophylax ridibundus (Pallas, 1771)
 15	6012	444443	\N	1	\N	8	\N	Pelophylax ridibundus (Pallas, 1771)
 63	6013	444446	\N	1	\N	8	\N	Zamenis longissimus (Laurenti, 1768)
-3	6014	444446	\N	1	\N	8	\N	Zamenis longissimus (Laurenti, 1768)
 43	6015	444446	\N	1	\N	8	\N	Zamenis longissimus (Laurenti, 1768)
 15	6016	444446	\N	1	\N	8	\N	Zamenis longissimus (Laurenti, 1768)
 63	6017	447951	\N	1	\N	8	\N	Adiantum capillus-veneris L., 1753
-3	6018	447951	\N	1	\N	8	\N	Adiantum capillus-veneris L., 1753
 43	6019	447951	\N	1	\N	8	\N	Adiantum capillus-veneris L., 1753
 15	6020	447951	\N	1	\N	8	\N	Adiantum capillus-veneris L., 1753
 63	6021	457281	\N	1	\N	8	\N	Uroctea durandi
-3	6022	457281	\N	1	\N	8	\N	Uroctea durandi
 43	6023	457281	\N	1	\N	8	\N	Uroctea durandi
 15	6024	457281	\N	1	\N	8	\N	Uroctea durandi
 63	6025	458706	\N	1	\N	8	\N	Eresus kollari Rossi, 1846
-3	6026	458706	\N	1	\N	8	\N	Eresus kollari Rossi, 1846
 43	6027	458706	\N	1	\N	8	\N	Eresus kollari Rossi, 1846
 15	6028	458706	\N	1	\N	8	\N	Eresus kollari Rossi, 1846
 63	6029	92421	\N	1	\N	8	\N	Corallorrhiza trifida Châtel.
-3	6030	92421	\N	1	\N	8	\N	Corallorrhiza trifida Châtel.
 43	6031	92421	\N	1	\N	8	\N	Corallorrhiza trifida Châtel.
 15	6032	92421	\N	1	\N	8	\N	Corallorrhiza trifida Châtel.
 63	6033	521628	\N	1	\N	8	\N	Epipactis exilis P.Delforge, 2004
-3	6034	521628	\N	1	\N	8	\N	Epipactis exilis P.Delforge, 2004
 43	6035	521628	\N	1	\N	8	\N	Epipactis exilis P.Delforge, 2004
 15	6036	521628	\N	1	\N	8	\N	Epipactis exilis P.Delforge, 2004
 63	6037	608286	\N	2	\N	8	\N	Lycaena helle magdalenae Guérin, 1959
-3	6038	608286	\N	2	\N	8	\N	Lycaena helle magdalenae Guérin, 1959
 43	6039	608286	\N	2	\N	8	\N	Lycaena helle magdalenae Guérin, 1959
 15	6040	608286	\N	2	\N	8	\N	Lycaena helle magdalenae Guérin, 1959
 63	6041	610647	\N	1	\N	8	\N	Jacobaea leucophylla (DC.) Pelser, 2006
-3	6042	610647	\N	1	\N	8	\N	Jacobaea leucophylla (DC.) Pelser, 2006
 43	6043	610647	\N	1	\N	8	\N	Jacobaea leucophylla (DC.) Pelser, 2006
 15	6044	610647	\N	1	\N	8	\N	Jacobaea leucophylla (DC.) Pelser, 2006
 63	6045	610656	\N	1	\N	8	\N	Jacobaea x mirabilis (Gaut. ex Rouy) B.Bock, 2012
-3	6046	610656	\N	1	\N	8	\N	Jacobaea x mirabilis (Gaut. ex Rouy) B.Bock, 2012
 43	6047	610656	\N	1	\N	8	\N	Jacobaea x mirabilis (Gaut. ex Rouy) B.Bock, 2012
 15	6048	610656	\N	1	\N	8	\N	Jacobaea x mirabilis (Gaut. ex Rouy) B.Bock, 2012
 63	6049	610859	\N	1	\N	8	\N	Paragymnopteris marantae (L.) K.H.Shing, 1994
-3	6050	610859	\N	1	\N	8	\N	Paragymnopteris marantae (L.) K.H.Shing, 1994
 43	6051	610859	\N	1	\N	8	\N	Paragymnopteris marantae (L.) K.H.Shing, 1994
 15	6052	610859	\N	1	\N	8	\N	Paragymnopteris marantae (L.) K.H.Shing, 1994
 63	6053	611455	\N	1	\N	8	\N	Rhaponticum coniferum (L.) Greuter, 2003
-3	6054	611455	\N	1	\N	8	\N	Rhaponticum coniferum (L.) Greuter, 2003
 43	6055	611455	\N	1	\N	8	\N	Rhaponticum coniferum (L.) Greuter, 2003
 15	6056	611455	\N	1	\N	8	\N	Rhaponticum coniferum (L.) Greuter, 2003
 63	6057	613479	\N	1	\N	8	\N	Camelina sativa var. pilosa DC.
-3	6058	613479	\N	1	\N	8	\N	Camelina sativa var. pilosa DC.
 43	6059	613479	\N	1	\N	8	\N	Camelina sativa var. pilosa DC.
 15	6060	613479	\N	1	\N	8	\N	Camelina sativa var. pilosa DC.
 63	6061	651457	\N	1	\N	8	\N	Gonotropis dorsalis (Gyllenhal, 1813)
-3	6062	651457	\N	1	\N	8	\N	Gonotropis dorsalis (Gyllenhal, 1813)
 43	6063	651457	\N	1	\N	8	\N	Gonotropis dorsalis (Gyllenhal, 1813)
 15	6064	651457	\N	1	\N	8	\N	Gonotropis dorsalis (Gyllenhal, 1813)
 63	6065	698968	\N	3	\N	8	\N	Corticeus suberis (Lucas, 1846)
-3	6066	698968	\N	3	\N	8	\N	Corticeus suberis (Lucas, 1846)
 43	6067	698968	\N	3	\N	8	\N	Corticeus suberis (Lucas, 1846)
 15	6068	698968	\N	3	\N	8	\N	Corticeus suberis (Lucas, 1846)
 63	6069	786525	\N	1	\N	8	\N	Bryum algovicum Sendtn. ex Müll.Hal. var. rutheanum (Warnst.) Crundw.
-3	6070	786525	\N	1	\N	8	\N	Bryum algovicum Sendtn. ex Müll.Hal. var. rutheanum (Warnst.) Crundw.
 43	6071	786525	\N	1	\N	8	\N	Bryum algovicum Sendtn. ex Müll.Hal. var. rutheanum (Warnst.) Crundw.
 15	6072	786525	\N	1	\N	8	\N	Bryum algovicum Sendtn. ex Müll.Hal. var. rutheanum (Warnst.) Crundw.
 63	6073	786543	\N	1	\N	8	\N	Cephalozia macrostachya Kaal. var. spiniflora (Schiffn.) Müll.Frib.
-3	6074	786543	\N	1	\N	8	\N	Cephalozia macrostachya Kaal. var. spiniflora (Schiffn.) Müll.Frib.
 43	6075	786543	\N	1	\N	8	\N	Cephalozia macrostachya Kaal. var. spiniflora (Schiffn.) Müll.Frib.
 15	6076	786543	\N	1	\N	8	\N	Cephalozia macrostachya Kaal. var. spiniflora (Schiffn.) Müll.Frib.
 63	6077	434476	\N	1	\N	8	\N	Hypnum uncinulatum Jur.
-3	6078	434476	\N	1	\N	8	\N	Hypnum uncinulatum Jur.
 43	6079	434476	\N	1	\N	8	\N	Hypnum uncinulatum Jur.
 15	6080	434476	\N	1	\N	8	\N	Hypnum uncinulatum Jur.
 63	6081	786514	\N	1	\N	8	\N	Jungermannia exsertifolia Steph. subsp. cordifolia (Dum.) Vána
-3	6082	786514	\N	1	\N	8	\N	Jungermannia exsertifolia Steph. subsp. cordifolia (Dum.) Vána
 43	6083	786514	\N	1	\N	8	\N	Jungermannia exsertifolia Steph. subsp. cordifolia (Dum.) Vána
 15	6084	786514	\N	1	\N	8	\N	Jungermannia exsertifolia Steph. subsp. cordifolia (Dum.) Vána
 63	6085	434521	\N	1	\N	8	\N	Sphagnum majus (Russow) C.E.O.Jensen subsp. norvegicum Flatberg
-3	6086	434521	\N	1	\N	8	\N	Sphagnum majus (Russow) C.E.O.Jensen subsp. norvegicum Flatberg
 43	6087	434521	\N	1	\N	8	\N	Sphagnum majus (Russow) C.E.O.Jensen subsp. norvegicum Flatberg
 15	6088	434521	\N	1	\N	8	\N	Sphagnum majus (Russow) C.E.O.Jensen subsp. norvegicum Flatberg
 63	6089	434249	\N	1	\N	8	\N	Tortula cernua (Huebener) Lindb.
-3	6090	434249	\N	1	\N	8	\N	Tortula cernua (Huebener) Lindb.
 43	6091	434249	\N	1	\N	8	\N	Tortula cernua (Huebener) Lindb.
+03	6022	457281	\N	1	\N	8	\N	Uroctea durandi
 15	6092	434249	\N	1	\N	8	\N	Tortula cernua (Huebener) Lindb.
 63	6093	6819	\N	1	\N	8	\N	Phaeoceros carolinianus (Michx.) Prosk.
-3	6094	6819	\N	1	\N	8	\N	Phaeoceros carolinianus (Michx.) Prosk.
 43	6095	6819	\N	1	\N	8	\N	Phaeoceros carolinianus (Michx.) Prosk.
 15	6096	6819	\N	1	\N	8	\N	Phaeoceros carolinianus (Michx.) Prosk.
 63	6097	96476	\N	1	\N	8	\N	Epipactis rhodanensis Gévaudan & Robatsch, 1994
-3	6098	96476	\N	1	\N	8	\N	Epipactis rhodanensis Gévaudan & Robatsch, 1994
 43	6099	96476	\N	1	\N	8	\N	Epipactis rhodanensis Gévaudan & Robatsch, 1994
 15	6100	96476	\N	1	\N	8	\N	Epipactis rhodanensis Gévaudan & Robatsch, 1994
 63	6101	99994	\N	1	\N	8	\N	Gentianopsis ciliata (L.) Ma, 1951
-3	6102	99994	\N	1	\N	8	\N	Gentianopsis ciliata (L.) Ma, 1951
 43	6103	99994	\N	1	\N	8	\N	Gentianopsis ciliata (L.) Ma, 1951
 15	6104	99994	\N	1	\N	8	\N	Gentianopsis ciliata (L.) Ma, 1951
 63	6105	129127	\N	1	\N	8	\N	Vicia bithynica (L.) L., 1759
-3	6106	129127	\N	1	\N	8	\N	Vicia bithynica (L.) L., 1759
 43	6107	129127	\N	1	\N	8	\N	Vicia bithynica (L.) L., 1759
 15	6108	129127	\N	1	\N	8	\N	Vicia bithynica (L.) L., 1759
 63	6109	139	\N	2	\N	8	\N	Triturus cristatus (Laurenti, 1768)
-3	6110	139	\N	2	\N	8	\N	Triturus cristatus (Laurenti, 1768)
 43	6111	139	\N	2	\N	8	\N	Triturus cristatus (Laurenti, 1768)
 15	6112	139	\N	2	\N	8	\N	Triturus cristatus (Laurenti, 1768)
 63	6113	163	\N	2	\N	8	\N	Triturus marmoratus (Latreille, 1800)
-3	6114	163	\N	2	\N	8	\N	Triturus marmoratus (Latreille, 1800)
 43	6115	163	\N	2	\N	8	\N	Triturus marmoratus (Latreille, 1800)
 15	6116	163	\N	2	\N	8	\N	Triturus marmoratus (Latreille, 1800)
 63	6117	212	\N	2	\N	8	\N	Bombina variegata (Linnaeus, 1758)
-3	6118	212	\N	2	\N	8	\N	Bombina variegata (Linnaeus, 1758)
 43	6119	212	\N	2	\N	8	\N	Bombina variegata (Linnaeus, 1758)
 15	6120	212	\N	2	\N	8	\N	Bombina variegata (Linnaeus, 1758)
 63	6121	252	\N	2	\N	8	\N	Pelodytes punctatus (Daudin, 1803)
-3	6122	252	\N	2	\N	8	\N	Pelodytes punctatus (Daudin, 1803)
 43	6123	252	\N	2	\N	8	\N	Pelodytes punctatus (Daudin, 1803)
 15	6124	252	\N	2	\N	8	\N	Pelodytes punctatus (Daudin, 1803)
 63	6125	281	\N	1	\N	8	\N	Hyla arborea (Linnaeus, 1758)
-3	6126	281	\N	1	\N	8	\N	Hyla arborea (Linnaeus, 1758)
 43	6127	281	\N	1	\N	8	\N	Hyla arborea (Linnaeus, 1758)
 15	6128	281	\N	1	\N	8	\N	Hyla arborea (Linnaeus, 1758)
 63	6129	310	\N	1	\N	8	\N	Rana dalmatina Fitzinger in Bonaparte, 1838
-3	6130	310	\N	1	\N	8	\N	Rana dalmatina Fitzinger in Bonaparte, 1838
 43	6131	310	\N	1	\N	8	\N	Rana dalmatina Fitzinger in Bonaparte, 1838
 15	6132	310	\N	1	\N	8	\N	Rana dalmatina Fitzinger in Bonaparte, 1838
 63	6133	351	\N	1	\N	8	\N	Rana temporaria Linnaeus, 1758
-3	6134	351	\N	1	\N	8	\N	Rana temporaria Linnaeus, 1758
 43	6135	351	\N	1	\N	8	\N	Rana temporaria Linnaeus, 1758
 15	6136	351	\N	1	\N	8	\N	Rana temporaria Linnaeus, 1758
 63	6137	887	\N	1	\N	8	\N	Atypus piceus
-3	6138	887	\N	1	\N	8	\N	Atypus piceus
 43	6139	887	\N	1	\N	8	\N	Atypus piceus
 15	6140	887	\N	1	\N	8	\N	Atypus piceus
 63	6141	2060	\N	1	\N	8	\N	Philaeus chrysops (Poda, 1761)
-3	6142	2060	\N	1	\N	8	\N	Philaeus chrysops (Poda, 1761)
 43	6143	2060	\N	1	\N	8	\N	Philaeus chrysops (Poda, 1761)
 15	6144	2060	\N	1	\N	8	\N	Philaeus chrysops (Poda, 1761)
 63	6145	2477	\N	2	site de nidification	8	\N	Ixobrychus minutus (Linnaeus, 1766)
-3	6146	2477	\N	2	site de nidification	8	\N	Ixobrychus minutus (Linnaeus, 1766)
 43	6147	2477	\N	2	site de nidification	8	\N	Ixobrychus minutus (Linnaeus, 1766)
 15	6148	2477	\N	2	site de nidification	8	\N	Ixobrychus minutus (Linnaeus, 1766)
 63	6149	2481	\N	2	site de nidification	8	\N	Nycticorax nycticorax (Linnaeus, 1758)
-3	6150	2481	\N	2	site de nidification	8	\N	Nycticorax nycticorax (Linnaeus, 1758)
 43	6151	2481	\N	2	site de nidification	8	\N	Nycticorax nycticorax (Linnaeus, 1758)
 15	6152	2481	\N	2	site de nidification	8	\N	Nycticorax nycticorax (Linnaeus, 1758)
 63	6153	2486	\N	2	site de nidification	8	\N	Ardeola ralloides (Scopoli, 1769)
-3	6154	2486	\N	2	site de nidification	8	\N	Ardeola ralloides (Scopoli, 1769)
 43	6155	2486	\N	2	site de nidification	8	\N	Ardeola ralloides (Scopoli, 1769)
 15	6156	2486	\N	2	site de nidification	8	\N	Ardeola ralloides (Scopoli, 1769)
 63	6157	2489	\N	2	site de nidification	8	\N	Bubulcus ibis (Linnaeus, 1758)
-3	6158	2489	\N	2	site de nidification	8	\N	Bubulcus ibis (Linnaeus, 1758)
 43	6159	2489	\N	2	site de nidification	8	\N	Bubulcus ibis (Linnaeus, 1758)
 15	6160	2489	\N	2	site de nidification	8	\N	Bubulcus ibis (Linnaeus, 1758)
 63	6161	2497	\N	2	site de nidification	8	\N	Egretta garzetta (Linnaeus, 1766)
-3	6162	2497	\N	2	site de nidification	8	\N	Egretta garzetta (Linnaeus, 1766)
 43	6163	2497	\N	2	site de nidification	8	\N	Egretta garzetta (Linnaeus, 1766)
 15	6164	2497	\N	2	site de nidification	8	\N	Egretta garzetta (Linnaeus, 1766)
 63	6165	2504	\N	2	site de nidification	8	\N	Ardea alba Linnaeus, 1758
-3	6166	2504	\N	2	site de nidification	8	\N	Ardea alba Linnaeus, 1758
 43	6167	2504	\N	2	site de nidification	8	\N	Ardea alba Linnaeus, 1758
 15	6168	2504	\N	2	site de nidification	8	\N	Ardea alba Linnaeus, 1758
 63	6169	2506	\N	2	site de nidification	8	\N	Ardea cinerea Linnaeus, 1758
-3	6170	2506	\N	2	site de nidification	8	\N	Ardea cinerea Linnaeus, 1758
+03	6106	129127	\N	1	\N	8	\N	Vicia bithynica (L.) L., 1759
 43	6171	2506	\N	2	site de nidification	8	\N	Ardea cinerea Linnaeus, 1758
 15	6172	2506	\N	2	site de nidification	8	\N	Ardea cinerea Linnaeus, 1758
 63	6173	2508	\N	2	site de nidification	8	\N	Ardea purpurea Linnaeus, 1766
-3	6174	2508	\N	2	site de nidification	8	\N	Ardea purpurea Linnaeus, 1766
 43	6175	2508	\N	2	site de nidification	8	\N	Ardea purpurea Linnaeus, 1766
 15	6176	2508	\N	2	site de nidification	8	\N	Ardea purpurea Linnaeus, 1766
 63	6177	2514	\N	3	site de nidification	8	\N	Ciconia nigra (Linnaeus, 1758)
-3	6178	2514	\N	3	site de nidification	8	\N	Ciconia nigra (Linnaeus, 1758)
 43	6179	2514	\N	3	site de nidification	8	\N	Ciconia nigra (Linnaeus, 1758)
 15	6180	2514	\N	3	site de nidification	8	\N	Ciconia nigra (Linnaeus, 1758)
 63	6181	2517	\N	2	site de nidification	8	\N	Ciconia ciconia (Linnaeus, 1758)
-3	6182	2517	\N	2	site de nidification	8	\N	Ciconia ciconia (Linnaeus, 1758)
 43	6183	2517	\N	2	site de nidification	8	\N	Ciconia ciconia (Linnaeus, 1758)
 15	6184	2517	\N	2	site de nidification	8	\N	Ciconia ciconia (Linnaeus, 1758)
 63	6185	2538	\N	2	\N	8	\N	Lymnocryptes minimus (Brünnich, 1764)
-3	6186	2538	\N	2	\N	8	\N	Lymnocryptes minimus (Brünnich, 1764)
 43	6187	2538	\N	2	\N	8	\N	Lymnocryptes minimus (Brünnich, 1764)
 15	6188	2538	\N	2	\N	8	\N	Lymnocryptes minimus (Brünnich, 1764)
 63	6189	2543	\N	2	\N	8	\N	Gallinago gallinago (Linnaeus, 1758)
-3	6190	2543	\N	2	\N	8	\N	Gallinago gallinago (Linnaeus, 1758)
 43	6191	2543	\N	2	\N	8	\N	Gallinago gallinago (Linnaeus, 1758)
 15	6192	2543	\N	2	\N	8	\N	Gallinago gallinago (Linnaeus, 1758)
 63	6193	2559	\N	2	\N	8	\N	Scolopax rusticola Linnaeus, 1758
-3	6194	2559	\N	2	\N	8	\N	Scolopax rusticola Linnaeus, 1758
 43	6195	2559	\N	2	\N	8	\N	Scolopax rusticola Linnaeus, 1758
 15	6196	2559	\N	2	\N	8	\N	Scolopax rusticola Linnaeus, 1758
 63	6197	2645	\N	2	site de nidification	8	\N	Aquila chrysaetos (Linnaeus, 1758)
-3	6198	2645	\N	2	site de nidification	8	\N	Aquila chrysaetos (Linnaeus, 1758)
 43	6199	2645	\N	2	site de nidification	8	\N	Aquila chrysaetos (Linnaeus, 1758)
 15	6200	2645	\N	2	site de nidification	8	\N	Aquila chrysaetos (Linnaeus, 1758)
 63	6201	2651	\N	2	site de nidification	8	\N	Hieraaetus pennatus (Gmelin, 1788)
-3	6202	2651	\N	2	site de nidification	8	\N	Hieraaetus pennatus (Gmelin, 1788)
 43	6203	2651	\N	2	site de nidification	8	\N	Hieraaetus pennatus (Gmelin, 1788)
 15	6204	2651	\N	2	site de nidification	8	\N	Hieraaetus pennatus (Gmelin, 1788)
 63	6205	2660	\N	2	site de nidification	8	\N	Pandion haliaetus (Linnaeus, 1758)
-3	6206	2660	\N	2	site de nidification	8	\N	Pandion haliaetus (Linnaeus, 1758)
 43	6207	2660	\N	2	site de nidification	8	\N	Pandion haliaetus (Linnaeus, 1758)
 15	6208	2660	\N	2	site de nidification	8	\N	Pandion haliaetus (Linnaeus, 1758)
 63	6209	2679	\N	2	site de nidification	8	\N	Falco subbuteo Linnaeus, 1758
-3	6210	2679	\N	2	site de nidification	8	\N	Falco subbuteo Linnaeus, 1758
 43	6211	2679	\N	2	site de nidification	8	\N	Falco subbuteo Linnaeus, 1758
 15	6212	2679	\N	2	site de nidification	8	\N	Falco subbuteo Linnaeus, 1758
 63	6213	2720	\N	2	\N	8	\N	Anser fabalis (Latham, 1787)
-3	6214	2720	\N	2	\N	8	\N	Anser fabalis (Latham, 1787)
 43	6215	2720	\N	2	\N	8	\N	Anser fabalis (Latham, 1787)
 15	6216	2720	\N	2	\N	8	\N	Anser fabalis (Latham, 1787)
 63	6217	2734	\N	2	\N	8	\N	Anser albifrons (Scopoli, 1769)
-3	6218	2734	\N	2	\N	8	\N	Anser albifrons (Scopoli, 1769)
 43	6219	2734	\N	2	\N	8	\N	Anser albifrons (Scopoli, 1769)
 15	6220	2734	\N	2	\N	8	\N	Anser albifrons (Scopoli, 1769)
 63	6221	2741	\N	2	\N	8	\N	Anser anser (Linnaeus, 1758)
-3	6222	2741	\N	2	\N	8	\N	Anser anser (Linnaeus, 1758)
 43	6223	2741	\N	2	\N	8	\N	Anser anser (Linnaeus, 1758)
 15	6224	2741	\N	2	\N	8	\N	Anser anser (Linnaeus, 1758)
 63	6225	2832	\N	2	site de nidification	8	\N	Pernis apivorus (Linnaeus, 1758)
-3	6226	2832	\N	2	site de nidification	8	\N	Pernis apivorus (Linnaeus, 1758)
 43	6227	2832	\N	2	site de nidification	8	\N	Pernis apivorus (Linnaeus, 1758)
 15	6228	2832	\N	2	site de nidification	8	\N	Pernis apivorus (Linnaeus, 1758)
 63	6229	2840	\N	2	site de nidification + dortoir	8	\N	Milvus migrans (Boddaert, 1783)
-3	6230	2840	\N	2	site de nidification + dortoir	8	\N	Milvus migrans (Boddaert, 1783)
 43	6231	2840	\N	2	site de nidification + dortoir	8	\N	Milvus migrans (Boddaert, 1783)
 15	6232	2840	\N	2	site de nidification + dortoir	8	\N	Milvus migrans (Boddaert, 1783)
 63	6233	2844	\N	2	site de nidification + dortoir	8	\N	Milvus milvus (Linnaeus, 1758)
-3	6234	2844	\N	2	site de nidification + dortoir	8	\N	Milvus milvus (Linnaeus, 1758)
 43	6235	2844	\N	2	site de nidification + dortoir	8	\N	Milvus milvus (Linnaeus, 1758)
 15	6236	2844	\N	2	site de nidification + dortoir	8	\N	Milvus milvus (Linnaeus, 1758)
 63	6237	2873	\N	2	site de nidification	8	\N	Circaetus gallicus (Gmelin, 1788)
-3	6238	2873	\N	2	site de nidification	8	\N	Circaetus gallicus (Gmelin, 1788)
 43	6239	2873	\N	2	site de nidification	8	\N	Circaetus gallicus (Gmelin, 1788)
 15	6240	2873	\N	2	site de nidification	8	\N	Circaetus gallicus (Gmelin, 1788)
 63	6241	2878	\N	2	\N	8	\N	Circus aeruginosus (Linnaeus, 1758)
-3	6242	2878	\N	2	\N	8	\N	Circus aeruginosus (Linnaeus, 1758)
 43	6243	2878	\N	2	\N	8	\N	Circus aeruginosus (Linnaeus, 1758)
 15	6244	2878	\N	2	\N	8	\N	Circus aeruginosus (Linnaeus, 1758)
 63	6245	2881	\N	2	site de nidification	8	\N	Circus cyaneus (Linnaeus, 1758)
-3	6246	2881	\N	2	site de nidification	8	\N	Circus cyaneus (Linnaeus, 1758)
 43	6247	2881	\N	2	site de nidification	8	\N	Circus cyaneus (Linnaeus, 1758)
 15	6248	2881	\N	2	site de nidification	8	\N	Circus cyaneus (Linnaeus, 1758)
 63	6249	2887	\N	1	site de nidification	8	\N	Circus pygargus (Linnaeus, 1758)
-3	6250	2887	\N	1	site de nidification	8	\N	Circus pygargus (Linnaeus, 1758)
 43	6251	2887	\N	1	site de nidification	8	\N	Circus pygargus (Linnaeus, 1758)
 15	6252	2887	\N	1	site de nidification	8	\N	Circus pygargus (Linnaeus, 1758)
 63	6253	2891	\N	2	site de nidification	8	\N	Accipiter gentilis (Linnaeus, 1758)
-3	6254	2891	\N	2	site de nidification	8	\N	Accipiter gentilis (Linnaeus, 1758)
 43	6255	2891	\N	2	site de nidification	8	\N	Accipiter gentilis (Linnaeus, 1758)
 15	6256	2891	\N	2	site de nidification	8	\N	Accipiter gentilis (Linnaeus, 1758)
 63	6257	2938	\N	2	site de nidification	8	\N	Falco peregrinus Tunstall, 1771
-3	6258	2938	\N	2	site de nidification	8	\N	Falco peregrinus Tunstall, 1771
 43	6259	2938	\N	2	site de nidification	8	\N	Falco peregrinus Tunstall, 1771
 15	6260	2938	\N	2	site de nidification	8	\N	Falco peregrinus Tunstall, 1771
 63	6261	3343	\N	2	site de nidification	8	\N	Sterna hirundo Linnaeus, 1758
-3	6262	3343	\N	2	site de nidification	8	\N	Sterna hirundo Linnaeus, 1758
 43	6263	3343	\N	2	site de nidification	8	\N	Sterna hirundo Linnaeus, 1758
 15	6264	3343	\N	2	site de nidification	8	\N	Sterna hirundo Linnaeus, 1758
 63	6265	3352	\N	2	site de nidification	8	\N	Sternula albifrons (Pallas, 1764)
-3	6266	3352	\N	2	site de nidification	8	\N	Sternula albifrons (Pallas, 1764)
 43	6267	3352	\N	2	site de nidification	8	\N	Sternula albifrons (Pallas, 1764)
 15	6268	3352	\N	2	site de nidification	8	\N	Sternula albifrons (Pallas, 1764)
 63	6269	3493	\N	2	\N	8	\N	Bubo bubo (Linnaeus, 1758)
-3	6270	3493	\N	2	\N	8	\N	Bubo bubo (Linnaeus, 1758)
 43	6271	3493	\N	2	\N	8	\N	Bubo bubo (Linnaeus, 1758)
 15	6272	3493	\N	2	\N	8	\N	Bubo bubo (Linnaeus, 1758)
 63	6273	3507	\N	2	\N	8	\N	Glaucidium passerinum (Linnaeus, 1758)
-3	6274	3507	\N	2	\N	8	\N	Glaucidium passerinum (Linnaeus, 1758)
 43	6275	3507	\N	2	\N	8	\N	Glaucidium passerinum (Linnaeus, 1758)
 15	6276	3507	\N	2	\N	8	\N	Glaucidium passerinum (Linnaeus, 1758)
 63	6277	3533	\N	2	\N	8	\N	Aegolius funereus (Linnaeus, 1758)
-3	6278	3533	\N	2	\N	8	\N	Aegolius funereus (Linnaeus, 1758)
 43	6279	3533	\N	2	\N	8	\N	Aegolius funereus (Linnaeus, 1758)
 15	6280	3533	\N	2	\N	8	\N	Aegolius funereus (Linnaeus, 1758)
 63	6281	3571	\N	1	site de nidification	8	\N	Alcedo atthis (Linnaeus, 1758)
-3	6282	3571	\N	1	site de nidification	8	\N	Alcedo atthis (Linnaeus, 1758)
 43	6283	3571	\N	1	site de nidification	8	\N	Alcedo atthis (Linnaeus, 1758)
 15	6284	3571	\N	1	site de nidification	8	\N	Alcedo atthis (Linnaeus, 1758)
 63	6285	3582	\N	2	site de nidification	8	\N	Merops apiaster Linnaeus, 1758
-3	6286	3582	\N	2	site de nidification	8	\N	Merops apiaster Linnaeus, 1758
 43	6287	3582	\N	2	site de nidification	8	\N	Merops apiaster Linnaeus, 1758
 15	6288	3582	\N	2	site de nidification	8	\N	Merops apiaster Linnaeus, 1758
 63	6289	3601	\N	2	\N	8	\N	Picus canus Gmelin, 1788
-3	6290	3601	\N	2	\N	8	\N	Picus canus Gmelin, 1788
 43	6291	3601	\N	2	\N	8	\N	Picus canus Gmelin, 1788
 15	6292	3601	\N	2	\N	8	\N	Picus canus Gmelin, 1788
 63	6293	3844	\N	1	\N	8	\N	Tetrodontium brownianum (Dicks.) Schwägr.
-3	6294	3844	\N	1	\N	8	\N	Tetrodontium brownianum (Dicks.) Schwägr.
 43	6295	3844	\N	1	\N	8	\N	Tetrodontium brownianum (Dicks.) Schwägr.
 15	6296	3844	\N	1	\N	8	\N	Tetrodontium brownianum (Dicks.) Schwägr.
 63	6297	3900	\N	1	\N	8	\N	Fissidens celticus Paton
-3	6298	3900	\N	1	\N	8	\N	Fissidens celticus Paton
 43	6299	3900	\N	1	\N	8	\N	Fissidens celticus Paton
 15	6300	3900	\N	1	\N	8	\N	Fissidens celticus Paton
 63	6301	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
-3	6302	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
 43	6303	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
 15	6304	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
 63	6305	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
-3	6306	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
 43	6307	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
 15	6308	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
 63	6309	4393	\N	1	\N	8	\N	Fissidens rivularis (Spruce) Schimp.
-3	6310	4393	\N	1	\N	8	\N	Fissidens rivularis (Spruce) Schimp.
 43	6311	4393	\N	1	\N	8	\N	Fissidens rivularis (Spruce) Schimp.
 15	6312	4393	\N	1	\N	8	\N	Fissidens rivularis (Spruce) Schimp.
 63	6313	4411	\N	1	\N	8	\N	Arctoa fulvella (Dicks.) Bruch & Schimp.
-3	6314	4411	\N	1	\N	8	\N	Arctoa fulvella (Dicks.) Bruch & Schimp.
 43	6315	4411	\N	1	\N	8	\N	Arctoa fulvella (Dicks.) Bruch & Schimp.
 15	6316	4411	\N	1	\N	8	\N	Arctoa fulvella (Dicks.) Bruch & Schimp.
+03	6270	3493	\N	2	\N	8	\N	Bubo bubo (Linnaeus, 1758)
 63	6317	4414	\N	1	\N	8	\N	Campylopus brevipilus Bruch & Schimp.
-3	6318	4414	\N	1	\N	8	\N	Campylopus brevipilus Bruch & Schimp.
 43	6319	4414	\N	1	\N	8	\N	Campylopus brevipilus Bruch & Schimp.
 15	6320	4414	\N	1	\N	8	\N	Campylopus brevipilus Bruch & Schimp.
 63	6321	4429	\N	1	\N	8	\N	Campylopus subulatus Schimp. ex Milde
-3	6322	4429	\N	1	\N	8	\N	Campylopus subulatus Schimp. ex Milde
 43	6323	4429	\N	1	\N	8	\N	Campylopus subulatus Schimp. ex Milde
 15	6324	4429	\N	1	\N	8	\N	Campylopus subulatus Schimp. ex Milde
 63	6325	4441	\N	1	\N	8	\N	Dicranella cerviculata (Hedw.) Schimp.
-3	6326	4441	\N	1	\N	8	\N	Dicranella cerviculata (Hedw.) Schimp.
 43	6327	4441	\N	1	\N	8	\N	Dicranella cerviculata (Hedw.) Schimp.
 15	6328	4441	\N	1	\N	8	\N	Dicranella cerviculata (Hedw.) Schimp.
 63	6329	4510	\N	2	site de nidification	8	\N	Corvus corax Linnaeus, 1758
-3	6330	4510	\N	2	site de nidification	8	\N	Corvus corax Linnaeus, 1758
 43	6331	4510	\N	2	site de nidification	8	\N	Corvus corax Linnaeus, 1758
 15	6332	4510	\N	2	site de nidification	8	\N	Corvus corax Linnaeus, 1758
 63	6333	4726	\N	1	\N	8	\N	Dicranella varia (Hedw.) Schimp.
-3	6334	4726	\N	1	\N	8	\N	Dicranella varia (Hedw.) Schimp.
 43	6335	4726	\N	1	\N	8	\N	Dicranella varia (Hedw.) Schimp.
 15	6336	4726	\N	1	\N	8	\N	Dicranella varia (Hedw.) Schimp.
 63	6337	4770	\N	1	\N	8	\N	Leucobryum glaucum (Hedw.) Ångstr.
-3	6338	4770	\N	1	\N	8	\N	Leucobryum glaucum (Hedw.) Ångstr.
 43	6339	4770	\N	1	\N	8	\N	Leucobryum glaucum (Hedw.) Ångstr.
 15	6340	4770	\N	1	\N	8	\N	Leucobryum glaucum (Hedw.) Ångstr.
 63	6341	4775	\N	1	\N	8	\N	Oncophorus virens (Hedw.) Brid.
-3	6342	4775	\N	1	\N	8	\N	Oncophorus virens (Hedw.) Brid.
 43	6343	4775	\N	1	\N	8	\N	Oncophorus virens (Hedw.) Brid.
 15	6344	4775	\N	1	\N	8	\N	Oncophorus virens (Hedw.) Brid.
 63	6345	4779	\N	1	\N	8	\N	Dicranum flagellare Hedw.
-3	6346	4779	\N	1	\N	8	\N	Dicranum flagellare Hedw.
 43	6347	4779	\N	1	\N	8	\N	Dicranum flagellare Hedw.
 15	6348	4779	\N	1	\N	8	\N	Dicranum flagellare Hedw.
 63	6349	4786	\N	1	\N	8	\N	Paraleucobryum enerve (Thed.) Loeske
-3	6350	4786	\N	1	\N	8	\N	Paraleucobryum enerve (Thed.) Loeske
 43	6351	4786	\N	1	\N	8	\N	Paraleucobryum enerve (Thed.) Loeske
 15	6352	4786	\N	1	\N	8	\N	Paraleucobryum enerve (Thed.) Loeske
 63	6353	4788	\N	1	\N	8	\N	Paraleucobryum sauteri (Bruch & Schimp.) Loeske
-3	6354	4788	\N	1	\N	8	\N	Paraleucobryum sauteri (Bruch & Schimp.) Loeske
 43	6355	4788	\N	1	\N	8	\N	Paraleucobryum sauteri (Bruch & Schimp.) Loeske
 15	6356	4788	\N	1	\N	8	\N	Paraleucobryum sauteri (Bruch & Schimp.) Loeske
 63	6357	4820	\N	1	\N	8	\N	Ditrichum pusillum (Hedw.) Hampe
-3	6358	4820	\N	1	\N	8	\N	Ditrichum pusillum (Hedw.) Hampe
 43	6359	4820	\N	1	\N	8	\N	Ditrichum pusillum (Hedw.) Hampe
 15	6360	4820	\N	1	\N	8	\N	Ditrichum pusillum (Hedw.) Hampe
 63	6361	4859	\N	1	\N	8	\N	Acaulon muticum (Hedw.) Müll.Hal.
-3	6362	4859	\N	1	\N	8	\N	Acaulon muticum (Hedw.) Müll.Hal.
 43	6363	4859	\N	1	\N	8	\N	Acaulon muticum (Hedw.) Müll.Hal.
 15	6364	4859	\N	1	\N	8	\N	Acaulon muticum (Hedw.) Müll.Hal.
 63	6365	4862	\N	1	\N	8	\N	Acaulon triquetrum (Spruce) Müll.Hal.
-3	6366	4862	\N	1	\N	8	\N	Acaulon triquetrum (Spruce) Müll.Hal.
 43	6367	4862	\N	1	\N	8	\N	Acaulon triquetrum (Spruce) Müll.Hal.
 15	6368	4862	\N	1	\N	8	\N	Acaulon triquetrum (Spruce) Müll.Hal.
 63	6369	4868	\N	1	\N	8	\N	Mielichhoferia elongata (Hoppe & Hornsch. ex Hook.) Hornsch.
-3	6370	4868	\N	1	\N	8	\N	Mielichhoferia elongata (Hoppe & Hornsch. ex Hook.) Hornsch.
 43	6371	4868	\N	1	\N	8	\N	Mielichhoferia elongata (Hoppe & Hornsch. ex Hook.) Hornsch.
 15	6372	4868	\N	1	\N	8	\N	Mielichhoferia elongata (Hoppe & Hornsch. ex Hook.) Hornsch.
 63	6373	4898	\N	1	\N	8	\N	Pohlia ludwigii (Spreng. ex Schwägr.) Broth.
-3	6374	4898	\N	1	\N	8	\N	Pohlia ludwigii (Spreng. ex Schwägr.) Broth.
 43	6375	4898	\N	1	\N	8	\N	Pohlia ludwigii (Spreng. ex Schwägr.) Broth.
 15	6376	4898	\N	1	\N	8	\N	Pohlia ludwigii (Spreng. ex Schwägr.) Broth.
 63	6377	4920	\N	1	\N	8	\N	Mnium marginatum (Dicks.) P.Beauv.
-3	6378	4920	\N	1	\N	8	\N	Mnium marginatum (Dicks.) P.Beauv.
 43	6379	4920	\N	1	\N	8	\N	Mnium marginatum (Dicks.) P.Beauv.
 15	6380	4920	\N	1	\N	8	\N	Mnium marginatum (Dicks.) P.Beauv.
 63	6381	4924	\N	1	\N	8	\N	Mnium spinosum (Voit) Schwägr.
-3	6382	4924	\N	1	\N	8	\N	Mnium spinosum (Voit) Schwägr.
 43	6383	4924	\N	1	\N	8	\N	Mnium spinosum (Voit) Schwägr.
 15	6384	4924	\N	1	\N	8	\N	Mnium spinosum (Voit) Schwägr.
 63	6385	4941	\N	1	\N	8	\N	Plagiomnium medium (Bruch & Schimp.) T.J.Kop.
-3	6386	4941	\N	1	\N	8	\N	Plagiomnium medium (Bruch & Schimp.) T.J.Kop.
 43	6387	4941	\N	1	\N	8	\N	Plagiomnium medium (Bruch & Schimp.) T.J.Kop.
 15	6388	4941	\N	1	\N	8	\N	Plagiomnium medium (Bruch & Schimp.) T.J.Kop.
 63	6389	4962	\N	1	\N	8	\N	Amblyodon dealbatus (Hedw.) P.Beauv.
-3	6390	4962	\N	1	\N	8	\N	Amblyodon dealbatus (Hedw.) P.Beauv.
 43	6391	4962	\N	1	\N	8	\N	Amblyodon dealbatus (Hedw.) P.Beauv.
 15	6392	4962	\N	1	\N	8	\N	Amblyodon dealbatus (Hedw.) P.Beauv.
 63	6393	4966	\N	1	\N	8	\N	Meesia uliginosa Hedw.
-3	6394	4966	\N	1	\N	8	\N	Meesia uliginosa Hedw.
 43	6395	4966	\N	1	\N	8	\N	Meesia uliginosa Hedw.
 15	6396	4966	\N	1	\N	8	\N	Meesia uliginosa Hedw.
 63	6397	4981	\N	1	\N	8	\N	Breutelia chrysocoma (Hedw.) Lindb.
-3	6398	4981	\N	1	\N	8	\N	Breutelia chrysocoma (Hedw.) Lindb.
 43	6399	4981	\N	1	\N	8	\N	Breutelia chrysocoma (Hedw.) Lindb.
 15	6400	4981	\N	1	\N	8	\N	Breutelia chrysocoma (Hedw.) Lindb.
 63	6401	4990	\N	1	\N	8	\N	Philonotis marchica (Hedw.) Brid.
-3	6402	4990	\N	1	\N	8	\N	Philonotis marchica (Hedw.) Brid.
 43	6403	4990	\N	1	\N	8	\N	Philonotis marchica (Hedw.) Brid.
 15	6404	4990	\N	1	\N	8	\N	Philonotis marchica (Hedw.) Brid.
 63	6405	5047	\N	1	\N	8	\N	Orthotrichum urnigerum Myrin
-3	6406	5047	\N	1	\N	8	\N	Orthotrichum urnigerum Myrin
 43	6407	5047	\N	1	\N	8	\N	Orthotrichum urnigerum Myrin
 15	6408	5047	\N	1	\N	8	\N	Orthotrichum urnigerum Myrin
 63	6409	5065	\N	1	\N	8	\N	Zygodon forsteri (Dicks.) Mitt.
-3	6410	5065	\N	1	\N	8	\N	Zygodon forsteri (Dicks.) Mitt.
 43	6411	5065	\N	1	\N	8	\N	Zygodon forsteri (Dicks.) Mitt.
 15	6412	5065	\N	1	\N	8	\N	Zygodon forsteri (Dicks.) Mitt.
 63	6413	5120	\N	1	\N	8	\N	Leptodon smithii (Hedw.) F.Weber & D.Mohr
-3	6414	5120	\N	1	\N	8	\N	Leptodon smithii (Hedw.) F.Weber & D.Mohr
 43	6415	5120	\N	1	\N	8	\N	Leptodon smithii (Hedw.) F.Weber & D.Mohr
 15	6416	5120	\N	1	\N	8	\N	Leptodon smithii (Hedw.) F.Weber & D.Mohr
 63	6417	436157	\N	1	\N	8	\N	Ptychodium plicatum (Schleich. ex F.Weber & D.Mohr) Schimp.
-3	6418	436157	\N	1	\N	8	\N	Ptychodium plicatum (Schleich. ex F.Weber & D.Mohr) Schimp.
 43	6419	436157	\N	1	\N	8	\N	Ptychodium plicatum (Schleich. ex F.Weber & D.Mohr) Schimp.
 15	6420	436157	\N	1	\N	8	\N	Ptychodium plicatum (Schleich. ex F.Weber & D.Mohr) Schimp.
 63	6421	5205	\N	1	\N	8	\N	Pterygoneurum ovatum (Hedw.) Dixon
-3	6422	5205	\N	1	\N	8	\N	Pterygoneurum ovatum (Hedw.) Dixon
 43	6423	5205	\N	1	\N	8	\N	Pterygoneurum ovatum (Hedw.) Dixon
 15	6424	5205	\N	1	\N	8	\N	Pterygoneurum ovatum (Hedw.) Dixon
 63	6425	5210	\N	1	\N	8	\N	Tortula atrovirens (Sm.) Lindb.
-3	6426	5210	\N	1	\N	8	\N	Tortula atrovirens (Sm.) Lindb.
 43	6427	5210	\N	1	\N	8	\N	Tortula atrovirens (Sm.) Lindb.
 15	6428	5210	\N	1	\N	8	\N	Tortula atrovirens (Sm.) Lindb.
 63	6429	5219	\N	1	\N	8	\N	Tortula inermis (Brid.) Mont.
-3	6430	5219	\N	1	\N	8	\N	Tortula inermis (Brid.) Mont.
 43	6431	5219	\N	1	\N	8	\N	Tortula inermis (Brid.) Mont.
 15	6432	5219	\N	1	\N	8	\N	Tortula inermis (Brid.) Mont.
 63	6433	5223	\N	1	\N	8	\N	Tortula marginata (Bruch & Schimp.) Spruce
-3	6434	5223	\N	1	\N	8	\N	Tortula marginata (Bruch & Schimp.) Spruce
 43	6435	5223	\N	1	\N	8	\N	Tortula marginata (Bruch & Schimp.) Spruce
 15	6436	5223	\N	1	\N	8	\N	Tortula marginata (Bruch & Schimp.) Spruce
 63	6437	786478	\N	1	\N	8	\N	Barbula crocea (Brid.) F.Weber & D.Mohr
-3	6438	786478	\N	1	\N	8	\N	Barbula crocea (Brid.) F.Weber & D.Mohr
 43	6439	786478	\N	1	\N	8	\N	Barbula crocea (Brid.) F.Weber & D.Mohr
 15	6440	786478	\N	1	\N	8	\N	Barbula crocea (Brid.) F.Weber & D.Mohr
 63	6441	5273	\N	1	\N	8	\N	Didymodon acutus (Brid.) K.Saito
-3	6442	5273	\N	1	\N	8	\N	Didymodon acutus (Brid.) K.Saito
 43	6443	5273	\N	1	\N	8	\N	Didymodon acutus (Brid.) K.Saito
 15	6444	5273	\N	1	\N	8	\N	Didymodon acutus (Brid.) K.Saito
 63	6445	5281	\N	1	\N	8	\N	Didymodon ferrugineus (Schimp. ex Besch.) M.O.Hill
-3	6446	5281	\N	1	\N	8	\N	Didymodon ferrugineus (Schimp. ex Besch.) M.O.Hill
 43	6447	5281	\N	1	\N	8	\N	Didymodon ferrugineus (Schimp. ex Besch.) M.O.Hill
 15	6448	5281	\N	1	\N	8	\N	Didymodon ferrugineus (Schimp. ex Besch.) M.O.Hill
 63	6449	5283	\N	1	\N	8	\N	Didymodon icmadophilus (Schimp. ex Müll.Hal.) K.Saito
-3	6450	5283	\N	1	\N	8	\N	Didymodon icmadophilus (Schimp. ex Müll.Hal.) K.Saito
 43	6451	5283	\N	1	\N	8	\N	Didymodon icmadophilus (Schimp. ex Müll.Hal.) K.Saito
 15	6452	5283	\N	1	\N	8	\N	Didymodon icmadophilus (Schimp. ex Müll.Hal.) K.Saito
 63	6453	5289	\N	1	\N	8	\N	Didymodon luridus Hornsch.
-3	6454	5289	\N	1	\N	8	\N	Didymodon luridus Hornsch.
 43	6455	5289	\N	1	\N	8	\N	Didymodon luridus Hornsch.
 15	6456	5289	\N	1	\N	8	\N	Didymodon luridus Hornsch.
 63	6457	5343	\N	1	\N	8	\N	Tortella flavovirens (Bruch) Broth.
-3	6458	5343	\N	1	\N	8	\N	Tortella flavovirens (Bruch) Broth.
 43	6459	5343	\N	1	\N	8	\N	Tortella flavovirens (Bruch) Broth.
 15	6460	5343	\N	1	\N	8	\N	Tortella flavovirens (Bruch) Broth.
 63	6461	5347	\N	1	\N	8	\N	Tortella inclinata (R.Hedw.) Limpr.
-3	6462	5347	\N	1	\N	8	\N	Tortella inclinata (R.Hedw.) Limpr.
 43	6463	5347	\N	1	\N	8	\N	Tortella inclinata (R.Hedw.) Limpr.
 15	6464	5347	\N	1	\N	8	\N	Tortella inclinata (R.Hedw.) Limpr.
 63	6465	5362	\N	1	\N	8	\N	Weissia brachycarpa (Nees & Hornsch.) Jur.
-3	6466	5362	\N	1	\N	8	\N	Weissia brachycarpa (Nees & Hornsch.) Jur.
 43	6467	5362	\N	1	\N	8	\N	Weissia brachycarpa (Nees & Hornsch.) Jur.
 15	6468	5362	\N	1	\N	8	\N	Weissia brachycarpa (Nees & Hornsch.) Jur.
 63	6469	5415	\N	1	\N	8	\N	Heterocladium wulfsbergii I.Hagen
-3	6470	5415	\N	1	\N	8	\N	Heterocladium wulfsbergii I.Hagen
 43	6471	5415	\N	1	\N	8	\N	Heterocladium wulfsbergii I.Hagen
 15	6472	5415	\N	1	\N	8	\N	Heterocladium wulfsbergii I.Hagen
 63	6473	5431	\N	1	\N	8	\N	Platydictya jungermannioides (Brid.) H.A.Crum
-3	6474	5431	\N	1	\N	8	\N	Platydictya jungermannioides (Brid.) H.A.Crum
 43	6475	5431	\N	1	\N	8	\N	Platydictya jungermannioides (Brid.) H.A.Crum
 15	6476	5431	\N	1	\N	8	\N	Platydictya jungermannioides (Brid.) H.A.Crum
 63	6477	5520	\N	1	\N	8	\N	Drepanocladus sendtneri (Schimp. ex H.Müll.) Warnst.
-3	6478	5520	\N	1	\N	8	\N	Drepanocladus sendtneri (Schimp. ex H.Müll.) Warnst.
 43	6479	5520	\N	1	\N	8	\N	Drepanocladus sendtneri (Schimp. ex H.Müll.) Warnst.
 15	6480	5520	\N	1	\N	8	\N	Drepanocladus sendtneri (Schimp. ex H.Müll.) Warnst.
 63	6481	5529	\N	1	\N	8	\N	Grimmia caespiticia (Brid.) Jur.
-3	6482	5529	\N	1	\N	8	\N	Grimmia caespiticia (Brid.) Jur.
 43	6483	5529	\N	1	\N	8	\N	Grimmia caespiticia (Brid.) Jur.
 15	6484	5529	\N	1	\N	8	\N	Grimmia caespiticia (Brid.) Jur.
 63	6485	5534	\N	1	\N	8	\N	Grimmia elatior Bruch ex Bals.-Criv. & De Not.
-3	6486	5534	\N	1	\N	8	\N	Grimmia elatior Bruch ex Bals.-Criv. & De Not.
 43	6487	5534	\N	1	\N	8	\N	Grimmia elatior Bruch ex Bals.-Criv. & De Not.
 15	6488	5534	\N	1	\N	8	\N	Grimmia elatior Bruch ex Bals.-Criv. & De Not.
 63	6489	5547	\N	1	\N	8	\N	Grimmia orbicularis Bruch ex Wilson
-3	6490	5547	\N	1	\N	8	\N	Grimmia orbicularis Bruch ex Wilson
 43	6491	5547	\N	1	\N	8	\N	Grimmia orbicularis Bruch ex Wilson
 15	6492	5547	\N	1	\N	8	\N	Grimmia orbicularis Bruch ex Wilson
 63	6493	5583	\N	1	\N	8	\N	Racomitrium microcarpon (Hedw.) Brid.
-3	6494	5583	\N	1	\N	8	\N	Racomitrium microcarpon (Hedw.) Brid.
 43	6495	5583	\N	1	\N	8	\N	Racomitrium microcarpon (Hedw.) Brid.
 15	6496	5583	\N	1	\N	8	\N	Racomitrium microcarpon (Hedw.) Brid.
 63	6497	5637	\N	1	\N	8	\N	Physcomitrella patens (Hedw.) Bruch & Schimp.
-3	6498	5637	\N	1	\N	8	\N	Physcomitrella patens (Hedw.) Bruch & Schimp.
 43	6499	5637	\N	1	\N	8	\N	Physcomitrella patens (Hedw.) Bruch & Schimp.
 15	6500	5637	\N	1	\N	8	\N	Physcomitrella patens (Hedw.) Bruch & Schimp.
 63	6501	5643	\N	1	\N	8	\N	Entosthodon obtusus (Hedw.) Lindb.
-3	6502	5643	\N	1	\N	8	\N	Entosthodon obtusus (Hedw.) Lindb.
 43	6503	5643	\N	1	\N	8	\N	Entosthodon obtusus (Hedw.) Lindb.
 15	6504	5643	\N	1	\N	8	\N	Entosthodon obtusus (Hedw.) Lindb.
 63	6505	5660	\N	1	\N	8	\N	Physcomitrium sphaericum (C.F.Ludw. ex Schkuhr) Brid.
-3	6506	5660	\N	1	\N	8	\N	Physcomitrium sphaericum (C.F.Ludw. ex Schkuhr) Brid.
 43	6507	5660	\N	1	\N	8	\N	Physcomitrium sphaericum (C.F.Ludw. ex Schkuhr) Brid.
 15	6508	5660	\N	1	\N	8	\N	Physcomitrium sphaericum (C.F.Ludw. ex Schkuhr) Brid.
 63	6509	5670	\N	1	\N	8	\N	Ephemerum recurvifolium (Dicks.) Boulay
-3	6510	5670	\N	1	\N	8	\N	Ephemerum recurvifolium (Dicks.) Boulay
 43	6511	5670	\N	1	\N	8	\N	Ephemerum recurvifolium (Dicks.) Boulay
 15	6512	5670	\N	1	\N	8	\N	Ephemerum recurvifolium (Dicks.) Boulay
 63	6513	770935	\N	1	\N	8	\N	Bryum caespiticium Hedw.
-3	6514	770935	\N	1	\N	8	\N	Bryum caespiticium Hedw.
 43	6515	770935	\N	1	\N	8	\N	Bryum caespiticium Hedw.
 15	6516	770935	\N	1	\N	8	\N	Bryum caespiticium Hedw.
 63	6517	786473	\N	1	\N	8	\N	Bryum creberrimum Taylor
-3	6518	786473	\N	1	\N	8	\N	Bryum creberrimum Taylor
 43	6519	786473	\N	1	\N	8	\N	Bryum creberrimum Taylor
 15	6520	786473	\N	1	\N	8	\N	Bryum creberrimum Taylor
 63	6521	5738	\N	1	\N	8	\N	Bryum elegans Nees
-3	6522	5738	\N	1	\N	8	\N	Bryum elegans Nees
 43	6523	5738	\N	1	\N	8	\N	Bryum elegans Nees
 15	6524	5738	\N	1	\N	8	\N	Bryum elegans Nees
 63	6525	5744	\N	1	\N	8	\N	Bryum gemmiparum De Not.
-3	6526	5744	\N	1	\N	8	\N	Bryum gemmiparum De Not.
 43	6527	5744	\N	1	\N	8	\N	Bryum gemmiparum De Not.
 15	6528	5744	\N	1	\N	8	\N	Bryum gemmiparum De Not.
 63	6529	786419	\N	1	\N	8	\N	Bryum mildeanum Jur.
-3	6530	786419	\N	1	\N	8	\N	Bryum mildeanum Jur.
 43	6531	786419	\N	1	\N	8	\N	Bryum mildeanum Jur.
 15	6532	786419	\N	1	\N	8	\N	Bryum mildeanum Jur.
 63	6533	436028	\N	1	\N	8	\N	Bryum muehlenbeckii Bruch & Schimp.
-3	6534	436028	\N	1	\N	8	\N	Bryum muehlenbeckii Bruch & Schimp.
 43	6535	436028	\N	1	\N	8	\N	Bryum muehlenbeckii Bruch & Schimp.
 15	6536	436028	\N	1	\N	8	\N	Bryum muehlenbeckii Bruch & Schimp.
 63	6537	5773	\N	1	\N	8	\N	Bryum turbinatum (Hedw.) Turner
-3	6538	5773	\N	1	\N	8	\N	Bryum turbinatum (Hedw.) Turner
 43	6539	5773	\N	1	\N	8	\N	Bryum turbinatum (Hedw.) Turner
 15	6540	5773	\N	1	\N	8	\N	Bryum turbinatum (Hedw.) Turner
 63	6541	5796	\N	1	\N	8	\N	Hygrohypnum luridum (Hedw.) Jenn.
-3	6542	5796	\N	1	\N	8	\N	Hygrohypnum luridum (Hedw.) Jenn.
 43	6543	5796	\N	1	\N	8	\N	Hygrohypnum luridum (Hedw.) Jenn.
 15	6544	5796	\N	1	\N	8	\N	Hygrohypnum luridum (Hedw.) Jenn.
 63	6545	5797	\N	1	\N	8	\N	Hygrohypnum molle (Hedw.) Loeske
-3	6546	5797	\N	1	\N	8	\N	Hygrohypnum molle (Hedw.) Loeske
 43	6547	5797	\N	1	\N	8	\N	Hygrohypnum molle (Hedw.) Loeske
 15	6548	5797	\N	1	\N	8	\N	Hygrohypnum molle (Hedw.) Loeske
 63	6549	5870	\N	1	\N	8	\N	Oxyrrhynchium speciosum (Brid.) Warnst.
-3	6550	5870	\N	1	\N	8	\N	Oxyrrhynchium speciosum (Brid.) Warnst.
 43	6551	5870	\N	1	\N	8	\N	Oxyrrhynchium speciosum (Brid.) Warnst.
 15	6552	5870	\N	1	\N	8	\N	Oxyrrhynchium speciosum (Brid.) Warnst.
 63	6553	5881	\N	1	\N	8	\N	Homalothecium philippeanum (Spruce) Schimp.
-3	6554	5881	\N	1	\N	8	\N	Homalothecium philippeanum (Spruce) Schimp.
 43	6555	5881	\N	1	\N	8	\N	Homalothecium philippeanum (Spruce) Schimp.
 15	6556	5881	\N	1	\N	8	\N	Homalothecium philippeanum (Spruce) Schimp.
+03	6514	770935	\N	1	\N	8	\N	Bryum caespiticium Hedw.
 63	6557	5898	\N	1	\N	8	\N	Rhynchostegiella curviseta (Brid.) Limpr.
-3	6558	5898	\N	1	\N	8	\N	Rhynchostegiella curviseta (Brid.) Limpr.
 43	6559	5898	\N	1	\N	8	\N	Rhynchostegiella curviseta (Brid.) Limpr.
 15	6560	5898	\N	1	\N	8	\N	Rhynchostegiella curviseta (Brid.) Limpr.
 63	6561	5924	\N	1	\N	8	\N	Scleropodium touretii (Brid.) L.F.Koch
-3	6562	5924	\N	1	\N	8	\N	Scleropodium touretii (Brid.) L.F.Koch
 43	6563	5924	\N	1	\N	8	\N	Scleropodium touretii (Brid.) L.F.Koch
 15	6564	5924	\N	1	\N	8	\N	Scleropodium touretii (Brid.) L.F.Koch
 63	6565	5990	\N	1	\N	8	\N	Callicladium haldanianum (Grev.) H.A.Crum
-3	6566	5990	\N	1	\N	8	\N	Callicladium haldanianum (Grev.) H.A.Crum
 43	6567	5990	\N	1	\N	8	\N	Callicladium haldanianum (Grev.) H.A.Crum
 15	6568	5990	\N	1	\N	8	\N	Callicladium haldanianum (Grev.) H.A.Crum
 63	6569	6054	\N	1	\N	8	\N	Hypnum hamulosum Schimp.
-3	6570	6054	\N	1	\N	8	\N	Hypnum hamulosum Schimp.
 43	6571	6054	\N	1	\N	8	\N	Hypnum hamulosum Schimp.
 15	6572	6054	\N	1	\N	8	\N	Hypnum hamulosum Schimp.
 63	6573	904305	\N	1	\N	8	\N	Hypnum vaucheri Lesq.
-3	6574	904305	\N	1	\N	8	\N	Hypnum vaucheri Lesq.
 43	6575	904305	\N	1	\N	8	\N	Hypnum vaucheri Lesq.
 15	6576	904305	\N	1	\N	8	\N	Hypnum vaucheri Lesq.
 63	6577	6204	\N	1	\N	8	\N	Riccia beyrichiana Hampe ex Lehm.
-3	6578	6204	\N	1	\N	8	\N	Riccia beyrichiana Hampe ex Lehm.
 43	6579	6204	\N	1	\N	8	\N	Riccia beyrichiana Hampe ex Lehm.
 15	6580	6204	\N	1	\N	8	\N	Riccia beyrichiana Hampe ex Lehm.
 63	6581	6210	\N	1	\N	8	\N	Riccia cavernosa Roffm.
-3	6582	6210	\N	1	\N	8	\N	Riccia cavernosa Roffm.
 43	6583	6210	\N	1	\N	8	\N	Riccia cavernosa Roffm.
 15	6584	6210	\N	1	\N	8	\N	Riccia cavernosa Roffm.
 63	6585	6212	\N	1	\N	8	\N	Riccia ciliifera Link ex Lindenb.
-3	6586	6212	\N	1	\N	8	\N	Riccia ciliifera Link ex Lindenb.
 43	6587	6212	\N	1	\N	8	\N	Riccia ciliifera Link ex Lindenb.
 15	6588	6212	\N	1	\N	8	\N	Riccia ciliifera Link ex Lindenb.
 63	6589	6218	\N	1	\N	8	\N	Riccia glauca L.
-3	6590	6218	\N	1	\N	8	\N	Riccia glauca L.
 43	6591	6218	\N	1	\N	8	\N	Riccia glauca L.
 15	6592	6218	\N	1	\N	8	\N	Riccia glauca L.
 63	6593	6227	\N	1	\N	8	\N	Riccia papillosa Moris
-3	6594	6227	\N	1	\N	8	\N	Riccia papillosa Moris
 43	6595	6227	\N	1	\N	8	\N	Riccia papillosa Moris
 15	6596	6227	\N	1	\N	8	\N	Riccia papillosa Moris
 63	6597	6279	\N	1	\N	8	\N	Pallavicinia lyellii (Hook.) Carruth.
-3	6598	6279	\N	1	\N	8	\N	Pallavicinia lyellii (Hook.) Carruth.
 43	6599	6279	\N	1	\N	8	\N	Pallavicinia lyellii (Hook.) Carruth.
 15	6600	6279	\N	1	\N	8	\N	Pallavicinia lyellii (Hook.) Carruth.
 63	6601	6285	\N	1	\N	8	\N	Fossombronia angulosa (Dicks.) Raddi
-3	6602	6285	\N	1	\N	8	\N	Fossombronia angulosa (Dicks.) Raddi
 43	6603	6285	\N	1	\N	8	\N	Fossombronia angulosa (Dicks.) Raddi
 15	6604	6285	\N	1	\N	8	\N	Fossombronia angulosa (Dicks.) Raddi
 63	6605	6286	\N	1	\N	8	\N	Fossombronia caespitiformis De Not. ex Rabenh.
-3	6606	6286	\N	1	\N	8	\N	Fossombronia caespitiformis De Not. ex Rabenh.
 43	6607	6286	\N	1	\N	8	\N	Fossombronia caespitiformis De Not. ex Rabenh.
 15	6608	6286	\N	1	\N	8	\N	Fossombronia caespitiformis De Not. ex Rabenh.
 63	6609	6294	\N	1	\N	8	\N	Fossombronia pusilla (L.) Nees
-3	6610	6294	\N	1	\N	8	\N	Fossombronia pusilla (L.) Nees
 43	6611	6294	\N	1	\N	8	\N	Fossombronia pusilla (L.) Nees
 15	6612	6294	\N	1	\N	8	\N	Fossombronia pusilla (L.) Nees
 63	6613	6305	\N	1	\N	8	\N	Anastrepta orcadensis (Hook.) Schiffn.
-3	6614	6305	\N	1	\N	8	\N	Anastrepta orcadensis (Hook.) Schiffn.
 43	6615	6305	\N	1	\N	8	\N	Anastrepta orcadensis (Hook.) Schiffn.
 15	6616	6305	\N	1	\N	8	\N	Anastrepta orcadensis (Hook.) Schiffn.
 63	6617	786410	\N	1	\N	8	\N	Barbilophozia atlantica (Kaal.) Müll.Frib.
-3	6618	786410	\N	1	\N	8	\N	Barbilophozia atlantica (Kaal.) Müll.Frib.
 43	6619	786410	\N	1	\N	8	\N	Barbilophozia atlantica (Kaal.) Müll.Frib.
 15	6620	786410	\N	1	\N	8	\N	Barbilophozia atlantica (Kaal.) Müll.Frib.
 63	6621	786444	\N	1	\N	8	\N	Leiocolea turbinata (Raddi) H.Buch
-3	6622	786444	\N	1	\N	8	\N	Leiocolea turbinata (Raddi) H.Buch
 43	6623	786444	\N	1	\N	8	\N	Leiocolea turbinata (Raddi) H.Buch
 15	6624	786444	\N	1	\N	8	\N	Leiocolea turbinata (Raddi) H.Buch
 63	6625	6405	\N	1	\N	8	\N	Jungermannia polaris Lindb.
-3	6626	6405	\N	1	\N	8	\N	Jungermannia polaris Lindb.
 43	6627	6405	\N	1	\N	8	\N	Jungermannia polaris Lindb.
 15	6628	6405	\N	1	\N	8	\N	Jungermannia polaris Lindb.
 63	6629	6418	\N	1	\N	8	\N	Mylia taylorii (Hook.) Gray
-3	6630	6418	\N	1	\N	8	\N	Mylia taylorii (Hook.) Gray
 43	6631	6418	\N	1	\N	8	\N	Mylia taylorii (Hook.) Gray
 15	6632	6418	\N	1	\N	8	\N	Mylia taylorii (Hook.) Gray
 63	6633	6422	\N	1	\N	8	\N	Nardia geoscyphus (De Not.) Lindb.
-3	6634	6422	\N	1	\N	8	\N	Nardia geoscyphus (De Not.) Lindb.
 43	6635	6422	\N	1	\N	8	\N	Nardia geoscyphus (De Not.) Lindb.
 15	6636	6422	\N	1	\N	8	\N	Nardia geoscyphus (De Not.) Lindb.
 63	6637	6434	\N	1	\N	8	\N	Gymnomitrion obtusum Lindb.
-3	6638	6434	\N	1	\N	8	\N	Gymnomitrion obtusum Lindb.
 43	6639	6434	\N	1	\N	8	\N	Gymnomitrion obtusum Lindb.
 15	6640	6434	\N	1	\N	8	\N	Gymnomitrion obtusum Lindb.
 63	6641	6453	\N	1	\N	8	\N	Marsupella sparsifolia (Lindb.) Dumort.
-3	6642	6453	\N	1	\N	8	\N	Marsupella sparsifolia (Lindb.) Dumort.
 43	6643	6453	\N	1	\N	8	\N	Marsupella sparsifolia (Lindb.) Dumort.
 15	6644	6453	\N	1	\N	8	\N	Marsupella sparsifolia (Lindb.) Dumort.
 63	6645	6454	\N	1	\N	8	\N	Marsupella sphacelata (Gieseke ex Lindenb.) Dumort.
-3	6646	6454	\N	1	\N	8	\N	Marsupella sphacelata (Gieseke ex Lindenb.) Dumort.
 43	6647	6454	\N	1	\N	8	\N	Marsupella sphacelata (Gieseke ex Lindenb.) Dumort.
 15	6648	6454	\N	1	\N	8	\N	Marsupella sphacelata (Gieseke ex Lindenb.) Dumort.
 63	6649	6463	\N	1	\N	8	\N	Southbya tophacea (Spruce) Spruce
-3	6650	6463	\N	1	\N	8	\N	Southbya tophacea (Spruce) Spruce
 43	6651	6463	\N	1	\N	8	\N	Southbya tophacea (Spruce) Spruce
 15	6652	6463	\N	1	\N	8	\N	Southbya tophacea (Spruce) Spruce
 63	6653	6488	\N	1	\N	8	\N	Harpanthus flotovianus (Nees) Nees
-3	6654	6488	\N	1	\N	8	\N	Harpanthus flotovianus (Nees) Nees
 43	6655	6488	\N	1	\N	8	\N	Harpanthus flotovianus (Nees) Nees
 15	6656	6488	\N	1	\N	8	\N	Harpanthus flotovianus (Nees) Nees
 63	6657	6489	\N	1	\N	8	\N	Harpanthus scutatus (F.Weber et D.Mohr) Spruce
-3	6658	6489	\N	1	\N	8	\N	Harpanthus scutatus (F.Weber et D.Mohr) Spruce
 43	6659	6489	\N	1	\N	8	\N	Harpanthus scutatus (F.Weber et D.Mohr) Spruce
 15	6660	6489	\N	1	\N	8	\N	Harpanthus scutatus (F.Weber et D.Mohr) Spruce
 63	6661	6520	\N	1	\N	8	\N	Scapania cuspiduligera (Nees) Müll.Frib.
-3	6662	6520	\N	1	\N	8	\N	Scapania cuspiduligera (Nees) Müll.Frib.
 43	6663	6520	\N	1	\N	8	\N	Scapania cuspiduligera (Nees) Müll.Frib.
 15	6664	6520	\N	1	\N	8	\N	Scapania cuspiduligera (Nees) Müll.Frib.
 63	6665	6528	\N	1	\N	8	\N	Scapania mucronata H.Buch
-3	6666	6528	\N	1	\N	8	\N	Scapania mucronata H.Buch
 43	6667	6528	\N	1	\N	8	\N	Scapania mucronata H.Buch
 15	6668	6528	\N	1	\N	8	\N	Scapania mucronata H.Buch
 63	6669	6537	\N	1	\N	8	\N	Scapania uliginosa (Sw. ex Lindenb.) Dumort.
-3	6670	6537	\N	1	\N	8	\N	Scapania uliginosa (Sw. ex Lindenb.) Dumort.
 43	6671	6537	\N	1	\N	8	\N	Scapania uliginosa (Sw. ex Lindenb.) Dumort.
 15	6672	6537	\N	1	\N	8	\N	Scapania uliginosa (Sw. ex Lindenb.) Dumort.
 63	6673	6550	\N	1	\N	8	\N	Cephaloziella baumgartneri Schiffn.
-3	6674	6550	\N	1	\N	8	\N	Cephaloziella baumgartneri Schiffn.
 43	6675	6550	\N	1	\N	8	\N	Cephaloziella baumgartneri Schiffn.
 15	6676	6550	\N	1	\N	8	\N	Cephaloziella baumgartneri Schiffn.
 63	6677	6557	\N	1	\N	8	\N	Cephaloziella grimsulana (J.B.Jack ex Gottsche et Rabenh.) Lacout.
-3	6678	6557	\N	1	\N	8	\N	Cephaloziella grimsulana (J.B.Jack ex Gottsche et Rabenh.) Lacout.
 43	6679	6557	\N	1	\N	8	\N	Cephaloziella grimsulana (J.B.Jack ex Gottsche et Rabenh.) Lacout.
 15	6680	6557	\N	1	\N	8	\N	Cephaloziella grimsulana (J.B.Jack ex Gottsche et Rabenh.) Lacout.
 63	6681	6559	\N	1	\N	8	\N	Cephaloziella integerrima (Lindb.) Warnst.
-3	6682	6559	\N	1	\N	8	\N	Cephaloziella integerrima (Lindb.) Warnst.
 43	6683	6559	\N	1	\N	8	\N	Cephaloziella integerrima (Lindb.) Warnst.
 15	6684	6559	\N	1	\N	8	\N	Cephaloziella integerrima (Lindb.) Warnst.
 63	6685	6560	\N	1	\N	8	\N	Cephaloziella massalongi (Spruce) Müll.Frib.
-3	6686	6560	\N	1	\N	8	\N	Cephaloziella massalongi (Spruce) Müll.Frib.
 43	6687	6560	\N	1	\N	8	\N	Cephaloziella massalongi (Spruce) Müll.Frib.
 15	6688	6560	\N	1	\N	8	\N	Cephaloziella massalongi (Spruce) Müll.Frib.
 63	6689	6568	\N	1	\N	8	\N	Cephaloziella turneri (Hook.) Müll.Frib.
-3	6690	6568	\N	1	\N	8	\N	Cephaloziella turneri (Hook.) Müll.Frib.
 43	6691	6568	\N	1	\N	8	\N	Cephaloziella turneri (Hook.) Müll.Frib.
 15	6692	6568	\N	1	\N	8	\N	Cephaloziella turneri (Hook.) Müll.Frib.
 63	6693	786425	\N	1	\N	8	\N	Cephalozia pleniceps (Austin) Lindb.
-3	6694	786425	\N	1	\N	8	\N	Cephalozia pleniceps (Austin) Lindb.
 43	6695	786425	\N	1	\N	8	\N	Cephalozia pleniceps (Austin) Lindb.
 15	6696	786425	\N	1	\N	8	\N	Cephalozia pleniceps (Austin) Lindb.
 63	6697	6658	\N	1	\N	8	\N	Radula lindenbergiana Gottsche ex C.Hartm.
-3	6698	6658	\N	1	\N	8	\N	Radula lindenbergiana Gottsche ex C.Hartm.
 43	6699	6658	\N	1	\N	8	\N	Radula lindenbergiana Gottsche ex C.Hartm.
 15	6700	6658	\N	1	\N	8	\N	Radula lindenbergiana Gottsche ex C.Hartm.
 63	6701	718190	\N	1	\N	8	\N	Aphanolejeunea microscopica (Taylor) A.Evans
-3	6702	718190	\N	1	\N	8	\N	Aphanolejeunea microscopica (Taylor) A.Evans
 43	6703	718190	\N	1	\N	8	\N	Aphanolejeunea microscopica (Taylor) A.Evans
 15	6704	718190	\N	1	\N	8	\N	Aphanolejeunea microscopica (Taylor) A.Evans
 63	6705	783399	\N	1	\N	8	\N	Cololejeunea minutissima (Sm.) Schiffn.
-3	6706	783399	\N	1	\N	8	\N	Cololejeunea minutissima (Sm.) Schiffn.
 43	6707	783399	\N	1	\N	8	\N	Cololejeunea minutissima (Sm.) Schiffn.
 15	6708	783399	\N	1	\N	8	\N	Cololejeunea minutissima (Sm.) Schiffn.
 63	6709	6722	\N	1	\N	8	\N	Sphagnum angustifolium (C.E.O.Jensen ex Russow) C.E.O.Jensen
-3	6710	6722	\N	1	\N	8	\N	Sphagnum angustifolium (C.E.O.Jensen ex Russow) C.E.O.Jensen
 43	6711	6722	\N	1	\N	8	\N	Sphagnum angustifolium (C.E.O.Jensen ex Russow) C.E.O.Jensen
 15	6712	6722	\N	1	\N	8	\N	Sphagnum angustifolium (C.E.O.Jensen ex Russow) C.E.O.Jensen
 63	6713	6728	\N	1	\N	8	\N	Sphagnum capillifolium (Ehrh.) Hedw.
-3	6714	6728	\N	1	\N	8	\N	Sphagnum capillifolium (Ehrh.) Hedw.
 43	6715	6728	\N	1	\N	8	\N	Sphagnum capillifolium (Ehrh.) Hedw.
 15	6716	6728	\N	1	\N	8	\N	Sphagnum capillifolium (Ehrh.) Hedw.
 63	6717	6732	\N	1	\N	8	\N	Sphagnum centrale C.E.O.Jensen
-3	6718	6732	\N	1	\N	8	\N	Sphagnum centrale C.E.O.Jensen
 43	6719	6732	\N	1	\N	8	\N	Sphagnum centrale C.E.O.Jensen
 15	6720	6732	\N	1	\N	8	\N	Sphagnum centrale C.E.O.Jensen
 63	6721	6734	\N	1	\N	8	\N	Sphagnum compactum Lam. & DC.
-3	6722	6734	\N	1	\N	8	\N	Sphagnum compactum Lam. & DC.
 43	6723	6734	\N	1	\N	8	\N	Sphagnum compactum Lam. & DC.
 15	6724	6734	\N	1	\N	8	\N	Sphagnum compactum Lam. & DC.
 63	6725	6736	\N	1	\N	8	\N	Sphagnum contortum Schultz
-3	6726	6736	\N	1	\N	8	\N	Sphagnum contortum Schultz
 43	6727	6736	\N	1	\N	8	\N	Sphagnum contortum Schultz
 15	6728	6736	\N	1	\N	8	\N	Sphagnum contortum Schultz
 63	6729	6739	\N	1	\N	8	\N	Sphagnum cuspidatum Ehrh. ex Hoffm.
-3	6730	6739	\N	1	\N	8	\N	Sphagnum cuspidatum Ehrh. ex Hoffm.
 43	6731	6739	\N	1	\N	8	\N	Sphagnum cuspidatum Ehrh. ex Hoffm.
 15	6732	6739	\N	1	\N	8	\N	Sphagnum cuspidatum Ehrh. ex Hoffm.
 63	6733	6742	\N	1	\N	8	\N	Sphagnum inundatum Russow
-3	6734	6742	\N	1	\N	8	\N	Sphagnum inundatum Russow
 43	6735	6742	\N	1	\N	8	\N	Sphagnum inundatum Russow
 15	6736	6742	\N	1	\N	8	\N	Sphagnum inundatum Russow
 63	6737	6746	\N	1	\N	8	\N	Sphagnum fallax (H.Klinggr.) H.Klinggr.
-3	6738	6746	\N	1	\N	8	\N	Sphagnum fallax (H.Klinggr.) H.Klinggr.
 43	6739	6746	\N	1	\N	8	\N	Sphagnum fallax (H.Klinggr.) H.Klinggr.
 15	6740	6746	\N	1	\N	8	\N	Sphagnum fallax (H.Klinggr.) H.Klinggr.
 63	6741	6747	\N	1	\N	8	\N	Sphagnum fimbriatum Wilson
-3	6742	6747	\N	1	\N	8	\N	Sphagnum fimbriatum Wilson
 43	6743	6747	\N	1	\N	8	\N	Sphagnum fimbriatum Wilson
 15	6744	6747	\N	1	\N	8	\N	Sphagnum fimbriatum Wilson
 63	6745	6748	\N	1	\N	8	\N	Sphagnum flexuosum Dozy & Molk.
-3	6746	6748	\N	1	\N	8	\N	Sphagnum flexuosum Dozy & Molk.
 43	6747	6748	\N	1	\N	8	\N	Sphagnum flexuosum Dozy & Molk.
 15	6748	6748	\N	1	\N	8	\N	Sphagnum flexuosum Dozy & Molk.
 63	6749	6750	\N	1	\N	8	\N	Sphagnum fuscum (Schimp.) H.Klinggr.
-3	6750	6750	\N	1	\N	8	\N	Sphagnum fuscum (Schimp.) H.Klinggr.
 43	6751	6750	\N	1	\N	8	\N	Sphagnum fuscum (Schimp.) H.Klinggr.
 15	6752	6750	\N	1	\N	8	\N	Sphagnum fuscum (Schimp.) H.Klinggr.
 63	6753	6751	\N	1	\N	8	\N	Sphagnum girgensohnii Russow
-3	6754	6751	\N	1	\N	8	\N	Sphagnum girgensohnii Russow
 43	6755	6751	\N	1	\N	8	\N	Sphagnum girgensohnii Russow
 15	6756	6751	\N	1	\N	8	\N	Sphagnum girgensohnii Russow
 63	6757	6754	\N	1	\N	8	\N	Sphagnum auriculatum Schimp.
-3	6758	6754	\N	1	\N	8	\N	Sphagnum auriculatum Schimp.
 43	6759	6754	\N	1	\N	8	\N	Sphagnum auriculatum Schimp.
 15	6760	6754	\N	1	\N	8	\N	Sphagnum auriculatum Schimp.
 63	6761	6760	\N	1	\N	8	\N	Sphagnum magellanicum Brid.
-3	6762	6760	\N	1	\N	8	\N	Sphagnum magellanicum Brid.
 43	6763	6760	\N	1	\N	8	\N	Sphagnum magellanicum Brid.
 15	6764	6760	\N	1	\N	8	\N	Sphagnum magellanicum Brid.
 63	6765	6765	\N	1	\N	8	\N	Sphagnum molle Sull.
-3	6766	6765	\N	1	\N	8	\N	Sphagnum molle Sull.
 43	6767	6765	\N	1	\N	8	\N	Sphagnum molle Sull.
 15	6768	6765	\N	1	\N	8	\N	Sphagnum molle Sull.
 63	6769	6768	\N	1	\N	8	\N	Sphagnum obtusum Warnst.
-3	6770	6768	\N	1	\N	8	\N	Sphagnum obtusum Warnst.
 43	6771	6768	\N	1	\N	8	\N	Sphagnum obtusum Warnst.
 15	6772	6768	\N	1	\N	8	\N	Sphagnum obtusum Warnst.
 63	6773	6769	\N	1	\N	8	\N	Sphagnum palustre L.
-3	6774	6769	\N	1	\N	8	\N	Sphagnum palustre L.
 43	6775	6769	\N	1	\N	8	\N	Sphagnum palustre L.
 15	6776	6769	\N	1	\N	8	\N	Sphagnum palustre L.
 63	6777	6774	\N	1	\N	8	\N	Sphagnum papillosum Lindb.
-3	6778	6774	\N	1	\N	8	\N	Sphagnum papillosum Lindb.
 43	6779	6774	\N	1	\N	8	\N	Sphagnum papillosum Lindb.
 15	6780	6774	\N	1	\N	8	\N	Sphagnum papillosum Lindb.
 63	6781	6776	\N	1	\N	8	\N	Sphagnum platyphyllum (Lindb. ex Braithw.) Warnst.
-3	6782	6776	\N	1	\N	8	\N	Sphagnum platyphyllum (Lindb. ex Braithw.) Warnst.
 43	6783	6776	\N	1	\N	8	\N	Sphagnum platyphyllum (Lindb. ex Braithw.) Warnst.
 15	6784	6776	\N	1	\N	8	\N	Sphagnum platyphyllum (Lindb. ex Braithw.) Warnst.
 63	6785	6780	\N	1	\N	8	\N	Sphagnum quinquefarium (Braithw.) Warnst.
-3	6786	6780	\N	1	\N	8	\N	Sphagnum quinquefarium (Braithw.) Warnst.
 43	6787	6780	\N	1	\N	8	\N	Sphagnum quinquefarium (Braithw.) Warnst.
 15	6788	6780	\N	1	\N	8	\N	Sphagnum quinquefarium (Braithw.) Warnst.
 63	6789	6784	\N	1	\N	8	\N	Sphagnum rubellum Wilson
-3	6790	6784	\N	1	\N	8	\N	Sphagnum rubellum Wilson
 43	6791	6784	\N	1	\N	8	\N	Sphagnum rubellum Wilson
 15	6792	6784	\N	1	\N	8	\N	Sphagnum rubellum Wilson
 63	6793	6785	\N	1	\N	8	\N	Sphagnum russowii Warnst.
-3	6794	6785	\N	1	\N	8	\N	Sphagnum russowii Warnst.
 43	6795	6785	\N	1	\N	8	\N	Sphagnum russowii Warnst.
 15	6796	6785	\N	1	\N	8	\N	Sphagnum russowii Warnst.
 63	6797	6789	\N	1	\N	8	\N	Sphagnum squarrosum Crome
-3	6798	6789	\N	1	\N	8	\N	Sphagnum squarrosum Crome
 43	6799	6789	\N	1	\N	8	\N	Sphagnum squarrosum Crome
 15	6800	6789	\N	1	\N	8	\N	Sphagnum squarrosum Crome
 63	6801	6790	\N	1	\N	8	\N	Sphagnum subnitens Russow & Warnst.
-3	6802	6790	\N	1	\N	8	\N	Sphagnum subnitens Russow & Warnst.
 43	6803	6790	\N	1	\N	8	\N	Sphagnum subnitens Russow & Warnst.
 15	6804	6790	\N	1	\N	8	\N	Sphagnum subnitens Russow & Warnst.
 63	6805	6794	\N	1	\N	8	\N	Sphagnum subsecundum Nees
-3	6806	6794	\N	1	\N	8	\N	Sphagnum subsecundum Nees
 43	6807	6794	\N	1	\N	8	\N	Sphagnum subsecundum Nees
 15	6808	6794	\N	1	\N	8	\N	Sphagnum subsecundum Nees
 63	6809	6795	\N	1	\N	8	\N	Sphagnum tenellum (Brid.) Pers. ex Brid.
-3	6810	6795	\N	1	\N	8	\N	Sphagnum tenellum (Brid.) Pers. ex Brid.
 43	6811	6795	\N	1	\N	8	\N	Sphagnum tenellum (Brid.) Pers. ex Brid.
 15	6812	6795	\N	1	\N	8	\N	Sphagnum tenellum (Brid.) Pers. ex Brid.
 63	6813	6797	\N	1	\N	8	\N	Sphagnum teres (Schimp.) Ångstr.
-3	6814	6797	\N	1	\N	8	\N	Sphagnum teres (Schimp.) Ångstr.
 43	6815	6797	\N	1	\N	8	\N	Sphagnum teres (Schimp.) Ångstr.
 15	6816	6797	\N	1	\N	8	\N	Sphagnum teres (Schimp.) Ångstr.
 63	6817	6802	\N	1	\N	8	\N	Sphagnum warnstorfii Russow
-3	6818	6802	\N	1	\N	8	\N	Sphagnum warnstorfii Russow
 43	6819	6802	\N	1	\N	8	\N	Sphagnum warnstorfii Russow
 15	6820	6802	\N	1	\N	8	\N	Sphagnum warnstorfii Russow
 63	6821	6809	\N	1	\N	8	\N	Anthoceros agrestis Paton
-3	6822	6809	\N	1	\N	8	\N	Anthoceros agrestis Paton
 43	6823	6809	\N	1	\N	8	\N	Anthoceros agrestis Paton
 15	6824	6809	\N	1	\N	8	\N	Anthoceros agrestis Paton
 63	6825	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
-3	6826	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
 43	6827	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
 15	6828	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
 63	6829	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
-3	6830	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
 43	6831	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
 15	6832	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
 63	6833	6830	\N	1	\N	8	\N	Andreaea frigida Huebener
-3	6834	6830	\N	1	\N	8	\N	Andreaea frigida Huebener
 43	6835	6830	\N	1	\N	8	\N	Andreaea frigida Huebener
 15	6836	6830	\N	1	\N	8	\N	Andreaea frigida Huebener
 63	6837	7990	\N	1	\N	8	\N	Anthoceros punctatus L.
-3	6838	7990	\N	1	\N	8	\N	Anthoceros punctatus L.
 43	6839	7990	\N	1	\N	8	\N	Anthoceros punctatus L.
 15	6840	7990	\N	1	\N	8	\N	Anthoceros punctatus L.
 63	6841	223028	\N	3	\N	8	\N	Carabus variolosus Fabricius, 1787
-3	6842	223028	\N	3	\N	8	\N	Carabus variolosus Fabricius, 1787
 43	6843	223028	\N	3	\N	8	\N	Carabus variolosus Fabricius, 1787
 15	6844	223028	\N	3	\N	8	\N	Carabus variolosus Fabricius, 1787
 63	6845	12348	\N	3	\N	8	\N	Rosalia alpina (Linnaeus, 1758)
-3	6846	12348	\N	3	\N	8	\N	Rosalia alpina (Linnaeus, 1758)
 43	6847	12348	\N	3	\N	8	\N	Rosalia alpina (Linnaeus, 1758)
 15	6848	12348	\N	3	\N	8	\N	Rosalia alpina (Linnaeus, 1758)
 63	6849	18432	\N	2	\N	8	\N	Astacus astacus (Linnaeus, 1758)
-3	6850	18432	\N	2	\N	8	\N	Astacus astacus (Linnaeus, 1758)
 43	6851	18432	\N	2	\N	8	\N	Astacus astacus (Linnaeus, 1758)
 15	6852	18432	\N	2	\N	8	\N	Astacus astacus (Linnaeus, 1758)
 63	6853	18437	\N	2	\N	8	\N	Austropotamobius pallipes (Lereboullet, 1858)
-3	6854	18437	\N	2	\N	8	\N	Austropotamobius pallipes (Lereboullet, 1858)
 43	6855	18437	\N	2	\N	8	\N	Austropotamobius pallipes (Lereboullet, 1858)
 15	6856	18437	\N	2	\N	8	\N	Austropotamobius pallipes (Lereboullet, 1858)
 63	6857	54496	\N	1	\N	8	\N	Parnassius apollo (Linnaeus, 1758)
-3	6858	54496	\N	1	\N	8	\N	Parnassius apollo (Linnaeus, 1758)
 43	6859	54496	\N	1	\N	8	\N	Parnassius apollo (Linnaeus, 1758)
 15	6860	54496	\N	1	\N	8	\N	Parnassius apollo (Linnaeus, 1758)
 63	6861	60295	\N	2	\N	8	\N	Rhinolophus ferrumequinum
-3	6862	60295	\N	2	\N	8	\N	Rhinolophus ferrumequinum
 43	6863	60295	\N	2	\N	8	\N	Rhinolophus ferrumequinum
 15	6864	60295	\N	2	\N	8	\N	Rhinolophus ferrumequinum
 63	6865	60313	\N	2	\N	8	\N	Rhinolophus hipposideros
-3	6866	60313	\N	2	\N	8	\N	Rhinolophus hipposideros
 43	6867	60313	\N	2	\N	8	\N	Rhinolophus hipposideros
 15	6868	60313	\N	2	\N	8	\N	Rhinolophus hipposideros
 63	6869	60330	\N	2	\N	8	\N	Rhinolophus euryale
-3	6870	60330	\N	2	\N	8	\N	Rhinolophus euryale
 43	6871	60330	\N	2	\N	8	\N	Rhinolophus euryale
 15	6872	60330	\N	2	\N	8	\N	Rhinolophus euryale
 63	6873	60345	\N	2	\N	8	\N	Barbastella barbastellus
-3	6874	60345	\N	2	\N	8	\N	Barbastella barbastellus
 43	6875	60345	\N	2	\N	8	\N	Barbastella barbastellus
 15	6876	60345	\N	2	\N	8	\N	Barbastella barbastellus
 63	6877	60383	\N	2	\N	8	\N	Myotis mystacinus
-3	6878	60383	\N	2	\N	8	\N	Myotis mystacinus
 43	6879	60383	\N	2	\N	8	\N	Myotis mystacinus
 15	6880	60383	\N	2	\N	8	\N	Myotis mystacinus
 63	6881	79300	\N	2	\N	8	\N	Myotis brandtii
-3	6882	79300	\N	2	\N	8	\N	Myotis brandtii
 43	6883	79300	\N	2	\N	8	\N	Myotis brandtii
 15	6884	79300	\N	2	\N	8	\N	Myotis brandtii
 63	6885	60400	\N	2	\N	8	\N	Myotis emarginatus
-3	6886	60400	\N	2	\N	8	\N	Myotis emarginatus
 43	6887	60400	\N	2	\N	8	\N	Myotis emarginatus
 15	6888	60400	\N	2	\N	8	\N	Myotis emarginatus
 63	6889	60408	\N	2	\N	8	\N	Myotis nattereri
-3	6890	60408	\N	2	\N	8	\N	Myotis nattereri
 43	6891	60408	\N	2	\N	8	\N	Myotis nattereri
 15	6892	60408	\N	2	\N	8	\N	Myotis nattereri
 63	6893	60418	\N	2	\N	8	\N	Myotis myotis
-3	6894	60418	\N	2	\N	8	\N	Myotis myotis
 43	6895	60418	\N	2	\N	8	\N	Myotis myotis
 15	6896	60418	\N	2	\N	8	\N	Myotis myotis
 63	6897	60427	\N	2	\N	8	\N	Myotis blythii
-3	6898	60427	\N	2	\N	8	\N	Myotis blythii
 43	6899	60427	\N	2	\N	8	\N	Myotis blythii
 15	6900	60427	\N	2	\N	8	\N	Myotis blythii
 63	6901	60457	\N	1	\N	8	\N	Nyctalus lasiopterus
-3	6902	60457	\N	1	\N	8	\N	Nyctalus lasiopterus
 43	6903	60457	\N	1	\N	8	\N	Nyctalus lasiopterus
 15	6904	60457	\N	1	\N	8	\N	Nyctalus lasiopterus
 63	6905	60461	\N	1	\N	8	\N	Nyctalus leisleri
-3	6906	60461	\N	1	\N	8	\N	Nyctalus leisleri
 43	6907	60461	\N	1	\N	8	\N	Nyctalus leisleri
 15	6908	60461	\N	1	\N	8	\N	Nyctalus leisleri
 63	6909	60468	\N	1	\N	8	\N	Nyctalus noctula
-3	6910	60468	\N	1	\N	8	\N	Nyctalus noctula
 43	6911	60468	\N	1	\N	8	\N	Nyctalus noctula
 15	6912	60468	\N	1	\N	8	\N	Nyctalus noctula
 63	6913	60489	\N	1	\N	8	\N	Pipistrellus pygmaeus
-3	6914	60489	\N	1	\N	8	\N	Pipistrellus pygmaeus
 43	6915	60489	\N	1	\N	8	\N	Pipistrellus pygmaeus
 15	6916	60489	\N	1	\N	8	\N	Pipistrellus pygmaeus
 63	6917	60490	\N	1	\N	8	\N	Pipistrellus nathusii
-3	6918	60490	\N	1	\N	8	\N	Pipistrellus nathusii
 43	6919	60490	\N	1	\N	8	\N	Pipistrellus nathusii
 15	6920	60490	\N	1	\N	8	\N	Pipistrellus nathusii
 63	6921	60518	\N	2	\N	8	\N	Plecotus auritus
-3	6922	60518	\N	2	\N	8	\N	Plecotus auritus
 43	6923	60518	\N	2	\N	8	\N	Plecotus auritus
 15	6924	60518	\N	2	\N	8	\N	Plecotus auritus
 63	6925	60527	\N	2	\N	8	\N	Plecotus austriacus
-3	6926	60527	\N	2	\N	8	\N	Plecotus austriacus
 43	6927	60527	\N	2	\N	8	\N	Plecotus austriacus
 15	6928	60527	\N	2	\N	8	\N	Plecotus austriacus
 63	6929	60537	\N	1	\N	8	\N	Vespertilio murinus
-3	6930	60537	\N	1	\N	8	\N	Vespertilio murinus
 43	6931	60537	\N	1	\N	8	\N	Vespertilio murinus
 15	6932	60537	\N	1	\N	8	\N	Vespertilio murinus
 63	6933	60557	\N	1	\N	8	\N	Tadarida teniotis
-3	6934	60557	\N	1	\N	8	\N	Tadarida teniotis
 43	6935	60557	\N	1	\N	8	\N	Tadarida teniotis
 15	6936	60557	\N	1	\N	8	\N	Tadarida teniotis
 63	6937	60577	\N	3	\N	8	\N	Canis lupus Linnaeus, 1758
-3	6938	60577	\N	3	\N	8	\N	Canis lupus Linnaeus, 1758
 43	6939	60577	\N	3	\N	8	\N	Canis lupus Linnaeus, 1758
 15	6940	60577	\N	3	\N	8	\N	Canis lupus Linnaeus, 1758
 63	6941	\N	\N	3	\N	8	\N	Lynx lynx lynx (Linnaeus, 1758)
-3	6942	\N	\N	3	\N	8	\N	Lynx lynx lynx (Linnaeus, 1758)
 43	6943	\N	\N	3	\N	8	\N	Lynx lynx lynx (Linnaeus, 1758)
 15	6944	\N	\N	3	\N	8	\N	Lynx lynx lynx (Linnaeus, 1758)
 63	6945	60630	\N	2	\N	8	\N	Lutra lutra (Linnaeus, 1758)
-3	6946	60630	\N	2	\N	8	\N	Lutra lutra (Linnaeus, 1758)
 43	6947	60630	\N	2	\N	8	\N	Lutra lutra (Linnaeus, 1758)
 15	6948	60630	\N	2	\N	8	\N	Lutra lutra (Linnaeus, 1758)
 63	6949	60831	\N	2	\N	8	\N	Genetta genetta (Linnaeus, 1758)
-3	6950	60831	\N	2	\N	8	\N	Genetta genetta (Linnaeus, 1758)
 43	6951	60831	\N	2	\N	8	\N	Genetta genetta (Linnaeus, 1758)
 15	6952	60831	\N	2	\N	8	\N	Genetta genetta (Linnaeus, 1758)
 63	6953	61212	\N	2	\N	8	\N	Castor fiber Linnaeus, 1758
-3	6954	61212	\N	2	\N	8	\N	Castor fiber Linnaeus, 1758
 43	6955	61212	\N	2	\N	8	\N	Castor fiber Linnaeus, 1758
 15	6956	61212	\N	2	\N	8	\N	Castor fiber Linnaeus, 1758
 63	6957	61636	\N	2	\N	8	\N	Muscardinus avellanarius (Linnaeus, 1758)
-3	6958	61636	\N	2	\N	8	\N	Muscardinus avellanarius (Linnaeus, 1758)
 43	6959	61636	\N	2	\N	8	\N	Muscardinus avellanarius (Linnaeus, 1758)
 15	6960	61636	\N	2	\N	8	\N	Muscardinus avellanarius (Linnaeus, 1758)
 63	6961	64443	\N	1	\N	8	\N	Unio crassus Philipsson, 1788
-3	6962	64443	\N	1	\N	8	\N	Unio crassus Philipsson, 1788
 43	6963	64443	\N	1	\N	8	\N	Unio crassus Philipsson, 1788
 15	6964	64443	\N	1	\N	8	\N	Unio crassus Philipsson, 1788
 63	6965	77381	\N	2	\N	8	\N	Emys orbicularis (Linnaeus, 1758)
-3	6966	77381	\N	2	\N	8	\N	Emys orbicularis (Linnaeus, 1758)
 43	6967	77381	\N	2	\N	8	\N	Emys orbicularis (Linnaeus, 1758)
 15	6968	77381	\N	2	\N	8	\N	Emys orbicularis (Linnaeus, 1758)
 63	6969	78130	\N	1	\N	8	\N	Vipera aspis (Linnaeus, 1758)
-3	6970	78130	\N	1	\N	8	\N	Vipera aspis (Linnaeus, 1758)
 43	6971	78130	\N	1	\N	8	\N	Vipera aspis (Linnaeus, 1758)
 15	6972	78130	\N	1	\N	8	\N	Vipera aspis (Linnaeus, 1758)
 63	6973	78141	\N	1	\N	8	\N	Vipera berus (Linnaeus, 1758)
-3	6974	78141	\N	1	\N	8	\N	Vipera berus (Linnaeus, 1758)
 43	6975	78141	\N	1	\N	8	\N	Vipera berus (Linnaeus, 1758)
 15	6976	78141	\N	1	\N	8	\N	Vipera berus (Linnaeus, 1758)
 63	6977	79273	\N	2	\N	8	\N	Timon lepidus (Daudin, 1802)
-3	6978	79273	\N	2	\N	8	\N	Timon lepidus (Daudin, 1802)
 43	6979	79273	\N	2	\N	8	\N	Timon lepidus (Daudin, 1802)
 15	6980	79273	\N	2	\N	8	\N	Timon lepidus (Daudin, 1802)
 63	6981	79299	\N	2	\N	8	\N	Myotis alcathoe
-3	6982	79299	\N	2	\N	8	\N	Myotis alcathoe
 43	6983	79299	\N	2	\N	8	\N	Myotis alcathoe
 15	6984	79299	\N	2	\N	8	\N	Myotis alcathoe
 63	6985	79301	\N	2	\N	8	\N	Myotis bechsteinii
-3	6986	79301	\N	2	\N	8	\N	Myotis bechsteinii
 43	6987	79301	\N	2	\N	8	\N	Myotis bechsteinii
 15	6988	79301	\N	2	\N	8	\N	Myotis bechsteinii
 63	6989	79302	\N	1	\N	8	\N	Eptesicus nilssonii
-3	6990	79302	\N	1	\N	8	\N	Eptesicus nilssonii
 43	6991	79302	\N	1	\N	8	\N	Eptesicus nilssonii
 15	6992	79302	\N	1	\N	8	\N	Eptesicus nilssonii
 63	6993	79305	\N	2	\N	8	\N	Miniopterus schreibersii
-3	6994	79305	\N	2	\N	8	\N	Miniopterus schreibersii
 43	6995	79305	\N	2	\N	8	\N	Miniopterus schreibersii
 15	6996	79305	\N	2	\N	8	\N	Miniopterus schreibersii
 63	6997	79306	\N	2	\N	8	\N	Felis silvestris Schreber, 1775
-3	6998	79306	\N	2	\N	8	\N	Felis silvestris Schreber, 1775
 43	6999	79306	\N	2	\N	8	\N	Felis silvestris Schreber, 1775
 15	7000	79306	\N	2	\N	8	\N	Felis silvestris Schreber, 1775
 63	7001	81369	\N	1	\N	8	\N	Allium ericetorum Thore, 1803
-3	7002	81369	\N	1	\N	8	\N	Allium ericetorum Thore, 1803
 43	7003	81369	\N	1	\N	8	\N	Allium ericetorum Thore, 1803
 15	7004	81369	\N	1	\N	8	\N	Allium ericetorum Thore, 1803
 63	7005	82516	\N	1	\N	8	\N	Androsace maxima L., 1753
-3	7006	82516	\N	1	\N	8	\N	Androsace maxima L., 1753
 43	7007	82516	\N	1	\N	8	\N	Androsace maxima L., 1753
 15	7008	82516	\N	1	\N	8	\N	Androsace maxima L., 1753
 63	7009	82909	\N	1	\N	8	\N	Anthericum ramosum L., 1753
-3	7010	82909	\N	1	\N	8	\N	Anthericum ramosum L., 1753
 43	7011	82909	\N	1	\N	8	\N	Anthericum ramosum L., 1753
 15	7012	82909	\N	1	\N	8	\N	Anthericum ramosum L., 1753
 63	7013	83756	\N	1	\N	8	\N	Aristavena setacea (Huds.) F.Albers & Butzin, 1977
-3	7014	83756	\N	1	\N	8	\N	Aristavena setacea (Huds.) F.Albers & Butzin, 1977
 43	7015	83756	\N	1	\N	8	\N	Aristavena setacea (Huds.) F.Albers & Butzin, 1977
 15	7016	83756	\N	1	\N	8	\N	Aristavena setacea (Huds.) F.Albers & Butzin, 1977
 63	7017	83934	\N	1	\N	8	\N	Artemisia alba Turra, 1764
-3	7018	83934	\N	1	\N	8	\N	Artemisia alba Turra, 1764
 43	7019	83934	\N	1	\N	8	\N	Artemisia alba Turra, 1764
 15	7020	83934	\N	1	\N	8	\N	Artemisia alba Turra, 1764
 63	7021	84846	\N	1	\N	8	\N	Astragalus hamosus L., 1753
-3	7022	84846	\N	1	\N	8	\N	Astragalus hamosus L., 1753
 43	7023	84846	\N	1	\N	8	\N	Astragalus hamosus L., 1753
 15	7024	84846	\N	1	\N	8	\N	Astragalus hamosus L., 1753
 63	7025	84937	\N	1	\N	8	\N	Astrantia minor L., 1753
-3	7026	84937	\N	1	\N	8	\N	Astrantia minor L., 1753
 43	7027	84937	\N	1	\N	8	\N	Astrantia minor L., 1753
 15	7028	84937	\N	1	\N	8	\N	Astrantia minor L., 1753
 63	7029	85152	\N	1	\N	8	\N	Atropa belladonna L., 1753
-3	7030	85152	\N	1	\N	8	\N	Atropa belladonna L., 1753
 43	7031	85152	\N	1	\N	8	\N	Atropa belladonna L., 1753
 15	7032	85152	\N	1	\N	8	\N	Atropa belladonna L., 1753
 63	7033	85897	\N	1	\N	8	\N	Betula nana L., 1753
-3	7034	85897	\N	1	\N	8	\N	Betula nana L., 1753
 43	7035	85897	\N	1	\N	8	\N	Betula nana L., 1753
 15	7036	85897	\N	1	\N	8	\N	Betula nana L., 1753
 63	7037	86082	\N	1	\N	8	\N	Bistorta vivipara (L.) Delarbre, 1800
-3	7038	86082	\N	1	\N	8	\N	Bistorta vivipara (L.) Delarbre, 1800
 43	7039	86082	\N	1	\N	8	\N	Bistorta vivipara (L.) Delarbre, 1800
 15	7040	86082	\N	1	\N	8	\N	Bistorta vivipara (L.) Delarbre, 1800
 63	7041	86186	\N	1	\N	8	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
-3	7042	86186	\N	1	\N	8	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 43	7043	86186	\N	1	\N	8	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 15	7044	86186	\N	1	\N	8	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 63	7045	86492	\N	1	\N	8	\N	Briza minor L., 1753
-3	7046	86492	\N	1	\N	8	\N	Briza minor L., 1753
 43	7047	86492	\N	1	\N	8	\N	Briza minor L., 1753
 15	7048	86492	\N	1	\N	8	\N	Briza minor L., 1753
 63	7049	87053	\N	1	\N	8	\N	Bupleurum gerardi All., 1773
-3	7050	87053	\N	1	\N	8	\N	Bupleurum gerardi All., 1773
 43	7051	87053	\N	1	\N	8	\N	Bupleurum gerardi All., 1773
 15	7052	87053	\N	1	\N	8	\N	Bupleurum gerardi All., 1773
 63	7053	87085	\N	1	\N	8	\N	Bupleurum praealtum L., 1756
-3	7054	87085	\N	1	\N	8	\N	Bupleurum praealtum L., 1756
 43	7055	87085	\N	1	\N	8	\N	Bupleurum praealtum L., 1756
 15	7056	87085	\N	1	\N	8	\N	Bupleurum praealtum L., 1756
 63	7057	87106	\N	1	\N	8	\N	Bupleurum tenuissimum L., 1753
-3	7058	87106	\N	1	\N	8	\N	Bupleurum tenuissimum L., 1753
 43	7059	87106	\N	1	\N	8	\N	Bupleurum tenuissimum L., 1753
 15	7060	87106	\N	1	\N	8	\N	Bupleurum tenuissimum L., 1753
 63	7061	87420	\N	1	\N	8	\N	Calendula arvensis L., 1763
-3	7062	87420	\N	1	\N	8	\N	Calendula arvensis L., 1763
 43	7063	87420	\N	1	\N	8	\N	Calendula arvensis L., 1763
 15	7064	87420	\N	1	\N	8	\N	Calendula arvensis L., 1763
 63	7065	87577	\N	1	\N	8	\N	Camelina microcarpa Andrz. ex DC., 1821
-3	7066	87577	\N	1	\N	8	\N	Camelina microcarpa Andrz. ex DC., 1821
 43	7067	87577	\N	1	\N	8	\N	Camelina microcarpa Andrz. ex DC., 1821
 15	7068	87577	\N	1	\N	8	\N	Camelina microcarpa Andrz. ex DC., 1821
 63	7069	87620	\N	1	\N	8	\N	Campanula cervicaria L., 1753
-3	7070	87620	\N	1	\N	8	\N	Campanula cervicaria L., 1753
 43	7071	87620	\N	1	\N	8	\N	Campanula cervicaria L., 1753
 15	7072	87620	\N	1	\N	8	\N	Campanula cervicaria L., 1753
 63	7073	88359	\N	1	\N	8	\N	Carex atrata L., 1753
-3	7074	88359	\N	1	\N	8	\N	Carex atrata L., 1753
 43	7075	88359	\N	1	\N	8	\N	Carex atrata L., 1753
 15	7076	88359	\N	1	\N	8	\N	Carex atrata L., 1753
 63	7077	88426	\N	1	\N	8	\N	Carex chordorrhiza L.f., 1782
-3	7078	88426	\N	1	\N	8	\N	Carex chordorrhiza L.f., 1782
 43	7079	88426	\N	1	\N	8	\N	Carex chordorrhiza L.f., 1782
 15	7080	88426	\N	1	\N	8	\N	Carex chordorrhiza L.f., 1782
 63	7081	88453	\N	1	\N	8	\N	Carex curvula All., 1785
-3	7082	88453	\N	1	\N	8	\N	Carex curvula All., 1785
 43	7083	88453	\N	1	\N	8	\N	Carex curvula All., 1785
 15	7084	88453	\N	1	\N	8	\N	Carex curvula All., 1785
 63	7085	88472	\N	1	\N	8	\N	Carex dioica L., 1753
-3	7086	88472	\N	1	\N	8	\N	Carex dioica L., 1753
 43	7087	88472	\N	1	\N	8	\N	Carex dioica L., 1753
 15	7088	88472	\N	1	\N	8	\N	Carex dioica L., 1753
 63	7089	88561	\N	1	\N	8	\N	Carex hartmanii Cajander, 1935
-3	7090	88561	\N	1	\N	8	\N	Carex hartmanii Cajander, 1935
 43	7091	88561	\N	1	\N	8	\N	Carex hartmanii Cajander, 1935
 15	7092	88561	\N	1	\N	8	\N	Carex hartmanii Cajander, 1935
 63	7093	88576	\N	1	\N	8	\N	Carex hordeistichos Vill., 1779
-3	7094	88576	\N	1	\N	8	\N	Carex hordeistichos Vill., 1779
 43	7095	88576	\N	1	\N	8	\N	Carex hordeistichos Vill., 1779
 15	7096	88576	\N	1	\N	8	\N	Carex hordeistichos Vill., 1779
 63	7097	88578	\N	1	\N	8	\N	Carex hostiana DC., 1813
-3	7098	88578	\N	1	\N	8	\N	Carex hostiana DC., 1813
 43	7099	88578	\N	1	\N	8	\N	Carex hostiana DC., 1813
 15	7100	88578	\N	1	\N	8	\N	Carex hostiana DC., 1813
 63	7101	88582	\N	1	\N	8	\N	Carex humilis Leyss., 1758
-3	7102	88582	\N	1	\N	8	\N	Carex humilis Leyss., 1758
 43	7103	88582	\N	1	\N	8	\N	Carex humilis Leyss., 1758
 15	7104	88582	\N	1	\N	8	\N	Carex humilis Leyss., 1758
 63	7105	88932	\N	1	\N	8	\N	Carex vaginata Tausch, 1821
-3	7106	88932	\N	1	\N	8	\N	Carex vaginata Tausch, 1821
 43	7107	88932	\N	1	\N	8	\N	Carex vaginata Tausch, 1821
 15	7108	88932	\N	1	\N	8	\N	Carex vaginata Tausch, 1821
 63	7109	89149	\N	1	\N	8	\N	Carlina biebersteinii Bernh. ex Hornem., 1819
-3	7110	89149	\N	1	\N	8	\N	Carlina biebersteinii Bernh. ex Hornem., 1819
 43	7111	89149	\N	1	\N	8	\N	Carlina biebersteinii Bernh. ex Hornem., 1819
 15	7112	89149	\N	1	\N	8	\N	Carlina biebersteinii Bernh. ex Hornem., 1819
 63	7113	89881	\N	1	\N	8	\N	Centranthus calcitrapae (L.) Dufr., 1811
-3	7114	89881	\N	1	\N	8	\N	Centranthus calcitrapae (L.) Dufr., 1811
 43	7115	89881	\N	1	\N	8	\N	Centranthus calcitrapae (L.) Dufr., 1811
 15	7116	89881	\N	1	\N	8	\N	Centranthus calcitrapae (L.) Dufr., 1811
 63	7117	89940	\N	1	\N	8	\N	Cephalaria leucantha (L.) Schrad. ex Roem. & Schult., 1818
-3	7118	89940	\N	1	\N	8	\N	Cephalaria leucantha (L.) Schrad. ex Roem. & Schult., 1818
 43	7119	89940	\N	1	\N	8	\N	Cephalaria leucantha (L.) Schrad. ex Roem. & Schult., 1818
 15	7120	89940	\N	1	\N	8	\N	Cephalaria leucantha (L.) Schrad. ex Roem. & Schult., 1818
 63	7121	90222	\N	1	\N	8	\N	Ceratophyllum submersum L., 1763
-3	7122	90222	\N	1	\N	8	\N	Ceratophyllum submersum L., 1763
 43	7123	90222	\N	1	\N	8	\N	Ceratophyllum submersum L., 1763
 15	7124	90222	\N	1	\N	8	\N	Ceratophyllum submersum L., 1763
 63	7125	91132	\N	1	\N	8	\N	Cicendia filiformis (L.) Delarbre, 1800
-3	7126	91132	\N	1	\N	8	\N	Cicendia filiformis (L.) Delarbre, 1800
 43	7127	91132	\N	1	\N	8	\N	Cicendia filiformis (L.) Delarbre, 1800
 15	7128	91132	\N	1	\N	8	\N	Cicendia filiformis (L.) Delarbre, 1800
 63	7129	91422	\N	1	\N	8	\N	Cirsium tuberosum (L.) All., 1785
-3	7130	91422	\N	1	\N	8	\N	Cirsium tuberosum (L.) All., 1785
 43	7131	91422	\N	1	\N	8	\N	Cirsium tuberosum (L.) All., 1785
 15	7132	91422	\N	1	\N	8	\N	Cirsium tuberosum (L.) All., 1785
 63	7133	91715	\N	1	\N	8	\N	Cistus salviifolius L., 1753
-3	7134	91715	\N	1	\N	8	\N	Cistus salviifolius L., 1753
 43	7135	91715	\N	1	\N	8	\N	Cistus salviifolius L., 1753
 15	7136	91715	\N	1	\N	8	\N	Cistus salviifolius L., 1753
 63	7137	91727	\N	1	\N	8	\N	Cistus umbellatus L., 1753
-3	7138	91727	\N	1	\N	8	\N	Cistus umbellatus L., 1753
 43	7139	91727	\N	1	\N	8	\N	Cistus umbellatus L., 1753
 15	7140	91727	\N	1	\N	8	\N	Cistus umbellatus L., 1753
 63	7141	92331	\N	1	\N	8	\N	Convolvulus lineatus L., 1759
-3	7142	92331	\N	1	\N	8	\N	Convolvulus lineatus L., 1759
 43	7143	92331	\N	1	\N	8	\N	Convolvulus lineatus L., 1759
 15	7144	92331	\N	1	\N	8	\N	Convolvulus lineatus L., 1759
 63	7145	92536	\N	1	\N	8	\N	Coronilla scorpioides (L.) W.D.J.Koch, 1837
-3	7146	92536	\N	1	\N	8	\N	Coronilla scorpioides (L.) W.D.J.Koch, 1837
 43	7147	92536	\N	1	\N	8	\N	Coronilla scorpioides (L.) W.D.J.Koch, 1837
 15	7148	92536	\N	1	\N	8	\N	Coronilla scorpioides (L.) W.D.J.Koch, 1837
 63	7149	92807	\N	1	\N	8	\N	Crassula vaillantii (Willd.) Roth, 1827
-3	7150	92807	\N	1	\N	8	\N	Crassula vaillantii (Willd.) Roth, 1827
 43	7151	92807	\N	1	\N	8	\N	Crassula vaillantii (Willd.) Roth, 1827
 15	7152	92807	\N	1	\N	8	\N	Crassula vaillantii (Willd.) Roth, 1827
 63	7153	93309	\N	1	\N	8	\N	Cruciata pedemontana (Bellardi) Ehrend., 1958
-3	7154	93309	\N	1	\N	8	\N	Cruciata pedemontana (Bellardi) Ehrend., 1958
 43	7155	93309	\N	1	\N	8	\N	Cruciata pedemontana (Bellardi) Ehrend., 1958
 15	7156	93309	\N	1	\N	8	\N	Cruciata pedemontana (Bellardi) Ehrend., 1958
 63	7157	93449	\N	1	\N	8	\N	Crupina vulgaris Cass., 1817
-3	7158	93449	\N	1	\N	8	\N	Crupina vulgaris Cass., 1817
 43	7159	93449	\N	1	\N	8	\N	Crupina vulgaris Cass., 1817
 15	7160	93449	\N	1	\N	8	\N	Crupina vulgaris Cass., 1817
 63	7161	93456	\N	1	\N	8	\N	Crypsis alopecuroides (Piller & Mitterp.) Schrad., 1806
-3	7162	93456	\N	1	\N	8	\N	Crypsis alopecuroides (Piller & Mitterp.) Schrad., 1806
 43	7163	93456	\N	1	\N	8	\N	Crypsis alopecuroides (Piller & Mitterp.) Schrad., 1806
 15	7164	93456	\N	1	\N	8	\N	Crypsis alopecuroides (Piller & Mitterp.) Schrad., 1806
 63	7165	93967	\N	1	\N	8	\N	Cyperus longus L., 1753
-3	7166	93967	\N	1	\N	8	\N	Cyperus longus L., 1753
 43	7167	93967	\N	1	\N	8	\N	Cyperus longus L., 1753
 15	7168	93967	\N	1	\N	8	\N	Cyperus longus L., 1753
 63	7169	94252	\N	1	\N	8	\N	Dactylorhiza elata (Poir.) Soó, 1962
-3	7170	94252	\N	1	\N	8	\N	Dactylorhiza elata (Poir.) Soó, 1962
 43	7171	94252	\N	1	\N	8	\N	Dactylorhiza elata (Poir.) Soó, 1962
 15	7172	94252	\N	1	\N	8	\N	Dactylorhiza elata (Poir.) Soó, 1962
 63	7173	94388	\N	1	\N	8	\N	Damasonium alisma Mill., 1768
-3	7174	94388	\N	1	\N	8	\N	Damasonium alisma Mill., 1768
 43	7175	94388	\N	1	\N	8	\N	Damasonium alisma Mill., 1768
 15	7176	94388	\N	1	\N	8	\N	Damasonium alisma Mill., 1768
 63	7177	94698	\N	1	\N	8	\N	Dianthus barbatus L., 1753
-3	7178	94698	\N	1	\N	8	\N	Dianthus barbatus L., 1753
 43	7179	94698	\N	1	\N	8	\N	Dianthus barbatus L., 1753
 15	7180	94698	\N	1	\N	8	\N	Dianthus barbatus L., 1753
 63	7181	106998	\N	1	\N	8	\N	Diphasiastrum alpinum (L.) Holub, 1975
-3	7182	106998	\N	1	\N	8	\N	Diphasiastrum alpinum (L.) Holub, 1975
 43	7183	106998	\N	1	\N	8	\N	Diphasiastrum alpinum (L.) Holub, 1975
 15	7184	106998	\N	1	\N	8	\N	Diphasiastrum alpinum (L.) Holub, 1975
 63	7185	719047	\N	1	\N	8	\N	Diphasiastrum oellgaardii Stoor, Boudrie, Jérôme, K.Horn & Bennert, 1996
-3	7186	719047	\N	1	\N	8	\N	Diphasiastrum oellgaardii Stoor, Boudrie, Jérôme, K.Horn & Bennert, 1996
 43	7187	719047	\N	1	\N	8	\N	Diphasiastrum oellgaardii Stoor, Boudrie, Jérôme, K.Horn & Bennert, 1996
 15	7188	719047	\N	1	\N	8	\N	Diphasiastrum oellgaardii Stoor, Boudrie, Jérôme, K.Horn & Bennert, 1996
 63	7189	107024	\N	1	\N	8	\N	Diphasiastrum tristachyum (Pursh) Holub, 1975
-3	7190	107024	\N	1	\N	8	\N	Diphasiastrum tristachyum (Pursh) Holub, 1975
 43	7191	107024	\N	1	\N	8	\N	Diphasiastrum tristachyum (Pursh) Holub, 1975
 15	7192	107024	\N	1	\N	8	\N	Diphasiastrum tristachyum (Pursh) Holub, 1975
 63	7193	95289	\N	1	\N	8	\N	Draba aizoides L., 1767
-3	7194	95289	\N	1	\N	8	\N	Draba aizoides L., 1767
 43	7195	95289	\N	1	\N	8	\N	Draba aizoides L., 1767
 15	7196	95289	\N	1	\N	8	\N	Draba aizoides L., 1767
 63	7197	95461	\N	1	\N	8	\N	Dryas octopetala L., 1753
-3	7198	95461	\N	1	\N	8	\N	Dryas octopetala L., 1753
 43	7199	95461	\N	1	\N	8	\N	Dryas octopetala L., 1753
 15	7200	95461	\N	1	\N	8	\N	Dryas octopetala L., 1753
 63	7201	95847	\N	1	\N	8	\N	Elatine alsinastrum L., 1753
-3	7202	95847	\N	1	\N	8	\N	Elatine alsinastrum L., 1753
 43	7203	95847	\N	1	\N	8	\N	Elatine alsinastrum L., 1753
 15	7204	95847	\N	1	\N	8	\N	Elatine alsinastrum L., 1753
 63	7205	95860	\N	1	\N	8	\N	Elatine hydropiper L., 1753
-3	7206	95860	\N	1	\N	8	\N	Elatine hydropiper L., 1753
 43	7207	95860	\N	1	\N	8	\N	Elatine hydropiper L., 1753
 15	7208	95860	\N	1	\N	8	\N	Elatine hydropiper L., 1753
 63	7209	96106	\N	1	\N	8	\N	Ephedra major Host, 1831
-3	7210	96106	\N	1	\N	8	\N	Ephedra major Host, 1831
 43	7211	96106	\N	1	\N	8	\N	Ephedra major Host, 1831
 15	7212	96106	\N	1	\N	8	\N	Ephedra major Host, 1831
 63	7213	96163	\N	1	\N	8	\N	Epilobium dodonaei Vill., 1779
-3	7214	96163	\N	1	\N	8	\N	Epilobium dodonaei Vill., 1779
 43	7215	96163	\N	1	\N	8	\N	Epilobium dodonaei Vill., 1779
 15	7216	96163	\N	1	\N	8	\N	Epilobium dodonaei Vill., 1779
 63	7217	96218	\N	1	\N	8	\N	Epilobium nutans F.W.Schmidt, 1794
-3	7218	96218	\N	1	\N	8	\N	Epilobium nutans F.W.Schmidt, 1794
 43	7219	96218	\N	1	\N	8	\N	Epilobium nutans F.W.Schmidt, 1794
 15	7220	96218	\N	1	\N	8	\N	Epilobium nutans F.W.Schmidt, 1794
 63	7221	96432	\N	1	\N	8	\N	Epipactis atrorubens (Hoffm.) Besser, 1809
-3	7222	96432	\N	1	\N	8	\N	Epipactis atrorubens (Hoffm.) Besser, 1809
 43	7223	96432	\N	1	\N	8	\N	Epipactis atrorubens (Hoffm.) Besser, 1809
 15	7224	96432	\N	1	\N	8	\N	Epipactis atrorubens (Hoffm.) Besser, 1809
 63	7225	96456	\N	1	\N	8	\N	Epipactis muelleri Godfery, 1921
-3	7226	96456	\N	1	\N	8	\N	Epipactis muelleri Godfery, 1921
 43	7227	96456	\N	1	\N	8	\N	Epipactis muelleri Godfery, 1921
 15	7228	96456	\N	1	\N	8	\N	Epipactis muelleri Godfery, 1921
 63	7229	96499	\N	1	\N	8	\N	Epipogium aphyllum Sw., 1814
-3	7230	96499	\N	1	\N	8	\N	Epipogium aphyllum Sw., 1814
 43	7231	96499	\N	1	\N	8	\N	Epipogium aphyllum Sw., 1814
 15	7232	96499	\N	1	\N	8	\N	Epipogium aphyllum Sw., 1814
 63	7233	96691	\N	1	\N	8	\N	Erica scoparia L., 1753
-3	7234	96691	\N	1	\N	8	\N	Erica scoparia L., 1753
 43	7235	96691	\N	1	\N	8	\N	Erica scoparia L., 1753
 15	7236	96691	\N	1	\N	8	\N	Erica scoparia L., 1753
 63	7237	96698	\N	1	\N	8	\N	Erica vagans L., 1770
-3	7238	96698	\N	1	\N	8	\N	Erica vagans L., 1770
 43	7239	96698	\N	1	\N	8	\N	Erica vagans L., 1770
 15	7240	96698	\N	1	\N	8	\N	Erica vagans L., 1770
 63	7241	96736	\N	1	\N	8	\N	Erigeron alpinus L., 1753
-3	7242	96736	\N	1	\N	8	\N	Erigeron alpinus L., 1753
 43	7243	96736	\N	1	\N	8	\N	Erigeron alpinus L., 1753
 15	7244	96736	\N	1	\N	8	\N	Erigeron alpinus L., 1753
 63	7245	97567	\N	1	\N	8	\N	Euphorbia loreyi Jord., 1855
-3	7246	97567	\N	1	\N	8	\N	Euphorbia loreyi Jord., 1855
 43	7247	97567	\N	1	\N	8	\N	Euphorbia loreyi Jord., 1855
 15	7248	97567	\N	1	\N	8	\N	Euphorbia loreyi Jord., 1855
 63	7249	97904	\N	1	\N	8	\N	Exaculum pusillum (Lam.) Caruel, 1886
-3	7250	97904	\N	1	\N	8	\N	Exaculum pusillum (Lam.) Caruel, 1886
 43	7251	97904	\N	1	\N	8	\N	Exaculum pusillum (Lam.) Caruel, 1886
 15	7252	97904	\N	1	\N	8	\N	Exaculum pusillum (Lam.) Caruel, 1886
 63	7253	99194	\N	1	\N	8	\N	Gagea pratensis (Pers.) Dumort., 1827
-3	7254	99194	\N	1	\N	8	\N	Gagea pratensis (Pers.) Dumort., 1827
 43	7255	99194	\N	1	\N	8	\N	Gagea pratensis (Pers.) Dumort., 1827
 15	7256	99194	\N	1	\N	8	\N	Gagea pratensis (Pers.) Dumort., 1827
 63	7257	99754	\N	1	\N	8	\N	Genista germanica L., 1753
-3	7258	99754	\N	1	\N	8	\N	Genista germanica L., 1753
 43	7259	99754	\N	1	\N	8	\N	Genista germanica L., 1753
 15	7260	99754	\N	1	\N	8	\N	Genista germanica L., 1753
 63	7261	100273	\N	1	\N	8	\N	Gladiolus imbricatus L., 1753
-3	7262	100273	\N	1	\N	8	\N	Gladiolus imbricatus L., 1753
 43	7263	100273	\N	1	\N	8	\N	Gladiolus imbricatus L., 1753
 15	7264	100273	\N	1	\N	8	\N	Gladiolus imbricatus L., 1753
 63	7265	100275	\N	1	\N	8	\N	Gladiolus italicus Mill., 1768
-3	7266	100275	\N	1	\N	8	\N	Gladiolus italicus Mill., 1768
 43	7267	100275	\N	1	\N	8	\N	Gladiolus italicus Mill., 1768
 15	7268	100275	\N	1	\N	8	\N	Gladiolus italicus Mill., 1768
 63	7269	100288	\N	1	\N	8	\N	Glaucium corniculatum (L.) Rudolph, 1781
-3	7270	100288	\N	1	\N	8	\N	Glaucium corniculatum (L.) Rudolph, 1781
 43	7271	100288	\N	1	\N	8	\N	Glaucium corniculatum (L.) Rudolph, 1781
 15	7272	100288	\N	1	\N	8	\N	Glaucium corniculatum (L.) Rudolph, 1781
 63	7273	110063	\N	1	\N	8	\N	Gnaphalium supinum L., 1768
-3	7274	110063	\N	1	\N	8	\N	Gnaphalium supinum L., 1768
 43	7275	110063	\N	1	\N	8	\N	Gnaphalium supinum L., 1768
 15	7276	110063	\N	1	\N	8	\N	Gnaphalium supinum L., 1768
 63	7277	100584	\N	1	\N	8	\N	Groenlandia densa (L.) Fourr., 1869
-3	7278	100584	\N	1	\N	8	\N	Groenlandia densa (L.) Fourr., 1869
 43	7279	100584	\N	1	\N	8	\N	Groenlandia densa (L.) Fourr., 1869
 15	7280	100584	\N	1	\N	8	\N	Groenlandia densa (L.) Fourr., 1869
 63	7281	101101	\N	1	\N	8	\N	Helichrysum stoechas (L.) Moench, 1794
-3	7282	101101	\N	1	\N	8	\N	Helichrysum stoechas (L.) Moench, 1794
 43	7283	101101	\N	1	\N	8	\N	Helichrysum stoechas (L.) Moench, 1794
 15	7284	101101	\N	1	\N	8	\N	Helichrysum stoechas (L.) Moench, 1794
 63	7285	101220	\N	1	\N	8	\N	Helosciadium inundatum (L.) W.D.J.Koch, 1824
-3	7286	101220	\N	1	\N	8	\N	Helosciadium inundatum (L.) W.D.J.Koch, 1824
 43	7287	101220	\N	1	\N	8	\N	Helosciadium inundatum (L.) W.D.J.Koch, 1824
 15	7288	101220	\N	1	\N	8	\N	Helosciadium inundatum (L.) W.D.J.Koch, 1824
 63	7289	102013	\N	1	\N	8	\N	Hieracium glanduliferum Hoppe, 1815
-3	7290	102013	\N	1	\N	8	\N	Hieracium glanduliferum Hoppe, 1815
 43	7291	102013	\N	1	\N	8	\N	Hieracium glanduliferum Hoppe, 1815
 15	7292	102013	\N	1	\N	8	\N	Hieracium glanduliferum Hoppe, 1815
 63	7293	103020	\N	1	\N	8	\N	Hornungia procumbens (L.) Hayek, 1925
-3	7294	103020	\N	1	\N	8	\N	Hornungia procumbens (L.) Hayek, 1925
 43	7295	103020	\N	1	\N	8	\N	Hornungia procumbens (L.) Hayek, 1925
 15	7296	103020	\N	1	\N	8	\N	Hornungia procumbens (L.) Hayek, 1925
 63	7297	103324	\N	1	\N	8	\N	Hypericum richeri Vill., 1779
-3	7298	103324	\N	1	\N	8	\N	Hypericum richeri Vill., 1779
 43	7299	103324	\N	1	\N	8	\N	Hypericum richeri Vill., 1779
 15	7300	103324	\N	1	\N	8	\N	Hypericum richeri Vill., 1779
 63	7301	103648	\N	1	\N	8	\N	Inula salicina L., 1753
-3	7302	103648	\N	1	\N	8	\N	Inula salicina L., 1753
 43	7303	103648	\N	1	\N	8	\N	Inula salicina L., 1753
 15	7304	103648	\N	1	\N	8	\N	Inula salicina L., 1753
 63	7305	103651	\N	1	\N	8	\N	Inula spiraeifolia L., 1759
-3	7306	103651	\N	1	\N	8	\N	Inula spiraeifolia L., 1759
 43	7307	103651	\N	1	\N	8	\N	Inula spiraeifolia L., 1759
 15	7308	103651	\N	1	\N	8	\N	Inula spiraeifolia L., 1759
 63	7309	103841	\N	1	\N	8	\N	Isoetes echinospora Durieu, 1861
-3	7310	103841	\N	1	\N	8	\N	Isoetes echinospora Durieu, 1861
 43	7311	103841	\N	1	\N	8	\N	Isoetes echinospora Durieu, 1861
 15	7312	103841	\N	1	\N	8	\N	Isoetes echinospora Durieu, 1861
 63	7313	104340	\N	1	\N	8	\N	Juncus subnodulosus Schrank, 1789
-3	7314	104340	\N	1	\N	8	\N	Juncus subnodulosus Schrank, 1789
 43	7315	104340	\N	1	\N	8	\N	Juncus subnodulosus Schrank, 1789
 15	7316	104340	\N	1	\N	8	\N	Juncus subnodulosus Schrank, 1789
 63	7317	104770	\N	1	\N	8	\N	Lactuca saligna L., 1753
-3	7318	104770	\N	1	\N	8	\N	Lactuca saligna L., 1753
 43	7319	104770	\N	1	\N	8	\N	Lactuca saligna L., 1753
 15	7320	104770	\N	1	\N	8	\N	Lactuca saligna L., 1753
 63	7321	105010	\N	1	\N	8	\N	Lappula squarrosa (Retz.) Dumort., 1827
-3	7322	105010	\N	1	\N	8	\N	Lappula squarrosa (Retz.) Dumort., 1827
 43	7323	105010	\N	1	\N	8	\N	Lappula squarrosa (Retz.) Dumort., 1827
 15	7324	105010	\N	1	\N	8	\N	Lappula squarrosa (Retz.) Dumort., 1827
 63	7325	105407	\N	1	\N	8	\N	Legousia hybrida (L.) Delarbre, 1800
-3	7326	105407	\N	1	\N	8	\N	Legousia hybrida (L.) Delarbre, 1800
 43	7327	105407	\N	1	\N	8	\N	Legousia hybrida (L.) Delarbre, 1800
 15	7328	105407	\N	1	\N	8	\N	Legousia hybrida (L.) Delarbre, 1800
 63	7329	105490	\N	1	\N	8	\N	Leontodon crispus Vill., 1779
-3	7330	105490	\N	1	\N	8	\N	Leontodon crispus Vill., 1779
 43	7331	105490	\N	1	\N	8	\N	Leontodon crispus Vill., 1779
 15	7332	105490	\N	1	\N	8	\N	Leontodon crispus Vill., 1779
 63	7333	105641	\N	1	\N	8	\N	Lepidium latifolium L., 1753
-3	7334	105641	\N	1	\N	8	\N	Lepidium latifolium L., 1753
 43	7335	105641	\N	1	\N	8	\N	Lepidium latifolium L., 1753
 15	7336	105641	\N	1	\N	8	\N	Lepidium latifolium L., 1753
 63	7337	105841	\N	1	\N	8	\N	Leucojum vernum L., 1753
-3	7338	105841	\N	1	\N	8	\N	Leucojum vernum L., 1753
 43	7339	105841	\N	1	\N	8	\N	Leucojum vernum L., 1753
 15	7340	105841	\N	1	\N	8	\N	Leucojum vernum L., 1753
 63	7341	106026	\N	1	\N	8	\N	Limodorum abortivum (L.) Sw., 1799
-3	7342	106026	\N	1	\N	8	\N	Limodorum abortivum (L.) Sw., 1799
 43	7343	106026	\N	1	\N	8	\N	Limodorum abortivum (L.) Sw., 1799
 15	7344	106026	\N	1	\N	8	\N	Limodorum abortivum (L.) Sw., 1799
 63	7345	106258	\N	1	\N	8	\N	Lindernia palustris Hartmann, 1767
-3	7346	106258	\N	1	\N	8	\N	Lindernia palustris Hartmann, 1767
 43	7347	106258	\N	1	\N	8	\N	Lindernia palustris Hartmann, 1767
 15	7348	106258	\N	1	\N	8	\N	Lindernia palustris Hartmann, 1767
 63	7349	106517	\N	1	\N	8	\N	Lolium temulentum L., 1753
-3	7350	106517	\N	1	\N	8	\N	Lolium temulentum L., 1753
 43	7351	106517	\N	1	\N	8	\N	Lolium temulentum L., 1753
 15	7352	106517	\N	1	\N	8	\N	Lolium temulentum L., 1753
 63	7353	106766	\N	1	\N	8	\N	Lupinus angustifolius L., 1753
-3	7354	106766	\N	1	\N	8	\N	Lupinus angustifolius L., 1753
 43	7355	106766	\N	1	\N	8	\N	Lupinus angustifolius L., 1753
 15	7356	106766	\N	1	\N	8	\N	Lupinus angustifolius L., 1753
 63	7357	106993	\N	1	\N	8	\N	Lycopodiella inundata (L.) Holub, 1964
-3	7358	106993	\N	1	\N	8	\N	Lycopodiella inundata (L.) Holub, 1964
 43	7359	106993	\N	1	\N	8	\N	Lycopodiella inundata (L.) Holub, 1964
 15	7360	106993	\N	1	\N	8	\N	Lycopodiella inundata (L.) Holub, 1964
 63	7361	107000	\N	1	\N	8	\N	Lycopodium annotinum L., 1753
-3	7362	107000	\N	1	\N	8	\N	Lycopodium annotinum L., 1753
 43	7363	107000	\N	1	\N	8	\N	Lycopodium annotinum L., 1753
 15	7364	107000	\N	1	\N	8	\N	Lycopodium annotinum L., 1753
 63	7365	107003	\N	1	\N	8	\N	Lycopodium clavatum L., 1753
-3	7366	107003	\N	1	\N	8	\N	Lycopodium clavatum L., 1753
 43	7367	107003	\N	1	\N	8	\N	Lycopodium clavatum L., 1753
 15	7368	107003	\N	1	\N	8	\N	Lycopodium clavatum L., 1753
 63	7369	107123	\N	1	\N	8	\N	Lythrum thymifolium L., 1753
-3	7370	107123	\N	1	\N	8	\N	Lythrum thymifolium L., 1753
 43	7371	107123	\N	1	\N	8	\N	Lythrum thymifolium L., 1753
 15	7372	107123	\N	1	\N	8	\N	Lythrum thymifolium L., 1753
 63	7373	107407	\N	1	\N	8	\N	Marsilea quadrifolia L., 1753
-3	7374	107407	\N	1	\N	8	\N	Marsilea quadrifolia L., 1753
 43	7375	107407	\N	1	\N	8	\N	Marsilea quadrifolia L., 1753
 15	7376	107407	\N	1	\N	8	\N	Marsilea quadrifolia L., 1753
 63	7377	108484	\N	1	\N	8	\N	Micranthes hieraciifolia (Waldst. & Kit. ex Willd.) Haw., 1822
-3	7378	108484	\N	1	\N	8	\N	Micranthes hieraciifolia (Waldst. & Kit. ex Willd.) Haw., 1822
 43	7379	108484	\N	1	\N	8	\N	Micranthes hieraciifolia (Waldst. & Kit. ex Willd.) Haw., 1822
 15	7380	108484	\N	1	\N	8	\N	Micranthes hieraciifolia (Waldst. & Kit. ex Willd.) Haw., 1822
 63	7381	108612	\N	1	\N	8	\N	Minuartia recurva (All.) Schinz & Thell., 1907
-3	7382	108612	\N	1	\N	8	\N	Minuartia recurva (All.) Schinz & Thell., 1907
 43	7383	108612	\N	1	\N	8	\N	Minuartia recurva (All.) Schinz & Thell., 1907
 15	7384	108612	\N	1	\N	8	\N	Minuartia recurva (All.) Schinz & Thell., 1907
 63	7385	109151	\N	1	\N	8	\N	Myriophyllum verticillatum L., 1753
-3	7386	109151	\N	1	\N	8	\N	Myriophyllum verticillatum L., 1753
 43	7387	109151	\N	1	\N	8	\N	Myriophyllum verticillatum L., 1753
 15	7388	109151	\N	1	\N	8	\N	Myriophyllum verticillatum L., 1753
 63	7389	109735	\N	1	\N	8	\N	Nuphar pumila (Timm) DC., 1821
-3	7390	109735	\N	1	\N	8	\N	Nuphar pumila (Timm) DC., 1821
 43	7391	109735	\N	1	\N	8	\N	Nuphar pumila (Timm) DC., 1821
 15	7392	109735	\N	1	\N	8	\N	Nuphar pumila (Timm) DC., 1821
 63	7393	110211	\N	1	\N	8	\N	Ononis natrix L., 1753
-3	7394	110211	\N	1	\N	8	\N	Ononis natrix L., 1753
 43	7395	110211	\N	1	\N	8	\N	Ononis natrix L., 1753
 15	7396	110211	\N	1	\N	8	\N	Ononis natrix L., 1753
 63	7397	110425	\N	1	\N	8	\N	Ophrys lutea Cav., 1793
-3	7398	110425	\N	1	\N	8	\N	Ophrys lutea Cav., 1793
 43	7399	110425	\N	1	\N	8	\N	Ophrys lutea Cav., 1793
 15	7400	110425	\N	1	\N	8	\N	Ophrys lutea Cav., 1793
 63	7401	110945	\N	1	\N	8	\N	Orchis pallens L., 1771
-3	7402	110945	\N	1	\N	8	\N	Orchis pallens L., 1771
 43	7403	110945	\N	1	\N	8	\N	Orchis pallens L., 1771
 15	7404	110945	\N	1	\N	8	\N	Orchis pallens L., 1771
 63	7405	110961	\N	1	\N	8	\N	Orchis provincialis Balb. ex DC., 1806
-3	7406	110961	\N	1	\N	8	\N	Orchis provincialis Balb. ex DC., 1806
 43	7407	110961	\N	1	\N	8	\N	Orchis provincialis Balb. ex DC., 1806
 15	7408	110961	\N	1	\N	8	\N	Orchis provincialis Balb. ex DC., 1806
 63	7409	110987	\N	1	\N	8	\N	Orchis simia Lam., 1779
-3	7410	110987	\N	1	\N	8	\N	Orchis simia Lam., 1779
 43	7411	110987	\N	1	\N	8	\N	Orchis simia Lam., 1779
 15	7412	110987	\N	1	\N	8	\N	Orchis simia Lam., 1779
 63	7413	112319	\N	1	\N	8	\N	Papaver hybridum L., 1753
-3	7414	112319	\N	1	\N	8	\N	Papaver hybridum L., 1753
 43	7415	112319	\N	1	\N	8	\N	Papaver hybridum L., 1753
 15	7416	112319	\N	1	\N	8	\N	Papaver hybridum L., 1753
 63	7417	112391	\N	1	\N	8	\N	Paradisea liliastrum (L.) Bertol., 1840
-3	7418	112391	\N	1	\N	8	\N	Paradisea liliastrum (L.) Bertol., 1840
 43	7419	112391	\N	1	\N	8	\N	Paradisea liliastrum (L.) Bertol., 1840
 15	7420	112391	\N	1	\N	8	\N	Paradisea liliastrum (L.) Bertol., 1840
 63	7421	112453	\N	1	\N	8	\N	Paronychia polygonifolia (Vill.) DC., 1805
-3	7422	112453	\N	1	\N	8	\N	Paronychia polygonifolia (Vill.) DC., 1805
 43	7423	112453	\N	1	\N	8	\N	Paronychia polygonifolia (Vill.) DC., 1805
 15	7424	112453	\N	1	\N	8	\N	Paronychia polygonifolia (Vill.) DC., 1805
 63	7425	112868	\N	1	\N	8	\N	Peucedanum officinale L., 1753
-3	7426	112868	\N	1	\N	8	\N	Peucedanum officinale L., 1753
 43	7427	112868	\N	1	\N	8	\N	Peucedanum officinale L., 1753
 15	7428	112868	\N	1	\N	8	\N	Peucedanum officinale L., 1753
 63	7429	113213	\N	1	\N	8	\N	Phleum paniculatum Huds., 1762
-3	7430	113213	\N	1	\N	8	\N	Phleum paniculatum Huds., 1762
 43	7431	113213	\N	1	\N	8	\N	Phleum paniculatum Huds., 1762
 15	7432	113213	\N	1	\N	8	\N	Phleum paniculatum Huds., 1762
 63	7433	113626	\N	1	\N	8	\N	Pinguicula lusitanica L., 1753
-3	7434	113626	\N	1	\N	8	\N	Pinguicula lusitanica L., 1753
 43	7435	113626	\N	1	\N	8	\N	Pinguicula lusitanica L., 1753
 15	7436	113626	\N	1	\N	8	\N	Pinguicula lusitanica L., 1753
 63	7437	114519	\N	1	\N	8	\N	Polycnemum arvense L., 1753
-3	7438	114519	\N	1	\N	8	\N	Polycnemum arvense L., 1753
 43	7439	114519	\N	1	\N	8	\N	Polycnemum arvense L., 1753
 15	7440	114519	\N	1	\N	8	\N	Polycnemum arvense L., 1753
 63	7441	114520	\N	1	\N	8	\N	Polycnemum majus A.Braun, 1841
-3	7442	114520	\N	1	\N	8	\N	Polycnemum majus A.Braun, 1841
 43	7443	114520	\N	1	\N	8	\N	Polycnemum majus A.Braun, 1841
 15	7444	114520	\N	1	\N	8	\N	Polycnemum majus A.Braun, 1841
 63	7445	114942	\N	1	\N	8	\N	Polypodium cambricum L., 1753
-3	7446	114942	\N	1	\N	8	\N	Polypodium cambricum L., 1753
 43	7447	114942	\N	1	\N	8	\N	Polypodium cambricum L., 1753
 15	7448	114942	\N	1	\N	8	\N	Polypodium cambricum L., 1753
 63	7449	115302	\N	1	\N	8	\N	Potamogeton praelongus Wulfen, 1805
-3	7450	115302	\N	1	\N	8	\N	Potamogeton praelongus Wulfen, 1805
 43	7451	115302	\N	1	\N	8	\N	Potamogeton praelongus Wulfen, 1805
 15	7452	115302	\N	1	\N	8	\N	Potamogeton praelongus Wulfen, 1805
 63	7453	116547	\N	1	\N	8	\N	Pyrola rotundifolia L., 1753
-3	7454	116547	\N	1	\N	8	\N	Pyrola rotundifolia L., 1753
 43	7455	116547	\N	1	\N	8	\N	Pyrola rotundifolia L., 1753
 15	7456	116547	\N	1	\N	8	\N	Pyrola rotundifolia L., 1753
 63	7457	117090	\N	1	\N	8	\N	Ranunculus lateriflorus DC., 1817
-3	7458	117090	\N	1	\N	8	\N	Ranunculus lateriflorus DC., 1817
 43	7459	117090	\N	1	\N	8	\N	Ranunculus lateriflorus DC., 1817
 15	7460	117090	\N	1	\N	8	\N	Ranunculus lateriflorus DC., 1817
 63	7461	117096	\N	1	\N	8	\N	Ranunculus lingua L., 1753
-3	7462	117096	\N	1	\N	8	\N	Ranunculus lingua L., 1753
 43	7463	117096	\N	1	\N	8	\N	Ranunculus lingua L., 1753
 15	7464	117096	\N	1	\N	8	\N	Ranunculus lingua L., 1753
 63	7465	117156	\N	1	\N	8	\N	Ranunculus parviflorus L., 1758
-3	7466	117156	\N	1	\N	8	\N	Ranunculus parviflorus L., 1758
 43	7467	117156	\N	1	\N	8	\N	Ranunculus parviflorus L., 1758
 15	7468	117156	\N	1	\N	8	\N	Ranunculus parviflorus L., 1758
 63	7469	117528	\N	1	\N	8	\N	Rhamnus alpina L., 1753
-3	7470	117528	\N	1	\N	8	\N	Rhamnus alpina L., 1753
 43	7471	117528	\N	1	\N	8	\N	Rhamnus alpina L., 1753
 15	7472	117528	\N	1	\N	8	\N	Rhamnus alpina L., 1753
 63	7473	117732	\N	1	\N	8	\N	Rhynchospora fusca (L.) W.T.Aiton, 1810
-3	7474	117732	\N	1	\N	8	\N	Rhynchospora fusca (L.) W.T.Aiton, 1810
 43	7475	117732	\N	1	\N	8	\N	Rhynchospora fusca (L.) W.T.Aiton, 1810
 15	7476	117732	\N	1	\N	8	\N	Rhynchospora fusca (L.) W.T.Aiton, 1810
 63	7477	119509	\N	1	\N	8	\N	Rumex hydrolapathum Huds., 1778
-3	7478	119509	\N	1	\N	8	\N	Rumex hydrolapathum Huds., 1778
 43	7479	119509	\N	1	\N	8	\N	Rumex hydrolapathum Huds., 1778
 15	7480	119509	\N	1	\N	8	\N	Rumex hydrolapathum Huds., 1778
 63	7481	119556	\N	1	\N	8	\N	Rumex palustris Sm., 1800
-3	7482	119556	\N	1	\N	8	\N	Rumex palustris Sm., 1800
 43	7483	119556	\N	1	\N	8	\N	Rumex palustris Sm., 1800
 15	7484	119556	\N	1	\N	8	\N	Rumex palustris Sm., 1800
 63	7485	119860	\N	1	\N	8	\N	Sagittaria sagittifolia L., 1753
-3	7486	119860	\N	1	\N	8	\N	Sagittaria sagittifolia L., 1753
 43	7487	119860	\N	1	\N	8	\N	Sagittaria sagittifolia L., 1753
 15	7488	119860	\N	1	\N	8	\N	Sagittaria sagittifolia L., 1753
 63	7489	120052	\N	1	\N	8	\N	Salix hastata L., 1753
-3	7490	120052	\N	1	\N	8	\N	Salix hastata L., 1753
 43	7491	120052	\N	1	\N	8	\N	Salix hastata L., 1753
 15	7492	120052	\N	1	\N	8	\N	Salix hastata L., 1753
 63	7493	120057	\N	1	\N	8	\N	Salix herbacea L., 1753
-3	7494	120057	\N	1	\N	8	\N	Salix herbacea L., 1753
 43	7495	120057	\N	1	\N	8	\N	Salix herbacea L., 1753
 15	7496	120057	\N	1	\N	8	\N	Salix herbacea L., 1753
 63	7497	120973	\N	1	\N	8	\N	Saxifraga androsacea L., 1753
-3	7498	120973	\N	1	\N	8	\N	Saxifraga androsacea L., 1753
 43	7499	120973	\N	1	\N	8	\N	Saxifraga androsacea L., 1753
 15	7500	120973	\N	1	\N	8	\N	Saxifraga androsacea L., 1753
 63	7501	121096	\N	1	\N	8	\N	Saxifraga lamottei Luizet, 1913
-3	7502	121096	\N	1	\N	8	\N	Saxifraga lamottei Luizet, 1913
 43	7503	121096	\N	1	\N	8	\N	Saxifraga lamottei Luizet, 1913
 15	7504	121096	\N	1	\N	8	\N	Saxifraga lamottei Luizet, 1913
 63	7505	121132	\N	1	\N	8	\N	Saxifraga oppositifolia L., 1753
-3	7506	121132	\N	1	\N	8	\N	Saxifraga oppositifolia L., 1753
 43	7507	121132	\N	1	\N	8	\N	Saxifraga oppositifolia L., 1753
 15	7508	121132	\N	1	\N	8	\N	Saxifraga oppositifolia L., 1753
 63	7509	121156	\N	1	\N	8	\N	Saxifraga prostii Sternb., 1831
-3	7510	121156	\N	1	\N	8	\N	Saxifraga prostii Sternb., 1831
 43	7511	121156	\N	1	\N	8	\N	Saxifraga prostii Sternb., 1831
 15	7512	121156	\N	1	\N	8	\N	Saxifraga prostii Sternb., 1831
 63	7513	121552	\N	1	\N	8	\N	Schoenoplectus mucronatus (L.) Palla, 1888
-3	7514	121552	\N	1	\N	8	\N	Schoenoplectus mucronatus (L.) Palla, 1888
 43	7515	121552	\N	1	\N	8	\N	Schoenoplectus mucronatus (L.) Palla, 1888
 15	7516	121552	\N	1	\N	8	\N	Schoenoplectus mucronatus (L.) Palla, 1888
 63	7517	121555	\N	1	\N	8	\N	Schoenoplectus tabernaemontani (C.C.Gmel.) Palla, 1888
-3	7518	121555	\N	1	\N	8	\N	Schoenoplectus tabernaemontani (C.C.Gmel.) Palla, 1888
 43	7519	121555	\N	1	\N	8	\N	Schoenoplectus tabernaemontani (C.C.Gmel.) Palla, 1888
 15	7520	121555	\N	1	\N	8	\N	Schoenoplectus tabernaemontani (C.C.Gmel.) Palla, 1888
 63	7521	121581	\N	1	\N	8	\N	Schoenus nigricans L., 1753
-3	7522	121581	\N	1	\N	8	\N	Schoenus nigricans L., 1753
 43	7523	121581	\N	1	\N	8	\N	Schoenus nigricans L., 1753
 15	7524	121581	\N	1	\N	8	\N	Schoenus nigricans L., 1753
 63	7525	121860	\N	1	\N	8	\N	Sclerochloa dura (L.) P.Beauv., 1812
-3	7526	121860	\N	1	\N	8	\N	Sclerochloa dura (L.) P.Beauv., 1812
 43	7527	121860	\N	1	\N	8	\N	Sclerochloa dura (L.) P.Beauv., 1812
 15	7528	121860	\N	1	\N	8	\N	Sclerochloa dura (L.) P.Beauv., 1812
 63	7529	122988	\N	1	\N	8	\N	Sesamoides purpurascens (L.) G.López, 1986
-3	7530	122988	\N	1	\N	8	\N	Sesamoides purpurascens (L.) G.López, 1986
 43	7531	122988	\N	1	\N	8	\N	Sesamoides purpurascens (L.) G.López, 1986
 15	7532	122988	\N	1	\N	8	\N	Sesamoides purpurascens (L.) G.López, 1986
 63	7533	124412	\N	1	\N	8	\N	Sparganium natans L., 1754
-3	7534	124412	\N	1	\N	8	\N	Sparganium natans L., 1754
 43	7535	124412	\N	1	\N	8	\N	Sparganium natans L., 1754
 15	7536	124412	\N	1	\N	8	\N	Sparganium natans L., 1754
 63	7537	124699	\N	1	\N	8	\N	Spiranthes aestivalis (Poir.) Rich., 1817
-3	7538	124699	\N	1	\N	8	\N	Spiranthes aestivalis (Poir.) Rich., 1817
 43	7539	124699	\N	1	\N	8	\N	Spiranthes aestivalis (Poir.) Rich., 1817
 15	7540	124699	\N	1	\N	8	\N	Spiranthes aestivalis (Poir.) Rich., 1817
 63	7541	124775	\N	1	\N	8	\N	Stachys heraclea All., 1785
-3	7542	124775	\N	1	\N	8	\N	Stachys heraclea All., 1785
 43	7543	124775	\N	1	\N	8	\N	Stachys heraclea All., 1785
 15	7544	124775	\N	1	\N	8	\N	Stachys heraclea All., 1785
 63	7545	124842	\N	1	\N	8	\N	Staehelina dubia L., 1753
-3	7546	124842	\N	1	\N	8	\N	Staehelina dubia L., 1753
 43	7547	124842	\N	1	\N	8	\N	Staehelina dubia L., 1753
 15	7548	124842	\N	1	\N	8	\N	Staehelina dubia L., 1753
 63	7549	125519	\N	1	\N	8	\N	Taraxacum bessarabicum (Hornem.) Hand.-Mazz., 1907
-3	7550	125519	\N	1	\N	8	\N	Taraxacum bessarabicum (Hornem.) Hand.-Mazz., 1907
 43	7551	125519	\N	1	\N	8	\N	Taraxacum bessarabicum (Hornem.) Hand.-Mazz., 1907
 15	7552	125519	\N	1	\N	8	\N	Taraxacum bessarabicum (Hornem.) Hand.-Mazz., 1907
 63	7553	126008	\N	1	\N	8	\N	Teucrium montanum L., 1753
-3	7554	126008	\N	1	\N	8	\N	Teucrium montanum L., 1753
 43	7555	126008	\N	1	\N	8	\N	Teucrium montanum L., 1753
 15	7556	126008	\N	1	\N	8	\N	Teucrium montanum L., 1753
 63	7557	126034	\N	1	\N	8	\N	Teucrium scordium L., 1753
-3	7558	126034	\N	1	\N	8	\N	Teucrium scordium L., 1753
 43	7559	126034	\N	1	\N	8	\N	Teucrium scordium L., 1753
 15	7560	126034	\N	1	\N	8	\N	Teucrium scordium L., 1753
 63	7561	126124	\N	1	\N	8	\N	Thalictrum flavum L., 1753
-3	7562	126124	\N	1	\N	8	\N	Thalictrum flavum L., 1753
 43	7563	126124	\N	1	\N	8	\N	Thalictrum flavum L., 1753
 15	7564	126124	\N	1	\N	8	\N	Thalictrum flavum L., 1753
 63	7565	126213	\N	1	\N	8	\N	Thalictrum simplex L., 1767
-3	7566	126213	\N	1	\N	8	\N	Thalictrum simplex L., 1767
 43	7567	126213	\N	1	\N	8	\N	Thalictrum simplex L., 1767
 15	7568	126213	\N	1	\N	8	\N	Thalictrum simplex L., 1767
 63	7569	126276	\N	1	\N	8	\N	Thelypteris palustris Schott, 1834
-3	7570	126276	\N	1	\N	8	\N	Thelypteris palustris Schott, 1834
 43	7571	126276	\N	1	\N	8	\N	Thelypteris palustris Schott, 1834
 15	7572	126276	\N	1	\N	8	\N	Thelypteris palustris Schott, 1834
 63	7573	126474	\N	1	\N	8	\N	Thymelaea passerina (L.) Coss. & Germ., 1861
-3	7574	126474	\N	1	\N	8	\N	Thymelaea passerina (L.) Coss. & Germ., 1861
 43	7575	126474	\N	1	\N	8	\N	Thymelaea passerina (L.) Coss. & Germ., 1861
 15	7576	126474	\N	1	\N	8	\N	Thymelaea passerina (L.) Coss. & Germ., 1861
 63	7577	126822	\N	1	\N	8	\N	Tolpis umbellata Bertol., 1803
-3	7578	126822	\N	1	\N	8	\N	Tolpis umbellata Bertol., 1803
 43	7579	126822	\N	1	\N	8	\N	Tolpis umbellata Bertol., 1803
 15	7580	126822	\N	1	\N	8	\N	Tolpis umbellata Bertol., 1803
 63	7581	126861	\N	1	\N	8	\N	Torilis leptophylla (L.) Rchb.f., 1867
-3	7582	126861	\N	1	\N	8	\N	Torilis leptophylla (L.) Rchb.f., 1867
 43	7583	126861	\N	1	\N	8	\N	Torilis leptophylla (L.) Rchb.f., 1867
 15	7584	126861	\N	1	\N	8	\N	Torilis leptophylla (L.) Rchb.f., 1867
 63	7585	126925	\N	1	\N	8	\N	Tozzia alpina L., 1753
-3	7586	126925	\N	1	\N	8	\N	Tozzia alpina L., 1753
 43	7587	126925	\N	1	\N	8	\N	Tozzia alpina L., 1753
 15	7588	126925	\N	1	\N	8	\N	Tozzia alpina L., 1753
 63	7589	127117	\N	1	\N	8	\N	Traunsteinera globosa (L.) Rchb., 1842
-3	7590	127117	\N	1	\N	8	\N	Traunsteinera globosa (L.) Rchb., 1842
 43	7591	127117	\N	1	\N	8	\N	Traunsteinera globosa (L.) Rchb., 1842
 15	7592	127117	\N	1	\N	8	\N	Traunsteinera globosa (L.) Rchb., 1842
 63	7593	127191	\N	1	\N	8	\N	Trichophorum alpinum (L.) Pers., 1805
-3	7594	127191	\N	1	\N	8	\N	Trichophorum alpinum (L.) Pers., 1805
 43	7595	127191	\N	1	\N	8	\N	Trichophorum alpinum (L.) Pers., 1805
 15	7596	127191	\N	1	\N	8	\N	Trichophorum alpinum (L.) Pers., 1805
 63	7597	127237	\N	1	\N	8	\N	Trifolium badium Schreb., 1804
-3	7598	127237	\N	1	\N	8	\N	Trifolium badium Schreb., 1804
 43	7599	127237	\N	1	\N	8	\N	Trifolium badium Schreb., 1804
 15	7600	127237	\N	1	\N	8	\N	Trifolium badium Schreb., 1804
 63	7601	127546	\N	1	\N	8	\N	Triglochin maritimum L., 1753
-3	7602	127546	\N	1	\N	8	\N	Triglochin maritimum L., 1753
 43	7603	127546	\N	1	\N	8	\N	Triglochin maritimum L., 1753
 15	7604	127546	\N	1	\N	8	\N	Triglochin maritimum L., 1753
 63	7605	127988	\N	1	\N	8	\N	Turgenia latifolia (L.) Hoffm., 1814
-3	7606	127988	\N	1	\N	8	\N	Turgenia latifolia (L.) Hoffm., 1814
 43	7607	127988	\N	1	\N	8	\N	Turgenia latifolia (L.) Hoffm., 1814
 15	7608	127988	\N	1	\N	8	\N	Turgenia latifolia (L.) Hoffm., 1814
 63	7609	128311	\N	1	\N	8	\N	Utricularia intermedia Hayne, 1800
-3	7610	128311	\N	1	\N	8	\N	Utricularia intermedia Hayne, 1800
 43	7611	128311	\N	1	\N	8	\N	Utricularia intermedia Hayne, 1800
 15	7612	128311	\N	1	\N	8	\N	Utricularia intermedia Hayne, 1800
 63	7613	128510	\N	1	\N	8	\N	Vandenboschia speciosa (Willd.) Kunkel, 1966
-3	7614	128510	\N	1	\N	8	\N	Vandenboschia speciosa (Willd.) Kunkel, 1966
 43	7615	128510	\N	1	\N	8	\N	Vandenboschia speciosa (Willd.) Kunkel, 1966
 15	7616	128510	\N	1	\N	8	\N	Vandenboschia speciosa (Willd.) Kunkel, 1966
 63	7617	128789	\N	1	\N	8	\N	Veronica alpina L., 1753
-3	7618	128789	\N	1	\N	8	\N	Veronica alpina L., 1753
 43	7619	128789	\N	1	\N	8	\N	Veronica alpina L., 1753
 15	7620	128789	\N	1	\N	8	\N	Veronica alpina L., 1753
 63	7621	128871	\N	1	\N	8	\N	Veronica fruticans Jacq., 1762
-3	7622	128871	\N	1	\N	8	\N	Veronica fruticans Jacq., 1762
 43	7623	128871	\N	1	\N	8	\N	Veronica fruticans Jacq., 1762
 15	7624	128871	\N	1	\N	8	\N	Veronica fruticans Jacq., 1762
 63	7625	129520	\N	1	\N	8	\N	Viola biflora L., 1753
-3	7626	129520	\N	1	\N	8	\N	Viola biflora L., 1753
 43	7627	129520	\N	1	\N	8	\N	Viola biflora L., 1753
 15	7628	129520	\N	1	\N	8	\N	Viola biflora L., 1753
 63	7629	129602	\N	1	\N	8	\N	Viola lactea Sm., 1798
-3	7630	129602	\N	1	\N	8	\N	Viola lactea Sm., 1798
 43	7631	129602	\N	1	\N	8	\N	Viola lactea Sm., 1798
 15	7632	129602	\N	1	\N	8	\N	Viola lactea Sm., 1798
 63	7633	130124	\N	1	\N	8	\N	Woodsia alpina (Bolton) Gray, 1821
-3	7634	130124	\N	1	\N	8	\N	Woodsia alpina (Bolton) Gray, 1821
 43	7635	130124	\N	1	\N	8	\N	Woodsia alpina (Bolton) Gray, 1821
 15	7636	130124	\N	1	\N	8	\N	Woodsia alpina (Bolton) Gray, 1821
 63	7637	130492	\N	1	\N	8	\N	Xanthium strumarium L., 1753
-3	7638	130492	\N	1	\N	8	\N	Xanthium strumarium L., 1753
 43	7639	130492	\N	1	\N	8	\N	Xanthium strumarium L., 1753
 15	7640	130492	\N	1	\N	8	\N	Xanthium strumarium L., 1753
 63	7641	131373	\N	1	\N	8	\N	Androsace elongata subsp. breistrofferi (Charpin & Greuter) Molero & P.Monts., 1983
-3	7642	131373	\N	1	\N	8	\N	Androsace elongata subsp. breistrofferi (Charpin & Greuter) Molero & P.Monts., 1983
 43	7643	131373	\N	1	\N	8	\N	Androsace elongata subsp. breistrofferi (Charpin & Greuter) Molero & P.Monts., 1983
 15	7644	131373	\N	1	\N	8	\N	Androsace elongata subsp. breistrofferi (Charpin & Greuter) Molero & P.Monts., 1983
 63	7645	131830	\N	1	\N	8	\N	Asplenium obovatum subsp. billotii (F.W.Schultz) O.Bolòs, Vigo, Massales & Ninot, 1990
-3	7646	131830	\N	1	\N	8	\N	Asplenium obovatum subsp. billotii (F.W.Schultz) O.Bolòs, Vigo, Massales & Ninot, 1990
 43	7647	131830	\N	1	\N	8	\N	Asplenium obovatum subsp. billotii (F.W.Schultz) O.Bolòs, Vigo, Massales & Ninot, 1990
 15	7648	131830	\N	1	\N	8	\N	Asplenium obovatum subsp. billotii (F.W.Schultz) O.Bolòs, Vigo, Massales & Ninot, 1990
 63	7649	132840	\N	1	\N	8	\N	Carlina acanthifolia subsp. cynara (Pourr. ex DC.) Arcang., 1882
-3	7650	132840	\N	1	\N	8	\N	Carlina acanthifolia subsp. cynara (Pourr. ex DC.) Arcang., 1882
 43	7651	132840	\N	1	\N	8	\N	Carlina acanthifolia subsp. cynara (Pourr. ex DC.) Arcang., 1882
 15	7652	132840	\N	1	\N	8	\N	Carlina acanthifolia subsp. cynara (Pourr. ex DC.) Arcang., 1882
 48	7653	60313	\N	1	\N	11	4	Rhinolophus hipposideros
@@ -10134,7 +9047,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 66	10050	60295	\N	1	\N	11	7	Rhinolophus ferrumequinum
 30	10051	60295	\N	1	\N	11	7	Rhinolophus ferrumequinum
 34	10052	60295	\N	1	\N	11	7	Rhinolophus ferrumequinum
-9	10053	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
 12	10054	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
 81	10055	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
 82	10056	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
@@ -10142,7 +9054,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10058	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
 46	10059	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
 65	10060	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
-9	10061	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
 12	10062	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
 81	10063	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
 82	10064	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
@@ -10150,7 +9061,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10066	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
 46	10067	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
 65	10068	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
-9	10069	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
 12	10070	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
 81	10071	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
 82	10072	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
@@ -10158,7 +9068,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10074	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
 46	10075	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
 65	10076	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
-9	10077	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
 12	10078	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
 81	10079	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
 82	10080	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
@@ -10166,7 +9075,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10082	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
 46	10083	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
 65	10084	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
-9	10085	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
 12	10086	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
 81	10087	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
 82	10088	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
@@ -10174,7 +9082,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10090	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
 46	10091	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
 65	10092	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
-9	10093	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
 12	10094	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
 81	10095	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
 82	10096	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
@@ -10182,13 +9089,11 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10098	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
 46	10099	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
 65	10100	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
-9	10101	240818	\N	1	\N	14	\N	Nitocrellopsis elegans (Chappuis & Rouch, 1959)
 82	10104	240818	\N	1	\N	14	\N	Nitocrellopsis elegans (Chappuis & Rouch, 1959)
 31	10105	240818	\N	1	\N	14	\N	Nitocrellopsis elegans (Chappuis & Rouch, 1959)
 32	10106	240818	\N	1	\N	14	\N	Nitocrellopsis elegans (Chappuis & Rouch, 1959)
 46	10107	240818	\N	1	\N	14	\N	Nitocrellopsis elegans (Chappuis & Rouch, 1959)
 65	10108	240818	\N	1	\N	14	\N	Nitocrellopsis elegans (Chappuis & Rouch, 1959)
-9	10109	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
 12	10110	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
 81	10111	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
 82	10112	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
@@ -10196,7 +9101,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10114	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
 46	10115	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
 65	10116	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
-9	10117	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
 12	10118	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
 81	10119	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
 82	10120	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
@@ -10204,7 +9108,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10122	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
 46	10123	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
 65	10124	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
-9	10125	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
 12	10126	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
 81	10127	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
 82	10128	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
@@ -10212,7 +9115,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10130	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
 46	10131	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
 65	10132	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
-9	10133	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
 12	10134	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
 81	10135	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
 82	10136	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
@@ -10220,7 +9122,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10138	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
 46	10139	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
 65	10140	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
-9	10141	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
 12	10142	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
 81	10143	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
 82	10144	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
@@ -10228,7 +9129,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10146	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
 46	10147	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
 65	10148	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
-9	10149	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
 12	10150	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
 81	10151	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
 82	10152	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
@@ -10236,7 +9136,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10154	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
 46	10155	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
 65	10156	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
-9	10157	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
 12	10158	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
 81	10159	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
 82	10160	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
@@ -10244,7 +9143,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10162	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
 46	10163	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
 65	10164	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
-9	10165	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
 12	10166	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
 81	10167	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
 82	10168	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
@@ -10252,7 +9150,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10170	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
 46	10171	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
 65	10172	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
-9	10173	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
 12	10174	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
 81	10175	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
 82	10176	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
@@ -10260,14 +9157,12 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10178	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
 46	10179	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
 65	10180	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
-9	10181	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
 12	10182	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
 81	10183	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
 82	10184	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
 32	10186	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
 46	10187	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
 65	10188	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
-9	10189	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
 12	10190	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
 81	10191	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
 82	10192	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
@@ -10275,7 +9170,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10194	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
 46	10195	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
 65	10196	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
-9	10197	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
 12	10198	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
 81	10199	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
 82	10200	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
@@ -10283,7 +9177,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10202	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
 46	10203	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
 65	10204	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
-9	10205	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
 12	10206	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
 81	10207	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
 82	10208	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
@@ -10291,7 +9184,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10210	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
 46	10211	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
 65	10212	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
-9	10213	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
 12	10214	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
 81	10215	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
 82	10216	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
@@ -10299,7 +9191,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10218	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
 46	10219	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
 65	10220	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
-9	10221	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
 12	10222	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
 81	10223	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
 82	10224	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
@@ -10307,7 +9198,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10226	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
 46	10227	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
 65	10228	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
-9	10229	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
 12	10230	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
 81	10231	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
 82	10232	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
@@ -10315,7 +9205,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10234	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
 46	10235	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
 65	10236	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
-9	10237	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
 12	10238	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
 81	10239	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
 82	10240	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
@@ -10323,7 +9212,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10242	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
 46	10243	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
 65	10244	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
-9	10245	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
 12	10246	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
 81	10247	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
 82	10248	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
@@ -10331,7 +9219,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10250	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
 46	10251	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
 65	10252	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
-9	10253	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
 12	10254	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
 81	10255	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
 82	10256	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
@@ -10339,7 +9226,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10258	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
 46	10259	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
 65	10260	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
-9	10261	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
 12	10262	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
 81	10263	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
 82	10264	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
@@ -10347,7 +9233,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10266	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
 46	10267	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
 65	10268	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
-9	10269	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
 12	10270	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
 81	10271	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
 82	10272	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
@@ -10355,7 +9240,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10274	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
 46	10275	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
 65	10276	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
-9	10277	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
 12	10278	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
 81	10279	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
 82	10280	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
@@ -10363,7 +9247,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10282	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
 46	10283	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
 65	10284	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
-9	10285	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
 12	10286	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
 81	10287	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
 82	10288	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
@@ -10371,7 +9254,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10290	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
 46	10291	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
 65	10292	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
-9	10293	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
 12	10294	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
 81	10295	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
 82	10296	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
@@ -10379,7 +9261,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10298	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
 46	10299	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
 65	10300	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
-9	10301	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
 12	10302	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
 81	10303	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
 82	10304	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
@@ -10387,7 +9268,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10306	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
 46	10307	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
 65	10308	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
-9	10309	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
 12	10310	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
 81	10311	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
 82	10312	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
@@ -10395,7 +9275,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10314	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
 46	10315	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
 65	10316	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
-9	10317	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
 12	10318	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
 81	10319	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
 82	10320	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
@@ -10403,7 +9282,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10322	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
 46	10323	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
 65	10324	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
-9	10325	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
 12	10326	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
 81	10327	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
 82	10328	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
@@ -10411,7 +9289,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10330	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
 46	10331	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
 65	10332	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
-9	10333	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
 12	10334	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
 81	10335	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
 82	10336	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
@@ -10419,7 +9296,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10338	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
 46	10339	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
 65	10340	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
-9	10341	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
 12	10342	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
 81	10343	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
 82	10344	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
@@ -10427,7 +9303,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10346	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
 46	10347	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
 65	10348	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
-9	10349	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
 12	10350	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
 81	10351	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
 82	10352	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
@@ -10435,7 +9310,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10354	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
 46	10355	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
 65	10356	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
-9	10357	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
 12	10358	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
 81	10359	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
 82	10360	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
@@ -10443,7 +9317,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10362	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
 46	10363	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
 65	10364	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
-9	10365	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
 12	10366	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
 81	10367	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
 82	10368	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
@@ -10451,7 +9324,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10370	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
 46	10371	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
 65	10372	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
-9	10373	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
 12	10374	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
 81	10375	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
 82	10376	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
@@ -10459,7 +9331,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10378	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
 46	10379	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
 65	10380	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
-9	10381	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
 12	10382	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
 81	10383	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
 82	10384	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
@@ -10467,7 +9338,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10386	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
 46	10387	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
 65	10388	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
-9	10389	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
 12	10390	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
 81	10391	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
 82	10392	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
@@ -10475,7 +9345,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10394	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
 46	10395	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
 65	10396	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
-9	10397	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
 12	10398	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
 81	10399	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
 82	10400	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
@@ -10483,7 +9352,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10402	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
 46	10403	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
 65	10404	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
-9	10405	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
 12	10406	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
 81	10407	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
 82	10408	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
@@ -10491,15 +9359,14 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10410	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
 46	10411	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
 65	10412	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
-9	10413	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
 12	10414	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
 81	10415	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
 82	10416	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
+09	10349	240960	\N	1	\N	14	\N	Proasellus rouchi Henry, 1980
 31	10417	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
 32	10418	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
 46	10419	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
 65	10420	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
-9	10421	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
 12	10422	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
 81	10423	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
 82	10424	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
@@ -10507,7 +9374,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10426	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
 46	10427	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
 65	10428	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
-9	10429	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
 12	10430	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
 81	10431	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
 82	10432	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
@@ -10515,7 +9381,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10434	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
 46	10435	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
 65	10436	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
-9	10437	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
 12	10438	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
 81	10439	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
 82	10440	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
@@ -10523,7 +9388,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10442	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
 46	10443	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
 65	10444	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
-9	10445	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
 12	10446	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
 81	10447	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
 82	10448	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
@@ -10531,7 +9395,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10450	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
 46	10451	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
 65	10452	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
-9	10453	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
 12	10454	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
 81	10455	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
 82	10456	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
@@ -10539,7 +9402,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10458	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
 46	10459	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
 65	10460	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
-9	10461	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
 12	10462	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
 81	10463	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
 82	10464	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
@@ -10547,7 +9409,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10466	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
 46	10467	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
 65	10468	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
-9	10469	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
 12	10470	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
 81	10471	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
 82	10472	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
@@ -10555,7 +9416,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10474	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
 46	10475	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
 65	10476	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
-9	10477	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
 12	10478	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
 81	10479	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
 82	10480	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
@@ -10563,7 +9423,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10482	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
 46	10483	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
 65	10484	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
-9	10485	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
 12	10486	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
 81	10487	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
 82	10488	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
@@ -10571,7 +9430,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10490	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
 46	10491	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
 65	10492	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
-9	10493	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
 12	10494	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
 81	10495	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
 82	10496	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
@@ -10579,7 +9437,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10498	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
 46	10499	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
 65	10500	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
-9	10501	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
 12	10502	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
 81	10503	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
 82	10504	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
@@ -10587,7 +9444,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10506	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
 46	10507	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
 65	10508	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
-9	10509	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
 12	10510	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
 81	10511	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
 82	10512	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
@@ -10595,7 +9451,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10514	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
 46	10515	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
 65	10516	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
-9	10517	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
 12	10518	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
 81	10519	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
 82	10520	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
@@ -10603,7 +9458,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10522	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
 46	10523	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
 65	10524	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
-9	10525	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
 12	10526	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
 81	10527	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
 82	10528	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
@@ -10611,7 +9465,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10530	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
 46	10531	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
 65	10532	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
-9	10533	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
 12	10534	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
 81	10535	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
 82	10536	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
@@ -10619,7 +9472,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10538	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
 46	10539	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
 65	10540	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
-9	10541	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
 12	10542	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
 81	10543	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
 82	10544	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
@@ -10627,7 +9479,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10546	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
 46	10547	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
 65	10548	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
-9	10549	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
 12	10550	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
 81	10551	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
 82	10552	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
@@ -10635,7 +9486,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10554	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
 46	10555	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
 65	10556	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
-9	10557	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
 12	10558	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
 81	10559	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
 82	10560	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
@@ -10643,7 +9493,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10562	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
 46	10563	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
 65	10564	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
-9	10565	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
 12	10566	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
 81	10567	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
 82	10568	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
@@ -10651,7 +9500,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10570	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
 46	10571	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
 65	10572	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
-9	10573	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
 12	10574	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
 81	10575	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
 82	10576	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
@@ -10659,7 +9507,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10578	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
 46	10579	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
 65	10580	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
-9	10581	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
 12	10582	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
 81	10583	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
 82	10584	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
@@ -10667,7 +9514,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10586	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
 46	10587	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
 65	10588	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
-9	10589	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
 12	10590	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
 81	10591	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
 82	10592	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
@@ -10675,7 +9521,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10594	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
 46	10595	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
 65	10596	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
-9	10597	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
 12	10598	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
 81	10599	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
 82	10600	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
@@ -10683,7 +9528,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10602	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
 46	10603	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
 65	10604	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
-9	10605	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
 12	10606	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
 81	10607	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
 82	10608	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
@@ -10691,7 +9535,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10610	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
 46	10611	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
 65	10612	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
-9	10613	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
 12	10614	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
 81	10615	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
 82	10616	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
@@ -10699,7 +9542,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10618	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
 46	10619	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
 65	10620	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
-9	10621	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
 12	10622	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
 81	10623	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
 82	10624	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
@@ -10707,7 +9549,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10626	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
 46	10627	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
 65	10628	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
-9	10629	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
 12	10630	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
 81	10631	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
 82	10632	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
@@ -10715,7 +9556,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10634	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
 46	10635	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
 65	10636	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
-9	10637	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
 12	10638	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
 81	10639	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
 82	10640	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
@@ -10723,7 +9563,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10642	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
 46	10643	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
 65	10644	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
-9	10645	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
 12	10646	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
 81	10647	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
 82	10648	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
@@ -10731,7 +9570,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10650	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
 46	10651	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
 65	10652	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
-9	10653	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
 12	10654	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
 81	10655	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
 82	10656	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
@@ -10739,7 +9577,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10658	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
 46	10659	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
 65	10660	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
-9	10661	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
 12	10662	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
 81	10663	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
 82	10664	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
@@ -10747,7 +9584,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10666	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
 46	10667	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
 65	10668	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
-9	10669	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
 12	10670	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
 81	10671	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
 82	10672	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
@@ -10755,7 +9591,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10674	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
 46	10675	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
 65	10676	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
-9	10677	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
 12	10678	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
 81	10679	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
 82	10680	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
@@ -10763,7 +9598,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10682	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
 46	10683	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
 65	10684	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
-9	10685	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
 12	10686	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
 81	10687	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
 82	10688	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
@@ -10771,7 +9605,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10690	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
 46	10691	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
 65	10692	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
-9	10693	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
 12	10694	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
 81	10695	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
 82	10696	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
@@ -10779,7 +9612,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10698	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
 46	10699	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
 65	10700	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
-9	10701	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
 12	10702	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
 81	10703	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
 82	10704	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
@@ -10787,7 +9619,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10706	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
 46	10707	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
 65	10708	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
-9	10709	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
 12	10710	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
 81	10711	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
 82	10712	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
@@ -10795,7 +9626,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10714	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
 46	10715	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
 65	10716	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
-9	10717	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
 12	10718	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
 81	10719	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
 82	10720	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
@@ -10803,15 +9633,14 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10722	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
 46	10723	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
 65	10724	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
-9	10725	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
 12	10726	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
 81	10727	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
 82	10728	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
 31	10729	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
 32	10730	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
 46	10731	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
+09	10661	250298	\N	1	\N	14	\N	Imnadia yeyetta Hertzog, 1935
 65	10732	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
-9	10733	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
 12	10734	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
 81	10735	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
 82	10736	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
@@ -10819,7 +9648,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10738	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
 46	10739	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
 65	10740	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
-9	10741	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
 12	10742	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
 81	10743	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
 82	10744	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
@@ -10827,7 +9655,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10746	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
 46	10747	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
 65	10748	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
-9	10749	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
 12	10750	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
 81	10751	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
 82	10752	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
@@ -10835,7 +9662,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10754	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
 46	10755	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
 65	10756	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
-9	10757	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
 12	10758	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
 81	10759	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
 82	10760	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
@@ -10843,7 +9669,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10762	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
 46	10763	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
 65	10764	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
-9	10765	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
 12	10766	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
 81	10767	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
 82	10768	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
@@ -10851,7 +9676,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10770	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
 46	10771	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
 65	10772	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
-9	10773	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
 12	10774	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
 81	10775	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
 82	10776	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
@@ -10859,7 +9683,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10778	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
 46	10779	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
 65	10780	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
-9	10781	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
 12	10782	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
 81	10783	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
 82	10784	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
@@ -10867,7 +9690,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10786	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
 46	10787	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
 65	10788	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
-9	10789	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
 12	10790	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
 81	10791	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
 82	10792	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
@@ -10875,7 +9697,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10794	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
 46	10795	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
 65	10796	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
-9	10797	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
 12	10798	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
 81	10799	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
 82	10800	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
@@ -10883,7 +9704,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10802	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
 46	10803	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
 65	10804	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
-9	10805	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
 12	10806	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
 81	10807	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
 82	10808	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
@@ -10891,7 +9711,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10810	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
 46	10811	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
 65	10812	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
-9	10813	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
 12	10814	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
 81	10815	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
 82	10816	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
@@ -10899,7 +9718,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10818	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
 46	10819	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
 65	10820	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
-9	10821	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
 12	10822	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
 81	10823	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
 82	10824	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
@@ -10907,7 +9725,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10826	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
 46	10827	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
 65	10828	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
-9	10829	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
 12	10830	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
 81	10831	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
 82	10832	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
@@ -10915,7 +9732,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10834	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
 46	10835	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
 65	10836	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
-9	10837	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
 12	10838	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
 81	10839	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
 82	10840	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
@@ -10923,7 +9739,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	10842	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
 46	10843	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
 65	10844	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
-9	10845	432548	\N	1	\N	14	\N	Acrotylus insubricus insubricus (Scopoli, 1786)
 12	10846	432548	\N	1	\N	14	\N	Acrotylus insubricus insubricus (Scopoli, 1786)
 81	10847	432548	\N	1	\N	14	\N	Acrotylus insubricus insubricus (Scopoli, 1786)
 82	10848	432548	\N	1	\N	14	\N	Acrotylus insubricus insubricus (Scopoli, 1786)
@@ -11141,7 +9956,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 36	11060	112038	\N	1	Toutes les données	13	\N	Paeonia mascula (L.) Mill., 1768
 37	11061	112038	\N	1	Toutes les données	13	\N	Paeonia mascula (L.) Mill., 1768
 41	11062	112038	\N	1	Toutes les données	13	\N	Paeonia mascula (L.) Mill., 1768
-9	11063	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
 12	11064	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
 81	11065	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
 82	11066	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
@@ -11149,8 +9963,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11068	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
 46	11069	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
 65	11070	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
-9	11071	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
-9	11151	458956	\N	1	\N	14	\N	Aphaenops cerberus (Dieck, 1869)
 12	11072	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
 81	11073	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
 82	11074	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
@@ -11158,7 +9970,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11076	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
 46	11077	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
 65	11078	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
-9	11079	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
 12	11080	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
 81	11081	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
 82	11082	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
@@ -11166,7 +9977,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11084	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
 46	11085	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
 65	11086	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
-9	11087	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
 12	11088	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
 81	11089	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
 82	11090	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
@@ -11174,7 +9984,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11092	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
 46	11093	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
 65	11094	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
-9	11095	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
 12	11096	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
 81	11097	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
 82	11098	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
@@ -11182,7 +9991,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11100	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
 46	11101	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
 65	11102	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
-9	11103	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
 12	11104	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
 81	11105	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
 82	11106	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
@@ -11190,7 +9998,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11108	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
 46	11109	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
 65	11110	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
-9	11111	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
 12	11112	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
 81	11113	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
 82	11114	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
@@ -11198,7 +10005,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11116	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
 46	11117	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
 65	11118	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
-9	11119	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
 12	11120	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
 81	11121	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
 82	11122	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
@@ -11206,7 +10012,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11124	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
 46	11125	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
 65	11126	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
-9	11127	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
 12	11128	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
 81	11129	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
 82	11130	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
@@ -11214,7 +10019,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11132	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
 46	11133	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
 65	11134	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
-9	11135	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
 12	11136	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
 81	11137	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
 82	11138	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
@@ -11222,7 +10026,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11140	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
 46	11141	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
 65	11142	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
-9	11143	458952	\N	1	\N	14	\N	Aphaenops carrerei Coiffait, 1953
 12	11144	458952	\N	1	\N	14	\N	Aphaenops carrerei Coiffait, 1953
 81	11145	458952	\N	1	\N	14	\N	Aphaenops carrerei Coiffait, 1953
 82	11146	458952	\N	1	\N	14	\N	Aphaenops carrerei Coiffait, 1953
@@ -11237,7 +10040,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11156	458956	\N	1	\N	14	\N	Aphaenops cerberus (Dieck, 1869)
 46	11157	458956	\N	1	\N	14	\N	Aphaenops cerberus (Dieck, 1869)
 65	11158	458956	\N	1	\N	14	\N	Aphaenops cerberus (Dieck, 1869)
-9	11159	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
 12	11160	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
 81	11161	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
 82	11162	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
@@ -11245,7 +10047,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11164	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
 46	11165	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
 65	11166	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
-9	11167	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
 12	11168	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
 81	11169	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
 82	11170	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
@@ -11253,7 +10054,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11172	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
 46	11173	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
 65	11174	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
-9	11175	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
 12	11176	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
 81	11177	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
 82	11178	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
@@ -11261,7 +10061,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11180	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
 46	11181	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
 65	11182	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
-9	11183	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
 12	11184	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
 81	11185	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
 82	11186	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
@@ -11269,7 +10068,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11188	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
 46	11189	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
 65	11190	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
-9	11191	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
 12	11192	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
 81	11193	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
 82	11194	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
@@ -11277,7 +10075,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11196	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
 46	11197	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
 65	11198	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
-9	11199	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
 12	11200	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
 81	11201	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
 82	11202	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
@@ -11285,7 +10082,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11204	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
 46	11205	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
 65	11206	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
-9	11207	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
 12	11208	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
 81	11209	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
 82	11210	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
@@ -11293,7 +10089,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11212	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
 46	11213	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
 65	11214	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
-9	11215	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
 12	11216	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
 81	11217	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
 82	11218	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
@@ -11301,7 +10096,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11220	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
 46	11221	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
 65	11222	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
-9	11223	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
 12	11224	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
 81	11225	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
 82	11226	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
@@ -11309,7 +10103,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11228	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
 46	11229	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
 65	11230	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
-9	11231	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
 12	11232	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
 81	11233	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
 82	11234	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
@@ -11317,7 +10110,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11236	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
 46	11237	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
 65	11238	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
-9	11239	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
 12	11240	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
 81	11241	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
 82	11242	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
@@ -11325,7 +10117,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11244	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
 46	11245	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
 65	11246	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
-9	11247	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
 12	11248	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
 81	11249	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
 82	11250	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
@@ -11333,7 +10124,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11252	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
 46	11253	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
 65	11254	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
-9	11255	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
 12	11256	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
 81	11257	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
 82	11258	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
@@ -11341,7 +10131,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11260	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
 46	11261	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
 65	11262	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
-9	11263	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
 12	11264	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
 81	11265	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
 82	11266	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
@@ -11349,7 +10138,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11268	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
 46	11269	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
 65	11270	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
-9	11271	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
 12	11272	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
 81	11273	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
 82	11274	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
@@ -11357,7 +10145,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11276	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
 46	11277	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
 65	11278	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
-9	11279	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
 12	11280	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
 81	11281	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
 82	11282	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
@@ -11365,7 +10152,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11284	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
 46	11285	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
 65	11286	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
-9	11287	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
 12	11288	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
 81	11289	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
 82	11290	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
@@ -11373,7 +10159,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11292	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
 46	11293	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
 65	11294	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
-9	11295	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
 12	11296	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
 81	11297	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
 82	11298	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
@@ -11381,7 +10166,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11300	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
 46	11301	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
 65	11302	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
-9	11303	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
 12	11304	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
 81	11305	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
 82	11306	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
@@ -11389,7 +10173,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11308	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
 46	11309	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
 65	11310	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
-9	11311	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
 12	11312	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
 81	11313	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
 82	11314	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
@@ -11397,7 +10180,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11316	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
 46	11317	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
 65	11318	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
-9	11319	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
 12	11320	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
 81	11321	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
 82	11322	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
@@ -11405,7 +10187,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11324	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
 46	11325	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
 65	11326	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
-9	11327	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
 12	11328	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
 81	11329	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
 82	11330	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
@@ -11413,7 +10194,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11332	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
 46	11333	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
 65	11334	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
-9	11335	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
 12	11336	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
 81	11337	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
 82	11338	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
@@ -11421,7 +10201,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11340	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
 46	11341	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
 65	11342	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
-9	11343	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
 12	11344	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
 81	11345	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
 82	11346	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
@@ -11429,7 +10208,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11348	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
 46	11349	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
 65	11350	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
-9	11351	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
 12	11352	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
 81	11353	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
 82	11354	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
@@ -11437,7 +10215,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11356	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
 46	11357	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
 65	11358	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
-9	11359	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
 12	11360	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
 81	11361	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
 82	11362	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
@@ -11445,7 +10222,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11364	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
 46	11365	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
 65	11366	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
-9	11367	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
 12	11368	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
 81	11369	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
 82	11370	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
@@ -11453,7 +10229,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11372	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
 46	11373	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
 65	11374	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
-9	11375	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
 12	11376	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
 81	11377	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
 82	11378	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
@@ -11461,7 +10236,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11380	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
 46	11381	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
 65	11382	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
-9	11383	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
 12	11384	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
 81	11385	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
 82	11386	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
@@ -11469,7 +10243,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11388	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
 46	11389	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
 65	11390	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
-9	11391	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
 12	11392	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
 81	11393	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
 82	11394	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
@@ -11477,7 +10250,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11396	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
 46	11397	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
 65	11398	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
-9	11399	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
 12	11400	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
 81	11401	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
 82	11402	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
@@ -11485,7 +10257,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11404	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
 46	11405	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
 65	11406	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
-9	11407	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
 12	11408	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
 81	11409	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
 82	11410	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
@@ -11493,7 +10264,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11412	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
 46	11413	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
 65	11414	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
-9	11415	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
 12	11416	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
 81	11417	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
 82	11418	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
@@ -11501,7 +10271,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11420	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
 46	11421	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
 65	11422	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
-9	11423	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
 12	11424	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
 81	11425	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
 82	11426	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
@@ -11509,7 +10278,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11428	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
 46	11429	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
 65	11430	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
-9	11431	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
 12	11432	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
 81	11433	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
 82	11434	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
@@ -11517,7 +10285,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11436	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
 46	11437	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
 65	11438	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
-9	11439	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
 12	11440	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
 81	11441	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
 82	11442	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
@@ -11525,7 +10292,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11444	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
 46	11445	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
 65	11446	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
-9	11447	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
 12	11448	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
 81	11449	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
 82	11450	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
@@ -11533,7 +10299,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11452	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
 46	11453	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
 65	11454	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
-9	11455	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
 12	11456	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
 81	11457	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
 82	11458	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
@@ -11541,7 +10306,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11460	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
 46	11461	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
 65	11462	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
-9	11463	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
 12	11464	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
 81	11465	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
 82	11466	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
@@ -11549,7 +10313,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11468	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
 46	11469	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
 65	11470	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
-9	11471	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
 12	11472	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
 81	11473	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
 82	11474	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
@@ -11557,7 +10320,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11476	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
 46	11477	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
 65	11478	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
-9	11479	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
 12	11480	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
 81	11481	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
 82	11482	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
@@ -11565,7 +10327,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11484	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
 46	11485	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
 65	11486	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
-9	11487	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
 12	11488	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
 81	11489	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
 82	11490	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
@@ -11573,7 +10334,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11492	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
 46	11493	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
 65	11494	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
-9	11495	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
 12	11496	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
 81	11497	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
 82	11498	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
@@ -11581,7 +10341,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11500	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
 46	11501	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
 65	11502	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
-9	11503	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
 12	11504	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
 81	11505	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
 82	11506	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
@@ -11589,7 +10348,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11508	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
 46	11509	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
 65	11510	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
-9	11511	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
 12	11512	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
 81	11513	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
 82	11514	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
@@ -11597,7 +10355,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11516	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
 46	11517	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
 65	11518	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
-9	11519	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
 12	11520	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
 81	11521	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
 82	11522	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
@@ -11605,7 +10362,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11524	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
 46	11525	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
 65	11526	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
-9	11527	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
 12	11528	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
 81	11529	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
 82	11530	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
@@ -11613,7 +10369,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11532	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
 46	11533	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
 65	11534	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
-9	11535	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
 12	11536	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
 81	11537	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
 82	11538	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
@@ -11621,7 +10376,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11540	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
 46	11541	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
 65	11542	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
-9	11543	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
 12	11544	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
 81	11545	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
 82	11546	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
@@ -11629,7 +10383,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11548	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
 46	11549	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
 65	11550	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
-9	11551	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
 12	11552	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
 81	11553	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
 82	11554	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
@@ -11637,7 +10390,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11556	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
 46	11557	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
 65	11558	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
-9	11559	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
 12	11560	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
 81	11561	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
 82	11562	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
@@ -11645,7 +10397,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11564	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
 46	11565	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
 65	11566	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
-9	11567	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
 12	11568	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
 81	11569	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
 82	11570	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
@@ -11653,7 +10404,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11572	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
 46	11573	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
 65	11574	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
-9	11575	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
 12	11576	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
 81	11577	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
 82	11578	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
@@ -11661,7 +10411,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11580	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
 46	11581	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
 65	11582	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
-9	11583	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
 12	11584	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
 81	11585	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
 82	11586	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
@@ -11669,7 +10418,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11588	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
 46	11589	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
 65	11590	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
-9	11591	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
 12	11592	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
 81	11593	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
 82	11594	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
@@ -11677,7 +10425,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11596	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
 46	11597	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
 65	11598	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
-9	11599	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
 12	11600	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
 81	11601	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
 82	11602	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
@@ -11685,7 +10432,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11604	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
 46	11605	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
 65	11606	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
-9	11607	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
 12	11608	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
 81	11609	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
 82	11610	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
@@ -11693,7 +10439,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11612	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
 46	11613	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
 65	11614	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
-9	11615	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
 12	11616	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
 81	11617	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
 82	11618	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
@@ -11701,7 +10446,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11620	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
 46	11621	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
 65	11622	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
-9	11623	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
 12	11624	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
 81	11625	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
 82	11626	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
@@ -11709,7 +10453,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11628	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
 46	11629	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
 65	11630	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
-9	11631	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
 12	11632	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
 81	11633	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
 82	11634	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
@@ -11717,7 +10460,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11636	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
 46	11637	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
 65	11638	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
-9	11639	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
 12	11640	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
 81	11641	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
 82	11642	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
@@ -11725,7 +10467,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11644	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
 46	11645	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
 65	11646	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
-9	11647	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
 12	11648	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
 81	11649	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
 82	11650	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
@@ -11733,7 +10474,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11652	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
 46	11653	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
 65	11654	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
-9	11655	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
 12	11656	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
 81	11657	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
 82	11658	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
@@ -11741,7 +10481,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11660	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
 46	11661	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
 65	11662	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
-9	11663	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
 12	11664	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
 81	11665	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
 82	11666	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
@@ -11749,7 +10488,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11668	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
 46	11669	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
 65	11670	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
-9	11671	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
 12	11672	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
 81	11673	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
 82	11674	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
@@ -11757,7 +10495,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11676	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
 46	11677	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
 65	11678	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
-9	11679	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
 12	11680	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
 81	11681	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
 82	11682	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
@@ -11765,7 +10502,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11684	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
 46	11685	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
 65	11686	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
-9	11687	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
 12	11688	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
 81	11689	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
 82	11690	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
@@ -11773,7 +10509,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11692	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
 46	11693	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
 65	11694	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
-9	11695	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
 12	11696	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
 81	11697	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
 82	11698	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
@@ -11781,7 +10516,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11700	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
 46	11701	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
 65	11702	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
-9	11703	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
 12	11704	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
 81	11705	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
 82	11706	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
@@ -11789,7 +10523,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11708	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
 46	11709	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
 65	11710	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
-9	11711	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
 12	11712	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
 81	11713	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
 82	11714	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
@@ -11797,7 +10530,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11716	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
 46	11717	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
 65	11718	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
-9	11719	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
 12	11720	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
 81	11721	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
 82	11722	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
@@ -11805,7 +10537,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11724	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
 46	11725	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
 65	11726	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
-9	11727	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
 12	11728	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
 81	11729	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
 82	11730	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
@@ -11813,7 +10544,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11732	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
 46	11733	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
 65	11734	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
-9	11735	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
 12	11736	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
 81	11737	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
 82	11738	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
@@ -11821,7 +10551,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11740	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
 46	11741	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
 65	11742	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
-9	11743	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
 12	11744	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
 81	11745	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
 82	11746	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
@@ -11829,7 +10558,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11748	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
 46	11749	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
 65	11750	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
-9	11751	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
 12	11752	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
 81	11753	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
 82	11754	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
@@ -11837,7 +10565,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11756	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
 46	11757	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
 65	11758	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
-9	11759	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
 12	11760	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
 81	11761	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
 82	11762	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
@@ -11845,7 +10572,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11764	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
 46	11765	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
 65	11766	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
-9	11767	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
 12	11768	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
 81	11769	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
 82	11770	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
@@ -11853,7 +10579,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11772	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
 46	11773	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
 65	11774	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
-9	11775	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
 12	11776	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
 81	11777	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
 82	11778	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
@@ -11861,7 +10586,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11780	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
 46	11781	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
 65	11782	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
-9	11783	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
 12	11784	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
 81	11785	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
 82	11786	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
@@ -11869,7 +10593,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11788	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
 46	11789	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
 65	11790	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
-9	11791	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
 12	11792	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
 81	11793	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
 82	11794	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
@@ -11877,7 +10600,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11796	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
 46	11797	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
 65	11798	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
-9	11799	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
 12	11800	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
 81	11801	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
 82	11802	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
@@ -11885,7 +10607,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11804	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
 46	11805	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
 65	11806	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
-9	11807	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
 12	11808	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
 81	11809	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
 82	11810	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
@@ -11893,7 +10614,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11812	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
 46	11813	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
 65	11814	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
-9	11815	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
 12	11816	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
 81	11817	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
 82	11818	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
@@ -11901,7 +10621,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11820	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
 46	11821	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
 65	11822	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
-9	11823	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
 12	11824	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
 81	11825	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
 82	11826	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
@@ -11909,7 +10628,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11828	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
 46	11829	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
 65	11830	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
-9	11831	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
 12	11832	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
 81	11833	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
 82	11834	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
@@ -11917,7 +10635,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11836	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
 46	11837	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
 65	11838	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
-9	11839	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
 12	11840	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
 81	11841	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
 82	11842	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
@@ -11925,7 +10642,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11844	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
 46	11845	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
 65	11846	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
-9	11847	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
 12	11848	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
 81	11849	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
 82	11850	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
@@ -11933,7 +10649,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11852	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
 46	11853	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
 65	11854	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
-9	11855	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
 12	11856	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
 81	11857	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
 82	11858	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
@@ -11941,7 +10656,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11860	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
 46	11861	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
 65	11862	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
-9	11863	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
 12	11864	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
 81	11865	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
 82	11866	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
@@ -11949,7 +10663,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11868	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
 46	11869	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
 65	11870	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
-9	11871	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
 12	11872	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
 81	11873	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
 82	11874	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
@@ -11957,7 +10670,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11876	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
 46	11877	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
 65	11878	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
-9	11879	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
 12	11880	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
 81	11881	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
 82	11882	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
@@ -11965,7 +10677,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11884	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
 46	11885	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
 65	11886	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
-9	11887	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
 12	11888	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
 81	11889	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
 82	11890	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
@@ -11973,7 +10684,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11892	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
 46	11893	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
 65	11894	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
-9	11895	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
 12	11896	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
 81	11897	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
 82	11898	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
@@ -11981,7 +10691,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11900	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
 46	11901	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
 65	11902	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
-9	11903	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
 12	11904	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
 81	11905	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
 82	11906	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
@@ -11989,7 +10698,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11908	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
 46	11909	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
 65	11910	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
-9	11911	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
 12	11912	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
 81	11913	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
 82	11914	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
@@ -11997,7 +10705,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11916	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
 46	11917	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
 65	11918	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
-9	11919	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
 12	11920	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
 81	11921	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
 82	11922	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
@@ -12005,7 +10712,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11924	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
 46	11925	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
 65	11926	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
-9	11927	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
 12	11928	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
 81	11929	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
 82	11930	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
@@ -12013,7 +10719,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11932	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
 46	11933	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
 65	11934	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
-9	11935	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
 12	11936	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
 81	11937	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
 82	11938	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
@@ -12021,7 +10726,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11940	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
 46	11941	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
 65	11942	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
-9	11943	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
 12	11944	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
 81	11945	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
 82	11946	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
@@ -12029,15 +10733,14 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11948	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
 46	11949	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
 65	11950	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
-9	11951	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
 12	11952	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
 81	11953	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
 82	11954	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
 31	11955	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
 32	11956	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
 46	11957	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
+09	11879	3511	\N	1	\N	14	\N	Athene noctua (Scopoli, 1769)
 65	11958	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
-9	11959	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
 12	11960	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
 81	11961	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
 82	11962	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
@@ -12045,7 +10748,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11964	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
 46	11965	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
 65	11966	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
-9	11967	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
 12	11968	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
 81	11969	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
 82	11970	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
@@ -12053,7 +10755,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11972	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
 46	11973	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
 65	11974	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
-9	11975	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
 12	11976	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
 81	11977	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
 82	11978	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
@@ -12061,7 +10762,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11980	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
 46	11981	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
 65	11982	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
-9	11983	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
 12	11984	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
 81	11985	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
 82	11986	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
@@ -12069,7 +10769,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11988	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
 46	11989	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
 65	11990	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
-9	11991	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
 12	11992	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
 81	11993	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
 82	11994	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
@@ -12077,7 +10776,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	11996	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
 46	11997	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
 65	11998	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
-9	11999	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
 12	12000	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
 81	12001	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
 82	12002	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
@@ -12085,7 +10783,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12004	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
 46	12005	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
 65	12006	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
-9	12007	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
 12	12008	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
 81	12009	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
 82	12010	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
@@ -12093,7 +10790,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12012	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
 46	12013	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
 65	12014	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
-9	12015	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
 12	12016	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
 81	12017	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
 82	12018	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
@@ -12101,7 +10797,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12020	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
 46	12021	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
 65	12022	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
-9	12023	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
 12	12024	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
 81	12025	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
 82	12026	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
@@ -12109,7 +10804,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12028	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
 46	12029	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
 65	12030	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
-9	12031	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
 12	12032	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
 81	12033	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
 82	12034	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
@@ -12117,7 +10811,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12036	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
 46	12037	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
 65	12038	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
-9	12039	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
 12	12040	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
 81	12041	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
 82	12042	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
@@ -12125,7 +10818,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12044	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
 46	12045	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
 65	12046	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
-9	12047	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
 12	12048	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
 81	12049	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
 82	12050	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
@@ -12133,7 +10825,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12052	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
 46	12053	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
 65	12054	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
-9	12055	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
 12	12056	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
 81	12057	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
 82	12058	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
@@ -12141,7 +10832,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12060	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
 46	12061	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
 65	12062	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
-9	12063	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
 12	12064	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
 81	12065	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
 82	12066	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
@@ -12149,7 +10839,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12068	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
 46	12069	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
 65	12070	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
-9	12071	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
 12	12072	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
 81	12073	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
 82	12074	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
@@ -12157,7 +10846,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12076	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
 46	12077	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
 65	12078	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
-9	12079	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
 12	12080	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
 81	12081	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
 82	12082	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
@@ -12165,7 +10853,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12084	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
 46	12085	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
 65	12086	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
-9	12087	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
 12	12088	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
 81	12089	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
 82	12090	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
@@ -12173,7 +10860,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12092	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
 46	12093	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
 65	12094	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
-9	12095	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
 12	12096	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
 81	12097	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
 82	12098	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
@@ -12181,7 +10867,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12100	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
 46	12101	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
 65	12102	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
-9	12103	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
 12	12104	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
 81	12105	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
 82	12106	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
@@ -12189,7 +10874,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12108	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
 46	12109	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
 65	12110	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
-9	12111	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
 12	12112	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
 81	12113	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
 82	12114	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
@@ -12197,7 +10881,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12116	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
 46	12117	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
 65	12118	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
-9	12119	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
 12	12120	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
 81	12121	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
 82	12122	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
@@ -12205,7 +10888,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12124	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
 46	12125	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
 65	12126	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
-9	12127	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
 12	12128	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
 81	12129	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
 82	12130	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
@@ -12213,7 +10895,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12132	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
 46	12133	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
 65	12134	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
-9	12135	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
 12	12136	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
 81	12137	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
 82	12138	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
@@ -12221,7 +10902,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12140	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
 46	12141	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
 65	12142	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
-9	12143	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
 12	12144	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
 81	12145	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
 82	12146	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
@@ -12229,7 +10909,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12148	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
 46	12149	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
 65	12150	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
-9	12151	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
 12	12152	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
 81	12153	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
 82	12154	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
@@ -12237,7 +10916,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12156	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
 46	12157	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
 65	12158	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
-9	12159	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
 12	12160	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
 81	12161	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
 82	12162	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
@@ -12245,7 +10923,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12164	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
 46	12165	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
 65	12166	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
-9	12167	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
 12	12168	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
 81	12169	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
 82	12170	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
@@ -12253,7 +10930,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12172	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
 46	12173	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
 65	12174	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
-9	12175	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
 12	12176	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
 81	12177	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
 82	12178	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
@@ -12261,7 +10937,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12180	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
 46	12181	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
 65	12182	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
-9	12183	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
 12	12184	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
 81	12185	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
 82	12186	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
@@ -12269,7 +10944,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12188	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
 46	12189	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
 65	12190	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
-9	12191	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
 12	12192	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
 81	12193	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
 82	12194	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
@@ -12277,7 +10951,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12196	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
 46	12197	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
 65	12198	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
-9	12199	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
 12	12200	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
 81	12201	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
 82	12202	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
@@ -12285,7 +10958,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12204	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
 46	12205	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
 65	12206	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
-9	12207	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
 12	12208	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
 81	12209	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
 82	12210	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
@@ -12293,7 +10965,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12212	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
 46	12213	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
 65	12214	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
-9	12215	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
 12	12216	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
 81	12217	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
 82	12218	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
@@ -12301,7 +10972,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12220	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
 46	12221	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
 65	12222	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
-9	12223	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
 12	12224	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
 81	12225	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
 82	12226	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
@@ -12309,7 +10979,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12228	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
 46	12229	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
 65	12230	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
-9	12231	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
 12	12232	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
 81	12233	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
 82	12234	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
@@ -12317,7 +10986,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12236	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
 46	12237	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
 65	12238	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
-9	12239	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
 12	12240	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
 81	12241	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
 82	12242	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
@@ -12325,7 +10993,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12244	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
 46	12245	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
 65	12246	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
-9	12247	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
 12	12248	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
 81	12249	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
 82	12250	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
@@ -12333,7 +11000,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12252	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
 46	12253	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
 65	12254	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
-9	12255	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
 12	12256	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
 81	12257	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
 82	12258	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
@@ -12341,7 +11007,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12260	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
 46	12261	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
 65	12262	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
-9	12263	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
 12	12264	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
 81	12265	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
 82	12266	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
@@ -12349,7 +11014,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12268	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
 46	12269	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
 65	12270	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
-9	12271	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
 12	12272	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
 81	12273	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
 82	12274	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
@@ -12357,7 +11021,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12276	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
 46	12277	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
 65	12278	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
-9	12279	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
 12	12280	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
 81	12281	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
 82	12282	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
@@ -12365,7 +11028,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12284	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
 46	12285	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
 65	12286	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
-9	12287	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
 12	12288	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
 81	12289	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
 82	12290	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
@@ -12373,7 +11035,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12292	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
 46	12293	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
 65	12294	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
-9	12295	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
 12	12296	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
 81	12297	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
 82	12298	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
@@ -12381,7 +11042,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12300	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
 46	12301	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
 65	12302	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
-9	12303	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
 12	12304	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
 81	12305	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
 82	12306	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
@@ -12389,7 +11049,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12308	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
 46	12309	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
 65	12310	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
-9	12311	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
 12	12312	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
 81	12313	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
 82	12314	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
@@ -12397,7 +11056,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12316	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
 46	12317	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
 65	12318	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
-9	12319	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
 12	12320	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
 81	12321	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
 82	12322	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
@@ -12405,7 +11063,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12324	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
 46	12325	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
 65	12326	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
-9	12327	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
 12	12328	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
 81	12329	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
 82	12330	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
@@ -12413,7 +11070,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12332	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
 46	12333	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
 65	12334	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
-9	12335	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
 12	12336	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
 81	12337	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
 82	12338	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
@@ -12421,7 +11077,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12340	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
 46	12341	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
 65	12342	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
-9	12343	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
 12	12344	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
 81	12345	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
 82	12346	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
@@ -12429,7 +11084,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12348	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
 46	12349	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
 65	12350	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
-9	12351	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
 12	12352	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
 81	12353	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
 82	12354	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
@@ -12437,7 +11091,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12356	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
 46	12357	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
 65	12358	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
-9	12359	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
 12	12360	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
 81	12361	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
 82	12362	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
@@ -12445,7 +11098,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12364	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
 46	12365	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
 65	12366	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
-9	12367	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
 12	12368	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
 81	12369	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
 82	12370	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
@@ -12453,7 +11105,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12372	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
 46	12373	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
 65	12374	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
-9	12375	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
 12	12376	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
 81	12377	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
 82	12378	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
@@ -12461,7 +11112,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12380	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
 46	12381	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
 65	12382	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
-9	12383	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
 12	12384	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
 81	12385	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
 82	12386	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
@@ -12469,7 +11119,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12388	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
 46	12389	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
 65	12390	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
-9	12391	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
 12	12392	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
 81	12393	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
 82	12394	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
@@ -12477,7 +11126,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12396	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
 46	12397	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
 65	12398	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
-9	12399	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
 12	12400	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
 81	12401	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
 82	12402	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
@@ -12485,7 +11133,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12404	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
 46	12405	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
 65	12406	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
-9	12407	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
 12	12408	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
 81	12409	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
 82	12410	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
@@ -12493,7 +11140,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12412	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
 46	12413	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
 65	12414	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
-9	12415	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
 12	12416	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
 81	12417	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
 82	12418	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
@@ -12501,7 +11147,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12420	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
 46	12421	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
 65	12422	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
-9	12423	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
 12	12424	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
 81	12425	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
 82	12426	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
@@ -12509,7 +11154,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12428	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
 46	12429	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
 65	12430	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
-9	12431	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
 12	12432	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
 81	12433	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
 82	12434	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
@@ -12517,7 +11161,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12436	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
 46	12437	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
 65	12438	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
-9	12439	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
 12	12440	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
 81	12441	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
 82	12442	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
@@ -12525,7 +11168,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12444	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
 46	12445	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
 65	12446	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
-9	12447	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
 12	12448	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
 81	12449	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
 82	12450	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
@@ -12533,7 +11175,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12452	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
 46	12453	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
 65	12454	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
-9	12455	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
 12	12456	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
 81	12457	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
 82	12458	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
@@ -12541,7 +11182,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12460	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
 46	12461	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
 65	12462	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
-9	12463	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
 12	12464	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
 81	12465	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
 82	12466	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
@@ -12549,7 +11189,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12468	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
 46	12469	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
 65	12470	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
-9	12471	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
 12	12472	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
 81	12473	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
 82	12474	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
@@ -12557,7 +11196,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12476	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
 46	12477	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
 65	12478	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
-9	12479	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
 12	12480	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
 81	12481	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
 82	12482	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
@@ -12565,7 +11203,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12484	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
 46	12485	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
 65	12486	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
-9	12487	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
 12	12488	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
 81	12489	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
 82	12490	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
@@ -12573,7 +11210,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12492	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
 46	12493	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
 65	12494	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
-9	12495	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
 12	12496	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
 81	12497	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
 82	12498	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
@@ -12581,7 +11217,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12500	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
 46	12501	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
 65	12502	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
-9	12503	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
 12	12504	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
 81	12505	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
 82	12506	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
@@ -12589,7 +11224,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12508	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
 46	12509	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
 65	12510	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
-9	12511	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
 12	12512	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
 81	12513	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
 82	12514	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
@@ -12597,7 +11231,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12516	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
 46	12517	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
 65	12518	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
-9	12519	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
 12	12520	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
 81	12521	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
 82	12522	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
@@ -12605,7 +11238,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12524	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
 46	12525	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
 65	12526	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
-9	12527	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
 12	12528	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
 81	12529	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
 82	12530	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
@@ -12613,7 +11245,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12532	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
 46	12533	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
 65	12534	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
-9	12535	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
 12	12536	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
 81	12537	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
 82	12538	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
@@ -12621,7 +11252,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12540	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
 46	12541	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
 65	12542	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
-9	12543	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
 12	12544	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
 81	12545	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
 82	12546	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
@@ -12629,7 +11259,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12548	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
 46	12549	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
 65	12550	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
-9	12551	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
 12	12552	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
 81	12553	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
 82	12554	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
@@ -12637,7 +11266,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12556	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
 46	12557	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
 65	12558	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
-9	12559	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
 12	12560	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
 81	12561	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
 82	12562	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
@@ -12645,7 +11273,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12564	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
 46	12565	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
 65	12566	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
-9	12567	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
 12	12568	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
 81	12569	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
 82	12570	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
@@ -12653,7 +11280,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12572	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
 46	12573	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
 65	12574	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
-9	12575	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
 12	12576	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
 81	12577	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
 82	12578	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
@@ -12661,7 +11287,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12580	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
 46	12581	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
 65	12582	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
-9	12583	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
 12	12584	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
 81	12585	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
 82	12586	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
@@ -12669,7 +11294,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12588	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
 46	12589	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
 65	12590	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
-9	12591	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
 12	12592	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
 81	12593	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
 82	12594	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
@@ -12677,7 +11301,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12596	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
 46	12597	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
 65	12598	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
-9	12599	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
 12	12600	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
 81	12601	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
 82	12602	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
@@ -12685,7 +11308,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12604	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
 46	12605	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
 65	12606	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
-9	12607	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
 12	12608	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
 81	12609	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
 82	12610	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
@@ -12693,7 +11315,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12612	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
 46	12613	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
 65	12614	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
-9	12615	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
 12	12616	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
 81	12617	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
 82	12618	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
@@ -12701,7 +11322,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12620	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
 46	12621	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
 65	12622	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
-9	12623	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
 12	12624	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
 81	12625	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
 82	12626	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
@@ -12709,7 +11329,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12628	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
 46	12629	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
 65	12630	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
-9	12631	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
 12	12632	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
 81	12633	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
 82	12634	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
@@ -12717,7 +11336,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12636	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
 46	12637	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
 65	12638	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
-9	12639	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
 12	12640	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
 81	12641	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
 82	12642	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
@@ -12725,7 +11343,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12644	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
 46	12645	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
 65	12646	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
-9	12647	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
 12	12648	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
 81	12649	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
 82	12650	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
@@ -12733,7 +11350,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12652	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
 46	12653	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
 65	12654	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
-9	12655	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
 12	12656	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
 81	12657	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
 82	12658	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
@@ -12741,7 +11357,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12660	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
 46	12661	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
 65	12662	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
-9	12663	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
 12	12664	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
 81	12665	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
 82	12666	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
@@ -12749,7 +11364,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12668	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
 46	12669	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
 65	12670	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
-9	12671	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 12	12672	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 81	12673	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 82	12674	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
@@ -12757,7 +11371,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12676	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 46	12677	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 65	12678	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
-9	12679	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
 12	12680	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
 81	12681	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
 82	12682	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
@@ -12765,7 +11378,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12684	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
 46	12685	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
 65	12686	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
-9	12687	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
 12	12688	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
 81	12689	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
 82	12690	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
@@ -12773,7 +11385,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12692	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
 46	12693	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
 65	12694	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
-9	12695	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
 12	12696	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
 81	12697	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
 82	12698	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
@@ -12781,7 +11392,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12700	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
 46	12701	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
 65	12702	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
-9	12703	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
 12	12704	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
 81	12705	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
 82	12706	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
@@ -12789,7 +11399,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12708	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
 46	12709	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
 65	12710	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
-9	12711	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
 12	12712	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
 81	12713	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
 82	12714	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
@@ -12797,7 +11406,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12716	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
 46	12717	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
 65	12718	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
-9	12719	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
 12	12720	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
 81	12721	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
 82	12722	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
@@ -12805,7 +11413,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12724	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
 46	12725	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
 65	12726	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
-9	12727	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
 12	12728	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
 81	12729	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
 82	12730	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
@@ -12813,7 +11420,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12732	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
 46	12733	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
 65	12734	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
-9	12735	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
 12	12736	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
 81	12737	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
 82	12738	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
@@ -12821,7 +11427,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12740	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
 46	12741	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
 65	12742	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
-9	12743	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 12	12744	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 81	12745	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 82	12746	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
@@ -12829,7 +11434,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12748	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 46	12749	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
 65	12750	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
-9	12751	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
 12	12752	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
 81	12753	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
 82	12754	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
@@ -12837,7 +11441,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12756	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
 46	12757	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
 65	12758	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
-9	12759	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
 12	12760	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
 81	12761	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
 82	12762	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
@@ -12845,7 +11448,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12764	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
 46	12765	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
 65	12766	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
-9	12767	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
 12	12768	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
 81	12769	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
 82	12770	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
@@ -12853,7 +11455,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12772	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
 46	12773	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
 65	12774	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
-9	12775	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
 12	12776	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
 81	12777	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
 82	12778	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
@@ -12861,7 +11462,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12780	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
 46	12781	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
 65	12782	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
-9	12783	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
 12	12784	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
 81	12785	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
 82	12786	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
@@ -12869,7 +11469,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12788	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
 46	12789	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
 65	12790	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
-9	12791	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
 12	12792	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
 81	12793	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
 82	12794	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
@@ -12877,7 +11476,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12796	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
 46	12797	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
 65	12798	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
-9	12799	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
 12	12800	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
 81	12801	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
 82	12802	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
@@ -12885,7 +11483,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12804	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
 46	12805	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
 65	12806	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
-9	12807	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
 12	12808	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
 81	12809	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
 82	12810	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
@@ -12893,7 +11490,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12812	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
 46	12813	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
 65	12814	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
-9	12815	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
 12	12816	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
 81	12817	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
 82	12818	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
@@ -12901,7 +11497,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12820	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
 46	12821	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
 65	12822	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
-9	12823	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
 12	12824	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
 81	12825	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
 82	12826	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
@@ -12909,7 +11504,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12828	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
 46	12829	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
 65	12830	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
-9	12831	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
 12	12832	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
 81	12833	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
 82	12834	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
@@ -12917,7 +11511,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12836	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
 46	12837	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
 65	12838	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
-9	12839	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
 12	12840	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
 81	12841	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
 82	12842	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
@@ -12925,7 +11518,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12844	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
 46	12845	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
 65	12846	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
-9	12847	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
 12	12848	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
 81	12849	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
 82	12850	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
@@ -12933,7 +11525,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12852	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
 46	12853	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
 65	12854	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
-9	12855	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
 12	12856	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
 81	12857	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
 82	12858	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
@@ -12941,7 +11532,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12860	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
 46	12861	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
 65	12862	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
-9	12863	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
 12	12864	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
 81	12865	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
 82	12866	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
@@ -12949,7 +11539,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12868	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
 46	12869	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
 65	12870	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
-9	12871	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
 12	12872	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
 81	12873	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
 82	12874	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
@@ -12957,7 +11546,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12876	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
 46	12877	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
 65	12878	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
-9	12879	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
 12	12880	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
 81	12881	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
 82	12882	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
@@ -12965,7 +11553,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12884	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
 46	12885	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
 65	12886	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
-9	12887	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
 12	12888	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
 81	12889	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
 82	12890	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
@@ -12973,7 +11560,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12892	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
 46	12893	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
 65	12894	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
-9	12895	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
 12	12896	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
 81	12897	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
 82	12898	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
@@ -12981,7 +11567,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12900	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
 46	12901	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
 65	12902	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
-9	12903	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
 12	12904	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
 81	12905	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
 82	12906	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
@@ -12989,7 +11574,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12908	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
 46	12909	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
 65	12910	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
-9	12911	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
 12	12912	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
 81	12913	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
 82	12914	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
@@ -12997,7 +11581,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12916	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
 46	12917	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
 65	12918	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
-9	12919	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
 12	12920	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
 81	12921	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
 82	12922	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
@@ -13005,7 +11588,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12924	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
 46	12925	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
 65	12926	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
-9	12927	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
 12	12928	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
 81	12929	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
 82	12930	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
@@ -13013,7 +11595,7 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12932	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
 46	12933	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
 65	12934	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
-9	12935	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
+09	12879	103777	\N	1	\N	14	\N	Iris sibirica L., 1753
 12	12936	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 81	12937	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 82	12938	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
@@ -13021,7 +11603,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12940	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 46	12941	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
 65	12942	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
-9	12943	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
 12	12944	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
 81	12945	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
 82	12946	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
@@ -13029,7 +11610,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12948	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
 46	12949	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
 65	12950	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
-9	12951	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
 12	12952	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
 81	12953	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
 82	12954	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
@@ -13037,7 +11617,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12956	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
 46	12957	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
 65	12958	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
-9	12959	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
 12	12960	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
 81	12961	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
 82	12962	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
@@ -13045,7 +11624,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12964	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
 46	12965	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
 65	12966	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
-9	12967	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
 12	12968	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
 81	12969	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
 82	12970	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
@@ -13053,7 +11631,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12972	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
 46	12973	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
 65	12974	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
-9	12975	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
 12	12976	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
 81	12977	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
 82	12978	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
@@ -13061,7 +11638,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12980	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
 46	12981	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
 65	12982	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
-9	12983	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
 12	12984	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
 81	12985	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
 82	12986	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
@@ -13069,7 +11645,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12988	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
 46	12989	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
 65	12990	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
-9	12991	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
 12	12992	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
 81	12993	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
 82	12994	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
@@ -13077,7 +11652,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	12996	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
 46	12997	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
 65	12998	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
-9	12999	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
 12	13000	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
 81	13001	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
 82	13002	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
@@ -13085,7 +11659,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13004	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
 46	13005	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
 65	13006	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
-9	13007	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
 12	13008	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
 81	13009	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
 82	13010	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
@@ -13093,7 +11666,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13012	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
 46	13013	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
 65	13014	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
-9	13015	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
 12	13016	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
 81	13017	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
 82	13018	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
@@ -13101,7 +11673,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13020	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
 46	13021	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
 65	13022	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
-9	13023	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
 12	13024	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
 81	13025	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
 82	13026	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
@@ -13109,7 +11680,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13028	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
 46	13029	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
 65	13030	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
-9	13031	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
 12	13032	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
 81	13033	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
 82	13034	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
@@ -13117,7 +11687,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13036	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
 46	13037	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
 65	13038	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
-9	13039	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
 12	13040	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
 81	13041	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
 82	13042	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
@@ -13125,7 +11694,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13044	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
 46	13045	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
 65	13046	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
-9	13047	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
 12	13048	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
 81	13049	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
 82	13050	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
@@ -13133,7 +11701,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13052	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
 46	13053	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
 65	13054	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
-9	13055	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
 12	13056	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
 81	13057	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
 82	13058	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
@@ -13141,7 +11708,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13060	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
 46	13061	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
 65	13062	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
-9	13063	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
 12	13064	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
 81	13065	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
 82	13066	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
@@ -13149,7 +11715,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13068	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
 46	13069	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
 65	13070	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
-9	13071	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
 12	13072	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
 81	13073	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
 82	13074	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
@@ -13157,7 +11722,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13076	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
 46	13077	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
 65	13078	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
-9	13079	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
 12	13080	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
 81	13081	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
 82	13082	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
@@ -13165,7 +11729,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13084	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
 46	13085	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
 65	13086	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
-9	13087	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
 12	13088	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
 81	13089	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
 82	13090	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
@@ -13173,7 +11736,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13092	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
 46	13093	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
 65	13094	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
-9	13095	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
 12	13096	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
 81	13097	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
 82	13098	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
@@ -13181,7 +11743,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13100	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
 46	13101	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
 65	13102	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
-9	13103	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
 12	13104	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
 81	13105	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
 82	13106	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
@@ -13189,7 +11750,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13108	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
 46	13109	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
 65	13110	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
-9	13111	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
 12	13112	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
 81	13113	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
 82	13114	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
@@ -13197,7 +11757,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13116	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
 46	13117	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
 65	13118	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
-9	13119	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
 12	13120	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
 81	13121	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
 82	13122	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
@@ -13205,7 +11764,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13124	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
 46	13125	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
 65	13126	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
-9	13127	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
 12	13128	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
 81	13129	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
 82	13130	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
@@ -13213,7 +11771,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13132	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
 46	13133	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
 65	13134	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
-9	13135	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
 12	13136	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
 81	13137	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
 82	13138	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
@@ -13221,7 +11778,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13140	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
 46	13141	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
 65	13142	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
-9	13143	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
 12	13144	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
 81	13145	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
 82	13146	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
@@ -13229,7 +11785,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13148	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
 46	13149	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
 65	13150	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
-9	13151	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
 12	13152	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
 81	13153	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
 82	13154	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
@@ -13237,7 +11792,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13156	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
 46	13157	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
 65	13158	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
-9	13159	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
 12	13160	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
 81	13161	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
 82	13162	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
@@ -13245,7 +11799,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13164	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
 46	13165	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
 65	13166	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
-9	13167	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
 12	13168	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
 81	13169	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
 82	13170	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
@@ -13253,7 +11806,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13172	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
 46	13173	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
 65	13174	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
-9	13175	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
 12	13176	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
 81	13177	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
 82	13178	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
@@ -13261,7 +11813,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13180	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
 46	13181	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
 65	13182	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
-9	13183	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
 12	13184	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
 81	13185	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
 82	13186	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
@@ -13269,7 +11820,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13188	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
 46	13189	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
 65	13190	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
-9	13191	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
 12	13192	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
 81	13193	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
 82	13194	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
@@ -13277,7 +11827,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13196	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
 46	13197	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
 65	13198	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
-9	13199	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
 12	13200	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
 81	13201	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
 82	13202	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
@@ -13285,7 +11834,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13204	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
 46	13205	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
 65	13206	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
-9	13207	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
 12	13208	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
 81	13209	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
 82	13210	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
@@ -13293,7 +11841,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13212	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
 46	13213	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
 65	13214	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
-9	13215	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
 12	13216	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
 81	13217	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
 82	13218	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
@@ -13301,7 +11848,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13220	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
 46	13221	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
 65	13222	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
-9	13223	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
 12	13224	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
 81	13225	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
 82	13226	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
@@ -13309,7 +11855,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13228	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
 46	13229	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
 65	13230	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
-9	13231	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
 12	13232	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
 81	13233	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
 82	13234	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
@@ -13317,7 +11862,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13236	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
 46	13237	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
 65	13238	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
-9	13239	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
 12	13240	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
 81	13241	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
 82	13242	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
@@ -13325,7 +11869,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13244	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
 46	13245	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
 65	13246	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
-9	13247	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
 12	13248	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
 81	13249	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
 82	13250	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
@@ -13333,7 +11876,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13252	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
 46	13253	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
 65	13254	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
-9	13255	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
 12	13256	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
 81	13257	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
 82	13258	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
@@ -13341,7 +11883,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13260	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
 46	13261	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
 65	13262	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
-9	13263	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
 12	13264	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
 81	13265	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
 82	13266	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
@@ -13349,7 +11890,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13268	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
 46	13269	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
 65	13270	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
-9	13271	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
 12	13272	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
 81	13273	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
 82	13274	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
@@ -13357,7 +11897,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13276	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
 46	13277	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
 65	13278	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
-9	13279	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
 12	13280	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
 81	13281	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
 82	13282	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
@@ -13365,7 +11904,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13284	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
 46	13285	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
 65	13286	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
-9	13287	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
 12	13288	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
 81	13289	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
 82	13290	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
@@ -13373,7 +11911,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13292	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
 46	13293	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
 65	13294	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
-9	13295	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
 12	13296	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
 81	13297	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
 82	13298	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
@@ -13381,7 +11918,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13300	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
 46	13301	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
 65	13302	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
-9	13303	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
 12	13304	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
 81	13305	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
 82	13306	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
@@ -13389,7 +11925,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13308	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
 46	13309	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
 65	13310	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
-9	13311	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
 12	13312	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
 81	13313	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
 82	13314	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
@@ -13397,7 +11932,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13316	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
 46	13317	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
 65	13318	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
-9	13319	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
 12	13320	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
 81	13321	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
 82	13322	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
@@ -13405,7 +11939,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13324	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
 46	13325	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
 65	13326	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
-9	13327	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
 12	13328	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
 81	13329	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
 82	13330	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
@@ -13413,7 +11946,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13332	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
 46	13333	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
 65	13334	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
-9	13335	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
 12	13336	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
 81	13337	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
 82	13338	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
@@ -13421,7 +11953,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13340	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
 46	13341	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
 65	13342	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
-9	13343	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
 12	13344	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
 81	13345	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
 82	13346	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
@@ -13429,7 +11960,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13348	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
 46	13349	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
 65	13350	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
-9	13351	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
 12	13352	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
 81	13353	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
 82	13354	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
@@ -13437,7 +11967,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13356	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
 46	13357	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
 65	13358	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
-9	13359	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
 12	13360	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
 81	13361	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
 82	13362	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
@@ -13445,7 +11974,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13364	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
 46	13365	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
 65	13366	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
-9	13367	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
 12	13368	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
 81	13369	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
 82	13370	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
@@ -13453,7 +11981,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13372	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
 46	13373	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
 65	13374	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
-9	13375	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
 12	13376	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
 81	13377	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
 82	13378	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
@@ -13461,7 +11988,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13380	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
 46	13381	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
 65	13382	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
-9	13383	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
 12	13384	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
 81	13385	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
 82	13386	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
@@ -13469,7 +11995,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13388	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
 46	13389	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
 65	13390	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
-9	13391	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
 12	13392	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
 81	13393	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
 82	13394	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
@@ -13477,7 +12002,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13396	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
 46	13397	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
 65	13398	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
-9	13399	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
 12	13400	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
 81	13401	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
 82	13402	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
@@ -13485,7 +12009,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13404	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
 46	13405	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
 65	13406	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
-9	13407	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
 12	13408	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
 81	13409	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
 82	13410	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
@@ -13493,7 +12016,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13412	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
 46	13413	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
 65	13414	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
-9	13415	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
 12	13416	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
 81	13417	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
 82	13418	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
@@ -13501,7 +12023,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13420	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
 46	13421	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
 65	13422	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
-9	13423	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
 12	13424	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
 81	13425	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
 82	13426	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
@@ -13509,7 +12030,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13428	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
 46	13429	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
 65	13430	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
-9	13431	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
 12	13432	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
 81	13433	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
 82	13434	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
@@ -13517,7 +12037,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13436	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
 46	13437	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
 65	13438	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
-9	13439	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
 12	13440	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
 81	13441	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
 82	13442	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
@@ -13525,7 +12044,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13444	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
 46	13445	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
 65	13446	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
-9	13447	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
 12	13448	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
 81	13449	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
 82	13450	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
@@ -13533,7 +12051,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13452	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
 46	13453	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
 65	13454	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
-9	13455	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
 12	13456	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
 81	13457	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
 82	13458	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
@@ -13541,7 +12058,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13460	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
 46	13461	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
 65	13462	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
-9	13463	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
 12	13464	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
 81	13465	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
 82	13466	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
@@ -13549,7 +12065,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13468	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
 46	13469	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
 65	13470	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
-9	13471	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
 12	13472	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
 81	13473	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
 82	13474	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
@@ -13557,7 +12072,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13476	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
 46	13477	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
 65	13478	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
-9	13479	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
 12	13480	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
 81	13481	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
 82	13482	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
@@ -13565,7 +12079,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13484	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
 46	13485	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
 65	13486	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
-9	13487	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
 12	13488	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
 81	13489	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
 82	13490	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
@@ -13573,7 +12086,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13492	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
 46	13493	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
 65	13494	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
-9	13495	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
 12	13496	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
 81	13497	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
 82	13498	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
@@ -13581,7 +12093,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13500	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
 46	13501	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
 65	13502	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
-9	13503	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
 12	13504	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
 81	13505	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
 82	13506	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
@@ -13589,7 +12100,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13508	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
 46	13509	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
 65	13510	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
-9	13511	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
 12	13512	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
 81	13513	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
 82	13514	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
@@ -13597,7 +12107,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13516	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
 46	13517	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
 65	13518	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
-9	13519	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
 12	13520	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
 81	13521	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
 82	13522	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
@@ -13605,7 +12114,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13524	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
 46	13525	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
 65	13526	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
-9	13527	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
 12	13528	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
 81	13529	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
 82	13530	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
@@ -13613,7 +12121,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13532	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
 46	13533	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
 65	13534	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
-9	13535	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
 12	13536	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
 81	13537	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
 82	13538	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
@@ -13621,7 +12128,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13540	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
 46	13541	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
 65	13542	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
-9	13543	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
 12	13544	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
 81	13545	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
 82	13546	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
@@ -13629,7 +12135,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13548	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
 46	13549	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
 65	13550	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
-9	13551	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
 12	13552	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
 81	13553	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
 82	13554	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
@@ -13637,7 +12142,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13556	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
 46	13557	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
 65	13558	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
-9	13559	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
 12	13560	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
 81	13561	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
 82	13562	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
@@ -13645,7 +12149,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13564	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
 46	13565	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
 65	13566	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
-9	13567	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
 12	13568	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
 81	13569	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
 82	13570	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
@@ -13653,7 +12156,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13572	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
 46	13573	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
 65	13574	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
-9	13575	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
 12	13576	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
 81	13577	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
 82	13578	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
@@ -13661,7 +12163,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13580	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
 46	13581	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
 65	13582	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
-9	13583	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
 12	13584	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
 81	13585	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
 82	13586	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
@@ -13669,7 +12170,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13588	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
 46	13589	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
 65	13590	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
-9	13591	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
 12	13592	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
 81	13593	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
 82	13594	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
@@ -13677,7 +12177,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13596	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
 46	13597	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
 65	13598	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
-9	13599	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
 12	13600	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
 81	13601	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
 82	13602	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
@@ -13685,7 +12184,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13604	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
 46	13605	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
 65	13606	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
-9	13607	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
 12	13608	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
 81	13609	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
 82	13610	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
@@ -13693,7 +12191,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13612	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
 46	13613	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
 65	13614	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
-9	13615	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
 12	13616	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
 81	13617	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
 82	13618	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
@@ -13701,7 +12198,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13620	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
 46	13621	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
 65	13622	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
-9	13623	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
 12	13624	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
 81	13625	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
 82	13626	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
@@ -13709,7 +12205,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13628	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
 46	13629	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
 65	13630	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
-9	13631	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
 12	13632	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
 81	13633	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
 82	13634	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
@@ -13717,7 +12212,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13636	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
 46	13637	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
 65	13638	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
-9	13639	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
 12	13640	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
 81	13641	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
 82	13642	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
@@ -13725,7 +12219,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13644	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
 46	13645	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
 65	13646	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
-9	13647	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
 12	13648	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
 81	13649	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
 82	13650	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
@@ -13733,7 +12226,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13652	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
 46	13653	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
 65	13654	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
-9	13655	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
 12	13656	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
 81	13657	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
 82	13658	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
@@ -13741,7 +12233,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13660	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
 46	13661	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
 65	13662	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
-9	13663	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
 12	13664	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
 81	13665	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
 82	13666	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
@@ -13749,7 +12240,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13668	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
 46	13669	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
 65	13670	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
-9	13671	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
 12	13672	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
 81	13673	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
 82	13674	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
@@ -13757,7 +12247,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13676	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
 46	13677	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
 65	13678	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
-9	13679	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
 12	13680	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
 81	13681	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
 82	13682	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
@@ -13765,7 +12254,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13684	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
 46	13685	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
 65	13686	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
-9	13687	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
 12	13688	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
 81	13689	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
 82	13690	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
@@ -13773,7 +12261,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13692	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
 46	13693	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
 65	13694	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
-9	13695	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
 12	13696	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
 81	13697	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
 82	13698	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
@@ -13781,7 +12268,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13700	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
 46	13701	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
 65	13702	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
-9	13703	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
 12	13704	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
 81	13705	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
 82	13706	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
@@ -13789,7 +12275,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13708	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
 46	13709	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
 65	13710	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
-9	13711	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
 12	13712	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
 81	13713	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
 82	13714	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
@@ -13797,7 +12282,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13716	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
 46	13717	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
 65	13718	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
-9	13719	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
 12	13720	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
 81	13721	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
 82	13722	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
@@ -13805,7 +12289,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13724	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
 46	13725	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
 65	13726	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
-9	13727	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
 12	13728	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
 81	13729	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
 82	13730	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
@@ -13813,7 +12296,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13732	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
 46	13733	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
 65	13734	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
-9	13735	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
 12	13736	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
 81	13737	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
 82	13738	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
@@ -13821,7 +12303,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13740	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
 46	13741	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
 65	13742	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
-9	13743	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
 12	13744	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
 81	13745	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
 82	13746	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
@@ -13829,7 +12310,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13748	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
 46	13749	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
 65	13750	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
-9	13751	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
 12	13752	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
 81	13753	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
 82	13754	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
@@ -13837,7 +12317,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13756	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
 46	13757	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
 65	13758	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
-9	13759	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
 12	13760	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
 81	13761	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
 82	13762	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
@@ -13845,7 +12324,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13764	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
 46	13765	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
 65	13766	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
-9	13767	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
 12	13768	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
 81	13769	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
 82	13770	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
@@ -13853,15 +12331,14 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13772	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
 46	13773	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
 65	13774	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
-9	13775	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
 12	13776	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
+09	13727	223790	\N	1	\N	14	\N	Speonomus diecki (Saulcy, 1872)
 81	13777	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
 82	13778	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
 31	13779	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
 32	13780	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
 46	13781	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
 65	13782	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
-9	13783	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
 12	13784	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
 81	13785	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
 82	13786	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
@@ -13869,7 +12346,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13788	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
 46	13789	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
 65	13790	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
-9	13791	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
 12	13792	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
 81	13793	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
 82	13794	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
@@ -13877,7 +12353,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13796	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
 46	13797	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
 65	13798	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
-9	13799	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
 12	13800	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
 81	13801	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
 82	13802	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
@@ -13885,7 +12360,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13804	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
 46	13805	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
 65	13806	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
-9	13807	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
 12	13808	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
 81	13809	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
 82	13810	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
@@ -13893,7 +12367,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13812	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
 46	13813	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
 65	13814	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
-9	13815	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
 12	13816	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
 81	13817	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
 82	13818	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
@@ -13901,7 +12374,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13820	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
 46	13821	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
 65	13822	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
-9	13823	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
 12	13824	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
 81	13825	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
 82	13826	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
@@ -13909,7 +12381,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13828	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
 46	13829	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
 65	13830	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
-9	13831	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
 12	13832	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
 81	13833	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
 82	13834	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
@@ -13917,7 +12388,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13836	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
 46	13837	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
 65	13838	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
-9	13839	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
 12	13840	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
 81	13841	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
 82	13842	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
@@ -13925,7 +12395,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13844	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
 46	13845	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
 65	13846	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
-9	13847	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
 12	13848	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
 81	13849	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
 82	13850	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
@@ -13933,7 +12402,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13852	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
 46	13853	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
 65	13854	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
-9	13855	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
 12	13856	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
 81	13857	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
 82	13858	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
@@ -13941,7 +12409,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13860	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
 46	13861	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
 65	13862	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
-9	13863	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
 12	13864	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
 81	13865	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
 82	13866	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
@@ -13949,7 +12416,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13868	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
 46	13869	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
 65	13870	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
-9	13871	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
 12	13872	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
 81	13873	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
 82	13874	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
@@ -13957,7 +12423,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13876	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
 46	13877	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
 65	13878	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
-9	13879	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
 12	13880	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
 81	13881	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
 82	13882	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
@@ -13965,7 +12430,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13884	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
 46	13885	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
 65	13886	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
-9	13887	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
 12	13888	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
 81	13889	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
 82	13890	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
@@ -13973,7 +12437,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13892	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
 46	13893	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
 65	13894	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
-9	13895	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
 12	13896	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
 81	13897	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
 82	13898	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
@@ -13981,7 +12444,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13900	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
 46	13901	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
 65	13902	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
-9	13903	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
 12	13904	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
 81	13905	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
 82	13906	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
@@ -13989,7 +12451,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13908	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
 46	13909	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
 65	13910	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
-9	13911	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
 12	13912	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
 81	13913	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
 82	13914	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
@@ -13997,7 +12458,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13916	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
 46	13917	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
 65	13918	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
-9	13919	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
 12	13920	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
 81	13921	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
 82	13922	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
@@ -14005,7 +12465,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13924	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
 46	13925	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
 65	13926	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
-9	13927	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
 12	13928	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
 81	13929	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
 82	13930	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
@@ -14013,7 +12472,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13932	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
 46	13933	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
 65	13934	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
-9	13935	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
 12	13936	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
 81	13937	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
 82	13938	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
@@ -14021,7 +12479,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13940	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
 46	13941	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
 65	13942	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
-9	13943	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
 12	13944	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
 81	13945	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
 82	13946	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
@@ -14029,7 +12486,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13948	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
 46	13949	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
 65	13950	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
-9	13951	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
 12	13952	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
 81	13953	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
 82	13954	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
@@ -14037,7 +12493,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13956	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
 46	13957	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
 65	13958	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
-9	13959	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
 12	13960	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
 81	13961	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
 82	13962	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
@@ -14045,7 +12500,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13964	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
 46	13965	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
 65	13966	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
-9	13967	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
 12	13968	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
 81	13969	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
 82	13970	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
@@ -14053,7 +12507,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13972	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
 46	13973	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
 65	13974	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
-9	13975	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
 12	13976	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
 81	13977	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
 82	13978	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
@@ -14061,7 +12514,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13980	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
 46	13981	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
 65	13982	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
-9	13983	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
 12	13984	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
 81	13985	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
 82	13986	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
@@ -14069,7 +12521,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13988	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
 46	13989	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
 65	13990	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
-9	13991	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
 12	13992	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
 81	13993	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
 82	13994	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
@@ -14077,7 +12528,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	13996	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
 46	13997	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
 65	13998	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
-9	13999	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
 12	14000	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
 81	14001	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
 82	14002	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
@@ -14085,7 +12535,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	14004	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
 46	14005	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
 65	14006	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
-9	14007	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
 12	14008	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
 81	14009	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
 82	14010	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
@@ -14093,7 +12542,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	14012	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
 46	14013	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
 65	14014	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
-9	14015	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
 12	14016	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
 81	14017	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
 82	14018	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
@@ -14101,7 +12549,6 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	14020	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
 46	14021	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
 65	14022	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
-9	14023	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
 12	14024	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
 81	14025	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
 82	14026	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
@@ -14109,12 +12556,1565 @@ COPY especesensible (cd_dept, id, cd_nom, duree, codage, autre, cd_sl, cd_occ_st
 32	14028	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
 46	14029	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
 65	14030	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
+08	274	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
+08	275	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
+08	276	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
+08	277	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
+08	278	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
+08	279	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
+08	280	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
+08	281	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
+08	282	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
+08	283	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
+08	284	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
+08	285	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
+08	286	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
+08	287	78164	\N	1	\N	9	\N	Vipera ursinii
+08	288	159453	20	2	\N	9	\N	Cottus petiti
+08	289	67534	20	2	\N	9	\N	Misgurnus fossilis
+08	290	94041	\N	1	\N	9	\N	Cypripedium calceolus
+08	291	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
+08	292	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
+08	293	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
+08	294	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
+08	295	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
+08	296	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
+08	297	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
+08	298	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
+08	299	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
+08	300	64437	20	2	\N	9	\N	Margaritifera auricularia
+08	301	64435	20	2	\N	9	\N	Margaritifera margaritifera
+08	302	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
+08	303	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
+08	304	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
+08	305	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
+08	306	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
+08	307	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
+08	308	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
+08	309	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+08	310	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
+08	311	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
+08	312	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
+08	313	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
+08	314	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+07	1745	67534	20	2	\N	9	\N	Misgurnus fossilis
+08	315	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
+08	316	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
+08	317	701819	\N	1	\N	9	\N	Salamandra atra
+08	318	699127	\N	1	\N	9	\N	Salamandra lanzai
+08	319	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
+08	320	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
+08	321	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
+08	322	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
+08	323	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
+08	324	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
+08	325	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
+08	326	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
+08	327	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
+08	328	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
+08	329	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
+08	330	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
+08	331	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
+08	332	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
+08	333	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
+08	334	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
+08	335	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
+08	336	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
+08	337	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
+08	338	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
+08	339	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
+08	340	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
+08	341	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
+08	342	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
+08	343	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
+08	344	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
+08	345	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
+08	346	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
+08	347	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
+08	348	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
+08	349	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
+08	350	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
+08	351	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
+08	352	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
+08	353	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
+08	354	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
+08	355	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
+08	356	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
+08	357	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
+08	358	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
+08	359	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
+08	360	53856	20	1	\N	9	\N	Euphydryas maturna
+08	361	53651	20	2	\N	9	\N	Coenonympha hero
+08	362	53631	20	2	\N	9	\N	Coenonympha tullia
+08	363	18437	20	2	\N	9	\N	Austropotamobius pallipes
+08	364	240	20	1	\N	9	\N	Pelobates fuscus
+05	911	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
+05	912	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
+05	913	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
+05	914	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
+05	915	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
+05	916	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
+05	917	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
+05	918	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
+05	919	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
+05	920	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
+05	921	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
+05	922	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
+05	923	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
+05	924	78164	\N	1	\N	9	\N	Vipera ursinii
+05	925	159453	20	2	\N	9	\N	Cottus petiti
+05	926	67534	20	2	\N	9	\N	Misgurnus fossilis
+05	927	94041	\N	1	\N	9	\N	Cypripedium calceolus
+05	928	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
+05	929	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
+05	930	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
+05	931	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
+05	932	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
+05	933	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
+05	934	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
+05	935	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
+05	936	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
+05	937	64437	20	2	\N	9	\N	Margaritifera auricularia
+05	938	64435	20	2	\N	9	\N	Margaritifera margaritifera
+05	939	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
+05	940	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
+05	941	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
+05	942	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
+05	943	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
+05	944	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
+05	945	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
+05	946	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+05	947	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
+05	948	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
+05	949	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
+05	950	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
+05	951	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+05	952	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
+05	953	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
+05	954	701819	\N	1	\N	9	\N	Salamandra atra
+05	955	699127	\N	1	\N	9	\N	Salamandra lanzai
+05	956	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
+05	957	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
+05	958	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
+05	959	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
+05	960	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
+05	961	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
+05	962	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
+05	963	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
+05	964	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
+05	965	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
+05	966	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
+05	967	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
+05	968	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
+05	969	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
+05	970	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
+05	971	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
+05	972	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
+05	973	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
+05	974	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
+05	975	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
+05	976	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
+05	977	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
+05	978	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
+05	979	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
+05	980	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
+05	981	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
+05	982	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
+05	983	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
+05	984	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
+05	985	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
+05	986	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
+05	987	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
+05	988	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
+05	989	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
+05	990	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
+05	991	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
+05	992	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
+05	993	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
+05	994	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
+05	995	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
+05	996	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
+05	997	53856	20	1	\N	9	\N	Euphydryas maturna
+05	998	53651	20	2	\N	9	\N	Coenonympha hero
+05	999	53631	20	2	\N	9	\N	Coenonympha tullia
+05	1000	18437	20	2	\N	9	\N	Austropotamobius pallipes
+05	1001	240	20	1	\N	9	\N	Pelobates fuscus
+07	1757	64435	20	2	\N	9	\N	Margaritifera margaritifera
+01	2021	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
+01	2022	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
+07	1730	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
+07	1731	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
+07	1732	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
+07	1733	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
+07	1734	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
+07	1735	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
+07	1736	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
+07	1737	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
+07	1738	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
+07	1739	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
+07	1740	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
+07	1741	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
+07	1742	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
+07	1743	78164	\N	1	\N	9	\N	Vipera ursinii
+07	1744	159453	20	2	\N	9	\N	Cottus petiti
+07	1746	94041	\N	1	\N	9	\N	Cypripedium calceolus
+07	1747	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
+07	1748	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
+07	1749	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
+07	1750	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
+07	1751	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
+07	1752	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
+07	1753	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
+07	1754	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
+07	1755	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
+07	1756	64437	20	2	\N	9	\N	Margaritifera auricularia
+07	1758	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
+07	1759	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
+07	1760	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
+07	1761	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
+07	1762	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
+07	1763	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
+07	1764	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
+07	1765	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+07	1766	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
+07	1767	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
+07	1768	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
+07	1769	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
+07	1770	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+07	1771	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
+07	1772	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
+07	1773	701819	\N	1	\N	9	\N	Salamandra atra
+07	1774	699127	\N	1	\N	9	\N	Salamandra lanzai
+07	1775	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
+07	1776	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
+07	1777	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
+07	1778	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
+07	1779	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
+07	1780	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
+07	1781	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
+07	1782	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
+07	1783	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
+07	1784	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
+07	1785	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
+07	1786	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
+07	1787	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
+07	1788	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
+07	1789	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
+07	1790	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
+07	1791	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
+07	1792	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
+07	1793	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
+07	1794	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
+07	1795	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
+07	1796	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
+07	1797	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
+07	1798	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
+07	1799	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
+07	1800	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
+07	1801	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
+07	1802	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
+07	1803	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
+07	1804	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
+07	1805	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
+07	1806	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
+07	1807	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
+07	1808	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
+07	1809	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
+07	1810	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
+07	1811	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
+07	1812	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
+07	1813	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
+07	1814	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
+07	1815	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
+07	1817	53651	20	2	\N	9	\N	Coenonympha hero
+07	1818	53631	20	2	\N	9	\N	Coenonympha tullia
+07	1819	18437	20	2	\N	9	\N	Austropotamobius pallipes
+07	1820	240	20	1	\N	9	\N	Pelobates fuscus
+01	2003	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
+01	2004	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
+01	2005	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
+01	2006	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
+01	2007	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
+01	2008	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
+01	2009	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
+01	2010	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
+01	2011	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
+01	2012	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
+01	2013	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
+01	2014	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
+01	2015	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
+01	2016	78164	\N	1	\N	9	\N	Vipera ursinii
+01	2017	159453	20	2	\N	9	\N	Cottus petiti
+01	2018	67534	20	2	\N	9	\N	Misgurnus fossilis
+01	2019	94041	\N	1	\N	9	\N	Cypripedium calceolus
+01	2020	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
+01	2023	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
+01	2024	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
+01	2025	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
+01	2026	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
+01	2027	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
+01	2028	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
+01	2029	64437	20	2	\N	9	\N	Margaritifera auricularia
+01	2030	64435	20	2	\N	9	\N	Margaritifera margaritifera
+01	2031	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
+01	2032	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
+01	2033	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
+01	2034	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
+01	2035	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
+01	2036	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
+01	2037	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
+01	2038	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+01	2039	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
+01	2040	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
+01	2041	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
+01	2042	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
+01	2043	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+01	2044	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
+01	2045	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
+01	2046	701819	\N	1	\N	9	\N	Salamandra atra
+01	2047	699127	\N	1	\N	9	\N	Salamandra lanzai
+01	2048	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
+01	2049	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
+01	2050	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
+01	2051	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
+01	2052	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
+01	2053	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
+01	2054	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
+01	2055	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
+01	2056	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
+01	2057	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
+01	2058	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
+01	2059	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
+01	2060	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
+01	2061	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
+01	2062	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
+01	2063	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
+01	2064	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
+01	2065	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
+01	2066	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
+01	2067	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
+01	2068	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
+01	2069	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
+01	2070	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
+01	2071	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
+01	2072	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
+01	2073	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
+01	2074	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
+01	2075	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
+01	2076	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
+01	2077	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
+01	2078	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
+01	2079	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
+01	2080	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
+01	2081	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
+01	2082	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
+01	2083	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
+01	2084	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
+01	2085	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
+01	2086	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
+01	2087	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
+01	2088	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
+01	2090	53651	20	2	\N	9	\N	Coenonympha hero
+01	2091	53631	20	2	\N	9	\N	Coenonympha tullia
+01	2092	18437	20	2	\N	9	\N	Austropotamobius pallipes
+01	2093	240	20	1	\N	9	\N	Pelobates fuscus
+02	2185	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
+02	2186	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
+02	2187	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
+02	2188	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
+02	2189	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
+02	2190	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
+02	2191	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
+02	2192	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
+02	2193	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
+02	2194	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
+02	2195	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
+02	2196	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
+02	2197	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
+02	2198	78164	\N	1	\N	9	\N	Vipera ursinii
+02	2199	159453	20	2	\N	9	\N	Cottus petiti
+02	2200	67534	20	2	\N	9	\N	Misgurnus fossilis
+02	2201	94041	\N	1	\N	9	\N	Cypripedium calceolus
+02	2202	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
+02	2203	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
+02	2204	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
+02	2205	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
+02	2206	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
+02	2207	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
+02	2208	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
+02	2209	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
+02	2210	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
+02	2211	64437	20	2	\N	9	\N	Margaritifera auricularia
+02	2212	64435	20	2	\N	9	\N	Margaritifera margaritifera
+02	2213	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
+02	2214	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
+02	2215	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
+02	2216	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
+02	2217	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
+02	2218	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
+02	2219	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
+02	2220	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+02	2221	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
+02	2222	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
+02	2223	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
+02	2224	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
+02	2225	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+02	2226	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
+02	2227	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
+02	2228	701819	\N	1	\N	9	\N	Salamandra atra
+02	2229	699127	\N	1	\N	9	\N	Salamandra lanzai
+02	2230	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
+02	2231	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
+02	2232	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
+02	2233	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
+02	2234	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
+02	2235	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
+03	7062	87420	\N	1	\N	8	\N	Calendula arvensis L., 1763
+02	2236	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
+02	2237	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
+02	2238	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
+02	2239	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
+02	2240	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
+02	2241	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
+02	2242	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
+02	2243	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
+02	2244	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
+02	2245	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
+02	2246	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
+02	2247	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
+02	2248	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
+02	2249	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
+02	2250	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
+02	2251	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
+02	2252	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
+02	2253	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
+02	2254	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
+02	2255	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
+02	2256	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
+02	2257	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
+02	2258	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
+02	2259	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
+02	2260	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
+02	2261	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
+02	2262	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
+02	2263	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
+02	2264	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
+02	2265	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
+02	2266	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
+02	2267	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
+02	2268	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
+02	2269	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
+02	2270	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
+02	2271	53856	20	1	\N	9	\N	Euphydryas maturna
+02	2272	53651	20	2	\N	9	\N	Coenonympha hero
+02	2273	53631	20	2	\N	9	\N	Coenonympha tullia
+02	2274	18437	20	2	\N	9	\N	Austropotamobius pallipes
+02	2275	240	20	1	\N	9	\N	Pelobates fuscus
+06	2276	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
+06	2277	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
+06	2278	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
+06	2279	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
+06	2280	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
+06	2281	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
+06	2282	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
+06	2283	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
+06	2284	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
+06	2285	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
+06	2286	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
+06	2287	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
+06	2288	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
+06	2289	78164	\N	1	\N	9	\N	Vipera ursinii
+06	2290	159453	20	2	\N	9	\N	Cottus petiti
+06	2291	67534	20	2	\N	9	\N	Misgurnus fossilis
+06	2292	94041	\N	1	\N	9	\N	Cypripedium calceolus
+06	2293	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
+06	2294	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
+06	2295	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
+06	2296	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
+06	2297	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
+06	2298	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
+06	2299	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
+06	2300	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
+06	2301	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
+06	2302	64437	20	2	\N	9	\N	Margaritifera auricularia
+06	2303	64435	20	2	\N	9	\N	Margaritifera margaritifera
+06	2304	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
+06	2305	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
+06	2306	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
+06	2307	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
+06	2308	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
+06	2309	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
+06	2310	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
+06	2311	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+06	2312	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
+06	2313	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
+06	2314	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
+06	2315	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
+06	2316	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+06	2317	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
+06	2318	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
+06	2319	701819	\N	1	\N	9	\N	Salamandra atra
+06	2320	699127	\N	1	\N	9	\N	Salamandra lanzai
+06	2321	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
+06	2322	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
+06	2323	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
+06	2324	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
+06	2325	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
+06	2326	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
+06	2327	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
+06	2328	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
+06	2329	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
+06	2330	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
+06	2331	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
+06	2332	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
+06	2333	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
+06	2334	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
+06	2335	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
+06	2336	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
+06	2337	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
+06	2338	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
+06	2339	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
+06	2340	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
+06	2341	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
+06	2342	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
+06	2343	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
+06	2344	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
+06	2345	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
+06	2346	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
+06	2347	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
+06	2348	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
+06	2349	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
+06	2350	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
+06	2351	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
+06	2352	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
+06	2353	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
+06	2354	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
+06	2355	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
+06	2356	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
+06	2357	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
+06	2358	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
+06	2359	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
+06	2360	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
+06	2361	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
+06	2362	53856	20	1	\N	9	\N	Euphydryas maturna
+06	2363	53651	20	2	\N	9	\N	Coenonympha hero
+06	2364	53631	20	2	\N	9	\N	Coenonympha tullia
+06	2365	18437	20	2	\N	9	\N	Austropotamobius pallipes
+06	2366	240	20	1	\N	9	\N	Pelobates fuscus
+04	4096	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis brandtii
+04	4097	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis brandtii
+04	4098	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis alcathoe
+04	4099	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis alcathoe
+04	4100	79299	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis alcathoe
+04	4101	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis punicus
+04	4102	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis punicus
+04	4103	79298	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis punicus
+04	4104	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus austriacus
+04	4105	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus austriacus
+04	4106	60527	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus austriacus
+04	4107	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus auritus
+04	4108	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus auritus
+04	4109	78164	\N	1	\N	9	\N	Vipera ursinii
+04	4110	159453	20	2	\N	9	\N	Cottus petiti
+04	4111	67534	20	2	\N	9	\N	Misgurnus fossilis
+04	4112	94041	\N	1	\N	9	\N	Cypripedium calceolus
+04	4113	3638	1	1	uniquement si observation de nidification 	9	3	Picoides tridactylus
+04	4114	3076	10	3	uniquement si observation de nidification 	9	3	Grus grus
+04	4115	2964	20	1	Place de chant, lek.	9	3	Tetrao urogallus
+04	4116	2852	10	2	uniquement si observation de nidification ?	9	3	Gypaetus barbatus
+04	4117	2848	10	3	uniquement si observation de nidification 	9	3	Haliaeetus albicilla
+04	4118	2657	10	3	uniquement si observation de nidification 	9	3	Hieraaetus fasciatus
+04	4119	836345	10	3	uniquement si observation de nidification 	9	3	Aquila pomarina
+04	4120	2514	10	3	uniquement si observation de nidification 	9	3	Ciconia nigra
+04	4121	2869	10	2	uniquement si observation de nidification	9	3	Aegypius monachus
+04	4122	64437	20	2	\N	9	\N	Margaritifera auricularia
+04	4123	64435	20	2	\N	9	\N	Margaritifera margaritifera
+04	4124	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis daubentonii
+04	4125	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis daubentonii
+04	4126	200118	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis daubentonii
+04	4127	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Plecotus macrobullaris
+04	4128	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Plecotus macrobullaris
+04	4129	163463	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus macrobullaris
+04	4130	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Miniopterus schreibersii
+04	4131	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Miniopterus schreibersii
+04	4132	79305	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Miniopterus schreibersii
+04	4133	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis bechsteinii
+04	4134	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis bechsteinii
+04	4135	79301	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis bechsteinii
+04	4136	79300	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis brandtii
+04	4137	60518	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Plecotus auritus
+04	4138	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis dasycneme
+04	4139	701819	\N	1	\N	9	\N	Salamandra atra
+04	4140	699127	\N	1	\N	9	\N	Salamandra lanzai
+04	4141	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis dasycneme
+04	4142	60447	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis dasycneme
+04	4143	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis capaccinii
+04	4144	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis capaccinii
+04	4145	60439	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis capaccinii
+04	4146	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis blythii
+04	4147	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis blythii
+04	4148	60427	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis blythii
+04	4149	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis myotis
+04	4150	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis myotis
+04	4151	60418	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis myotis
+04	4152	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis escalerai
+04	4153	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis escalerai
+04	4154	60411	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis escalerai
+04	4155	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis nattereri
+04	4156	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis nattereri
+04	4157	60408	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis nattereri
+04	4158	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis emarginatus
+04	4159	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis emarginatus
+04	4160	60400	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis emarginatus
+04	4161	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Myotis mystacinus
+04	4162	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Myotis mystacinus
+04	4163	60383	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Myotis mystacinus
+04	4164	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Barbastella barbastellus
+04	4165	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Barbastella barbastellus
+04	4166	60345	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Barbastella barbastellus
+04	4167	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus mehelyi
+04	4168	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus mehelyi
+04	4169	60337	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus mehelyi
+04	4170	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus euryale
+04	4171	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus euryale
+04	4172	60330	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus euryale
+04	4173	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus hipposideros
+04	4174	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus hipposideros
+04	4175	60313	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus hipposideros
+04	4176	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	7	Rhinolophus ferrumequinum
+04	4177	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	4	Rhinolophus ferrumequinum
+04	4178	60295	\N	2	Gîtes hypogés et fortifications (données de détection acoustique non sensibles)	9	3	Rhinolophus ferrumequinum
+04	4179	60826	1	2	uniquement l'emplacement des tanières	9	3	Ursus arctos
+04	4180	60612	1	2	uniquement l'emplacement gîte de mise bas	9	3	Lynx lynx
+04	4181	60577	1	2	uniquement l'emplacement des terriers	9	3	Canis lupus
+04	4182	53856	20	1	\N	9	\N	Euphydryas maturna
+04	4183	53651	20	2	\N	9	\N	Coenonympha hero
+04	4184	53631	20	2	\N	9	\N	Coenonympha tullia
+04	4185	18437	20	2	\N	9	\N	Austropotamobius pallipes
+04	4186	240	20	1	\N	9	\N	Pelobates fuscus
+03	5858	160269	\N	1	\N	8	\N	Trifolium squamosum L., 1759
+03	5826	134096	\N	1	\N	8	\N	Empetrum nigrum L. subsp. nigrum
+03	5830	136883	\N	1	\N	8	\N	Jasione crispa subsp. arvernensis Tutin, 1973
+03	5834	138067	\N	1	\N	8	\N	Neslia paniculata subsp. thracica (Velen.) Bornm., 1894
+03	5838	138865	\N	1	\N	8	\N	Pisum sativum subsp. biflorum (Raf.) Soldano, 1992
+03	5842	143985	\N	1	\N	8	\N	Asplenium adiantum-nigrum var. silesiacum (Milde) Milde, 1867
+03	5846	155051	\N	1	\N	8	\N	Spiraea hypericifolia subsp. obovata (Waldst. & Kit. ex Willd.) H.Huber, 1964
+03	5850	159441	\N	1	\N	8	\N	Limoniscus violaceus (P. W. J. Müller, 1821)
+03	5854	159574	\N	1	\N	8	\N	Calamagrostis neglecta G.Gaertn., B.Mey. & Scherb., 1799
+03	5862	64460	\N	1	\N	8	\N	Pseudanodonta complanata subsp ligerica Bourguignat, 1880
+03	5866	199294	\N	3	\N	8	\N	Bonasa bonasia (Linnaeus, 1758)
+03	5874	200406	\N	3	\N	8	\N	Ceruchus chrysomelinus (Hochenwart, 1785)
+03	5878	222951	\N	3	\N	8	\N	Rhysodes sulcatus (Fabricius, 1787)
+03	5882	235422	\N	3	\N	8	\N	Peltis grossa (Linnaeus, 1758)
+03	5886	235425	\N	3	\N	8	\N	Grynocharis oblonga (Linnaeus, 1758)
+03	5890	244664	\N	3	\N	8	\N	Neatus picipes (Herbst, 1797)
+03	5894	244672	\N	1	\N	8	\N	Tribolium madens (Charpentier, 1825)
+03	5898	306611	\N	3	\N	8	\N	Benibotarus taygetanus (Pic, 1905)
+03	5902	416838	\N	3	\N	8	\N	Corticeus bicoloroides (Roubal, 1933)
+03	5906	432710	\N	2	site de nidification	8	\N	Falco peregrinus nesiotes Mayr, 1941
+03	5910	433999	\N	1	\N	8	\N	Entosthodon muhlenbergii (Turner) Fife
+03	5914	434000	\N	1	\N	8	\N	Entosthodon pulchellus (H.Philib.) Brugués
+03	5918	434128	\N	1	\N	8	\N	Dicranum spadiceum J.E.Zetterst.
+03	5922	434157	\N	1	\N	8	\N	Pottiopsis caespitosa (Brid.) Blockeel & A.J.E.Sm.
+03	5926	902013	\N	1	\N	8	\N	Microbryum curvicollum (Hedw.) R.H.Zander
+03	5930	434209	\N	1	\N	8	\N	Microbryum davallianum (Sm.) R.H.Zander
+03	5934	434213	\N	1	\N	8	\N	Microbryum rectum (With.) R.H.Zander
+03	5938	434214	\N	1	\N	8	\N	Microbryum starckeanum (Hedw.) R.H.Zander
+03	5942	435867	\N	1	\N	8	\N	Protobryum bryoides (Dicks.) J.Guerra & M.J.Cano
+03	5946	434251	\N	1	\N	8	\N	Tortula hoppeana (Schultz) Ochyra
+03	5950	434342	\N	1	\N	8	\N	Pohlia sphagnicola (Bruch & Schimp.) Broth.
+03	5954	434378	\N	1	\N	8	\N	Campyliadelphus elodes (Lindb.) Kanda
+03	5958	5516	\N	1	\N	8	\N	Pseudocalliergon lycopodioides (Brid.) Hedenäs
+03	5962	770790	\N	1	\N	8	\N	Pseudocalliergon trifarium (F.Weber & D.Mohr) Loeske
+03	5966	434420	\N	1	\N	8	\N	Helodium blandowii (F.Weber & D.Mohr) Warnst.
+03	5970	434441	\N	1	\N	8	\N	Oxyrrhynchium schleicheri (R.Hedw.) Röll
+03	5974	434458	\N	1	\N	8	\N	Brachythecium tommasinii (Sendtn. ex Boulay) Ignatov & Huttunen
+03	5978	434468	\N	1	\N	8	\N	Calliergonella lindbergii (Mitt.) Hedenäs
+03	5982	436220	\N	1	\N	8	\N	Campylophyllum calcareum (Crundw. & Nyholm) Hedenäs
+03	5986	434483	\N	1	\N	8	\N	Isopterygiopsis pulchella (Hedw.) Z.Iwats.
+03	5990	436534	\N	1	\N	8	\N	Oxymitra incrassata (Brot.) Sergio et Sim-Sim
+03	5994	444430	\N	1	\N	8	\N	Ichthyosaura alpestris (Laurenti, 1768)
+03	5998	444431	\N	2	\N	8	\N	Lissotriton vulgaris (Linnaeus, 1758)
+03	6002	444440	\N	1	\N	8	\N	Pelophylax kl. esculentus (Linnaeus, 1758)
+03	6006	444441	\N	1	\N	8	\N	Pelophylax lessonae (Camerano, 1882)
+03	6010	444443	\N	1	\N	8	\N	Pelophylax ridibundus (Pallas, 1771)
+03	6014	444446	\N	1	\N	8	\N	Zamenis longissimus (Laurenti, 1768)
+03	6018	447951	\N	1	\N	8	\N	Adiantum capillus-veneris L., 1753
+03	6026	458706	\N	1	\N	8	\N	Eresus kollari Rossi, 1846
+03	6030	92421	\N	1	\N	8	\N	Corallorrhiza trifida Châtel.
+03	6034	521628	\N	1	\N	8	\N	Epipactis exilis P.Delforge, 2004
+03	6038	608286	\N	2	\N	8	\N	Lycaena helle magdalenae Guérin, 1959
+03	6042	610647	\N	1	\N	8	\N	Jacobaea leucophylla (DC.) Pelser, 2006
+03	6046	610656	\N	1	\N	8	\N	Jacobaea x mirabilis (Gaut. ex Rouy) B.Bock, 2012
+03	6050	610859	\N	1	\N	8	\N	Paragymnopteris marantae (L.) K.H.Shing, 1994
+03	6054	611455	\N	1	\N	8	\N	Rhaponticum coniferum (L.) Greuter, 2003
+03	6058	613479	\N	1	\N	8	\N	Camelina sativa var. pilosa DC.
+03	6062	651457	\N	1	\N	8	\N	Gonotropis dorsalis (Gyllenhal, 1813)
+03	6066	698968	\N	3	\N	8	\N	Corticeus suberis (Lucas, 1846)
+03	6070	786525	\N	1	\N	8	\N	Bryum algovicum Sendtn. ex Müll.Hal. var. rutheanum (Warnst.) Crundw.
+03	7066	87577	\N	1	\N	8	\N	Camelina microcarpa Andrz. ex DC., 1821
+03	6074	786543	\N	1	\N	8	\N	Cephalozia macrostachya Kaal. var. spiniflora (Schiffn.) Müll.Frib.
+03	6078	434476	\N	1	\N	8	\N	Hypnum uncinulatum Jur.
+03	6082	786514	\N	1	\N	8	\N	Jungermannia exsertifolia Steph. subsp. cordifolia (Dum.) Vána
+03	6086	434521	\N	1	\N	8	\N	Sphagnum majus (Russow) C.E.O.Jensen subsp. norvegicum Flatberg
+03	6090	434249	\N	1	\N	8	\N	Tortula cernua (Huebener) Lindb.
+03	6094	6819	\N	1	\N	8	\N	Phaeoceros carolinianus (Michx.) Prosk.
+03	6098	96476	\N	1	\N	8	\N	Epipactis rhodanensis Gévaudan & Robatsch, 1994
+03	6102	99994	\N	1	\N	8	\N	Gentianopsis ciliata (L.) Ma, 1951
+03	6110	139	\N	2	\N	8	\N	Triturus cristatus (Laurenti, 1768)
+03	6114	163	\N	2	\N	8	\N	Triturus marmoratus (Latreille, 1800)
+03	6118	212	\N	2	\N	8	\N	Bombina variegata (Linnaeus, 1758)
+03	6122	252	\N	2	\N	8	\N	Pelodytes punctatus (Daudin, 1803)
+03	6126	281	\N	1	\N	8	\N	Hyla arborea (Linnaeus, 1758)
+03	6130	310	\N	1	\N	8	\N	Rana dalmatina Fitzinger in Bonaparte, 1838
+03	6134	351	\N	1	\N	8	\N	Rana temporaria Linnaeus, 1758
+03	6138	887	\N	1	\N	8	\N	Atypus piceus
+03	6142	2060	\N	1	\N	8	\N	Philaeus chrysops (Poda, 1761)
+03	6146	2477	\N	2	site de nidification	8	\N	Ixobrychus minutus (Linnaeus, 1766)
+03	6150	2481	\N	2	site de nidification	8	\N	Nycticorax nycticorax (Linnaeus, 1758)
+03	6154	2486	\N	2	site de nidification	8	\N	Ardeola ralloides (Scopoli, 1769)
+03	6158	2489	\N	2	site de nidification	8	\N	Bubulcus ibis (Linnaeus, 1758)
+03	6162	2497	\N	2	site de nidification	8	\N	Egretta garzetta (Linnaeus, 1766)
+03	6166	2504	\N	2	site de nidification	8	\N	Ardea alba Linnaeus, 1758
+03	6170	2506	\N	2	site de nidification	8	\N	Ardea cinerea Linnaeus, 1758
+03	6174	2508	\N	2	site de nidification	8	\N	Ardea purpurea Linnaeus, 1766
+03	6178	2514	\N	3	site de nidification	8	\N	Ciconia nigra (Linnaeus, 1758)
+03	6182	2517	\N	2	site de nidification	8	\N	Ciconia ciconia (Linnaeus, 1758)
+03	6186	2538	\N	2	\N	8	\N	Lymnocryptes minimus (Brünnich, 1764)
+03	6190	2543	\N	2	\N	8	\N	Gallinago gallinago (Linnaeus, 1758)
+03	6194	2559	\N	2	\N	8	\N	Scolopax rusticola Linnaeus, 1758
+03	6198	2645	\N	2	site de nidification	8	\N	Aquila chrysaetos (Linnaeus, 1758)
+03	6202	2651	\N	2	site de nidification	8	\N	Hieraaetus pennatus (Gmelin, 1788)
+03	6206	2660	\N	2	site de nidification	8	\N	Pandion haliaetus (Linnaeus, 1758)
+03	6210	2679	\N	2	site de nidification	8	\N	Falco subbuteo Linnaeus, 1758
+03	6214	2720	\N	2	\N	8	\N	Anser fabalis (Latham, 1787)
+03	6218	2734	\N	2	\N	8	\N	Anser albifrons (Scopoli, 1769)
+03	6222	2741	\N	2	\N	8	\N	Anser anser (Linnaeus, 1758)
+03	6226	2832	\N	2	site de nidification	8	\N	Pernis apivorus (Linnaeus, 1758)
+03	6230	2840	\N	2	site de nidification + dortoir	8	\N	Milvus migrans (Boddaert, 1783)
+03	6234	2844	\N	2	site de nidification + dortoir	8	\N	Milvus milvus (Linnaeus, 1758)
+03	6238	2873	\N	2	site de nidification	8	\N	Circaetus gallicus (Gmelin, 1788)
+03	6242	2878	\N	2	\N	8	\N	Circus aeruginosus (Linnaeus, 1758)
+03	6246	2881	\N	2	site de nidification	8	\N	Circus cyaneus (Linnaeus, 1758)
+03	6250	2887	\N	1	site de nidification	8	\N	Circus pygargus (Linnaeus, 1758)
+03	6254	2891	\N	2	site de nidification	8	\N	Accipiter gentilis (Linnaeus, 1758)
+03	6258	2938	\N	2	site de nidification	8	\N	Falco peregrinus Tunstall, 1771
+03	6262	3343	\N	2	site de nidification	8	\N	Sterna hirundo Linnaeus, 1758
+03	6266	3352	\N	2	site de nidification	8	\N	Sternula albifrons (Pallas, 1764)
+03	6274	3507	\N	2	\N	8	\N	Glaucidium passerinum (Linnaeus, 1758)
+03	6278	3533	\N	2	\N	8	\N	Aegolius funereus (Linnaeus, 1758)
+03	6282	3571	\N	1	site de nidification	8	\N	Alcedo atthis (Linnaeus, 1758)
+03	6286	3582	\N	2	site de nidification	8	\N	Merops apiaster Linnaeus, 1758
+03	6290	3601	\N	2	\N	8	\N	Picus canus Gmelin, 1788
+03	6294	3844	\N	1	\N	8	\N	Tetrodontium brownianum (Dicks.) Schwägr.
+03	6298	3900	\N	1	\N	8	\N	Fissidens celticus Paton
+03	6302	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
+03	6306	3915	\N	1	\N	8	\N	Crossidium squamiferum (Viv.) Jur.
+03	6310	4393	\N	1	\N	8	\N	Fissidens rivularis (Spruce) Schimp.
+03	6314	4411	\N	1	\N	8	\N	Arctoa fulvella (Dicks.) Bruch & Schimp.
+03	6318	4414	\N	1	\N	8	\N	Campylopus brevipilus Bruch & Schimp.
+03	6322	4429	\N	1	\N	8	\N	Campylopus subulatus Schimp. ex Milde
+03	6326	4441	\N	1	\N	8	\N	Dicranella cerviculata (Hedw.) Schimp.
+03	6330	4510	\N	2	site de nidification	8	\N	Corvus corax Linnaeus, 1758
+03	6334	4726	\N	1	\N	8	\N	Dicranella varia (Hedw.) Schimp.
+03	6338	4770	\N	1	\N	8	\N	Leucobryum glaucum (Hedw.) Ångstr.
+03	6342	4775	\N	1	\N	8	\N	Oncophorus virens (Hedw.) Brid.
+03	6346	4779	\N	1	\N	8	\N	Dicranum flagellare Hedw.
+03	6350	4786	\N	1	\N	8	\N	Paraleucobryum enerve (Thed.) Loeske
+03	6354	4788	\N	1	\N	8	\N	Paraleucobryum sauteri (Bruch & Schimp.) Loeske
+03	6358	4820	\N	1	\N	8	\N	Ditrichum pusillum (Hedw.) Hampe
+03	6362	4859	\N	1	\N	8	\N	Acaulon muticum (Hedw.) Müll.Hal.
+03	6366	4862	\N	1	\N	8	\N	Acaulon triquetrum (Spruce) Müll.Hal.
+03	6370	4868	\N	1	\N	8	\N	Mielichhoferia elongata (Hoppe & Hornsch. ex Hook.) Hornsch.
+03	6374	4898	\N	1	\N	8	\N	Pohlia ludwigii (Spreng. ex Schwägr.) Broth.
+03	6378	4920	\N	1	\N	8	\N	Mnium marginatum (Dicks.) P.Beauv.
+03	6382	4924	\N	1	\N	8	\N	Mnium spinosum (Voit) Schwägr.
+03	6386	4941	\N	1	\N	8	\N	Plagiomnium medium (Bruch & Schimp.) T.J.Kop.
+03	6390	4962	\N	1	\N	8	\N	Amblyodon dealbatus (Hedw.) P.Beauv.
+03	6394	4966	\N	1	\N	8	\N	Meesia uliginosa Hedw.
+03	6398	4981	\N	1	\N	8	\N	Breutelia chrysocoma (Hedw.) Lindb.
+03	6402	4990	\N	1	\N	8	\N	Philonotis marchica (Hedw.) Brid.
+03	6406	5047	\N	1	\N	8	\N	Orthotrichum urnigerum Myrin
+03	6410	5065	\N	1	\N	8	\N	Zygodon forsteri (Dicks.) Mitt.
+03	6414	5120	\N	1	\N	8	\N	Leptodon smithii (Hedw.) F.Weber & D.Mohr
+03	6418	436157	\N	1	\N	8	\N	Ptychodium plicatum (Schleich. ex F.Weber & D.Mohr) Schimp.
+03	6422	5205	\N	1	\N	8	\N	Pterygoneurum ovatum (Hedw.) Dixon
+03	6426	5210	\N	1	\N	8	\N	Tortula atrovirens (Sm.) Lindb.
+03	6430	5219	\N	1	\N	8	\N	Tortula inermis (Brid.) Mont.
+03	6434	5223	\N	1	\N	8	\N	Tortula marginata (Bruch & Schimp.) Spruce
+03	6438	786478	\N	1	\N	8	\N	Barbula crocea (Brid.) F.Weber & D.Mohr
+03	6442	5273	\N	1	\N	8	\N	Didymodon acutus (Brid.) K.Saito
+03	6446	5281	\N	1	\N	8	\N	Didymodon ferrugineus (Schimp. ex Besch.) M.O.Hill
+03	6450	5283	\N	1	\N	8	\N	Didymodon icmadophilus (Schimp. ex Müll.Hal.) K.Saito
+03	6454	5289	\N	1	\N	8	\N	Didymodon luridus Hornsch.
+03	6458	5343	\N	1	\N	8	\N	Tortella flavovirens (Bruch) Broth.
+03	6462	5347	\N	1	\N	8	\N	Tortella inclinata (R.Hedw.) Limpr.
+03	6466	5362	\N	1	\N	8	\N	Weissia brachycarpa (Nees & Hornsch.) Jur.
+03	6470	5415	\N	1	\N	8	\N	Heterocladium wulfsbergii I.Hagen
+03	6474	5431	\N	1	\N	8	\N	Platydictya jungermannioides (Brid.) H.A.Crum
+03	6478	5520	\N	1	\N	8	\N	Drepanocladus sendtneri (Schimp. ex H.Müll.) Warnst.
+03	6482	5529	\N	1	\N	8	\N	Grimmia caespiticia (Brid.) Jur.
+03	6486	5534	\N	1	\N	8	\N	Grimmia elatior Bruch ex Bals.-Criv. & De Not.
+03	6490	5547	\N	1	\N	8	\N	Grimmia orbicularis Bruch ex Wilson
+03	6494	5583	\N	1	\N	8	\N	Racomitrium microcarpon (Hedw.) Brid.
+03	6498	5637	\N	1	\N	8	\N	Physcomitrella patens (Hedw.) Bruch & Schimp.
+03	6502	5643	\N	1	\N	8	\N	Entosthodon obtusus (Hedw.) Lindb.
+03	6506	5660	\N	1	\N	8	\N	Physcomitrium sphaericum (C.F.Ludw. ex Schkuhr) Brid.
+03	6510	5670	\N	1	\N	8	\N	Ephemerum recurvifolium (Dicks.) Boulay
+03	6518	786473	\N	1	\N	8	\N	Bryum creberrimum Taylor
+03	6522	5738	\N	1	\N	8	\N	Bryum elegans Nees
+03	6526	5744	\N	1	\N	8	\N	Bryum gemmiparum De Not.
+03	6530	786419	\N	1	\N	8	\N	Bryum mildeanum Jur.
+03	6534	436028	\N	1	\N	8	\N	Bryum muehlenbeckii Bruch & Schimp.
+03	6538	5773	\N	1	\N	8	\N	Bryum turbinatum (Hedw.) Turner
+03	6542	5796	\N	1	\N	8	\N	Hygrohypnum luridum (Hedw.) Jenn.
+03	6546	5797	\N	1	\N	8	\N	Hygrohypnum molle (Hedw.) Loeske
+03	6550	5870	\N	1	\N	8	\N	Oxyrrhynchium speciosum (Brid.) Warnst.
+03	6554	5881	\N	1	\N	8	\N	Homalothecium philippeanum (Spruce) Schimp.
+03	6558	5898	\N	1	\N	8	\N	Rhynchostegiella curviseta (Brid.) Limpr.
+03	6562	5924	\N	1	\N	8	\N	Scleropodium touretii (Brid.) L.F.Koch
+03	6566	5990	\N	1	\N	8	\N	Callicladium haldanianum (Grev.) H.A.Crum
+03	6570	6054	\N	1	\N	8	\N	Hypnum hamulosum Schimp.
+03	6574	904305	\N	1	\N	8	\N	Hypnum vaucheri Lesq.
+03	6578	6204	\N	1	\N	8	\N	Riccia beyrichiana Hampe ex Lehm.
+03	6582	6210	\N	1	\N	8	\N	Riccia cavernosa Roffm.
+03	6586	6212	\N	1	\N	8	\N	Riccia ciliifera Link ex Lindenb.
+03	6590	6218	\N	1	\N	8	\N	Riccia glauca L.
+03	6594	6227	\N	1	\N	8	\N	Riccia papillosa Moris
+03	6598	6279	\N	1	\N	8	\N	Pallavicinia lyellii (Hook.) Carruth.
+03	6602	6285	\N	1	\N	8	\N	Fossombronia angulosa (Dicks.) Raddi
+03	6606	6286	\N	1	\N	8	\N	Fossombronia caespitiformis De Not. ex Rabenh.
+03	6610	6294	\N	1	\N	8	\N	Fossombronia pusilla (L.) Nees
+03	6614	6305	\N	1	\N	8	\N	Anastrepta orcadensis (Hook.) Schiffn.
+03	6618	786410	\N	1	\N	8	\N	Barbilophozia atlantica (Kaal.) Müll.Frib.
+03	6622	786444	\N	1	\N	8	\N	Leiocolea turbinata (Raddi) H.Buch
+03	6626	6405	\N	1	\N	8	\N	Jungermannia polaris Lindb.
+03	6630	6418	\N	1	\N	8	\N	Mylia taylorii (Hook.) Gray
+03	6634	6422	\N	1	\N	8	\N	Nardia geoscyphus (De Not.) Lindb.
+03	6638	6434	\N	1	\N	8	\N	Gymnomitrion obtusum Lindb.
+03	6642	6453	\N	1	\N	8	\N	Marsupella sparsifolia (Lindb.) Dumort.
+03	6646	6454	\N	1	\N	8	\N	Marsupella sphacelata (Gieseke ex Lindenb.) Dumort.
+03	6650	6463	\N	1	\N	8	\N	Southbya tophacea (Spruce) Spruce
+03	6654	6488	\N	1	\N	8	\N	Harpanthus flotovianus (Nees) Nees
+03	6658	6489	\N	1	\N	8	\N	Harpanthus scutatus (F.Weber et D.Mohr) Spruce
+03	6662	6520	\N	1	\N	8	\N	Scapania cuspiduligera (Nees) Müll.Frib.
+03	6666	6528	\N	1	\N	8	\N	Scapania mucronata H.Buch
+03	6670	6537	\N	1	\N	8	\N	Scapania uliginosa (Sw. ex Lindenb.) Dumort.
+03	6674	6550	\N	1	\N	8	\N	Cephaloziella baumgartneri Schiffn.
+03	6678	6557	\N	1	\N	8	\N	Cephaloziella grimsulana (J.B.Jack ex Gottsche et Rabenh.) Lacout.
+03	6682	6559	\N	1	\N	8	\N	Cephaloziella integerrima (Lindb.) Warnst.
+03	6686	6560	\N	1	\N	8	\N	Cephaloziella massalongi (Spruce) Müll.Frib.
+03	6690	6568	\N	1	\N	8	\N	Cephaloziella turneri (Hook.) Müll.Frib.
+03	6694	786425	\N	1	\N	8	\N	Cephalozia pleniceps (Austin) Lindb.
+03	6698	6658	\N	1	\N	8	\N	Radula lindenbergiana Gottsche ex C.Hartm.
+03	6702	718190	\N	1	\N	8	\N	Aphanolejeunea microscopica (Taylor) A.Evans
+03	6706	783399	\N	1	\N	8	\N	Cololejeunea minutissima (Sm.) Schiffn.
+03	6710	6722	\N	1	\N	8	\N	Sphagnum angustifolium (C.E.O.Jensen ex Russow) C.E.O.Jensen
+03	6714	6728	\N	1	\N	8	\N	Sphagnum capillifolium (Ehrh.) Hedw.
+03	6718	6732	\N	1	\N	8	\N	Sphagnum centrale C.E.O.Jensen
+03	6722	6734	\N	1	\N	8	\N	Sphagnum compactum Lam. & DC.
+03	6726	6736	\N	1	\N	8	\N	Sphagnum contortum Schultz
+03	6730	6739	\N	1	\N	8	\N	Sphagnum cuspidatum Ehrh. ex Hoffm.
+03	6734	6742	\N	1	\N	8	\N	Sphagnum inundatum Russow
+03	6738	6746	\N	1	\N	8	\N	Sphagnum fallax (H.Klinggr.) H.Klinggr.
+03	6742	6747	\N	1	\N	8	\N	Sphagnum fimbriatum Wilson
+03	6746	6748	\N	1	\N	8	\N	Sphagnum flexuosum Dozy & Molk.
+03	6750	6750	\N	1	\N	8	\N	Sphagnum fuscum (Schimp.) H.Klinggr.
+03	6754	6751	\N	1	\N	8	\N	Sphagnum girgensohnii Russow
+03	6758	6754	\N	1	\N	8	\N	Sphagnum auriculatum Schimp.
+03	6762	6760	\N	1	\N	8	\N	Sphagnum magellanicum Brid.
+03	6766	6765	\N	1	\N	8	\N	Sphagnum molle Sull.
+03	6770	6768	\N	1	\N	8	\N	Sphagnum obtusum Warnst.
+03	6774	6769	\N	1	\N	8	\N	Sphagnum palustre L.
+03	6778	6774	\N	1	\N	8	\N	Sphagnum papillosum Lindb.
+03	6782	6776	\N	1	\N	8	\N	Sphagnum platyphyllum (Lindb. ex Braithw.) Warnst.
+03	6786	6780	\N	1	\N	8	\N	Sphagnum quinquefarium (Braithw.) Warnst.
+03	6790	6784	\N	1	\N	8	\N	Sphagnum rubellum Wilson
+03	6794	6785	\N	1	\N	8	\N	Sphagnum russowii Warnst.
+03	6798	6789	\N	1	\N	8	\N	Sphagnum squarrosum Crome
+03	6802	6790	\N	1	\N	8	\N	Sphagnum subnitens Russow & Warnst.
+03	6806	6794	\N	1	\N	8	\N	Sphagnum subsecundum Nees
+03	6810	6795	\N	1	\N	8	\N	Sphagnum tenellum (Brid.) Pers. ex Brid.
+03	6814	6797	\N	1	\N	8	\N	Sphagnum teres (Schimp.) Ångstr.
+03	6818	6802	\N	1	\N	8	\N	Sphagnum warnstorfii Russow
+03	6822	6809	\N	1	\N	8	\N	Anthoceros agrestis Paton
+03	6826	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
+03	6830	6820	\N	1	\N	8	\N	Phaeoceros laevis (L.) Prosk.
+03	6834	6830	\N	1	\N	8	\N	Andreaea frigida Huebener
+03	6838	7990	\N	1	\N	8	\N	Anthoceros punctatus L.
+03	6842	223028	\N	3	\N	8	\N	Carabus variolosus Fabricius, 1787
+03	6846	12348	\N	3	\N	8	\N	Rosalia alpina (Linnaeus, 1758)
+03	6850	18432	\N	2	\N	8	\N	Astacus astacus (Linnaeus, 1758)
+03	6854	18437	\N	2	\N	8	\N	Austropotamobius pallipes (Lereboullet, 1858)
+03	6858	54496	\N	1	\N	8	\N	Parnassius apollo (Linnaeus, 1758)
+03	6862	60295	\N	2	\N	8	\N	Rhinolophus ferrumequinum
+03	6866	60313	\N	2	\N	8	\N	Rhinolophus hipposideros
+03	6870	60330	\N	2	\N	8	\N	Rhinolophus euryale
+03	6874	60345	\N	2	\N	8	\N	Barbastella barbastellus
+03	6878	60383	\N	2	\N	8	\N	Myotis mystacinus
+03	6882	79300	\N	2	\N	8	\N	Myotis brandtii
+03	6886	60400	\N	2	\N	8	\N	Myotis emarginatus
+03	6890	60408	\N	2	\N	8	\N	Myotis nattereri
+03	6894	60418	\N	2	\N	8	\N	Myotis myotis
+03	6898	60427	\N	2	\N	8	\N	Myotis blythii
+03	6902	60457	\N	1	\N	8	\N	Nyctalus lasiopterus
+03	6906	60461	\N	1	\N	8	\N	Nyctalus leisleri
+03	6910	60468	\N	1	\N	8	\N	Nyctalus noctula
+03	6914	60489	\N	1	\N	8	\N	Pipistrellus pygmaeus
+03	6918	60490	\N	1	\N	8	\N	Pipistrellus nathusii
+03	6922	60518	\N	2	\N	8	\N	Plecotus auritus
+03	6926	60527	\N	2	\N	8	\N	Plecotus austriacus
+03	6930	60537	\N	1	\N	8	\N	Vespertilio murinus
+03	6934	60557	\N	1	\N	8	\N	Tadarida teniotis
+03	6938	60577	\N	3	\N	8	\N	Canis lupus Linnaeus, 1758
+03	6942	\N	\N	3	\N	8	\N	Lynx lynx lynx (Linnaeus, 1758)
+03	6946	60630	\N	2	\N	8	\N	Lutra lutra (Linnaeus, 1758)
+03	6950	60831	\N	2	\N	8	\N	Genetta genetta (Linnaeus, 1758)
+03	6954	61212	\N	2	\N	8	\N	Castor fiber Linnaeus, 1758
+03	6958	61636	\N	2	\N	8	\N	Muscardinus avellanarius (Linnaeus, 1758)
+03	6962	64443	\N	1	\N	8	\N	Unio crassus Philipsson, 1788
+03	6966	77381	\N	2	\N	8	\N	Emys orbicularis (Linnaeus, 1758)
+03	6970	78130	\N	1	\N	8	\N	Vipera aspis (Linnaeus, 1758)
+03	6974	78141	\N	1	\N	8	\N	Vipera berus (Linnaeus, 1758)
+03	6978	79273	\N	2	\N	8	\N	Timon lepidus (Daudin, 1802)
+03	6982	79299	\N	2	\N	8	\N	Myotis alcathoe
+03	6986	79301	\N	2	\N	8	\N	Myotis bechsteinii
+03	6990	79302	\N	1	\N	8	\N	Eptesicus nilssonii
+03	6994	79305	\N	2	\N	8	\N	Miniopterus schreibersii
+03	6998	79306	\N	2	\N	8	\N	Felis silvestris Schreber, 1775
+03	7002	81369	\N	1	\N	8	\N	Allium ericetorum Thore, 1803
+03	7006	82516	\N	1	\N	8	\N	Androsace maxima L., 1753
+03	7010	82909	\N	1	\N	8	\N	Anthericum ramosum L., 1753
+03	7014	83756	\N	1	\N	8	\N	Aristavena setacea (Huds.) F.Albers & Butzin, 1977
+03	7018	83934	\N	1	\N	8	\N	Artemisia alba Turra, 1764
+03	7022	84846	\N	1	\N	8	\N	Astragalus hamosus L., 1753
+03	7026	84937	\N	1	\N	8	\N	Astrantia minor L., 1753
+03	7030	85152	\N	1	\N	8	\N	Atropa belladonna L., 1753
+03	7034	85897	\N	1	\N	8	\N	Betula nana L., 1753
+03	7038	86082	\N	1	\N	8	\N	Bistorta vivipara (L.) Delarbre, 1800
+03	7042	86186	\N	1	\N	8	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
+03	7046	86492	\N	1	\N	8	\N	Briza minor L., 1753
+03	7050	87053	\N	1	\N	8	\N	Bupleurum gerardi All., 1773
+03	7054	87085	\N	1	\N	8	\N	Bupleurum praealtum L., 1756
+03	7058	87106	\N	1	\N	8	\N	Bupleurum tenuissimum L., 1753
+03	7070	87620	\N	1	\N	8	\N	Campanula cervicaria L., 1753
+03	7074	88359	\N	1	\N	8	\N	Carex atrata L., 1753
+03	7078	88426	\N	1	\N	8	\N	Carex chordorrhiza L.f., 1782
+03	7082	88453	\N	1	\N	8	\N	Carex curvula All., 1785
+03	7086	88472	\N	1	\N	8	\N	Carex dioica L., 1753
+03	7090	88561	\N	1	\N	8	\N	Carex hartmanii Cajander, 1935
+03	7094	88576	\N	1	\N	8	\N	Carex hordeistichos Vill., 1779
+03	7098	88578	\N	1	\N	8	\N	Carex hostiana DC., 1813
+03	7102	88582	\N	1	\N	8	\N	Carex humilis Leyss., 1758
+03	7106	88932	\N	1	\N	8	\N	Carex vaginata Tausch, 1821
+03	7110	89149	\N	1	\N	8	\N	Carlina biebersteinii Bernh. ex Hornem., 1819
+03	7114	89881	\N	1	\N	8	\N	Centranthus calcitrapae (L.) Dufr., 1811
+03	7118	89940	\N	1	\N	8	\N	Cephalaria leucantha (L.) Schrad. ex Roem. & Schult., 1818
+03	7122	90222	\N	1	\N	8	\N	Ceratophyllum submersum L., 1763
+03	7126	91132	\N	1	\N	8	\N	Cicendia filiformis (L.) Delarbre, 1800
+03	7130	91422	\N	1	\N	8	\N	Cirsium tuberosum (L.) All., 1785
+03	7134	91715	\N	1	\N	8	\N	Cistus salviifolius L., 1753
+03	7138	91727	\N	1	\N	8	\N	Cistus umbellatus L., 1753
+03	7142	92331	\N	1	\N	8	\N	Convolvulus lineatus L., 1759
+03	7146	92536	\N	1	\N	8	\N	Coronilla scorpioides (L.) W.D.J.Koch, 1837
+03	7150	92807	\N	1	\N	8	\N	Crassula vaillantii (Willd.) Roth, 1827
+03	7154	93309	\N	1	\N	8	\N	Cruciata pedemontana (Bellardi) Ehrend., 1958
+03	7158	93449	\N	1	\N	8	\N	Crupina vulgaris Cass., 1817
+03	7162	93456	\N	1	\N	8	\N	Crypsis alopecuroides (Piller & Mitterp.) Schrad., 1806
+03	7166	93967	\N	1	\N	8	\N	Cyperus longus L., 1753
+03	7170	94252	\N	1	\N	8	\N	Dactylorhiza elata (Poir.) Soó, 1962
+03	7174	94388	\N	1	\N	8	\N	Damasonium alisma Mill., 1768
+03	7178	94698	\N	1	\N	8	\N	Dianthus barbatus L., 1753
+03	7182	106998	\N	1	\N	8	\N	Diphasiastrum alpinum (L.) Holub, 1975
+03	7186	719047	\N	1	\N	8	\N	Diphasiastrum oellgaardii Stoor, Boudrie, Jérôme, K.Horn & Bennert, 1996
+03	7190	107024	\N	1	\N	8	\N	Diphasiastrum tristachyum (Pursh) Holub, 1975
+03	7194	95289	\N	1	\N	8	\N	Draba aizoides L., 1767
+03	7198	95461	\N	1	\N	8	\N	Dryas octopetala L., 1753
+03	7202	95847	\N	1	\N	8	\N	Elatine alsinastrum L., 1753
+03	7206	95860	\N	1	\N	8	\N	Elatine hydropiper L., 1753
+03	7210	96106	\N	1	\N	8	\N	Ephedra major Host, 1831
+03	7214	96163	\N	1	\N	8	\N	Epilobium dodonaei Vill., 1779
+03	7218	96218	\N	1	\N	8	\N	Epilobium nutans F.W.Schmidt, 1794
+03	7222	96432	\N	1	\N	8	\N	Epipactis atrorubens (Hoffm.) Besser, 1809
+03	7226	96456	\N	1	\N	8	\N	Epipactis muelleri Godfery, 1921
+03	7230	96499	\N	1	\N	8	\N	Epipogium aphyllum Sw., 1814
+03	7234	96691	\N	1	\N	8	\N	Erica scoparia L., 1753
+03	7238	96698	\N	1	\N	8	\N	Erica vagans L., 1770
+03	7242	96736	\N	1	\N	8	\N	Erigeron alpinus L., 1753
+03	7246	97567	\N	1	\N	8	\N	Euphorbia loreyi Jord., 1855
+03	7250	97904	\N	1	\N	8	\N	Exaculum pusillum (Lam.) Caruel, 1886
+03	7254	99194	\N	1	\N	8	\N	Gagea pratensis (Pers.) Dumort., 1827
+03	7258	99754	\N	1	\N	8	\N	Genista germanica L., 1753
+03	7262	100273	\N	1	\N	8	\N	Gladiolus imbricatus L., 1753
+03	7266	100275	\N	1	\N	8	\N	Gladiolus italicus Mill., 1768
+03	7270	100288	\N	1	\N	8	\N	Glaucium corniculatum (L.) Rudolph, 1781
+03	7274	110063	\N	1	\N	8	\N	Gnaphalium supinum L., 1768
+03	7278	100584	\N	1	\N	8	\N	Groenlandia densa (L.) Fourr., 1869
+03	7282	101101	\N	1	\N	8	\N	Helichrysum stoechas (L.) Moench, 1794
+03	7286	101220	\N	1	\N	8	\N	Helosciadium inundatum (L.) W.D.J.Koch, 1824
+03	7290	102013	\N	1	\N	8	\N	Hieracium glanduliferum Hoppe, 1815
+03	7294	103020	\N	1	\N	8	\N	Hornungia procumbens (L.) Hayek, 1925
+03	7298	103324	\N	1	\N	8	\N	Hypericum richeri Vill., 1779
+03	7302	103648	\N	1	\N	8	\N	Inula salicina L., 1753
+03	7306	103651	\N	1	\N	8	\N	Inula spiraeifolia L., 1759
+03	7310	103841	\N	1	\N	8	\N	Isoetes echinospora Durieu, 1861
+03	7314	104340	\N	1	\N	8	\N	Juncus subnodulosus Schrank, 1789
+03	7318	104770	\N	1	\N	8	\N	Lactuca saligna L., 1753
+03	7322	105010	\N	1	\N	8	\N	Lappula squarrosa (Retz.) Dumort., 1827
+03	7326	105407	\N	1	\N	8	\N	Legousia hybrida (L.) Delarbre, 1800
+03	7330	105490	\N	1	\N	8	\N	Leontodon crispus Vill., 1779
+03	7334	105641	\N	1	\N	8	\N	Lepidium latifolium L., 1753
+03	7338	105841	\N	1	\N	8	\N	Leucojum vernum L., 1753
+03	7342	106026	\N	1	\N	8	\N	Limodorum abortivum (L.) Sw., 1799
+03	7346	106258	\N	1	\N	8	\N	Lindernia palustris Hartmann, 1767
+03	7350	106517	\N	1	\N	8	\N	Lolium temulentum L., 1753
+03	7354	106766	\N	1	\N	8	\N	Lupinus angustifolius L., 1753
+03	7358	106993	\N	1	\N	8	\N	Lycopodiella inundata (L.) Holub, 1964
+03	7362	107000	\N	1	\N	8	\N	Lycopodium annotinum L., 1753
+03	7366	107003	\N	1	\N	8	\N	Lycopodium clavatum L., 1753
+03	7370	107123	\N	1	\N	8	\N	Lythrum thymifolium L., 1753
+03	7374	107407	\N	1	\N	8	\N	Marsilea quadrifolia L., 1753
+03	7378	108484	\N	1	\N	8	\N	Micranthes hieraciifolia (Waldst. & Kit. ex Willd.) Haw., 1822
+03	7382	108612	\N	1	\N	8	\N	Minuartia recurva (All.) Schinz & Thell., 1907
+03	7386	109151	\N	1	\N	8	\N	Myriophyllum verticillatum L., 1753
+03	7390	109735	\N	1	\N	8	\N	Nuphar pumila (Timm) DC., 1821
+03	7394	110211	\N	1	\N	8	\N	Ononis natrix L., 1753
+03	7398	110425	\N	1	\N	8	\N	Ophrys lutea Cav., 1793
+03	7402	110945	\N	1	\N	8	\N	Orchis pallens L., 1771
+03	7406	110961	\N	1	\N	8	\N	Orchis provincialis Balb. ex DC., 1806
+03	7410	110987	\N	1	\N	8	\N	Orchis simia Lam., 1779
+03	7414	112319	\N	1	\N	8	\N	Papaver hybridum L., 1753
+03	7418	112391	\N	1	\N	8	\N	Paradisea liliastrum (L.) Bertol., 1840
+03	7422	112453	\N	1	\N	8	\N	Paronychia polygonifolia (Vill.) DC., 1805
+03	7426	112868	\N	1	\N	8	\N	Peucedanum officinale L., 1753
+03	7430	113213	\N	1	\N	8	\N	Phleum paniculatum Huds., 1762
+03	7434	113626	\N	1	\N	8	\N	Pinguicula lusitanica L., 1753
+03	7438	114519	\N	1	\N	8	\N	Polycnemum arvense L., 1753
+03	7442	114520	\N	1	\N	8	\N	Polycnemum majus A.Braun, 1841
+03	7446	114942	\N	1	\N	8	\N	Polypodium cambricum L., 1753
+03	7450	115302	\N	1	\N	8	\N	Potamogeton praelongus Wulfen, 1805
+03	7454	116547	\N	1	\N	8	\N	Pyrola rotundifolia L., 1753
+03	7458	117090	\N	1	\N	8	\N	Ranunculus lateriflorus DC., 1817
+03	7462	117096	\N	1	\N	8	\N	Ranunculus lingua L., 1753
+03	7466	117156	\N	1	\N	8	\N	Ranunculus parviflorus L., 1758
+03	7470	117528	\N	1	\N	8	\N	Rhamnus alpina L., 1753
+03	7474	117732	\N	1	\N	8	\N	Rhynchospora fusca (L.) W.T.Aiton, 1810
+03	7478	119509	\N	1	\N	8	\N	Rumex hydrolapathum Huds., 1778
+03	7482	119556	\N	1	\N	8	\N	Rumex palustris Sm., 1800
+03	7486	119860	\N	1	\N	8	\N	Sagittaria sagittifolia L., 1753
+03	7490	120052	\N	1	\N	8	\N	Salix hastata L., 1753
+03	7494	120057	\N	1	\N	8	\N	Salix herbacea L., 1753
+03	7498	120973	\N	1	\N	8	\N	Saxifraga androsacea L., 1753
+03	7502	121096	\N	1	\N	8	\N	Saxifraga lamottei Luizet, 1913
+03	7506	121132	\N	1	\N	8	\N	Saxifraga oppositifolia L., 1753
+03	7510	121156	\N	1	\N	8	\N	Saxifraga prostii Sternb., 1831
+03	7514	121552	\N	1	\N	8	\N	Schoenoplectus mucronatus (L.) Palla, 1888
+03	7518	121555	\N	1	\N	8	\N	Schoenoplectus tabernaemontani (C.C.Gmel.) Palla, 1888
+03	7522	121581	\N	1	\N	8	\N	Schoenus nigricans L., 1753
+03	7526	121860	\N	1	\N	8	\N	Sclerochloa dura (L.) P.Beauv., 1812
+03	7530	122988	\N	1	\N	8	\N	Sesamoides purpurascens (L.) G.López, 1986
+03	7534	124412	\N	1	\N	8	\N	Sparganium natans L., 1754
+03	7538	124699	\N	1	\N	8	\N	Spiranthes aestivalis (Poir.) Rich., 1817
+03	7542	124775	\N	1	\N	8	\N	Stachys heraclea All., 1785
+03	7546	124842	\N	1	\N	8	\N	Staehelina dubia L., 1753
+03	7550	125519	\N	1	\N	8	\N	Taraxacum bessarabicum (Hornem.) Hand.-Mazz., 1907
+03	7554	126008	\N	1	\N	8	\N	Teucrium montanum L., 1753
+03	7558	126034	\N	1	\N	8	\N	Teucrium scordium L., 1753
+03	7562	126124	\N	1	\N	8	\N	Thalictrum flavum L., 1753
+03	7566	126213	\N	1	\N	8	\N	Thalictrum simplex L., 1767
+03	7570	126276	\N	1	\N	8	\N	Thelypteris palustris Schott, 1834
+03	7574	126474	\N	1	\N	8	\N	Thymelaea passerina (L.) Coss. & Germ., 1861
+03	7578	126822	\N	1	\N	8	\N	Tolpis umbellata Bertol., 1803
+03	7582	126861	\N	1	\N	8	\N	Torilis leptophylla (L.) Rchb.f., 1867
+03	7586	126925	\N	1	\N	8	\N	Tozzia alpina L., 1753
+03	7590	127117	\N	1	\N	8	\N	Traunsteinera globosa (L.) Rchb., 1842
+03	7594	127191	\N	1	\N	8	\N	Trichophorum alpinum (L.) Pers., 1805
+03	7598	127237	\N	1	\N	8	\N	Trifolium badium Schreb., 1804
+03	7602	127546	\N	1	\N	8	\N	Triglochin maritimum L., 1753
+03	7606	127988	\N	1	\N	8	\N	Turgenia latifolia (L.) Hoffm., 1814
+03	7610	128311	\N	1	\N	8	\N	Utricularia intermedia Hayne, 1800
+03	7614	128510	\N	1	\N	8	\N	Vandenboschia speciosa (Willd.) Kunkel, 1966
+03	7618	128789	\N	1	\N	8	\N	Veronica alpina L., 1753
+03	7622	128871	\N	1	\N	8	\N	Veronica fruticans Jacq., 1762
+03	7626	129520	\N	1	\N	8	\N	Viola biflora L., 1753
+03	7630	129602	\N	1	\N	8	\N	Viola lactea Sm., 1798
+03	7634	130124	\N	1	\N	8	\N	Woodsia alpina (Bolton) Gray, 1821
+03	7638	130492	\N	1	\N	8	\N	Xanthium strumarium L., 1753
+03	7642	131373	\N	1	\N	8	\N	Androsace elongata subsp. breistrofferi (Charpin & Greuter) Molero & P.Monts., 1983
+03	7646	131830	\N	1	\N	8	\N	Asplenium obovatum subsp. billotii (F.W.Schultz) O.Bolòs, Vigo, Massales & Ninot, 1990
+03	7650	132840	\N	1	\N	8	\N	Carlina acanthifolia subsp. cynara (Pourr. ex DC.) Arcang., 1882
+09	10053	240787	\N	1	\N	14	\N	Acanthocyclops hispanicus Kiefer, 1937
+09	10061	240809	\N	1	\N	14	\N	Gelyella droguei Rouch & Lescher-Moutoué, 1977
+09	10069	240814	\N	1	\N	14	\N	Nitocrella delayi Rouch, 1970
+09	10077	240815	\N	1	\N	14	\N	Nitocrella dussarti Chappuis & Rouch, 1959
+09	10085	240816	\N	1	\N	14	\N	Nitocrella gracilis Chappuis, 1955
+09	10093	240817	\N	1	\N	14	\N	Nitocrella omega Hertzog, 1936
+09	10101	240818	\N	1	\N	14	\N	Nitocrellopsis elegans (Chappuis & Rouch, 1959)
+09	10109	240823	\N	1	\N	14	\N	Antrocamptus chappuisi Rouch, 1970
+09	10117	240824	\N	1	\N	14	\N	Antrocamptus coiffaiti Chappuis, 1956
+09	10125	240825	\N	1	\N	14	\N	Antrocamptus longifurcatus Rouch, 1970
+09	10133	240826	\N	1	\N	14	\N	Antrocamptus stygius Rouch, 1980
+09	10141	240845	\N	1	\N	14	\N	Ceuthonectes boui Apostolov, 2002
+09	10149	240846	\N	1	\N	14	\N	Ceuthonectes bulbiseta Apostolov, 2002
+09	10157	240847	\N	1	\N	14	\N	Ceuthonectes chappuisi Rouch, 1980
+09	10165	240848	\N	1	\N	14	\N	Ceuthonectes vievilleae Rouch, 1980
+09	10173	240850	\N	1	\N	14	\N	Elaphoidella brehieri Apostolov, 2002
+09	10181	240851	\N	1	\N	14	\N	Elaphoidella boui Rouch, 1988
+09	10189	240852	\N	1	\N	14	\N	Elaphoidella bouilloni Rouch, 1964
+09	10197	240853	\N	1	\N	14	\N	Elaphoidella cavatica Chappuis, 1957
+09	10205	240854	\N	1	\N	14	\N	Elaphoidella elaphoides (Chappuis, 1924)
+09	10213	240855	\N	1	\N	14	\N	Elaphoidella garbetensis Rouch, 1980
+09	10221	240856	\N	1	\N	14	\N	Elaphoidella longifurcata Chappuis & Kiefer, 1952
+09	10229	240857	\N	1	\N	14	\N	Elaphoidella mauro Chappuis, 1956
+09	10237	240858	\N	1	\N	14	\N	Elaphoidella pyrenaica Rouch, 1970
+09	10245	240859	\N	1	\N	14	\N	Elaphoidella vandeli Chappuis & Rouch, 1958
+09	10253	240860	\N	1	\N	14	\N	Elaphoidella vasconica Rouch, 1970
+09	10261	240872	\N	1	\N	14	\N	Moraria catalana Chappuis & Kiefer, 1952
+09	10269	240876	\N	1	\N	14	\N	Neoelaphoidella calypsonis (Chappuis & Rouch, 1959)
+09	10277	240892	\N	1	\N	14	\N	Pseudectinosoma janineae Galassi, Dole-Olivier & De Laurentiis, 1999
+09	10285	240893	\N	1	\N	14	\N	Pseudectinosoma vandeli (Rouch, 1969)
+09	10293	240919	\N	1	\N	14	\N	Parastenocaris dentulatus Chappuis & Rouch, 1959
+09	10301	240932	\N	1	\N	14	\N	Parastenocaris vandeli Rouch, 1988
+09	10309	240945	\N	1	\N	14	\N	Gallasellus heilyi (Legrand, 1956)
+09	10317	240947	\N	1	\N	14	\N	Proasellus aquaecalidae (Racovitza, 1922)
+09	10325	240951	\N	1	\N	14	\N	Proasellus burgundus Henry & Magniez, 1969
+09	10333	240953	\N	1	\N	14	\N	Proasellus chauvini Henry & Magniez, 1978
+09	10341	240959	\N	1	\N	14	\N	Proasellus racovitzai Henry & Magniez, 1972
+09	10357	240961	\N	1	\N	14	\N	Proasellus spelaeus (Racovitza, 1922)
+09	10365	240965	\N	1	\N	14	\N	Proasellus vandeli Magniez & Henry, 1969
+09	10373	240971	\N	1	\N	14	\N	Microcharon angelieri Coineau, 1963
+09	10381	240972	\N	1	\N	14	\N	Microcharon boui Coineau, 1968
+09	10389	240973	\N	1	\N	14	\N	Microcharon doueti Coineau, 1968
+09	10397	240974	\N	1	\N	14	\N	Microcharon juberthiei Coineau, 1968
+09	10405	240977	\N	1	\N	14	\N	Microcharon sisyphus Chappuis & Delamare-Deboutteville, 1954
+09	10413	240986	\N	1	\N	14	\N	Schellencandona simililampadis (Danielopol, 1978)
+09	10421	240989	\N	1	\N	14	\N	Pseudocandona delamarei Danielopol, 1978
+09	10429	240994	\N	1	\N	14	\N	Pseudocandona rouchi Danielopol, 1973
+09	10437	240997	\N	1	\N	14	\N	Mixtacandona coineauae Rogulj & Danielopol, 1993
+09	10445	240998	\N	1	\N	14	\N	Mixtacandona juberthieae Danielopol, 1978
+09	10453	241007	\N	1	\N	14	\N	Candonopsis boui Danielopol, 1978
+09	10461	241032	\N	1	\N	14	\N	Psychrodromus betharrami Baltanas, Danielopol, Roca & Marmonier, 1993
+09	10469	241057	\N	1	\N	14	\N	Cytherissa lacustris (Sars, 1863)
+09	10477	241060	\N	1	\N	14	\N	Sphaeromicola cebennica Remy, 1948
+09	10485	241061	\N	1	\N	14	\N	Sphaeromicola hamigera Remy, 1946
+09	10493	241066	\N	1	\N	14	\N	Ilyocypris lacustris Kaufmann, 1900
+09	10501	241228	\N	1	\N	14	\N	Echinogammarus cyrtus Pinkster & Platvoet, 1986
+09	10509	241239	\N	1	\N	14	\N	Echinogammarus tabu G.S. Karaman, 1971
+09	10517	241240	\N	1	\N	14	\N	Echinogammarus zebrinus Pinkster & Stock, 1971
+09	10525	241246	\N	1	\N	14	\N	Gammarus monspeliensis Pinkster, 1972
+09	10533	244547	\N	1	\N	14	\N	Niphargus balazuci Schellenberg, 1951
+09	10541	244548	\N	1	\N	14	\N	Niphargus boulangei Wichers, 1964
+09	10549	244549	\N	1	\N	14	\N	Niphargus burgundus Graf, 1968
+09	10557	244554	\N	1	\N	14	\N	Niphargus kieferi Schellenberg, 1936
+09	10565	244557	\N	1	\N	14	\N	Niphargus nicaensis Isnard, 1916
+09	10573	244565	\N	1	\N	14	\N	Niphargus vandeli Barbe, 1961
+09	10581	244568	\N	1	\N	14	\N	Bogidiella albertimagni Hertzog, 1933
+09	10589	244577	\N	1	\N	14	\N	Ingolfiella catalanensis Coineau, 1963
+09	10597	250281	\N	1	\N	14	\N	Artemia parthenogenetica Bowen & Sterling, 1978
+09	10605	250283	\N	1	\N	14	\N	Branchipus blanchardi Daday, 1908
+09	10613	250288	\N	1	\N	14	\N	Chirocephalus salinus Daday, 1910
+09	10621	250289	\N	1	\N	14	\N	Chirocephalus spinicaudatus Simon, 1886
+09	10629	250291	\N	1	\N	14	\N	Linderiella massaliensis Thiéry & Champeau, 1988
+09	10637	250295	\N	1	\N	14	\N	Cyzicus tetracerus (Krynicki, 1830)
+09	10645	250296	\N	1	\N	14	\N	Eoleptestheria ticinensis (Balsamo-Crivelli, 1859)
+09	10653	250297	\N	1	\N	14	\N	Limnadia lenticularis (Linnaeus, 1761)
+09	10669	251161	\N	1	\N	14	\N	Geotrechus orcinus orcinus (Linder, 1859)
+09	10677	251165	\N	1	\N	14	\N	Geotrechus orpheus doderoi Jeannel, 1920
+09	10685	251585	\N	1	\N	14	\N	Speonomus normandi hydrophilus (Jeannel, 1907)
+09	10693	319825	\N	1	\N	14	\N	Daphnia chevreuxi Richard, 1896
+09	10701	319828	\N	1	\N	14	\N	Daphnia mediterranea Alonso, 1985
+09	10709	319848	\N	1	\N	14	\N	Moina salina Daday, 1888
+09	10717	319873	\N	1	\N	14	\N	Pleuroxus letourneuxi (Richard, 1888)
+09	10725	319878	\N	1	\N	14	\N	Ephemeroporus phintonicus (Margaritora, 1969)
+09	10733	319879	\N	1	\N	14	\N	Estatheroporus gauthieri Alonso, 1990
+09	10741	319883	\N	1	\N	14	\N	Alona azorica Frenzel & Alonso, 1988
+09	10749	320014	\N	1	\N	14	\N	Speocyclops proserpinae Kiefer, 1937
+09	10757	320082	\N	1	\N	14	\N	Diacyclops paolae Pesce & Galassi, 1987
+09	10765	320096	\N	1	\N	14	\N	Diacyclops zschokkei (Graeter, 1910)
+09	10773	320208	\N	1	\N	14	\N	Nitocrella beatricis Cottarelli & Bruno, 1993
+09	10781	320297	\N	1	\N	14	\N	Ceuthonectes serbicus Chappuis, 1924
+09	10789	320657	\N	1	\N	14	\N	Proasellus slavus (Remy, 1948)
+09	10797	321703	\N	1	\N	14	\N	Echinogammarus aquilifer Pinkster, 1969
+09	10805	332982	\N	1	\N	14	\N	Bogidiella nicolae G.S. Karaman, 1988
+09	10813	348263	\N	1	\N	14	\N	Lynceus brachyurus Müller, 1776
+09	10821	416843	\N	1	\N	14	\N	Eupotosia mirifica (Mulsant, 1842)
+09	10829	432533	\N	1	\N	14	\N	Elaphoidella infernalis Rouch, 1970
+09	10837	432534	\N	1	\N	14	\N	Eulimnogammarus anisocheirus (Ruffo, 1959)
+09	10845	432548	\N	1	\N	14	\N	Acrotylus insubricus insubricus (Scopoli, 1786)
+09	11063	432560	\N	1	\N	14	\N	Stenobothrus fischeri glaucescens Bolívar, 1897
+09	11071	432575	\N	1	\N	14	\N	Proasellus claudei Henry & Magniez, 1996
+09	11151	458956	\N	1	\N	14	\N	Aphaenops cerberus (Dieck, 1869)
+09	11079	432577	\N	1	\N	14	\N	Pseudocandona marmonieri Namiotko & Danielopol, 2004
+09	11087	443331	\N	1	\N	14	\N	Elaphoidella brevicaudata Apostolov, 2002
+09	11095	443332	\N	1	\N	14	\N	Elaphoidella claudboui Apostolov, 2003
+09	11103	443333	\N	1	\N	14	\N	Elaphoidella madiracensis Apostolov, 1998
+09	11111	458693	\N	1	\N	14	\N	Perdix perdix perdix (Linnaeus, 1758)
+09	11119	458861	\N	1	\N	14	\N	Aphaenops pluto (Dieck, 1869)
+09	11127	458946	\N	1	\N	14	\N	Aphaenops bonneti Fourès, 1948
+09	11135	458947	\N	1	\N	14	\N	Aphaenops bouilloni Coiffait, 1955
+09	11143	458952	\N	1	\N	14	\N	Aphaenops carrerei Coiffait, 1953
+09	11159	458964	\N	1	\N	14	\N	Aphaenops crypticola (Linder, 1859)
+09	11167	458970	\N	1	\N	14	\N	Aphaenops hustachei Jeannel, 1917
+09	11175	458973	\N	1	\N	14	\N	Aphaenops laurenti Genest, 1983
+09	11183	458974	\N	1	\N	14	\N	Aphaenops linderi Jeannel, 1938
+09	11191	458985	\N	1	\N	14	\N	Aphaenops mariaerosae Genest, 1983
+09	11199	458987	\N	1	\N	14	\N	Aphaenops michaeli Fourès, 1954
+09	11207	459005	\N	1	\N	14	\N	Aphaenops rhadamanthus (Linder, 1860)
+09	11215	459009	\N	1	\N	14	\N	Aphaenops sioberae Fourès, 1954
+09	11223	459013	\N	1	\N	14	\N	Aphaenops tiresias (Piochard de la Brûlerie, 1872)
+09	11231	459023	\N	1	\N	14	\N	Aphaenops vandeli Fourès, 1954
+09	11239	459478	\N	1	\N	14	\N	Delichon urbicum (Linnaeus, 1758)
+09	11247	459684	\N	1	\N	14	\N	Palaospeum bertrandi Girardi, 2009
+09	11255	526304	\N	1	\N	14	\N	Sorholia lescherae (Boeters, 1981)
+09	11263	530157	\N	1	\N	14	\N	Chroicocephalus ridibundus (Linnaeus, 1766)
+09	11271	534584	\N	1	\N	14	\N	Gallocaris inermis (Fage, 1937)
+09	11279	534782	\N	1	\N	14	\N	Lagopus muta pyrenaica Hartert, 1921
+09	11287	535764	\N	1	\N	14	\N	Dociostaurus jagoi occidentalis Soltani, 1978
+09	11295	542660	\N	1	\N	14	\N	Elaphoidella coiffaiti Chappuis & Kiefer, 1952
+09	11303	542662	\N	1	\N	14	\N	Elaphoidella reducta Rouch, 1964
+09	11311	544397	\N	1	\N	14	\N	Gigantodiaptomus amblyodon (Marenzeller, 1873)
+09	11319	544404	\N	1	\N	14	\N	Occidodiaptomus ingens (Gurney, 1909)
+09	11327	544406	\N	1	\N	14	\N	Occidodiaptomus roubaui (Richard, 1888)
+09	11335	608283	\N	1	\N	14	\N	Lycaena helle deslandesi Hemming, 1932
+09	11343	622904	\N	1	\N	14	\N	Niphargus corsicanus Schellenberg, 1950
+09	11351	628401	\N	1	\N	14	\N	Gammarus stupendus Pinkster, 1983
+09	11359	628878	\N	1	\N	14	\N	Holothuria (Mertensiothuria) hilla Lesson, 1830
+09	11367	639903	\N	1	\N	14	\N	Michelicaris micheli (Chappuis & Rouch, 1959)
+09	11375	639925	\N	1	\N	14	\N	Alona elegans Kurz, 1875
+09	11383	639940	\N	1	\N	14	\N	Dolekiella europaea Gido, Artheau, Colin, Danielopol & Marmonier, 2007
+09	11391	639948	\N	1	\N	14	\N	Phallocryptus spinosa (Milne-Edwards, 1840)
+09	11399	640042	\N	1	\N	14	\N	Stammericaris stammeri (Chappuis, 1937)
+09	11407	670498	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) alosensis Apostolov, 1998
+09	11415	670503	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) dentatus Chappuis, 1937
+09	11423	670510	\N	1	\N	14	\N	Bryocamptus (Rheocamptus) typhlops (Mrázek, 1916)
+09	11431	670535	\N	1	\N	14	\N	Bryocamptus (Echinocamptus) hoferi (Douwe, 1908)
+09	11439	717729	\N	1	\N	14	\N	Arabidopsis cebennensis (DC.) O'Kane & Al-Shehbaz
+09	11447	717750	\N	1	\N	14	\N	Dichoropetalum schottii (Besser ex DC.) Pimenov & Kljuykov
+09	11455	793189	\N	1	\N	14	\N	Aphaenops chaudoiri (C. Brisout de Barneville, 1867)
+09	11463	794327	\N	1	\N	14	\N	Aphaenops ehlersi (Abeille de Perrin, 1872)
+09	11471	794328	\N	1	\N	14	\N	Aphaenops elegans (A. Gaudin, 1946)
+09	11479	794330	\N	1	\N	14	\N	Aphaenops longicollis Joffre, 1931
+09	11487	794332	\N	1	\N	14	\N	Aphaenops pecoudi A. Gaudin, 1938
+09	11495	794333	\N	1	\N	14	\N	Aphaenops minos (Linder, 1860)
+09	11503	794334	\N	1	\N	14	\N	Aphaenops mouriesi (Genest, 1983)
+09	11511	795222	\N	1	\N	14	\N	Aphaenops pandellei (Linder, 1859)
+09	11519	795412	\N	1	\N	14	\N	Duvalius lespesi cardurcus Jeannel, 1955
+09	11527	795422	\N	1	\N	14	\N	Aphaenops bourgoini bourgoini Jeannel, 1946
+09	11535	795424	\N	1	\N	14	\N	Aphaenops bourgoini vandeli Coiffait, 1969
+09	11543	823608	\N	1	\N	14	\N	Corneola acrotricha (P. Fischer, 1877)
+09	11551	826747	\N	1	\N	14	\N	Antrocamptus catharinae Chappuis & Rouch, 1960
+09	11559	827167	\N	1	\N	14	\N	Proserpinicaris mangini (Rouch, 1992)
+09	11567	836203	\N	1	\N	14	\N	Mareca strepera (Linnaeus, 1758)
+09	11575	212	\N	1	\N	14	\N	Bombina variegata (Linnaeus, 1758)
+09	11583	2477	\N	3	\N	14	\N	Ixobrychus minutus (Linnaeus, 1766)
+09	11591	2481	\N	1	\N	14	\N	Nycticorax nycticorax (Linnaeus, 1758)
+09	11599	2486	\N	1	\N	14	\N	Ardeola ralloides (Scopoli, 1769)
+09	11607	2508	\N	1	\N	14	\N	Ardea purpurea Linnaeus, 1766
+09	11615	2514	\N	1	\N	14	\N	Ciconia nigra (Linnaeus, 1758)
+09	11623	2517	\N	2	\N	14	\N	Ciconia ciconia (Linnaeus, 1758)
+09	11631	2576	\N	1	\N	14	\N	Numenius arquata (Linnaeus, 1758)
+09	11639	2616	\N	1	\N	14	\N	Actitis hypoleucos (Linnaeus, 1758)
+09	11647	2645	\N	3	\N	14	\N	Aquila chrysaetos (Linnaeus, 1758)
+09	11655	2651	\N	2	\N	14	\N	Hieraaetus pennatus (Gmelin, 1788)
+09	11663	2660	\N	1	\N	14	\N	Pandion haliaetus (Linnaeus, 1758)
+09	11671	2767	\N	1	\N	14	\N	Tadorna tadorna (Linnaeus, 1758)
+09	11679	2836	\N	1	\N	14	\N	Elanus caeruleus (Desfontaines, 1789)
+09	11687	2844	\N	2	\N	14	\N	Milvus milvus (Linnaeus, 1758)
+09	11695	2852	\N	3	\N	14	\N	Gypaetus barbatus (Linnaeus, 1758)
+09	11703	2856	\N	3	\N	14	\N	Neophron percnopterus (Linnaeus, 1758)
+09	11711	2869	\N	3	\N	14	\N	Aegypius monachus (Linnaeus, 1766)
+09	11719	2873	\N	2	\N	14	\N	Circaetus gallicus (Gmelin, 1788)
+09	11727	2881	\N	2	\N	14	\N	Circus cyaneus (Linnaeus, 1758)
+09	11735	2887	\N	2	\N	14	\N	Circus pygargus (Linnaeus, 1758)
+09	11743	2938	\N	3	\N	14	\N	Falco peregrinus Tunstall, 1771
+09	11751	2966	\N	2	\N	14	\N	Tetrao urogallus aquitanicus Ingram, 1915
+09	11759	3036	\N	1	\N	14	\N	Rallus aquaticus Linnaeus, 1758
+09	11767	3039	\N	1	\N	14	\N	Porzana porzana (Linnaeus, 1766)
+09	11775	3053	\N	1	\N	14	\N	Crex crex (Linnaeus, 1758)
+09	11783	3070	\N	1	\N	14	\N	Fulica atra Linnaeus, 1758
+09	11791	3089	\N	3	\N	14	\N	Tetrax tetrax (Linnaeus, 1758)
+09	11799	3101	\N	1	\N	14	\N	Otis tarda Linnaeus, 1758
+09	11807	3112	\N	1	\N	14	\N	Himantopus himantopus (Linnaeus, 1758)
+09	11815	3120	\N	1	\N	14	\N	Burhinus oedicnemus (Linnaeus, 1758)
+09	11823	3136	\N	1	\N	14	\N	Charadrius dubius Scopoli, 1786
+09	11831	3187	\N	1	\N	14	\N	Vanellus vanellus (Linnaeus, 1758)
+09	11839	3343	\N	2	\N	14	\N	Sterna hirundo Linnaeus, 1758
+09	11847	3420	\N	1	\N	14	\N	Columba livia Gmelin, 1789
+09	11855	3422	\N	1	\N	14	\N	Columba oenas Linnaeus, 1758
+09	11863	3482	\N	1	\N	14	\N	Tyto alba (Scopoli, 1769)
+09	11871	3493	\N	3	\N	14	\N	Bubo bubo (Linnaeus, 1758)
+09	11887	3533	\N	1	\N	14	\N	Aegolius funereus (Linnaeus, 1758)
+09	11895	3555	\N	2	\N	14	\N	Apus pallidus (Shelley, 1870)
+09	11903	3561	\N	1	\N	14	\N	Tachymarptis melba (Linnaeus, 1758)
+09	11911	3582	\N	2	\N	14	\N	Merops apiaster Linnaeus, 1758
+09	11919	3595	\N	1	\N	14	\N	Jynx torquilla Linnaeus, 1758
+09	11927	3625	\N	2	\N	14	\N	Dendrocopos leucotos (Bechstein, 1803)
+09	11935	3644	\N	2	\N	14	\N	Melanocorypha calandra (Linnaeus, 1766)
+09	11943	3649	\N	1	\N	14	\N	Calandrella brachydactyla (Leisler, 1814)
+09	11951	3688	\N	1	\N	14	\N	Riparia riparia (Linnaeus, 1758)
+09	11959	3696	\N	1	\N	14	\N	Hirundo rustica Linnaeus, 1758
+09	11967	3713	\N	1	\N	14	\N	Anthus campestris (Linnaeus, 1758)
+09	11975	3726	\N	1	\N	14	\N	Anthus pratensis (Linnaeus, 1758)
+09	11983	3798	\N	1	\N	14	\N	Remiz pendulinus (Linnaeus, 1758)
+09	11991	3811	\N	1	\N	14	\N	Lanius minor Gmelin, 1788
+09	11999	3814	\N	2	\N	14	\N	Lanius excubitor Linnaeus, 1758
+09	12007	4049	\N	1	\N	14	\N	Saxicola rubetra (Linnaeus, 1758)
+09	12015	4074	\N	1	\N	14	\N	Oenanthe hispanica (Linnaeus, 1758)
+09	12023	4084	\N	1	\N	14	\N	Monticola saxatilis (Linnaeus, 1758)
+09	12031	4087	\N	1	\N	14	\N	Monticola solitarius (Linnaeus, 1758)
+09	12039	4127	\N	1	\N	14	\N	Turdus pilaris Linnaeus, 1758
+09	12047	4155	\N	1	\N	14	\N	Cisticola juncidis (Rafinesque, 1810)
+09	12055	4195	\N	1	\N	14	\N	Acrocephalus scirpaceus (Hermann, 1804)
+09	12063	4198	\N	1	\N	14	\N	Acrocephalus arundinaceus (Linnaeus, 1758)
+09	12071	4221	\N	1	\N	14	\N	Sylvia undata (Boddaert, 1783)
+09	12079	4227	\N	1	\N	14	\N	Sylvia conspicillata Temminck, 1820
+09	12087	4232	\N	1	\N	14	\N	Sylvia melanocephala (Gmelin, 1789)
+09	12095	4242	\N	1	\N	14	\N	Sylvia hortensis (Gmelin, 1789)
+09	12103	4254	\N	1	\N	14	\N	Sylvia borin (Boddaert, 1783)
+09	12111	4272	\N	1	\N	14	\N	Phylloscopus sibilatrix (Bechstein, 1793)
+09	12119	4330	\N	1	\N	14	\N	Ficedula hypoleuca (Pallas, 1764)
+09	12127	4460	\N	1	\N	14	\N	Lanius senator Linnaeus, 1758
+09	12135	4485	\N	1	\N	14	\N	Pyrrhocorax graculus (Linnaeus, 1766)
+09	12143	4488	\N	1	\N	14	\N	Pyrrhocorax pyrrhocorax (Linnaeus, 1758)
+09	12151	4501	\N	1	\N	14	\N	Corvus frugilegus Linnaeus, 1758
+09	12159	4532	\N	1	\N	14	\N	Passer montanus (Linnaeus, 1758)
+09	12167	889047	\N	1	\N	14	\N	Carduelis cannabina (Linnaeus, 1758)
+09	12175	4619	\N	1	\N	14	\N	Pyrrhula pyrrhula (Linnaeus, 1758)
+09	12183	4665	\N	2	\N	14	\N	Emberiza hortulana Linnaeus, 1758
+09	12191	8746	\N	1	\N	14	\N	Geotrechus gallicus (Delarouzée, 1857)
+09	12199	8750	\N	1	\N	14	\N	Aphaenops bucephalus (Dieck, 1869)
+09	12207	8755	\N	1	\N	14	\N	Aphaenops leschenaulti Bonvouloir, 1862
+09	12215	10979	\N	1	\N	14	\N	Osmoderma eremita (Scopoli, 1763)
+09	12223	17886	\N	1	\N	14	\N	Acanthocyclops venustus (Norman & Scott, 1906)
+09	12231	18432	\N	1	\N	14	\N	Astacus astacus (Linnaeus, 1758)
+09	12239	18437	\N	2	\N	14	\N	Austropotamobius pallipes (Lereboullet, 1858)
+09	12247	29042	\N	1	\N	14	\N	Isonychia ignota (Walker, 1853)
+09	12255	54183	\N	1	\N	14	\N	Aricia morronensis (Ribbe, 1910)
+09	12263	60243	\N	2	\N	14	\N	Galemys pyrenaicus (E. Geoffroy, 1811)
+09	12271	60295	\N	2	\N	14	\N	Rhinolophus ferrumequinum (Schreber, 1774)
+09	12279	60313	\N	2	\N	14	\N	Rhinolophus hipposideros (Bechstein, 1800)
+09	12287	60330	\N	2	\N	14	\N	Rhinolophus euryale Blasius, 1853
+09	12295	60337	\N	2	\N	14	\N	Rhinolophus mehelyi Matschie, 1901
+09	12303	60345	\N	2	\N	14	\N	Barbastella barbastellus (Schreber, 1774)
+09	12311	60400	\N	2	\N	14	\N	Myotis emarginatus (E. Geoffroy, 1806)
+09	12319	60418	\N	2	\N	14	\N	Myotis myotis (Borkhausen, 1797)
+09	12327	60427	\N	2	\N	14	\N	Myotis blythii (Tomes, 1857)
+09	12335	60439	\N	2	\N	14	\N	Myotis capaccinii (Bonaparte, 1837)
+09	12343	60457	\N	1	\N	14	\N	Nyctalus lasiopterus (Schreber, 1780)
+09	12351	60489	\N	1	\N	14	\N	Pipistrellus pygmaeus (Leach, 1825)
+09	12359	60577	\N	2	\N	14	\N	Canis lupus Linnaeus, 1758
+09	12367	60612	\N	2	\N	14	\N	Lynx lynx (Linnaeus, 1758)
+09	12375	60704	\N	1	\N	14	\N	Mustela lutreola (Linnaeus, 1761)
+09	12383	60826	\N	2	\N	14	\N	Ursus arctos Linnaeus, 1758
+09	12391	61733	\N	1	\N	14	\N	Cryptazeca monodonta (de Folin & Bérillon, 1877)
+09	12399	62167	\N	1	\N	14	\N	Moitessieria simoniana (Saint-Simon, 1848)
+09	12407	62170	\N	1	\N	14	\N	Moitessieria juvenisanguis Boeters & E. Gittenberger, 1980
+09	12415	64140	\N	1	\N	14	\N	Vertigo angustior Jeffreys, 1830
+09	12423	64141	\N	1	\N	14	\N	Vertigo moulinsiana (Dupuy, 1849)
+09	12431	64435	\N	2	\N	14	\N	Margaritifera margaritifera (Linnaeus, 1758)
+09	12439	64437	\N	2	\N	14	\N	Margaritifera auricularia (Spengler, 1793)
+09	12447	65384	\N	1	\N	14	\N	Macromia splendens (Pictet, 1843)
+09	12455	65639	\N	1	\N	14	\N	Polysarcus scutatus (Brunner von Wattenwyl, 1882)
+09	12463	65641	\N	1	\N	14	\N	Polysarcus denticauda (Charpentier, 1825)
+09	12471	65704	\N	1	\N	14	\N	Platycleis sabulosa Azam, 1901
+09	12479	65710	\N	1	\N	14	\N	Platycleis affinis Fieber, 1853
+09	12487	65718	\N	1	\N	14	\N	Metrioptera brachyptera (Linnaeus, 1761)
+09	12495	65762	\N	1	\N	14	\N	Thyreonotus corsicus corsicus (Rambur, 1838)
+09	12503	65768	\N	1	\N	14	\N	Antaxius hispanicus Bolívar, 1884
+09	12511	65928	\N	1	\N	14	\N	Eugryllodes pipiens (Dufour, 1820)
+09	12519	66021	\N	1	\N	14	\N	Leptynia hispanica (Bolivar, 1878)
+09	12527	66029	\N	1	\N	14	\N	Tetrix bolivari Saulcy in Azam, 1901
+09	12535	66226	\N	1	\N	14	\N	Calephorus compressicornis (Latreille, 1804)
+09	12543	66279	\N	1	\N	14	\N	Paracaloptenus bolivari Uvarov, 1942
+09	12551	66330	\N	1	\N	14	\N	Lampetra fluviatilis (Linnaeus, 1758)
+09	12559	66832	\N	1	\N	14	\N	Anguilla anguilla (Linnaeus, 1758)
+09	12567	66967	\N	1	\N	14	\N	Alosa alosa (Linnaeus, 1758)
+09	12575	67506	\N	1	\N	14	\N	Cobitis taenia Linnaeus, 1758
+09	12583	67606	\N	1	\N	14	\N	Esox lucius Linnaeus, 1758
+09	12591	67765	\N	1	\N	14	\N	Salmo salar Linnaeus, 1758
+09	12599	77381	\N	1	\N	14	\N	Emys orbicularis (Linnaeus, 1758)
+09	12607	78130	\N	1	\N	14	\N	Vipera aspis (Linnaeus, 1758)
+09	12615	79299	\N	2	\N	14	\N	Myotis alcathoe Helversen & Heller, 2001
+09	12623	79301	\N	2	\N	14	\N	Myotis bechsteinii (Kuhl, 1817)
+09	12631	79305	\N	2	\N	14	\N	Miniopterus schreibersii (Kuhl, 1817)
+09	12639	79874	\N	1	\N	14	\N	Achillea chamaemelifolia Pourr., 1788
+09	12647	80240	\N	1	\N	14	\N	Adonis vernalis L., 1753
+09	12655	81516	\N	1	\N	14	\N	Allium siculum Ucria, 1793
+09	12663	81897	\N	1	\N	14	\N	Alyssum cuneifolium Ten., 1815
+09	12671	82287	\N	1	\N	14	\N	Anacamptis papilionacea (L.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
+09	12679	82420	\N	1	\N	14	\N	Andromeda polifolia L., 1753
+09	12687	82504	\N	1	\N	14	\N	Androsace helvetica (L.) All., 1785
+09	12695	83266	\N	1	\N	14	\N	Aquilegia viscosa Gouan, 1764
+09	12703	83588	\N	1	\N	14	\N	Arenaria hispida L., 1753
+09	12711	83598	\N	1	\N	14	\N	Arenaria ligericina Lecoq & Lamotte, 1847
+09	12719	83615	\N	1	\N	14	\N	Arenaria modesta Dufour, 1821
+09	12727	84699	\N	1	\N	14	\N	Aster pyrenaeus Desf. ex DC., 1805
+09	12735	86025	\N	1	\N	14	\N	Biscutella cichoriifolia Loisel., 1810
+09	12743	86186	\N	1	\N	14	\N	Botrychium matricariifolium (A.Braun ex Döll) W.D.J.Koch, 1846
+09	12751	87009	\N	1	\N	14	\N	Buphthalmum salicifolium L., 1753
+09	12759	87053	\N	1	\N	14	\N	Bupleurum gerardi All., 1773
+09	12767	87136	\N	1	\N	14	\N	Butomus umbellatus L., 1753
+09	12775	87663	\N	1	\N	14	\N	Campanula jaubertiana Timb.-Lagr., 1868
+09	12783	88404	\N	1	\N	14	\N	Carex buxbaumii Wahlenb., 1803
+09	12791	90180	\N	1	\N	14	\N	Ceratocephalus falcatus (L.) Pers., 1805
+09	12799	94041	\N	1	\N	14	\N	Cypripedium calceolus L., 1753
+09	12807	94388	\N	1	\N	14	\N	Damasonium alisma Mill., 1768
+09	12815	95046	\N	1	\N	14	\N	Dioscorea pyrenaica Bubani & Bordère ex Gren., 1866
+09	12823	95407	\N	1	\N	14	\N	Dracocephalum ruyschiana L., 1753
+09	12831	96499	\N	1	\N	14	\N	Epipogium aphyllum Sw., 1814
+09	12839	96904	\N	1	\N	14	\N	Erodium glandulosum (Cav.) Willd., 1800
+09	12847	99194	\N	1	\N	14	\N	Gagea pratensis (Pers.) Dumort., 1829
+09	12855	99211	\N	1	\N	14	\N	Gagea villosa (M.Bieb.) Sweet, 1826
+09	12863	100739	\N	1	\N	14	\N	Hammarbya paludosa (L.) Kuntze, 1891
+09	12871	102870	\N	1	\N	14	\N	Hippuris vulgaris L., 1753
+09	12887	103841	\N	1	\N	14	\N	Isoetes echinospora Durieu, 1861
+09	12895	105908	\N	1	\N	14	\N	Ligularia sibirica (L.) Cass., 1823
+09	12903	106993	\N	1	\N	14	\N	Lycopodiella inundata (L.) Holub, 1964
+09	12911	107061	\N	1	\N	14	\N	Lysimachia ephemerum L., 1753
+09	12919	107407	\N	1	\N	14	\N	Marsilea quadrifolia L., 1753
+09	12927	109135	\N	1	\N	14	\N	Myricaria germanica (L.) Desv., 1824
+09	12935	109498	\N	1	\N	14	\N	Neotinea lactea (Poir.) R.M.Bateman, Pridgeon & M.W.Chase, 1997
+09	12943	110306	\N	1	\N	14	\N	Ophioglossum azoricum C.Presl, 1845
+09	12951	110357	\N	1	\N	14	\N	Ophrys bertolonii Moretti, 1823 \nOphrys bertolonii subsp. magniflora (Melki & Geniez) R.Soca, 2001
+09	12959	110362	\N	1	\N	14	\N	Ophrys bombyliflora Link, 1800
+09	12967	110483	\N	1	\N	14	\N	Ophrys tenthredinifera Willd., 1805
+09	12975	112038	\N	1	\N	14	\N	Paeonia mascula (L.) Mill., 1768 \nPaeonia mascula (L.) Mill. subsp. mascula
+09	12983	113305	\N	1	\N	14	\N	Phyllodoce caerulea (L.) Bab., 1843
+09	12991	114480	\N	1	\N	14	\N	Polemonium caeruleum L., 1753
+09	12999	115258	\N	1	\N	14	\N	Potamogeton gramineus L., 1753
+09	13007	115270	\N	1	\N	14	\N	Potamogeton lucens L., 1753
+09	13015	115437	\N	1	\N	14	\N	Potentilla cinerea Chaix ex Vill., 1779
+09	13023	117090	\N	1	\N	14	\N	Ranunculus lateriflorus DC., 1817
+09	13031	117096	\N	1	\N	14	\N	Ranunculus lingua L., 1753
+09	13039	117139	\N	1	\N	14	\N	Ranunculus nodiflorus L., 1753
+09	13047	120812	\N	1	\N	14	\N	Saponaria bellidifolia Sm., 1791
+09	13055	122112	\N	1	\N	14	\N	Sedum amplexicaule DC., 1808
+09	13063	127925	\N	1	\N	14	\N	Tulipa clusiana DC., 1804
+09	13071	128330	\N	1	\N	14	\N	Vaccaria hispanica (Mill.) Rauschert, 1965
+09	13079	129115	\N	1	\N	14	\N	Vicia argentea Lapeyr., 1813
+09	13087	129654	\N	1	\N	14	\N	Viola pseudomirabilis H.J.Coste, 1893
+09	13095	131371	\N	1	\N	14	\N	Androsace cylindrica DC. subsp. cylindrica
+09	13103	135029	\N	1	\N	14	\N	Gentiana clusii subsp. costei Braun-Blanq., 1919
+09	13111	138819	\N	1	\N	14	\N	Pinguicula longifolia subsp. caussensis Casper, 1962
+09	13119	140805	\N	1	\N	14	\N	Scorzonera austriaca subsp. bupleurifolia (Pouzolz) Bonnier, 1923
+09	13127	159447	\N	2	\N	14	\N	Austropotamobius torrentium (Schrank, 1803)
+09	13135	161239	\N	1	\N	14	\N	Delphinium orientale J.Gay, 1840
+09	13143	162681	\N	1	\N	14	\N	Theodoxus fluviatilis thermalis (Dupuy, 1851)
+09	13151	162699	\N	1	\N	14	\N	Acicula lineata lineata (Draparnaud, 1801)
+09	13159	162724	\N	1	\N	14	\N	Moitessieria bourguignati Coutagne, 1883
+09	13167	162727	\N	1	\N	14	\N	Moitessieria rolandiana Bourguignat, 1863
+09	13175	162728	\N	1	\N	14	\N	Moitessieria fontsaintei Bertrand, 2001
+09	13183	162741	\N	1	\N	14	\N	Paladilhia pleurotoma Bourguignat, 1865
+09	13191	162775	\N	1	\N	14	\N	Palacanthilhiopsis vervierii Bernasconi, 1988
+09	13199	162777	\N	1	\N	14	\N	Belgrandiella saxatilis (Reyniés, 1844)
+09	13207	162801	\N	1	\N	14	\N	Belgrandia conoidea (Reyniés, 1844)
+09	13215	162819	\N	1	\N	14	\N	Islamia minuta minuta (Draparnaud, 1805)
+09	13223	162822	\N	1	\N	14	\N	Islamia moquiniana (Dupuy, 1851)
+09	13231	162891	\N	1	\N	14	\N	Myxas glutinosa (O.F. Müller, 1774)
+09	13239	162951	\N	1	\N	14	\N	Pagodulina pagodula principalis Klemm, 1939
+09	13247	162952	\N	1	\N	14	\N	Pagodulina austeniana austeniana (G. Nevill, 1880)
+09	13255	162954	\N	1	\N	14	\N	Argna ferrari blanci (Bourguignat, 1874)
+09	13263	162960	\N	1	\N	14	\N	Vallonia enniensis (Gredler, 1856)
+09	13271	163018	\N	1	\N	14	\N	Vertigo substriata (Jeffreys, 1833)
+09	13279	163248	\N	1	\N	14	\N	Trissexodon constrictus (Boubée, 1836)
+09	13287	163463	\N	2	\N	14	\N	Plecotus macrobullaris Kuzjakin, 1965
+09	13295	\N	\N	1	\N	14	\N	Islamia Radoman, 1973
+09	13303	\N	\N	1	\N	14	\N	Moitessieria Bourguignat, 1863
+09	13311	199409	\N	2	\N	14	\N	Lanius meridionalis Temminck, 1820
+09	13319	199820	\N	1	\N	14	\N	Siettitia balsetensis Abeille de Perrin, 1904
+09	13327	200168	\N	1	\N	14	\N	Paladilhia jamblussensis Bertrand, 2004
+09	13335	200249	\N	1	\N	14	\N	Heraultiella exilis (Paladilhe, 1867)
+09	13343	216430	\N	1	\N	14	\N	Bathynella pyrenaica Delamare, Deboutteville & Chappuis, 1954
+09	13351	216431	\N	1	\N	14	\N	Delamareibathynella debouttevillei Serban, 1989
+09	13359	216432	\N	1	\N	14	\N	Delamareibathynella motasi Serban, 1992
+09	13367	216433	\N	1	\N	14	\N	Gallobathynella boui Serban, Coineau & Delamare Deboutteville, 1971
+09	13375	216435	\N	1	\N	14	\N	Gallobathynella delayi Serban, Coineau & Delamare Deboutteville, 1971
+09	13383	216436	\N	1	\N	14	\N	Gallobathynella juberthiae Serban, Coineau & Delamare Deboutteville, 1971
+09	13391	216438	\N	1	\N	14	\N	Meridiobathynella rouchi Serban, Coineau & Delamare Deboutteville, 1971
+09	13399	216439	\N	1	\N	14	\N	Parameridiobathynella gardensis Serban & Leclerc, 1984
+09	13407	216440	\N	1	\N	14	\N	Pseudobathynella magniezi Serban, Coineau & Delamare Deboutteville, 1971
+09	13415	216441	\N	1	\N	14	\N	Vandelibathynella vandeli (Delamare Deboutteville & Chappuis, 1954)
+09	13423	216442	\N	1	\N	14	\N	Vejdovskybathynella balazuci Serban & Leclerc, 1984
+09	13431	216443	\N	1	\N	14	\N	Vejdovskybathynella espattyensis Serban & Leclerc, 1984
+09	13439	216444	\N	1	\N	14	\N	Vejdovskybathynella leclerci Serban, 1989
+09	13447	216445	\N	1	\N	14	\N	Hexabathynella knoepffleri (Coineau, 1965)
+09	13455	216446	\N	1	\N	14	\N	Paraiberobathynella fagei (Delamare Deboutteville & Angelier, 1950)
+09	13463	219832	\N	1	\N	14	\N	Pieris ergane (Geyer, 1828)
+09	13471	222115	\N	1	\N	14	\N	Phaenops sumptuosa Abeille de Perrin, 1904
+09	13479	222534	\N	1	\N	14	\N	Stomis benoiti Jeannel, 1953
+09	13487	222692	\N	1	\N	14	\N	Duvalius lespesi (Fairmaire, 1867)
+09	13495	222706	\N	1	\N	14	\N	Duvalius simoni (Abeille de Perrin, 1881)
+09	13503	222758	\N	1	\N	14	\N	Geotrechus discontignyi (Fairmaire, 1867)
+09	13511	222760	\N	1	\N	14	\N	Geotrechus orcinus (Linder, 1859)
+09	13519	222761	\N	1	\N	14	\N	Geotrechus orpheus (Dieck, 1869)
+09	13527	222763	\N	1	\N	14	\N	Geotrechus trophonius (Abeille de Perrin, 1872)
+09	13535	222764	\N	1	\N	14	\N	Geotrechus aldensis Jeannel, 1955
+09	13543	222765	\N	1	\N	14	\N	Geotrechus andreae Jeannel, 1920
+09	13551	222766	\N	1	\N	14	\N	Geotrechus jeanneli A. Gaudin, 1938
+09	13559	222767	\N	1	\N	14	\N	Geotrechus palei Fourès, 1962
+09	13567	222768	\N	1	\N	14	\N	Geotrechus saulcyi (Argod-Vallon, 1913)
+09	13575	222770	\N	1	\N	14	\N	Geotrechus sulcatus Coiffait, 1959
+09	13583	222771	\N	1	\N	14	\N	Geotrechus vandeli Coiffait, 1959
+09	13591	222772	\N	1	\N	14	\N	Geotrechus vanderberghi Perreau & Quéinnec, 1987
+09	13599	222773	\N	1	\N	14	\N	Geotrechus vulcanus (Abeille de Perrin, 1904)
+09	13607	222774	\N	1	\N	14	\N	Speotrechus mayeti (Abeille de Perrin, 1875)
+09	13615	223098	\N	1	\N	14	\N	Chlorophorus herbstii (Brahm, 1790)
+09	13623	223104	\N	1	\N	14	\N	Cyrtoclytus capra (Germar, 1824)
+09	13631	223186	\N	1	\N	14	\N	Tragosoma depsarium (Linnaeus, 1767)
+09	13639	223191	\N	1	\N	14	\N	Cerophytum elateroides (Latreille, 1804)
+09	13647	223353	\N	1	\N	14	\N	Siettitia avenionensis Guignot, 1925
+09	13655	223771	\N	1	\N	14	\N	Troglophyes aubryi Coiffait, 1953
+09	13663	223778	\N	1	\N	14	\N	Trocharanis mestrei (Abeille de Perrin, 1878)
+09	13671	223779	\N	1	\N	14	\N	Speonomus endogaeus Coiffait, 1963
+09	13679	223780	\N	1	\N	14	\N	Speonomus infernus (Dieck, 1869)
+09	13687	223781	\N	1	\N	14	\N	Speonomus monticola Coiffait, 1963
+09	13695	223782	\N	1	\N	14	\N	Speonomus abeillei (Saulcy, 1872)
+09	13703	223784	\N	1	\N	14	\N	Speonomus bastideus Coiffait, 1950
+09	13711	223785	\N	1	\N	14	\N	Speonomus bepmalei Jeannel, 1908
+09	13719	223789	\N	1	\N	14	\N	Speonomus cabidochei Besson, 1968
+09	13735	223793	\N	1	\N	14	\N	Speonomus colluvii Delay, Juberthie & Ruffat, 1983
+09	13743	223794	\N	1	\N	14	\N	Speonomus curvipes (Piochard de la Brûlerie, 1873)
+09	13751	223795	\N	1	\N	14	\N	Speonomus ehlersi (Abeille de Perrin, 1872)
+09	13759	223798	\N	1	\N	14	\N	Speonomus leleupi Coiffait, 1953
+09	13767	223799	\N	1	\N	14	\N	Speonomus longicornis (Saulcy, 1872)
+09	13775	223803	\N	1	\N	14	\N	Speonomus opisthonoxus Gers & Dupuis, 1988
+09	13783	223806	\N	1	\N	14	\N	Speonomus piochardi (Abeille de Perrin, 1873)
+09	13791	223807	\N	1	\N	14	\N	Speonomus proserpinae (Abeille de Perrin, 1878)
+09	13799	223810	\N	1	\N	14	\N	Speonomus speluncarum (Delarouzée, 1857)
+09	13807	223829	\N	1	\N	14	\N	Paratroglophyes carrerei Fourès, 1954
+09	13815	223830	\N	1	\N	14	\N	Paratroglophyes jeanneli Coiffait, 1955
+09	13823	223831	\N	1	\N	14	\N	Paraspeonomus vandeli Coiffait, 1952
+09	13831	223845	\N	1	\N	14	\N	Gesciella delioti Giachino & Guéorguiev, 1989
+09	13839	223891	\N	1	\N	14	\N	Antrocharis querilhaci (Lespès, 1857)
+09	13847	240285	\N	1	\N	14	\N	Xya variegata Latreille, 1809
+09	13855	240643	\N	1	\N	14	\N	Daphnia atkinsoni Baird, 1859
+09	13863	240674	\N	1	\N	14	\N	Macrothrix rosea (Jurine, 1820)
+09	13871	240695	\N	1	\N	14	\N	Alona nuragica Margaritora, 1971
+09	13879	240728	\N	1	\N	14	\N	Spelaeodiaptomus rouchi Dussart, 1970
+09	13887	240739	\N	1	\N	14	\N	Diaptomus castaneti Burckhardt, 1920
+09	13895	240741	\N	1	\N	14	\N	Copidodiaptomus numidicus (Gurney, 1909)
+09	13903	240748	\N	1	\N	14	\N	Speocyclops anomalus Chappuis & Kiefer, 1952
+09	13911	240749	\N	1	\N	14	\N	Speocyclops arregladensis Chappuis & Kiefer, 1952
+09	13919	240750	\N	1	\N	14	\N	Speocyclops castereti Lindberg, 1954
+09	13927	240751	\N	1	\N	14	\N	Speocyclops gallicus Chappuis & Kiefer, 1952
+09	13935	240752	\N	1	\N	14	\N	Speocyclops kieferi Lescher-Moutoué, 1968
+09	13943	240753	\N	1	\N	14	\N	Speocyclops orcinus Kiefer, 1937
+09	13951	240755	\N	1	\N	14	\N	Speocyclops sisyphus Kiefer, 1937
+09	13959	240761	\N	1	\N	14	\N	Megacyclops brachypus Kiefer, 1954
+09	13967	240764	\N	1	\N	14	\N	Kieferiella delamarei (Lescher-Moutoué, 1971)
+09	13975	240765	\N	1	\N	14	\N	Graeteriella boui Lescher-Moutoué, 1974
+09	13983	240766	\N	1	\N	14	\N	Graeteriella brehmi Lescher-Moutoué, 1968
+09	13991	240767	\N	1	\N	14	\N	Graeteriella rouchi Lescher-Moutoué, 1968
+09	13999	240768	\N	1	\N	14	\N	Graeteriella bertrandi Lescher-Moutoué, 1974
+09	14007	240769	\N	1	\N	14	\N	Graeteriella gelyensis Lescher-Moutoué, 1978
+09	14015	240770	\N	1	\N	14	\N	Graeteriella laisi (Kiefer, 1936)
+09	14023	240771	\N	1	\N	14	\N	Graeteriella vandeli Lescher-Moutoué, 1969
 \.
 
 
 --
--- TOC entry 4203 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 4087 (class 0 OID 0)
+-- Dependencies: 219
 -- Name: especesensible_id_seq; Type: SEQUENCE SET; Schema: referentiels; Owner: admin
 --
 
@@ -14122,7 +14122,7 @@ SELECT pg_catalog.setval('especesensible_id_seq', 14030, true);
 
 
 --
--- TOC entry 4069 (class 2606 OID 6461761)
+-- TOC entry 3953 (class 2606 OID 9344230)
 -- Name: especesensible pk; Type: CONSTRAINT; Schema: referentiels; Owner: admin
 --
 
@@ -14131,8 +14131,8 @@ ALTER TABLE ONLY especesensible
 
 
 --
--- TOC entry 4201 (class 0 OID 0)
--- Dependencies: 223
+-- TOC entry 4085 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: TABLE especesensible; Type: ACL; Schema: referentiels; Owner: admin
 --
 
@@ -14140,7 +14140,7 @@ GRANT ALL ON TABLE especesensible TO ogam;
 GRANT ALL ON TABLE especesensible TO postgres;
 
 
--- Completed on 2018-11-23 13:38:41 CET
+-- Completed on 2019-03-28 11:43:50 CET
 
 --
 -- PostgreSQL database dump complete

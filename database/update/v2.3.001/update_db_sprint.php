@@ -32,6 +32,8 @@ if ($isDlb) {
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
+	execCustSQLFile("$sprintDir/fix_especes_sensibles.sql", $config);
+
 
 
 } catch (Exception $e) {
@@ -46,6 +48,7 @@ $CLIParams = implode(' ', array_slice($argv, 1));
 try {
     
 	//system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
+	
 
 } catch (Exception $e) {
 	
