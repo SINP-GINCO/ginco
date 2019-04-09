@@ -37,14 +37,9 @@ public class JddService implements IntegrationEventListener {
 	 */
 	private JddDAO jddDAO = new JddDAO();
 
-	/**
-	 * The metadata Id
-	 */
-	private String jddMetadataId;
 
 	/**
 	 * Event called before the integration of a submission of data.
-	 * Get the metadataId from submissionId
 	 *
 	 * @param submissionId
 	 *            the submission identifier
@@ -52,11 +47,7 @@ public class JddService implements IntegrationEventListener {
 	 *             in case of database error
 	 */
 	public void beforeIntegration(Integer submissionId) throws Exception {
-		// todo
-		logger.debug("JddService get metadataId");
-		// jddMetadataId = "123-456-789";
-		jddMetadataId = jddDAO.getJddMetadataId(submissionId);
-
+		// DO NOTHING
 	}
 
 	/**
@@ -110,6 +101,8 @@ public class JddService implements IntegrationEventListener {
 				break;
 			}
 		}
+		
+		String jddMetadataId = jddDAO.getJddMetadataId(submissionId);
 		jddMdDeeIdGD.setValue(jddMetadataId);
 
 		values.put(DSRConstants.JDD_METADONNEE_DEE_ID, jddMdDeeIdGD);
