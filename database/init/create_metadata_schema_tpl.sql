@@ -276,6 +276,7 @@ FORMAT               VARCHAR(255)          not null,
 IS_MANDATORY         CHAR(1)          	  null,
 MASK                 VARCHAR(100)         null,
 LABEL_CSV			 VARCHAR(60)		   not null,
+DEFAULT_VALUE        VARCHAR(255)         not null,
 constraint PK_FILE_FIELD primary key (DATA, FORMAT),
 constraint file_field_format_label_csv_key UNIQUE (format, label_csv)
 );

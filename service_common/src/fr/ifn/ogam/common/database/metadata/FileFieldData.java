@@ -32,6 +32,11 @@ public class FileFieldData extends FieldData {
 	private String labelCSV;
 	
 	/**
+     * The defaultValue of the imported CSV file columns.
+    */
+      private String defaultValue;
+	
+	/**
 	 * @return the isMandatory
 	 */
 	public Boolean getIsMandatory() {
@@ -75,5 +80,20 @@ public class FileFieldData extends FieldData {
 	public void setLabelCSV(String labelCSV) {
 		this.labelCSV = labelCSV;
 	}
+	
+	/**
+     * @return the defaultValue
+     */
+ 	public String getDefaultValue() {
+		return defaultValue;
+	}
 
+    /**
+     * @param defaultValue
+     *            the defaultValue of the CSV columns
+     */
+	public void setDefaultValue(String defaultValue) {
+    	this.defaultValue = defaultValue;
+    }
+	
 }

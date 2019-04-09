@@ -255,7 +255,11 @@ public class IntegrationService extends GenericMapper {
 
 						// Get the field descriptor
 						FileFieldData sourceFieldDescriptor = CSVsourceFieldDescriptors.get(col);
-
+						if(value.isEmpty() && (sourceFieldDescriptor.getDefaultValue() != null)) {   
+                        	System.out.println("setFoundValue value: " + sourceFieldDescriptor.getDefaultValue());
+                            value =  sourceFieldDescriptor.getDefaultValue();
+                        }
+						
 						// Check the mask if available and the variable is not a date (date format is tested with a date format)
 						if (sourceFieldDescriptor.getMask() != null && !sourceFieldDescriptor.getType().equalsIgnoreCase(DATE)
 								&& !sourceFieldDescriptor.getType().equalsIgnoreCase(TIME)) {

@@ -1142,6 +1142,7 @@ public class MetadataDAO {
 				result.setDefinition(rs.getString("definition"));
 				result.setIsMandatory(rs.getBoolean("is_mandatory"));
 				result.setMask(rs.getString("mask"));
+				result.setDefaultValue(rs.getString("default_value"));				
 			}
 
 		} finally {
@@ -1206,6 +1207,8 @@ public class MetadataDAO {
 				result.setDefinition(rs.getString("definition"));
 				result.setIsMandatory(rs.getBoolean("is_mandatory"));
 				result.setMask(rs.getString("mask"));
+				result.setDefaultValue(rs.getString("default_value"));
+				
 			}
 			
 		} finally {
@@ -1274,6 +1277,7 @@ public class MetadataDAO {
 					field.setDefinition(rs.getString("definition"));
 					field.setIsMandatory(rs.getBoolean("is_mandatory"));
 					field.setMask(rs.getString("mask"));
+					field.setDefaultValue(rs.getString("default_value"));
 					result.add(field);
 					logger.debug(rs.getString("data"));
 				}
