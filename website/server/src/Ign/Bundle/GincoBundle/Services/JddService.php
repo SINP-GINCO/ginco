@@ -95,29 +95,41 @@ class JddService {
 			throw new \Exception("Can't publish JDD because of running submissions.") ;
 		}
 		
-		$validatedSubmissions = 0 ;
-		foreach ($submissions as $submission) {
+		$validatedSubmissions = [] ;
+		
+		try {
 			
-			if ($submission->isInError()) {
-				$this->integrationService->cancelDataSubmission($submission) ;
-				continue ;
+			foreach ($submissions as $submission) {
+
+				if ($submission->isInError()) {
+					$this->integrationService->cancelDataSubmission($submission) ;
+					continue ;
+				}
+
+				if (!$submission->isActive()) {
+					continue ;
+				}
+
+				if ($submission->isSuccessful()) {
+					$this->integrationService->validateDataSubmission($submission) ;
+					$validatedSubmissions[] = $submission ;
+				}
 			}
-			
-			if (!$submission->isActive()) {
-				continue ;
+
+			if (count($validatedSubmissions) > 0) {
+				$jdd->setStatus(Jdd::STATUS_VALIDATED) ;
 			}
+
+			$this->entityManager->flush() ;
+		
+		} catch (\Exception $e) {
 			
-			if ($submission->isSuccessful()) {
-				$this->integrationService->validateDataSubmission($submission) ;
-				$validatedSubmissions++ ;
+			$this->logger->error("Error while validating JDD {$jdd->getId()}") ;
+			// En cas d'erreur (souvent un timeout du serveur de BDD) on dépublie les soumissions déjà publiées, pour éviter les états incohérents.
+			foreach ($validatedSubmissions as $submission) {
+				$this->integrationService->invalidateDataSubmission($submission) ;
 			}
 		}
-		
-		if ($validatedSubmissions > 0) {
-			$jdd->setStatus(Jdd::STATUS_VALIDATED) ;
-		}
-		
-		$this->entityManager->flush() ;
 	}
 	
 	
@@ -135,16 +147,30 @@ class JddService {
 			throw new \Exception("Can't publish JDD because of running submissions.") ;
 		}
 		
-		foreach ($submissions as $submission) {
+		$invalidatedSubmissions = [] ;
+		
+		try {
+		
+			foreach ($submissions as $submission) {
+
+				if ($submission->isValidated()) {
+					$this->integrationService->invalidateDataSubmission($submission) ;
+					$invalidatedSubmissions[] = $submission ;
+				}	
+			}
+
+			$jdd->setStatus(Jdd::STATUS_ACTIVE) ;
+
+			$this->entityManager->flush() ;
+		
+		} catch (\Exception $e) {
 			
-			if ($submission->isValidated()) {
-				$this->integrationService->invalidateDataSubmission($submission) ;
-			}	
+			$this->logger->error("Error while invalidating JDD {$jdd->getId()}") ;
+			// En cas d'erreur (souvent timeout du serveur de BDD), on republie les soumissions déjà dépubliées pour éviter les états incohérents.
+			foreach ($invalidatedSubmissions as $submission) {
+				$this->integrationService->validateDataSubmission($submission) ;
+			}
 		}
-		
-		$jdd->setStatus(Jdd::STATUS_ACTIVE) ;
-		
-		$this->entityManager->flush() ;		
 		
 	}
 	
