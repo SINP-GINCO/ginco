@@ -33,7 +33,7 @@ try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/fix_especes_sensibles.sql", $config);
-
+	execCustSQLFile("$sprintDir/add_defaultvalue_fields.sql", $config);
 
 
 } catch (Exception $e) {
