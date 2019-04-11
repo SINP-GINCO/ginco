@@ -45,7 +45,7 @@ public class FileFieldData extends FieldData {
 
 	/**
 	 * @param isMandatory
-	 *            the isMandatory to set
+	 *  the isMandatory to set
 	 */
 	public void setIsMandatory(Boolean isMandatory) {
 		this.isMandatory = isMandatory;
@@ -60,7 +60,7 @@ public class FileFieldData extends FieldData {
 
 	/**
 	 * @param mask
-	 *            the mask to set
+	 * the mask to set
 	 */
 	public void setMask(String mask) {
 		this.mask = mask;
@@ -75,14 +75,14 @@ public class FileFieldData extends FieldData {
 
 	/**
 	 * @param labelCSV
-	 *            the label of the CSV columns
+	 * the label of the CSV columns
 	 */
 	public void setLabelCSV(String labelCSV) {
 		this.labelCSV = labelCSV;
 	}
 	
 	/**
-     * @return the defaultValue
+	 * @return the defaultValue
      */
  	public String getDefaultValue() {
 		return defaultValue;
@@ -90,7 +90,7 @@ public class FileFieldData extends FieldData {
 
     /**
      * @param defaultValue
-     *            the defaultValue of the CSV columns
+     *  the defaultValue of the CSV columns
      */
 	public void setDefaultValue(String defaultValue) {
     	this.defaultValue = defaultValue;
