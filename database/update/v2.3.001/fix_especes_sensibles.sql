@@ -1,0 +1,1 @@
+UPDATE referentiels.especesensible SET cd_dept = concat('0', cd_dept) WHERE char_length(cd_dept) = 1 ;

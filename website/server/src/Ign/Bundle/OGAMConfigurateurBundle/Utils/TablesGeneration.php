@@ -59,6 +59,7 @@ class TablesGeneration extends DatabaseUtils {
 				}
 			}
 			$this->createTable($tableFormat, $tableName, $tableSchema, $tablePrimaryKey, $dbconn);
+			$this->createOgamIndex($tableSchema, $OGAM_ID, $tableName, $dbconn) ;
 			$this->createPrimaryKeyTrigger($tableSchema, $OGAM_ID, $tableName);
 			$this->createGeometryColumn($tableName, $tableSchema, $tableFormat);
 			$this->grantAllRights($tableSchema);
@@ -117,6 +118,20 @@ class TablesGeneration extends DatabaseUtils {
 		pg_prepare($dbconn, "", $sql);
 		pg_execute($dbconn, "", array());
 	}
+	
+	
+	/**
+	 * Crée un index sur la colonne OGAM_ID_*
+	 * @param type $tableSchema
+	 * @param type $OGAM_ID
+	 * @param type $tableName
+	 * @param type $dbconn
+	 */
+	public function createOgamIndex($tableSchema, $OGAM_ID, $tableName, $dbconn) {
+		
+		$sql = "CREATE INDEX idx_{$OGAM_ID} ON $tableSchema.$tableName({$OGAM_ID})" ;
+		pg_query($dbconn, $sql) ;
+	}
 
 	/**
 	 *
@@ -170,6 +185,10 @@ class TablesGeneration extends DatabaseUtils {
 		$sqlPK = "ALTER TABLE " . $tableSchema . "." . $tableName . "
   				  ADD PRIMARY KEY (" . $tablePrimaryKey . ");";
 		pg_query($dbconn, $sqlPK);
+			
+		pg_query($dbconn, "ALTER TABLE $tableSchema.$tableName OWNER TO ogam");
+		pg_query($dbconn, "GRANT ALL ON TABLE $tableSchema.$tableName TO ogam");
+		pg_query($dbconn, "GRANT ALL ON TABLE $tableSchema.$tableName TO {$this->adminName}");
 	}
 
 	/**
@@ -230,12 +249,34 @@ class TablesGeneration extends DatabaseUtils {
 	}
 	
 	/**
+	 * Retire une colonne de la table.
+	 * @param TableField $tableField
+	 */
+	public function removeColumn(TableField $tableField) {
+		
+		$tableFormat = $tableField->getFormat() ;
+		$model = $tableFormat->getModel() ;
+		$unit = $tableField->getData()->getUnit() ;
+		
+		$schemaName = $model->getSchema()->getName() ;
+		$tableName = $tableFormat->getTableName() ;
+		$columnName = $tableField->getColumnName() ;
+		
+		$sql = "ALTER TABLE $schemaName.$tableName DROP COLUMN $columnName" ;
+		$this->conn->query($sql) ;
+	}
+	
+	/**
 	 * Retire la contrainte NOT NULL d'une colonne.
 	 * Utilisé dans le cas de la suppression d'un champ d'un modèle de données : la colonne n'est pas retirée (pour conservation)
 	 * mais on s'assure que la valeur nulle est acceptée pour les futures lignes.
 	 * @param TableField $tableField
 	 */
 	public function dropNotNull(TableField $tableField) {
+		
+		if (!$tableField->getIsMandatory()) {
+			return ;
+		}
 		
 		$tableFormat = $tableField->getFormat() ;
 		$model = $tableFormat->getModel() ;
@@ -246,6 +287,30 @@ class TablesGeneration extends DatabaseUtils {
 		$columnName = $tableField->getColumnName() ;
 		
 		$sql = "ALTER TABLE $schemaName.$tableName ALTER COLUMN $columnName DROP NOT NULL" ;
+		$this->conn->query($sql) ;
+	}
+	
+	
+	/**
+	 * Ajoute une contrainte NOT NULL sur une colonne.
+	 * @param TableField $tableField
+	 * @return type
+	 */
+	public function addNotNull(TableField $tableField) {
+		
+		if ($tableField->getIsMandatory()) {
+			return ;
+		}
+		
+		$tableFormat = $tableField->getFormat() ;
+		$model = $tableFormat->getModel() ;
+		$unit = $tableField->getData()->getUnit() ;
+		
+		$schemaName = $model->getSchema()->getName() ;
+		$tableName = $tableFormat->getTableName() ;
+		$columnName = $tableField->getColumnName() ;
+		
+		$sql = "ALTER TABLE $schemaName.$tableName ALTER COLUMN $columnName SET NOT NULL" ;
 		$this->conn->query($sql) ;
 	}
 	

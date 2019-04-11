@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelManager;
 
 use Monolog\Logger;
 
@@ -22,11 +23,6 @@ use Monolog\Logger;
  */
 class ModelPublication extends DatabaseUtils {
 
-	/**
-	 *
-	 * @var : the tables generation service
-	 */
-	protected $tablesGeneration;
 
 	protected $copyUtils;
 	
@@ -35,9 +31,19 @@ class ModelPublication extends DatabaseUtils {
 	 * @var EntityManager
 	 */
 	protected $entityManager ;
+	
+	
+	/**
+	 *
+	 * @var ModelManager
+	 */
+	protected $modelManager;
 
-	public function __construct(EntityManager $entityManager, Logger $logger, $adminName, $adminPassword) {
+
+
+	public function __construct(EntityManager $entityManager, ModelManager $modelManager, Logger $logger, $adminName, $adminPassword) {
 		$this->entityManager = $entityManager ;
+		$this->modelManager = $modelManager ;
 		parent::__construct($entityManager->getConnection(), $logger, $adminName, $adminPassword);
 	}
 
@@ -50,60 +56,27 @@ class ModelPublication extends DatabaseUtils {
 	}
 
 	/**
-	 * Publishes a model by copying all the data related to a specific model, then generates
-	 * the model in the database.
 	 *
 	 * @param $modelId the
 	 *        	id of the model
 	 * @return true if publication succeded, false otherwise
 	 */
 	public function publishModel(Model $model) {
-		
-		try {
-			if ($this->isPublishable($model)) {
-				$dbconn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
-				
-				pg_query($dbconn, "BEGIN");
-				
-				// on ne crée le query dataset et les formulaires qu'à la première publication.
-				if ($model->getQueryDatasets()->isEmpty()) {
-				
-					$datasetId = $this->copyUtils->createQueryDataset($model->getId(), $dbconn);
-					$this->copyUtils->createFormFields($model->getId(), $datasetId, $dbconn);
-				}
-				
-				// Generate the tables
-				if ($this->tablesGeneration && $model->getPublishedAt() == null) {
-					$result = $this->tablesGeneration->createTables($model->getId(), $dbconn);
-					if (!$result) {
-						pg_query($dbconn, "ROLLBACK");
-						return false;
-					}
-				}
-				
-				pg_query($dbconn, "COMMIT");
-				
-				$model->setStatus(Model::PUBLISHED) ;
-				$model->setPublishedAt(new \DateTime()) ;
-				$this->entityManager->flush() ;
-				
-				return true;
-			} else {
-				return false;
+			
+		if ($this->isPublishable($model)) {
+			
+			// Le premier modèle (par défaut) est déjà présent dans le métamodèle,
+			// mais ses tables ne sont pas générées.
+			if ($model->getCreatedAt() == null) {
+				$this->modelManager->initModel($model) ;
 			}
-		} catch (ContextErrorException $e) {
-			$this->logger->error($e);
-			pg_query($dbconn, "ROLLBACK");
-			return false;
-		} catch (DBALException $e) {
-			$this->logger->error($e);
-			pg_query($dbconn, "ROLLBACK");
-			return false;
-		} finally {
-			if (isset($dbconn)) {
-				pg_close($dbconn);
-			}
+			
+			$model->setStatus(Model::PUBLISHED) ;
+			$this->entityManager->flush() ;
+			return true ;
 		}
+		
+		return false ;
 	}
 
 	

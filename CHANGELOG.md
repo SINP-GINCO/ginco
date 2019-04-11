@@ -4,10 +4,25 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.3.0 (25/03/2019)
+
+* Refonte du métamodèle : possibilité d'ajouter, supprimer ou modifier des champs sans passer par une dépublication.
+* Ajout de la possibilité de créer un modèle à partir d'un standard.
+* Optimisation du chargement de la page "Gérer tous les jeux de données".
+* Correction d'un bug sur les données floutées du Dépôt Légal.
+* Ajout d'une fonctionnalité permettant le recalcul DLB et DEE sur le Dépôt Légal (sans re-générer le certificat de dépôt).
+* Amélioration des performances lors de la consultation des données.
+* Re-calcul du nom valide conformément au standard.
+* Corrections de bugs divers
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.3..v2.3.0)
+
 ## V2.2.4 (25/02/2019)
 
 * Correctif de sécurité : contrôle du type de fichier uploadé.
 * Correctif dans la procédure de déploiement pour le téléchargement des DEE et des exports.
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.3..v2.2.4)
 
 ## V2.2.3 (6/12/2018)
 
@@ -17,7 +32,7 @@ Pour voir le diff entre deux versions, aller à (par exemple) : https://github.c
 * Correctifs de sécurités divers
 * Corrections de bugs divers
 
-[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.2...v2.2.3)
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.2.2..v2.2.3)
 
 ## V2.2.2 (19/10/2018)
 

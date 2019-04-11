@@ -331,7 +331,7 @@ class GeoAssociationService {
 	 */
 	public function geomToEntity($entity, $tableFormat, $filter) {
 		$geomToEntity = "INSERT INTO mapping.observation_" . $entity . "
-			SELECT m." . $tableFormat->getPrimaryKeys()[0] . ",  m.provider_id, '" . $tableFormat->getFormat() . "', ref.id_" . $entity . ", 1
+			SELECT m." . $tableFormat->getPrimaryKeys()[0] . ",  m.provider_id, '" . $tableFormat->getFormat()->getFormat() . "', ref.id_" . $entity . ", 1
 			FROM mapping.bac_" . $entity . " AS ref, raw_data." . $tableFormat->getTableName() . " AS m
 			WHERE m.geometrie IS NOT NULL
 			AND St_Intersects(St_Transform(m.geometrie, 3857), ref.geom) 
@@ -392,7 +392,7 @@ class GeoAssociationService {
 		    FROM rows
 		)
 		INSERT INTO mapping.observation_geometrie
-		  SELECT id_observation, id_provider, '" . $tableFormat->getFormat() . "', id_geometrie
+		  SELECT id_observation, id_provider, '" . $tableFormat->getFormat()->getFormat() . "', id_geometrie
 		  FROM rows
 		  		;";
 		
@@ -443,7 +443,7 @@ class GeoAssociationService {
 		}
 		
 		$entityAToEntityB = "INSERT INTO mapping.observation_" . $entityB . "
-		SELECT m." . $tableFormat->getPrimaryKeys()[0] . ",  m.provider_id, '" . $tableFormat->getFormat() . "', asso.id_" . $entityB . ", 1
+		SELECT m." . $tableFormat->getPrimaryKeys()[0] . ",  m.provider_id, '" . $tableFormat->getFormat()->getFormat() . "', asso.id_" . $entityB . ", 1
 		FROM raw_data." . $tableFormat->getTableName() . " AS m, mapping." . $assoTable . " AS asso
 		" . $where . "
 		AND asso.id_" . $entityA . " = ANY(m.code" . $entityA . "::text[]) " . $filter . "
@@ -469,7 +469,7 @@ class GeoAssociationService {
 			    FROM mapping.observation_maille AS o
 			    WHERE m." . $tableFormat->getPrimaryKeys()[0] . " = o.id_observation 
 			    AND m.provider_id = o.id_provider
-			    AND o.table_format = '" . $tableFormat->getFormat() . "'
+			    AND o.table_format = '" . $tableFormat->getFormat()->getFormat() . "'
 			 	) WHERE true " . $filter . ";
 				";
 		
@@ -492,14 +492,14 @@ class GeoAssociationService {
 			    FROM mapping.observation_commune AS o
 			    WHERE m." . $tableFormat->getPrimaryKeys()[0] . " = o.id_observation 
 			    AND m.provider_id = o.id_provider
-			    AND o.table_format = '" . $tableFormat->getFormat() . "'
+			    AND o.table_format = '" . $tableFormat->getFormat()->getFormat() . "'
 			),
 			nomcommunecalcule = ARRAY(SELECT c.nom_com 
 			    FROM referentiels.commune_carto_2017 AS c 
 			    LEFT JOIN mapping.observation_commune AS o ON c.insee_com = o.id_commune  
 			 WHERE m." . $tableFormat->getPrimaryKeys()[0] . " = o.id_observation 
 			    AND m.provider_id = o.id_provider
-			    AND o.table_format = '" . $tableFormat->getFormat() . "'
+			    AND o.table_format = '" . $tableFormat->getFormat()->getFormat() . "'
 			    ) WHERE true " . $filter . ";
 				";
 		
@@ -522,7 +522,7 @@ class GeoAssociationService {
 			FROM mapping.observation_departement AS o
 			WHERE m." . $tableFormat->getPrimaryKeys()[0] . " = o.id_observation 
 			AND m.provider_id = o.id_provider
-			AND o.table_format = '" . $tableFormat->getFormat() . "'
+			AND o.table_format = '" . $tableFormat->getFormat()->getFormat() . "'
 			) WHERE true " . $filter . ";
 			";
 		

@@ -16,11 +16,11 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "bootstrap": "^3.4.0",
+    "bootstrap": "^3.4.1",
     "bootstrap-table": "1.11.*",
-    "ckeditor": "^4.11.1",
+    "ckeditor": "^4.11.3",
     "components-jqueryui": "^1.12",
-    "grunt": "^1.0.3",
+    "grunt": "^1.0.4",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "^2.0.0",
     "jquery": "^3.3"

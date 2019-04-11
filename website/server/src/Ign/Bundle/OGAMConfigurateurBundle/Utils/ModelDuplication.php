@@ -37,7 +37,7 @@ class ModelDuplication extends DatabaseUtils {
 	 *        	the description of the copied model.
 	 * @return a message id explaining the result of the operation.
 	 */
-	public function duplicateModel($model, $copyModelName, $copyModelDescription) {
+	public function duplicateModel(Model $model, Model $copyModel) {
 		$this->conn->beginTransaction();
 		$copyUtils = new CopyUtils($this->conn, $this->logger, $this->adminName, $this->adminPassword);
 		$modelId = $model->getId();
@@ -47,18 +47,22 @@ class ModelDuplication extends DatabaseUtils {
 		}
 
 		$destSchema = 'metadata';
-
+		
+		$copyModelName = $copyModel->getName() ;
+		$copyModelDescription = $copyModel->getDescription() ;
+		$copyModelId = $copyModel->getId() ;
+		
 		// Copy data without modifying primary keys
-		$copiedModelId = $copyUtils->copyModel($modelId, $destSchema, true, $copyModelName, $copyModelDescription);
+		$copyUtils->copyModel($modelId, $destSchema, true, $copyModelId, $copyModelName, $copyModelDescription);
 		$copyUtils->copyFormat($modelId, $destSchema, true);
-		$copyUtils->copyTableFormat($modelId, $destSchema, true, $copiedModelId);
+		$copyUtils->copyTableFormat($modelId, $destSchema, true, $copyModelId);
 		$copyUtils->copyTableTree($modelId, $destSchema, true);
 		$copyUtils->copyField($modelId, $destSchema, true);
 		$copyUtils->copyTableField($modelId, $destSchema, true);
-		$copyUtils->copyModelTables($modelId, $destSchema, true, $copiedModelId);
+		$copyUtils->copyModelTables($modelId, $destSchema, true, $copyModelId);
 
 		// Change primary keys
-		$this->updatePrimaryKeys($model, $copiedModelId);
+		$this->updatePrimaryKeys($model, $copyModelId);
 
 		try {
 			$this->conn->commit();

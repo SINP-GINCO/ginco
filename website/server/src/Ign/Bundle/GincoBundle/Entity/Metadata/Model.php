@@ -50,7 +50,9 @@ class Model {
 
 	/**
 	 *
-	 * @var string @ORM\Column(name="is_ref", type="boolean", nullable=true)
+	 * @var boolean 
+	 * 
+	 * @ORM\Column(name="is_ref", type="boolean", nullable=true)
 	 */
 	private $ref;
 
@@ -90,13 +92,24 @@ class Model {
 	 *
 	 * @var DateTime
 	 * 
-	 * @ORM\Column(name="published_at", type="datetime", nullable=true)
+	 * @ORM\Column(name="created_at", type="datetime", nullable=true)
 	 */
-	private $publishedAt;
+	private $createdAt;
+	
+	
+	/**
+	 *
+	 * @var Standard
+	 * 
+	 * @ORM\ManyToOne(targetEntity="Standard", inversedBy="models")
+	 * @ORM\JoinColumn(name="standard", referencedColumnName="name")
+	 */
+	private $standard ;
 
 	
 	
 	public function __construct() {
+		$this->id = uniqid('model_') ;
 		$this->tables = new ArrayCollection();
 		$this->datasets = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->ref = false;
@@ -168,7 +181,7 @@ class Model {
 	/**
 	 * Get ref
 	 *
-	 * @return string
+	 * @return boolean
 	 */
 	public function getRef() {
 		return $this->ref;
@@ -342,20 +355,39 @@ class Model {
 
 	
 	/**
-	 * Get publication date
+	 * Get creation date
 	 * @return DateTime
 	 */
-	public function getPublishedAt() {
-		return $this->publishedAt ;
+	public function getCreatedAt() {
+		return $this->createdAt ;
 	}
 	
 	/**
-	 * Set publication date
-	 * @param type $publishedAt
+	 * Set creation date
+	 * @param type $createdAt
 	 * @return $this
 	 */
-	public function setPublishedAt($publishedAt) {
-		$this->publishedAt = $publishedAt ;
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt ;
 		return $this ;
 	}
+	
+	
+	/**
+	 * Get standard
+	 * @return Standard
+	 */
+	public function getStandard() {
+		return $this->standard ;
+	}
+	
+	/**
+	 * Set standard
+	 * @param \Ign\Bundle\GincoBundle\Entity\Metadata\Standard $standard
+	 * @return $this
+	 */
+	public function setStandard(Standard $standard) {
+		$this->standard = $standard ;
+		return $this ;
+	} 
 }

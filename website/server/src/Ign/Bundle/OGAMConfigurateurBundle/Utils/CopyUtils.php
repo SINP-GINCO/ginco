@@ -355,17 +355,19 @@ class CopyUtils extends DatabaseUtils {
 	 *        	the destination schema of the data (metadata or metadata)
 	 * @param $duplicate boolean
 	 *        	wether the method is called for duplication or not.
+	 * @param $copyModelId
+	 *			the id of the copy model 
 	 * @param $copyModelName string
 	 *        	the name of the copied model. Only for duplication.
 	 * @param $copyModelDescription string
 	 *        	the description of the copied model. Only for duplication.
 	 * @return the generated id of the model if duplicate is true.
 	 */
-	public function copyModel($modelId, $destSchema, $duplicate, $copyModelName = NULL, $copyModelDescription = NULL) {
+	public function copyModel($modelId, $destSchema, $duplicate, $copyModelId, $copyModelName = NULL, $copyModelDescription = NULL) {
 		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
-		$selectQuery = "SELECT DISTINCT m.id, m.name, m.description, m.schema_code, m.status
+		$selectQuery = "SELECT DISTINCT m.id, m.name, m.description, m.schema_code, m.status, m.standard
 				FROM metadata.model m
 				WHERE m.id = $1";
 
@@ -375,27 +377,27 @@ class CopyUtils extends DatabaseUtils {
 		));
 
 		// Prepare insert statement for each value
-		$insertQuery = "INSERT INTO " . $destSchema . ".model(id, name, description, schema_code, status) VALUES ($1, $2, $3, $4, $5);";
+		$insertQuery = "INSERT INTO " . $destSchema . ".model(id, name, description, schema_code, status, standard) VALUES ($1, $2, $3, $4, $5, $6);";
 		pg_prepare($this->pgConn, "", $insertQuery);
 
 		while ($row = pg_fetch_assoc($results)) {
 			if ($duplicate) {
-				$copiedModelId = uniqid('model_');
 				pg_execute($this->pgConn, "", array(
-					$copiedModelId,
+					$copyModelId,
 					$copyModelName,
 					$copyModelDescription,
 					$row['schema_code'],
-					Model::UNPUBLISHED
+					Model::UNPUBLISHED,
+					$row['standard']
 				));
-				return $copiedModelId;
 			} else {
 				pg_execute($this->pgConn, "", array(
 					$row['id'],
 					$row['name'],
 					$row['description'],
 					$row['schema_code'],
-					$row['status']
+					$row['status'],
+					$row['standard']
 				));
 			}
 		}

@@ -24,9 +24,15 @@ import fr.ifn.ogam.common.database.referentiels.ListReferentielsDAO;
 import fr.ifn.ogam.common.util.DSRConstants;
 import fr.ifn.ogam.common.business.checks.CheckException;
 import fr.ifn.ogam.common.business.checks.CheckExceptionArrayList;
+import static fr.ifn.ogam.common.business.checks.CheckCodes.*;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.*;
 import static fr.ifn.ogam.common.business.UnitTypes.*;
 import static fr.ifn.ogam.common.business.Data.*;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.operation.valid.*;
 
 /**
  * 
@@ -90,6 +96,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		// jourDateDebut < jourDateFin < today
 		observationDatesAreCoherent(values);
 		identifiantPermanentIsUUID(values) ;
+		geometryIsValid(values) ;
 
 		// ----- SOURCE ------
 
@@ -507,6 +514,40 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 			}
 		}
 	}
+	
+	
+	/**
+	 * Tests if geometry is valid
+	 * @param values
+	 */
+	private void geometryIsValid(Map < String, GenericData > values) throws CheckException {
+		
+		GenericData genericGeometry = values.get(DSRConstants.GEOMETRIE) ;
+		if (genericGeometry != null && !empty(genericGeometry)) {
+			String wkt = genericGeometry.getValue().toString() ;
+			WKTReader reader = new WKTReader() ;
+			String error = "La géométrie n'est pas valide : " ;
+			try {
+				Geometry geometry = reader.read(wkt) ;
+				IsValidOp validOp = new IsValidOp(geometry) ;
+				if (validOp.isValid()) {
+					return ;
+				}
+				TopologyValidationError topoError = validOp.getValidationError() ;
+				error += topoError.toString() ;
+				CheckException ce = new CheckException(INVALID_GEOMETRY, error) ;
+				ce.setSourceData(DSRConstants.GEOMETRIE) ;
+				alce.add(ce) ;
+			} catch (Exception e) {
+				error += e.getMessage() ;
+				CheckException ce = new CheckException(INVALID_GEOMETRY, error) ;
+				ce.setSourceData(DSRConstants.GEOMETRIE) ;
+				alce.add(ce) ;
+			}
+		}
+	}
+	
+	
 
 	/**
 	 * Tests if all values for given list of fields (list), if they are array and not empty, have the same number of elements
@@ -567,15 +608,19 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 */
 	private void cdNomCdRef(Map<String, GenericData> values) throws Exception {
 		
+		ListReferentielsDAO refDAO = new ListReferentielsDAO() ;
+		String currentTaxrefVersion = refDAO.getReferentielVersion("taxref") ;
+		
 		GenericData cdNomGD = values.get(DSRConstants.CD_NOM) ;
 		GenericData cdRefGD = values.get(DSRConstants.CD_REF) ;
 		
 		if (cdNomGD != null && !empty(cdNomGD)) {			
 			List<String> names = metadataDAO.getNameFromTaxrefCode(cdNomGD.getValue().toString()) ;
 			if (names.isEmpty()) {
-				String error = "Le cdNom indiqué n'existe pas dans le référentiel TAXREF." ;
+				String cdNom = cdNomGD.getValue().toString() ;
+				String error = "Le cdNom indiqué (" + cdNom + ") n'existe pas dans le référentiel TAXREF " + currentTaxrefVersion + "." ;
 				CheckException ce = new CheckException(CDNOM_NOT_FOUND, error) ;
-				ce.setFoundValue(cdNomGD.getValue().toString()) ;
+				ce.setFoundValue(cdNom) ;
 				ce.setSourceData("cdNom") ;
 				alce.add(ce) ;
 			}
@@ -584,9 +629,10 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		if (cdRefGD != null && !empty(cdRefGD)) {			
 			List<String> names = metadataDAO.getNameFromTaxrefCode(cdRefGD.getValue().toString()) ;
 			if (names.isEmpty()) {
-				String error = "Le cdRef indiqué n'existe pas dans le référentiel TAXREF." ;
+				String cdRef = cdRefGD.getValue().toString() ;
+				String error = "Le cdRef indiqué (" + cdRef + ") n'existe pas dans le référentiel TAXREF " + currentTaxrefVersion + "." ;
 				CheckException ce = new CheckException(CDREF_NOT_FOUND, error) ;
-				ce.setFoundValue(cdRefGD.getValue().toString()) ;
+				ce.setFoundValue(cdRef) ;
 				ce.setSourceData("cdRef") ;
 				alce.add(ce) ;
 			}
@@ -1085,14 +1131,16 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		try {
 			UUID uuid = UUID.fromString(identifiantPermanent) ;
 			if((StringUtils.countMatches(identifiantPermanent, "-") !=4) || (identifiantPermanent.length() != 36)) {
-				String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID valide, ou une valeur vide." ;
+				String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID valide, ou une valeur vide" ;
+				errorMessage += " (valeur fournie : " + identifiantPermanent + ")." ;
 				CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UUID, errorMessage) ;
 				ce.setFoundValue(identifiantPermanent) ;
 				alce.add(ce) ;
 			
 			} 
 		} catch (IllegalArgumentException e) {
-			String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID valide, ou une valeur vide." ;
+			String errorMessage = "La valeur de " + DSRConstants.IDENTIFIANT_PERMANENT + " doit être un UUID valide, ou une valeur vide" ;
+			errorMessage += " (valeur fournie : " + identifiantPermanent + ")." ;
 			CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UUID, errorMessage) ;
 			ce.setFoundValue(identifiantPermanent) ;
 			alce.add(ce) ;

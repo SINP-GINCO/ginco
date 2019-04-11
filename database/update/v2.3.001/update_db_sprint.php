@@ -4,11 +4,11 @@ $initDir = realpath(dirname(__FILE__)."/../../init/") ;
 require_once "$sprintDir/../../../lib/share.php";
 
 // ------------------------------------------------
-// Synopsis: migrate DB GINCO from v2.2.3 to v2.3.0
+// Synopsis: migrate DB GINCO from v2.3.0 to v2.3.1
 // ------------------------------------------------
 function usage($mess = NULL) {
 	echo "------------------------------------------------------------------------\n";
-	echo ("\nUpdate DB from v2.2.3 to v2.3.0\n");
+	echo ("\nUpdate DB from v2.3.0 to v2.3.1\n");
 	echo ("> php update_db_sprint.php -f <configFile> [{-D<propertiesName>=<Value>}]\n\n");
 	echo "o <configFile>: a java style properties file for the instance on which you work\n";
 	echo "o -D : inline options to complete or override the config file.\n";
@@ -32,9 +32,8 @@ if ($isDlb) {
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
-	execCustSQLFile("$sprintDir/add_status_fields.sql", $config);
-	execCustSQLFile("$sprintDir/add_standard.sql", $config);
-	execCustSQLFile("$sprintDir/change_mapping_observation_provider.sql", $config);
+	execCustSQLFile("$sprintDir/fix_especes_sensibles.sql", $config);
+
 
 
 } catch (Exception $e) {
@@ -50,23 +49,6 @@ try {
     
 	//system("php $sprintDir/XXXX.php $CLIParams", $returnCode1);
 	
-	system("php $sprintDir/change_model_nomvalide.php $CLIParams", $returnCode1) ;
-	if ($returnCode1 != 0) {
-		echo "$sprintDir/change_model_nomvalide.php crashed.\n";
-		exit(1);
-	}
-
-	system("php $sprintDir/add_index_observations.php $CLIParams", $returnCode2) ;
-	if ($returnCode2 != 0) {
-		echo "$sprintDir/add_index_observations.php crashed.\n";
-		// pas besoin d'exit -> on ne plante pas le processus si la création de l'index a échoué.
-	}
-
-	system("php $sprintDir/insert_metadata_work.php $CLIParams", $returnCode3) ;
-	if ($returnCode3 != 0) {
-			echo "$sprintDir/insert_metadata_work.php crashed.\n";
-			exit(1);
-	}
 
 } catch (Exception $e) {
 	

@@ -5,6 +5,7 @@ use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelType;
 use Ign\Bundle\OGAMConfigurateurBundle\Form\ModelUploadType;
 use Ign\Bundle\GincoBundle\Entity\Metadata\Dataset;
+use Ign\Bundle\OGAMConfigurateurBundle\Utils\ModelManager;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -26,6 +27,57 @@ class ModelController extends Controller {
 		return $this->render('IgnOGAMConfigurateurBundle:Model:index.html.twig', array(
 			'models' => $models,
 			'upload_form' => $uploadForm->createView()
+		));
+	}
+	
+	
+	/**
+	 * @Route("/models/new", name="configurateur_model_new")
+	 */
+	public function newAction(Request $request) {
+		
+		$model = new Model() ;
+		$form = $this->createForm(ModelType::class, $model) ;
+		$form->handleRequest($request) ;
+		
+		if ($form->isValid()) {
+			
+			$entityManager = $this->getDoctrine()->getManager() ;
+			$entityManager->persist($model) ;
+			
+			$modelDuplication = $this->get('app.modelduplication') ;
+			$defaultModel = $model->getStandard()->getDefaultModel() ;
+			$successStatus = $modelDuplication->duplicateModel($defaultModel, $model) ;
+			
+			if ($successStatus == 'datamodel.duplicate.success') {
+				$this->addFlash('notice', $this->get('translator')
+					->trans($successStatus, array(
+					'%modelName%' => $model->getName()
+				)));
+				
+				$modelManager = $this->get(ModelManager::class) ;
+				$entityManager->refresh($model) ;
+				$modelManager->initModel($model) ;
+				
+			} else if ($successStatus == 'datamodel.duplicate.fail') {
+				$this->addFlash('error', $this->get('translator')
+					->trans($successStatus, array(
+					'%modelId%' => $defaultModel->getName()
+				)));
+			} else if ($successStatus == 'datamodel.duplicate.hasCopy') {
+				$this->addFlash('error', $this->get('translator')
+					->trans($successStatus, array(
+					'%modelName%' => $model->getName()
+				)));
+			}
+			
+			// Redirect to list of models
+			return $this->redirectToRoute('configurateur_model_index');
+		}
+		
+		return $this->render('IgnOGAMConfigurateurBundle:Model:new.html.twig', array(
+			'form' => $form->createView(),
+			'method' => 'Duplication'
 		));
 	}
 
@@ -369,58 +421,5 @@ class ModelController extends Controller {
 			'tables' => $tables,
 			'id' => $id
 		));
-	}
-
-	/**
-	 * @Route("/models/{id}/duplicate/", name="configurateur_model_duplicate")
-	 */
-	public function duplicateAction($id, Request $request) {
-		$model = $this->getDoctrine()
-			->getManager('metadata')
-			->getRepository('IgnGincoBundle:Metadata\Model')
-			->find($id);
-		if ($model) {
-
-			// Create a new model only to activate assertions on the entity
-			$modelNew = new Model();
-			$form = $this->createForm(ModelType::class, $modelNew);
-
-			$form->handleRequest($request);
-
-			if ($form->isValid()) {
-				$copyModelName = $form->getData()->getName();
-				$copyModelDescription = $form->getData()->getDescription();
-				$successStatus = $this->get('app.modelduplication')->duplicateModel($model, $copyModelName, $copyModelDescription);
-				$modelName = $model->getName();
-				if ($successStatus == 'datamodel.duplicate.success') {
-					$this->addFlash('notice', $this->get('translator')
-						->trans($successStatus, array(
-						'%modelName%' => $modelName
-					)));
-				} else if ($successStatus == 'datamodel.duplicate.fail') {
-					$this->addFlash('error', $this->get('translator')
-						->trans($successStatus, array(
-						'%modelId%' => $id
-					)));
-				} else if ($successStatus == 'datamodel.duplicate.hasCopy') {
-					$this->addFlash('error', $this->get('translator')
-						->trans($successStatus, array(
-						'%modelName%' => $modelName
-					)));
-				}
-				// Redirect to list of models
-				return $this->redirectToRoute('configurateur_model_index');
-			}
-
-			return $this->render('IgnOGAMConfigurateurBundle:Model:new.html.twig', array(
-				'form' => $form->createView(),
-				'method' => 'Duplication'
-			));
-		} else {
-			$this->addFlash('error', $this->get('translator')
-				->trans('datamodel.duplicate.badid', array(
-				'%modelId%' => $id
-			)));
-		}
 	}
 }
