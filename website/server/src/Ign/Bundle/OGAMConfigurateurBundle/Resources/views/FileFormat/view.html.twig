@@ -45,6 +45,7 @@
 						<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
 						<th data-field="labelCSV">{% trans %}Nom de colonne dans le fichier{% endtrans %}</th>
 						<th data-field="mandatory">{% trans %}Mandatory{% endtrans %}</th>
+						<th data-field="defaultValue">{% trans %}DefaultValue{% endtrans %}</th>
 						<th data-field="mask">{% trans %}fileField.mask{% endtrans %}</th>
 					</tr>
 				</thead>
@@ -62,6 +63,7 @@
 						 {% trans %}no{% endtrans %}
 						 {% endif %}
 						</td>
+						<td>{{ champ.defaultValue }}</td>
 						<td>{{ champ.mask}}</td>
 					</tr>
 					{% endfor %}

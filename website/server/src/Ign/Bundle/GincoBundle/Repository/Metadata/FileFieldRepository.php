@@ -24,7 +24,7 @@ class FileFieldRepository extends \Doctrine\ORM\EntityRepository {
 		$rsm->addRootEntityFromClassMetadata($this->_entityName, 'ff');
 		
 		// Get the fields specified by the format
-		$sql = "SELECT file_field.data, file_field.format, field.type, is_mandatory, mask, label_csv";
+		$sql = "SELECT file_field.data, file_field.format, field.type, is_mandatory, mask, label_csv,default_value";
 		$sql .= " FROM file_field ";
 		$sql .= " LEFT JOIN field on (file_field.data = field.data AND file_field.format = field.format) ";
 		$sql .= " WHERE file_field.format = :fileFormat ";
@@ -51,7 +51,7 @@ class FileFieldRepository extends \Doctrine\ORM\EntityRepository {
 		$query = $em->createQuery('SELECT DISTINCT dt.data as fieldName, tfi.labelCSV,
 						dt.label as label,
 						u.type as unitType, tfi.isMandatory,
-						tfi.mask
+						tfi.mask, tfi.defaultValue
 					FROM IgnGincoBundle:Metadata\FileField tfi
 					LEFT JOIN IgnGincoBundle:Metadata\FileFormat tfo
 						WITH tfo.format = tfi.format

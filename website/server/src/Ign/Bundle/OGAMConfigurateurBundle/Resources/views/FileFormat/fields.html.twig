@@ -79,6 +79,7 @@
 						<th data-field="label">{% trans %}Field name{% endtrans %}</th>
 						<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
 						<th data-field="labelCSV">{% trans %}LabelCSV{% endtrans %}</th>
+						<th data-field="defaultValue">{% trans %}DefaultValue{% endtrans %}</th>
 						<th data-field="mandatory">{% trans %}Mandatory{% endtrans %}</th>
 						<th data-field="mask">{% trans %}fileField.mask.label{% endtrans %}
 							<button type="button" class="btn btn-default btn-xs"
@@ -99,6 +100,7 @@
 						<td id="label"><div style="max-width:180px;" class="longtext"  title="{{ champ.label }}">{{ champ.label }}</div></td>
 						<td id="unit">{{ champ.unitType }}</td>
 						<td><input id="labelCSV" class="text-center" value="{{ champ.labelCSV }}"></td>
+						<td><input id="defaultValue" class="text-center" value="{{ champ.defaultValue }}"></td>
 						<td id="mandatory" class=text-center">
 							{% if champ.fieldName in mandatoryFields %}
 								<input type="checkbox" checked="checked" disabled title="{% trans with {'%dataName%':champ.fieldName}%}data.compulsory_state_change.mapping.forbidden{% endtrans %}">
