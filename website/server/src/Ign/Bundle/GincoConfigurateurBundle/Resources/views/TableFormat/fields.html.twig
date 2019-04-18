@@ -87,12 +87,15 @@
 						<th data-field="label">{% trans %}Field name{% endtrans %}</th>
 						<th data-field="unitType">{% trans %}Unit{% endtrans %}</th>
 						<th>{% trans %}Mandatory{% endtrans %}</th>
+                        <th data-field="defaultValue">{% trans %}DefaultValue{% endtrans %}</th>
 						<th data-align="center" data-field=""><a
 							href="{{ path('configurateur_table_remove_all_fields', {
 						'modelId' : model.id, 'format': table.format } ) }}"
 							class="btn btn-default btn-xs" role="button"><span
 										class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></th>
+					
 					</tr>
+					
 				</thead>
 				<tbody>
 					{% for champ in tableFields %} 
@@ -116,6 +119,7 @@
 										{% endif %}
 									{% endif %}
 								</td>
+								<td id="defaultValue" class="text-center" value="{{champ.defaultValue}}"></td>
 								<td>
 									{% if champ.ref == false %}
 										<a id="remove-field-{{ champ.fieldName }}" class="btn btn-default btn-xs" type="button" href="{{ path('configurateur_table_remove_field_and_update', {modelId: model.id, format: table.format, field: champ.fieldName}) }}">
