@@ -34,6 +34,7 @@ try {
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/fix_especes_sensibles.sql", $config);
 	execCustSQLFile("$sprintDir/add_defaultvalue_fields.sql", $config);
+	execCustSQLFile("$sprintDir/fix_ref_model.sql", $config);
 
 
 } catch (Exception $e) {
