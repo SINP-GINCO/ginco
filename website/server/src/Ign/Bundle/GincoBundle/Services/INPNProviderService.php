@@ -20,7 +20,7 @@ class INPNProviderService {
 	protected $configManager;
 	protected $logger;
 	
-	const urlINPN= "https://preprod-odata-inpn.mnhn.fr/solr-ws/organismes/records?" ;
+	protected $urlINPN ;
 
 	protected $options;
 
@@ -41,6 +41,9 @@ class INPNProviderService {
 		if (!empty($httpsProxy)) {
 			$this->options['proxy'] = $httpsProxy;
 		}
+		
+		// Url of provider service
+		$this->urlINPN = $this->configManager->getConfig('INPN_providers_webservice', "https://odata-inpn.mnhn.fr/solr-ws/organismes/records?") ;
 
 	}
 
@@ -145,7 +148,7 @@ class INPNProviderService {
 			$query['start'] = $start;
 		}
 		
-		return self::urlINPN . http_build_query($query);
+		return $this->urlINPN . http_build_query($query);
 	}
 
 	/**
@@ -157,7 +160,7 @@ class INPNProviderService {
 	 */
 	public function getInfosById($idOrganism) {
 		/* Build url to get infos */ 
-		$urlInfosId = self::urlINPN;
+		$urlInfosId = $this->urlINPN;
 		$urlInfosId .= "wt=json&q=id:".$idOrganism;
 		$resultJson = $this->callINPN($urlInfosId);
 		// Return unique result (else null)
@@ -175,7 +178,7 @@ class INPNProviderService {
 	 * @return mixed
 	 */
 	public function getInfosByUUID($uuid){
-		$urlUUID= self::urlINPN;
+		$urlUUID= $this->urlINPN;
 		$urlUUID .= "wt=json&q=codeOrganisme:".$uuid;
 		$resultJson = $this->callINPN($urlUUID);
 		// return unique result (else null)
