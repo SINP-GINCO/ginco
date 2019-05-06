@@ -199,7 +199,7 @@ public class MetadataDAO {
 	/**
 	 * Get the name associated with the code from a taxonomic referential.
 	 */
-	private static final String GET_TAXREF_NAME_FROM_CODE_STMT = "SELECT lb_name FROM mode_taxref WHERE code = ?";
+	private static final String GET_TAXREF_NAME_FROM_CODE_STMT = "SELECT nom_valide FROM referentiels.taxref WHERE cd_nom = ?";
 
 	/**
 	 * Get the one mode of a given unit.
@@ -2072,7 +2072,7 @@ public class MetadataDAO {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				result.add(rs.getString("lb_name"));
+				result.add(rs.getString("nom_valide"));
 			}
 
 			return result;
