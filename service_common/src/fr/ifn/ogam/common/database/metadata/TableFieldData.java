@@ -28,6 +28,9 @@ public class TableFieldData extends FieldData {
 	// Indicated if the field is mandatory
 	private Boolean isMandatory = false;
 	
+	// For defaultValue
+	private String defaultValue;
+	
 	/**
 	 * @return the tableName
 	 */
@@ -118,6 +121,21 @@ public class TableFieldData extends FieldData {
 		this.isCalculated = isCalculated;
 	}
 
+	/**
+	 * @return defaultValue
+	 */
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	/**
+	 * @param defaultValue
+	 * the defaultValue is to Set
+	 */
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+	
 	/**
 	 * Return a description of the object.
 	 * 
