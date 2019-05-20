@@ -49,9 +49,9 @@ try {
     $sql = "INSERT INTO metadata.dataset (
                 SELECT *, 'unpublished'
                 FROM metadata_work.dataset WHERE dataset_id IN (
-                    SELECT dataset_id FROM metadata_work.dataset
+                    SELECT dataset_id FROM metadata_work.dataset WHERE type != 'QUERY'
                     EXCEPT
-                    SELECT dataset_id FROM metadata.dataset
+                    SELECT dataset_id FROM metadata.dataset WHERE type != 'QUERY'
                 )
             )
     ";
