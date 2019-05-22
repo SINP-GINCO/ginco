@@ -146,12 +146,13 @@ try {
     $sql = "INSERT INTO metadata.table_tree (
             SELECT schema_code, child_table, NULL, join_key, comment
             FROM metadata_work.table_tree WHERE (schema_code, child_table) IN (
-                SELECT (schema_code, child_table) FROM metadata_work.table_tree
+                SELECT schema_code, child_table FROM metadata_work.table_tree
                 EXCEPT
-                SELECT (schema_code, child_table) FROM metadata.table_tree
+                SELECT schema_code, child_table FROM metadata.table_tree
             )
         )
     ";
+    $pdo->exec($sql) ;
     
     //$pdo->commit() ;
     
