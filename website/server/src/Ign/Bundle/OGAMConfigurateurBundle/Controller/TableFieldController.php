@@ -80,10 +80,12 @@ class TableFieldController extends Controller {
 
 		$fields = $request->get('fields');
 		$mandatorys = $request->get('mandatorys');
+		$defaultValues = $request->get('defaultValues');
 
 		// Handle the name of the fields
 		$data = explode(",", $fields);
 		$mandatorys = explode(",", $mandatorys);
+		$defaultValues = explode(",", $defaultValues) ;
 
 		for($i = 0; $i < sizeof($data); $i++){
 			$name = $data[$i];
@@ -121,6 +123,8 @@ class TableFieldController extends Controller {
 					$tablesGeneration->dropNotNull($tableField) ;
 				}
 				$tableField->setIsMandatory($mandatory);
+				$defaultValue = empty($defaultValues[$i]) ? null : $defaultValues[$i] ;
+				$tableField->setDefaultValue($defaultValue) ;
 			}
 
 			$em->flush();
