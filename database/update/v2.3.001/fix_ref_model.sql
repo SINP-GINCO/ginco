@@ -1,0 +1,1 @@
+UPDATE metadata.model SET is_ref = true WHERE id = 'model_1' ;

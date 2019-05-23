@@ -400,7 +400,7 @@ class DefaultController extends GincoController {
 	public function taxrefMigrationAction() {
 		
 		$entityManager = $this->getDoctrine()->getManager('metadata') ;
-		$tableFormats = $entityManager->getRepository('IgnGincoBundle:Metadata\TableFormat')->findAll() ;
+		$tableFormats = $entityManager->getRepository('IgnGincoBundle:Metadata\TableFormat')->findPublishedTableFormats() ;
 		
 		$query = $this->get('ginco.query') ;
 		

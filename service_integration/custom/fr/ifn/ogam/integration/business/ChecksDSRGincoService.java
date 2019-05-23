@@ -906,7 +906,7 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	}
 
 	/**
-	 * Fills nomValide if it is empty.
+	 * Fills nomValide.
 	 *
 	 * @param values
 	 */
@@ -915,30 +915,28 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 		// -- Calculate nomValide
 		GenericData nomValideGD = values.get(DSRConstants.NOM_VALIDE);
 		if (nomValideGD != null) {
-			if (empty(nomValideGD)) {
-				GenericData cdRefGD = values.get(DSRConstants.CD_REF);
-				if (cdRefGD != null && !empty(cdRefGD)) {
+			GenericData cdRefGD = values.get(DSRConstants.CD_REF);
+			if (cdRefGD != null && !empty(cdRefGD)) {
+				try {
+					List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdRefGD.getValue().toString());
+					if (!codeNames.isEmpty()) {
+						String nomValide = codeNames.get(0);
+						nomValideGD.setValue(nomValide);
+					}
+				} catch (Exception e) {
+					throw e;
+				}
+			} else {
+				GenericData cdNomGD = values.get(DSRConstants.CD_NOM);
+				if (cdNomGD != null && !empty(cdNomGD)) {
 					try {
-						List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdRefGD.getValue().toString());
+						List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdNomGD.getValue().toString());
 						if (!codeNames.isEmpty()) {
 							String nomValide = codeNames.get(0);
 							nomValideGD.setValue(nomValide);
 						}
 					} catch (Exception e) {
 						throw e;
-					}
-				} else {
-					GenericData cdNomGD = values.get(DSRConstants.CD_NOM);
-					if (cdNomGD != null && !empty(cdNomGD)) {
-						try {
-							List<String> codeNames = metadataDAO.getNameFromTaxrefCode(cdNomGD.getValue().toString());
-							if (!codeNames.isEmpty()) {
-								String nomValide = codeNames.get(0);
-								nomValideGD.setValue(nomValide);
-							}
-						} catch (Exception e) {
-							throw e;
-						}
 					}
 				}
 			}

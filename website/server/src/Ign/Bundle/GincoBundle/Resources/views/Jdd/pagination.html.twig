@@ -4,48 +4,84 @@
 	{% set maxPage = numJdds // jddQuery.limit + 1 %}
 {% endif %}
 
-<nav aria-label="Page navigation">
-  <ul class="pagination">
-	  
-	<li>
-	  <a href="{{ path(route, {page: max(jddQuery.page-1, 1), limit: jddQuery.limit, search: jddQuery.search}) }}" aria-label="Previous">
-		<span aria-hidden="true">&laquo;</span>
-	  </a>
-	</li>
+<div class="row">
 	
-	<li {% if jddQuery.page == 1 %}class="active"{% endif %}>
-		<a href="{{ path(route, {page:1, limit: jddQuery.limit, search: jddQuery.search}) }}">1</a>
-	</li>
 	
-	{% if maxPage > 2 %}
-		{% for p in range(max(jddQuery.page-1, 2), min(jddQuery.page+1, maxPage-1)) %}
+<div class="col-xs-6">
+	<p>Affichage des lignes {{ (jddQuery.page-1) * jddQuery.limit + 1 }} à {{ min(jddQuery.page * jddQuery.limit, numJdds) }} sur {{ numJdds }} lignes au total.</p>
+	<span class="page-list">Montrer 
+		<span class="btn-group dropdown">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				<span class="page-size">{{ jddQuery.limit }}</span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li role="menuitem" class="active">
+					<a href="{{ path(route, {page: 1, limit: 10, search: jddQuery.search}) }}">10</a>
+				</li>
+				<li role="menuitem">
+					<a href="{{ path(route, {page: 1, limit: 25, search: jddQuery.search}) }}">25</a>
+				</li>
+				<li role="menuitem">
+					<a href="{{ path(route, {page: 1, limit: 50, search: jddQuery.search}) }}">50</a>
+				</li>
+				<li role="menuitem">
+					<a href="{{ path(route, {page: 1, limit: 100, search: jddQuery.search}) }}">100</a>
+				</li>
+				<li role="menuitem">
+					<a href="{{ path(route, {page: 1, limit: 500, search: jddQuery.search}) }}">500</a>
+				</li>
+			</ul>
+		</span> 
+	&nbsplignes par page</p>
+</div>
 
-			{% if loop.first and p > 2 %}
-				<li class="disabled"><a href="#">...</a></li>
-			{% endif %}
+<div class="col-xs-6">
+	<nav aria-label="Page navigation" class="pull-right">
+	  <ul class="pagination">
 
-			<li {% if jddQuery.page == p %}class="active"{% endif %}>
-				<a href="{{ path(route, {page:p, limit: jddQuery.limit, search: jddQuery.search}) }}">{{ p }}</a>
-			</li>
-
-			{% if loop.last and p < maxPage -1 %}
-				<li class="disabled"><a href="#">...</a></li>
-			{% endif %}
-
-		{% endfor %}
-	{% endif %}
-	
-	{% if maxPage > 1 %}
-		<li {% if jddQuery.page == maxPage %}class="active"{% endif %}>
-			<a href="{{ path(route, {page:maxPage, limit: jddQuery.limit, search: jddQuery.search}) }}">{{ maxPage }}</a>
+		<li>
+		  <a href="{{ path(route, {page: max(jddQuery.page-1, 1), limit: jddQuery.limit, search: jddQuery.search}) }}" aria-label="Previous">
+			<span aria-hidden="true">&laquo;</span>
+		  </a>
 		</li>
-	{% endif %}
-	
-	<li>
-	  <a href="{{ path(route, {page: min(jddQuery.page+1, maxPage), limit: jddQuery.limit, search: jddQuery.search}) }}" aria-label="Next">
-		<span aria-hidden="true">&raquo;</span>
-	  </a>
-	</li>
-	
-  </ul>
-</nav>
+
+		<li {% if jddQuery.page == 1 %}class="active"{% endif %}>
+			<a href="{{ path(route, {page:1, limit: jddQuery.limit, search: jddQuery.search}) }}">1</a>
+		</li>
+
+		{% if maxPage > 2 %}
+			{% for p in range(max(jddQuery.page-1, 2), min(jddQuery.page+1, maxPage-1)) %}
+
+				{% if loop.first and p > 2 %}
+					<li class="disabled"><a href="#">...</a></li>
+				{% endif %}
+
+				<li {% if jddQuery.page == p %}class="active"{% endif %}>
+					<a href="{{ path(route, {page:p, limit: jddQuery.limit, search: jddQuery.search}) }}">{{ p }}</a>
+				</li>
+
+				{% if loop.last and p < maxPage -1 %}
+					<li class="disabled"><a href="#">...</a></li>
+				{% endif %}
+
+			{% endfor %}
+		{% endif %}
+
+		{% if maxPage > 1 %}
+			<li {% if jddQuery.page == maxPage %}class="active"{% endif %}>
+				<a href="{{ path(route, {page:maxPage, limit: jddQuery.limit, search: jddQuery.search}) }}">{{ maxPage }}</a>
+			</li>
+		{% endif %}
+
+		<li>
+		  <a href="{{ path(route, {page: min(jddQuery.page+1, maxPage), limit: jddQuery.limit, search: jddQuery.search}) }}" aria-label="Next">
+			<span aria-hidden="true">&raquo;</span>
+		  </a>
+		</li>
+
+	  </ul>
+	</nav>
+</div>
+				
+</div>

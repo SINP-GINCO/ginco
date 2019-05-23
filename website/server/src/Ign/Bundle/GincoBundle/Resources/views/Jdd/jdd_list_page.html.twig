@@ -66,17 +66,19 @@
         </a>
     </p>
 
-	<div class="pull-right col-xs-4">
-		<form action="{{ path(route, {page: jddQuery.page, limit: jddQuery.limit}) }}">
-			<div class="input-group">
-				<input type="text" class="form-control" name='search' placeholder="{{ 'Search' | trans }}...">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="submit">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					</button>
-				</span>
-			</div>
-		</form>
+	<div class="row">
+		<div class="pull-right col-xs-4">
+			<form action="{{ path(route, {page: jddQuery.page, limit: jddQuery.limit}) }}">
+				<div class="input-group">
+					<input type="text" class="form-control" name='search' placeholder="{{ 'Search' | trans }}...">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="submit">
+							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+						</button>
+					</span>
+				</div>
+			</form>
+		</div>
 	</div>
 	
     <!-- Show the currently active location submissions -->
@@ -354,7 +356,7 @@
         </tbody>
     </table>
 	
-	<div class="pull-right">
+	<div>
 		{% include '@IgnGinco/Jdd/pagination.html.twig' with {route: route, jddQuery: jddQuery, numJdds: numJdds} %}
 	</div>
 
@@ -404,9 +406,12 @@
 {% else %}
     <p>{% trans %}Jdd.none{% endtrans %}</p>
 {% endif %}
+	
+<div>
 <p><a href="{{ path("jdd_new") }}">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Create data submission{% endtrans %}
 </a></p>
+</div>
 {% endblock %}
 
 {% block javascripts %}

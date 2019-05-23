@@ -4,6 +4,7 @@ namespace Ign\Bundle\GincoBundle\Repository\Metadata;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
 
 /**
  * TableFormatRepository
@@ -92,5 +93,21 @@ class TableFormatRepository extends \Doctrine\ORM\EntityRepository {
 		$query->setParameter('parentTable', $tableFormat->getFormat()) ;
 		
 		return $query->getResult() ;
+	}
+	
+	
+	/**
+	 * Recherche tous les table_format correspondant à un modèle publié.
+	 * @return TableFormat[]
+	 */
+	public function findPublishedTableFormats() {
+		
+		return $this->createQueryBuilder('tf')
+			->join('tf.models', 'm')
+			->where('m.status = :status')
+			->setParameter('status', Model::PUBLISHED)
+			->getQuery()
+			->getResult()
+		;
 	}
 }
