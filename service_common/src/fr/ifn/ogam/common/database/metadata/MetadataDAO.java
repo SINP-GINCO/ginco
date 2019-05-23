@@ -943,6 +943,7 @@ public class MetadataDAO {
 				field.setTableName(rs.getString("table_name"));
 				field.setDefinition(rs.getString("definition"));
 				field.setLabel(rs.getString("label"));
+				field.setDefaultValue(rs.getString("default_value"));
 				String iscalculated = rs.getString("is_calculated");
 				if (iscalculated != null) {
 					field.setIsCalculated(iscalculated.equalsIgnoreCase("1"));
@@ -1076,6 +1077,7 @@ public class MetadataDAO {
 				field.setTableName(rs.getString("table_name"));
 				field.setDefinition(rs.getString("definition"));
 				field.setLabel(rs.getString("label"));
+				field.setDefaultValue(rs.getString("default_value"));
 				String iscalculated = rs.getString("is_calculated");
 				if (iscalculated != null) {
 					field.setIsCalculated(iscalculated.equalsIgnoreCase("1"));
@@ -1532,6 +1534,7 @@ public class MetadataDAO {
 				field.setTableName(rs.getString("table_name"));
 				field.setDefinition(rs.getString("definition"));
 				field.setLabel(rs.getString("label"));
+				field.setDefaultValue(rs.getString("default_value"));
 				String iscalculated = rs.getString("is_calculated");
 				if (iscalculated != null) {
 					field.setIsCalculated(iscalculated.equalsIgnoreCase("1"));
@@ -1604,6 +1607,7 @@ public class MetadataDAO {
 				field.setTableName(rs.getString("table_name"));
 				field.setDefinition(rs.getString("definition"));
 				field.setLabel(rs.getString("label"));
+				field.setDefaultValue(rs.getString("default_value"));
 				String iscalculated = rs.getString("is_calculated");
 				if (iscalculated != null) {
 					field.setIsCalculated(iscalculated.equalsIgnoreCase("1"));
@@ -1671,6 +1675,7 @@ public class MetadataDAO {
 				field.setTableName(rs.getString("table_name"));
 				field.setDefinition(rs.getString("definition"));
 				field.setLabel(rs.getString("label"));
+				field.setDefaultValue(rs.getString("default_value"));
 				String iscalculated = rs.getString("is_calculated");
 				if (iscalculated != null) {
 					field.setIsCalculated(iscalculated.equalsIgnoreCase("1"));

@@ -32,7 +32,8 @@ class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 					dt.label as label,
 					u.type as unitType, 
 					tfi.isMandatory, 
-					tfi.isCalculated
+					tfi.isCalculated,
+                    tfi.defaultValue
 			FROM IgnGincoBundle:Metadata\TableField tfi
 			LEFT JOIN IgnGincoBundle:Metadata\TableFormat tfo WITH tfo.format = tfi.format
 			LEFT JOIN IgnGincoBundle:Metadata\Data dt WITH tfi.data = dt.data

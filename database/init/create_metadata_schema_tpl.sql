@@ -329,6 +329,7 @@ IS_INSERTABLE        CHAR(1)		      null,
 IS_MANDATORY         CHAR(1)		      null,
 POSITION             INT4                 null,
 COMMENT		         VARCHAR(255)         null,
+DEFAULT_VALUE        VARCHAR(255)         null,
 constraint PK_TABLE_FIELD primary key (DATA, FORMAT)
 );
 

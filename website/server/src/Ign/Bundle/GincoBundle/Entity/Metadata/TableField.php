@@ -51,7 +51,13 @@ class TableField implements FieldInterface {
 	 * @var integer @ORM\Column(name="position", type="integer", nullable=true)
 	 */
 	private $position;
-
+	
+	/**
+	 *
+	 * @var string @ORM\Column(name="default_value", type="string", length=255, nullable=true)
+	 */
+	private $defaultValue;
+	
 	/**
 	 *
 	 * @var integer @ORM\Column(name="comment", type="text", nullable=true)
@@ -290,6 +296,24 @@ class TableField implements FieldInterface {
 		} else {
 			return $this->getData()->getLabel();
 		}
+	}
+	/**
+	 * Get defaultValue
+	 * @return String
+	 */
+	
+	public function getDefaultValue() {
+	    return $this->defaultValue;
+	}
+	
+	/**
+	 * Set DefaultValue
+	 * @param string $defaultValue
+	 *
+	 */
+	public function setDefaultValue($defaultValue) {
+	    $this->defaultValue = $defaultValue;
+	    return $this;
 	}
 }
 

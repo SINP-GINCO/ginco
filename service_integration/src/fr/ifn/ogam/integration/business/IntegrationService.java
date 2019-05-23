@@ -389,6 +389,9 @@ public class IntegrationService extends GenericMapper {
 							if(value.isEmpty() && (sourceFieldDescriptor.getDefaultValue() != null)) {   
 								value =  sourceFieldDescriptor.getDefaultValue();
 							}
+							if(value.isEmpty() && (mappedFieldDescriptor.getDefaultValue() != null)) {   
+								value =  mappedFieldDescriptor.getDefaultValue();
+							}
 							// Check - once again, but it's ok, it's been checked before - and convert the type
 							valueObj = convertType(sourceFieldDescriptor, value);
 
@@ -398,6 +401,7 @@ public class IntegrationService extends GenericMapper {
 							data.setColumnName(mappedFieldDescriptor.getColumnName());
 							data.setType(sourceFieldDescriptor.getType());
 							data.setValue(valueObj);
+							
 
 							// Store the descriptor in the list
 							fieldsMap.put(mappedFieldDescriptor.getData(), data);

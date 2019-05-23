@@ -277,12 +277,15 @@ function renumber_table() {
 function getFormFromTableTable(){
 	var names = "";
 	var mandatorys = "";
+	var defaultValues = "";
 
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
 		var $mandatory = $(this).find('input:checked').is(':checked');
+		var $defaultValue = $(this).find('#defaultValue').val();
 		names = names + $name + ",";
 		mandatorys = mandatorys + $mandatory + ",";
+		defaultValues = defaultValues + $defaultValue + ",";
 	});
 
 	{% if table.format is defined %}
@@ -291,6 +294,7 @@ function getFormFromTableTable(){
 			var form = $('<form name="form_fields_update" action="' + url + '" method="post">' +
 			  '<input type="text" name="fields" value="' + names + '" />' +
 			  '<input type="text" name="mandatorys" value="' + mandatorys + '" />' +
+			  '<input type="text" name="defaultValues" value="' + defaultValues  + '" />' + 
 			  '</form>');
 			return form;
 		}
