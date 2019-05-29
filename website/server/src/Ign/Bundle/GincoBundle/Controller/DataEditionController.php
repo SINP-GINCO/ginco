@@ -551,24 +551,28 @@ class DataEditionController extends GincoController {
 		
 		// Now we write the original values of the object in the session
 		$bag = $request->getSession();
-		$objectNormalizer = new ObjectNormalizer();
-		$objectNormalizer->setCircularReferenceLimit(2);
 		
-		$propertyNormalizer = new PropertyNormalizer();
-		$propertyNormalizer->setCircularReferenceHandler(function ($object) {
-			$class = get_class($object);
-			if ($class == 'Ign\Bundle\GincoBundle\Entity\Metadata\Model') {
-				return $object->getId();
-			} else if ($class == 'Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat') {
-				return $object->getFormat();
-			}
-		});
-		
-		$ser = new Serializer(array(
-			$propertyNormalizer,
-			$objectNormalizer
-		));
-		$ser->normalize($data); // FIXME : treewalker force loading proxy element ...
+		// RP : je mets en commentaire cette partie : je ne comprends pas ce qu'elle fait (->normalize('data') devrait renvoyer un résultat, on ne s'en sert pas).
+		// Cf ticket #1740
+		// 
+//		$objectNormalizer = new ObjectNormalizer();
+//		$objectNormalizer->setCircularReferenceLimit(2);
+//		
+//		$propertyNormalizer = new PropertyNormalizer();
+//		$propertyNormalizer->setCircularReferenceHandler(function ($object) {
+//			$class = get_class($object);
+//			if ($class == 'Ign\Bundle\GincoBundle\Entity\Metadata\Model') {
+//				return $object->getId();
+//			} else if ($class == 'Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat') {
+//				return $object->getFormat();
+//			}
+//		});
+//		
+//		$ser = new Serializer(array(
+//			$propertyNormalizer,
+//			$objectNormalizer
+//		));
+//		$ser->normalize($data); // FIXME : treewalker force loading proxy element ...
 		$bag->set('data', $data);
 		
 		// and return the values to construct the form

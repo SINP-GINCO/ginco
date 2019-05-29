@@ -108,7 +108,7 @@ class GenericService {
 	
 		// Separate the keys from other values
 		foreach ($tableFields as $tableField) {
-			$format = $tableField->getFormat()->getFormat();
+			$format = $tableField->getFormat()->getFormat()->getFormat();
 			$data = $tableField->getData()->getData();
 			if ($tableField->getData()
 				->getUnit()
