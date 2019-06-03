@@ -45,7 +45,7 @@
         {% if observation.datedetermination %}
             <cont:dateDetermination>{{ observation.datedetermination }}</cont:dateDetermination>
         {% endif %}
-        {% if personne.determinateur %}
+        {% if observation.determinateur %}
             <cont:determinateur>
                 {% include 'personne.xml.twig' with {'personne': observation.determinateur} %}
             </cont:determinateur>
