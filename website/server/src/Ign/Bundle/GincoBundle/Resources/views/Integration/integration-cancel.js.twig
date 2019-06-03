@@ -16,7 +16,11 @@
  * @param $submissionId
  * @param $status
  */
-function updateCancelStatusAndContent($submissionId, $status = null) {
+function updateCancelStatusAndContent($submissionId, $status) {
+
+	if ($status === undefined) {
+		$status = null ;
+	}
 
     if ( $status ) {
         updateCancelStatusDiv($submissionId, $status);

@@ -15,7 +15,12 @@
  * @param $submissionId
  * @param $status
  */
-function updateStatusAndContent($submissionId, $status = null) {
+function updateStatusAndContent($submissionId, $status) {
+	
+	if ($status === undefined) {
+		$status = null ;
+	}
+
     if ( $status ) {
         updateStatusDiv($submissionId, $status);
         updateContentDiv($submissionId, $status);
@@ -94,7 +99,16 @@ function updateStatusDiv( $submissionId, $status) {
  * @param $status
  * @param $progress
  */
-function updateContentDiv($submissionId, $status, $progress = 0, $task = 'Inserting') {
+function updateContentDiv($submissionId, $status, $progress, $task) {
+
+	if ($progress === undefined) {
+		$progress = 0 ;
+	}
+	
+	if ($task === undefined) {
+		$task = 'Inserting' ;
+	}
+
     var $contentDiv = $("div.integration-content[data-target='" + $submissionId + "']");
     $contentDiv.html('');
 
