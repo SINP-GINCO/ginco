@@ -202,27 +202,37 @@ class DEEController extends GincoController {
 	 *
 	 * @param DEE $DEE
 	 * @return BinaryFileResponse
-	 * @throws DEEException @Route("/{id}/download", name = "dee_download", requirements={"id": "\d+"})
+	 * @throws DEEException @Route("/{id}/download", name = "dee_download")
 	 */
-	public function downloadDEE(DEE $DEE)
-	{
-
-		$jdd = $DEE->getJdd();
+	public function downloadDEE($id) {
+		
+		$jddRepository = $this->getDoctrine()->getRepository('IgnGincoBundle:RawData\Jdd') ;
+		$jdd = $jddRepository->findOneByMetadataId($id) ;
+		if (!$jdd) {
+			throw $this->createNotFoundException("Le jeu de données $id n'existe pas.") ;
+		}
+		
 		if ( !$this->isGranted('GENERATE_DEE', $jdd) ) {
 			throw $this->createAccessDeniedException("You don't have the rights to download a DEE for this JDD.");
 		}
+		
+		$deeRepository = $this->getDoctrine()->getRepository('IgnGincoBundle:RawData\DEE') ;
+		$dee = $deeRepository->findLastVersionByJdd($jdd) ;
+		if (!$dee || $dee->getStatus() != DEE::STATUS_OK) {
+			throw $this->createNotFoundException("Le jeu de données $id n'a pas de DEE transmis.") ;
+		}
 
 		// Get archive
-		$archivePath = $DEE->getFilePath();
+		$archivePath = $dee->getFilePath();
 		if (!$archivePath) {
-			throw new DEEException("No archive file path for this DEE: " . $DEE->getId());
+			throw new DEEException("No archive file path for this DEE: " . $dee->getId());
 		}
 
 		// tests the existence of the zip file
 		$fileName = pathinfo($archivePath, PATHINFO_BASENAME);
 		$archiveFilePath = $this->get('ginco.configuration_manager')->getConfig('deePublicDirectory') . '/' . $fileName;
 		if (!is_file($archiveFilePath)) {
-			throw new DEEException("DEE archive file does not exist for this DEE: " . $DEE->getId());
+			throw new DEEException("DEE archive file does not exist for this DEE: " . $dee->getId());
 		}
 
 		// -- Get back the file

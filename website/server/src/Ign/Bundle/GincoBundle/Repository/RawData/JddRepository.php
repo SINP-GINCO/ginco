@@ -179,6 +179,26 @@ class JddRepository extends EntityRepository  {
 	}
 	
 	/**
+	 * Find ONE Jdd by their metadata ID.
+	 * @param type $metadataId
+	 * @return type
+	 */
+	public function findOneByMetadataId($metadataId) {
+		
+		$qb = $this->createQueryBuilder('j')
+			->where('j.status != :status')
+			->setParameter('status', 'deleted')
+			->join('j.fields', 'f')
+			->andWhere('f.key = :key')
+			->andWhere('f.valueString = :valueStr')
+			->setParameter('key', 'metadataId')
+			->setParameter('valueStr', $metadataId)
+		;
+
+		return $qb->getQuery()->getSingleResult();
+	}
+	
+	/**
 	 * Find Jdd by Field value
 	 *
 	 * @param array $criteria

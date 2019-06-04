@@ -307,7 +307,7 @@
                 {# DEE Column - Empty / filled by Ajax #}
                 {% set permToGenerateDEE = is_granted('GENERATE_DEE', jdd) %}
                 <td>
-                    <div class="dee" data-jdd-id="{{ jdd.id }}" data-perm-generate="{{ permToGenerateDEE ? 1 : 0 }}">
+                    <div class="dee" data-jdd-id="{{ jdd.id }}" data-jdd-metadata-id="{{ jdd.field('metadataId') }}" data-perm-generate="{{ permToGenerateDEE ? 1 : 0 }}">
                         <div class="dee-state">
                             <div class="progress-label hidden"></div>
                             <div class="hidden">
