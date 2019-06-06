@@ -1,27 +1,27 @@
 {
-  "_from": "ckeditor@4.11.3",
-  "_id": "ckeditor@4.11.3",
+  "_from": "ckeditor@4.11.4",
+  "_id": "ckeditor@4.11.4",
   "_inBundle": false,
-  "_integrity": "sha512-v6G+v16WAcukKuQH6m+trA9RCOQntFM2nxPO/GFiLYsdD/5IbZAZ2n7GwMxQmxDXpx4AixpnMWF+yAE1t9wq6Q==",
+  "_integrity": "sha512-h1EymdwFDdQuDO1vEisUagZ/WYiDnvvvtftYmbmqbbUf9vk21ovXb7mXnQimvTYJfRQBgJCoqfjFDfcQIfw9ig==",
   "_location": "/ckeditor",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "ckeditor@4.11.3",
+    "raw": "ckeditor@4.11.4",
     "name": "ckeditor",
     "escapedName": "ckeditor",
-    "rawSpec": "4.11.3",
+    "rawSpec": "4.11.4",
     "saveSpec": null,
-    "fetchSpec": "4.11.3"
+    "fetchSpec": "4.11.4"
   },
   "_requiredBy": [
     "#DEV:/",
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/ckeditor/-/ckeditor-4.11.3.tgz",
-  "_shasum": "91f66d7ddb5bff3874514fe539779686874ed655",
-  "_spec": "ckeditor@4.11.3",
+  "_resolved": "https://registry.npmjs.org/ckeditor/-/ckeditor-4.11.4.tgz",
+  "_shasum": "5edbc235808f9e0f562e8e642eeb04fa1b01b633",
+  "_spec": "ckeditor@4.11.4",
   "_where": "/home/rpas/Devs/sinp/ginco/website/server",
   "author": {
     "name": "CKSource",
@@ -51,5 +51,5 @@
     "type": "git",
     "url": "git+https://github.com/ckeditor/ckeditor-releases.git"
   },
-  "version": "4.11.3"
+  "version": "4.11.4"
 }
