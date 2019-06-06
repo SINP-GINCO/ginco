@@ -4,6 +4,18 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.3.1 (06/06/2019)
+
+* Métamodèle : configuration possible de valeurs par défaut pour les modèles de données et modèles d'import.
+* Métamodèle : introduction de la notion de standard de données.
+* Métamodèle : possibilité de créer un modèle à partir d'un standard (=duplication du modèle de référence de ce standard).
+* Rapport d'erreur : messages plus explicites pour les erreurs liées à la géométrie.
+* DEE : correction d'un bug indiquant un mauvais identifiant de jeu de données dans la DEE.
+* Correction de l'affichage de la page "Gérer les jeux de données" sur Internet Explorer.
+* Corrections de bugs divers.
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.3.0..v2.3.1)
+
 ## V2.3.0 (25/03/2019)
 
 * Refonte du métamodèle : possibilité d'ajouter, supprimer ou modifier des champs sans passer par une dépublication.
