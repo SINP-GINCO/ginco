@@ -1,1 +1,5 @@
-RAW_DATA;RAW_DATA;Données sources;Contains raw dataMETADATA;METADATA;Metadata;Contains the tables describing the dataWEBSITE;WEBSITE;Website;Contains the tables used to operate the web sitePUBLIC;PUBLIC;Public;Contains the default PostgreSQL tables and PostGIS functions
+schema_code;schema_name;label;description
+RAW_DATA;RAW_DATA;Données sources;Contains raw data
+METADATA;METADATA;Metadata;Contains the tables describing the data
+WEBSITE;WEBSITE;Website;Contains the tables used to operate the web site
+PUBLIC;PUBLIC;Public;Contains the default PostgreSQL tables and PostGIS functions

@@ -1,3 +1,4 @@
+unit;sql
 CodeCommuneValue;SELECT insee_com as code, insee_com as label, ''::text as definition, ''::text as position FROM referentiels.commune_carto_2017 ORDER BY insee_com
 CodeDepartementValue;SELECT code_dept as code, nom_dept || ' (' || code_dept || ')' as label, ''::text as definition, ''::text as position FROM referentiels.departement_carto_2017 ORDER BY code_dept
 region;SELECT code_reg as code, nom_reg || ' (' || code_reg || ')' as label, ''::text as definition, ''::text as position FROM referentiels.region_carto_2017 ORDER BY code_reg
@@ -41,3 +42,13 @@ TaxoStatutValue;SELECT code, label || ' (' || code || ')' as label, definition, 
 TaxoModifValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.TaxoModifValue ORDER BY code
 TaxoAlerteValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.TaxoAlerteValue ORDER BY code
 USER_LOGIN;SELECT user_login as code, user_name as label, user_name as definition, ''::text as position FROM website.users ORDER BY user_login
+ComplexeHabitatValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.complexehabitatvalue ORDER BY code
+ExpositionValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.expositionvalue ORDER BY code
+MethodeCalculSurfaceValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.methodecalculsurfacevalue ORDER BY code
+TypeSolValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.typesolvalue ORDER BY code
+GeologieValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.geologievalue ORDER BY code
+AciditeValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.aciditevalue ORDER BY code
+TypeDeterminationValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.typedeterminationvalue ORDER BY code
+TechniqueCollecteValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.techniquecollectevalue ORDER BY code
+AbondanceHabitatValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.abondancehabitatvalue ORDER BY code
+NiveauSensiValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.niveausensivalue ORDER BY code

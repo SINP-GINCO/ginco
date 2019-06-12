@@ -1,1 +1,4 @@
+schema_code;child_table;parent_table;join_key;comment
 RAW_DATA;table_observation;;;
+RAW_DATA;table_station;;;
+RAW_DATA;table_habitat;table_station;identifiantstasinp;

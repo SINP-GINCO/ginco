@@ -1,3 +1,4 @@
+check_id;step;name;label;description;statement;importance
 1000;COMPLIANCE;EMPTY_FILE_ERROR;Fichier vide.;Les fichiers ne doivent pas être vides.;;ERROR
 1001;COMPLIANCE;WRONG_FIELD_NUMBER;Nombre de champs incorrect.;Le fichier doit contenir le bon nombre de champs, séparés par des points-virgules et aucun ne doit contenir de point-virgule.;;ERROR
 1002;COMPLIANCE;INTEGRITY_CONSTRAINT;Contrainte d'intégrité non respectée.;La valeur de la clé étrangère n'existe pas dans la table mère.;;ERROR

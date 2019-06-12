@@ -1,1 +1,5 @@
-file_observation;CSV;file_observation;0;dsr_exemple_observation;fichier_dsr_exemple_observationfile_shapefile;CSV;fichier_shapefile;1;fichier_shapefile;fichier_shapefile
+format;file_extension;file_type;position;label;definition
+file_observation;CSV;file_observation;0;dsr_exemple_observation;fichier_dsr_exemple_observation
+file_shapefile;CSV;fichier_shapefile;1;fichier_shapefile;fichier_shapefile
+file_station;CSV;file_station;0;dsr_exemple_station;fichier_dsr_exemple_station
+file_habitat;CSV;file_habitat;1;dsr_exemple_habitat;fichier_dsr_exemple_habitat

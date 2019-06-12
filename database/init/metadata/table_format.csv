@@ -1,1 +1,4 @@
+format;table_name;schema_code;primary_key;label;definition
 table_observation;model_1_observation;RAW_DATA;OGAM_ID_table_observation, PROVIDER_ID, USER_LOGIN;observation;table_dsr_exemple_observation
+table_station;model_1000_station;RAW_DATA;OGAM_ID_table_station, PROVIDER_ID, USER_LOGIN;station;table_dsr_exemple_station
+table_habitat;model_1000_habitat;RAW_DATA;OGAM_ID_table_habitat, PROVIDER_ID, USER_LOGIN;habitat;table_dsr_exemple_habitat

@@ -589,6 +589,374 @@ INSERT INTO referentiels.taxoalertevalue(code, label, definition) VALUES
 ;
 
 
+
+CREATE TABLE referentiels.complexehabitatvalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT complexehabitatvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.complexehabitatvalue OWNER TO postgres ;
+
+INSERT INTO referentiels.complexehabitatvalue (code, label, definition) VALUES
+    ('1', 'Mosaïque spatiale', 'Mosaïque spatiale'),
+    ('2', 'Mosaïque temporelle', 'Mosaïque temporelle'),
+    ('3', 'Complexe d''habitats', 'Complexe d''habitats')
+;
+
+
+CREATE TABLE referentiels.expositionvalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT expositionvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.expositionvalue OWNER TO postgres ;
+
+INSERT INTO referentiels.expositionvalue (code, label, definition) VALUES 
+    ('E', 'Est : 78,75° - 101,25°', 'Est : 78,75° - 101,25°'),
+    ('ENE', 'Est-Nord-Est : 56.25° - 78.75°', 'Est-Nord-Est : 56.25° - 78.75°'),
+    ('ESE', 'Est-Sud-Est : 101.25° - 123.75°', 'Est-Sud-Est : 101.25° - 123.75°'),
+    ('N', 'Nord : 348.75° - 11.25°', 'Nord : 348.75° - 11.25°'),
+    ('NE', 'Nord-Est : 33.75° - 56.25°', 'Nord-Est : 33.75° - 56.25°'),
+    ('NNE', 'Nord-Nord-Est : 11.25° - 33.75°', 'Nord-Nord-Est : 11.25° - 33.75°'),
+    ('NNO', 'Nord-Nord-Ouest : 326.25° - 348.75°', 'Nord-Nord-Ouest : 326.25° - 348.75°'),
+    ('NO', 'Nord-Ouest : 303.75° - 326.25 °', 'Nord-Ouest : 303.75° - 326.25 °'),
+    ('O', 'Ouest : 258.75° - 281.25°', 'Ouest : 258.75° - 281.25°'),
+    ('ONO', 'Ouest-Nord-Ouest : 281.25° - 303.75°', 'Ouest-Nord-Ouest : 281.25° - 303.75°'),
+    ('OSO', 'Ouest-Sud-Ouest : 236.25° - 258.75°', 'Ouest-Sud-Ouest : 236.25° - 258.75°'),
+    ('S', 'Sud : 168.75° - 191.25°', 'Sud : 168.75° - 191.25°'),
+    ('SE', 'Sud-Est : 123.75°- 146.25°', 'Sud-Est : 123.75°- 146.25°'),
+    ('SO', 'Sud-Ouest : 213.75° - 236.25°', 'Sud-Ouest : 213.75° - 236.25°'),
+    ('SSE', 'Sud-Sud-Est : 146.25° - 168.75°', 'Sud-Sud-Est : 146.25° - 168.75°'),
+    ('SSO', 'Sud-Sud-Ouest : 191.25° - 213.75°', 'Sud-Sud-Ouest : 191.25° - 213.75°')
+;
+
+CREATE TABLE referentiels.methodecalculsurfacevalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT methodecalculsurfacevalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.methodecalculsurfacevalue OWNER TO postgres ;
+
+INSERT INTO referentiels.methodecalculsurfacevalue (code, label, definition) VALUES
+    ('es', 'Estimée : la surface est estimée par l''opérateur.', 'Estimée : la surface est estimée par l''opérateur.'),
+    ('lin', 'Calculée à partir de la largeur du linéaire', 'Calculée à partir de la largeur du linéaire'), 
+    ('sig', 'La surface est calculée directement par usage d''un logiciel SIG.', 'La surface est calculée directement par usage d''un logiciel SIG.'),
+    ('nsp', 'Ne sait pas : la méthode de calcul est inconnue.', 'Ne sait pas : la méthode de calcul est inconnue.')
+;
+
+
+CREATE TABLE referentiels.typesolvalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT typesolvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.typesolvalue OWNER TO postgres ;
+
+INSERT INTO referentiels.typesolvalue (code, label, definition) VALUES 
+    ('1', 'Anthroposol', 'Anthroposol'),
+    ('2', 'Lithosol', 'Lithosol'),
+    ('3', 'Régosol', 'Régosol'),
+    ('4', 'Cryosol', 'Cryosol'),
+    ('5', 'Rédoxisol', 'Rédoxisol'),
+    ('6', 'Réductisol', 'Réductisol'),
+    ('7', 'Histosol', 'Histosol'),
+    ('8', 'Colluviosol', 'Colluviosol'),
+    ('9', 'Peyrosol', 'Peyrosol'),
+    ('10', 'Arénosol', 'Arénosol'),
+    ('11', 'Vertisol', 'Vertisol'),
+    ('12', 'Leptimectisol', 'Leptimectisol'),
+    ('13', 'Pélosol', 'Pélosol'),
+    ('14', 'Nitosol', 'Nitosol'),
+    ('15', 'Andosol', 'Andosol'),
+    ('16', 'Gyposol', 'Gyposol'),
+    ('17', 'Salisol', 'Salisol'),
+    ('18', 'Sodisol', 'Sodisol'),
+    ('19', 'Organosol', 'Organosol'),
+    ('20', 'Rankosol', 'Rankosol'),
+    ('21', 'Veracrisol', 'Veracrisol'),
+    ('22', 'Chernosol', 'Chernosol'),
+    ('23', 'Phaerosol', 'Phaerosol'),
+    ('24', 'Podzosol', 'Podzosol'),
+    ('25', 'Fersialsol', 'Fersialsol'),
+    ('26', 'Brunisol', 'Brunisol'),
+    ('27', 'Alocrisol', 'Alocrisol'),
+    ('28', 'Luvisol', 'Luvisol'),
+    ('29', 'Planosol', 'Planosol'),
+    ('30', 'Pélosol', 'Pélosol'),
+    ('31', 'Basisol', 'Basisol')
+;
+
+
+CREATE TABLE referentiels.geologievalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT geologievalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.geologievalue OWNER TO postgres ;
+
+INSERT INTO referentiels.geologievalue (code, label, definition) VALUES
+    ('1','Alluvions','Alluvions'),
+    ('10','Andésite','Andésite'),
+    ('100','Roche magmatique','Roche magmatique'),
+    ('101','Roche métamorphique','Roche métamorphique'),
+    ('102','Roche plutonique','Roche plutonique'),
+    ('103','Roche sédimentaire','Roche sédimentaire'),
+    ('104','Roche ultrabasique','Roche ultrabasique'),
+    ('105','Roche volcanique','Roche volcanique'),
+    ('106','Sables','Sables'),
+    ('107','Sables argileux','Sables argileux'),
+    ('108','Sables fins','Sables fins'),
+    ('109','Sables grossiers','Sables grossiers'),
+    ('11','Anhydrite','Anhydrite'),
+    ('110','Sables moyens','Sables moyens'),
+    ('111','Sancyte','Sancyte'),
+    ('112','Schistes','Schistes'),
+    ('113','Schistes bitumeux','Schistes bitumeux'),
+    ('114','Schistes bleus','Schistes bleus'),
+    ('115','Schistes cristallins','Schistes cristallins'),
+    ('116','Schistes verts','Schistes verts'),
+    ('117','Serpentinite','Serpentinite'),
+    ('118','Silt','Silt'),
+    ('119','Syénite','Syénite'),
+    ('12','Ardoise','Ardoise'),
+    ('120','Syénite néphélinique','Syénite néphélinique'),
+    ('121','Sylvinite (Potasse)','Sylvinite (Potasse)'),
+    ('122','Tahitite','Tahitite'),
+    ('123','Tonalite','Tonalite'),
+    ('124','Tourbe','Tourbe'),
+    ('125','Trachy-andésite','Trachy-andésite'),
+    ('126','Trachy-basalte','Trachy-basalte'),
+    ('127','Trachyte','Trachyte'),
+    ('128','Tufs et travertin','Tufs et travertin'),
+    ('129','Turbidite','Turbidite'),
+    ('13','Arènes (granitiques ou gneissiques)','Arènes (granitiques ou gneissiques)'),
+    ('130','Vases consolidées','Vases consolidées'),
+    ('131','Vaugnerite','Vaugnerite'),
+    ('132','Vogesite','Vogesite'),
+    ('133','Vosgesite','Vosgesite'),
+    ('134','Werhlite','Werhlite'),
+    ('14','Argiles','Argiles'),
+    ('15','Argiles sableuses','Argiles sableuses'),
+    ('16','Ariegite','Ariegite'),
+    ('17','Arkoses','Arkoses'),
+    ('18','Avezacite','Avezacite'),
+    ('19','Basalte','Basalte'),
+    ('2','Alluvions caillouteuses (galets, graviers, sables)','Alluvions caillouteuses (galets, graviers, sables)'),
+    ('20','Blavierite','Blavierite'),
+    ('21','Blocs','Blocs'),
+    ('22','Calcaires','Calcaires'),
+    ('23','Calcaires dolomitiques','Calcaires dolomitiques'),
+    ('24','Calcaires marneux','Calcaires marneux'),
+    ('25','Calcschistes','Calcschistes'),
+    ('26','Cantalite','Cantalite'),
+    ('27','Conglomérat (brèches ou poudingues)','Conglomérat (brèches ou poudingues)'),
+    ('28','Conglomérats compacts','Conglomérats compacts'),
+    ('29','Cornéenne','Cornéenne'),
+    ('3','Alluvions graveleuses (graviers, sables)','Alluvions graveleuses (graviers, sables)'),
+    ('30','Corsite','Corsite'),
+    ('31','Craie','Craie'),
+    ('32','Craie marneuse','Craie marneuse'),
+    ('33','Dacite','Dacite'),
+    ('34','Diorite','Diorite'),
+    ('35','Dolomies','Dolomies'),
+    ('36','Domite','Domite'),
+    ('37','Doreite','Doreite'),
+    ('38','Dunite','Dunite'),
+    ('39','Eclogite','Eclogite'),
+    ('4','Altérites','Altérites'),
+    ('40','Esterellite','Esterellite'),
+    ('41','Evisite','Evisite'),
+    ('42','Falun (sable coquillier)','Falun (sable coquillier)'),
+    ('43','Florinite','Florinite'),
+    ('44','Flysh argileux','Flysh argileux'),
+    ('45','Flysh calcaire','Flysh calcaire'),
+    ('46','Fraidonite','Fraidonite'),
+    ('47','Gabbro','Gabbro'),
+    ('48','Gaize','Gaize'),
+    ('49','Galets (et cailloux)','Galets (et cailloux)'),
+    ('5','Alternance gréso-calcaire','Alternance gréso-calcaire'),
+    ('50','Gelé','Gelé'),
+    ('51','Gneiss','Gneiss'),
+    ('52','Granite','Granite'),
+    ('53','Granitoide','Granitoide'),
+    ('54','Granodiorite','Granodiorite'),
+    ('55','Granulite','Granulite'),
+    ('56','Graviers','Graviers'),
+    ('57','Grès','Grès'),
+    ('58','Gypse','Gypse'),
+    ('59','Halite (Sel Gemme)','Halite (Sel Gemme)'),
+    ('6','Alternance gréso-schisteuse','Alternance gréso-schisteuse'),
+    ('60','Harzburgite','Harzburgite'),
+    ('61','Hauynite, hauynitite','Hauynite, hauynitite'),
+    ('62','Houille','Houille'),
+    ('63','Jaspes (phtanites)','Jaspes (phtanites)'),
+    ('64','Kersantite','Kersantite'),
+    ('65','Lapillis (ou pouzzolane)','Lapillis (ou pouzzolane)'),
+    ('66','Latite','Latite'),
+    ('67','Lherzite','Lherzite'),
+    ('68','Lherzolite','Lherzolite'),
+    ('69','Lignite','Lignite'),
+    ('7','Alternance marno-calcaire','Alternance marno-calcaire'),
+    ('70','Limburgite','Limburgite'),
+    ('71','Limon argileux','Limon argileux'),
+    ('72','Limons','Limons'),
+    ('73','Lindinosite','Lindinosite'),
+    ('74','Lithologie inconnue','Lithologie inconnue'),
+    ('75','Loess','Loess'),
+    ('76','Luscladite','Luscladite'),
+    ('77','Marbres et/ou cipolins','Marbres et/ou cipolins'),
+    ('78','Mareugite','Mareugite'),
+    ('79','Marnes','Marnes'),
+    ('8','Alternance sablo-argileuse','Alternance sablo-argileuse'),
+    ('80','Miagite','Miagite'),
+    ('81','Micaschiste','Micaschiste'),
+    ('82','Migmatites','Migmatites'),
+    ('83','Molasse','Molasse'),
+    ('84','Monzonite','Monzonite'),
+    ('85','Moraines','Moraines'),
+    ('86','Mylonite','Mylonite'),
+    ('87','Napoleonite','Napoleonite'),
+    ('88','Oceanite','Oceanite'),
+    ('89','Ordanchite','Ordanchite'),
+    ('9','Amphibolite','Amphibolite'),
+    ('90','Ouenite','Ouenite'),
+    ('91','Pegmatite','Pegmatite'),
+    ('92','Peleite, peléeite','Peleite, peléeite'),
+    ('93','Pélite','Pélite'),
+    ('94','Péridotite','Péridotite'),
+    ('95','Phonolite','Phonolite'),
+    ('96','Pyromeride','Pyromeride'),
+    ('97','Quartzites (métaquartzites)','Quartzites (métaquartzites)'),
+    ('98','Quartzites (orthoquartzites)','Quartzites (orthoquartzites)'),
+    ('99','Rhyolite','Rhyolite')
+;
+
+
+
+CREATE TABLE referentiels.aciditevalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT aciditevalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.aciditevalue OWNER TO postgres ;
+
+INSERT INTO referentiels.aciditevalue (code, label, definition) VALUES 
+    ('1', 'Acide', 'Acide'),
+    ('2', 'Neutre', 'Neutre'),
+    ('3', 'Basique', 'Basique')
+;
+
+
+CREATE TABLE referentiels.typedeterminationvalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT typedeterminationvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.typedeterminationvalue OWNER TO postgres ;
+
+INSERT INTO referentiels.typedeterminationvalue (code, label, definition) VALUES
+    ('0', 'Inconnu', 'Inconnu'),
+    ('1', 'Attribué terrain', 'Attribué terrain'),
+    ('2', 'Expertise a posteriori', 'Expertise a posteriori'),
+    ('3', 'Correspondance typologique', 'Correspondance typologique')
+;
+
+
+CREATE TABLE referentiels.techniquecollectevalue(
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT techniquecollectevalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.techniquecollectevalue OWNER TO postgres ;
+
+INSERT INTO referentiels.techniquecollectevalue (code, label, definition) VALUES
+    ('0', 'Ne sait pas', 'Ne sait pas'),
+    ('1', 'In situ : observation directe, sur le terrain', 'In situ : observation directe, sur le terrain'),
+    ('2', 'Télédétection (satellite, LIDAR...)', 'Télédétection (satellite, LIDAR...)'),
+    ('2.1', 'Lidar', 'Lidar'),
+    ('2.2', 'Radar', 'Radar'),
+    ('2.3', 'Imagerie numérique aéroportée', 'Imagerie numérique aéroportée'),
+    ('2.4', 'Imagerie satellitaire', 'Imagerie satellitaire'),
+    ('3', 'Techniques acoustiques', 'Techniques acoustiques'),
+    ('3.1', 'Sonar à balayage latéral', 'Sonar à balayage latéral'),
+    ('3.2', 'Sondeur multifaisceaux', 'Sondeur multifaisceaux'),
+    ('3.3', 'Sonar à interféromètre', 'Sonar à interféromètre'),
+    ('3.4', 'Système acoustique de classification automatique des natures de fonds', 'Système acoustique de classification automatique des natures de fonds'),
+    ('3.5', 'Imagerie sismique', 'Imagerie sismique'),
+    ('3.6', 'Sondeur de sédiments', 'Sondeur de sédiments'),
+    ('3.7', 'Sondeur monofaisceau', 'Sondeur monofaisceau'),
+    ('4', 'Modélisation', 'Modélisation'),
+    ('5', 'Observation à distance (jumelles par exemple)', 'Observation à distance (jumelles par exemple)'),
+    ('6', 'Observation directe marine (observation en plongée)', 'Observation directe marine (observation en plongée)'),
+    ('7', 'Extrapolation', 'Extrapolation'),
+    ('8', 'Techniques de prélèvements in situ', 'Techniques de prélèvements in situ'),
+    ('8.1', 'Plongées', 'Plongées'),
+    ('8.2', 'Mesures géotechniques', 'Mesures géotechniques'),
+    ('8.3', 'Prélèvement à la benne', 'Prélèvement à la benne'),
+    ('8.4', 'Prélèvement au chalut ou à la drague', 'Prélèvement au chalut ou à la drague'),
+    ('8.4.1', 'Prélèvement au chalut', 'Prélèvement au chalut'),
+    ('8.4.2', 'Prélèvement à la drague', 'Prélèvement à la drague'),
+    ('8.5', 'Carottage', 'Carottage'),
+    ('9', 'Vidéo et photographies', 'Vidéo et photographies'),
+    ('9.1', 'Imagerie des profils sédimentaires', 'Imagerie des profils sédimentaires'),
+    ('9.2', 'Caméra tractée ou téléguidée', 'Caméra tractée ou téléguidée'),
+    ('9.3', 'Observation marine photographique (observation photographique en plongée)', 'Observation marine photographique (observation photographique en plongée)'),
+    ('9.4', 'Observation photographique aérienne, prise de vue aérienne, suivie d''une photointerprétation', 'Observation photographique aérienne, prise de vue aérienne, suivie d''une photointerprétation'),
+    ('9.5', 'Observation photographique terrestre suivie d''une photointerprétation.', 'Observation photographique terrestre suivie d''une photointerprétation.'),
+    ('10', 'Autre, préciser.', 'Autre, préciser.')
+;
+
+
+CREATE TABLE referentiels.abondancehabitatvalue (
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT abondancehabitatvalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.abondancehabitatvalue OWNER TO postgres ;
+
+INSERT INTO referentiels.abondancehabitatvalue (code, label, definition) VALUES
+    ('1', 'Recouvrement très faible', 'Recouvrement très faible'),
+    ('2', 'Habitat recouvrant environ 1/20 à 1/4 de la surface (5 à 25 %)', 'Habitat recouvrant environ 1/20 à 1/4 de la surface (5 à 25 %)'),
+    ('3', 'Habitat recouvrant environ 1/4 à 1/2 de la surface (25 à 50 %)', 'Habitat recouvrant environ 1/4 à 1/2 de la surface (25 à 50 %)'),
+    ('4', 'Habitat recouvrant environ 1/2 à 3/4 de la surface (50 à 75 %)', 'Habitat recouvrant environ 1/2 à 3/4 de la surface (50 à 75 %)'),
+    ('5', 'Habitat recouvrant plus des 3/4 de la surface (>75 %)', 'Habitat recouvrant plus des 3/4 de la surface (>75 %)')
+;
+
+
+CREATE TABLE referentiels.niveausensivalue (
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT niveausensivalue_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.niveausensivalue OWNER TO postgres ;
+
+INSERT INTO referentiels.niveausensivalue (code, label, definition) VALUES
+    ('0', 'Pas de sensibilité particulière', 'Pas de sensibilité particulière'),
+    ('2', 'Sensible', 'Sensible')
+;
+
+
+
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM PUBLIC;
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM postgres;
 GRANT ALL ON ALL TABLES IN SCHEMA  referentiels TO postgres;

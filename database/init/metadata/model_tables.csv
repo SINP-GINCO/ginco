@@ -1,1 +1,4 @@
-model_1;table_observation
+model_id;table_id
+model_1;table_observation
+model_1000;table_station
+model_1000;table_habitat

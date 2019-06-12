@@ -1,1 +1,7 @@
-table_observation;PROVIDER_ID;FR;Organisme;L'organismetable_observation;SUBMISSION_ID;FR;Identifiant de soumission;L'identifiant de soumissiontable_observation;OGAM_ID_table_observation;FR;Observation;L'identifiant de l'observationtable_observation;PROVIDER_ID;EN;The identifier of the provider;The identifier of the providertable_observation;SUBMISSION_ID;EN;Submission ID;The identifier of a submissiontable_observation;OGAM_ID_table_observation;EN;Observation;The identifier of a observation
+table_format;row_pk;lang;label;definition
+table_observation;PROVIDER_ID;FR;Organisme;L'organisme
+table_observation;SUBMISSION_ID;FR;Identifiant de soumission;L'identifiant de soumission
+table_observation;OGAM_ID_table_observation;FR;Observation;L'identifiant de l'observation
+table_observation;PROVIDER_ID;EN;The identifier of the provider;The identifier of the provider
+table_observation;SUBMISSION_ID;EN;Submission ID;The identifier of a submission
+table_observation;OGAM_ID_table_observation;EN;Observation;The identifier of a observation

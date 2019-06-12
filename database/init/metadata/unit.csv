@@ -1,3 +1,4 @@
+unit;type;subtype;label;definition
 Integer;INTEGER;;entier;
 Decimal;NUMERIC;;flotant;
 CharacterString;STRING;;texte;Lors d'une recherche on regardera l'appartenance du motif recherché aux valeurs du champ.
@@ -53,3 +54,13 @@ TaxoStatutValue;CODE;DYNAMIC;[Liste] Statut du taxon pour la migration TAXREF;St
 TaxoModifValue;CODE;DYNAMIC;[Liste] Modification effectuée lors de la migration TAXREF;Modification effectuée sur le taxon lors de la migration TAXREF
 TaxoAlerteValue;CODE;DYNAMIC;[Liste] Taxon en alerte ou non pour la migration TAXREF;Taxon en alerte ou non pour la migration TAXREF
 USER_LOGIN;STRING;DYNAMIC;Utilisateur;Utilisateur
+ComplexeHabitatValue;CODE;DYNAMIC;Type de complexe d'habitats;Type de complexe d'habitats
+ExpositionValue;CODE;DYNAMIC;Point cardinal dominant pour l'exposition du terrain;Point cardinal dominant pour l'exposition du terrain
+MethodeCalculSurfaceValue;CODE;DYNAMIC;Type de détermination d'une surface;Type de détermination d'une surface
+TypeSolValue;ARRAY;DYNAMIC;Type de sol observé;Type de sol observé
+GeologieValue;ARRAY;DYNAMIC;Type de géologie de la zone;Type de géologie de la zone
+AciditeValue;CODE;DYNAMIC;Acidité du sol;Acidité du sol
+TypeDeterminationValue;CODE;DYNAMIC;Type de détermination;Type de détermination
+TechniqueCollecteValue;STRING;DYNAMIC;Techniques de collecte de l'observation;Techniques de collecte de l'observation
+AbondanceHabitatValue;CODE;DYNAMIC;Coefficients de Braun-Blanquet et Pavillard;Coefficients de Braun-Blanquet et Pavillard
+NiveauSensiValue;CODE;DYNAMIC;Niveau de sensiblité des habitats;Niveau de sensiblité des habitats

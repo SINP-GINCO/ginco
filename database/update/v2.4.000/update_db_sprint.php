@@ -32,6 +32,7 @@ if ($isDlb) {
 try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
+	execCustSQLFile("$sprintDir/add_standard_habitat.sql", $config);
 
 
 } catch (Exception $e) {

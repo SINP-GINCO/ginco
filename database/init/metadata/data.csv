@@ -115,3 +115,30 @@ taxostatut;TaxoStatutValue;taxoStatut;Statut du taxon pour la migration TAXREF.;
 taxomodif;TaxoModifValue;taxoModif;Modification effectuée sur le taxon lors de la migration TAXREF.;;true
 taxoalerte;TaxoAlerteValue;taxoAlerte;Alerte sur le taxon pour la migration TAXREF.;;true
 USER_LOGIN;USER_LOGIN;Utilisateur;Utilisateur;;true
+OGAM_ID_table_station;IDString;Clé primaire table station;Clé primaire table station;;true
+identifiantstasinp;CharacterString;identifiantStaSINP;Identifiant unique de la station observée.;;true
+identifiantoriginestation;CharacterString;identifiantOrigineStation;Identifiant unique de la donnée de station dans la base de données du producteur où est stockée et initialement gérée la donnée d'origine.;;true
+dateimprecise;BOOLEAN;dateImprecise;Permet d'indiquer qu'une date est imprécise et que jourDateDebut / jourDateFin recouvre une période d'imprécision.;;true
+observateur;CharacterString;observateur;Identité et organisme de la ou des personnes ayant réalisé l'observation.;;true
+nomstation;CharacterString;nomStation;Nom ou code éventuel de la station.;;true
+estcomplexehabitats;ComplexeHabitatValue;estComplexeHabitats;Permet de préciser que la station est un complexe d'habitats.;;true
+exposition;ExpositionValue;exposition;Exposition de la station.;;true
+surface;Decimal;surface;Superficie de la station.;;true
+methodecalculsurface;MethodeCalculSurfaceValue;methodeCalculSurface;Méthode de calcul pour la détermination de la surface.;;true
+usage;CharacterString;usage;Usage/activité pratiquée sur l'habitat, si nécessaire, fondé sur la notion d'impact anthropique.;;true
+typesol;TypeSolValue;typeSol;Type de sol de la zone considérée.;;true
+geologie;GeologieValue;geologie;Géologie de la zone considérée.;;true
+acidite;AciditeValue;acidite;Acidité du sol.;;true
+OGAM_ID_table_habitat;IDString;Clé primaire table habitat;Clé primaire table habitat;;true
+identifianthabsinp;CharacterString;identifiantHabSINP;Identifiant unique de l'habitat observé.;;true
+cdhab;CodeHabRefValue;cdHab;Code l'habitat suivant HABREF.;;true
+typedeterm;TypeDeterminationValue;typeDeterm;Type de détermination.;;true
+determinateur;CharacterString;determinateur;Personne ayant procédé à la détermination du code de l'habitat contenu dans cdHab, ainsi que son éventuel organisme.;;true
+techniquecollecte;TechniqueCollecteValue;techniqueCollecte;Technique de collecte ayant permis la génération de l'observation.;;true
+recouvrement;Decimal;recouvrement;Pourcentage de recouvrement de l'habitat par rapport à la station.;;true
+abondancehabitat;AbondanceHabitatValue;abondanceHabitat;Abondance relative de l'habitat par rapport à la station.;;true
+precisiontechnique;CharacterString;precisionTechnique;Précisions sur la technique de collecte quand techniqueCollecte prend la valeur 10.;;true
+releveespeces;CharacterString;relevesEspeces;Identifiant d'un regroupement au sein du standard Occurences de taxons du SINP.;;true
+relevephyto;CharacterString;relevePhyto;Identifiant d'un relevé phytosociologique de l'extension relevés phytosociologiques du standard occurrences de taxons.;;true
+sensibilitehab;NiveauSensiValue;sensibiliteHab;Sensibilité de l'habitat selon le producteur.;;true
+echellenumerisation;CharacterString;echelleNumerisation;Echelle de carte à laquelle la numérisation de l'information géographique a été effectuée.;;true

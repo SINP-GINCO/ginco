@@ -1,1 +1,5 @@
-dataset_1;file_observationdataset_100;file_shapefile
+dataset_id;format
+dataset_1;file_observation
+dataset_100;file_shapefile
+dataset_1000;file_station
+dataset_1000;file_habitat

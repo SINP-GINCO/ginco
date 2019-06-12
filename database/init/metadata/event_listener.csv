@@ -1,1 +1,4 @@
-GincoChecksDSRService;fr.ifn.ogam.integration.business.ChecksDSRGincoServiceJddService;fr.ifn.ogam.integration.business.JddServiceGeoAssociationService;fr.ifn.ogam.integration.business.GeoAssociationService
+listener_id;classname
+GincoChecksDSRService;fr.ifn.ogam.integration.business.ChecksDSRGincoService
+JddService;fr.ifn.ogam.integration.business.JddService
+GeoAssociationService;fr.ifn.ogam.integration.business.GeoAssociationService

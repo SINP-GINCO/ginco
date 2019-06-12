@@ -1,3 +1,4 @@
+dataset_id;schema_code;format;data
 dataset_2;RAW_DATA;table_observation;SUBMISSION_ID
 dataset_2;RAW_DATA;table_observation;PROVIDER_ID
 dataset_2;RAW_DATA;table_observation;OGAM_ID_table_observation

@@ -1,3 +1,4 @@
+data;format;is_criteria;is_result;input_type;position;is_default_criteria;is_default_result;default_value;decimals;mask
 altitudemax;form_localisation;1;1;NUMERIC;1;0;0;;;
 altitudemin;form_localisation;1;1;NUMERIC;2;0;0;;;
 altitudemoyenne;form_localisation;1;1;NUMERIC;3;0;0;;;

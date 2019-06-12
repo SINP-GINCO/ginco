@@ -65,7 +65,7 @@ class TablesGeneration extends TablesGenerationBase {
 			}
 		}
 		try {
-			if ($this->predefinedRequestGeneration && $numberOfTables > 0) {
+			if ($this->isTableOcctax($modelId, $dbconn) && $this->predefinedRequestGeneration && $numberOfTables > 0) {
 				$this->predefinedRequestGeneration->createPredefinedRequests($modelId, $tableSchema, $dbconn); // Ginco specific
 			}
 			$this->addConstraints($modelId, $dbconn);
@@ -75,6 +75,23 @@ class TablesGeneration extends TablesGenerationBase {
 		}
 		return true;
 	}
+	
+	
+	/**
+	 * Test if table is from occtax standard.
+	 * @param type $modelId
+	 * @param type $dbconn
+	 * @return boolean
+	 */
+	protected function isTableOcctax($modelId, $dbconn) {
+		$sql = "SELECT standard FROM metadata.model WHERE id = $1" ;
+		pg_prepare($dbconn, "", $sql) ;
+		$result = pg_execute($dbconn, "", array($modelId)) ;
+		if (pg_fetch_row($result)[0] == 'occtax') {
+			return true ;
+		}
+		return false ;
+	} 
 
 	/**
 	 *
