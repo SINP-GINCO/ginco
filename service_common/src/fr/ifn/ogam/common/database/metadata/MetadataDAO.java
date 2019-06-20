@@ -234,7 +234,7 @@ public class MetadataDAO {
 	/**
 	 * Get all the tables physical names.
 	 */
-	private static final String GET_ALL_TABLE_FORMAT_STMT = "SELECT * FROM table_format";
+	private static final String GET_ALL_TABLE_FORMAT_STMT = "SELECT * FROM table_format tf JOIN model_tables mt ON mt.table_id = tf.format JOIN model m ON m.id = mt.model_id WHERE m.created_at IS NOT NULL ";
 
 	/**
 	 * Get the list of available datasets.
