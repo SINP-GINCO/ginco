@@ -233,24 +233,24 @@ class ModelDuplication extends DatabaseUtils {
 	public function addPrimaryKeyToDataTable($originalPK, $duplicatedPK, $tableFormat) {
 		// Get values of original PK
 		$selectOGPKQuery = "SELECT * FROM metadata.data WHERE data = $1";
-		pg_prepare($this->pgConn, "select_og_pk_query", $selectOGPKQuery);
-		$results = pg_execute($this->pgConn, "select_og_pk_query", array(
+		pg_prepare($this->pgConn, "", $selectOGPKQuery);
+		$results = pg_execute($this->pgConn, "", array(
 			$originalPK
 		));
 		$originalPKRow = pg_fetch_assoc($results);
 
 		// Get label of the table
 		$selectTableLabel = "SELECT label FROM metadata.table_format WHERE format = $1";
-		pg_prepare($this->pgConn, "select_table_label_query", $selectTableLabel);
-		$labelRes = pg_execute($this->pgConn, "select_table_label_query", array(
+		pg_prepare($this->pgConn, "", $selectTableLabel);
+		$labelRes = pg_execute($this->pgConn, "", array(
 			$tableFormat
 		));
 		$tableLabel = pg_fetch_result($labelRes, 'label');
 
 		// Insert data field of PK in data table
 		$insertPKDataFieldQuery = "INSERT INTO metadata.data(data, unit, label, definition) VALUES($1, $2, $3, $4)";
-		pg_prepare($this->pgConn, "insert_pk_data_query", $insertPKDataFieldQuery);
-		pg_execute($this->pgConn, "insert_pk_data_query", array(
+		pg_prepare($this->pgConn, "", $insertPKDataFieldQuery);
+		pg_execute($this->pgConn, "", array(
 			$duplicatedPK,
 			$originalPKRow['unit'],
 			"Clé primaire table " . $tableLabel,
@@ -259,8 +259,8 @@ class ModelDuplication extends DatabaseUtils {
 
 		// update field row for primary key (and via cascade table_field also)
 		$insertFieldQuery = "UPDATE metadata.field SET data = $1 WHERE format = $2 AND data = $3";
-		pg_prepare($this->pgConn, "update_field_pk_query", $insertFieldQuery);
-		pg_execute($this->pgConn, "update_field_pk_query", array(
+		pg_prepare($this->pgConn, "", $insertFieldQuery);
+		pg_execute($this->pgConn, "", array(
 			$duplicatedPK,
 			$tableFormat,
 			$originalPK
@@ -268,8 +268,8 @@ class ModelDuplication extends DatabaseUtils {
 
 		// update tablefield row column name for primary key
 		$insertTableFieldQuery = "UPDATE metadata.table_field SET column_name = $1 WHERE format = $2 AND data = $3";
-		pg_prepare($this->pgConn, "update_table_field_column_name_query", $insertTableFieldQuery);
-		pg_execute($this->pgConn, "update_table_field_column_name_query", array(
+		pg_prepare($this->pgConn, "", $insertTableFieldQuery);
+		pg_execute($this->pgConn, "", array(
 			strtolower($duplicatedPK),
 			$tableFormat,
 			$duplicatedPK

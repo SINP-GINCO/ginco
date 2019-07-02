@@ -57,7 +57,6 @@ class ModelController extends Controller {
 				
 				$modelManager = $this->get(ModelManager::class) ;
 				$entityManager->refresh($model) ;
-				$modelManager->initModel($model) ;
 				
 			} else if ($successStatus == 'datamodel.duplicate.fail') {
 				$this->addFlash('error', $this->get('translator')

@@ -217,6 +217,14 @@ class TablesGeneration extends DatabaseUtils {
 			$childName = $row['child_name'];
 			$parentName = $row['parent_name'];
 			$joinKey = $row['join_key'];
+			
+			$sqlIndex = "CREATE UNIQUE INDEX idx_{$modelId}_$joinKey ON $schema.$parentName ($joinKey)" ;
+			pg_prepare($dbconn, "", $sqlIndex) ;
+			pg_execute($dbconn, "", array());
+			
+			$sqlUnique = "ALTER TABLE $schema.$parentName ADD CONSTRAINT unique_{$modelId}_$joinKey UNIQUE USING INDEX idx_{$modelId}_$joinKey" ;
+			pg_prepare($dbconn, "", $sqlUnique) ;
+			pg_execute($dbconn, "", array()) ;			
 
 			$sqlFK = "ALTER TABLE " . $schema . "." . $childName . "
 					ADD CONSTRAINT fk" . $parentName . " FOREIGN KEY (" . $joinKey . ")
