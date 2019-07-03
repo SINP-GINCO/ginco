@@ -714,7 +714,7 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
 
 INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_insertable,is_mandatory,"position") VALUES
     ('identifiantstasinp','table_station','identifiantstasinp','0','0','1','1',1),
-    ('jddmetadonneedeeid','table_station','metadonneid','0','1','1','1',2),
+    ('jddmetadonneedeeid','table_station','metadonneeid','0','1','1','1',2),
     ('dspublique','table_station','dspublique','0','1','1','1',3),
     ('referencebiblio','table_station','referencebiblio','0','1','1','0',4),
     ('identifiantoriginestation','table_station','identifiantoriginestation','0','1','1','0',5),
