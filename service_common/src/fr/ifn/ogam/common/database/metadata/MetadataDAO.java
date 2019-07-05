@@ -271,6 +271,15 @@ public class MetadataDAO {
 	 */
 	private static final String GET_CDREF_FROM_CDNOM = "SELECT cd_ref FROM referentiels.taxref WHERE cd_nom = ?" ;
 	
+	/**
+	 * Get standard from dataset.
+	 */
+	private static final String GET_STANDARD_FROM_DATASET_STMT = "SELECT s.* " + // 
+			" FROM standard s " + //
+			" INNER JOIN model m ON s.name = m.standard " + //
+			" INNER JOIN model_datasets md ON m.id = md.model_id " + //
+			" WHERE md.dataset_id = ?";
+	
 	
 	/**
 	 * Get a connexion to the database.
@@ -2081,6 +2090,63 @@ public class MetadataDAO {
 			}
 
 			return result;
+
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing resultset : " + e.getMessage());
+			}
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing statement : " + e.getMessage());
+			}
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing connexion : " + e.getMessage());
+			}
+		}
+	}
+	
+	
+	/**
+	 * Get standard from dataset
+	 * @param datasetId the dataset ID
+	 * @return StandardData
+	 * @throws Exception
+	 */
+	public StandardData getStandardFromDataset(String datasetId) throws Exception {
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			StandardData standard = new StandardData() ;
+
+			con = getConnection();
+
+			// Execute the statement
+			ps = con.prepareStatement(GET_STANDARD_FROM_DATASET_STMT);
+			ps.setString(1, datasetId);
+			rs = ps.executeQuery();
+
+			
+			while (rs.next()) {
+				standard.setName(rs.getString("name")) ;
+				standard.setLabel(rs.getString("label")) ;
+				standard.setVersion(rs.getString("version")) ;
+			}
+
+			return standard ;
 
 		} finally {
 			try {

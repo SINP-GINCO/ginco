@@ -492,7 +492,7 @@ INSERT INTO data(data, unit, label, definition) VALUES
     ('recouvrement', 'Decimal', 'recouvrement', 'Pourcentage de recouvrement de l''habitat par rapport à la station.'),
     ('abondancehabitat', 'AbondanceHabitatValue', 'abondanceHabitat', 'Abondance relative de l''habitat par rapport à la station.'),
     ('precisiontechnique', 'CharacterString', 'precisionTechnique', 'Précisions sur la technique de collecte quand techniqueCollecte prend la valeur 10.'),
-    ('releveespeces', 'CharacterString', 'relevesEspeces', 'Identifiant d''un regroupement au sein du standard Occurences de taxons du SINP.'),
+    ('releveespeces', 'CharacterString', 'releveEspeces', 'Identifiant d''un regroupement au sein du standard Occurences de taxons du SINP.'),
     ('relevephyto', 'CharacterString', 'relevePhyto', 'Identifiant d''un relevé phytosociologique de l''extension relevés phytosociologiques du standard occurrences de taxons.'),
     ('sensibilitehab', 'NiveauSensiValue', 'sensibiliteHab', 'Sensibilité de l''habitat selon le producteur.'),
     ('echellenumerisation', 'CharacterString', 'echelleNumerisation', 'Echelle de carte à laquelle la numérisation de l''information géographique a été effectuée.')
@@ -714,7 +714,7 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
 
 INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_insertable,is_mandatory,"position") VALUES
     ('identifiantstasinp','table_station','identifiantstasinp','0','0','1','1',1),
-    ('jddmetadonneedeeid','table_station','metadonneeid','0','1','1','1',2),
+    ('jddmetadonneedeeid','table_station','jddmetadonneedeeid','0','1','1','1',2),
     ('dspublique','table_station','dspublique','0','1','1','1',3),
     ('referencebiblio','table_station','referencebiblio','0','1','1','0',4),
     ('identifiantoriginestation','table_station','identifiantoriginestation','0','1','1','0',5),
@@ -765,7 +765,7 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('precisiontechnique','file_habitat','0',NULL,'precisionTechnique'),
     ('preuvenumerique','file_habitat','0',NULL,'urlPreuve'),
     ('recouvrement','file_habitat','0',NULL,'recouvrement'),
-    ('releveespeces','file_habitat','0',NULL,'relevesEspeces'),
+    ('releveespeces','file_habitat','0',NULL,'releveEspeces'),
     ('relevephyto','file_habitat','0',NULL,'relevePhyto'),
     ('sensibilitehab','file_habitat','0',NULL,'sensibiliteHab'),
     ('typedeterm','file_habitat','0',NULL,'typeDeterm'),

@@ -20,6 +20,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import fr.ifn.ogam.common.database.GenericData;
 import fr.ifn.ogam.common.database.metadata.MetadataDAO;
+import fr.ifn.ogam.common.database.metadata.StandardData;
+import fr.ifn.ogam.common.database.rawdata.SubmissionDAO;
+import fr.ifn.ogam.common.database.rawdata.SubmissionData;
 import fr.ifn.ogam.common.database.referentiels.ListReferentielsDAO;
 import fr.ifn.ogam.common.util.DSRConstants;
 import fr.ifn.ogam.common.business.checks.CheckException;
@@ -54,6 +57,11 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 * The Metadata DAO
 	 */
 	private MetadataDAO metadataDAO = new MetadataDAO();
+	
+	/**
+	 * The submission DAO
+	 */
+	private SubmissionDAO submissionDAO = new SubmissionDAO() ;
 
 	/**
 	 * The exception array to store errors
@@ -81,6 +89,13 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 *             CheckException CheckException in case of database error
 	 */
 	public void checkLine(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException, CheckExceptionArrayList {
+		
+		SubmissionData submission = submissionDAO.getSubmission(submissionId) ;
+		StandardData standard = metadataDAO.getStandardFromDataset(submission.getDatasetId()) ;
+		if ("occtax" != standard.getName()) {
+			return ;
+		}
+		
 		logger.debug("coherenceChecks: checkLine");
 		if (values.size() == 0) {
 			return;
@@ -223,6 +238,12 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 */
 	public void beforeLineInsertion(Integer submissionId, Map<String, GenericData> values) throws Exception, CheckException, CheckExceptionArrayList {
 
+		SubmissionData submission = submissionDAO.getSubmission(submissionId) ;
+		StandardData standard = metadataDAO.getStandardFromDataset(submission.getDatasetId()) ;
+		if ("occtax" != standard.getName()) {
+			return ;
+		}
+		
 		logger.debug("coherenceChecks: beforeLineInsertion");
 		if (values.size() == 0) {
 			return;
@@ -323,6 +344,13 @@ public class ChecksDSRGincoService implements IntegrationEventListener {
 	 *             in case of database error
 	 */
 	public void beforeIntegration(Integer submissionId) throws Exception {
+		
+		SubmissionData submission = submissionDAO.getSubmission(submissionId) ;
+		StandardData standard = metadataDAO.getStandardFromDataset(submission.getDatasetId()) ;
+		if ("occtax" != standard.getName()) {
+			return ;
+		}
+		
 		logger.debug("coherenceChecks: beforeIntegration");
 		ListReferentielsDAO refDAO = new ListReferentielsDAO();
 

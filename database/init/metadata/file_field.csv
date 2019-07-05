@@ -180,7 +180,7 @@ identifiantorigine;file_habitat;"0";;identifiantOrigine;
 precisiontechnique;file_habitat;"0";;precisionTechnique;
 preuvenumerique;file_habitat;"0";;urlPreuve;
 recouvrement;file_habitat;"0";;recouvrement;
-releveespeces;file_habitat;"0";;relevesEspeces;
+releveespeces;file_habitat;"0";;releveEspeces;
 relevephyto;file_habitat;"0";;relevePhyto;
 sensibilitehab;file_habitat;"0";;sensibiliteHab;
 typedeterm;file_habitat;"0";;typeDeterm;
