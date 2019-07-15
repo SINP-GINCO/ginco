@@ -302,5 +302,14 @@ class Dataset implements \JsonSerializable {
 	public function isUnpublished(){
 		return $this->getStatus() == self::UNPUBLISHED;
 	}
+	
+	
+	/**
+	 * Get standard related to this dataset (via model).
+	 * @return Standard
+	 */
+	public function getStandard() {
+		return $this->getModel()->getStandard() ;
+	}
 
 }

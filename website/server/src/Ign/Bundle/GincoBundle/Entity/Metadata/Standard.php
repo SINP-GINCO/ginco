@@ -14,7 +14,12 @@ use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
  */
 class Standard {
 	
-	
+	public const STANDARD_OCCTAX = 'occtax' ;
+	public const STANDARD_HABITAT = 'habitat' ;
+
+
+
+
 	/**
 	 *
 	 * @var string

@@ -619,6 +619,12 @@ INSERT INTO field (type,"data",format) VALUES ('TABLE','geometrie','table_statio
 INSERT INTO field (type,"data",format) VALUES ('TABLE','natureobjetgeo','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','precisiongeometrie','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','echellenumerisation','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','codecommune','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','codedepartement','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','codemaille','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','typeinfogeocommune','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','typeinfogeodepartement','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','typeinfogeomaille','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','codemaillecalcule','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','codecommunecalcule','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','nomcommunecalcule','table_station');
@@ -742,14 +748,20 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
     ('natureobjetgeo','table_station','natureobjetgeo','0','1','1','0',27),
     ('precisiongeometrie','table_station','precisiongeometrie','0','1','1','0',28),
     ('echellenumerisation','table_station','echellenumerisation','0','1','1','0',29),
-    ('codemaillecalcule','table_station','codemaillecalcule','1','0','1','0',30),
-    ('codecommunecalcule','table_station','codecommunecalcule','1','0','1','0',31),
-    ('nomcommunecalcule','table_station','nomcommunecalcule','1','0','1','0',32),
-    ('codedepartementcalcule','table_station','codedepartementcalcule','1','0','1','0',33),
-    ('OGAM_ID_table_station','table_station','ogam_id_table_station','1','0','0','1',26),
-    ('SUBMISSION_ID','table_station','submission_id','1','0','0','0',27),
-    ('PROVIDER_ID','table_station','provider_id','0','0','0','1',28),
-    ('USER_LOGIN','table_station','user_login','0','0','0','1',29)
+    ('codecommune','table_station','codecommune','0','1','1','0',30),
+    ('codedepartement','table_station','codedepartement','0','1','1','0',31),
+    ('codemaille','table_station','codemaille','0','1','1','0',32),
+    ('typeinfogeocommune','table_station','typeinfogeocommune','0','1','1','0',33),
+    ('typeinfogeodepartement','table_station','typeinfogeodepartement','0','1','1','0',34),
+    ('typeinfogeomaille','table_station','typeinfogeomaille','0','1','1','0',35);
+    ('codemaillecalcule','table_station','codemaillecalcule','1','0','1','0',36),
+    ('codecommunecalcule','table_station','codecommunecalcule','1','0','1','0',37),
+    ('nomcommunecalcule','table_station','nomcommunecalcule','1','0','1','0',38),
+    ('codedepartementcalcule','table_station','codedepartementcalcule','1','0','1','0',39),
+    ('OGAM_ID_table_station','table_station','ogam_id_table_station','1','0','0','1',40),
+    ('SUBMISSION_ID','table_station','submission_id','1','0','0','0',41),
+    ('PROVIDER_ID','table_station','provider_id','0','0','0','1',42),
+    ('USER_LOGIN','table_station','user_login','0','0','0','1',43)
 ;
 
 

@@ -3,11 +3,14 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
-use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
+
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
+
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
+use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 
 /**
  * Class GeoAssociation
@@ -98,15 +101,17 @@ class GeoAssociationService {
 	 * - calculate and create (insert) new geo associations
 	 *
 	 * @param unknown $providerId        	
-	 * @param unknown $submission        	
+	 * @param Submission $submission        	
 	 * @param unknown $jdd        	
 	 * @param String $entity        	
 	 */
-	public function computeGeoAssociation($providerId, $submission, $jdd, $entity = null) {
+	public function computeGeoAssociation($providerId, Submission $submission, $jdd, $entity = null) {
 		$this->logger->debug('computeGeoAssociation');
 		
 		try {
 			/* ------- Get concerned submission(s) and table(s) in raw_data -------- */
+			
+			$tableFormatRepository = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat', 'metadata') ;
 			
 			$isSubmissionRunning = false;
 			
@@ -121,7 +126,7 @@ class GeoAssociationService {
 					$submissionIdArray[] = $valuesField->getId();
 				}
 				
-				$tableFormats = $jdd->getModel()->getTables();
+				$tableFormats = $tableFormatRepository->getTableFormatsWithGeometry($jdd->getModel());
 				
 				// Compute geo associations for a submission
 			} elseif ($submission != null) {
@@ -135,9 +140,7 @@ class GeoAssociationService {
 				}
 				$submissionIdArray = array();
 				
-				$tableFormats = $submission->getJdd()
-					->getModel()
-					->getTables();
+				$tableFormats = $tableFormatRepository->getTableFormatsWithGeometry($submission->getJdd()->getModel());
 				
 				// Compute geo association for an entity (commune or departement)
 			} elseif ($entity != null) {
@@ -148,7 +151,7 @@ class GeoAssociationService {
 				
 				$submissionId = null;
 				$submissionIdArray = array();
-				$tableFormats = $this->doctrine->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat', 'metadata')->getAllTableFormats();
+				$tableFormats = $tableFormatRepository->getTableFormatsWithGeometry();
 				
 				// All input parameters are null : throw exception
 			} else {

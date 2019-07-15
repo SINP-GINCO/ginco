@@ -63,6 +63,38 @@ class TableFormatRepository extends \Doctrine\ORM\EntityRepository {
 		return $query->getResult();
 	}
 	
+	/**
+	 * Get all table formats with a geometry column for a given model (if supplied, otherwise get all table formats with geometry).
+	 * @return Array[TableFormat]
+	 */
+	public function getTableFormatsWithGeometry(Model $model = null) {
+		$rsm = new ResultSetMappingBuilder($this->_em);
+		$rsm->addRootEntityFromClassMetadata($this->_entityName, 't');
+	
+		$sql = "SELECT format, table_name, schema_code, primary_key, tf.label, tf.definition ";
+		$sql .= " FROM metadata.table_format tf ";
+		$sql .= "JOIN metadata.table_field tfi USING (format) " ;
+		$sql .= "JOIN metadata.DATA d USING (data) ";
+		
+		if (!is_null($model)) {
+			$sql .= "JOIN metadata.model_tables mt ON mt.table_id = tf.format ";
+		}
+		
+		$sql .= "WHERE d.unit = 'GEOM' " ;
+		
+		if (!is_null($model)) {
+			$sql .= "AND mt.model_id = :model" ;
+		}
+		
+		$query = $this->_em->createNativeQuery($sql, $rsm);
+		
+		if (!is_null($model)) {
+			$query->setParameter('model', $model->getId()) ;
+		}
+		
+		return $query->getResult();		
+	}
+	
 	
 	/**
 	 * Trouve toutes les tables qui ne sont ni enfant de la table en entrée, ni la table elle-meme.
