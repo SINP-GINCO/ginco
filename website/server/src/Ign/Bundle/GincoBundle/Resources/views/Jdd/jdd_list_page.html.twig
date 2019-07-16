@@ -245,9 +245,16 @@
                 <td>
                     {% if jdd.activeSubmissions|length > 0 %}
                         {% for submission in jdd.activeSubmissions %}
-                            <div class="submission-line submission-line-actions">
-                                {%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
-                            </div>
+							{%  for file in submission.files %}
+								{%  if loop.first %}
+									<div class="submission-line submission-line-actions">
+										{%  include "@IgnGinco/Integration/submission_actions.html.twig" %}
+									</div>
+								{% else %}
+									<div class="submission-line submission-line-actions">
+									</div>
+								{% endif %}
+							{% endfor %}
                         {% endfor %}
 						{% if jdd.validatedSubmissions | length > 0 %}<p>{{ 'Last_validation' | trans }} : {{ jdd.lastValidatedSubmission.validationDate | date('d/m/Y H\\hi:s') }}</p>{% endif %}
                     {% else %}
@@ -257,13 +264,13 @@
                 {# File and lines #}
                 <td>
                     {% for submission in jdd.activeSubmissions %}
-                        <div class="submission-line submission-line-file">
-                            {% for file in submission.files %}
-                                {% set filename = file.fileName|trim|pathinfo_filename %}
-                                <div class="submission-line-lines">({{file.nbLines}})</div>
-                                <div title="{{ filename }}" class="submission-line-file-name longtext oneline">{{ filename }}</div>
-                            {% endfor %}
-                        </div>
+						{% for file in submission.files %}
+							<div class="submission-line submission-line-file">
+								{% set filename = file.fileName|trim|pathinfo_filename %}
+								<div class="submission-line-lines">({{file.nbLines}})</div>
+								<div title="{{ filename }}" class="submission-line-file-name longtext oneline">{{ filename }}</div>
+							</div>
+						{% endfor %}
                     {% endfor %}
                     {# Add a new submission to dataset #}
 					{% if jdd.status != 'validated' %}
@@ -277,30 +284,37 @@
                 {# Status -- see integration-progress-bars.js.twig #}
                 <td>
                     {% for submission in jdd.activeSubmissions %}
-                        <div class="submission-line submission-line-status" >
-                            <div class="integration-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
-                            <div class="integration-progress hidden">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" title="{{ 'IntegrationPage.import.running'|trans }}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                                        0%
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="integration-content" data-target="{{ submission.id }}"
-                                {% if submission.status in ['OK','CHECK'] %}
-                                    ><span class="glyphicon glyphicon-ok color-success" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
-                                {% elseif submission.status in ['WARNING'] %}
-                                    ><span class="glyphicon glyphicon-alert color-warning" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
-                                {% elseif submission.status in ['ERROR'] %}
-                                    ><span class="glyphicon glyphicon-remove color-danger" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
-                                {% elseif submission.step in ['CANCEL'] and submission.status in ['RUNNING'] %}
-                                    title="{% trans with {'%submissionId%': submission.id}%}IntegrationPage.cancel.running.tooltip{% endtrans %}">
-                                    <span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;
-                                {% else %}
-                                    >
-                                {% endif %}
-                            </div>
-                        </div>
+						{% for file in submission.files %}
+							{% if loop.first %}
+								<div class="submission-line submission-line-status" >
+									<div class="integration-status hidden" data-target="{{ submission.id }}">Status:{{ submission.status }};Step:{{ submission.step }}</div>
+									<div class="integration-progress hidden">
+										<div class="progress">
+											<div class="progress-bar progress-bar-success" role="progressbar" title="{{ 'IntegrationPage.import.running'|trans }}" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+												0%
+											</div>
+										</div>
+									</div>
+									<div class="integration-content" data-target="{{ submission.id }}"
+										{% if submission.status in ['OK','CHECK'] %}
+											><span class="glyphicon glyphicon-ok color-success" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
+										{% elseif submission.status in ['WARNING'] %}
+											><span class="glyphicon glyphicon-alert color-warning" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
+										{% elseif submission.status in ['ERROR'] %}
+											><span class="glyphicon glyphicon-remove color-danger" title="&nbsp;{{ submission.status }}" aria-hidden="true"></span>
+										{% elseif submission.step in ['CANCEL'] and submission.status in ['RUNNING'] %}
+											title="{% trans with {'%submissionId%': submission.id}%}IntegrationPage.cancel.running.tooltip{% endtrans %}">
+											<span class="glyphicon glyphicon-alert color-warning" aria-hidden="true"></span>&nbsp;
+										{% else %}
+											>
+										{% endif %}
+									</div>
+								</div>
+							{% else %}
+								<div class="submission-line submission-line-status" >
+								</div>
+							{% endif %}
+						{% endfor %}
                     {% endfor %}
                 </td>
 
