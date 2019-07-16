@@ -142,3 +142,4 @@ releveespeces;CharacterString;relevesEspeces;Identifiant d'un regroupement au se
 relevephyto;CharacterString;relevePhyto;Identifiant d'un relevé phytosociologique de l'extension relevés phytosociologiques du standard occurrences de taxons.;;true
 sensibilitehab;NiveauSensiValue;sensibiliteHab;Sensibilité de l'habitat selon le producteur.;;true
 echellenumerisation;CharacterString;echelleNumerisation;Echelle de carte à laquelle la numérisation de l'information géographique a été effectuée.;;true
+clestation;CharacterString;cleStation;Identifiant dans la soumission faisant le lien entre station et habitat.;;true

@@ -495,7 +495,8 @@ INSERT INTO data(data, unit, label, definition) VALUES
     ('releveespeces', 'CharacterString', 'releveEspeces', 'Identifiant d''un regroupement au sein du standard Occurences de taxons du SINP.'),
     ('relevephyto', 'CharacterString', 'relevePhyto', 'Identifiant d''un relevé phytosociologique de l''extension relevés phytosociologiques du standard occurrences de taxons.'),
     ('sensibilitehab', 'NiveauSensiValue', 'sensibiliteHab', 'Sensibilité de l''habitat selon le producteur.'),
-    ('echellenumerisation', 'CharacterString', 'echelleNumerisation', 'Echelle de carte à laquelle la numérisation de l''information géographique a été effectuée.')
+    ('echellenumerisation', 'CharacterString', 'echelleNumerisation', 'Echelle de carte à laquelle la numérisation de l''information géographique a été effectuée.'),
+    ('clestation','CharacterString', 'cleStation', 'Identifiant dans la soumission faisant le lien entre station et habitat.')
 ;
 
 
@@ -561,7 +562,7 @@ INSERT INTO dataset_files (dataset_id,format) VALUES ('dataset_1000','file_habit
 ----------------------------------------------------------------
 
 INSERT INTO table_tree (schema_code,child_table,parent_table,join_key,comment) VALUES ('RAW_DATA','table_station',NULL,NULL,NULL);
-INSERT INTO table_tree (schema_code,child_table,parent_table,join_key,comment) VALUES ('RAW_DATA','table_habitat','table_station','identifiantstasinp',NULL);
+INSERT INTO table_tree (schema_code,child_table,parent_table,join_key,comment) VALUES ('RAW_DATA','table_habitat','table_station','clestation,SUBMISSION_ID',NULL);
 
 
 ----------------------------------------------------------------
@@ -571,7 +572,7 @@ INSERT INTO table_tree (schema_code,child_table,parent_table,join_key,comment) V
 -- Table
 --------
 
-INSERT INTO field (type,"data",format) VALUES ('TABLE','identifianthabsinp','table_habitat');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','clestation','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','nomcite','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','preuvenumerique','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','cdhab','table_habitat');
@@ -633,6 +634,8 @@ INSERT INTO field (type,"data",format) VALUES ('TABLE','OGAM_ID_table_station','
 INSERT INTO field (type,"data",format) VALUES ('TABLE','SUBMISSION_ID','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','PROVIDER_ID','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','USER_LOGIN','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','clestation','table_station');
+
 
 -- File
 -------
@@ -652,7 +655,7 @@ INSERT INTO field (type,"data",format) VALUES
     ('FILE','identifianthabsinp','file_habitat'),
     ('FILE','nomcite','file_habitat'),
     ('FILE','techniquecollecte','file_habitat'),
-    ('FILE','identifiantstasinp','file_habitat'),
+    ('FILE','clestation','file_habitat'),
     ('FILE','acidite','file_station'),
     ('FILE','altitudemax','file_station'),
     ('FILE','altitudemin','file_station'),
@@ -694,7 +697,7 @@ INSERT INTO field (type,"data",format) VALUES
 ----------------
 
 INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_insertable,is_mandatory,"position") VALUES 
-    ('identifianthabsinp','table_habitat','identifianthabsinp','0','0','1','1',1),
+    ('identifianthabsinp','table_habitat','identifianthabsinp','1','0','0','1',1),
     ('nomcite','table_habitat','nomcite','0','1','1','1',2),
     ('preuvenumerique','table_habitat','preuvenumerique','0','1','1','0',3),
     ('cdhab','table_habitat','cdhab','0','1','1','0',4),
@@ -712,14 +715,14 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
     ('SUBMISSION_ID','table_habitat','submission_id','1','0','0','0',16),
     ('PROVIDER_ID','table_habitat','provider_id','0','0','0','1',17),
     ('USER_LOGIN','table_habitat','user_login','0','0','0','1',18),
-    ('identifiantstasinp','table_habitat','identifiantstasinp','0','1','1','1',19)
+    ('clestation','table_habitat','clestation','0','1','1','1',19)
 ;
 
 -- Table station
 ----------------
 
 INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_insertable,is_mandatory,"position") VALUES
-    ('identifiantstasinp','table_station','identifiantstasinp','0','0','1','1',1),
+    ('identifiantstasinp','table_station','identifiantstasinp','1','0','0','1',1),
     ('jddmetadonneedeeid','table_station','jddmetadonneedeeid','0','1','1','1',2),
     ('dspublique','table_station','dspublique','0','1','1','1',3),
     ('referencebiblio','table_station','referencebiblio','0','1','1','0',4),
@@ -761,7 +764,8 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
     ('OGAM_ID_table_station','table_station','ogam_id_table_station','1','0','0','1',40),
     ('SUBMISSION_ID','table_station','submission_id','1','0','0','0',41),
     ('PROVIDER_ID','table_station','provider_id','0','0','0','1',42),
-    ('USER_LOGIN','table_station','user_login','0','0','0','1',43)
+    ('USER_LOGIN','table_station','user_login','0','0','0','1',43),
+    ('clestation','table_station','clestation','0','1','1','1',44)
 ;
 
 
@@ -781,10 +785,10 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('relevephyto','file_habitat','0',NULL,'relevePhyto'),
     ('sensibilitehab','file_habitat','0',NULL,'sensibiliteHab'),
     ('typedeterm','file_habitat','0',NULL,'typeDeterm'),
-    ('identifianthabsinp','file_habitat','1',NULL,'idHabSINP'),
+    ('identifianthabsinp','file_habitat','0',NULL,'idHabSINP'),
     ('nomcite','file_habitat','1',NULL,'nomCite'),
     ('techniquecollecte','file_habitat','1',NULL,'techniqueCollecte'),
-    ('identifiantstasinp','file_habitat','1',NULL,'idStaSINP'),
+    ('clestation','file_habitat','1',NULL,'cleStation'),
     ('acidite','file_station','0','','acidite'),
     ('altitudemax','file_station','0','','altMax'),
     ('altitudemin','file_station','0','','altMin'),
@@ -809,11 +813,12 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('typesol','file_station','0','','typeSol'),
     ('usage','file_station','0','','usage'),
     ('dspublique','file_station','1','','dSPublique'),
-    ('identifiantstasinp','file_station','1','','idStaSINP'),
+    ('identifiantstasinp','file_station','0','','idStaSINP'),
     ('jddmetadonneedeeid','file_station','1','','idMTD'),
     ('jourdatedebut','file_station','1','yyyy-MM-dd','dateDebut'),
     ('jourdatefin','file_station','1','yyyy-MM-dd','dateFin'),
-    ('observateur','file_station','1','','observer')
+    ('observateur','file_station','1','','observer'),
+    ('clestation','file_station','1','','cleStation')
 ;
 
 

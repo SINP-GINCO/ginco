@@ -296,7 +296,7 @@ typedeterm;file_habitat;typedeterm;table_habitat;FILE
 identifianthabsinp;file_habitat;identifianthabsinp;table_habitat;FILE
 nomcite;file_habitat;nomcite;table_habitat;FILE
 techniquecollecte;file_habitat;techniquecollecte;table_habitat;FILE
-identifiantstasinp;file_habitat;identifiantstasinp;table_habitat;FILE
+clestation;file_habitat;clestation;table_habitat;FILE
 acidite;file_station;acidite;table_station;FILE
 altitudemax;file_station;altitudemax;table_station;FILE
 altitudemin;file_station;altitudemin;table_station;FILE
@@ -326,3 +326,4 @@ jddmetadonneedeeid;file_station;jddmetadonneedeeid;table_station;FILE
 jourdatedebut;file_station;jourdatedebut;table_station;FILE
 jourdatefin;file_station;jourdatefin;table_station;FILE
 observateur;file_station;observateur;table_station;FILE
+clestation;file_station;clestation;table_station;FILE
