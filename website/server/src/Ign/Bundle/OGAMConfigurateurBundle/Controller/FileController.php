@@ -130,7 +130,7 @@ class FileController extends Controller {
 
 		// Get Table Fields
 		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
-		$tableFields = $tableFieldRepository->getTableFieldsForModel($dataset->getModel());
+		$tableFields = $tableFieldRepository->getTableFieldsForModelNotInFileFormat($dataset->getModel(), $file);
 		// Get File Fields
 		$fileFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\FileField');
 		$fileFields = $fileFieldRepository->findFieldsByFileFormat($format);

@@ -49,7 +49,7 @@ class TableController extends TableControllerBase {
 
 		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
 		// Get data dictionnary
-		$allFields = $dataRepository->findAllFields();
+		$allFields = $dataRepository->findAllFieldsNotInTableFormat($table);
 		$fieldsForm = $this->createForm(TableUpdateFieldsType::class, null);
 		// Get table fields
 		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');

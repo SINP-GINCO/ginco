@@ -7,6 +7,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Ign\Bundle\GincoBundle\Entity\Generic\GenericField;
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
 use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
 
 /**
  * TableFieldRepository
@@ -107,6 +108,38 @@ class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 				LEFT JOIN metadata.data d ON tfi.data = d.data
 				LEFT JOIN metadata.unit u on d.unit = u.unit
 				WHERE mt.model_id = :modelId
+				ORDER BY d.label";
+	
+		$rsm = new ResultSetMappingBuilder($this->_em);
+		$rsm->addRootEntityFromClassMetadata($this->_entityName, 't');
+	
+		$query = $this->_em->createNativeQuery($sql, $rsm->addIndexBy('t', 'data'));
+	
+	
+		$query->setParameters($binds);
+		return $query->getResult();
+	}
+	
+	/**
+	 * Retourne tous les champs d'un format de table qui ne sont pas déjà dans un file_format.
+	 * @param FileFormat $fileFormat
+	 * @return type
+	 */
+	public function getTableFieldsForModelNotInFileFormat(Model $model, FileFormat $fileFormat) {
+		
+		$binds = array(
+			'modelId' => $model->getId(),
+			'fileFormat' => $fileFormat->getFormat()->getFormat()
+		);
+		//TODO : simplify select : only data, format, value are needed
+		$sql = "SELECT tfi.*, d.label as label, d.unit, u.type, u.subtype, d.definition
+				FROM metadata.table_field tfi
+				LEFT JOIN metadata.model_tables mt ON tfi.format = mt.table_id
+				LEFT JOIN metadata.data d ON tfi.data = d.data
+				LEFT JOIN metadata.unit u on d.unit = u.unit
+				LEFT JOIN metadata.file_field ff ON ff.data = tfi.data AND ff.format = :fileFormat
+				WHERE mt.model_id = :modelId
+				AND ff.format IS NULL
 				ORDER BY d.label";
 	
 		$rsm = new ResultSetMappingBuilder($this->_em);
