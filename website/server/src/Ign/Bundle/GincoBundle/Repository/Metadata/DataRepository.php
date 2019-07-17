@@ -23,6 +23,23 @@ class DataRepository extends EntityRepository {
 
 		return $query->getResult();
 	}
+	
+	public function findAllFieldsNotInTableFormat(TableFormat $tableFormat) {
+		
+		$em = $this->getEntityManager();
+		$query = $em->createQuery('
+			SELECT DISTINCT dt.data as dataName,dt.label as label, u.type as unitType
+    		FROM IgnGincoBundle:Metadata\Data dt
+			LEFT JOIN IgnGincoBundle:Metadata\Unit u WITH dt.unit = u.unit
+			LEFT JOIN IgnGincoBundle:Metadata\TableField tf WITH tf.data = dt.data AND tf.format = :tableFormat
+			WHERE tf.format IS NULL
+			ORDER BY dt.data
+		');
+
+		$query->setParameter('tableFormat', $tableFormat) ;
+		
+		return $query->getResult();
+	}
 
 	/**
 	 * Returns all the data fields related to a model which are not named
