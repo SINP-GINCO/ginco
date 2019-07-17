@@ -31,6 +31,7 @@ UNIT                 VARCHAR(36)          not null,
 LABEL                VARCHAR(125)         null,
 DEFINITION           VARCHAR(255)         null,
 COMMENT              VARCHAR(255)         null,
+CAN_HAVE_DEFAULT	 BOOLEAN			  DEFAULT true,
 constraint PK_DATA primary key (DATA)
 );
 

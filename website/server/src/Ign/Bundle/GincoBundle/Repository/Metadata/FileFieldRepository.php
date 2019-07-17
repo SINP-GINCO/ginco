@@ -50,6 +50,7 @@ class FileFieldRepository extends \Doctrine\ORM\EntityRepository {
 		$em = $this->getEntityManager();
 		$query = $em->createQuery('SELECT DISTINCT dt.data as fieldName, tfi.labelCSV,
 						dt.label as label,
+						dt.canHaveDefault,
 						u.type as unitType, tfi.isMandatory,
 						tfi.mask, tfi.defaultValue
 					FROM IgnGincoBundle:Metadata\FileField tfi

@@ -30,6 +30,7 @@ class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 		$query = $em->createQuery(
 			'SELECT DISTINCT dt.data as fieldName,
 					dt.label as label,
+					dt.canHaveDefault,
 					u.type as unitType, 
 					tfi.isMandatory, 
 					tfi.isCalculated,

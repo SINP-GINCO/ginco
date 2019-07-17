@@ -119,7 +119,7 @@
 										{% endif %}
 									{% endif %}
 								</td>
-								<td><input id="defaultValue" class="text-center" value="{{ champ.defaultValue }}"></td>
+								<td><input id="defaultValue" class="text-center" value="{{ champ.defaultValue }}" {% if not champ.canHaveDefault %}disabled{% endif %}></td>
 								<td>
 									{% if champ.ref == false %}
 										<a id="remove-field-{{ champ.fieldName }}" class="btn btn-default btn-xs" type="button" href="{{ path('configurateur_table_remove_field_and_update', {modelId: model.id, format: table.format, field: champ.fieldName}) }}">
