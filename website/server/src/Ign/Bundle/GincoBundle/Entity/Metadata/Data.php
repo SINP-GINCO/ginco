@@ -57,6 +57,14 @@ class Data implements \JsonSerializable {
 	 *      @Assert\Length(max="255", maxMessage="data.definition.maxLength")
 	 */
 	private $comment;
+	
+	/**
+	 *
+	 * @var boolean
+	 * 
+	 * @ORM\Column(name="can_have_default", type="boolean")
+	 */
+	private $canHaveDefault ;
 
 	/**
 	 * @ORM\OneToMany(targetEntity="Field", mappedBy="data")
@@ -68,6 +76,7 @@ class Data implements \JsonSerializable {
 	 */
 	public function __construct() {
 		$this->fields = new ArrayCollection();
+		$this->canHaveDefault = true ;
 	}
 
 	/**
@@ -152,6 +161,24 @@ class Data implements \JsonSerializable {
 	 */
 	public function getComment() {
 		return $this->comment;
+	}
+	
+	/**
+	 * Get canHaveDefault
+	 * @return boolean
+	 */
+	public function getCanHaveDefault() {
+		return $this->canHaveDefault ;
+	}
+	
+	/**
+	 * Set canHaveDefault
+	 * @param boolean $canHaveDefault
+	 * @return $this
+	 */
+	public function setCanHaveDefault($canHaveDefault) {
+		$this->canHaveDefault = $canHaveDefault ;
+		return $this ;
 	}
 
 	/**

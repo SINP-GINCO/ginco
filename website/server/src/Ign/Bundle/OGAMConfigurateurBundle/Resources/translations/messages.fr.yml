@@ -25,6 +25,7 @@ yes: oui
 no: non
 and: et
 Fields: Champs
+CanHaveDefault: Peut posséder une valeur par défaut
 
 login:
   fail: Vous n'êtes pas connecté. Merci de bien vouloir vous authentifier pour accéder à cette page. Redirection vers la page de connection...
@@ -352,6 +353,7 @@ data:
   foreign_key: Clé étrangère table %tableLabel%
   label.tooltip: Nom du champ tel qu'il apparaîtra dans l'interface GINCO.
   name.tooltip: Nom du champ tel qu'il apparaîtra dans la base de données. Les caractères autorisés sont les lettres minuscules, chiffres et l'underscore. Le premier caractère doit être une lettre.
+  canHaveDefault.tooltip: Indique si une valeur par défaut pourra être définie dans les modèles de données ou d'import utilisant cette entrée du dictionnaire de données."
   compulsory_state_change:
     mapping:
       forbidden: Le caractère obligatoire du champ %dataName% ne peut être modifié car il est associé à un champ obligatoire non-calculé du modèle de données cible.
