@@ -6,13 +6,13 @@ BEGIN ;
 -- 1. Standard
 ----------------------------------------------------------------
 
-INSERT INTO standard VALUES ('habitat', 'Standard d''occurences d''habitats', 'v1.0') ;
+INSERT INTO standard VALUES ('habitat', 'Standard d''occurrences d''habitats', 'v1.0') ;
 
 ----------------------------------------------------------------
 -- 2. Model
 ----------------------------------------------------------------
 
-INSERT INTO model VALUES ('model_1000','Occ_Habitat_DSR_1.0', 'Implémentation du standard "Occurences d''habitats" v1.0', 'RAW_DATA', TRUE, 'unpublished', null, 'habitat');
+INSERT INTO model VALUES ('model_1000','Occ_Habitat_DSR_1.0', 'Implémentation du standard "Occurrences d''habitats" v1.0', 'RAW_DATA', TRUE, 'unpublished', null, 'habitat');
 
 
 ----------------------------------------------------------------
@@ -492,7 +492,7 @@ INSERT INTO data(data, unit, label, definition) VALUES
     ('recouvrement', 'Decimal', 'recouvrement', 'Pourcentage de recouvrement de l''habitat par rapport à la station.'),
     ('abondancehabitat', 'AbondanceHabitatValue', 'abondanceHabitat', 'Abondance relative de l''habitat par rapport à la station.'),
     ('precisiontechnique', 'CharacterString', 'precisionTechnique', 'Précisions sur la technique de collecte quand techniqueCollecte prend la valeur 10.'),
-    ('releveespeces', 'CharacterString', 'releveEspeces', 'Identifiant d''un regroupement au sein du standard Occurences de taxons du SINP.'),
+    ('releveespeces', 'CharacterString', 'releveEspeces', 'Identifiant d''un regroupement au sein du standard Occurrences de taxons du SINP.'),
     ('relevephyto', 'CharacterString', 'relevePhyto', 'Identifiant d''un relevé phytosociologique de l''extension relevés phytosociologiques du standard occurrences de taxons.'),
     ('sensibilitehab', 'NiveauSensiValue', 'sensibiliteHab', 'Sensibilité de l''habitat selon le producteur.'),
     ('echellenumerisation', 'CharacterString', 'echelleNumerisation', 'Echelle de carte à laquelle la numérisation de l''information géographique a été effectuée.'),

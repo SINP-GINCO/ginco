@@ -19,7 +19,7 @@ try {
 	 * ********************
 	 */
 
-	// Delete occurences of the column in any of the model description tables
+	// Delete occurrences of the column in any of the model description tables
 	deleteFromMetadataModel('metadata', $columnName, $fileFormat, $tableFormat);
 	deleteFromMetadataModel('metadata_work', $columnName, $fileFormat, $tableFormat);
 

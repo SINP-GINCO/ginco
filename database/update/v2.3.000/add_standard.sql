@@ -11,7 +11,7 @@ ALTER TABLE metadata.model ADD CONSTRAINT fk_model_standard FOREIGN KEY (standar
 
 INSERT INTO metadata.standard VALUES(
     'occtax',
-    'Standard d''occurences de taxons',
+    'Standard d''occurrences de taxons',
     'v1.2.1'
 );
 

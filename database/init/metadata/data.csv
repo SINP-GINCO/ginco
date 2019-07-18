@@ -139,7 +139,7 @@ techniquecollecte;TechniqueCollecteValue;techniqueCollecte;Technique de collecte
 recouvrement;Decimal;recouvrement;Pourcentage de recouvrement de l'habitat par rapport à la station.;;true
 abondancehabitat;AbondanceHabitatValue;abondanceHabitat;Abondance relative de l'habitat par rapport à la station.;;true
 precisiontechnique;CharacterString;precisionTechnique;Précisions sur la technique de collecte quand techniqueCollecte prend la valeur 10.;;true
-releveespeces;CharacterString;relevesEspeces;Identifiant d'un regroupement au sein du standard Occurences de taxons du SINP.;;true
+releveespeces;CharacterString;relevesEspeces;Identifiant d'un regroupement au sein du standard Occurrences de taxons du SINP.;;true
 relevephyto;CharacterString;relevePhyto;Identifiant d'un relevé phytosociologique de l'extension relevés phytosociologiques du standard occurrences de taxons.;;true
 sensibilitehab;NiveauSensiValue;sensibiliteHab;Sensibilité de l'habitat selon le producteur.;;true
 echellenumerisation;CharacterString;echelleNumerisation;Echelle de carte à laquelle la numérisation de l'information géographique a été effectuée.;;true
