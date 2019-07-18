@@ -1,3 +1,4 @@
+data;unit;label;definition;comment;can_have_default
 PROVIDER_ID;PROVIDER_ID;Organisme du compte GINCO;Organisme du compte utilisateur GINCO qui a importé la donnée dans GINCO;;true
 SUBMISSION_ID;Integer;Identifiant de la soumission;Identifiant de la soumission;;true
 OGAM_ID_table_observation;IDString;Clé primaire table observation;Clé primaire table observation;;true
