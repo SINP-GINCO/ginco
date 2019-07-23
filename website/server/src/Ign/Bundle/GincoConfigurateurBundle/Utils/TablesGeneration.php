@@ -108,45 +108,42 @@ class TablesGeneration extends TablesGenerationBase {
 	 */
 	public function createIdentifierTrigger($tableSchema, $tableFormat, $tableName, $dbconn) {
 		// Will the table contain the "identifiantpermanent" column?
-		$sql = "SELECT count(*)
+		$sql = "SELECT data
 				FROM metadata.table_field
-				WHERE table_field.data = 'identifiantpermanent'
+				WHERE table_field.data IN ('identifiantpermanent', 'identifiantstasinp', 'identifianthabsinp')
 				AND table_field.format = $1";
 		pg_prepare($dbconn, "", $sql);
 		$result = pg_execute($dbconn, "", array(
 			$tableFormat
 		));
-		// The identifier column is present in the table
-		if (pg_fetch_row($result)[0] > 0) {
-
-			$request = $this->requestStack->getCurrentRequest();
-
-			// Prefix is siteUrl
-			// $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-			$protocol = 'http://'; // Always http because redirections exists from http to https, but not reverse.
-			$domainName = ($request) ? strtolower($request->getHttpHost()) : 'test'; // strtolower($_SERVER['SERVER_NAME']);
-			$siteUrl = $protocol . $domainName . '/';
-
-			$sql = "CREATE OR REPLACE FUNCTION " . $tableSchema . ".perm_id_generate" . $tableName . "()
-				RETURNS TRIGGER
-				LANGUAGE plpgsql
-				AS $$
-				BEGIN
-				IF (NEW.identifiantpermanent IS NULL OR NEW.identifiantpermanent = '') THEN
-				 NEW.identifiantpermanent  := uuid_generate_v1();
-				END IF;
-				RETURN NEW;
-				END;
-				$$;";
-			pg_prepare($dbconn, "", $sql);
-			pg_execute($dbconn, "", array());
-
-			$sql = "CREATE TRIGGER perm_id_generate" . $tableName . " BEFORE INSERT ON " . $tableSchema . "." . $tableName . "
-				FOR EACH ROW
-				EXECUTE PROCEDURE " . $tableSchema . ".perm_id_generate" . $tableName . "();";
-			pg_prepare($dbconn, "", $sql);
-			pg_execute($dbconn, "", array());
+		
+		$row = pg_fetch_row($result) ;
+		if (!$row) {
+			// No identifier column found in the table.
+			return ;
 		}
+		
+		$permId = $row[0] ;
+
+		$sql = "CREATE OR REPLACE FUNCTION " . $tableSchema . ".perm_id_generate" . $tableName . "()
+			RETURNS TRIGGER
+			LANGUAGE plpgsql
+			AS $$
+			BEGIN
+			IF (NEW.$permId IS NULL OR NEW.$permId = '') THEN
+			 NEW.$permId  := uuid_generate_v1();
+			END IF;
+			RETURN NEW;
+			END;
+			$$;";
+		pg_prepare($dbconn, "", $sql);
+		pg_execute($dbconn, "", array());
+
+		$sql = "CREATE TRIGGER perm_id_generate" . $tableName . " BEFORE INSERT ON " . $tableSchema . "." . $tableName . "
+			FOR EACH ROW
+			EXECUTE PROCEDURE " . $tableSchema . ".perm_id_generate" . $tableName . "();";
+		pg_prepare($dbconn, "", $sql);
+		pg_execute($dbconn, "", array());
 	}
 
 	/**

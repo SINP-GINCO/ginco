@@ -33,6 +33,7 @@ try {
 	/* patch code here*/
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_standard_habitat.sql", $config);
+	execCustSQLFile("$sprintDir/add_services.sql", $config);
 
 
 } catch (Exception $e) {

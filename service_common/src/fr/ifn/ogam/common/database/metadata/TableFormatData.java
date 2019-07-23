@@ -35,6 +35,11 @@ public class TableFormatData extends FormatData {
 	 * The list of primary keys of the table.
 	 */
 	private List<String> primaryKeys = new ArrayList<String>();
+	
+	/**
+	 * The label of the table format.
+	 */
+	private String label ;
 
 	/**
 	 * @return the tableName
@@ -87,6 +92,24 @@ public class TableFormatData extends FormatData {
 	 */
 	public void addPrimaryKey(String key) {
 		this.primaryKeys.add(key);
+	}
+	
+	/**
+	 * Get label
+	 * @return
+	 */
+	public String getLabel() {
+		return label ;
+	}
+	
+	
+	/**
+	 * Set label
+	 * @param label
+	 * @return
+	 */
+	public void setLabel(String label) {
+		this.label = label ;
 	}
 
 	/**

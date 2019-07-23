@@ -1,4 +1,6 @@
 listener_id;classname
-GincoChecksDSRService;fr.ifn.ogam.integration.business.ChecksDSRGincoService
+ChecksOcctaxService;fr.ifn.ogam.integration.business.ChecksOcctaxService
+ChecksStationService;fr.ifn.ogam.integration.business.ChecksStationService
+ChecksHabitatService;fr.ifn.ogam.integration.business.ChecksHabitatService
 JddService;fr.ifn.ogam.integration.business.JddService
 GeoAssociationService;fr.ifn.ogam.integration.business.GeoAssociationService

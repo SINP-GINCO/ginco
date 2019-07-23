@@ -19,22 +19,22 @@ INSERT INTO role(role_label, role_definition, is_default) VALUES ('Producteur', 
 INSERT INTO role(role_label, role_definition, is_default) VALUES ('Grand public', 'Rôle par défaut non-modifiable pour un utilisateur non identifié', false);
 
 -- Create default provider
-INSERT INTO website.providers(id,label,definition) VALUES ('0', 'Pas d''organisme', 'Organisme par défaut');
+INSERT INTO website.providers(id,label,definition, uuid) VALUES 
+  ('0', 'Pas d''organisme', 'Organisme par défaut', null),
+  ('82', 'INSTITUT NATIONAL DE L''INFORMATION GEOGRAPHIQUE ET FORESTIERE - IGN', null, '5A433BD0-1FE6-25D9-E053-2614A8C026F8')
+;
 
 -- Create users with rights on every platforms
 -- We add users on default provider because we don't want to create other providers on the platform
 INSERT INTO website.users(user_login, provider_id, email) VALUES
-  ('gautam.pastakia',0,'gautam.pastakia@ign.fr'),
-  ('anna.mouget@ign.fr',0,'anna.mouget@ign.fr'),
-  ('scandel',0,'severine.candelier@ign.fr'),
-  ('vsagniez',0,'vincent.sagniez@ign.fr'),
+  ('vsagniez',82,'vincent.sagniez@ign.fr'),
   ('jpanijel',0,'jpanijel@mnhn.fr'),
   ('nbotte',0,'noemie.botte@mnhn.fr'),
-  ('tgerbeau',0,'thierry.gerbeau@ign.fr'),
-  ('cgimazane',0,'clement.gimazane@ign.fr'),
-  ('rpas',0,'remi.pas@ign.fr'),
-  ('xthauvin',0,'xavier.thauvin@ign.fr'),
-  ('SimonF',0,'simon.fauret@ign.fr')
+  ('tgerbeau',82,'thierry.gerbeau@ign.fr'),
+  ('cgimazane',82,'clement.gimazane@ign.fr'),
+  ('rpas',82,'remi.pas@ign.fr'),
+  ('xthauvin',82,'xavier.thauvin@ign.fr'),
+  ('SimonF',82,'simon.fauret@ign.fr')
 ;
 
 -- Create visiteur special user

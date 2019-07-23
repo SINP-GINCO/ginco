@@ -107,4 +107,13 @@ public class DSRConstants {
 	public final static String JDD_METADONNEE_DEE_ID = "jddmetadonneedeeid";
 	public final static String TPS_ID = "tpsid";
 
+	
+	// Station
+	public final static String IDENTIFIANT_STA_SINP = "identifiantstasinp" ;
+	public final static String CLE_STATION = "clestation" ;
+	
+	// Habitat
+	public final static String IDENTIFIANT_HAB_SINP = "identifianthabsinp" ;
+	public final static String TECHNIQUE_COLLECTE = "techniquecollecte" ;
+
 }

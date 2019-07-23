@@ -329,6 +329,7 @@ public class MetadataDAO {
 					result.setFormat(format);
 					result.setTableName(rs.getString("table_name"));
 					result.setSchemaCode(rs.getString("schema_code"));
+					result.setLabel(rs.getString("label"));
 					String primaryKeys = rs.getString("primary_key");
 					if (primaryKeys != null) {
 						StringTokenizer tokenizer = new StringTokenizer(primaryKeys, ",");
