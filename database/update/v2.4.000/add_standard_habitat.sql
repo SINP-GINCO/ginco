@@ -799,7 +799,7 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('estcomplexehabitats','file_station','0','','isComplex'),
     ('exposition','file_station','0','','exposition'),
     ('geologie','file_station','0','','geologie'),
-    ('geometrie','file_station','0','','wkt'),
+    ('geometrie','file_station','0','','WKT'),
     ('identifiantoriginestation','file_station','0','','idOrigSta'),
     ('methodecalculsurface','file_station','0','','methCalcSu'),
     ('natureobjetgeo','file_station','0','','natObjGeo'),
