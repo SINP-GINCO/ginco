@@ -546,7 +546,6 @@ INSERT INTO model_tables (model_id,table_id) VALUES ('model_1000','table_habitat
 ----------------------------------------------------------------
 
 INSERT INTO model_datasets (model_id,dataset_id) VALUES ('model_1000','dataset_1000');
-INSERT INTO model_datasets (model_id,dataset_id) VALUES ('model_1000','dataset_1002');
 
 ----------------------------------------------------------------
 -- Dataset files
@@ -572,6 +571,7 @@ INSERT INTO table_tree (schema_code,child_table,parent_table,join_key,comment) V
 -- Table
 --------
 
+INSERT INTO field (type,"data",format) VALUES ('TABLE','identifianthabsinp','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','clestation','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','nomcite','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','preuvenumerique','table_habitat');
@@ -590,7 +590,6 @@ INSERT INTO field (type,"data",format) VALUES ('TABLE','OGAM_ID_table_habitat','
 INSERT INTO field (type,"data",format) VALUES ('TABLE','SUBMISSION_ID','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','PROVIDER_ID','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','USER_LOGIN','table_habitat');
-INSERT INTO field (type,"data",format) VALUES ('TABLE','identifiantstasinp','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','identifiantstasinp','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','jddmetadonneedeeid','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','dspublique','table_station');
@@ -684,7 +683,8 @@ INSERT INTO field (type,"data",format) VALUES
     ('FILE','jddmetadonneedeeid','file_station'),
     ('FILE','jourdatedebut','file_station'),
     ('FILE','jourdatefin','file_station'),
-    ('FILE','observateur','file_station')
+    ('FILE','observateur','file_station'),
+    ('FILE', 'clestation', 'file_station')
 ;
 
 
@@ -789,36 +789,36 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('nomcite','file_habitat','1',NULL,'nomCite'),
     ('techniquecollecte','file_habitat','1',NULL,'techniqueCollecte'),
     ('clestation','file_habitat','1',NULL,'cleStation'),
-    ('acidite','file_station','0','','acidite'),
-    ('altitudemax','file_station','0','','altMax'),
-    ('altitudemin','file_station','0','','altMin'),
-    ('altitudemoyenne','file_station','0','','altMoy'),
-    ('commentaire','file_station','0','','comment'),
-    ('dateimprecise','file_station','0','','dateImprec'),
-    ('echellenumerisation','file_station','0','','echelleNum'),
-    ('estcomplexehabitats','file_station','0','','isComplex'),
-    ('exposition','file_station','0','','exposition'),
-    ('geologie','file_station','0','','geologie'),
-    ('geometrie','file_station','0','','WKT'),
-    ('identifiantoriginestation','file_station','0','','idOrigSta'),
-    ('methodecalculsurface','file_station','0','','methCalcSu'),
-    ('natureobjetgeo','file_station','0','','natObjGeo'),
-    ('nomstation','file_station','0','','nomStation'),
-    ('precisiongeometrie','file_station','0','','precisGeom'),
-    ('profondeurmax','file_station','0','','profMax'),
-    ('profondeurmin','file_station','0','','profMin'),
-    ('profondeurmoyenne','file_station','0','','profMoy'),
-    ('referencebiblio','file_station','0','','refBiblio'),
-    ('surface','file_station','0','','surface'),
-    ('typesol','file_station','0','','typeSol'),
-    ('usage','file_station','0','','usage'),
-    ('dspublique','file_station','1','','dSPublique'),
-    ('identifiantstasinp','file_station','0','','idStaSINP'),
-    ('jddmetadonneedeeid','file_station','1','','idMTD'),
+    ('acidite','file_station','0',NULL,'acidite'),
+    ('altitudemax','file_station','0',NULL,'altMax'),
+    ('altitudemin','file_station','0',NULL,'altMin'),
+    ('altitudemoyenne','file_station','0',NULL,'altMoy'),
+    ('commentaire','file_station','0',NULL,'comment'),
+    ('dateimprecise','file_station','0',NULL,'dateImprec'),
+    ('echellenumerisation','file_station','0',NULL,'echelleNum'),
+    ('estcomplexehabitats','file_station','0',NULL,'isComplex'),
+    ('exposition','file_station','0',NULL,'exposition'),
+    ('geologie','file_station','0',NULL,'geologie'),
+    ('geometrie','file_station','0',NULL,'WKT'),
+    ('identifiantoriginestation','file_station','0',NULL,'idOrigSta'),
+    ('methodecalculsurface','file_station','0',NULL,'methCalcSu'),
+    ('natureobjetgeo','file_station','0',NULL,'natObjGeo'),
+    ('nomstation','file_station','0',NULL,'nomStation'),
+    ('precisiongeometrie','file_station','0',NULL,'precisGeom'),
+    ('profondeurmax','file_station','0',NULL,'profMax'),
+    ('profondeurmin','file_station','0',NULL,'profMin'),
+    ('profondeurmoyenne','file_station','0',NULL,'profMoy'),
+    ('referencebiblio','file_station','0',NULL,'refBiblio'),
+    ('surface','file_station','0',NULL,'surface'),
+    ('typesol','file_station','0',NULL,'typeSol'),
+    ('usage','file_station','0',NULL,'usage'),
+    ('dspublique','file_station','1',NULL,'dSPublique'),
+    ('identifiantstasinp','file_station','0',NULL,'idStaSINP'),
+    ('jddmetadonneedeeid','file_station','1',NULL,'idMTD'),
     ('jourdatedebut','file_station','1','yyyy-MM-dd','dateDebut'),
     ('jourdatefin','file_station','1','yyyy-MM-dd','dateFin'),
-    ('observateur','file_station','1','','observer'),
-    ('clestation','file_station','1','','cleStation')
+    ('observateur','file_station','1',NULL,'observer'),
+    ('clestation','file_station','1',NULL,'cleStation')
 ;
 
 
@@ -837,16 +837,6 @@ INSERT INTO field_mapping (src_data, src_format, dst_data, dst_format, mapping_t
     SELECT data, format, data, 'table_station', 'FILE'
     FROM field
     WHERE format = 'file_station'
-;
-
-----------------------------------------------------------------
--- Dataset fields
-----------------------------------------------------------------
-
-INSERT INTO dataset_fields (dataset_id, schema_code, format, data)
-    SELECT 'dataset_1002', 'RAW_DATA', format, data
-    FROM field
-    WHERE format IN ('table_station', 'table_habitat')
 ;
 
 COMMIT ;
