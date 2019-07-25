@@ -756,7 +756,7 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
     ('codemaille','table_station','codemaille','0','1','1','0',32),
     ('typeinfogeocommune','table_station','typeinfogeocommune','0','1','1','0',33),
     ('typeinfogeodepartement','table_station','typeinfogeodepartement','0','1','1','0',34),
-    ('typeinfogeomaille','table_station','typeinfogeomaille','0','1','1','0',35);
+    ('typeinfogeomaille','table_station','typeinfogeomaille','0','1','1','0',35),
     ('codemaillecalcule','table_station','codemaillecalcule','1','0','1','0',36),
     ('codecommunecalcule','table_station','codecommunecalcule','1','0','1','0',37),
     ('nomcommunecalcule','table_station','nomcommunecalcule','1','0','1','0',38),
