@@ -218,8 +218,26 @@ class IntegrationController extends GincoController {
 					$targetName = $targetPath . DIRECTORY_SEPARATOR . $filename;
 					@mkdir($uploadDir . DIRECTORY_SEPARATOR . $submission->getId()); // create the submission dir
 					@mkdir($targetPath);
+					$mimeType = $file->getMimeType() ;
 					$file->move($targetPath, $filename);
 					$this->getLogger()->debug('renamed to ' . $targetName);
+					
+					if ("application/zip" == $mimeType) {
+						
+						// Extract shapefile files from zip archive
+						$zip = new \ZipArchive();
+						if ($zip->open($targetPath . '/' . $filename) === TRUE) {
+							$zip->extractTo($targetPath);
+							$zip->close();
+						}
+						
+						// Transform the upload file in CSV with GDAL (ogr2ogr)
+						$inputPath = preg_replace('"\.zip$"', '.shp', $targetPath . '/' . $filename);
+						$outputPath = preg_replace('"\.zip$"', '.csv', $targetPath . '/' . $filename);
+						$this->get('ginco.ogr2ogr')->shp2csv('"' . $inputPath . '"', '"' . $outputPath . '"');
+						$targetName = $outputPath ;
+					}
+					
 					$requestedFile->filePath = $targetName; // TODO : clean this fake filePath property
 				}
 			}
@@ -663,126 +681,5 @@ class IntegrationController extends GincoController {
 		}
 	}
 
-	/**
-	 * Import shapefile
-	 *
-	 * @Route("/import-shapefile/{id}", name="import_shapefile")
-	 */
-	public function importShapefileAction(Request $request, Submission $submission) {
-		$this->get('monolog.logger.ginco')->debug('importShapefileAction');
-		
-		$this->denyAccessUnlessGranted('CREATE_SUBMISSION', $submission->getJdd()) ;
-		
-		$configuration = $this->get('ginco.configuration_manager');
-		$fileMaxSize = intval($this->get('ginco.configuration_manager')->getConfig('fileMaxSize', '40'));
-		$showModel = $configuration->getConfig('showUploadFileModel', true) == 1;
-		$dataset = $submission->getDataset();
-		
-		$geomFieldInFile = true;
-		
-		$locale = $this->get('ginco.locale_listener')->getLocale();
-		$submissionFiles = $this->getDoctrine()
-			->getRepository(FileFormat::class)
-			->getFileFormats($dataset->getId(), $locale);
-		
-		$files = [];
-		
-		foreach ($submissionFiles as $file) {
-			$files[$file->getFormat()->getFormat()] = $file;
-		}
 
-		$optionsForm['submission'] = $submission;
-		$optionsForm['fileMaxSize'] = $fileMaxSize;
-		$form = $this->createForm(UploadDataShapeType::class, $optionsForm);
-		$form->handleRequest($request);
-		
-		if ($form->isValid() && $form->isSubmitted()) {
-			// Get the configuration info
-			$uploadDir = $configuration->getConfig('uploadDir', '/var/www/html/upload');
-			
-			// For each requested file
-			$requestedFiles = $submission->getDataset()->getFiles();
-			foreach ($requestedFiles as $key => $requestedFile) {
-				$file = $form[$requestedFile->getFormat()->getFormat()]->getData();
-				// Get the uploaded filename
-				
-				$filename = $file->getClientOriginalName();
-				
-				// Check that the file is present
-				if (empty($file) || !$file->isValid()) {
-					$this->getLogger()->debug('File ' . $requestedFile->format . ' is missing, skipping');
-					unset($requestedFiles[$key]);
-				} else {
-					// Move the file to the upload directory on the php server
-					$targetPath = $uploadDir . DIRECTORY_SEPARATOR . $submission->getId() . DIRECTORY_SEPARATOR . $requestedFile->getFileType();
-					$targetName = $targetPath . DIRECTORY_SEPARATOR . $filename;
-					
-					@mkdir($uploadDir . DIRECTORY_SEPARATOR . $submission->getId()); // create the submission dir
-					@mkdir($targetPath);
-					
-					$file->move($targetPath, $filename);
-					
-					// Extract shapefile files from zip archive
-					$zip = new \ZipArchive();
-					if ($zip->open($targetPath . '/' . $filename) === TRUE) {
-						$zip->extractTo($targetPath);
-						$zip->close();
-					}
-					
-					// Custom validator to check shapefile files names and extensions in zip archive
-					$pathWithoutExtension = substr($targetPath . '/' . $filename, 0, -3);
-					if (!file_exists($pathWithoutExtension . 'shp') || !file_exists($pathWithoutExtension . 'dbf') || !file_exists($pathWithoutExtension . 'shx') || !file_exists($pathWithoutExtension . 'prj')) {
-						// We add an error to the form
-						$errorMessage = $this->get('translator')->trans('import.format.shp.files');
-						$form->get($requestedFile->getFormat())
-							->addError(new FormError($errorMessage));
-						
-						// And print the form again with an error
-						return $this->render('IgnGincoBundle:Integration:import_shapefile.html.twig', array(
-							'id' => $submission->getId(),
-							'dataset' => $dataset,
-							'form' => $form->createView(),
-							'files' => $files,
-							'showModel' => $showModel
-						));
-					}
-					
-					// Transform the upload file in CSV with GDAL (ogr2ogr)
-					$inputPath = preg_replace('"\.zip$"', '.shp', $targetPath . '/' . $filename);
-					$outputPath = preg_replace('"\.zip$"', '.csv', $targetPath . '/' . $filename);
-					$this->get('ginco.ogr2ogr')->shp2csv('"' . $inputPath . '"', '"' . $outputPath . '"');
-					
-					$requestedFile->filePath = $outputPath; // TODO : clean this fake filePath property
-				}
-			}
-			try {
-				$providerId = $submission->getProvider()->getId();
-				$srid = '4326';
-				$extension = ".zip";
-				$this->get('ginco.integration_service')->uploadData($submission->getId(), $this->getUser()->getLogin(), $providerId, $requestedFiles, $srid, $extension);
-			} catch (\Exception $e) {
-				$this->get('monolog.logger.ginco')->error('Error during upload:' . $e, array(
-					'exception' => $e
-				));
-				return $this->render('IgnGincoBundle:Integration:data_error.html.twig', array(
-					'error' => $e->getMessage()
-				));
-			}
-			
-			// Returns to the page where the action comes from in the first place
-			// (get it from session)
-			$session = $request->getSession();
-			$redirectUrl = $session->get('redirectToUrl', $this->generateUrl('integration_home'));
-			$session->remove('redirectToUrl');
-			return $this->redirect($redirectUrl);
-		}
-		
-		return $this->render('IgnGincoBundle:Integration:import_shapefile.html.twig', array(
-			'id' => $submission->getId(),
-			'dataset' => $dataset,
-			'form' => $form->createView(),
-			'files' => $files,
-			'showModel' => $showModel
-		));
-	}
 }

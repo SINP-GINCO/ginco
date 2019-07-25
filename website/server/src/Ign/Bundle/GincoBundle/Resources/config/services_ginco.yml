@@ -291,3 +291,7 @@ services:
         - {  name: validator.constraint_validator }
       arguments: ["@doctrine.orm.entity_manager"]
       
+    Ign\Bundle\GincoBundle\Validator\Constraints\ZipContainsShapefileValidator:
+        autowire: true
+        tags:
+            - { name: 'validator.constraint_validator' }

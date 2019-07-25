@@ -5,11 +5,6 @@
 <h1>{{ 'Data integration module'|trans }} - {{ 'Upload Data'|trans }}<br>
 <small>{{ 'Dataset'|trans }} : {{ dataset.label }}</small></h1>
 
-    <ul class="nav nav-tabs">
-        <li role="import_format" class="active"><a href="#">{{ 'import.format.csv'|trans }}</a></li>
-        <li role="import_format"><a href="{{  path('import_shapefile',{'id': id}) }}">{{ 'import.format.shp.label'|trans }}</a></li>
-    </ul>
-
 {% set showModel = configurationManager.getConfig('showUploadFileModel', 0) != 0  %}
 
 <div class="{{ form.vars.name }}">

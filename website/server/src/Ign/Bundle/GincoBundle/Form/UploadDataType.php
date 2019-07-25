@@ -1,22 +1,18 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Form;
 
-use Doctrine\ORM\EntityRepository;
-use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
-use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
 use Symfony\Component\Form\AbstractType;
-use Ign\Bundle\GincoBundle\GincoBundle;
-use Ign\Bundle\GincoBundle\Validator\Constraints\EPSGCode;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
-use Ign\Bundle\GincoBundle\Entity\Metadata\FileFormat;
+
+use Ign\Bundle\GincoBundle\Validator\Constraints\EPSGCode;
+use Ign\Bundle\GincoBundle\Validator\Constraints\ZipContainsShapefile;
 
 class UploadDataType extends AbstractType {
 
@@ -44,8 +40,12 @@ class UploadDataType extends AbstractType {
 				'constraints' => array(
 					new File(array(
 						'maxSize' => "${fileMaxSize}Mi",
-						'mimeTypes' => 'text/*',
+						'mimeTypes' => ['text/*', 'application/zip'],
 						'mimeTypesMessage' => 'import.format.csv'
+					)),
+					new ZipContainsShapefile(array(
+						'submission' => $submission,
+						'fileFormat' => $requestedFile
 					))
 				)
 			));
