@@ -1,6 +1,7 @@
 package fr.ifn.ogam.integration.business;
 
 import static fr.ifn.ogam.common.business.UnitTypes.*;
+import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +48,8 @@ public class ChecksHabitatService extends AbstractChecksService {
 		}
 		
 		identifiantPermanentIsUUID(DSRConstants.IDENTIFIANT_HAB_SINP, values);
+		cdHabIsNotEmpty(values);
+		precisionTechniqueNotEmpty(values);
 
 		// if errors have been found while doing the checks, return an exception containing those to write in check_error
 		if (alce.size() > 0) {
@@ -87,6 +90,9 @@ public class ChecksHabitatService extends AbstractChecksService {
 		fields.put(DSRConstants.IDENTIFIANT_HAB_SINP, STRING);
 		fields.put(DSRConstants.CLE_STATION, STRING) ;
 		fields.put(DSRConstants.TECHNIQUE_COLLECTE, CODE) ;
+		fields.put(DSRConstants.PRECISION_TECHNIQUE, STRING) ;
+		fields.put(DSRConstants.NOM_CITE, STRING) ;
+		fields.put(DSRConstants.CD_HAB, INTEGER) ;
 
 		for (Map.Entry < String, String > field : fields.entrySet()) {
 			if (!values.containsKey(field.getKey())) {
@@ -115,7 +121,56 @@ public class ChecksHabitatService extends AbstractChecksService {
 		if (!isCorrectStandard(submissionId)) {
 			return ;
 		}
+	}
+	
+	
+	
+	/**
+	 * cdHab have to be filled if nomCite is "Inconnu" or "Nom perdu"
+	 * @param values
+	 * @return
+	 * @throws Exception
+	 */
+	private void cdHabIsNotEmpty(Map < String, GenericData > values) throws Exception {
 		
-
+		GenericData nomCite = values.get(DSRConstants.NOM_CITE) ;
+		GenericData cdHab = values.get(DSRConstants.CD_HAB) ;
+		
+		String nomCiteValue = nomCite.getValue().toString() ;
+		
+		if (nomCiteValue.equals("Inconnu") || nomCiteValue.equals("Nom perdu")) {
+			
+			if (empty(cdHab)) {
+				
+				String error = "Le champ cdHab doit être rempli car nomCite a pour valeur '" + nomCiteValue + "'." ;
+				CheckException ce = new CheckException(CDHAB_EMPTY, error) ;
+				ce.setSourceData("cdHab") ;
+				alce.add(ce) ;
+			}
+		}
+	}
+	
+	/**
+	 * precisiontechnique have to be filled if techniquecollecte equals 10.
+	 * @param values
+	 * @throws Exception
+	 */
+	private void precisionTechniqueNotEmpty(Map < String, GenericData > values) throws Exception {
+		
+		GenericData precisionTechnique = values.get(DSRConstants.PRECISION_TECHNIQUE) ;
+		GenericData techniqueCollecte = values.get(DSRConstants.TECHNIQUE_COLLECTE) ;
+		
+		String techniqueCollecteValue = techniqueCollecte.getValue().toString() ;
+		
+		if (techniqueCollecteValue.equals("10")) {
+			
+			if (empty(precisionTechnique)) {
+				
+				String error = "Le champ precisionTechnique doit être rempli car la valeur de techniqueCollecte est 10 (Autre, à préciser)." ;
+				CheckException ce = new CheckException(PRECISION_TECHNIQUE_EMPTY, error) ;
+				ce.setSourceData("precisionTechnique") ;
+				alce.add(ce) ;
+			}
+		}
 	}
 }

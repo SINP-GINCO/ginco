@@ -111,9 +111,13 @@ public class DSRConstants {
 	// Station
 	public final static String IDENTIFIANT_STA_SINP = "identifiantstasinp" ;
 	public final static String CLE_STATION = "clestation" ;
+	public final static String SURFACE = "surface" ;
+	public final static String METHODE_CALCUL_SURFACE = "methodecalculsurface" ;
 	
 	// Habitat
 	public final static String IDENTIFIANT_HAB_SINP = "identifianthabsinp" ;
 	public final static String TECHNIQUE_COLLECTE = "techniquecollecte" ;
+	public final static String PRECISION_TECHNIQUE = "precisiontechnique" ;
+	public final static String CD_HAB = "cdhab" ;
 
 }

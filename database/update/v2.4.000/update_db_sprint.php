@@ -34,7 +34,7 @@ try {
 	//execCustSQLFile("$sprintDir/xxxx.sql", $config);
 	execCustSQLFile("$sprintDir/add_standard_habitat.sql", $config);
 	execCustSQLFile("$sprintDir/add_services.sql", $config);
-
+	execCustSQLFile("$sprintDir/add_checks.sql", $config);
 
 } catch (Exception $e) {
 	echo "$sprintDir/update_db_sprint.php\n";

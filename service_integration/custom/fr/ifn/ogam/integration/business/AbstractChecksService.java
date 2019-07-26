@@ -7,6 +7,7 @@ import static fr.ifn.ogam.common.business.UnitTypes.STRING;
 import static fr.ifn.ogam.common.business.UnitTypes.TIME;
 import static fr.ifn.ogam.common.business.checks.CheckCodes.INVALID_GEOMETRY;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.ARRAY_OF_SAME_LENGTH;
+import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.DATE_ORDER;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.IDENTIFIANT_PERMANENT_NOT_UUID;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.MANDATORY_CONDITIONAL_FIELDS;
 
@@ -529,5 +530,56 @@ abstract class AbstractChecksService implements IntegrationEventListener {
 			alce.add(ce) ;
 		}
 		
+	}
+	
+	
+	/**
+	 * Checks that dates are in a logical time order
+	 *
+	 * @param values
+	 */
+	protected void observationDatesAreCoherent(Map<String, GenericData> values) throws CheckException {
+
+		GenericData jourDateDebutGD = values.get(DSRConstants.JOUR_DATE_DEBUT);
+		GenericData jourDateFinGD = values.get(DSRConstants.JOUR_DATE_FIN);
+		GenericData heureDateDebut = values.get(DSRConstants.HEURE_DATE_DEBUT) ;
+		GenericData heureDateFin = values.get(DSRConstants.HEURE_DATE_FIN) ;
+
+		Date jourDateDebutValue = (Date) jourDateDebutGD.getValue() ;
+		Date jourDateFinValue = (Date) jourDateFinGD.getValue() ;	
+		
+		
+		if (jourDateDebutValue != null && jourDateFinValue != null) {
+			
+			Date debut = jourDateDebutValue ;
+			Date fin = jourDateFinValue ;
+			Date now = new Date() ;
+			
+			if(debut.compareTo(fin) == 0) {
+				if (heureDateDebut != null && heureDateFin != null) {
+					Date heureDateDebutValue = (Date) heureDateDebut.getValue() ;
+					Date heureDateFinValue = (Date) heureDateFin.getValue() ;
+					if(heureDateDebutValue != null && heureDateFinValue != null) {
+						logger.debug("HeureDebut:"+heureDateDebutValue.toString());
+						debut = combineDateTime(jourDateDebutValue, heureDateDebutValue) ;
+						fin = combineDateTime(jourDateFinValue, heureDateFinValue) ;
+					}
+				}
+			}
+			
+			if (debut.compareTo(fin) > 0) {
+				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_DEBUT + " / " + DSRConstants.HEURE_DATE_DEBUT + " est ultérieure à celle de " + DSRConstants.JOUR_DATE_FIN + " / " + DSRConstants.HEURE_DATE_FIN + ".";
+				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
+				// Add the exception in the array list and continue doing the checks
+				alce.add(ce);
+			}
+
+			if (fin.compareTo(now) > 0) {
+				String errorMessage = "La valeur de " + DSRConstants.JOUR_DATE_FIN + " / " + DSRConstants.HEURE_DATE_FIN + " est ultérieure à la date du jour.";
+				CheckException ce = new CheckException(DATE_ORDER, errorMessage);
+				// Add the exception in the array list and continue doing the checks
+				alce.add(ce);
+			}
+		}
 	}
 }

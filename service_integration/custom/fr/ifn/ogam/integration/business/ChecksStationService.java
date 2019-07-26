@@ -1,9 +1,6 @@
 package fr.ifn.ogam.integration.business;
 
-import static fr.ifn.ogam.common.business.UnitTypes.CODE;
-import static fr.ifn.ogam.common.business.UnitTypes.INTEGER;
-import static fr.ifn.ogam.common.business.UnitTypes.STRING;
-import static fr.ifn.ogam.common.business.UnitTypes.TIME;
+import static fr.ifn.ogam.common.business.UnitTypes.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +49,11 @@ public class ChecksStationService extends AbstractChecksService {
 		}
 
 		identifiantPermanentIsUUID(DSRConstants.IDENTIFIANT_STA_SINP, values);
+		observationDatesAreCoherent(values);
+		
+		// -- SURFACE --
+		String[] surfaceAll = { DSRConstants.SURFACE, DSRConstants.METHODE_CALCUL_SURFACE } ;
+		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(surfaceAll, surfaceAll, values, "Surface");
 		
 		// if errors have been found while doing the checks, return an exception containing those to write in check_error
 		if (alce.size() > 0) {
@@ -91,6 +93,8 @@ public class ChecksStationService extends AbstractChecksService {
 		Map < String, String > fields = new HashMap < String, String >();
 		fields.put(DSRConstants.IDENTIFIANT_STA_SINP, STRING);
 		fields.put(DSRConstants.CLE_STATION, STRING) ;
+		fields.put(DSRConstants.SURFACE, NUMERIC) ;
+		fields.put(DSRConstants.METHODE_CALCUL_SURFACE, CODE) ;
 
 		for (Map.Entry < String, String > field : fields.entrySet()) {
 			if (!values.containsKey(field.getKey())) {

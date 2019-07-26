@@ -34,3 +34,5 @@ check_id;step;name;label;description;statement;importance
 1211;CONFORMITY;IDENTIFIANT_PERMANENT_NOT_UUID;L'identifiant permanent n''est pas un UUID.;L’identifiant permanent doit être un UUID valide, ou sa valeur doit être vide.;;ERROR
 1212;CONFORMITY;CDNOM_NOT_FOUND;cdNom non trouvé;Le cdNom n''existe pas dans le référentiel TAXREF;;ERROR
 1213;CONFORMITY;CDREF_NOT_FOUND;cdRef non trouvé;Le cdRef n''existe pas dans le référentiel TAXREF;;ERROR
+1214;CONFORMITY;CDHAB_EMPTY;cdHab est vide;cdHab ne doit pas être vide si nomCite est Inconnu ou Nom perdu;;ERROR
+1215;CONFORMITY;PRECISION_TECHNIQUE_EMPTY;precisionTechnqiue est vide;precisionTechnique ne doit pas être vide si techniqueCollecte = 10;;ERROR

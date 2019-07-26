@@ -81,5 +81,15 @@ public interface CheckCodesGinco {
 	 * cdref does not exist
 	 */
 	Integer CDREF_NOT_FOUND = 1213 ;
+	
+	/**
+	 * cdhab is empty
+	 */
+	Integer CDHAB_EMPTY = 1214 ;
+	
+	/**
+	 * techniquecollecte is empty
+	 */
+	Integer PRECISION_TECHNIQUE_EMPTY = 1215 ;
 
 }
