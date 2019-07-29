@@ -3,6 +3,8 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Ign\Bundle\GincoBundle\Entity\Generic\QueryForm;
 use Ign\Bundle\GincoBundle\Entity\RawData\Submission;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Standard;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
 
 /**
  * The Submission Service.
@@ -155,8 +157,255 @@ class SubmissionService {
 		}
 	}
 
+	
+	
 	/**
-	 * Generate sensibility report,
+	 * Generates sensibility report and write it to $outputFile
+	 * @param Submission $submission
+	 * @param type $outputFile
+	 * @return type
+	 */
+	public function writeSensibilityReport(Submission $submission, $outputFile) {
+		
+		$standardType = $submission->getDataset()->getStandard()->getName() ;
+		if (Standard::STANDARD_OCCTAX == $standardType) {
+			return $this->writeSensibilityReportOcctax($submission, $outputFile) ;
+		} else if (Standard::STANDARD_HABITAT == $standardType) {
+			return $this->writeSensibilityReportHabitat($submission, $outputFile) ;
+		}
+	}
+	
+	
+	/**
+	 * Generate sensibily report for standard habitat.
+	 * @param Submission $submission
+	 * @param type $outputFile
+	 */
+	private function writeSensibilityReportHabitat(Submission $submission, $outputFile) {
+		
+		$schema = "RAW_DATA" ;
+		
+//		$tables = $submission->getDataset()->getModel()->getTables()->filter(function (TableFormat $tableFormat) {
+//			return $tableFormat->getLabel() == 'habitat' ;
+//		});
+//		
+//		if ($tables->count() != 1) {
+//			$this->logger->error("writeSensibilityReportHabitat - Submission Id : {$submission->getId()} - found 0 or more than 1 table for habitat.") ;
+//		}
+//		/* @var $habitatTable TableFormat */
+//		$habitatTable = $tables[0] ;
+		
+		// Le dernier fichier est normalement le fichier d'habitat. C'est fragile...
+		$habitatFileFormat = $this->queryService->getQueryResults("
+			SELECT ff.* 
+			FROM metadata.file_format ff
+			JOIN metadata.dataset_files df USING (format)
+			WHERE df.dataset_id = '{$submission->getDataset()->getId()}'
+			ORDER BY ff.position DESC
+			LIMIT 1
+		");
+		
+		$habitatFileFormatName = $habitatFileFormat[0]['format'] ;
+		
+		$subData = $this->queryService->getQueryResults("SELECT nb_line FROM raw_data.submission_file WHERE submission_id = {$submission->getId()} AND file_type = '$habitatFileFormatName'") ;
+		if (count($subData) > 0) {
+			$counts = array_column($subData, 'nb_line');
+			$totalSubmission = max($counts);
+		} else {
+			$totalSubmission = 0;
+		}
+		
+		$this->logger->debug("writeSensibilityReport - Submission Id : {$submission->getId()}");
+		
+		// -- Create a query object : the query must find all 'sensible = OUI' lines with given submission_id,
+		// And print a list of all fields in the model
+		$queryForm = new QueryForm();
+
+		$formFieldRepo = $this->emm->getRepository('Ign\Bundle\GincoBundle\Entity\Metadata\FormField', 'metadata');
+		$modelId = $submission->getDataset()->getModel()->getId() ;
+		$formFields = $formFieldRepo->getFormFieldsFromModel($modelId);
+		
+		// -- Criteria fields for the query
+		foreach ($formFields as $formField) {
+			$data = $formField->getData()->getData();
+			$format = $formField->getFormat()->getFormat();
+			switch ($data) {
+				case 'SUBMISSION_ID':
+					$queryForm->addCriterion($format, 'SUBMISSION_ID', $submission->getId());
+					break;
+				case 'sensibilitehab':
+					$queryForm->addCriterion($format, 'sensibilitehab', '2');
+					break;
+			}
+		}
+		
+		// -- List of fields to print in the report
+		$reportFields = array(
+			'identifianthabsinp',
+			'identifiantorigine',
+			'cdhab',
+			'sensibilitehab'
+		);
+		
+		// -- Result fields for the query
+		foreach ($formFields as $formField) {
+			if (in_array($formField->getData()->getData(), $reportFields)) {
+				$queryForm->addColumn($formField->getFormat()
+					->getFormat(), $formField->getData()
+					->getData());
+			}
+		}
+		$resultColumns = $queryForm->getColumns();
+		
+		// -- Header
+		$resultHeader = array();
+		foreach ($resultColumns as $genericField) {
+			$field = $formFieldRepo->findOneBy(array(
+				'data' => $genericField->getData(),
+				'format' => $genericField->getFormat()
+			));
+			$resultHeader[] = $field->getLabel();
+		}
+		
+		// -- Generate the SQL Request
+		// Get the mappings for the query form fields
+		$criteria = $queryForm->getCriteria();
+		$queryForm = $this->queryService->setQueryFormFieldsMappings($queryForm);
+		
+		$mappingSet = $queryForm->getFieldMappingSet($queryForm);
+		
+		// Set false user params, thus everybody accessing the integration page can see sensitive data in the report
+		$userInfos = [
+			"providerId" => NULL,
+			"DATA_QUERY_OTHER_PROVIDER" => true,
+			"EDIT_DATA_OWN" => false,
+			"EDIT_DATA_PROVIDER" => false,
+			"EDIT_DATA_ALL" => false
+		];
+		
+		$select = $this->genericService->generateSQLSelectRequest($schema, $queryForm->getColumns(), $mappingSet, $userInfos);
+		$from = $this->genericService->generateSQLFromRequest($schema, $mappingSet);
+		$where = $this->genericService->generateSQLWhereRequest($schema, $queryForm->getCriteria(), $mappingSet, $userInfos);
+		$sqlPKey = $this->genericService->generateSQLPrimaryKey($schema, $mappingSet);
+		$sql = $select . $from . $where;
+		
+		// -- Execute query and put results in a formatted array of strings
+		$results = $this->queryService->getQueryResults($sql);
+		
+		// Put lines in a formatted array
+		
+		$resultsArray = array();
+		
+		foreach ($results as $line) {
+			$resultLine = array();
+			foreach ($resultColumns as $formField) {
+				$tableField = $mappingSet->getDstField($formField)->getMetadata();
+				$key = strtolower($tableField->getName());
+				$value = $line[$key];
+				$data = $tableField->getData()->getData();
+				
+				if ($value == null) {
+					$resultLine[$data] = '';
+				} else {
+					$type = $tableField->getData()
+						->getUnit()
+						->getType();
+					switch ($type) {
+						
+						case "CODE":
+							// For cdref and cdnom, show code instead of label
+							if (($data == 'cdref') || ($data == 'cdnom')) {
+								$resultLine[$data] = $value;
+							} else {
+								$resultLine[$data] = $this->getLabelCache($tableField, $value);
+							}
+							break;
+						
+						case 'ARRAY':
+							// Split the array items
+							$arrayValues = explode(",", preg_replace("@[{-}]@", "", $value));
+							foreach ($arrayValues as $index => $arrayValue) {
+								$arrayValues[$index] = $this->getLabelCache($tableField, $arrayValue);
+							}
+							$resultLine[$data] = '[' . implode(',', $arrayValues) . ']';
+							break;
+						
+						default:
+							// Default case : String or numeric value
+							$resultLine[$data] = $value;
+							break;
+					}
+				}
+			}
+			$resultsArray[] = $resultLine;
+		}
+		
+		// Count the number of lines
+		$total = count($results);
+		
+		// -- Title
+		
+		$titleArray = [
+			['// ' . $this->translator->trans('Report.Sensitivity.Title')],
+			[
+				'// ' . $this->translator->trans('Jdd.list.jdd') . ':',
+				$submission->getJdd()->getField('title')
+			],
+			[
+				'// ' . $this->translator->trans('Jdd.list.metadataId') . ':',
+				$submission->getJdd()->getField('metadataId')
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.Provider') . ':',
+				$submission->getJdd()->getProvider()->getLabel()
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.SubmissionId') . ':',
+				$submission->getId()
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.Date') . ':',
+				date('d/m/Y H\hi')
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.SensitiveDataNumber') . ':',
+				$total
+			],
+			[
+				'// ' . $this->translator->trans('Report.Sensitivity.TotalDataNumber') . ':',
+				$totalSubmission
+			],
+			[],
+			[],
+		];
+
+		// -- Export results to a CSV file
+		// Open the file in write mode
+		$out = fopen($outputFile, 'w');
+		if (!$out) {
+			$this->logger->debug("Error: could not open (w) file: $outputFile");
+			throw new Exception("Error: could not open (w) file: $outputFile");
+		}
+		
+		// Write Title
+		foreach ($titleArray as $titleLine) {
+			fputcsv($out, $titleLine, ";");
+		}
+		if ($total != 0) {
+			// Opens the standard output as a file flux
+			fputcsv($out, $resultHeader, ";");
+			foreach ($resultsArray as $resultLine) {
+				fputcsv($out, $resultLine, ";");
+			}
+		}
+		fclose($out);
+		return true;
+	}
+	
+	
+	
+	/**
+	 * Generate sensibility report for standard occtax,
 	 * and write it down to $outputFile
 	 *
 	 * @param
@@ -166,7 +415,7 @@ class SubmissionService {
 	 * @return bool
 	 * @throws Exception
 	 */
-	function writeSensibilityReport(Submission $submission, $outputFile) {
+	private function writeSensibilityReportOcctax(Submission $submission, $outputFile) {
 		$schema = 'RAW_DATA';
 		
 		$submissionId = $submission->getId() ;
@@ -378,7 +627,7 @@ class SubmissionService {
 		fclose($out);
 		return true;
 	}
-
+	
 	/**
 	 * Generate "provider ids to SINP permanent ids" report,
 	 * and write it down to $outputFile

@@ -1121,7 +1121,7 @@ class GenericService {
 			$from .= " JOIN " . $tableTreeData->getChildTable()->getTableName() . " " . $tableTreeData->getChildTable()->getFormat() . " on (";
 				
 			// Add the join keys
-			$keys = $tableTreeData->getJoinKeys();
+			$keys = explode(',', $tableTreeData->getJoinKey());
 			foreach ($keys as $key) {
 				$from .= $tableTreeData->getChildTable()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTable()->getFormat() . "." . trim($key) . " AND ";
 			}
