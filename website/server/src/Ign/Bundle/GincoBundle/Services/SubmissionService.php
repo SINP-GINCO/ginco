@@ -628,18 +628,52 @@ class SubmissionService {
 		return true;
 	}
 	
+	
+	
+	
 	/**
 	 * Generate "provider ids to SINP permanent ids" report,
-	 * and write it down to $outputFile
-	 *
-	 * @param
-	 *        	$submissionId
-	 * @param
-	 *        	$outputFile
-	 * @return bool
-	 * @throws Exception
+	 * and write it down to $outputFile 
+	 * @param Submission $submission
+	 * @param type $outputFile
+	 * @return type
 	 */
-	function writePermanentIdsReport(Submission $submission, $outputFile) {
+	public function writePermanentIdsReport(Submission $submission, $outputFile) {
+		
+		$standardType = $submission->getDataset()->getStandard()->getName() ;
+		
+		if (Standard::STANDARD_OCCTAX == $standardType) {
+			
+			// -- List of fields to print in the report
+			$reportFields = array(
+				'identifiantpermanent',
+				'identifiantorigine'
+			);
+			return $this->doWritePermanentIdsReport($submission, $reportFields, $outputFile) ;
+			
+		} else if (Standard::STANDARD_HABITAT == $standardType) {
+			
+			// -- List of fields to print in the report
+			$reportFields = array(
+				'identifiantstasinp',
+				'identifianthabsinp',
+				'identifiantorigine',
+				'identifiantoriginestation'
+			);
+			return $this->doWritePermanentIdsReport($submission, $reportFields, $outputFile) ;
+		}
+	}
+	
+	
+	/**
+	 * Generate "provider ids to SINP permanent ids" report.
+	 * 
+	 * @param Submission $submission
+	 * @param type $outputFile
+	 * @return boolean
+	 * @throws \Exception
+	 */
+	private function doWritePermanentIdsReport(Submission $submission, $reportFields, $outputFile) {
 		$schema = 'RAW_DATA';
 		
 		$submissionId = $submission->getId() ;
@@ -671,12 +705,6 @@ class SubmissionService {
 					break;
 			}
 		}
-		
-		// -- List of fields to print in the report
-		$reportFields = array(
-			'identifiantpermanent',
-			'identifiantorigine'
-		);
 		
 		// -- Result fields for the query
 		foreach ($formFields as $formField) {
@@ -760,6 +788,7 @@ class SubmissionService {
 		fclose($out);
 		return true;
 	}
+	
 
 	/**
 	 * Get a label from a code, use a local cache mechanism.
