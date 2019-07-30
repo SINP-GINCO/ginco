@@ -156,7 +156,7 @@ public class IntegrationService extends GenericMapper {
 
 			// Update line_number for the submissionId after a correct test on file.
 			// Remove the header line in the row count
-			submissionDAO.updateSubmissionFile(submissionId, csvFile.getRowsCount() - 1);
+			submissionDAO.updateSubmissionFile(submissionId, csvFile);
 
 			// Get the destination formats
 			Map<String, TableFormatData> destFormatsMap = metadataDAO.getFormatMapping(sourceFormat, MappingTypes.FILE_MAPPING);

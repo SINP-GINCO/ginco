@@ -27,6 +27,7 @@ import javax.sql.DataSource;
 import org.apache.log4j.Logger;
 
 import fr.ifn.ogam.common.business.submissions.SubmissionStep;
+import fr.ifn.ogam.common.util.CSVFile;
 
 /**
  * Data Access Object used to access the application parameters.
@@ -73,7 +74,7 @@ public class SubmissionDAO {
 	/**
 	 * Update information line_number with a submission file id
 	 */
-	private static final String UPDATE_SUBMISSION_FILE_STMT = "UPDATE submission_file SET nb_line = ? WHERE submission_id = ?";
+	private static final String UPDATE_SUBMISSION_FILE_STMT = "UPDATE submission_file SET nb_line = ? WHERE submission_id = ? AND file_name = ?";
 	
 	/**
 	 * Update information file_path extension with a submission file path
@@ -528,7 +529,7 @@ public class SubmissionDAO {
 	 * @param lineNumber
 	 *            the number of lines of data in the file
 	 */
-	public void updateSubmissionFile(Integer submissionId, Integer lineNumber) throws Exception {
+	public void updateSubmissionFile(Integer submissionId, CSVFile csv) throws Exception {
 
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -539,8 +540,9 @@ public class SubmissionDAO {
 			// Get the submission ID from the sequence
 			ps = con.prepareStatement(UPDATE_SUBMISSION_FILE_STMT);
 			logger.trace(UPDATE_SUBMISSION_FILE_STMT);
-			ps.setInt(1, lineNumber);
+			ps.setInt(1, csv.getRowsCount() - 1);
 			ps.setInt(2, submissionId);
+			ps.setString(3, csv.getPath());
 			ps.execute();
 
 		} finally {

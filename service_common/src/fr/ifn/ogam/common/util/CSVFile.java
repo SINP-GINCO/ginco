@@ -248,5 +248,13 @@ public class CSVFile {
 	public int getCurrentLine() {
 		return currentLine;
 	}
+	
+	/**
+	 * Returns the path.
+	 * @return
+	 */
+	public String getPath() {
+		return path ;
+	}
 
 }
