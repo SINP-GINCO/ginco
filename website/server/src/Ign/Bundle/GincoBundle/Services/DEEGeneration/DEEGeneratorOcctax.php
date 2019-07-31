@@ -1,15 +1,18 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services\DEEGeneration;
 
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Bridge\Monolog\Logger;
+
+use Ign\Bundle\GincoBundle\Services\DEEGeneration\AbstractDEEGenerator;
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use Ign\Bundle\GincoBundle\Exception\DEEException;
 use Ign\Bundle\GincoBundle\Entity\Generic\QueryForm;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping as ORM;
-use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
 use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
-use Symfony\Bridge\Monolog\Logger;
 
 /**
  * Class DEEGenerator
@@ -17,31 +20,10 @@ use Symfony\Bridge\Monolog\Logger;
  *
  * @package Ign\Bundle\GincoBundle\Services\DEEGeneration
  */
-class DEEGenerator {
+class DEEGeneratorOcctax extends AbstractDEEGenerator {
 
 	protected $twig; 
 
-	/**
-	 * @var Logger
-	 */
-	protected $logger;
-
-
-	/**
-	 * @var ConfigurationManager
-	 */
-	protected $configuration;
-
-	/**
-	 * The models.
-	 *
-	 * @var EntityManager
-	 */
-	protected $em;
-
-	protected $genericService;
-
-	protected $queryService;
 	
 	// Class DEEModel
 	protected $dee;
@@ -59,10 +41,7 @@ class DEEGenerator {
 	 */
 	public function __construct($em, $configuration, $genericService, $queryService, $logger) {
 
-		$this->em = $em;
-		$this->configuration = $configuration;
-		$this->genericService = $genericService;
-		$this->queryService = $queryService;
+		parent::__construct($em, $configuration, $genericService, $queryService, $logger) ;
 
 		// Instantiate a twig environment (independant from the one which renders the site)
 		$loader = new \Twig_Loader_Filesystem(__DIR__ . '/templates');
@@ -77,8 +56,6 @@ class DEEGenerator {
 		
 		// gmlId is generated as a sequence of integer
 		$this->gmlId = 1;
-		
-		$this->logger = $logger;
 	}
 
 	/**
@@ -96,12 +73,15 @@ class DEEGenerator {
 	 * - concatenate the intermediate files and delete them
 	 *
 	 * @param DEE $DEE
-	 * @param $fileName
+	 * @param $filePath
 	 * @param Message|null $message RabbitMQ Message entity
 	 * @return bool
 	 * @throws DEEException
 	 */
-	public function generateDeeGml(DEE $DEE, $fileName, Message $message = null) {
+	public function generateDee(DEE $DEE, $filePath, Message $message = null) {
+		
+		$fileName = $filePath . DIRECTORY_SEPARATOR . basename($filePath) . ".xml" ;
+		
 		// Configure memory and time limit because the program ask a lot of resources
 		ini_set("memory_limit", $this->configuration->getConfig('memory_limit', '1024M'));
 		ini_set("max_execution_time", 0);
@@ -187,7 +167,6 @@ class DEEGenerator {
 		if ($total != 0) {
 			
 			// Opens a file for observations ($filename."_observations")
-			$filePath = pathinfo($fileName, PATHINFO_DIRNAME);
 			$pathExists = is_dir($filePath) || mkdir($filePath, 0755, true);
 			if (!$pathExists) {
 				throw new DEEException("Error: could not create directory: $filePath");

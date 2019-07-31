@@ -1,16 +1,21 @@
 <?php
 namespace Ign\Bundle\GincoBundle\Services\DEEGeneration;
 
+use Symfony\Bridge\Monolog\Logger;
+
+use Doctrine\ORM\EntityManager;
+
 use Ign\Bundle\GincoBundle\Entity\RawData\DEE;
 use Ign\Bundle\GincoBundle\Entity\Website\Message;
 use Ign\Bundle\GincoBundle\Exception\DEEException;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping as ORM;
 use Ign\Bundle\GincoBundle\Entity\RawData\Jdd;
 use Ign\Bundle\GincoBundle\Entity\Website\User;
 use Ign\Bundle\GincoBundle\Services\ConfigurationManager;
 use Ign\Bundle\GincoBundle\Services\MailManager;
-use Symfony\Bridge\Monolog\Logger;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Standard;
+use Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGeneratorOcctax ;
+use Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGeneratorHabitat;
+
 
 /**
  * Class DEEProcess
@@ -40,9 +45,15 @@ class DEEProcess {
 
 	/**
 	 *
-	 * @var DEEGenerator
+	 * @var DEEGeneratorOcctax
 	 */
-	protected $DEEGenerator;
+	protected $DEEGeneratorOcctax;
+	
+	/**
+	 *
+	 * @var DEEGeneratorHabitat
+	 */
+	protected $DEEGeneratorHabitat; 
 
 	/**
 	 *
@@ -68,10 +79,11 @@ class DEEProcess {
 	 * @param
 	 *        	$logger
 	 */
-	public function __construct($em, $configuration, $DEEGenerator, $mailManager, $logger) {
+	public function __construct($em, $configuration, $DEEGeneratorOcctax, $DEEGeneratorHabitat, $mailManager, $logger) {
 		$this->em = $em;
 		$this->configuration = $configuration;
-		$this->DEEGenerator = $DEEGenerator;
+		$this->DEEGeneratorOcctax = $DEEGeneratorOcctax;
+		$this->DEEGeneratorHabitat = $DEEGeneratorHabitat;
 		$this->mailManager = $mailManager;
 		$this->logger = $logger;
 	}
@@ -175,16 +187,24 @@ class DEEProcess {
 		// Get all objects and variables
 		$DEE = $this->em->getRepository('IgnGincoBundle:RawData\DEE')->findOneById($DEEId);
 		
+		$DEEGenerator = null ;
+		$standardType = $DEE->getJdd()->getModel()->getStandard()->getName() ;
+		if (Standard::STANDARD_OCCTAX == $standardType) {
+			$DEEGenerator = $this->DEEGeneratorOcctax ;
+		} else if (Standard::STANDARD_HABITAT == $standardType) {
+			$DEEGenerator = $this->DEEGeneratorHabitat ;
+		}
+		
 		if ($DEE) {
 			// RabbitMQ Message if given
 			$message = ($messageId) ? $this->em->getRepository('IgnGincoBundle:Website\Message')->findOneById($messageId) : null;
 			
 			// Filepath of the DEE gml file
-			$DEEfilePath = $this->generateFilePath($DEE);
+			$DEEfilePath = $this->generateFilePath($standardType, $DEE);
 			
 			if (!$this->messageToCancel($message)) {
 				// Generate the DEE gml file
-				$this->DEEGenerator->generateDeeGml($DEE, $DEEfilePath, $message);
+				$DEEGenerator->generateDee($DEE, $DEEfilePath, $message);
 			}
 			
 			if (!$this->messageToCancel($message)) {
@@ -216,13 +236,29 @@ class DEEProcess {
 		}
 	}
 
+	
+	/**
+	 * Create the file path for DEE file
+	 * @param DEE $dee
+	 * @return string
+	 */
+	public function generateFilePath($standardType, DEE $dee) {
+		
+		if (Standard::STANDARD_OCCTAX == $standardType) {
+			return $this->generateFilePathOcctax($dee) ;
+		} else if (Standard::STANDARD_HABITAT == $standardType) {
+			return $this->generateFilePathHabitat($dee) ;
+		}
+	}
+	
+	
 	/**
 	 * Create the filepath of the DEE gml file
 	 *
 	 * @param Jdd $jdd        	
 	 * @return string
 	 */
-	public function generateFilePath(DEE $DEE) {
+	private function generateFilePathOcctax(DEE $DEE) {
 		$regionCode = $this->configuration->getConfig('regionCode', 'REGION');
 		$date = $DEE->getCreatedAt()->format('Y-m-d_H-i-s');
 		$jdd = $DEE->getJdd();
@@ -231,10 +267,23 @@ class DEEProcess {
 		
 		$fileNameWithoutExtension = $regionCode . '_' . $date . '_' . $uuid;
 		
-		$filePath = $this->configuration->getConfig('deePrivateDirectory') . '/' . $fileNameWithoutExtension . '/';
-		$filename = $fileNameWithoutExtension . '.xml';
+		$filePath = $this->configuration->getConfig('deePrivateDirectory') . '/' . $fileNameWithoutExtension ;
 		
-		return $filePath . $filename;
+		return $filePath;
+	}
+	
+	/**
+	 * Create the file path of DEE for standard habitat
+	 * @param DEE $dee
+	 * @return string
+	 */
+	private function generateFilePathHabitat(DEE $dee) {
+		
+		$now = (new \DateTime())->format("d-m-Y") ;
+		$metadataId = $dee->getJdd()->getField('metadataId') ;
+		$directory = $this->configuration->getConfig('deePrivateDirectory') ;
+		$fileNameWithoutExtension = "SOH1-0_{$now}_{$metadataId}" ;
+		return  $directory . DIRECTORY_SEPARATOR . $fileNameWithoutExtension ;
 	}
 
 	/**
@@ -251,10 +300,9 @@ class DEEProcess {
 	 *        	$comment
 	 * @return string
 	 */
-	public function createDEEArchive(DEE $DEE, $fileName) {
+	public function createDEEArchive(DEE $DEE, $filePath) {
 		// Get fileName without extension
-		$filePath = pathinfo($fileName, PATHINFO_DIRNAME);
-		$fileNameWithoutExtension = pathinfo($fileName, PATHINFO_FILENAME);
+		$fileNameWithoutExtension = basename($filePath) ;
 		
 		// Public directory to store the archive
 		$deePublicDir = $this->configuration->getConfig('deePublicDirectory');
@@ -286,13 +334,34 @@ class DEEProcess {
 		// Delete the other files
 		unlink($descriptionFile);
 		
-		// Delete GML file
-		unlink($fileName);
-		rmdir($filePath);
+		// Delete filePath (in deePrivateDirectory)
+		$this->rrmdir($filePath);
 		
 		return $archiveName;
 	}
 
+	/**
+	 * Deletes a directory.
+	 * @param type $src
+	 */
+	private function rrmdir($src) {
+		$dir = opendir($src);
+		while(false !== ( $file = readdir($dir)) ) {
+			if (( $file != '.' ) && ( $file != '..' )) {
+				$full = $src . '/' . $file;
+				if ( is_dir($full) ) {
+					rrmdir($full);
+				}
+				else {
+					unlink($full);
+				}
+			}
+		}
+		closedir($dir);
+		rmdir($src);
+	}
+	
+	
 	/**
 	 * Send two notification emails after creation of the DEE archive:
 	 * - one to the MNHN

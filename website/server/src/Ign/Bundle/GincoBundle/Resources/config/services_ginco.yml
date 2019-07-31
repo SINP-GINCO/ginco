@@ -233,17 +233,24 @@ services:
         tags:
           - { name: monolog.logger, channel: ginco }
 
-    # Service generating DEE
-    ginco.dee_generator:
-        class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGenerator
+    # Service generating DEE (occtax)
+    ginco.dee_generator_occtax:
+        class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGeneratorOcctax
         arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.generic_service", "@ginco.query_service","@logger"]
+        tags:
+          - { name: monolog.logger, channel: ginco }
+          
+    # Service generating DEE (habitat)
+    ginco.dee_generator_habitat:
+        class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEGeneratorHabitat
+        arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.generic_service", "@ginco.query_service","@logger", "@ginco.ogr2ogr"]
         tags:
           - { name: monolog.logger, channel: ginco }
 
     # Service doing the whole process of generating and sending the DEE file
     ginco.dee_process:
         class: Ign\Bundle\GincoBundle\Services\DEEGeneration\DEEProcess
-        arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.dee_generator", "@app.mail_manager","@logger"]
+        arguments: ["@doctrine.orm.entity_manager","@ginco.configuration_manager", "@ginco.dee_generator_occtax", "@ginco.dee_generator_habitat", "@app.mail_manager","@logger"]
         tags:
           - { name: monolog.logger, channel: ginco }
         
