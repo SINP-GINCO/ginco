@@ -3,12 +3,15 @@ namespace Ign\Bundle\GincoBundle\Manager;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
+
 use Ign\Bundle\GincoBundle\Services\QueryService;
 use Ign\Bundle\GincoBundle\Entity\Generic\BoundingBox;
 use Ign\Bundle\GincoBundle\Entity\Generic\GenericTableFormat;
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableTree;
 use Ign\Bundle\GincoBundle\Services\GenericService;
 use Ign\Bundle\OGAMConfigurateurBundle\DependencyInjection\Configuration;
+use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Standard;
 
 /**
  * Class allowing generic access to the RAW_DATA tables.
@@ -709,11 +712,22 @@ class GenericManager {
 	 * @param string $where
 	 *        	the WHERE part of the SQL request
 	 */
-	public function getHidingLevelParameters($geometryTable, $ogamIdColumn, $providerIdColumn, $reqId, $from, $where) {
-		$req = "SELECT " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
-		INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn
-		$where AND res.id_request = ?
-		ORDER BY res.id_provider, res.id_observation;";
+	public function getHidingLevelParameters(TableFormat $geometryTable, $ogamIdColumn, $providerIdColumn, $reqId, $from, $where) {
+		
+		$standardType = $geometryTable->getModel()->getStandard()->getName() ;
+		if (Standard::STANDARD_HABITAT == $standardType) {
+			
+			$req = "SELECT " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, null as sensiniveau, null as diffusionniveauprecision, dspublique $from
+			INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn
+			$where AND res.id_request = ?
+			ORDER BY res.id_provider, res.id_observation;";
+		} else {
+		
+			$req = "SELECT " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, sensiniveau, diffusionniveauprecision, dspublique $from
+			INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = " . $geometryTable->getFormat()->getFormat() . " . $ogamIdColumn
+			$where AND res.id_request = ?
+			ORDER BY res.id_provider, res.id_observation;";
+		}
 
 		$select = $this->rawdb->prepare($req);
 		$select->execute(array($reqId));
