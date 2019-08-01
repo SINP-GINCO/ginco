@@ -116,15 +116,20 @@ class Ogr2ogr {
 	 *
 	 * @param string $inputPath
 	 * @param string $outputPath
+	 * @param string $a_srs SRID to assign to output. Must be a valide EPSG code.
 	 *
 	 * @return string
 	 *
 	 */
-	public function csv2shp($inputPath , $outputPath){
+	public function csv2shp($inputPath , $outputPath, $a_srs = null){
 		$commandLine  = $this->path.' -f "ESRI Shapefile" '.$outputPath.' '. $inputPath;
-
+		
 		if (isset($this->separator)) {
 			$commandLine .= ' -lco SEPARATOR='.$this->separator;
+		}
+		
+		if (isset($a_srs)) {
+			$commandLine .= " -a_srs $a_srs " ;
 		}
 
 		echo $commandLine;

@@ -136,8 +136,7 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 			return;
 		}
 		$shpStationPoints = $filePath . DIRECTORY_SEPARATOR . "shp_point_soh.shp" ;
-		$this->ogr2ogr->csv2shp($csvStationPoints, $shpStationPoints) ;
-		$this->addPrj($filePath, $shpStationPoints) ;
+		$this->ogr2ogr->csv2shp($csvStationPoints, $shpStationPoints, 'EPSG:4326') ;
 		unlink($csvStationPoints) ;
 		
 		// Stations lignes
@@ -148,8 +147,7 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 			return;
 		}
 		$shpStationLignes = $filePath . DIRECTORY_SEPARATOR . "shp_ligne_soh.shp" ;
-		$this->ogr2ogr->csv2shp($csvStationLignes, $shpStationLignes) ;
-		$this->addPrj($filePath, $shpStationLignes) ;
+		$this->ogr2ogr->csv2shp($csvStationLignes, $shpStationLignes, 'EPSG:4326') ;
 		unlink($csvStationLignes) ;
 		
 		// Stations polygones
@@ -160,8 +158,7 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 			return;
 		}
 		$shpStationPolygones = $filePath . DIRECTORY_SEPARATOR . "shp_polygone_soh.shp" ;
-		$this->ogr2ogr->csv2shp($csvStationPolygones, $shpStationPolygones) ;
-		$this->addPrj($filePath, $shpStationPolygones) ;
+		$this->ogr2ogr->csv2shp($csvStationPolygones, $shpStationPolygones, 'EPSG:4326') ;
 		unlink($csvStationPolygones) ;
 		
 	}
@@ -216,20 +213,5 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 		
 		$message->setProgress($progress) ;
 		$this->em->flush() ;
-	}
-	
-	/**
-	 * Ajoute le fichier prj au shapefile.
-	 * @param type $filePath
-	 * @param type $filename
-	 */
-	private function addPrj($filePath, $shapefile) {
-		
-		if (!file_exists($shapefile)) {
-			return ;
-		}
-		$prj = $filePath . DIRECTORY_SEPARATOR . basename($shapefile, ".shp") . ".prj" ;
-		$file = new \SplFileObject($prj, "w") ;
-		$file->fwrite('GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]') ;
 	}
 }
