@@ -79,6 +79,16 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 	
 	public function generateDee(DEE $dee, $filePath, Message $message = null) {
 		
+		// Préparation de l'avancement du message.
+		$pdo = $this->em->getConnection() ;
+		$sth = $pdo->query("SELECT sum(nb_line) AS total FROM raw_data.submission_file WHERE submission_id IN (" . implode(',', $dee->getSubmissions()) . ")") ;
+		$result = $sth->fetch() ;
+		$total = $result['total'] ;
+		$progress = 0 ;
+		$message->setLength($total) ;
+		$message->setProgress($progress) ;
+		$this->em->flush() ;
+		
 		// Création du répertoire de sortie
 		$pathExists = is_dir($filePath) || mkdir($filePath, 0755, true);
 		if (!$pathExists) {
@@ -107,7 +117,10 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 		$sqlHabitat .= " WHERE h.submission_id IN (" . implode(",", $dee->getSubmissions()) . ")" ;
 		
 		$csvHabitat = $filePath . DIRECTORY_SEPARATOR . "Habitat_soh_1_0.csv" ;
-		$this->generateCsv($sqlHabitat, $csvHabitat, array_merge(["identifiantstasinp" => "idStaSINP"], $this->habitatModel)) ;
+		$this->generateCsv($sqlHabitat, $csvHabitat, array_merge(["identifiantstasinp" => "idStaSINP"], $this->habitatModel), $message) ;
+		if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+			return;
+		}
 		
 		// Requête stations base
 		$sqlStation = "SELECT " ;
@@ -118,7 +131,10 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 		// Stations points
 		$sqlStationPoints = $sqlStation . " AND st_geometrytype(st_multi(s.geometrie)) = 'ST_MultiPoint'" ;
 		$csvStationPoints = $filePath . DIRECTORY_SEPARATOR . "shp_point_soh.csv" ;
-		$this->generateCsv($sqlStationPoints, $csvStationPoints, $this->stationModel) ;
+		$this->generateCsv($sqlStationPoints, $csvStationPoints, $this->stationModel, $message) ;
+		if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+			return;
+		}
 		$shpStationPoints = $filePath . DIRECTORY_SEPARATOR . "shp_point_soh.shp" ;
 		$this->ogr2ogr->csv2shp($csvStationPoints, $shpStationPoints) ;
 		$this->addPrj($filePath, $shpStationPoints) ;
@@ -127,7 +143,10 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 		// Stations lignes
 		$sqlStationLignes = $sqlStation . " AND st_geometrytype(st_multi(s.geometrie)) = 'ST_MultiLineString'" ;
 		$csvStationLignes = $filePath . DIRECTORY_SEPARATOR . "shp_ligne_soh.csv" ;
-		$this->generateCsv($sqlStationLignes, $csvStationLignes, $this->stationModel) ;
+		$this->generateCsv($sqlStationLignes, $csvStationLignes, $this->stationModel, $message) ;
+		if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+			return;
+		}
 		$shpStationLignes = $filePath . DIRECTORY_SEPARATOR . "shp_ligne_soh.shp" ;
 		$this->ogr2ogr->csv2shp($csvStationLignes, $shpStationLignes) ;
 		$this->addPrj($filePath, $shpStationLignes) ;
@@ -136,7 +155,10 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 		// Stations polygones
 		$sqlStationPolygones = $sqlStation . " AND st_geometrytype(st_multi(s.geometrie)) = 'ST_MultiPolygon'" ;
 		$csvStationPolygones = $filePath . DIRECTORY_SEPARATOR . "shp_polygone_soh.csv" ;
-		$this->generateCsv($sqlStationPolygones, $csvStationPolygones, $this->stationModel) ;
+		$this->generateCsv($sqlStationPolygones, $csvStationPolygones, $this->stationModel, $message) ;
+		if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+			return;
+		}
 		$shpStationPolygones = $filePath . DIRECTORY_SEPARATOR . "shp_polygone_soh.shp" ;
 		$this->ogr2ogr->csv2shp($csvStationPolygones, $shpStationPolygones) ;
 		$this->addPrj($filePath, $shpStationPolygones) ;
@@ -150,9 +172,12 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 	 * @param type $sql
 	 * @param type $outputFile
 	 */
-	private function generateCsv($sql, $outputFile, $model) {
+	private function generateCsv($sql, $outputFile, $model, Message $message) {
 		
 		$pdo = $this->em->getConnection() ; 
+		
+		$progress = $message->getProgress() ;
+		$total = $message->getLength() ;
 		
 		$file = new \SplFileObject($outputFile, "w") ;
 		$file->setCsvControl(";") ;
@@ -172,7 +197,25 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 			}
 			
 			$file->fputcsv(array_values($row)) ;
+			
+			++$progress ;
+			if (($total <= 100) || ($total <= 1000 && ($progress % 10 == 0)) || ($total <= 10000 && ($progress % 100 == 0)) || ($progress % 1000 == 0)) {
+
+				// Check if message has been cancelled externally; if yes, just return
+				// (DEE cancellation is done at a upper level)
+				$this->em->refresh($message);
+				if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+					return;
+				}
+
+				// Report message progress if given
+				$message->setProgress($progress);
+				$this->em->flush();
+			}
 		}
+		
+		$message->setProgress($progress) ;
+		$this->em->flush() ;
 	}
 	
 	/**
