@@ -236,6 +236,9 @@ class IntegrationController extends GincoController {
 						$outputPath = preg_replace('"\.zip$"', '.csv', $targetPath . '/' . $filename);
 						$this->get('ginco.ogr2ogr')->shp2csv('"' . $inputPath . '"', '"' . $outputPath . '"');
 						$targetName = $outputPath ;
+						
+						// Cancel srid (no need with shp)
+						$srid = '' ;
 					}
 					
 					$requestedFile->filePath = $targetName; // TODO : clean this fake filePath property
