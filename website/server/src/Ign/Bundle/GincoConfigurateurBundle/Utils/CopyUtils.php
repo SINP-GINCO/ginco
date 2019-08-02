@@ -93,6 +93,28 @@ class CopyUtils extends CopyUtilsBase {
 		'determinateurmail' => 'observation',
 		'determinateurnomorganisme' => 'observation',
 		'datedetermination' => 'observation',
+		
+		'dateimprecise' => 'observation',
+		'observateur' => 'observation',
+		'nomstation' => 'observation',
+		'estcomplexehabitats' => 'observation',
+		'exposition' => 'observation',
+		'surface' => 'observation',
+		'methodecalculsurface' => 'observation',
+		'usage' => 'observation',
+		'typesol' => 'observation',
+		'geologie' => 'observation',
+		'acidite' => 'observation',
+		'cdhab' => 'observation',
+		'typedeterm' => 'observation',
+		'determinateur' => 'observation',
+		'techniquecollecte' => 'observation',
+		'recouvrement' => 'observation',
+		'abondancehabitat' => 'observation',
+		'precisiontechnique' => 'observation',
+		'releveespeces' => 'observation',
+		'relevephyto' => 'observation',
+		
 
 		// ---- Localisation --------------------------
 
@@ -136,6 +158,8 @@ class CopyUtils extends CopyUtilsBase {
 		'codedepartementcalcule' => 'localisation',
 		'codemaillecalcule' => 'localisation',
 		'nomcommunecalcule' => 'localisation',
+		
+		'echellenumerisation' => 'localisation',
 
 		// ----- Regroupements -------------------------
 
@@ -173,6 +197,11 @@ class CopyUtils extends CopyUtilsBase {
 		'jddid' => 'standardisation',
 		'jddsourceid' => 'standardisation',
 		'referencebiblio' => 'standardisation',
+		
+		'identifiantstasinp' => 'standardisation',
+		'identifiantoriginestation' => 'standardisation',
+		'identifianthabsinp' => 'standardisation',
+		'sensibilitehab' => 'standardisation',
 
 		// ----- Champs additionnels DSR -----------------------
 		'nomattribut' => 'dsr',
@@ -206,7 +235,18 @@ class CopyUtils extends CopyUtilsBase {
 		'orgtransformation',
 		'sensible',
 		'sensiniveau',
-		'statutsource'
+		'statutsource',
+		
+		'determinateur',
+		'typedeterm',
+		'jourdatedebut',
+		'jourdatefin',
+		'dateimprecise',
+		'nomstation',
+		'identifiantstasinp',
+		'identifianthabsinp',
+		'sensibilitehab'
+		
 	);
 
 	/**
