@@ -1438,10 +1438,10 @@ class GenericService {
 		// Add the joined tables (when there is ancestors)
 		foreach ($ancestorsToGeometry as $tableTreeData) {
 			if ($tableTreeData->getParentTable() != null) {
-				$parentTableName = $ancestorsToGeometry[$tableTreeData->getParentTable()]->getTableName();
+				$parentTableName = $tableTreeData->getParentTable()->getTableName();
 				$from .= " JOIN " . $parentTableName . " " . $tableTreeData->getParentTable()->getFormat() . " on (";
 				// Add the join keys
-				$keys = explode(',', $tableTreeData->getChildTable()->getPrimaryKeys());
+				$keys = explode(',', $tableTreeData->getJoinKey());
 				foreach ($keys as $key) {
 					$from .= $tableTreeData->getChildTable()->getFormat() . "." . trim($key) . " = " . $tableTreeData->getParentTable()->getFormat() . "." . trim($key) . " AND ";
 				}
@@ -1501,8 +1501,7 @@ class GenericService {
 				strtolower($schema)
 			));
 
-			$row = $results[0];
-			if ($row['has_geometry'] != null) {
+			if (!empty($results) && $results[0]['has_geometry'] != null) {
 				$ĥasGeometryColumn = 1;
 			}
 		}
