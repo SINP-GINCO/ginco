@@ -365,21 +365,19 @@ class GenericManager {
 		// For each potential child table listed, we search for the actual lines of data available
 		foreach ($select->fetchAll() as $row) {
 			$childTable = $row['child_table'];
+			$joinKeys = explode(',', $row['join_key']) ;
 				
 			// Build an empty data object (for the query)
 			$child = $this->genericService->buildGenericTableFormat($tableFormat->getSchemaCode(), $childTable);
-				
-			// Fill the known primary keys (we hope the child contain the keys of the parent)
-			foreach ($data->getIdFields() as $dataKey) {
-				foreach ($child->getIdFields() as $childKey) {
-					if ($dataKey->getData() == $childKey->getData()) {
-						$childKey->setValue($dataKey->getValue());
-					}
-				}
-				foreach ($child->getFields() as $childKey) {
-					if ($dataKey->getData() == $childKey->getData()) {
-						$childKey->setValue($dataKey->getValue());
-					}
+			
+			$fields = $data->all() ;
+			foreach ($joinKeys as $joinKey) {
+				$parentFieldName = $data->getTableFormat()->getFormat() . '__' . $joinKey ;
+				$childFieldName = $child->getTableFormat()->getFormat() . '__' . $joinKey ;
+				if (array_key_exists($parentFieldName, $fields)) {
+					$parentField = $fields[$parentFieldName] ;
+					$childField = $child->getField($childFieldName) ;
+					$childField->setValue($parentField->getValue()) ;
 				}
 			}
 				
