@@ -25,13 +25,13 @@ Ext.define('OgamDesktop.ux.form.field.Factory', function () {
          */
         buildCheckboxFieldConfig : function(record) {
             var field = {xtype : 'checkbox'};
-            switch (record.get('type')) {
+            switch (record.type) {
                 case 'BOOLEAN': // We assume that the field is a boolean with two possible values: true and false
                     field.uncheckedValue = false;
                     field.inputValue = true;
-                    if (record.get('default_value')) {
-                        if (Ext.isBoolean(record.get('default_value'))) {
-                            field.checked = record.get('default_value');
+                    if (record.default_value) {
+                        if (Ext.isBoolean(record.default_value)) {
+                            field.checked = record.default_value;
                         } else {
                             console.warn('The default_value parameter must be of boolean type for a checkbox field with a "BOOLEAN" type');
                             console.warn('The default_value parameter is ignored');
@@ -41,9 +41,9 @@ Ext.define('OgamDesktop.ux.form.field.Factory', function () {
                 case 'STRING': // We assume that the field is a char(1) with two possible values: '0' and '1'
                     field.uncheckedValue = '0';
                     field.inputValue = '1';
-                    if (record.get('default_value')) {
+                    if (record.default_value) {
                         if (Ext.isString(record.get('default_value'))) {
-                            switch (record.get('default_value')) {
+                            switch (record.default_value) {
                                 case "0": field.checked = false; break;
                                 case "1": field.checked = true; break;
                                 default:
@@ -59,18 +59,18 @@ Ext.define('OgamDesktop.ux.form.field.Factory', function () {
                     break;
                 case 'CODE': // We assume that the field is a code with two possible values set per the "uncheckedValue" and "checkedValue" parameters
                     var uncheckedValue = '0', checkedValue = '1';
-                    if (record.get('uncheckedValue') && record.get('checkedValue')) {
-                        uncheckedValue = record.get('uncheckedValue');
-                        checkedValue = record.get('checkedValue');
+                    if (record.uncheckedValue && record.checkedValue) {
+                        uncheckedValue = record.uncheckedValue;
+                        checkedValue = record.get.checkedValue;
                     } else {
                         console.warn('The uncheckedValue and checkedValue parameters are missing for a checkbox field with a "CODE" type');
                         console.warn('The checkbox field defaults values are set to "0" and "1"');
                     }
                     field.uncheckedValue = uncheckedValue;
                     field.inputValue = checkedValue;
-                    if (record.get('default_value')) {
-                        if (Ext.isString(record.get('default_value'))) {
-                            switch (record.get('default_value')) {
+                    if (record.default_value) {
+                        if (Ext.isString(record.default_value)) {
+                            switch (record.default_value) {
                                 case uncheckedValue: field.checked = false; break;
                                 case checkedValue: field.checked = true; break;
                                 default:

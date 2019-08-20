@@ -860,7 +860,7 @@ class GenericService {
 				
 				case "BOOLEAN":
 					// Value is 1 or 0, stored in database as a char(1)
-					$sql = ($value == true ? '1' : '0');
+					$sql = (filter_var($value, FILTER_VALIDATE_BOOLEAN) === true ? '1' : '0');
 					break;
 				case "DATE":
 					if ($value === "" || $value === null) {

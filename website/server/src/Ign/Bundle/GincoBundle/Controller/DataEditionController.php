@@ -310,9 +310,9 @@ class DataEditionController extends GincoController {
 			case "BOOLEAN":
 				
 				// The field is a boolean
-				$elem = $form->create($tableField->getData()
-					->getName(), FType\CheckboxType::class, $option);
-				$elem->setData($tableRowField->getValue());
+				$elem = $form->create($tableField->getData()->getData(), FType\CheckboxType::class, $option);
+				$value = filter_var($tableRowField->getValue(), FILTER_VALIDATE_BOOLEAN) ;
+				$elem->setData($value);
 				break;
 			
 			case "ARRAY":
