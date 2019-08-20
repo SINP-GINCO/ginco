@@ -119,7 +119,7 @@ class GenericManager {
 			return $field->getMetadata();
 		}, $data->all()));
 		$sql .= " FROM " . $schema->getName() . "." . $tableFormat->getTableName() . " AS " . $tableFormat->getFormat();
-		$sql .= " WHERE (1 = 1)" . $this->genericService->buildWhere($schema->getCode(), $data->getIdFields());
+		$sql .= " WHERE (1 = 1)" . $this->genericService->buildWhere($schema->getCode(), $data->all());
 	
 		$this->logger->info('getDatum : ' . $sql);
 	
@@ -136,7 +136,7 @@ class GenericManager {
 	
 	
 		// Fill the values with data from the table
-		foreach ($data->getFields() as $field) {
+		foreach ($data->all() as $field) {
 			$key = strtolower($field->getId());
 			$field->setValue($row[$key]);
 			$unit = $field->getMetadata()
@@ -273,7 +273,7 @@ class GenericManager {
 		$this->logger->info('getAncestors');
 	
 		// Get the parent of the current table
-		$sql = "SELECT parent_table";
+		$sql = "SELECT parent_table, join_key";
 		$sql .= " FROM TABLE_TREE ";
 		$sql .= " WHERE SCHEMA_CODE = '" . $tableFormat->getSchemaCode() . "'";
 		$sql .= " AND child_table = '" . $tableFormat->getFormat() . "'";
@@ -282,23 +282,36 @@ class GenericManager {
 	
 		$select = $this->metadatadb->prepare($sql);
 		$select->execute();
-		$parentTable = $select->fetchColumn(0);
+		$row = $select->fetch() ;
+		$parentTable = $row['parent_table'] ;
+		$joinKeys = explode(',', $row['join_key']) ;
 	
 		// Check if we are not the root table
 		if ($parentTable != null) {
 				
 			// Build an empty parent object
 			$parent = $this->genericService->buildGenericTableFormat($tableFormat->getSchemaCode(), $parentTable, null);
-				
+			
+			$fields = $data->all() ;
+			
 			// Fill the PK values (we hope that the child contain the fields of the parent pk)
 			foreach ($parent->getIdFields() as $key) {
 				$fieldName = $tableFormat->getFormat() . '__' . $key->getData();
-				$fields = $data->all();
 				if (array_key_exists($fieldName, $fields)) {
 					$keyField = $fields[$fieldName];
 					if ($keyField != null && $keyField->getValue() != null) {
 						$key->setValue($keyField->getValue());
 					}
+				}
+			}
+			
+			foreach ($joinKeys as $joinKey) {
+				$fieldName = $tableFormat->getFormat() . '__' . $joinKey ;
+				if (array_key_exists($fieldName, $fields)) {
+					$keyField = $fields[$fieldName] ;
+					$parentFieldName = $parent->getTableFormat()->getFormat() . '__' . $joinKey ;
+					$key = $parent->getField($parentFieldName) ;
+					$key->setValue($keyField->getValue()) ;
 				}
 			}
 				
@@ -374,7 +387,7 @@ class GenericManager {
 			$childs = $this->_getDataList($child);
 				
 			// Add to the result
-			$children[$child->getTableFormat()->getFormat()] = $childs;
+			$children[$child->getTableFormat()->getFormat()->getFormat()] = $childs;
 		}
 	
 		return $children;
