@@ -29,8 +29,10 @@ Ext.define('OgamDesktop.ux.data.field.Factory', function () {
                 case 'BOOLEAN':
                     fieldConfig.convert = function (value) {
                         switch (value) {
-                            case false: return false;
-                            case true: return true;
+                            case false: case 0: case '0':
+                                return false;
+                            case true: case 1: case '1':
+                                return true;
                             default: 
                                 console.warn('The value must be set to true or false for a checkbox field with a "BOOLEAN" type');
                                 return null;
