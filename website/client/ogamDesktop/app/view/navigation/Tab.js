@@ -207,39 +207,42 @@ Ext.define('OgamDesktop.view.navigation.Tab', {
                     }
                 }
 
-                // TODO : add foreach on data.format[i] ?
-                data.formats[0].fields.sort(dynamicSortMultiple("formPosition", "label"));   
-                
-                var formArrays = Object.create(null);
+                // Loop on formats.
+                for (var i=0; i<data.formats.length ; ++i) {
 
-            	// Loop the fields array
-                data.formats[0].fields.forEach(function(field) {
-                	// Get the form array for this field'formLabel, if any
-                	var formArray = formArrays[field.formLabel];
-                	if (!formArray) {
-                		// There wasn't one, create it
-                		formArray = formArrays[field.formLabel] = [];
-                	}
-                	// Add this entry
-                	formArray.push(field);
-            	});
-
-                var tab = [];
-                for (var key in formArrays) {                    
-                    tab.push(Object.create({'formulaire': key, 'champs' :formArrays[key]}));
+                    data.formats[i].fields.sort(dynamicSortMultiple("formPosition", "label"));   
                     
+                    var formArrays = Object.create(null);
+
+                    // Loop the fields array
+                    data.formats[i].fields.forEach(function(field) {
+                        // Get the form array for this field'formLabel, if any
+                        var formArray = formArrays[field.formLabel];
+                        if (!formArray) {
+                            // There wasn't one, create it
+                            formArray = formArrays[field.formLabel] = [];
+                        }
+                        // Add this entry
+                        formArray.push(field);
+                    });
+
+                    var tab = [];
+                    for (var key in formArrays) {                    
+                        tab.push(Object.create({'formulaire': key, 'champs' :formArrays[key]}));
+                        
+                    }
+                    
+                    data.formats[i].fields = tab;
+                    
+                    var title = data.title;
+                    if(data.title.length > this.titleCharsMaxLength){
+                        title = data.title.substring(0,this.titleCharsMaxLength) + '...';
+                    }
+                    this.setTitle('<div style="width:'+ this.headerWidth + 'px;"'
+                        +' ext:qtip="' + data.title + '"'
+                        +'>'+title+'</div>');
+                    this.tpl.overwrite(this.body, data);
                 }
-                
-                data.formats[0].fields = tab;
-                
-                var title = data.title;
-                if(data.title.length > this.titleCharsMaxLength){
-                    title = data.title.substring(0,this.titleCharsMaxLength) + '...';
-                }
-                this.setTitle('<div style="width:'+ this.headerWidth + 'px;"'
-                    +' ext:qtip="' + data.title + '"'
-                    +'>'+title+'</div>');
-                this.tpl.overwrite(this.body, data);
             },
             method: 'POST',
             params : {
