@@ -1313,8 +1313,10 @@ class QueryService {
 		
 		$permissions = $this->getVisuPermissions($user);
 		$where = "WHERE res.id_request = $requestId
-			AND res.id_provider = '" . $providerId . "'
-			AND res.id_observation = '$observationId'";
+			AND res.id_provider = '$providerId'
+			AND {$table->getFormat()}.{$keys['id_observation']} = '$observationId'";
+
+			//AND res.id_observation = '$observationId'";
 		$hidingLevel = $this->getHidingLevels($keys, $table, $permissions, $from, $where, $requestId)[0]['hiding_level'];
 		
 		$hidingLevels = array(
@@ -1325,16 +1327,36 @@ class QueryService {
 		);
 		$bbox = '';
 		
+		/* @var $parentTable TableFormat */
+		$parentTable = $this->metadataModel->getRepository('IgnGincoBundle:Metadata\TableFormat')->findParent($table) ;
+		
 		for ($i = $hidingLevel; $i < count($hidingLevels); $i ++) {
 			$layer = $hidingLevels[$i];
 			$idKey = ($layer == "geometrie") ? "geom" : $layer;
 			
+			$join = "" ;
+			$idObservationColumn = 'res.id_observation' ;
+			if ($parentTable) {	
+				// Si on a une table parent, c'est qu'on est en train de manipuler un habitat.
+				$parentTableName = $parentTable->getTableName() ;
+				$parentTableAlias = $parentTable->getFormat()->getFormat() ;
+				$tableName = $table->getTableName() ;
+				$tableAlias = $table->getFormat()->getFormat() ;
+				
+				$join = "JOIN $parentTableName $parentTableAlias ON obs.id_observation = $parentTableAlias.{$parentTable->getPkName()}
+					JOIN $tableName $tableAlias ON $tableAlias.clestation = $parentTableAlias.clestation AND $tableAlias.submission_id = $parentTableAlias.submission_id";
+				$idObservationColumn = "$tableAlias.{$table->getPkName()}" ;
+			}
+			
+			
 			$bbQuery = "SELECT ST_AsText(ST_Extent(ST_Transform(geom, $projection ))) AS wkt
 			FROM bac_$layer bac
 			INNER JOIN observation_$layer obs ON obs.id_$idKey = bac.id_$layer
-			INNER JOIN results res ON res.table_format =  obs.table_format
-			AND res.id_provider = obs.id_provider
-			AND res.id_observation = obs.id_observation $where";
+			INNER JOIN results res ON res.table_format =  obs.table_format AND res.id_provider = obs.id_provider AND res.id_observation = obs.id_observation 
+			$join
+			WHERE res.id_request = $requestId
+			AND res.id_provider = '$providerId'
+			AND $idObservationColumn = '$observationId'";
 			
 			$bbResult = $this->getQueryResults($bbQuery);
 			

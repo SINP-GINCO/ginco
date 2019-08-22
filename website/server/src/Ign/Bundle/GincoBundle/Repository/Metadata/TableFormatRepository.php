@@ -46,6 +46,50 @@ class TableFormatRepository extends \Doctrine\ORM\EntityRepository {
 		return $query->getResult()[0];
 	}
 	
+	
+	/**
+	 * Get information about the first geometry table in table tree
+	 * @param type $schema
+	 * @param type $format
+	 * @param type $lang
+	 * @return type
+	 */
+	public function getParentGeometryTableFormat($schema, $format, $lang) {
+		
+		$rsm = new ResultSetMappingBuilder($this->_em);
+		$rsm->addRootEntityFromClassMetadata($this->_entityName, 't');
+		
+		// Get the fields specified by the format
+		
+		$sql = "
+			WITH RECURSIVE parent AS (
+				SELECT tf.format, tf.schema_code, tf.table_name, COALESCE(t.label, tf.label) as label, tf.primary_key
+				FROM table_format tf
+				LEFT JOIN translation t ON (t.lang = :lang AND t.table_format = 'TABLE_FORMAT' AND t.row_pk = format)
+				JOIN metadata.table_field tfi USING (format)
+				JOIN metadata.DATA d USING (data)
+				WHERE tf.schema_code = :schema
+				AND tf.format = :format
+				AND d.unit = 'GEOM'
+				UNION
+				SELECT tf.format, tf.schema_code, tf.table_name, COALESCE(t.label, tf.label) as label, tf.primary_key
+				FROM table_format tf
+				LEFT JOIN translation t ON (t.lang = :lang AND t.table_format = 'TABLE_FORMAT' AND t.row_pk = format)
+				JOIN table_tree tt ON tf.format = tt.parent_table
+				WHERE tf.format = :format
+			) SELECT * FROM parent 
+		";
+		
+		$query = $this->_em->createNativeQuery($sql, $rsm);
+		$query->setParameters(array(
+			'lang' => $lang,
+			'schema' => $schema,
+			'format' => $format
+		));
+		
+		return $query->getResult()[0];
+	}
+	
 	/**
 	 * Get all table formats.
 	 *
@@ -141,5 +185,22 @@ class TableFormatRepository extends \Doctrine\ORM\EntityRepository {
 			->getQuery()
 			->getResult()
 		;
+	}
+	
+
+	/**
+	 * Retrouve la table parente (si existante) d'une table donnée.
+	 * @param TableFormat $tableFormat
+	 * @return TableFormat La table parente (ou null si non existante, false si un problème a été rencontré).
+	 */
+	public function findParent(TableFormat $tableFormat) {
+		
+		$tableTreeRepository = $this->getEntityManager()->getRepository('IgnGincoBundle:Metadata\TableTree') ;
+		
+		$tableTree = $tableTreeRepository->findOneBy(['childTable' => $tableFormat]) ;
+		if (!$tableTree) {
+			return false ;
+		}		
+		return $tableTree->getParentTable() ;
 	}
 }
