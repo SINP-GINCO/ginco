@@ -10,10 +10,11 @@ Les applications et paquets suivants doivent être installées au préalable :
 
 ```bash
 # Postgresql et Postgis (version: 9.4 minimum, l'application fonctionne dans les versions supérieures)
+# Voir ici pour l'obtention des différentes versions de PostgreSQL : https://www.postgresql.org/download/
 apt-get install -y postgresql postgresql-client postgresql-contrib postgresql-9.4-postgis
 
-# Apache & php (php 5.5 minimum, l'application fonctionne avec php7)
-apt-get install -y apache2 php5 php5-pgsql php5-cli php5-curl php5-bcmath php5-mbstring
+# Apache & php (php 7.2 minimum)
+apt-get install -y apache2 php7.2 php7.2-pgsql php7.2-cli php7.2-curl php7.2-bcmath php7.2-mbstring php7.2-json php7.2-zip php7.2-xml
 a2enmod rewrite
 a2enmod expires
 a2enmod cgi
@@ -63,9 +64,6 @@ cd /path/to/ginco-project
 
 # récupérer le code du projet ginco
 git clone https://github.com/SINP-GINCO/ginco.git
-
-# récupérer le code du configurateur
-git clone https://github.com/SINP-GINCO/ogam-configurator.git configurator
 
 ```
 
