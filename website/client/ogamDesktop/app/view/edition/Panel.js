@@ -403,7 +403,7 @@ Ext.define('OgamDesktop.view.edition.Panel', {
 						}
 
 						// buttons
-						Ext.applyIf(cCO, {items:[]});
+						/*Ext.applyIf(cCO, {items:[]});
 						cCO['items'].push( {
 							xtype:'button',
 							text : this.childrenFSAddNewChildButtonText,
@@ -412,7 +412,7 @@ Ext.define('OgamDesktop.view.edition.Panel', {
 								this.lookupController().redirectTo(location);
 							}).bind(this,cCO['AddChildURL']),
 							scope : this
-						});
+						});*/
 						childrenItems.push(new Ext.form.FieldSet(cCO));
 					}
 				}
