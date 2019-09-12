@@ -764,33 +764,44 @@ class GenericManager {
 	 */
 	private function buildSQLHidingLevelParametersHabitat(TableFormat $table, $ogamIdColumn, $providerIdColumn, $reqId, $from, $where) {
 		
-		/* @var $parentTable TableFormat */
-		$parentTable = $this->metadataModel->getRepository('IgnGincoBundle:Metadata\TableFormat')->findParent($table) ;
+		$format = $table->getFormat()->getFormat() ;
 		
-		if (!$parentTable) {
-			
-			// Pas de table parente -> l'objet qu'on manipule est une station.
-			
-			$format = $table->getFormat()->getFormat() ;
-			
-			$req = "SELECT $format.$ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, null as sensiniveau, null as diffusionniveauprecision, dspublique $from
+		$req = "SELECT $format.$ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, null as sensiniveau, null as diffusionniveauprecision, dspublique $from
 			INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = $format.$ogamIdColumn
 			$where AND res.id_request = ?
 			ORDER BY res.id_provider, res.id_observation;";
-			
-		} else {
-			
-			// Il y a une table parente -> l'objet qu'on manipule est un habitat.
-			
-			$format = $table->getFormat()->getFormat() ;
-			$parentFormat = $parentTable->getFormat()->getFormat() ;
-			$parentOgamIdColumn = $parentTable->getPkName() ;
-			
-			$req = "SELECT $parentFormat.$parentOgamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, $format.sensibilitehab as sensiniveau, null as diffusionniveauprecision, $parentFormat.dspublique $from
-			INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = $parentFormat.$parentOgamIdColumn
-			$where AND res.id_request = ?
-			ORDER BY res.id_provider, res.id_observation;";
-		}
+		
+		
+		// Le code suivant permet de retrouver un floutage sur les habitats sensibles.
+		// Mis en commentaire, car finalement pas demandé, cf ticket #1733.
+		
+		/* @var $parentTable TableFormat */
+//		$parentTable = $this->metadataModel->getRepository('IgnGincoBundle:Metadata\TableFormat')->findParent($table) ;
+//		
+//		if (!$parentTable) {
+//			
+//			// Pas de table parente -> l'objet qu'on manipule est une station.
+//			
+//			$format = $table->getFormat()->getFormat() ;
+//			
+//			$req = "SELECT $format.$ogamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, null as sensiniveau, null as diffusionniveauprecision, dspublique $from
+//			INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = $format.$ogamIdColumn
+//			$where AND res.id_request = ?
+//			ORDER BY res.id_provider, res.id_observation;";
+//			
+//		} else {
+//			
+//			// Il y a une table parente -> l'objet qu'on manipule est un habitat.
+//			
+//			$format = $table->getFormat()->getFormat() ;
+//			$parentFormat = $parentTable->getFormat()->getFormat() ;
+//			$parentOgamIdColumn = $parentTable->getPkName() ;
+//			
+//			$req = "SELECT $parentFormat.$parentOgamIdColumn as id_observation,  submission.$providerIdColumn as id_provider, $format.sensibilitehab as sensiniveau, null as diffusionniveauprecision, $parentFormat.dspublique $from
+//			INNER JOIN results res ON res.id_provider = submission.$providerIdColumn AND res.id_observation = $parentFormat.$parentOgamIdColumn
+//			$where AND res.id_request = ?
+//			ORDER BY res.id_provider, res.id_observation;";
+//		}
 		
 		return $req ;
 	}
