@@ -4,6 +4,19 @@ Ce changelog liste les modifications significatives du projet pour les différen
 
 Pour voir le diff entre deux versions, aller à (par exemple) : https://github.com/SINP-GINCO/ginco/compare/v1.0.0...v1.1.0
 
+## V2.4.0 (16/09/2019)
+
+* Implémentation du standard habitat sur deux tables : station et habitat.
+* Mise à jour du métamodèle pour accueillir des modèles à plusieurs tables.
+* Refonte du système de contrôle sur les données en entrée pour accueillir le standard habitat.
+* Révisions de certaines pages pour visualiser le standard habitat.
+* Refonte du système de génération des DEE pour créer ceux du standard habitat.
+* Refonte du système d'import des soumissions pour accepter indifféremment des fichiers CSV ou shapefiles.
+* Corrections sur le visualiseur / requêteur pour le standard habitat.
+* Corrections de bugs divers.
+
+[Liste complète des commits](https://github.com/SINP-GINCO/ginco/compare/v2.3.1..v2.4.0)
+
 ## V2.3.1 (06/06/2019)
 
 * Métamodèle : configuration possible de valeurs par défaut pour les modèles de données et modèles d'import.
