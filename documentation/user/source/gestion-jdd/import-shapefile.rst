@@ -5,9 +5,9 @@
 Fichier d'import shapefile
 ==========================
 
-Sur la page de chargement des données, un second onglet permet d'importer des fichiers shapefile.
+Sur la page de chargement des données, le formulaire permet de charger indifféremment un fichier CSV ou un fichier shapefile.
 
-.. image:: ../images/gestion-jdd/import-shapefile.png
+Si vous choisissez de soumettre un fichier shapefile, il sera transformé en CSV sur le serveur.
 
 Un shapefile étant constitué de plusieurs fichiers, ils doivent être regroupés dans une archive .zip portant le même nom que les fichiers. L'archive doit contenir au moins 4 fichiers avec les extensions .shp, .dbf, .shx et .prj
 

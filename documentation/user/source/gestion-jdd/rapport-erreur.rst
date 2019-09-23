@@ -158,3 +158,7 @@ Erreurs de cohérence
 * **1212 -  Le cdNom indiqué n'est pas dans le référentiel TAXREF** ; la valeur de cdNom n'a pu être trouvée dans la version courante du référentiel.
 
 * **1213 -  Le cdRef indiqué n'est pas dans le référentiel TAXREF** ; la valeur de cdRef n'a pu être trouvée dans la version courante du référentiel.
+
+* **1214 -  Le champ cdHab doit être rempli car nomCite a pour valeur + nomCite** ; la valeur du cdHab doit être fournie lorsque le nom cité est égal à "Inconnu" ou "Nom perdu".
+
+* **1215 -  Le champ precisionTechnique doit être rempli car la valeur de techniqueCollecte est 10 (Autre, à préciser).** ; lorsque la technique collecte ne fait pas partie des valeurs listées, alors le champ precisionTechnique doit être rempli pour préciser la technique de collecte utilisée.
