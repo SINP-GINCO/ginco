@@ -30,21 +30,18 @@ Créer un modèle de données
 
 Il faut avoir cliqué sur "Modèles de données" dans le menu pour accéder à la page de gestion des modèles de données.
 
-1. GINCO propose un modèle de données de base : **Occ_Taxon_DSR_exemple** (**1**).
+1. GINCO propose deux modèles de données de base : **Occ_Taxon_DSR_exemple** et **Occ_Habitat_DSR** qui sont des exemples de modèles de données implémentant respectivement le standard des occurences de taxon et le standard des occurences d'habitat.
 
-.. note:: Le modèle Occ_Taxon_DSR_exemple est le modèle de base. Il n'est possible ni de le supprimer, ni de le modifier.
+.. note:: Ce sont les modèles de base. Il n'est possible ni de les supprimer, ni de les modifier.
 
-Pour créer un nouveau modèle, vous devez dupliquer le modèle DSR de base ou un
-modèle qui l'a étendu (**2**).
+Pour créer un nouveau modèle, vous devez cliquer sur le bouton **Créer un modèle de données.**
 
-.. warning :: Il n'est plus possible de créer un modèle à partir de zéro. C'est en effet un processus laborieux et un peu dangereux car rien ne garantit que le modèle ainsi configuré permettra l'export correct en DEE et que tous les champs techniques nécessaires au bon fonctionnement de la plate-forme seront présents.
+.. warning :: Il n'est plus possible de créer un modèle à partir de zéro. C'est en effet un processus laborieux et un peu dangereux car rien ne garantit que le modèle ainsi configuré permettra l'export correct en DEE et que tous les champs techniques nécessaires au bon fonctionnement de la plate-forme seront présents. La création d'un nouveau modèle consiste en fait à dupliquer un modèle de base, qui pourra alors être étendu.
 
-2. Pour copier un modèle existant, cliquer sur l'icône "Dupliquer" correspondante. Un modèle contenant les mêmes tables et champs que le modèle initial sera créé. Vous ne devez pas modifier ou supprimer des champs provenant du modèle DSR de base.
-
-Vous pourrez alors indiquer le nom de votre nouveau modèle ainsi qu'une description
+Vous devez ensuite choisir le standard de données que votre modèle implémente, et vous pourrez alors indiquer le nom de votre nouveau modèle ainsi qu'une description
 (facultative) :
 
-.. image:: ../images/new-data-model.png
+.. image:: ../images/configurateur/configurateur-modele-choix-standard.png
 
 Votre nouveau modèle est visible sur la page de gestion des modèles de données (1) :
 
@@ -182,21 +179,18 @@ Le modèle de données sera alors disponible en production.
 
 Si toutes ces conditions ne sont pas atteintes, le bouton de publication est grisé.
 
-.. note:: Une fois publié, le modèle de données ne peut plus être ni supprimé ni
-    modifié. Vous pouvez toutefois continuer à consulter sa configuration en visualisant
-    son contenu (bouton Visualiser).
-
 La publication est la première étape à effectuer dans le processus de mise à disposition
 de vos données. Elle est nécessaire à la publication des modèles d'import de
 fichiers qui vont alimenter ce modèle de données.
 
-Lorsque vous publiez un modèle de données, toutes les tables qui y ont été configurées sont générées en base de données.
+Lorsque vous publiez un modèle de données pour la première fois, toutes les tables qui y ont été configurées sont générées en base de données.
 
 Si vous souhaitez dépublier un modèle de données, il suffit de cliquer sur le bouton d'arrêt de lecture dans le tableau des modèles de données :
 
 .. image:: ../images/configurateur/configurateur-modele-depublication.png
 
-A la dépublication d'un modèle de données, tous les modèles d'import qui lui sont associés seront également dépubliés. Il ne vous sera alors plus possible de téléverser des données d'observation.
+A la dépublication d'un modèle de données, tous les modèles d'import qui lui sont associés seront également dépubliés. Il ne vous sera alors plus possible de téléverser des données d'observation, tant que ce modèle restera dépublié.
 
-.. warning:: Il n'est pas possible de dépublier un modèle de données si des données
-    ont été insérées dans les tables de ce modèle.
+En revanche, vous pourrez de nouveau accéder à la modification du modèle pour y ajouter ou supprimer des champs (les champs du modèle de base ne sont pas supprimables).
+
+Une fois vos modifications terminées, cliquez à nouveau sur Publier et vous pourrez alors à nouveau verser des données dans ce modèle.

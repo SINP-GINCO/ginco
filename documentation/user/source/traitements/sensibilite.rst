@@ -3,6 +3,8 @@
 Calcul de la sensibilité
 ========================
 
+.. note:: Le calcul de sensibilité ne concerne que les données rattachées au standard des occurences de taxon. Pour le standard des occurences d'habitat, la sensibilité est déclarative.
+
 La sensibilité est calculée à partir d'un référentiel de sensibilité.
 Un référentiel liste des croisements de taxons, localisations (départements), durées de sensibilité.
 Il permet de définir au niveau de la donnée un indice de sensibilité (entre 0 et 4)

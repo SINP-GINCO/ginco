@@ -56,6 +56,7 @@ Languedoc-Roussillon                                https://ginco.naturefrance.f
 Midi-Pyrénées                                       https://ginco.naturefrance.fr/midipyrenees
 Nouvelle-Aquitaine     			                    https://ginco.naturefrance.fr/nouvelleaquitaine
 Pays de la Loire                           			https://ginco.naturefrance.fr/paysdelaloire
+Occitanie                                           https://ginco.naturefrance.fr/occitanie
 ==============================================    =====================================
 
 ==============================================    =====================================
