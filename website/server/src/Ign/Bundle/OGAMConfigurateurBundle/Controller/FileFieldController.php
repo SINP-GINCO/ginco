@@ -18,7 +18,7 @@ class FileFieldController extends Controller {
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/addAndUpdate/", name="configurateur_file_add_fields_and_update", options={"expose"=true})
 	 * @Route("datasetsimport/{datasetId}/files/{format}/fields/add/", name="configurateur_file_add_fields", options={"expose"=true})
 	 */
-	public function addFieldsAction($datasetId, $format, Request $request) {
+	public function addFieldsAction(Request $request, $datasetId, $format, $destinationFormat = null) {
 		$em = $this->getDoctrine()->getManager('metadata');
 
 		$dataRepository = $em->getRepository('IgnGincoBundle:Metadata\Data');
@@ -73,10 +73,15 @@ class FileFieldController extends Controller {
 		if ($fields === null) {
 
 			$dataset = $em->getRepository('IgnGincoBundle:Metadata\Dataset')->find($datasetId);
-			$tables = $dataset->getModel()->getTables();
-			foreach ($tables as $table) {
-				$this->doAutoMapping($table->getFormat(), $format->getFormat());
-			}
+            if (!is_null($destinationFormat)) {
+                $destTableFormat = $em->getRepository('IgnGincoBundle:Metadata\TableFormat')->find($destinationFormat) ;
+                $this->doAutoMapping($destinationFormat, $format->getFormat()) ;
+            } else {
+                $tables = $dataset->getModel()->getTables();
+                foreach ($tables as $table) {
+                    $this->doAutoMapping($table->getFormat(), $format->getFormat());
+                }
+            }
 
 			return $this->redirectToRoute('configurateur_file_fields', array(
 				'datasetId' => $datasetId,

@@ -10,10 +10,10 @@ app.session.flashbag.get('error-autoaddfields') %}
 <div class="alert alert-danger">{{ flashMessage }}</div>
 {% endfor %}
 
-{# Inline form...#} 
-{{ form_start(autoAddFieldsForm, {attr:{class: 'form-inline'}}) }}
-<div class="col-xs-6">{{ form_row(autoAddFieldsForm.table_format) }}</div>
-<div class="col-xs-6">{{ form_row(autoAddFieldsForm.only_mandatory) }}</div>
-<div class="col-xs-6">{{ form_row(autoAddFieldsForm.with_calculated) }}</div>
-<div class="col-xs-6">{{ form_row(autoAddFieldsForm.submit) }}</div>
+
+{{ form_start(autoAddFieldsForm) }}
+{{ form_row(autoAddFieldsForm.table_format) }}
+{{ form_row(autoAddFieldsForm.only_mandatory) }}
+{{ form_row(autoAddFieldsForm.with_calculated) }}
+{{ form_row(autoAddFieldsForm.submit) }}
 {{ form_end(autoAddFieldsForm) }}
