@@ -28,8 +28,10 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 	public function createPredefinedRequests($modelId, $tableSchema, $dbconn) {
 		
 		// Get the query dataset_id linked to the $modelId
-		$sql = "SELECT dataset.dataset_id, dataset.label
+		$sql = "SELECT dataset.dataset_id, dataset.label, s.name as standard
 					FROM metadata.dataset, metadata.model_datasets md
+                    JOIN metadata.model m ON md.model_id = m.id
+					JOIN metadata.standard s ON s.name = m.standard
 					WHERE dataset.type = 'QUERY'
 					AND md.dataset_id = dataset.dataset_id
 					AND md.model_id = $1";
@@ -40,6 +42,7 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		$row = pg_fetch_assoc($result);
 		$datasetId = $row['dataset_id'];
 		$datasetLabel = $row['label'];
+        $standard = $row['standard'];
 		
 		// Get predefined request group next val sequence id
 		$sqlPRGroupIdNextval = "SELECT nextval('predefined_request_group_group_id_seq');";
@@ -49,6 +52,11 @@ class PredefinedRequestGeneration extends TableGenerationBase2 {
 		
 		// Add a group for the predefined request of the dataset
 		$this->addPredefinedRequestGroup($groupId, $datasetLabel, $datasetLabel, '1', $dbconn);
+        
+        // Only create a group with standard habitat.
+        if ('habitat' == $standard) {
+            return ;
+        }
 		
 		// Describe custom requests
 		// REQUEST 1 : group request
