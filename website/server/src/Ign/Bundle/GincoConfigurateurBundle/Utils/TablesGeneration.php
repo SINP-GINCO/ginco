@@ -65,7 +65,7 @@ class TablesGeneration extends TablesGenerationBase {
 			}
 		}
 		try {
-			if ($this->isTableOcctax($modelId, $dbconn) && $this->predefinedRequestGeneration && $numberOfTables > 0) {
+			if ($this->predefinedRequestGeneration && $numberOfTables > 0) {
 				$this->predefinedRequestGeneration->createPredefinedRequests($modelId, $tableSchema, $dbconn); // Ginco specific
 			}
 			$this->addConstraints($modelId, $dbconn);
