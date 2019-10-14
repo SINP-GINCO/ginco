@@ -119,5 +119,7 @@ public class DSRConstants {
 	public final static String TECHNIQUE_COLLECTE = "techniquecollecte" ;
 	public final static String PRECISION_TECHNIQUE = "precisiontechnique" ;
 	public final static String CD_HAB = "cdhab" ;
+	public final static String HABITAT_INTERET_COMMUNAUTAIRE = "habitatinteretcommunautaire" ;
+	public final static String CD_HAB_INTERET_COMMUNAUTAIRE = "cdhabinteretcommunautaire" ;
 
 }
