@@ -52,3 +52,4 @@ TypeDeterminationValue;SELECT code, label || ' (' || code || ')' as label, defin
 TechniqueCollecteValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.techniquecollectevalue ORDER BY code
 AbondanceHabitatValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.abondancehabitatvalue ORDER BY code
 NiveauSensiValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.niveausensivalue ORDER BY code
+HabitatInteretCommunautaireValue;SELECT code, label || ' (' || code || ')' as label, definition, ''::text as position FROM referentiels.habitatinteretcommunautairevalue ORDER BY code

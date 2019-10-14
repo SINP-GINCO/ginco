@@ -64,3 +64,4 @@ TypeDeterminationValue;CODE;DYNAMIC;Type de détermination;Type de déterminatio
 TechniqueCollecteValue;STRING;DYNAMIC;Techniques de collecte de l'observation;Techniques de collecte de l'observation
 AbondanceHabitatValue;CODE;DYNAMIC;Coefficients de Braun-Blanquet et Pavillard;Coefficients de Braun-Blanquet et Pavillard
 NiveauSensiValue;CODE;DYNAMIC;Niveau de sensiblité des habitats;Niveau de sensiblité des habitats
+HabitatInteretCommunautaireValue;CODE;DYNAMIC;Indication si l'habitat est d'interêt communautaire;Indication si l'habitat est d'interêt communautaire
