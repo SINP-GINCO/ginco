@@ -144,3 +144,5 @@ relevephyto;CharacterString;relevePhyto;Identifiant d'un relevé phytosociologiq
 sensibilitehab;NiveauSensiValue;sensibiliteHab;Sensibilité de l'habitat selon le producteur.;;true
 echellenumerisation;CharacterString;echelleNumerisation;Echelle de carte à laquelle la numérisation de l'information géographique a été effectuée.;;true
 clestation;CharacterString;cleStation;Identifiant dans la soumission faisant le lien entre station et habitat.;;true
+habitatinteretcommunautaire;HabitatInteretCommunautaireValue;habitatInteretCommunautaire;Indique si l'habitat est d'intérêt communautaire.;;true
+cdhabinteretcommunautaire;CodeHabRefValue;cdHabInteretCommunautaire;Code d'habitat d'intérêt communautaire.;;true

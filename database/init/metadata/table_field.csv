@@ -127,6 +127,8 @@ SUBMISSION_ID;table_habitat;submission_id;1;0;0;0;16;;
 PROVIDER_ID;table_habitat;provider_id;0;0;0;1;17;;
 USER_LOGIN;table_habitat;user_login;0;0;0;1;18;;
 clestation;table_habitat;clestation;0;1;1;1;19;;
+habitatinteretcommunautaire;table_habitat;habitatinteretcommunautaire;0;1;1;0;20;;
+cdhabinteretcommunautaire;table_habitat;cdhabinteretcommunautaire;0;1;1;0;21;;
 identifiantstasinp;table_station;identifiantstasinp;1;0;0;1;1;;
 jddmetadonneedeeid;table_station;jddmetadonneedeeid;0;1;1;1;2;;
 dspublique;table_station;dspublique;0;1;1;1;3;;

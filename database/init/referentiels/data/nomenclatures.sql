@@ -957,6 +957,27 @@ INSERT INTO referentiels.niveausensivalue (code, label, definition) VALUES
 
 
 
+
+CREATE TABLE referentiels.habitatinteretcommunautairevalue (
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT habitatinteretcommunautaire_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.habitatinteretcommunautairevalue OWNER TO postgres ;
+
+INSERT INTO referentiels.habitatinteretcommunautairevalue (code, label, definition) VALUES
+    ('1', 'Oui', 'L''habitat est d''intérêt communautaire'),
+    ('2', 'Non', 'L''habitat n''est pas d''intérêt communautaire'),
+    ('3', 'Oui, prioritaire', 'L''habitat est d''intérêt communautaire prioritaire')
+;
+
+
+
+
+
+
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM PUBLIC;
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM postgres;
 GRANT ALL ON ALL TABLES IN SCHEMA  referentiels TO postgres;

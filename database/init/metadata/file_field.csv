@@ -188,6 +188,8 @@ identifianthabsinp;file_habitat;"0";;idHabSINP;
 nomcite;file_habitat;"1";;nomCite;
 techniquecollecte;file_habitat;"1";;techniqueCollecte;
 clestation;file_habitat;"1";;cleStation;
+habitatinteretcommunautaire;file_habitat;"0";;habitatInteretCommunautaire;
+cdhabinteretcommunautaire;file_habitat;"0";;cdHabInteretCommunautaire;
 acidite;file_station;"0";;acidite;
 altitudemax;file_station;"0";;altMax;
 altitudemin;file_station;"0";;altMin;

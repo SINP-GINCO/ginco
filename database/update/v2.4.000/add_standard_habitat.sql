@@ -38,7 +38,8 @@ INSERT INTO unit VALUES
     ('TypeDeterminationValue', 'CODE', 'DYNAMIC', 'Type de détermination', 'Type de détermination'),
     ('TechniqueCollecteValue', 'STRING', 'DYNAMIC', 'Techniques de collecte de l''observation', 'Techniques de collecte de l''observation'),
     ('AbondanceHabitatValue', 'CODE', 'DYNAMIC', 'Coefficients de Braun-Blanquet et Pavillard', 'Coefficients de Braun-Blanquet et Pavillard'),
-    ('NiveauSensiValue', 'CODE', 'DYNAMIC', 'Niveau de sensiblité des habitats', 'Niveau de sensiblité des habitats')
+    ('NiveauSensiValue', 'CODE', 'DYNAMIC', 'Niveau de sensiblité des habitats', 'Niveau de sensiblité des habitats'),
+    ('HabitatInteretCommunautaireValue', 'CODE', 'DYNAMIC', 'Indication si l''habitat est d''interêt communautaire', 'Indication si l''habitat est d''interêt communautaire')
 ;
 
 ----------------------------------------------------------------
@@ -55,7 +56,8 @@ INSERT INTO dynamode VALUES
     ('TypeDeterminationValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.typedeterminationvalue ORDER BY code'),
     ('TechniqueCollecteValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.techniquecollectevalue ORDER BY code'),
     ('AbondanceHabitatValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.abondancehabitatvalue ORDER BY code'),
-    ('NiveauSensiValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.niveausensivalue ORDER BY code')
+    ('NiveauSensiValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.niveausensivalue ORDER BY code'),
+    ('HabitatInteretCommunautaireValue', 'SELECT code, label || '' ('' || code || '')'' as label, definition, ''''::text as position FROM referentiels.habitatinteretcommunautairevalue ORDER BY code')
 ;
 
 ----------------------------------------------------------------
@@ -457,12 +459,29 @@ INSERT INTO referentiels.niveausensivalue (code, label, definition) VALUES
 ;
 
 
+-- HabitatInteretCommunautaireValue
+-----------------------------------
+
+CREATE TABLE referentiels.habitatinteretcommunautairevalue (
+    code varchar(32) NOT NULL,
+    label varchar(128) NULL,
+    definition varchar(510) NULL,
+    CONSTRAINT habitatinteretcommunautaire_pkey PRIMARY KEY (code)
+);
+
+ALTER TABLE referentiels.habitatinteretcommunautairevalue OWNER TO postgres ;
+
+INSERT INTO referentiels.habitatinteretcommunautairevalue (code, label, definition) VALUES
+    ('1', 'Oui', 'L''habitat est d''intérêt communautaire'),
+    ('2', 'Non', 'L''habitat n''est pas d''intérêt communautaire'),
+    ('3', 'Oui, prioritaire', 'L''habitat est d''intérêt communautaire prioritaire')
+;
+
+
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM PUBLIC;
 REVOKE ALL ON ALL TABLES IN SCHEMA referentiels FROM postgres;
 GRANT ALL ON ALL TABLES IN SCHEMA  referentiels TO postgres;
 GRANT ALL ON ALL TABLES IN SCHEMA  referentiels TO ogam;
-
-
 
 ----------------------------------------------------------------
 -- 7. Data
@@ -496,7 +515,9 @@ INSERT INTO data(data, unit, label, definition) VALUES
     ('relevephyto', 'CharacterString', 'relevePhyto', 'Identifiant d''un relevé phytosociologique de l''extension relevés phytosociologiques du standard occurrences de taxons.'),
     ('sensibilitehab', 'NiveauSensiValue', 'sensibiliteHab', 'Sensibilité de l''habitat selon le producteur.'),
     ('echellenumerisation', 'CharacterString', 'echelleNumerisation', 'Echelle de carte à laquelle la numérisation de l''information géographique a été effectuée.'),
-    ('clestation','CharacterString', 'cleStation', 'Identifiant dans la soumission faisant le lien entre station et habitat.')
+    ('clestation','CharacterString', 'cleStation', 'Identifiant dans la soumission faisant le lien entre station et habitat.'),
+    ('habitatinteretcommunautaire', 'HabitatInteretCommunautaireValue', 'habitatInteretCommunautaire', 'Indique si l''habitat est d''intérêt communautaire.'),
+    ('cdhabinteretcommunautaire', 'CodeHabRefValue', 'cdHabInteretCommunautaire', 'Code d''habitat d''intérêt communautaire.;')
 ;
 
 
@@ -586,6 +607,8 @@ INSERT INTO field (type,"data",format) VALUES ('TABLE','precisiontechnique','tab
 INSERT INTO field (type,"data",format) VALUES ('TABLE','releveespeces','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','relevephyto','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','sensibilitehab','table_habitat');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','habitatinteretcommunautaire','table_habitat');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','cdhabinteretcommunautaire','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','OGAM_ID_table_habitat','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','SUBMISSION_ID','table_habitat');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','PROVIDER_ID','table_habitat');
@@ -655,6 +678,8 @@ INSERT INTO field (type,"data",format) VALUES
     ('FILE','nomcite','file_habitat'),
     ('FILE','techniquecollecte','file_habitat'),
     ('FILE','clestation','file_habitat'),
+    ('FILE','habitatinteretcommunautaire', 'file_habitat'),
+    ('FILE','cdhabinteretcommunautaire', 'file_habitat'),
     ('FILE','acidite','file_station'),
     ('FILE','altitudemax','file_station'),
     ('FILE','altitudemin','file_station'),
@@ -715,7 +740,9 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
     ('SUBMISSION_ID','table_habitat','submission_id','1','0','0','0',16),
     ('PROVIDER_ID','table_habitat','provider_id','0','0','0','1',17),
     ('USER_LOGIN','table_habitat','user_login','0','0','0','1',18),
-    ('clestation','table_habitat','clestation','0','1','1','1',19)
+    ('clestation','table_habitat','clestation','0','1','1','1',19),
+    ('habitatinteretcommunautaire','table_habitat','habitatinteretcommunautaire','0','1','1','0',20),
+    ('cdhabinteretcommunautaire','table_habitat','cdhabinteretcommunautaire','0','1','1','0',21)
 ;
 
 -- Table station
@@ -789,6 +816,8 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('nomcite','file_habitat','1',NULL,'nomCite'),
     ('techniquecollecte','file_habitat','1',NULL,'techniqueCollecte'),
     ('clestation','file_habitat','1',NULL,'cleStation'),
+    ('habitatinteretcommunautaire','file_habitat','0',NULL,'habitatInteretCommunautaire'),
+    ('cdhabinteretcommunautaire','file_habitat','0',NULL,'cdHabInteretCommunautaire'),
     ('acidite','file_station','0',NULL,'acidite'),
     ('altitudemax','file_station','0',NULL,'altMax'),
     ('altitudemin','file_station','0',NULL,'altMin'),
