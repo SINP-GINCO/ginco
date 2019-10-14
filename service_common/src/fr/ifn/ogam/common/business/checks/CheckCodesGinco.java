@@ -91,5 +91,10 @@ public interface CheckCodesGinco {
 	 * techniquecollecte is empty
 	 */
 	Integer PRECISION_TECHNIQUE_EMPTY = 1215 ;
+	
+	/**
+	 * cdhabinteretcommunautaire is empty
+	 */
+	Integer CDHAB_INTERET_COMMUNAUTAIRE_EMPTY = 1216 ;
 
 }

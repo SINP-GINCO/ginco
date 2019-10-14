@@ -49,6 +49,7 @@ public class ChecksHabitatService extends AbstractChecksService {
 		
 		identifiantPermanentIsUUID(DSRConstants.IDENTIFIANT_HAB_SINP, values);
 		cdHabIsNotEmpty(values);
+		cdHabInteretCommunautaireIsNotEmpty(values);
 		precisionTechniqueNotEmpty(values);
 
 		// if errors have been found while doing the checks, return an exception containing those to write in check_error
@@ -93,6 +94,8 @@ public class ChecksHabitatService extends AbstractChecksService {
 		fields.put(DSRConstants.PRECISION_TECHNIQUE, STRING) ;
 		fields.put(DSRConstants.NOM_CITE, STRING) ;
 		fields.put(DSRConstants.CD_HAB, INTEGER) ;
+		fields.put(DSRConstants.HABITAT_INTERET_COMMUNAUTAIRE, CODE) ;
+		fields.put(DSRConstants.CD_HAB_INTERET_COMMUNAUTAIRE, INTEGER) ;
 
 		for (Map.Entry < String, String > field : fields.entrySet()) {
 			if (!values.containsKey(field.getKey())) {
@@ -145,6 +148,31 @@ public class ChecksHabitatService extends AbstractChecksService {
 				String error = "Le champ cdHab doit être rempli car nomCite a pour valeur '" + nomCiteValue + "'." ;
 				CheckException ce = new CheckException(CDHAB_EMPTY, error) ;
 				ce.setSourceData("cdHab") ;
+				alce.add(ce) ;
+			}
+		}
+	}
+	
+	
+	/**
+	 * cdHabInteretCommunautaire must be filled if habitatInteretCommunautaire equals 1 or 3.
+	 * @param values
+	 * @throws Exception
+	 */
+	private void cdHabInteretCommunautaireIsNotEmpty(Map < String, GenericData > values) throws Exception {
+		
+		GenericData interetCommunautaire = values.get(DSRConstants.HABITAT_INTERET_COMMUNAUTAIRE) ;
+		GenericData cdHabInteretCommunautaire = values.get(DSRConstants.CD_HAB_INTERET_COMMUNAUTAIRE) ;
+		
+		String interetCommunautaireValue = interetCommunautaire.getValue().toString() ;
+		
+		if (interetCommunautaireValue.equals("1") || interetCommunautaireValue.equals("3")) {
+			
+			if (empty(cdHabInteretCommunautaire)) {
+				
+				String error = "Le champ cdHabInteretCommunautaire doit être rempli car habitatInteretCommunautaire a pour valeur '" + interetCommunautaireValue + "'." ;
+				CheckException ce = new CheckException(CDHAB_INTERET_COMMUNAUTAIRE_EMPTY, error) ;
+				ce.setSourceData("cdHabInteretCommunautaire") ;
 				alce.add(ce) ;
 			}
 		}

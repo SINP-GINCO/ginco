@@ -297,6 +297,8 @@ identifianthabsinp;file_habitat;identifianthabsinp;table_habitat;FILE
 nomcite;file_habitat;nomcite;table_habitat;FILE
 techniquecollecte;file_habitat;techniquecollecte;table_habitat;FILE
 clestation;file_habitat;clestation;table_habitat;FILE
+habitatinteretcommunautaire;file_habitat;habitatinteretcommunautaire;table_habitat;FILE
+cdhabinteretcommunautaire;file_habitat;cdhabinteretcommunautaire;table_habitat;FILE
 acidite;file_station;acidite;table_station;FILE
 altitudemax;file_station;altitudemax;table_station;FILE
 altitudemin;file_station;altitudemin;table_station;FILE
