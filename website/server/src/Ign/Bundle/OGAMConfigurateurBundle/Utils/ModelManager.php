@@ -212,7 +212,10 @@ class ModelManager {
 		}
 		$this->entityManager->flush();
 		
-		$this->tablesGeneration->addColumn($tableField) ;
+        $model = $tableFormat->getModel() ;
+        if ($model->isUnpublished() && !empty($model->getCreatedAt())) {
+            $this->tablesGeneration->addColumn($tableField) ;
+        }
 	}
 	
 	
@@ -269,8 +272,10 @@ class ModelManager {
 		
 		$this->entityManager->flush();
 		
-		// Retrait "physique" de la colonne. 
-		$this->tablesGeneration->removeColumn($tableFieldToRemove) ;
+		// Retrait "physique" de la colonne.
+        if ($model->isUnpublished() && !empty($model->getCreatedAt())) {
+            $this->tablesGeneration->removeColumn($tableFieldToRemove) ;
+        }
 	}
 	
 }
