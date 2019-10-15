@@ -67,7 +67,7 @@ class ModelPublication extends DatabaseUtils {
 			
 			// Le premier modèle (par défaut) est déjà présent dans le métamodèle,
 			// mais ses tables ne sont pas générées.
-			if ($model->getCreatedAt() == null) {
+			if ($model->hasNeverBeenPublished()) {
 				$this->modelManager->initModel($model) ;
 			}
 			
