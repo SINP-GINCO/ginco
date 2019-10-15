@@ -116,10 +116,11 @@ class TableFieldController extends Controller {
 				$tableField->setData($dataField);
 				$tableField->setFormat($tableFormat);
 				$tableField->setColumnName($dataField->getData());
-				if (boolval($mandatory) && !$tableField->getIsMandatory()) {
+                $model = $tableFormat->getModel() ;
+				if (!$model->hasNeverBeenPublished() && boolval($mandatory) && !$tableField->getIsMandatory()) {
 					$tablesGeneration->addNotNull($tableField) ;
 				}
-				if (!boolval($mandatory) && $tableField->getIsMandatory()) {
+				if (!$model->hasNeverBeenPublished() && !boolval($mandatory) && $tableField->getIsMandatory()) {
 					$tablesGeneration->dropNotNull($tableField) ;
 				}
 				$tableField->setIsMandatory($mandatory);

@@ -213,7 +213,7 @@ class ModelManager {
 		$this->entityManager->flush();
 		
         $model = $tableFormat->getModel() ;
-        if ($model->isUnpublished() && !empty($model->getCreatedAt())) {
+        if (!$model->hasNeverBeenPublished()) {
             $this->tablesGeneration->addColumn($tableField) ;
         }
 	}
@@ -273,7 +273,7 @@ class ModelManager {
 		$this->entityManager->flush();
 		
 		// Retrait "physique" de la colonne.
-        if ($model->isUnpublished() && !empty($model->getCreatedAt())) {
+        if (!$model->hasNeverBeenPublished()) {
             $this->tablesGeneration->removeColumn($tableFieldToRemove) ;
         }
 	}

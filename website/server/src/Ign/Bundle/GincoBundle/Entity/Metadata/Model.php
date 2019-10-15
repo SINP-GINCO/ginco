@@ -353,6 +353,13 @@ class Model {
 		return $this->getStatus() == self::SOFT_DELETED;
 	}
 
+    /**
+     * 
+     * @return type
+     */
+    public function hasNeverBeenPublished() {
+        return empty($this->getCreatedAt()) ;
+    }
 	
 	/**
 	 * Get creation date
