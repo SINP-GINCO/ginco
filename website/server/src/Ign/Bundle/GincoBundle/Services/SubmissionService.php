@@ -658,7 +658,8 @@ class SubmissionService {
 				'identifiantstasinp',
 				'identifianthabsinp',
 				'identifiantorigine',
-				'identifiantoriginestation'
+				'identifiantoriginestation',
+                'clestation'
 			);
 			return $this->doWritePermanentIdsReport($submission, $reportFields, $outputFile) ;
 		}
@@ -712,7 +713,9 @@ class SubmissionService {
 				$queryForm->addColumn($formField->getFormat()
 					->getFormat(), $formField->getData()
 					->getData());
-			}
+                // remove reported fields to avoid counting it twice (for clestation, both in habitat and station).
+                $reportFields = array_diff($reportFields, [$formField->getData()->getData()]) ;
+            }
 		}
 		$resultColumns = $queryForm->getColumns();
 		
