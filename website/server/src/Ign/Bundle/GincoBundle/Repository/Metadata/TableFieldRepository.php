@@ -400,13 +400,16 @@ class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 	 *
 	 * @return array
 	 */
-	public function findReferenceFields() {
+	public function findReferenceFields(Model $model) {
 		$query = $this->_em->createQuery("SELECT dt.data
 			FROM IgnGincoBundle:Metadata\TableField t
 			INNER JOIN IgnGincoBundle:Metadata\Data dt WITH dt.data = t.data
 			INNER JOIN IgnGincoBundle:Metadata\ModelTables mt WITH mt.table = t.format
 			INNER JOIN IgnGincoBundle:Metadata\Model m WITH m.id = mt.model
-			WHERE m.ref = true");
+            INNER JOIN IgnGincoBundle:Metadata\Standard s WITH m.standard = s.name
+			WHERE m.ref = true
+            AND s.name = :standard");
+        $query->setParameter('standard', $model->getStandard()->getName()) ;
 		return $query->getResult();
 	}
 
