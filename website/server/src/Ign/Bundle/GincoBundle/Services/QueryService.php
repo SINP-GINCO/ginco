@@ -114,7 +114,9 @@ class QueryService {
 		'sensiniveau',
 		'dspublique',
 		'diffusionniveauprecision',
-		'pk'
+		'pk',
+        'nomstation',
+        'cdhab'
 	);
 
 	private static $submissionJoin = array(
@@ -1406,10 +1408,22 @@ class QueryService {
 		$locationTableInfo = $this->doctrine->getManager('mapping')
 			->getRepository(TableFormat::class)
 			->getTableFormat($schema, $locationTableFormat, $locale);
+        
+        // Get the children of locationTableInfo
+        $children = $this->metadataModel->getRepository('IgnGincoBundle:Metadata\TableTree')->findChildren($locationTableInfo) ;
+        
 		// Get the location table columns
 		$tableFields = $this->doctrine->getManager('mapping')
 			->getRepository(TableField::class)
 			->getTableFields($schema, $locationTableFormat, null, $locale);
+        
+        // add children table columns
+        if (!empty($children)) {
+            foreach ($children as $child) {
+                $childFields = $this->metadataModel->getRepository(TableField::class)->getTableFields($schema, $child->getChildTable(), null, $locale);
+                $tableFields = array_merge($tableFields, $childFields) ;
+            }
+        }
 		
 		// Setup the location table columns for the select
 		// Only few columns are selected
@@ -1485,6 +1499,19 @@ class QueryService {
 		$rawDataTableName = $locationTableInfo->getTableName();
 		// Map the varying two keys in results to the keys in the raw_data table
 		$keys = $this->genericModel->getRawDataTablePrimaryKeys($locationTableInfo);
+        
+        $joinChildren = "" ;
+        if (!empty($children)) {
+            foreach ($children as $child) {
+                $joinKeys = explode(',', $child->getJoinKey()) ;
+                $joinConditions = array();
+                foreach ($joinKeys as $joinKey) {
+                    $joinConditions[] = " c.$joinKey = raw.$joinKey " ;
+                }
+                $childTableName = $child->getChildTable()->getTableName() ;
+                $joinChildren .= " INNER JOIN $childTableName c ON " . implode(" AND ", $joinConditions) ;
+            }
+        }
 		
 		$fromTemplate = "FROM bac_# bac
 		INNER JOIN observation_# obs ON obs.id_$ = bac.id_#
@@ -1494,6 +1521,7 @@ class QueryService {
 		INNER JOIN requests req ON res.id_request = req.id
 		INNER JOIN $rawDataTableName raw ON raw.provider_id = res.id_provider
 		AND raw." . $keys['id_observation'] . " = res.id_observation
+        $joinChildren
 		WHERE req.session_id = ?
 		AND hiding_level <= ?
 		AND ST_DWithin(bac.geom, ST_SetSRID(ST_Point(?, ?),$projection), $margin)
