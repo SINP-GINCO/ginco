@@ -484,6 +484,7 @@ class QueryController extends GincoController {
 					->getRepository(TableFormat::class)
 					->getTableFormat($schema, $locationField->getFormat()
 					->getFormat(), $locale); // Get info about the location table
+                $children = $this->getDoctrine()->getRepository('IgnGincoBundle:Metadata\TableTree')->findChildren($locationTableInfo) ;
 					                         
 				// Get the intersected locations
 				$locations = $this->get('ginco.query_service')->getLocationInfo($sessionId, $lon, $lat, $locationField, $schema, $this->get('ginco.configuration_manager'), $locale, $activeLayers, $resultsLayer);
@@ -543,6 +544,12 @@ class QueryController extends GincoController {
 								->getRepository(TableField::class)
 								->getTableFields($schema, $locationField->getFormat()
 								->getFormat(), null, $locale);
+                            if (!empty($children)) {
+                                foreach ($children as $child) {
+                                    $childFields = $this->getDoctrine()->getRepository(TableField::class)->getTableFields($schema, $child->getChildTable(), null, $locale) ;
+                                    $tableFields = array_merge($tableFields, $childFields) ;
+                                }
+                            }
 							$tFOrdered = array();
 							foreach ($tableFields as $tableField) {
 								$tFOrdered[strtoupper($tableField->getColumnName())] = $tableField;

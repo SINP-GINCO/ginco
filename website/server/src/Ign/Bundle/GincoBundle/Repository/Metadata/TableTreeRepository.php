@@ -105,4 +105,21 @@ class TableTreeRepository extends \Doctrine\ORM\EntityRepository {
 		return array_column($childrenLabels, 'label', 'format');
 	}
 	
+    
+    /**
+     * Retrouve les enfants (directs, pas de récursivité) d'une table donnée
+     * @param TableFormat $tableFormat
+     * @return TableTree[] Tableau des enfants directs, false si un problème a été rencontré.
+     */
+    public function findChildren(TableFormat $tableFormat) {
+        
+        $tableTreeRepository = $this->getEntityManager()->getRepository('IgnGincoBundle:Metadata\TableTree') ;
+        
+        $tableTrees = $tableTreeRepository->findBy(['parentTable' => $tableFormat]) ;
+        if (!$tableTrees) {
+            return false ;
+        }
+        
+        return $tableTrees ;
+    }
 }
