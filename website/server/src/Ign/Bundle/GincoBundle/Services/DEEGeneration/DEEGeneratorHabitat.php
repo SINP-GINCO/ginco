@@ -124,42 +124,37 @@ class DEEGeneratorHabitat extends AbstractDEEGenerator {
 		
 		// Requête stations base
 		$sqlStation = "SELECT " ;
-		$sqlStation .= implode(", ", array_keys($this->stationModel)) ;
+        $fields = array() ;
+        foreach ($this->stationModel as $column => $label) {
+            $fields[] = "s.$column AS $label" ;
+        }
+        $sqlStation .= implode(", ", $fields) ;
 		$sqlStation .= " FROM {$tableStation->getTableName()} s " ;
 		$sqlStation .= " WHERE s.submission_id IN (" . implode(",", $dee->getSubmissions()) . ") " ;
 		
 		// Stations points
 		$sqlStationPoints = $sqlStation . " AND st_geometrytype(st_multi(s.geometrie)) = 'ST_MultiPoint'" ;
-		$csvStationPoints = $filePath . DIRECTORY_SEPARATOR . "shp_point_soh.csv" ;
-		$this->generateCsv($sqlStationPoints, $csvStationPoints, $this->stationModel, $message) ;
-		if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+		$shpStationPoints = $filePath . DIRECTORY_SEPARATOR . "shp_point_soh.shp" ;
+        $this->ogr2ogr->pg2shp($sqlStationPoints, $shpStationPoints, 'EPSG:4326') ;
+        if (Message::STATUS_TOCANCEL == $message->getStatus()) {
 			return;
 		}
-		$shpStationPoints = $filePath . DIRECTORY_SEPARATOR . "shp_point_soh.shp" ;
-		$this->ogr2ogr->csv2shp($csvStationPoints, $shpStationPoints, 'EPSG:4326') ;
-		unlink($csvStationPoints) ;
 		
 		// Stations lignes
 		$sqlStationLignes = $sqlStation . " AND st_geometrytype(st_multi(s.geometrie)) = 'ST_MultiLineString'" ;
-		$csvStationLignes = $filePath . DIRECTORY_SEPARATOR . "shp_ligne_soh.csv" ;
-		$this->generateCsv($sqlStationLignes, $csvStationLignes, $this->stationModel, $message) ;
-		if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+		$shpStationLignes = $filePath . DIRECTORY_SEPARATOR . "shp_ligne_soh.shp" ;
+        $this->ogr2ogr->pg2shp($sqlStationLignes, $shpStationLignes, 'EPSG:4326') ;
+        if (Message::STATUS_TOCANCEL == $message->getStatus()) {
 			return;
 		}
-		$shpStationLignes = $filePath . DIRECTORY_SEPARATOR . "shp_ligne_soh.shp" ;
-		$this->ogr2ogr->csv2shp($csvStationLignes, $shpStationLignes, 'EPSG:4326') ;
-		unlink($csvStationLignes) ;
 		
 		// Stations polygones
 		$sqlStationPolygones = $sqlStation . " AND st_geometrytype(st_multi(s.geometrie)) = 'ST_MultiPolygon'" ;
-		$csvStationPolygones = $filePath . DIRECTORY_SEPARATOR . "shp_polygone_soh.csv" ;
-		$this->generateCsv($sqlStationPolygones, $csvStationPolygones, $this->stationModel, $message) ;
-		if (Message::STATUS_TOCANCEL == $message->getStatus()) {
+		$shpStationPolygones = $filePath . DIRECTORY_SEPARATOR . "shp_polygone_soh.shp" ;
+        $this->ogr2ogr->pg2shp($sqlStationPolygones, $shpStationPolygones, 'EPSG:4326') ;
+        if (Message::STATUS_TOCANCEL == $message->getStatus()) {
 			return;
 		}
-		$shpStationPolygones = $filePath . DIRECTORY_SEPARATOR . "shp_polygone_soh.shp" ;
-		$this->ogr2ogr->csv2shp($csvStationPolygones, $shpStationPolygones, 'EPSG:4326') ;
-		unlink($csvStationPolygones) ;
 		
 	}
 

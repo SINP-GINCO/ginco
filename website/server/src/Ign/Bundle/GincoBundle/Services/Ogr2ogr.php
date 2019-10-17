@@ -3,6 +3,8 @@ namespace Ign\Bundle\GincoBundle\Services;
 
 use Symfony\Component\Process\Process;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 /**
  * Service to transform shapefile to csv
  */
@@ -43,16 +45,23 @@ class Ogr2ogr {
 	 * @var string
 	 */
 	private $inputSrs = null;
+    
+    /**
+     *
+     * @var EntityManagerInterface
+     */
+    private $entityManager ;
 
 	/**
 	 * Constructeur prenant en paramètre le chemin vers l'exécutable
 	 *
 	 * @param string $path
 	 */
-	public function __construct($logger, $configuration, $path = 'ogr2ogr' ){
+	public function __construct($logger, $configuration, $entityManager, $path = 'ogr2ogr' ){
 		$this->logger = $logger;
 		$this->configuration = $configuration;
 		$this->path = $path ;
+        $this->entityManager = $entityManager ;
 	}
 
 	/**
@@ -132,13 +141,46 @@ class Ogr2ogr {
 			$commandLine .= " -a_srs $a_srs " ;
 		}
 
-		echo $commandLine;
-
 		$process = new Process( $commandLine );
 		$result = $process->run();
 
 		return $process->getOutput() ;
 	}
+    
+
+    /**
+     * Transform a SQL query to shapefile
+     * @param type $sql
+     * @param type $outputPath
+     * @param type $a_srs
+     * @return type
+     */
+    public function pg2shp($sql, $outputPath, $a_srs = null) {
+        
+        $connection = $this->entityManager->getConnection() ;
+        
+        $connectionString = 'PG:"host=' . $connection->getHost()
+            . ' user=' . $connection->getUsername()
+            . ' dbname=' .$connection->getDatabase()
+            . ' password=' . $connection->getPassword()
+            . ' port=' . $connection->getPort()
+            . '"' ;
+        
+        $commandLine = $this->path . ' -f "ESRI Shapefile" ' . $outputPath . ' ' . $connectionString . ' -sql "' . $sql . '"' ;
+        
+        if (isset($this->separator)) {
+			$commandLine .= ' -lco SEPARATOR='.$this->separator;
+		}
+		
+		if (isset($a_srs)) {
+			$commandLine .= " -a_srs $a_srs " ;
+		}
+
+		$process = new Process( $commandLine );
+		$result = $process->run();
+
+		return $process->getOutput() ;
+    }
 
 	/**
 	 *

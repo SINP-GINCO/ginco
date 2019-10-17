@@ -121,7 +121,7 @@ services:
 
     ginco.ogr2ogr:
       class: Ign\Bundle\GincoBundle\Services\Ogr2ogr
-      arguments: ["@logger", "@ginco.configuration_manager"]
+      arguments: ["@logger", "@ginco.configuration_manager", "@doctrine.orm.entity_manager"]
       tags:
           - { name: monolog.logger, channel: ginco }
 
