@@ -107,6 +107,7 @@ public class ChecksHabitatService extends AbstractChecksService {
 			}
 		}
 
+		identifiantPermanentIsUnique(DSRConstants.IDENTIFIANT_HAB_SINP, values);
 	}
 
 	/**

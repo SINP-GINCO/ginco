@@ -106,6 +106,7 @@ public class ChecksStationService extends AbstractChecksService {
 			}
 		}
 
+		identifiantPermanentIsUnique(DSRConstants.IDENTIFIANT_STA_SINP, values);
 	}
 
 	/**

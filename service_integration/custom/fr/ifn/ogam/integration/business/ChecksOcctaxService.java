@@ -299,6 +299,10 @@ public class ChecksOcctaxService extends AbstractChecksService {
 		// ----- MAILLE, COMMUNE, DEPARTEMENT (VERSIONS) -----
 
 		refsGeoVersion(values);
+		
+		
+		// Check permanent id unicity
+		identifiantPermanentIsUnique(DSRConstants.IDENTIFIANT_PERMANENT, values);
 	}
 
 	/**

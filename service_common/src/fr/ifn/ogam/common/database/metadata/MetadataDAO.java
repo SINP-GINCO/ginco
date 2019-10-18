@@ -272,6 +272,11 @@ public class MetadataDAO {
 	private static final String GET_CDREF_FROM_CDNOM = "SELECT cd_ref FROM referentiels.taxref WHERE cd_nom = ?" ;
 	
 	/**
+	 * Get count to check permanent id existence.
+	 */
+	private static final String GET_COUNT_PERMID = "SELECT count(%column%) FROM %table% WHERE %column% = ?" ;
+	
+	/**
 	 * Get standard from dataset.
 	 */
 	private static final String GET_STANDARD_FROM_DATASET_STMT = "SELECT s.* " + // 
@@ -2061,6 +2066,68 @@ public class MetadataDAO {
 		}
 	}
 
+	
+	
+	/**
+	 * Find if permanent id already exists.
+	 * 
+	 * @param tableFormat the table format where searching is needed
+	 * @param column the permanent id column to search
+	 * @param id the id to search
+	 * @return int number of occurences found (normally 0 or 1).
+	 */
+	public int countPermanentId(TableFormatData tableFormat, String column, String id) throws Exception {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			int result = 0 ;
+
+			con = getConnection();
+
+			// Execute the statement
+			String statement = GET_COUNT_PERMID ;
+			statement = statement.replace("%column%", column) ;
+			statement = statement.replace("%table%", tableFormat.getTableName()) ;
+			
+			ps = con.prepareStatement(statement);
+			ps.setString(1, id) ;
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt("count") ;
+			}
+
+			return result;
+
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing resultset : " + e.getMessage());
+			}
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing statement : " + e.getMessage());
+			}
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing connexion : " + e.getMessage());
+			}
+		}
+	}
+	
+	
 	
 	
 	/**
