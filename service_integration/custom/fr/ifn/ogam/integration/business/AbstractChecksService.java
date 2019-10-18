@@ -6,10 +6,7 @@ import static fr.ifn.ogam.common.business.UnitTypes.INTEGER;
 import static fr.ifn.ogam.common.business.UnitTypes.STRING;
 import static fr.ifn.ogam.common.business.UnitTypes.TIME;
 import static fr.ifn.ogam.common.business.checks.CheckCodes.INVALID_GEOMETRY;
-import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.ARRAY_OF_SAME_LENGTH;
-import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.DATE_ORDER;
-import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.IDENTIFIANT_PERMANENT_NOT_UUID;
-import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.MANDATORY_CONDITIONAL_FIELDS;
+import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -530,6 +527,30 @@ abstract class AbstractChecksService implements IntegrationEventListener {
 			alce.add(ce) ;
 		}
 		
+	}
+	
+	
+	/**
+	 * Checks if permanent id is unique id database.
+	 */
+	protected void identifiantPermanentIsUnique(String idField, Map < String, GenericData > values) throws Exception, CheckException {
+		
+		GenericData identifiantPermanentGeneric = values.get(idField) ;
+		if (identifiantPermanentGeneric == null || empty(identifiantPermanentGeneric)) {
+			return ;
+		}
+		String identifiantPermanent = identifiantPermanentGeneric.getValue().toString() ;
+		
+		TableFormatData tableFormat = getTableFormat(values) ;
+		int count = metadataDAO.countPermanentId(tableFormat, idField, identifiantPermanent) ;
+		if (count > 0) {
+			String errorMessage = "La valeur de l'identifiant unique (" + idField + " = " + identifiantPermanent + ") existe déjà en base." ;  
+			errorMessage += " Merci d'en fournir une autre ou de laisser la valeur vide pour une attribution automatique." ;
+			CheckException ce = new CheckException(IDENTIFIANT_PERMANENT_NOT_UNIQUE, errorMessage) ;
+			ce.setSourceData(idField);
+			ce.setFoundValue(identifiantPermanent);
+			throw ce ;
+		}
 	}
 	
 	

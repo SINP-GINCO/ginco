@@ -96,5 +96,10 @@ public interface CheckCodesGinco {
 	 * cdhabinteretcommunautaire is empty
 	 */
 	Integer CDHAB_INTERET_COMMUNAUTAIRE_EMPTY = 1216 ;
+	
+	/**
+	 * identifiant permanent is not unique
+	 */
+	Integer IDENTIFIANT_PERMANENT_NOT_UNIQUE = 1217 ;
 
 }
