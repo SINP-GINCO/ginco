@@ -51,10 +51,6 @@ public class ChecksStationService extends AbstractChecksService {
 		identifiantPermanentIsUUID(DSRConstants.IDENTIFIANT_STA_SINP, values);
 		observationDatesAreCoherent(values);
 		
-		// -- SURFACE --
-		String[] surfaceAll = { DSRConstants.SURFACE, DSRConstants.METHODE_CALCUL_SURFACE } ;
-		ifOneOfAIsNotEmptyThenAllOfBMustNotBeEmpty(surfaceAll, surfaceAll, values, "Surface");
-		
 		// if errors have been found while doing the checks, return an exception containing those to write in check_error
 		if (alce.size() > 0) {
 			// The arrayList of exceptions
@@ -95,6 +91,8 @@ public class ChecksStationService extends AbstractChecksService {
 		fields.put(DSRConstants.CLE_STATION, STRING) ;
 		fields.put(DSRConstants.SURFACE, NUMERIC) ;
 		fields.put(DSRConstants.METHODE_CALCUL_SURFACE, CODE) ;
+		fields.put(DSRConstants.DS_PUBLIQUE, CODE) ;
+		fields.put(DSRConstants.NATURE_OBJET_GEO, CODE) ;
 
 		for (Map.Entry < String, String > field : fields.entrySet()) {
 			if (!values.containsKey(field.getKey())) {
@@ -106,7 +104,17 @@ public class ChecksStationService extends AbstractChecksService {
 			}
 		}
 
+		// --- Identifiant permanent : idStaSINP
 		identifiantPermanentIsUnique(DSRConstants.IDENTIFIANT_STA_SINP, values);
+		
+		// --- dspublique
+		fillDSPublique(values) ;
+		
+		// --- methcalculsurface
+		fillMethCalcSurface(values);
+		
+		// --- natureobjetgeo
+		fillNatureObjetGeo(values) ;
 	}
 
 	/**
@@ -125,5 +133,49 @@ public class ChecksStationService extends AbstractChecksService {
 			return ;
 		}
 
+	}
+	
+	
+	/**
+	 * Fill dspublique value if not supplied.
+	 * @param values
+	 */
+	public void fillDSPublique(Map < String, GenericData > values) {
+		
+		GenericData dsPublique = values.get(DSRConstants.DS_PUBLIQUE) ;
+		if (dsPublique != null && empty(dsPublique)) {
+			dsPublique.setValue("NSP") ;
+		}
+	}
+	
+	
+	/**
+	 * Fills methCalculSurface if surface is supplied and methCalculSurface is not.
+	 * @param values
+	 */
+	public void fillMethCalcSurface(Map < String, GenericData > values) {
+		
+		GenericData methCalcSurface = values.get(DSRConstants.METHODE_CALCUL_SURFACE) ;
+		GenericData surface = values.get(DSRConstants.SURFACE) ;
+		
+		if (surface != null && !empty(surface)) {
+			
+			if (methCalcSurface != null && empty(methCalcSurface)) {
+				methCalcSurface.setValue("nsp");
+			}
+		}
+	}
+	
+	
+	/**
+	 * Fills natureobjetgeo if empty.
+	 * @param values
+	 */
+	public void fillNatureObjetGeo(Map < String, GenericData > values) {
+		
+		GenericData natureObjetGeo = values.get(DSRConstants.NATURE_OBJET_GEO) ;
+		if (natureObjetGeo != null && empty(natureObjetGeo)) {
+			natureObjetGeo.setValue("NSP");
+		}
 	}
 }
