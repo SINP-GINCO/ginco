@@ -1,30 +1,30 @@
 idHabSINP;cleStation;nomCite;urlPreuve;cdHab;typeDeterm;determinateur;techniqueCollecte;recouvrement;abondanceHabitat;identifiantOrigine;precisionTechnique;releveEspeces;relevePhyto;sensibiliteHab;habitatInteretCommunautaire;cdHabInteretCommunautaire
-165a78cd-a9a4-483a-aaa0-4a6fe366abe0;1;Ancien verger à l'abandon & friche;;5687;;;0;;;1;;;;0;1;5687
-02ff1ebd-b135-4c65-8b17-85d0f79307b9;2;Bassin;;1856;;;0;;;2;;;;0;1;1856
-48a205e6-6d9d-4ce9-9e12-9c39997f3274;3;Begre de rivière;;5017;;;0;;;3;;;;0;1;5017
-92ad2169-f620-4e51-843c-669eb31d2b1e;4;Berge à galets;;5019;;;0;;;4;;;;0;1;5019
-d864f3d6-2c70-426d-ba8c-120d64c5dd29;5;Berges de galets;;5017;;;1;;;5;;;;0;1;5017
-e1a8deef-db01-477d-b79e-c39a6924152e;6;Berges de galets;;5017;;;1;;;6;;;;0;1;5017
-7eea2b8f-7a97-4e04-82d2-d519d35a04e4;7;Berges de galets;;5017;;;0;;;7;;;;0;1;5017
-a1d65a2c-e5fc-4bb8-99b7-4f86ff1f5d7f;8;Berges de galets;;5017;;;1;;;8;;;;0;2;
-4006b8b4-1f7d-45c9-ab25-fa44ebd992c7;9;Berges enrochées;;625;;;0;;;9;;;;0;2;
-49ee7a39-abe7-42ed-8dbc-895acc8cbfa4;10;Berges enrochées;;625;;;0;;;10;;;;0;2;
-471d7647-cd60-4d96-8f9a-7d370423b2da;11;Berges enrochées;;625;;;0;;;11;;;;0;2;
-bb896d7c-e697-4c6c-bd36-519245168d81;12;Berges enrochées;;625;;;1;;;12;;;;0;2;
-8cfc3076-94e9-4d43-88fa-10158953f3b0;13;Berges enrochées;;625;;;0;;;13;;;;0;2;
-1a9ea2fc-be03-43c4-aaec-f6e053b52d8e;14;Berges enrochées;;625;;;1;;;14;;;;0;2;
-2e86acb2-9976-44d4-9528-ac6cedc25c3b;15;Berges enrochées;;625;;;0;;;15;;;;0;2;
-288b2a05-76d3-4287-aeab-4ad5c532bb41;16;Berges enrochées;;625;;;0;;;16;;;;0;2;
-44af456e-e94b-4e6c-ab4e-f8d426a123e2;17;Berges enrochées;;625;;;0;;;17;;;;0;2;
-bbbe51c4-463d-4e07-9f62-bc441c8944b4;18;Berges enrochées;;625;;;0;;;18;;;;0;2;
-71b45642-4657-4b23-bdcb-a3b4dda235c1;19;Berges enrochées;;625;;;1;;;19;;;;0;2;
-5332aff9-13be-4dc8-826e-23867d18aae5;20;Bois de Bouleaux;;11949;;;0;;;20;;;;0;2;
-182d3182-5a32-4164-9ce8-5cddd25d7f24;21;Bois de Bouleaux;;11949;;;0;;;21;;;;0;2;
-6a27c0ef-4213-4df8-a55e-1ddb01c8ba92;22;Bois de Bouleaux;;11949;;;1;;;22;;;;0;2;
-b8596d0e-4064-49ae-aed3-6758281faef0;23;Bois de Bouleaux;;11949;;;1;;;23;;;;0;2;
-f8d5c83c-ae50-43f4-8a88-f7662c3daeb8;24;Bois de Bouleaux;;11949;;;0;;;24;;;;0;2;
-a34eac6a-1276-4b83-ad25-27853f513cec;25;Bois de Bouleaux;;11949;;;0;;;25;;;;0;2;
-984678b5-f296-4422-bd94-0dd8e9e8a581;26;Bois de Bouleaux;;11949;;;0;;;26;;;;0;2;
+;1;Ancien verger à l'abandon & friche;;5687;;;0;;;1;;;;0;1;5687
+;2;Bassin;;1856;;;0;;;2;;;;0;1;1856
+;3;Begre de rivière;;5017;;;0;;;3;;;;0;1;5017
+;4;Berge à galets;;5019;;;0;;;4;;;;0;1;5019
+;5;Berges de galets;;5017;;;1;;;5;;;;0;1;5017
+;6;Berges de galets;;5017;;;1;;;6;;;;0;1;5017
+;7;Berges de galets;;5017;;;0;;;7;;;;0;1;5017
+;8;Berges de galets;;5017;;;1;;;8;;;;0;2;
+;9;Berges enrochées;;625;;;0;;;9;;;;0;2;
+;10;Berges enrochées;;625;;;0;;;10;;;;0;2;
+;11;Berges enrochées;;625;;;0;;;11;;;;0;2;
+;12;Berges enrochées;;625;;;1;;;12;;;;0;2;
+;13;Berges enrochées;;625;;;0;;;13;;;;0;2;
+;14;Berges enrochées;;625;;;1;;;14;;;;0;2;
+;15;Berges enrochées;;625;;;0;;;15;;;;0;2;
+;16;Berges enrochées;;625;;;0;;;16;;;;0;2;
+;17;Berges enrochées;;625;;;0;;;17;;;;0;2;
+;18;Berges enrochées;;625;;;0;;;18;;;;0;2;
+;19;Berges enrochées;;625;;;1;;;19;;;;0;2;
+;20;Bois de Bouleaux;;11949;;;0;;;20;;;;0;2;
+;21;Bois de Bouleaux;;11949;;;0;;;21;;;;0;2;
+;22;Bois de Bouleaux;;11949;;;1;;;22;;;;0;2;
+;23;Bois de Bouleaux;;11949;;;1;;;23;;;;0;2;
+;24;Bois de Bouleaux;;11949;;;0;;;24;;;;0;2;
+;25;Bois de Bouleaux;;11949;;;0;;;25;;;;0;2;
+;26;Bois de Bouleaux;;11949;;;0;;;26;;;;0;2;
 ;27;Bois de Bouleaux;;11949;;;1;;;27;;;;0;2;
 ;28;Bois de Bouleaux;;11949;;;0;;;28;;;;0;2;
 ;29;Bois de Bouleaux;;11949;;;0;;;29;;;;0;2;

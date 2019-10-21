@@ -750,7 +750,7 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
 
 INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_insertable,is_mandatory,"position") VALUES
     ('identifiantstasinp','table_station','identifiantstasinp','1','0','0','1',1),
-    ('jddmetadonneedeeid','table_station','jddmetadonneedeeid','0','1','1','1',2),
+    ('jddmetadonneedeeid','table_station','jddmetadonneedeeid','1','0','0','1',2),
     ('dspublique','table_station','dspublique','0','1','1','1',3),
     ('referencebiblio','table_station','referencebiblio','0','1','1','0',4),
     ('identifiantoriginestation','table_station','identifiantoriginestation','0','1','1','0',5),
@@ -843,7 +843,7 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('usage','file_station','0',NULL,'usage'),
     ('dspublique','file_station','1',NULL,'dSPublique'),
     ('identifiantstasinp','file_station','0',NULL,'idStaSINP'),
-    ('jddmetadonneedeeid','file_station','1',NULL,'idMTD'),
+    ('jddmetadonneedeeid','file_station','0',NULL,'idMTD'),
     ('jourdatedebut','file_station','1','yyyy-MM-dd','dateDebut'),
     ('jourdatefin','file_station','1','yyyy-MM-dd','dateFin'),
     ('observateur','file_station','1',NULL,'observer'),
