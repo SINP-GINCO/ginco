@@ -108,6 +108,8 @@ public class ChecksHabitatService extends AbstractChecksService {
 		}
 
 		identifiantPermanentIsUnique(DSRConstants.IDENTIFIANT_HAB_SINP, values);
+		
+		fillTechniqueCollecte(values);
 	}
 
 	/**
@@ -200,6 +202,20 @@ public class ChecksHabitatService extends AbstractChecksService {
 				ce.setSourceData("precisionTechnique") ;
 				alce.add(ce) ;
 			}
+		}
+	}
+	
+	
+	/**
+	 * Fills techniqueCollecte if empty.
+	 * @param values
+	 */
+	private void fillTechniqueCollecte(Map < String, GenericData > values) {
+		
+		GenericData techniqueCollecte = values.get(DSRConstants.TECHNIQUE_COLLECTE) ;
+		
+		if (techniqueCollecte != null && empty(techniqueCollecte)) {
+			techniqueCollecte.setValue("0");
 		}
 	}
 }
