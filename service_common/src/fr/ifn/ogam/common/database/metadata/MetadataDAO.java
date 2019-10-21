@@ -277,6 +277,11 @@ public class MetadataDAO {
 	private static final String GET_COUNT_PERMID = "SELECT count(%column%) FROM %table% WHERE %column% = ?" ;
 	
 	/**
+	 * Get count of clestation
+	 */
+	private static final String GET_COUNT_CLESTATION = "SELECT count(clestation) FROM %table% WHERE clestation = ? AND submission_id = ?" ;
+	
+	/**
 	 * Get standard from dataset.
 	 */
 	private static final String GET_STANDARD_FROM_DATASET_STMT = "SELECT s.* " + // 
@@ -2094,6 +2099,68 @@ public class MetadataDAO {
 			
 			ps = con.prepareStatement(statement);
 			ps.setString(1, id) ;
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				result = rs.getInt("count") ;
+			}
+
+			return result;
+
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing resultset : " + e.getMessage());
+			}
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing statement : " + e.getMessage());
+			}
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing connexion : " + e.getMessage());
+			}
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * Find if (cleStation, submissionId) already exists by counting it.
+	 * @param tableFormat
+	 * @param cleStation
+	 * @param submissionId
+	 * @return
+	 * @throws Exception
+	 */
+	public int countCleStation(TableFormatData tableFormat, String cleStation, Integer submissionId) throws Exception {
+
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			int result = 0 ;
+
+			con = getConnection();
+
+			// Execute the statement
+			String statement = GET_COUNT_CLESTATION ;
+			statement = statement.replace("%table%", tableFormat.getTableName()) ;
+			
+			ps = con.prepareStatement(statement);
+			ps.setString(1, cleStation) ;
+			ps.setInt(2, submissionId);
 			rs = ps.executeQuery();
 
 			if (rs.next()) {

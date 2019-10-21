@@ -101,5 +101,10 @@ public interface CheckCodesGinco {
 	 * identifiant permanent is not unique
 	 */
 	Integer IDENTIFIANT_PERMANENT_NOT_UNIQUE = 1217 ;
+	
+	/**
+	 * clestation is not found in table station
+	 */
+	Integer CLE_STATION_NOT_FOUND = 1218 ;
 
 }

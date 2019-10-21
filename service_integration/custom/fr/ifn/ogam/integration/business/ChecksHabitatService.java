@@ -4,11 +4,18 @@ import static fr.ifn.ogam.common.business.UnitTypes.*;
 import static fr.ifn.ogam.common.business.checks.CheckCodesGinco.*;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import org.omg.DynamicAny.DynStructOperations;
+
+import java.util.List;
 
 import fr.ifn.ogam.common.business.checks.CheckException;
 import fr.ifn.ogam.common.business.checks.CheckExceptionArrayList;
 import fr.ifn.ogam.common.database.GenericData;
+import fr.ifn.ogam.common.database.metadata.TableFormatData;
+import fr.ifn.ogam.common.database.metadata.TableTreeData;
 import fr.ifn.ogam.common.database.referentiels.ListReferentielsDAO;
 import fr.ifn.ogam.common.util.DSRConstants;
 
@@ -109,7 +116,11 @@ public class ChecksHabitatService extends AbstractChecksService {
 
 		identifiantPermanentIsUnique(DSRConstants.IDENTIFIANT_HAB_SINP, values);
 		
+		// --- Fills techniqueCollecte
 		fillTechniqueCollecte(values);
+		
+		// --- Checks if cleStation exists in table station.
+		cleStationExists(submissionId, values);
 	}
 
 	/**
@@ -216,6 +227,41 @@ public class ChecksHabitatService extends AbstractChecksService {
 		
 		if (techniqueCollecte != null && empty(techniqueCollecte)) {
 			techniqueCollecte.setValue("0");
+		}
+	}
+	
+	
+	/**
+	 * Checks if supplied cleStation for habitat can be found in table station.
+	 * @param submissionId
+	 * @param values
+	 * @throws Exception
+	 * @throws CheckException
+	 */
+	private void cleStationExists(Integer submissionId, Map < String, GenericData > values) throws Exception, CheckException {
+		
+		TableFormatData tableFormat = getTableFormat(values) ;
+		List < TableTreeData > tablesTree = metadataDAO.getTablesTree(tableFormat.getFormat(), tableFormat.getSchemaCode()) ;
+		
+		TableFormatData parentTableFormat = null ;
+		Iterator < TableTreeData > it = tablesTree.iterator() ;
+		while (it.hasNext()) {
+			TableTreeData next = it.next() ;
+			if (next.getTable().getFormat().equals(tableFormat.getFormat())) {
+				parentTableFormat = next.getParentTable() ;
+				break ;
+			}
+		}
+		
+		String cleStation = values.get(DSRConstants.CLE_STATION).getValue().toString() ;
+		int count = metadataDAO.countCleStation(parentTableFormat, cleStation, submissionId) ;
+		
+		if (count != 1) {
+			String error = "La cleStation " + cleStation + " présente dans le fichier des habitats ne référence aucune station dans le fichier des stations." ;
+			CheckException ce = new CheckException(CLE_STATION_NOT_FOUND, error) ;
+			ce.setSourceData("cleStation");
+			ce.setFoundValue(cleStation);
+			throw ce ;
 		}
 	}
 }
