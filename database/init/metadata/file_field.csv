@@ -215,7 +215,7 @@ typesol;file_station;"0";;typeSol;
 usage;file_station;"0";;usage;
 dspublique;file_station;"1";;dSPublique;
 identifiantstasinp;file_station;"0";;idStaSINP;
-jddmetadonneedeeid;file_station;"1";;idMTD;
+jddmetadonneedeeid;file_station;"0";;idMTD;
 jourdatedebut;file_station;"1";yyyy-MM-dd;dateDebut;
 jourdatefin;file_station;"1";yyyy-MM-dd;dateFin;
 observateur;file_station;"1";;observer;
