@@ -86,7 +86,11 @@ public class GenericMapper {
 		List<String> modes = metadataDAO.getDynamodes(unit);
 
 		if (!modes.contains(fieldValue)) {
-			CheckException ce = new CheckException(INVALID_CODE_FIELD);
+			String error = null ;
+			if (unit.equals("CodeHabRefValue")) {
+				error = "Le code fourni '" + fieldValue + "' ne fait pas partie du référentiel HABREF." ;
+			}
+			CheckException ce = new CheckException(INVALID_CODE_FIELD, error);
 			throw ce;
 		}
 	}
