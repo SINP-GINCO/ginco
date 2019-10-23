@@ -768,7 +768,7 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
     ('profondeurmax','table_station','profondeurmax','0','1','1','0',17),
     ('profondeurmoyenne','table_station','profondeurmoyenne','0','1','1','0',18),
     ('surface','table_station','surface','0','1','1','0',19),
-    ('methodecalculsurface','table_station','methodecalculsurface','1','1','1','1',20),
+    ('methodecalculsurface','table_station','methodecalculsurface','1','1','1','0',20),
     ('usage','table_station','usage','0','1','1','0',21),
     ('typesol','table_station','typesol','0','1','1','0',22),
     ('geologie','table_station','geologie','0','1','1','0',23),

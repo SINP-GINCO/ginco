@@ -178,6 +178,10 @@ public class ChecksHabitatService extends AbstractChecksService {
 		GenericData interetCommunautaire = values.get(DSRConstants.HABITAT_INTERET_COMMUNAUTAIRE) ;
 		GenericData cdHabInteretCommunautaire = values.get(DSRConstants.CD_HAB_INTERET_COMMUNAUTAIRE) ;
 		
+		if (interetCommunautaire == null || empty(interetCommunautaire)) {
+			return ;
+		}
+		
 		String interetCommunautaireValue = interetCommunautaire.getValue().toString() ;
 		
 		if (interetCommunautaireValue.equals("1") || interetCommunautaireValue.equals("3")) {
