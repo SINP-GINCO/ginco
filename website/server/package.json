@@ -18,7 +18,7 @@
   "devDependencies": {
     "bootstrap": "^3.4.1",
     "bootstrap-table": "1.11.*",
-    "ckeditor": "^4.11.4",
+    "ckeditor": "^4.12.1",
     "components-jqueryui": "^1.12",
     "grunt": "^1.0.4",
     "grunt-contrib-copy": "^1.0.0",
