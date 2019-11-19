@@ -7,6 +7,12 @@
 
 {% set showModel = configurationManager.getConfig('showUploadFileModel', 0) != 0  %}
 
+<div class="alert alert-warning">
+    <p>
+        Les formats autorisés pour les soumissions sont les fichiers CSV, ou les fichiers zip contenant un shapefile.
+    </p>
+</div>
+
 <div class="{{ form.vars.name }}">
     {{ form_start(form) }}
         {{ form_errors(form) }}
