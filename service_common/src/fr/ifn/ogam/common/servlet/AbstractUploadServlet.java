@@ -82,8 +82,8 @@ public abstract class AbstractUploadServlet extends AbstractServlet {
 			this.fileItemFactory = new DiskFileItemFactory();
 			this.fileUpload = new ServletFileUpload(fileItemFactory);
 
-			// Set the total max for a request size = 1 Go
-			long yourMaxRequestSize = 1024 * 1024 * 100;
+			// Set the total max for a request size = 150 Mo
+			long yourMaxRequestSize = 1024 * 1024 * 150;
 			fileUpload.setSizeMax(yourMaxRequestSize);
 
 		} catch (Exception e) {
