@@ -10,7 +10,9 @@ import fr.ifn.ogam.common.business.submissions.SubmissionStatus;
 import java.util.Map;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.io.IOException;
 
 /**
@@ -58,15 +60,33 @@ public class GeoAssociationService implements IntegrationEventListener {
 		logger.debug("GeoAssociationService, afterIntegration");
 
 		int responseCode = 0;
+		
+		String baseUrl = parameterDAO.getApplicationParameter("site_url");
+		
+		Proxy proxy = null ;
+		String proxyStr = parameterDAO.getApplicationParameter("https_proxy") ;
+		if (!proxyStr.isEmpty()) {
+			String[] proxyParams = proxyStr.split(":") ;
+			String httpProxy = proxyParams[0] ;
+			int httpPort = Integer.parseInt(proxyParams[1]) ;
+			if (!baseUrl.contains("localhost") && !baseUrl.contains("127.0.0.1")) {
+				proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(httpProxy, httpPort)) ;
+			}
+		}
 
 		try {
-			String baseUrl = parameterDAO.getApplicationParameter("site_url");
 			// Call prod url first
 			URL myURL = new URL(baseUrl + "/geo-association/compute?submissionId=" + submissionId);
 			logger.debug("Calling url: " + myURL);
-			HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
-			responseCode = conn.getResponseCode();
-			logger.debug("Response code: " + responseCode);
+			if (proxy != null) {
+				HttpURLConnection conn = (HttpURLConnection) myURL.openConnection(proxy);
+				responseCode = conn.getResponseCode();
+				logger.debug("Response code: " + responseCode);
+			} else {
+				HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
+				responseCode = conn.getResponseCode();
+				logger.debug("Response code: " + responseCode);
+			}
 		} catch (MalformedURLException e) {
 			// new URL() failed
 			logger.debug("Malformed URL exception", e);
@@ -78,12 +98,17 @@ public class GeoAssociationService implements IntegrationEventListener {
 		// Call dev URL if prod URL did not succeed
 		if (responseCode != 200 && !submissionDAO.getSubmission(submissionId).getStep().equals("GEO-ASSOCIATION")) {
 			try {
-				String baseUrl = parameterDAO.getApplicationParameter("site_url");
 				URL myURL = new URL(baseUrl + "/app_dev.php/geo-association/compute?submissionId=" + submissionId);
 				logger.debug("Calling url: " + myURL);
-				HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
-				responseCode = conn.getResponseCode();
-				logger.debug("Response code: " + responseCode);
+				if (proxy != null) {
+					HttpURLConnection conn = (HttpURLConnection) myURL.openConnection(proxy);
+					responseCode = conn.getResponseCode();
+					logger.debug("Response code: " + responseCode);
+				} else {
+					HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
+					responseCode = conn.getResponseCode();
+					logger.debug("Response code: " + responseCode);
+				}
 			} catch (MalformedURLException e) {
 				// new URL() failed
 				logger.debug("Malformed URL exception", e);
