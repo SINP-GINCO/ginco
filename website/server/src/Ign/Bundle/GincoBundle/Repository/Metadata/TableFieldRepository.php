@@ -396,20 +396,28 @@ class TableFieldRepository extends \Doctrine\ORM\EntityRepository {
 	}
 
 	/**
-	 * Get the fields listed in tables in model that are marked as reference models.
+	 * Get fields used in a table with the same label in a reference model
+     * 
+     * @param $model Model model where the fields are listed.
+     * @param $tableFormat TableFormat table where the fields are listed.
 	 *
 	 * @return array
 	 */
-	public function findReferenceFields(Model $model) {
+	public function findReferenceFields(TableFormat $tableFormat) {
 		$query = $this->_em->createQuery("SELECT dt.data
 			FROM IgnGincoBundle:Metadata\TableField t
+            INNER JOIN IgnGincoBundle:Metadata\TableFormat tf WITH tf.format = t.format
 			INNER JOIN IgnGincoBundle:Metadata\Data dt WITH dt.data = t.data
 			INNER JOIN IgnGincoBundle:Metadata\ModelTables mt WITH mt.table = t.format
 			INNER JOIN IgnGincoBundle:Metadata\Model m WITH m.id = mt.model
             INNER JOIN IgnGincoBundle:Metadata\Standard s WITH m.standard = s.name
 			WHERE m.ref = true
-            AND s.name = :standard");
-        $query->setParameter('standard', $model->getStandard()->getName()) ;
+            AND s.name = :standard
+            AND tf.label = :label
+        ");
+        
+        $query->setParameter('standard', $tableFormat->getModel()->getStandard()->getName()) ;
+        $query->setParameter('label', $tableFormat->getLabel()) ;
 		return $query->getResult();
 	}
 

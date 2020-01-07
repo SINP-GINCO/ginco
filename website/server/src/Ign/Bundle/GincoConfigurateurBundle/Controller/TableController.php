@@ -55,7 +55,7 @@ class TableController extends TableControllerBase {
 		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
 		$tableFields = $tableFieldRepository->findFieldsByTableFormat($table->getFormat());
 		// Check if these fields are derived from a reference model
-		$referenceFields = $tableFieldRepository->findReferenceFields($model);
+		$referenceFields = $tableFieldRepository->findReferenceFields($table);
 		for ($i = 0; $i < count($tableFields); $i ++) {
 			$tableField = $tableFields[$i];
 			if (in_array($tableField['fieldName'], array_column($referenceFields, 'data'))) {

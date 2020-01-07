@@ -44,9 +44,10 @@ class TableFieldController extends TableFieldControllerBase {
 
 		// Check if the field is not derived from a field included in a reference model
 		$tableFieldRepository = $em->getRepository('IgnGincoBundle:Metadata\TableField');
+        $tableFormatRepository = $em->getRepository('IgnGincoBundle:Metadata\TableFormat') ;
         
-        $model = $em->getRepository('IgnGincoBundle:Metadata\Model')->find($modelId) ;
-		$referenceFields = $tableFieldRepository->findReferenceFields($model);
+        $tableFormat = $tableFormatRepository->find($format) ;
+		$referenceFields = $tableFieldRepository->findReferenceFields($tableFormat);
 		if (in_array($field, array_column($referenceFields, 'data'))) {
 			$this->addFlash('error', $this->get('translator')
 				->trans('data.delete.ref.forbidden', array(
