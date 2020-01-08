@@ -133,7 +133,8 @@ class FileController extends FileControllerBase {
 			$redirectResponse = $this->forward('IgnOGAMConfigurateurBundle:FileField:addFields', array(
 				'datasetId' => $datasetId,
 				'format' => $fileFormat,
-				 'addedFields' => implode(',', $fieldsToAdd),
+				'addedFields' => implode(',', $fieldsToAdd),
+                'destinationFormat' => $tableFormat
 			));
 
 			// Update as mandatory in file the fields which are mandatory in table, but not calculated
