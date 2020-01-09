@@ -281,6 +281,9 @@ public class MetadataDAO {
 	 */
 	private static final String GET_COUNT_CLESTATION = "SELECT count(clestation) FROM %table% WHERE clestation = ? AND submission_id = ?" ;
 	
+	
+	private static final String GET_CDTYPO_FROM_CDHAB = "SELECT cd_typo FROM referentiels.habref_20 WHERE cd_hab = ?" ;
+	
 	/**
 	 * Get standard from dataset.
 	 */
@@ -2308,6 +2311,59 @@ public class MetadataDAO {
 		}
 	}
 	
+	
+	/**
+	 * Get cd_typo from HABREF for a given cd_hab
+	 * @param cdhab
+	 * @return int
+	 * @throws Exception
+	 */
+	public int getCdTypoFromCdHab(String cdhab) throws Exception {
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			
+			int result = 0;
+			con = getConnection();
+
+			// Execute the statement
+			ps = con.prepareStatement(GET_CDTYPO_FROM_CDHAB);
+			ps.setString(1, cdhab);
+			rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				result = rs.getInt("cd_typo") ;
+			}
+
+			return result ;
+
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing resultset : " + e.getMessage());
+			}
+			try {
+				if (ps != null) {
+					ps.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing statement : " + e.getMessage());
+			}
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				logger.error("Error while closing connexion : " + e.getMessage());
+			}
+		}
+	}
 	
 	
 	/**

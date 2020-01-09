@@ -106,5 +106,10 @@ public interface CheckCodesGinco {
 	 * clestation is not found in table station
 	 */
 	Integer CLE_STATION_NOT_FOUND = 1218 ;
+	
+	/**
+	 * interetcommunautaire is empty
+	 */
+	Integer HABITAT_INTERET_COMMUNAUTAIRE_EMPTY = 1219 ;
 
 }
