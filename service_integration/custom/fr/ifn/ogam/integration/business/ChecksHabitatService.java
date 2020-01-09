@@ -57,6 +57,7 @@ public class ChecksHabitatService extends AbstractChecksService {
 		identifiantPermanentIsUUID(DSRConstants.IDENTIFIANT_HAB_SINP, values);
 		cdHabIsNotEmpty(values);
 		cdHabInteretCommunautaireIsNotEmpty(values);
+		cdHabInteretCommunautaireCdTypo(values);
 		precisionTechniqueNotEmpty(values);
 
 		// if errors have been found while doing the checks, return an exception containing those to write in check_error
@@ -153,6 +154,10 @@ public class ChecksHabitatService extends AbstractChecksService {
 		GenericData nomCite = values.get(DSRConstants.NOM_CITE) ;
 		GenericData cdHab = values.get(DSRConstants.CD_HAB) ;
 		
+		if (nomCite == null || empty(nomCite)) {
+			return ;
+		}
+		
 		String nomCiteValue = nomCite.getValue().toString() ;
 		
 		if (nomCiteValue.equals("Inconnu") || nomCiteValue.equals("Nom perdu")) {
@@ -191,6 +196,33 @@ public class ChecksHabitatService extends AbstractChecksService {
 				String error = "Le champ cdHabInteretCommunautaire doit être rempli car habitatInteretCommunautaire a pour valeur '" + interetCommunautaireValue + "'." ;
 				CheckException ce = new CheckException(CDHAB_INTERET_COMMUNAUTAIRE_EMPTY, error) ;
 				ce.setSourceData("cdHabInteretCommunautaire") ;
+				alce.add(ce) ;
+			}
+		}
+	}
+	
+	/**
+	 * interetCommunaitaire must be filled if cdHab has a cdTypo = 8.
+	 * @param values
+	 * @throws Exception
+	 */
+	private void cdHabInteretCommunautaireCdTypo(Map < String, GenericData > values) throws Exception {
+		
+		GenericData cdHab = values.get(DSRConstants.CD_HAB) ;
+		GenericData interetCommunautaire = values.get(DSRConstants.HABITAT_INTERET_COMMUNAUTAIRE) ;
+		
+		String[] cdHabValues = (String[]) cdHab.getValue() ;
+		// cdHab ne peut pas être vide, le test a déjà été fait plus haut.
+		String cdHabStr = cdHabValues[0] ;
+ 		int cdTypo = metadataDAO.getCdTypoFromCdHab(cdHabStr) ;
+		
+		if (8 == cdTypo) {
+			
+			if (interetCommunautaire == null || empty(interetCommunautaire)) {
+				
+				String error = "Le champ habitatInteretCommunautaire doit être rempli car le cd_hab fourni (" + cdHabStr + ") est associé à un cd_typo = 8 dans le référentiel HABREF." ;
+				CheckException ce = new CheckException(HABITAT_INTERET_COMMUNAUTAIRE_EMPTY, error) ;
+				ce.setSourceData("habitatInteretCommunautaire") ;
 				alce.add(ce) ;
 			}
 		}

@@ -1,5 +1,5 @@
 idHabSINP;cleStation;nomCite;urlPreuve;cdHab;typeDeterm;determinateur;techniqueCollecte;recouvrement;abondanceHabitat;identifiantOrigine;precisionTechnique;releveEspeces;relevePhyto;sensibiliteHab;habitatInteretCommunautaire;cdHabInteretCommunautaire
-165a78cd-a9a4-483a-aaa0-4a6fe366abe0;1;Ancien verger à l'abandon & friche;;5687;;;0;;;;;;;;1;5687
+165a78cd-a9a4-483a-aaa0-4a6fe366abe0;1;Ancien verger à l'abandon & friche;;205;;;0;;;;;;;;1;1856
 02ff1ebd-b135-4c65-8b17-85d0f79307b9;2;Bassin;;1856;;;0;;;;;;;;1;1856
 48a205e6-6d9d-4ce9-9e12-9c39997f3274;3;Begre de rivière;;5017;;;0;;;;;;;;1;5017
 92ad2169-f620-4e51-843c-669eb31d2b1e;4;Berge à galets;;5019;;;0;;;;;;;;1;5019
@@ -30,7 +30,7 @@ a34eac6a-1276-4b83-ad25-27853f513cec;25;Bois de Bouleaux;;11949;;;0;;;;;;;;2;
 ;29;Bois de Bouleaux;;11949;;;0;;;;;;;;2;
 ;30;Bois de Bouleaux;;11949;;;1;;;;;;;;2;
 ;31;Bois de Bouleaux;;11949;;;1;;;;;;;;2;
-;32;Bois de Bouleaux;;11949;;;0;;;;;;;;2;
+;32;Bois de Bouleaux;;205;;;0;;;;;;;;;
 ;33;Bois de Bouleaux;;11949;;;1;;;;;;;;2;
 ;34;Bois de Bouleaux;;11949;;;10;;;;;;;;2;
 ;35;Bois de Bouleaux;;11949;;;0;;;;;;;;2;
