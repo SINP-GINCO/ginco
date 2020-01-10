@@ -146,3 +146,4 @@ echellenumerisation;CharacterString;echelleNumerisation;Echelle de carte à laqu
 clestation;CharacterString;cleStation;Identifiant dans la soumission faisant le lien entre station et habitat.;;true
 habitatinteretcommunautaire;HabitatInteretCommunautaireValue;habitatInteretCommunautaire;Indique si l'habitat est d'intérêt communautaire.;;true
 cdhabinteretcommunautaire;CodeHabRefValue;cdHabInteretCommunautaire;Code d'habitat d'intérêt communautaire.;;true
+typesolalternatif;CharacterString;typeSolAlternatif;Type de sol alternatif.;;true

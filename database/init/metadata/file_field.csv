@@ -220,3 +220,4 @@ jourdatedebut;file_station;"1";yyyy-MM-dd;dateDebut;
 jourdatefin;file_station;"1";yyyy-MM-dd;dateFin;
 observateur;file_station;"1";;observer;
 clestation;file_station;"1";;cleStation;
+typesolalternatif;file_station;"0";;typeSolAlt;
