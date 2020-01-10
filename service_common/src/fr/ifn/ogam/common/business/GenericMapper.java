@@ -301,15 +301,16 @@ public class GenericMapper {
 
 			if (type.equalsIgnoreCase(BOOLEAN)) {
 				try {
-					if (fieldValue.trim().equals("1") || fieldValue.trim().equalsIgnoreCase("true")) {
+					String trimedValue = fieldValue.trim() ;
+					if (trimedValue.equals("1") || trimedValue.equalsIgnoreCase("true") || trimedValue.equalsIgnoreCase("t")) {
 						result = Boolean.TRUE;
-					} else {
+					} else if (trimedValue.equals("0") || trimedValue.equalsIgnoreCase("false") || trimedValue.equalsIgnoreCase("f")) {
 						result = Boolean.FALSE;
+					} else {
+						throw new Exception() ;
 					}
 				} catch (Exception e) {
-					if (fieldDescriptor.getIsMandatory()) {
-						throw new CheckException(INVALID_TYPE_FIELD);
-					}
+					throw new CheckException(INVALID_TYPE_FIELD, "Les valeurs booléennes acceptées sont 0, f, false ou 1, t, true.");
 				}
 			}
 
