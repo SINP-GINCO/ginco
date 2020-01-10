@@ -174,26 +174,34 @@ public class ChecksHabitatService extends AbstractChecksService {
 	
 	
 	/**
-	 * cdHabInteretCommunautaire must be filled if habitatInteretCommunautaire equals 1 or 3.
+	 * cdHabInteretCommunautaire must be filled if habitatInteretCommunautaire equals 1 or 3 or if cdhab is empty.
 	 * @param values
 	 * @throws Exception
 	 */
 	private void cdHabInteretCommunautaireIsNotEmpty(Map < String, GenericData > values) throws Exception {
 		
+		GenericData cdHab = values.get(DSRConstants.CD_HAB) ;
 		GenericData interetCommunautaire = values.get(DSRConstants.HABITAT_INTERET_COMMUNAUTAIRE) ;
 		GenericData cdHabInteretCommunautaire = values.get(DSRConstants.CD_HAB_INTERET_COMMUNAUTAIRE) ;
-		
-		if (interetCommunautaire == null || empty(interetCommunautaire)) {
-			return ;
+	
+		boolean isInteretCommunautaire = false ;
+		if (interetCommunautaire != null && !empty(interetCommunautaire)) {
+			String interetCommunautaireValue = interetCommunautaire.getValue().toString() ;
+			if (interetCommunautaireValue.equals("1") || interetCommunautaireValue.equals("3")) {
+				isInteretCommunautaire = true ;
+			}
 		}
 		
-		String interetCommunautaireValue = interetCommunautaire.getValue().toString() ;
+		boolean emptyCdHab = false ;
+		if (cdHab == null || empty(cdHab)) {
+			emptyCdHab = true ;
+		}
 		
-		if (interetCommunautaireValue.equals("1") || interetCommunautaireValue.equals("3")) {
+		if (isInteretCommunautaire || emptyCdHab) {
 			
-			if (empty(cdHabInteretCommunautaire)) {
+			if (cdHabInteretCommunautaire == null || empty(cdHabInteretCommunautaire)) {
 				
-				String error = "Le champ cdHabInteretCommunautaire doit être rempli car habitatInteretCommunautaire a pour valeur '" + interetCommunautaireValue + "'." ;
+				String error = "Le champ cdHabInteretCommunautaire doit être rempli car habitatInteretCommunautaire a pour valeur 1 ou 3, ou aucun cdHab n'est fourni." ;
 				CheckException ce = new CheckException(CDHAB_INTERET_COMMUNAUTAIRE_EMPTY, error) ;
 				ce.setSourceData("cdHabInteretCommunautaire") ;
 				alce.add(ce) ;
