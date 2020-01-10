@@ -122,7 +122,7 @@ abstract class AbstractChecksService implements IntegrationEventListener {
 	protected boolean isCorrectStandard(Integer submissionId) throws Exception {
 		
 		StandardData standard = getStandard(submissionId) ;
-		if (!standard.getLabel().equals(getExpectedStandard())) {
+		if (!standard.getName().equals(getExpectedStandard())) {
 			return false ;
 		}
 		return true ;
