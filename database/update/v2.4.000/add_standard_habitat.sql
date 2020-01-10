@@ -517,7 +517,8 @@ INSERT INTO data(data, unit, label, definition) VALUES
     ('echellenumerisation', 'CharacterString', 'echelleNumerisation', 'Echelle de carte à laquelle la numérisation de l''information géographique a été effectuée.'),
     ('clestation','CharacterString', 'cleStation', 'Identifiant dans la soumission faisant le lien entre station et habitat.'),
     ('habitatinteretcommunautaire', 'HabitatInteretCommunautaireValue', 'habitatInteretCommunautaire', 'Indique si l''habitat est d''intérêt communautaire.'),
-    ('cdhabinteretcommunautaire', 'CodeHabRefValue', 'cdHabInteretCommunautaire', 'Code d''habitat d''intérêt communautaire.;')
+    ('cdhabinteretcommunautaire', 'CodeHabRefValue', 'cdHabInteretCommunautaire', 'Code d''habitat d''intérêt communautaire.'),
+    ('typesolalternatif', 'CharacterString', 'typeSolAlternatif', 'Type de sol alternatif.')
 ;
 
 
@@ -657,6 +658,7 @@ INSERT INTO field (type,"data",format) VALUES ('TABLE','SUBMISSION_ID','table_st
 INSERT INTO field (type,"data",format) VALUES ('TABLE','PROVIDER_ID','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','USER_LOGIN','table_station');
 INSERT INTO field (type,"data",format) VALUES ('TABLE','clestation','table_station');
+INSERT INTO field (type,"data",format) VALUES ('TABLE','typesolalternatif','table_station');
 
 
 -- File
@@ -709,7 +711,8 @@ INSERT INTO field (type,"data",format) VALUES
     ('FILE','jourdatedebut','file_station'),
     ('FILE','jourdatefin','file_station'),
     ('FILE','observateur','file_station'),
-    ('FILE', 'clestation', 'file_station')
+    ('FILE', 'clestation', 'file_station'),
+    ('FILE','typesolalternatif','file_station')
 ;
 
 
@@ -792,7 +795,8 @@ INSERT INTO table_field ("data",format,column_name,is_calculated,is_editable,is_
     ('SUBMISSION_ID','table_station','submission_id','1','0','0','0',41),
     ('PROVIDER_ID','table_station','provider_id','0','0','0','1',42),
     ('USER_LOGIN','table_station','user_login','0','0','0','1',43),
-    ('clestation','table_station','clestation','0','1','1','1',44)
+    ('clestation','table_station','clestation','0','1','1','1',44),
+    ('typesolalternatif','table_station','typesolalternatif','0','1','1','0',45)
 ;
 
 
@@ -847,7 +851,8 @@ INSERT INTO file_field ("data",format,is_mandatory,mask,label_csv) VALUES
     ('jourdatedebut','file_station','1','yyyy-MM-dd','dateDebut'),
     ('jourdatefin','file_station','1','yyyy-MM-dd','dateFin'),
     ('observateur','file_station','1',NULL,'observer'),
-    ('clestation','file_station','1',NULL,'cleStation')
+    ('clestation','file_station','1',NULL,'cleStation'),
+    ('typesolalternatif','file_station','0',NULL,'typeSolAlt')
 ;
 
 
