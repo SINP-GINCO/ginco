@@ -13,19 +13,7 @@ Elle est mise à la disposition de l'ensemble des collecteurs de données et des
 ==============================================    =====================================
 Région                                  			Url GINGO
 ==============================================    =====================================
-Auvergne Rhône-Alpes                    			https://ginco.naturefrance.fr/test-ara
-Bretagne                                			https://ginco.naturefrance.fr/test-bretagne
-Centre-Val de Loire                     			https://ginco.naturefrance.fr/test-cvdl
-Corse                                   			https://ginco.naturefrance.fr/test-corse
 Grand Est                                           https://ginco.naturefrance.fr/test-grandest
-Guadeloupe                              			https://ginco.naturefrance.fr/test-guadeloupe
-Guyane                                  			https://ginco.naturefrance.fr/test-guyane
-Hauts-de-France                                     https://ginco.naturefrance.fr/test-hautsdefrance
-Ile de France                           			https://ginco.naturefrance.fr/test-idf
-TAAF                               			        https://ginco.naturefrance.fr/test-taaf
-Nouvelle-Aquitaine     			                    https://ginco.naturefrance.fr/test-nouvelleaquitaine
-Occitanie                                 			https://ginco.naturefrance.fr/test-occitanie
-Pays de la Loire                           			https://ginco.naturefrance.fr/test-paysdelaloire
 ==============================================    =====================================
 
 Trois instances supra-régionales de test ont aussi été créées :
@@ -52,8 +40,6 @@ Centre-Val de Loire                     			https://ginco.naturefrance.fr/centre-
 Corse                                   			https://ginco.naturefrance.fr/corse
 Grand Est                                           https://ginco.naturefrance.fr/grandest
 Guyane                                  			https://ginco.naturefrance.fr/guyane
-Languedoc-Roussillon                                https://ginco.naturefrance.fr/languedocroussillon
-Midi-Pyrénées                                       https://ginco.naturefrance.fr/midipyrenees
 Nouvelle-Aquitaine     			                    https://ginco.naturefrance.fr/nouvelleaquitaine
 Pays de la Loire                           			https://ginco.naturefrance.fr/paysdelaloire
 Occitanie                                           https://ginco.naturefrance.fr/occitanie
