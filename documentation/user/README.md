@@ -27,20 +27,10 @@ le marquage par version, les notes et warnings...
 
 ## Installation de Sphinx
 
-```bash
-apt-get install python-sphinx
-```
-Et installer l'outil latexpdf (pour compiler la doc en PDF) :
+Installer l'outil sphinx et les dépendances nécessaires pour générer des PDF.
 
 ```bash
-apt-get install texlive-latex-base
-```
-
-Et installer l'outil textlive-lang-french pour avoir les textes en français(pour la doc PDF en français) : 
-
-
-```bash
-apt-get install texlive-lang-french
+apt-get install python-sphinx texlive-latex-base texlive-lang-french texlive-latex-extra texlive-pictures latexmk
 ```
 
 
