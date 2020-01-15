@@ -12,8 +12,6 @@ var $saveTableButton = $('#save-table-form');
 var $saveFileOrderButton = $('#save-file-order');
 var $deleteAllFieldsButton = $('#remove-all-fields');
 
-console.log('script');
-
 /*
 Calls the transfer action of the TableController or FileController.
 */
@@ -34,7 +32,6 @@ $transferButton.click(function() {
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
 		var $labelCSV = $(this).find('#labelCSV').val();
-		console.log($labelCSV);
 		var $mandatory = $(this).find('input:checked').is(':checked');
 		var $mask = $(this).find('#mask').val();
 		var $defaultValue = $(this).find('#defaultValue').val();
