@@ -31,10 +31,10 @@ $transferButton.click(function() {
 
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
-		var $labelCSV = $(this).find('#labelCSV').val();
+		var $labelCSV = $(this).find('.labelCSV').val();
 		var $mandatory = $(this).find('input:checked').is(':checked');
-		var $mask = $(this).find('#mask').val();
-		var $defaultValue = $(this).find('#defaultValue').val();
+		var $mask = $(this).find('.mask').val();
+		var $defaultValue = $(this).find('.defaultValue').val();
 		if($name != ""){
 			names = names + $name + ",";
 			labelCSVs = labelCSVs + $labelCSV + ",";
@@ -136,10 +136,10 @@ function addClickEventOnRemoveFields() {
 
 		$('#selected-data-table > tbody > tr').each(function(){
 			var $name = $(this).find('#name').text();
-			var $labelCSV = $(this).find('#labelCSV').val();
+			var $labelCSV = $(this).find('.labelCSV').val();
 			var $mandatory = $(this).find('input:checked').is(':checked');
-			var $mask = $(this).find('#mask').val();
-			var $defaultValue = $(this).find('#defaultValue').val();
+			var $mask = $(this).find('.mask').val();
+			var $defaultValue = $(this).find('.defaultValue').val();
 
 			if($name !== fieldToRemove){
 				names = names + $name + ",";
@@ -279,7 +279,7 @@ function getFormFromTableTable(){
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
 		var $mandatory = $(this).find('input:checked').is(':checked');
-		var $defaultValue = $(this).find('#defaultValue').val();
+		var $defaultValue = $(this).find('.defaultValue').val();
 		names = names + $name + ",";
 		mandatorys = mandatorys + $mandatory + ",";
 		defaultValues = defaultValues + $defaultValue + ",";
@@ -310,10 +310,10 @@ function getFormFromFileTable(){
 	
 	$('#selected-data-table > tbody > tr').each(function(){
 		var $name = $(this).find('#name').text();
-		var $labelCSV = $(this).find('#labelCSV').val();
+		var $labelCSV = $(this).find('.labelCSV').val();
 		var $mandatory = $(this).find('input:checked').is(':checked');
-		var $mask = $(this).find('#mask').val();
-        var $defaultValue = $(this).find('#defaultValue').val();
+		var $mask = $(this).find('.mask').val();
+        var $defaultValue = $(this).find('.defaultValue').val();
         
 		names = names + $name + ",";
 		labelCSVs = labelCSVs + $labelCSV + ",";
