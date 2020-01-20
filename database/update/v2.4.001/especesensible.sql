@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.9
 -- Dumped by pg_dump version 9.6.9
 
--- Started on 2019-03-28 11:43:50 CET
+-- Started on 2018-11-23 13:38:41 CET
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,61 +20,12 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
---
--- TOC entry 218 (class 1259 OID 9344220)
--- Name: especesensible; Type: TABLE; Schema: referentiels; Owner: admin
---
 
-CREATE TABLE especesensible (
-    cd_dept character varying,
-    id integer NOT NULL,
-    cd_nom character varying(500),
-    duree integer,
-    codage integer,
-    autre character varying(500),
-    cd_sl integer,
-    cd_occ_statut_biologique integer,
-    nom_cite character varying(225)
-);
-
-
-ALTER TABLE especesensible OWNER TO admin;
+TRUNCATE TABLE especesensible RESTART IDENTITY ;
 
 --
--- TOC entry 219 (class 1259 OID 9344226)
--- Name: especesensible_id_seq; Type: SEQUENCE; Schema: referentiels; Owner: admin
---
-
-CREATE SEQUENCE especesensible_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE especesensible_id_seq OWNER TO admin;
-
---
--- TOC entry 4086 (class 0 OID 0)
--- Dependencies: 219
--- Name: especesensible_id_seq; Type: SEQUENCE OWNED BY; Schema: referentiels; Owner: admin
---
-
-ALTER SEQUENCE especesensible_id_seq OWNED BY especesensible.id;
-
-
---
--- TOC entry 3951 (class 2604 OID 9344228)
--- Name: especesensible id; Type: DEFAULT; Schema: referentiels; Owner: admin
---
-
-ALTER TABLE ONLY especesensible ALTER COLUMN id SET DEFAULT nextval('especesensible_id_seq'::regclass);
-
-
---
--- TOC entry 4078 (class 0 OID 9344220)
--- Dependencies: 218
+-- TOC entry 4194 (class 0 OID 6461751)
+-- Dependencies: 223
 -- Data for Name: especesensible; Type: TABLE DATA; Schema: referentiels; Owner: admin
 --
 
@@ -15238,8 +15189,8 @@ D4	14234	77338	\N	2	Emplacement des nids et traces de montée/descente particuli
 
 
 --
--- TOC entry 4087 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 4203 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: especesensible_id_seq; Type: SEQUENCE SET; Schema: referentiels; Owner: admin
 --
 
@@ -15247,17 +15198,8 @@ SELECT pg_catalog.setval('especesensible_id_seq', 14030, true);
 
 
 --
--- TOC entry 3953 (class 2606 OID 9344230)
--- Name: especesensible pk; Type: CONSTRAINT; Schema: referentiels; Owner: admin
---
-
-ALTER TABLE ONLY especesensible
-    ADD CONSTRAINT pk PRIMARY KEY (id);
-
-
---
--- TOC entry 4085 (class 0 OID 0)
--- Dependencies: 218
+-- TOC entry 4201 (class 0 OID 0)
+-- Dependencies: 223
 -- Name: TABLE especesensible; Type: ACL; Schema: referentiels; Owner: admin
 --
 
@@ -15265,7 +15207,7 @@ GRANT ALL ON TABLE especesensible TO ogam;
 GRANT ALL ON TABLE especesensible TO postgres;
 
 
--- Completed on 2019-03-28 11:43:50 CET
+-- Completed on 2018-11-23 13:38:41 CET
 
 --
 -- PostgreSQL database dump complete

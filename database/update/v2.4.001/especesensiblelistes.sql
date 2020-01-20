@@ -1,23 +1,6 @@
-CREATE TABLE referentiels.especesensiblelistes
-(
-  short_citation character varying(500),
-  cd_insee_reg character varying(500),
-  date_liste integer,
-  full_citation character varying(500),
-  url character varying(500),
-  cd_doc integer,
-  cd_sl integer,
-  CONSTRAINT pk_cd_doc PRIMARY KEY (cd_doc)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE referentiels.especesensiblelistes
-  OWNER TO admin;
- 
-GRANT ALL ON TABLE referentiels.especesensiblelistes TO admin;
-GRANT ALL ON TABLE referentiels.especesensiblelistes TO ogam;
-GRANT ALL ON TABLE referentiels.especesensiblelistes TO postgres;
+UPDATE referentiels.liste_referentiels SET version = '12', updated_at = now() WHERE table_name IN ('especesensible', 'especesensiblelistes') ;
+
+TRUNCATE TABLE referentiels.especesensiblelistes ;
   
 INSERT INTO referentiels.especesensiblelistes (short_citation,cd_insee_reg,date_liste,full_citation,url,cd_doc,cd_sl) VALUES 
 ('Anonyme (2015)','24',2015,'Anonyme. 2015. Référentiel régional de données sensibles SINP Centre-Val de Loire Volet "Occurrence de taxons" (validé; le 25 juin 2015 en CSRPN). 5 pp.','http://www.centre.developpement-durable.gouv.fr/IMG/pdf/Notice_referentiel_donnees_sensibles_region_Centre-Val_de_Loire_cle03e5ed.pdf',189968,13)
