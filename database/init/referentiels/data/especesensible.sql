@@ -15245,6 +15245,8 @@ D4	14234	77338	\N	2	Emplacement des nids et traces de montée/descente particuli
 
 SELECT pg_catalog.setval('especesensible_id_seq', 14030, true);
 
+UPDATE referentiels.especesensible SET cd_dept = concat('0', cd_dept) WHERE char_length(cd_dept) = 1 ;
+
 
 --
 -- TOC entry 3953 (class 2606 OID 9344230)
