@@ -101,9 +101,9 @@ public class ChecksHabitatService extends AbstractChecksService {
 		fields.put(DSRConstants.TECHNIQUE_COLLECTE, CODE) ;
 		fields.put(DSRConstants.PRECISION_TECHNIQUE, STRING) ;
 		fields.put(DSRConstants.NOM_CITE, STRING) ;
-		fields.put(DSRConstants.CD_HAB, INTEGER) ;
+		fields.put(DSRConstants.CD_HAB, ARRAY) ;
 		fields.put(DSRConstants.HABITAT_INTERET_COMMUNAUTAIRE, CODE) ;
-		fields.put(DSRConstants.CD_HAB_INTERET_COMMUNAUTAIRE, INTEGER) ;
+		fields.put(DSRConstants.CD_HAB_INTERET_COMMUNAUTAIRE, ARRAY) ;
 
 		for (Map.Entry < String, String > field : fields.entrySet()) {
 			if (!values.containsKey(field.getKey())) {
@@ -162,7 +162,7 @@ public class ChecksHabitatService extends AbstractChecksService {
 		
 		if (nomCiteValue.equals("Inconnu") || nomCiteValue.equals("Nom perdu")) {
 			
-			if (empty(cdHab)) {
+			if (cdHab == null || empty(cdHab)) {
 				
 				String error = "Le champ cdHab doit être rempli car nomCite a pour valeur '" + nomCiteValue + "'." ;
 				CheckException ce = new CheckException(CDHAB_EMPTY, error) ;
