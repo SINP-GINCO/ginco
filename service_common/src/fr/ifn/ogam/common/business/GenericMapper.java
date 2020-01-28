@@ -89,6 +89,8 @@ public class GenericMapper {
 			String error = null ;
 			if (unit.equals("CodeHabRefValue")) {
 				error = "Le code fourni '" + fieldValue + "' ne fait pas partie du référentiel HABREF." ;
+			} else if (unit.equals("CodeCommuneValue")) {
+				error = "Le code commune '" + fieldValue + "' ne fait pas partie du référentiel des communes." ;
 			}
 			CheckException ce = new CheckException(INVALID_CODE_FIELD, error);
 			throw ce;
