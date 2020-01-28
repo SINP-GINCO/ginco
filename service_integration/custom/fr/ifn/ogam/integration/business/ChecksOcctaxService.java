@@ -548,12 +548,12 @@ public class ChecksOcctaxService extends AbstractChecksService {
 
 		// If these two arrays exists, we already tested they have the same length than refHabitatArray
 		String[] codeHabitatArray = null;
-		if (!empty(codeHabitatGD)) {
+		if (codeHabitatGD != null && !empty(codeHabitatGD)) {
 			codeHabitatArray = (String[]) codeHabitatGD.getValue();
 		}
 
 		String[] codeHabRefArray = null;
-		if (!empty(codeHabRefGD)) {
+		if (codeHabRefGD != null && !empty(codeHabRefGD)) {
 			codeHabRefArray = (String[]) codeHabRefGD.getValue();
 		}
 
