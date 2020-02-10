@@ -174,7 +174,7 @@ public class ChecksHabitatService extends AbstractChecksService {
 	
 	
 	/**
-	 * cdHabInteretCommunautaire must be filled if habitatInteretCommunautaire equals 1 or 3 or if cdhab is empty.
+	 * cdHabInteretCommunautaire must be filled if habitatInteretCommunautaire equals 1 or 3.
 	 * @param values
 	 * @throws Exception
 	 */
@@ -192,20 +192,17 @@ public class ChecksHabitatService extends AbstractChecksService {
 			}
 		}
 		
-		boolean emptyCdHab = false ;
-		if (cdHab == null || empty(cdHab)) {
-			emptyCdHab = true ;
+		boolean emptyCdHabInteretCommunautaire = false ;
+		if (cdHabInteretCommunautaire == null || empty(cdHabInteretCommunautaire)) {
+			emptyCdHabInteretCommunautaire = true ;
 		}
 		
-		if (isInteretCommunautaire || emptyCdHab) {
-			
-			if (cdHabInteretCommunautaire == null || empty(cdHabInteretCommunautaire)) {
+		if (isInteretCommunautaire && emptyCdHabInteretCommunautaire) {
 				
-				String error = "Le champ cdHabInteretCommunautaire doit être rempli car habitatInteretCommunautaire a pour valeur 1 ou 3, ou aucun cdHab n'est fourni." ;
-				CheckException ce = new CheckException(CDHAB_INTERET_COMMUNAUTAIRE_EMPTY, error) ;
-				ce.setSourceData("cdHabInteretCommunautaire") ;
-				alce.add(ce) ;
-			}
+			String error = "Le champ cdHabInteretCommunautaire doit être rempli car habitatInteretCommunautaire a pour valeur 1 ou 3." ;
+			CheckException ce = new CheckException(CDHAB_INTERET_COMMUNAUTAIRE_EMPTY, error) ;
+			ce.setSourceData("cdHabInteretCommunautaire") ;
+			alce.add(ce) ;
 		}
 	}
 	
