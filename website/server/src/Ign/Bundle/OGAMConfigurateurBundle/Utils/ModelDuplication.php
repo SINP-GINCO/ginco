@@ -85,7 +85,7 @@ class ModelDuplication extends DatabaseUtils {
 	 *        	the id of the duplicated model
 	 */
 	public function updatePrimaryKeys($model, $copiedModelId) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 		// Trick to pass unit tests - deallocate all prepared statements
 		pg_query($this->pgConn, "DEALLOCATE ALL");
 		// Select all values from format

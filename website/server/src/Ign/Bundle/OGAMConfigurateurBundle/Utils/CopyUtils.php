@@ -37,7 +37,7 @@ class CopyUtils extends DatabaseUtils {
 	 */
 	public function copyData($modelId, $dbConn) {
 		if ($dbConn == null) {
-			$dbConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+			$dbConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 		}
 
 		$sql = 'CREATE TEMPORARY TABLE data_temp(data varchar(174),
@@ -81,7 +81,7 @@ class CopyUtils extends DatabaseUtils {
 	 *        	wether the method is called for duplication or not.
 	 */
 	public function copyFormat($modelId, $destSchema, $duplicate) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT fo.format, fo.type
@@ -128,7 +128,7 @@ class CopyUtils extends DatabaseUtils {
 	 *        	optional parameter used for table_name in duplication.
 	 */
 	public function copyTableFormat($modelId, $destSchema, $duplicate, $copiedModelId = NULL) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT tfo.format, tfo.table_name, tfo.schema_code, tfo.primary_key, tfo.label , tfo.definition
@@ -182,7 +182,7 @@ class CopyUtils extends DatabaseUtils {
 	 *        	wether the method is called for duplication or not.
 	 */
 	public function copyTableTree($modelId, $destSchema, $duplicate) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT ttr.schema_code, ttr.child_table, ttr.parent_table, ttr.join_key, ttr.comment
@@ -240,7 +240,7 @@ class CopyUtils extends DatabaseUtils {
 	 *        	wether the method is called for duplication or not.
 	 */
 	public function copyField($modelId, $destSchema, $duplicate) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT f.data, f.format, f.type
@@ -299,7 +299,7 @@ class CopyUtils extends DatabaseUtils {
 	 *        	wether the method is called for duplication or not.
 	 */
 	public function copyTableField($modelId, $destSchema, $duplicate) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT tfi.data, tfi.format, tfi.column_name, tfi.is_calculated, tfi.is_editable, tfi.is_insertable, tfi.is_mandatory, tfi.position, tfi.comment
@@ -364,7 +364,7 @@ class CopyUtils extends DatabaseUtils {
 	 * @return the generated id of the model if duplicate is true.
 	 */
 	public function copyModel($modelId, $destSchema, $duplicate, $copyModelId, $copyModelName = NULL, $copyModelDescription = NULL) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT m.id, m.name, m.description, m.schema_code, m.status, m.standard
@@ -416,7 +416,7 @@ class CopyUtils extends DatabaseUtils {
 	 *        	the id of the copied model. Only for duplication.
 	 */
 	public function copyModelTables($modelId, $destSchema, $duplicate, $copiedModelId = NULL) {
-		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $this->conn->getHost() . " port=" . $this->conn->getPort() . " dbname=" . $this->conn->getDatabase() . " user=" . $this->conn->getUsername() . " password=" . $this->conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 
 		// Select all values
 		$selectQuery = "SELECT DISTINCT mt.model_id, mt.table_id

@@ -34,7 +34,7 @@ class ImportModelUnpublication extends DatabaseUtils {
 		$this->entityManager = $entityManager ;
 		$conn = $entityManager->getConnection() ;
 		parent::__construct($conn, $logger);
-		$this->pgConn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
+		$this->pgConn = pg_connect("host=" . $conn->getHost() . " port=" . $conn->getPort() . " dbname=" . $conn->getDatabase() . " user=" . $conn->getUsername() . " password=" . $conn->getPassword()) or die('Connection is impossible : ' . pg_last_error());
 	}
 
 	/**
