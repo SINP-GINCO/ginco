@@ -105,7 +105,7 @@ class ModelManager {
 		try {
 			
 			$conn = $this->entityManager->getConnection() ;
-			$dbconn = pg_connect("host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $this->adminUser . " password=" . $this->adminPassword) or die('Connection is impossible : ' . pg_last_error());
+			$dbconn = pg_connect("host=" . $conn->getHost() . " port=" . $conn->getPort() . " dbname=" . $conn->getDatabase() . " user=" . $this->adminUser . " password=" . $this->adminPassword) or die('Connection is impossible : ' . pg_last_error());
 
 			pg_query($dbconn, "BEGIN");
 

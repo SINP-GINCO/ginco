@@ -45,7 +45,7 @@ class ModelUnpublication extends DatabaseUtils {
 		
 		parent::__construct($conn, $logger, $adminName, $adminPassword);
 		
-		$this->connParams = "host=" . $conn->getHost() . " dbname=" . $conn->getDatabase() . " user=" . $adminName . " password=" . $adminPassword;
+		$this->connParams = "host=" . $conn->getHost() . " port=" . $conn->getPort() . " dbname=" . $conn->getDatabase() . " user=" . $adminName . " password=" . $adminPassword;
 		try{
 			$this->adminPgConn = pg_connect($this->connParams);
 		} catch(ContextErrorException $e){

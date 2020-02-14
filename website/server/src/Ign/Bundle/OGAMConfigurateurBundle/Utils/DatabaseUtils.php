@@ -71,6 +71,7 @@ class DatabaseUtils {
 				'user' => $this->adminName,
 				'password' => $this->adminPassword,
 				'host' => $this->conn->getHost(),
+                'port' => $this->conn->getPort(),
 				'driver' => $this->conn->getDriver()->getName()
 			);
 
