@@ -400,7 +400,8 @@ class DefaultController extends GincoController {
 	public function taxrefMigrationAction() {
 		
 		$entityManager = $this->getDoctrine()->getManager('metadata') ;
-		$tableFormats = $entityManager->getRepository('IgnGincoBundle:Metadata\TableFormat')->findPublishedTableFormats() ;
+        $occtaxStandard = $entityManager->getRepository('IgnGincoBundle:Metadata\Standard')->findOneByName('occtax') ;
+		$tableFormats = $entityManager->getRepository('IgnGincoBundle:Metadata\TableFormat')->findPublishedTableFormats($occtaxStandard) ;
 		
 		$query = $this->get('ginco.query') ;
 		

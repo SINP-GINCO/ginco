@@ -5,6 +5,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 use Ign\Bundle\GincoBundle\Entity\Metadata\TableFormat;
 use Ign\Bundle\GincoBundle\Entity\Metadata\Model;
+use Ign\Bundle\GincoBundle\Entity\Metadata\Standard;
 
 /**
  * TableFormatRepository
@@ -173,15 +174,18 @@ class TableFormatRepository extends \Doctrine\ORM\EntityRepository {
 	
 	
 	/**
-	 * Recherche tous les table_format correspondant à un modèle publié.
+	 * Recherche tous les table_format correspondant à un modèle publié dans un standard donné.
+     * @param $standard Standard à considérer.
 	 * @return TableFormat[]
 	 */
-	public function findPublishedTableFormats() {
+	public function findPublishedTableFormats(Standard $standard) {
 		
 		return $this->createQueryBuilder('tf')
 			->join('tf.models', 'm')
 			->where('m.status = :status')
+            ->andWhere('m.standard = :standard')
 			->setParameter('status', Model::PUBLISHED)
+            ->setParameter('standard', $standard->getName())
 			->getQuery()
 			->getResult()
 		;
