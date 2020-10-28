@@ -84,7 +84,7 @@ Le fichier généré est `build/latex/Ginco.pdf`.
 Et pour les deux en même temps (le PDF est ainsi téléchargeable directement depuis le site de doc) :
 
 ```bash
-make htmlandpdf SPHINWENV=[test|prod] (défaut=prod)
+make htmlandpdf SPHINXENV=[test|prod] (défaut=prod)
 ```
 
 ## Captures d'écran
