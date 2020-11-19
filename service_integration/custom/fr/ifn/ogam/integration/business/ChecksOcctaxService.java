@@ -491,7 +491,10 @@ public class ChecksOcctaxService extends AbstractChecksService {
 
 			if (preuveExistanteValue.equalsIgnoreCase("1")) {
 
-				if (empty(preuveNumeriqueGD) && empty(preuveNonNumeriqueGD)) {
+				boolean hasPreuveNumerique = (preuveNumeriqueGD != null && !empty(preuveNumeriqueGD)) ;
+				boolean hasPreuveNonNumerique = (preuveNonNumeriqueGD != null && !empty(preuveNonNumeriqueGD)) ;
+
+				if (!hasPreuveNumerique && !hasPreuveNonNumerique) {
 					String errorMessage = DSRConstants.PREUVE_NUMERIQUE + " ou " + DSRConstants.PREUVE_NON_NUMERIQUE + " sont obligatoires car "
 							+ DSRConstants.PREUVE_EXISTANTE + " vaut \"1\" (Oui).";
 					CheckException ce = new CheckException(PROOF, errorMessage);
@@ -500,7 +503,7 @@ public class ChecksOcctaxService extends AbstractChecksService {
 				}
 
 				// preuveNumerique doit commencer comme une url
-				if (!empty(preuveNumeriqueGD)) {
+				if (hasPreuveNumerique) {
 					String preuveNumeriqueValue = (String) preuveNumeriqueGD.getValue();
 					if (!StringUtils.startsWithAny(preuveNumeriqueValue.toLowerCase(), new String[] { "http://", "https://", "ftp://" })) {
 						String errorMessage = DSRConstants.PREUVE_NUMERIQUE
