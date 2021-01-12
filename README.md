@@ -1,5 +1,7 @@
 # GINCO
 
+**Ce projet n'est plus maintenu.**
+
 ## A propos
 GINCO est le projet d'implémentation de référence des plates-formes régionales et
 thématique du SINP ([Système d'Information Nature et Paysage](http://www.naturefrance.fr/sinp/presentation-du-sinp))
